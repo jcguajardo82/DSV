@@ -6167,6 +6167,12 @@ table.table-mail tr td {
     color: #ffffff;
 }
 
+.red-bg-sor,
+.bg-danger-sor {
+    background-color: #D52B1E !important;
+    color: #ffffff;
+}
+
 .black-bg {
     background-color: #262626;
 }
