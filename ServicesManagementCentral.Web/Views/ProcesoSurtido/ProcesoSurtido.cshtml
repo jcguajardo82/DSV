@@ -202,7 +202,7 @@
                             </div>
                             <div role="tabpanel" id="tab-2" class="tab-pane">
                                 <div class="panel-body">
-                                    <div class="row">
+                                    @*<div class="row">
                                         <table>
                                             <tr>
                                                 <td></td>
@@ -217,70 +217,86 @@
                                                 <td style="text-align:left;"><input type="text" class="form-control"></td>
                                             </tr>
                                         </table>
-                                    </div>
+                                    </div>*@
                                     <div class="tableFixHead table-responsive m-t">
                                         <table id="tblSolicitutGuia" class="table invoice-table">
                                             <thead>
                                                 <tr>
-                                                    <th style="text-align:center;">ID</th>
+                                                    <th style="text-align:center;">EAN</th>
                                                     <th style="text-align:center;">Descripción</th>
-                                                    <th style="text-align:center;">Peso Volumetrico</th>
-                                                    <th style="text-align:center;">Tipo Envío</th>
-                                                    <th style="text-align:center;">Total de Guías</th>
+                                                    <th style="text-align:center;">Piezas</th>
+                                                    <th style="text-align:center;">Artículo en guía</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td style="text-align:center;">1123124</td>
                                                     <td style="text-align:left;">Calefactor</td>
-                                                    <td style="text-align:center;">1.23</td>
-                                                    <td style="text-align:left;">Paqueteria</td>
                                                     <td style="text-align:center;">1</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">1123124</td>
                                                     <td style="text-align:left;">Calefactor</td>
-                                                    <td style="text-align:center;">1.23</td>
-                                                    <td style="text-align:left;">Paqueteria</td>
                                                     <td style="text-align:center;">1</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">1123124</td>
                                                     <td style="text-align:left;">Calefactor</td>
-                                                    <td style="text-align:center;">1.23</td>
-                                                    <td style="text-align:left;">Paqueteria</td>
                                                     <td style="text-align:center;">1</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">1123124</td>
                                                     <td style="text-align:left;">Calefactor</td>
-                                                    <td style="text-align:center;">1.23</td>
-                                                    <td style="text-align:left;">Paqueteria</td>
                                                     <td style="text-align:center;">1</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">1123124</td>
                                                     <td style="text-align:left;">Calefactor</td>
-                                                    <td style="text-align:center;">1.23</td>
-                                                    <td style="text-align:left;">Paqueteria</td>
                                                     <td style="text-align:center;">1</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
                                                 </tr>
                                             </tbody>
-                                            <tfoot>
-                                                <tr></tr>
-                                            </tfoot>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
+                                                    Solicitar Guía
+                                                </button>
+                                            </td>
                                         </table>
                                     </div>
                                     <div class="row">
                                         <table>
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center;">No. de Guía</th>
+                                                    <th style="text-align:center;">Alto (mts)</th>
+                                                    <th style="text-align:center;">Largo (mts)</th>
+                                                    <th style="text-align:center;">Ancho (mts)</th>
+                                                    <th style="text-align:center;">Peso (kg)</th>
+                                                    <th style="text-align:center;">Peso REAL</th>
+                                                    <th style="text-align:center;">Tipo Envío</th>
+                                                    <th style="text-align:center;">Total de artículos en guía</th>
+                                                    <th>    </th>
+                                                </tr>
+                                            </thead>
                                             <tr>
+                                                <td>Guía 2</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <td>71 (en automático)</td>
+                                                <td>Paquetería (en automático)</td>
+                                                <td>ES LA SUMA EN AUTOMÁTICO DE LOS ARTÍCULOS SELECCIONADOS EN EL DETALLE</td>
                                                 <td>
                                                     <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
-                                                        Generar Guías
+                                                        Confirmar solicitud de guía
                                                     </button>
                                                 </td>
                                             </tr>
@@ -337,8 +353,13 @@
                                             <thead>
                                                 <tr>
                                                     <th style="text-align:center;">No. Guía</th>
+<<<<<<< Updated upstream
                                                     <th style="text-align:center;">ID</th>
                                                     <th style="text-align:center;">Descripción</th>
+=======
+                                                    <th style="text-align:center;">Peso Real</th>
+                                                    <th style="text-align:center;">Tipo Envío</th>
+>>>>>>> Stashed changes
                                                     <th> </th>
                                                     <th></th>
                                                 </tr>
@@ -347,42 +368,66 @@
                                                 <tr>
                                                     <td style="text-align:center;">4562734567898230000000</td>
                                                     <td style="text-align:center;">1234567</td>
+<<<<<<< Updated upstream
                                                     <td style="text-align:left;">Licon Caballero</td>
+=======
+                                                    <td style="text-align:left;">Paquetería</td>
+>>>>>>> Stashed changes
                                                     <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
                                                     <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">4562734567898230000000</td>
                                                     <td style="text-align:center;">1234567</td>
+<<<<<<< Updated upstream
                                                     <td style="text-align:left;">Licon Caballero</td>
+=======
+                                                    <td style="text-align:left;">Paquetería</td>
+>>>>>>> Stashed changes
                                                     <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
                                                     <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">4562734567898230000000</td>
                                                     <td style="text-align:center;">1234567</td>
+<<<<<<< Updated upstream
                                                     <td style="text-align:left;">Licon Caballero</td>
+=======
+                                                    <td style="text-align:left;">Paquetería</td>
+>>>>>>> Stashed changes
                                                     <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
                                                     <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">4562734567898230000000</td>
                                                     <td style="text-align:center;">1234567</td>
+<<<<<<< Updated upstream
                                                     <td style="text-align:left;">Licon Caballero</td>
+=======
+                                                    <td style="text-align:left;">Paquetería</td>
+>>>>>>> Stashed changes
                                                     <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
                                                     <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">4562734567898230000000</td>
                                                     <td style="text-align:center;">1234567</td>
+<<<<<<< Updated upstream
                                                     <td style="text-align:left;">Licon Caballero</td>
+=======
+                                                    <td style="text-align:left;">Paquetería</td>
+>>>>>>> Stashed changes
                                                     <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
                                                     <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">4562734567898230000000</td>
                                                     <td style="text-align:center;">1234567</td>
+<<<<<<< Updated upstream
                                                     <td style="text-align:left;">Licon Caballero</td>
+=======
+                                                    <td style="text-align:left;">Paquetería</td>
+>>>>>>> Stashed changes
                                                     <td> <a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
                                                     <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
 
