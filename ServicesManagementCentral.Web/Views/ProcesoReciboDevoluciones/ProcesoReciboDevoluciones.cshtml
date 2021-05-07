@@ -17,13 +17,10 @@
         height: 300px;
     }
 
-
-
         .tableFixHead th {
             position: sticky;
             top: 0;
         }
-
 
 
     /* Just common table stuff. */
@@ -34,14 +31,9 @@
         word-wrap: break-word;
     }
 
-
-
     th, td {
         padding: 8px 16px;
     }
-
-
-
 
     th {
         background: #D52B1E;
@@ -57,23 +49,34 @@
 
 
 
-
+            <div class="row">
+                <div class="col col-xs-6">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        @*<button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>*@
+                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                    </div>
+                </div>
+                <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
-                            <thead>
+                    <div id="tblConsulta" class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table dataTable">
+                            <thead class="bg-danger-sor">
                                 <tr>
-                                    <th>Numero de Orden</th>
-                                    <th>Fecha y hora de creacion de la orden</th>
-                                    <th>Solicitud RMA</th>
-                                    <th>Motivo RMA</th>
-                                    <th>Paqueteria</th>
-                                    <th>Numero de la guia de devolucion</th>
-                                    <th>Estatus de Guía de devolucion</th>
-                                    <th>Fecha de entrega al almacen</th>
-                                    <th>Recibido por</th>
-
+                                    <th class="sorting">Numero de Orden</th>
+                                    <th class="sorting">Fecha y hora de creacion de la orden</th>
+                                    <th class="sorting">Solicitud RMA</th>
+                                    <th class="sorting">Motivo RMA</th>
+                                    <th class="sorting">Paqueteria</th>
+                                    <th class="sorting">Numero de la guia de devolucion</th>
+                                    <th class="sorting">Estatus de Guía de devolucion</th>
+                                    <th class="sorting">Fecha de entrega al almacen</th>
+                                    <th class="sorting">Recibido por</th>
+                                    <th class="sorting">EAN/Código Barras</th>
+                                    <th class="sorting">Días Vigentes Guia</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,18 +87,19 @@
                                         Reenvio
                                     </td>
                                     <td>
-                                        Daño
+                                        Robo
                                     </td>
                                     <td>
                                         Estafeta
                                     </td>
                                     <td>45627345678982300000000000</td>
                                     <td>
-                                        En transito
+                                        Entregado
                                     </td>
-                                    <td></td>
-                                    <td></td>
-
+                                    <td>13-Mar-21</td>
+                                    <td>SOE: Alberto Juarez</td>
+                                    <td>456273456789</td>
+                                    <td>1</td>
                                 </tr>
                                 <tr>
                                     <td><u>7654234</u></td>
@@ -111,84 +115,82 @@
                                     </td>
                                     <td>45627345678982300000000000</td>
                                     <td>
-                                       Entregado
+                                        Entregado
                                     </td>
                                     <td>13-Mar-21</td>
                                     <td>SOE: Alberto Juarez</td>
-
+                                    <td>456273456789</td>
+                                    <td>1</td>
                                 </tr>
-
-
-
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
             <h2>Recibo de devoluciones</h2>
-
-
-
+            <div class="row">
+                <div class="col col-xs-6">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        @*<button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>*@
+                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                    </div>
+                </div>
+                <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
-                            <thead>
+                    <div>
+                        <table class="table invoice-table dataTable">
+                            <thead class="bg-danger-sor">
                                 <tr>
-                                    <th>RMA</th>
-                                    <th>ID</th>
-                                    <th>Descripcion</th>
-                                    <th>Piezas</th>
-                                    <th>Numero de Guia de devolucion</th>
-                                    <th>Condiciones del paquete</th>
-                                    <th>Recibo</th>
-                                   
-
+                                    <th class="sorting">RMA</th>
+                                    <th class="sorting">ID</th>
+                                    <th class="sorting">Descripcion</th>
+                                    <th class="sorting">Piezas</th>
+                                    <th class="sorting">Numero de Guia de devolucion</th>
+                                    <th class="sorting">Condiciones del paquete</th>
+                                    <th class="sorting">Recibo</th>
+                                    <th class="sorting">EAN/Código Barras</th>
+                                    <th class="sorting">Días Vigentes Guia</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>7654234</td>
                                     <td>DSV</td>
-                                    <td>
-                                        Calefactor
-                                    </td>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>
-                                        45627345678982300000000000
-                                    </td>
+                                    <td> Calefactor</td>
+                                    <td>1</td>
+                                    <td>45627345678982300000000000</td>
                                     <td>En buen estado</td>
-                                    <td>
-                                        <input type="checkbox"onclick="return false" checked>
-                                    </td>
-
-
+                                    <td><input type="checkbox" onclick="return false" checked></td>
+                                    <td>9021312899368128</td>
+                                    <td>1</td>
                                 </tr>
                                 <tr>
                                     <td>7654234</td>
-                                    <td>DST</td>
-                                    <td>
-                                        Calefactor
-                                    </td>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>
-                                        45627345678982300000000000
-                                    </td>
-                                    <td>Dañado</td>
-                                    <td>
-                                        <input type="checkbox" onclick="return false" checked>
-                                    </td>
-                                    
-
+                                    <td>DSV</td>
+                                    <td> Calefactor</td>
+                                    <td>1</td>
+                                    <td>45627345678982300000000000</td>
+                                    <td>En buen estado</td>
+                                    <td><input type="checkbox" onclick="return false" checked></td>
+                                    <td>9021312899368128</td>
+                                    <td>1</td>
                                 </tr>
-
-
-
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7"></td>
+                                    <td colspan="2" style="text-align:right;">
+                                        <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
+                                            Confirmar Devolución
+                                        </button>
+
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
