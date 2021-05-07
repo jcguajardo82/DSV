@@ -47,22 +47,45 @@
         color: #ffffff;
         font-weight: bold;
     }
+
+    .asc:after {
+        content: ' ↑';
+    }
+
+    .desc:after {
+        content: " ↓";
+    }
 </style>
 
 <div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
     <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+
         <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
             <h2>Estatus de Reenvio de Mercancia</h2>
 
-
+            <div class="row">
+                <div class="col col-xs-6">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        @*<button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>*@
+                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                    </div>
+                </div>
+                <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-sm-12">
+                    <div class="col col-xs-3 col col-md-3 col col-lg-3">
+                        <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
+                    </div>
                     <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+
                         <table class="table invoice-table">
                             <thead>
                                 <tr>
-                                    <th>Numero de consignacion</th>                                   
+                                    <th>Numero de consignacion</th>
                                     <th>Numero de la consignación de reenvio/sustituto/cambio fisico</th>
                                     <th>Tipo almacen</th>
                                     <th>Fecha y hora de creacion de la orden</th>
@@ -83,7 +106,7 @@
                                     <td><a onclick="popDetalle()" class="nav-link">7654234</a></td>
                                     <td>-</td>
                                     <td>DSV</td>
-                                    
+
                                     <td>
                                         28-Ene-21
                                     </td>
@@ -134,6 +157,8 @@
                             </tbody>
                         </table>
                     </div>
+                    <button style="visibility:hidden;" float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
+                    <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
                 </div>
             </div>
 
@@ -211,8 +236,10 @@
 
                             </tbody>
                         </table>
-                        <button style="float: right;"type="button" class="btn btn-w-m btn-warning">Descargar</button>
+
                     </div>
+                    <button style="visibility:hidden;" float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
+                    <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
                 </div>
             </div>
         </div>
@@ -232,6 +259,30 @@
         });
         function popDetalle() {
             $('#dlgDetalle').modal('toggle');
+        }
+
+
+        $('th').click(function () {
+            var table = $(this).parents('table').eq(0)
+           // var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+            this.asc = !this.asc
+            //if (!this.asc) {
+            //    rows = rows.reverse()
+            //}
+            //for (var i = 0; i < rows.length; i++) {
+            //    table.append(rows[i])
+            //}
+            setIcon($(this), this.asc);
+        })
+        function setIcon(element, asc) {
+            $("th").each(function (index) {
+                $(this).removeClass("sorting");
+                $(this).removeClass("asc");
+                $(this).removeClass("desc");
+            });
+            element.addClass("sorting");
+            if (asc) element.addClass("asc");
+            else element.addClass("desc");
         }
 
     </script>

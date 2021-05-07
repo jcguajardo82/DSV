@@ -192,6 +192,7 @@
     <Compile Include="Controllers\ActualizacionesController.cs" />
     <Compile Include="Controllers\Api\ApiBaseController.cs" />
     <Compile Include="Controllers\Api\SecurityController.cs" />
+    <Compile Include="Controllers\AutorizacionesRMA.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
@@ -3651,6 +3652,7 @@
     <Content Include="Views\Config\Menus.cshtml" />
     <Content Include="Views\Config\Roles.cshtml" />
     <Content Include="Views\Config\Usuarios.cshtml" />
+    <Content Include="Views\AutorizacionesRMA\AutorizacionesRMA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

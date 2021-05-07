@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "AutorizacionesRMA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style id="compiled-css" type="text/css">
+
+    h2 {
+        color: #263EEA;
+        text-align: center;
+        font-weight: bold;
+    }
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+    }
+
+
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+
+
+    th {
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+    }
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <h2>Autorizaciones de RMA</h2>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <h3>Almacenes</h3>
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Folio RMA</th>
+                                    <th>Solicitud de Cliente</th>
+                                    <th>Motivo </th>
+                                    <th>Fecha de creacion del RMA</th>
+                                    <th>Consignacion</th>
+                                    <th>Almacen</th>
+                                    <th>Nombre de Almacen</th>
+                                    <th>Costo de la Consignación</th>
+                                    <th>Costo de la solicitud de devolución</th>
+                                    <th>Detalle</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>12345</td>
+                                    <td>Renmolso</td>
+                                    <td>
+                                        Dañado
+                                    </td>
+                                    <td>21-abril</td>
+                                    <td>12456</td>
+                                    <td>8003</td>
+                                    <td>Cedis</td>
+                                    <td>$400.00</td>
+                                    <td>$135</td>
+                                    <td><u>ver detalle</u></td>
+
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>EAN</th>
+                                    <th>ID</th>
+                                    <th>Descripcion</th>
+                                    <th>Costo</th>
+                                    <th>Piezas</th>
+                                    <th>Autorizacion</th>
+                                   
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>12345678</td>
+                                    <td>8776</td>
+                                    <td>Toalla baño</td>
+                                    <td>$100</td>
+                                    <td>1</td>
+                                    <td></td>
+                                    
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+
+    </script>
+}
+
+
+

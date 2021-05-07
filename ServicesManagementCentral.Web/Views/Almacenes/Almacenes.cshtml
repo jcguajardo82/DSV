@@ -68,13 +68,24 @@
                 </div>
             </div>
 
-
+            <div class="row">
+                <div class="col col-xs-6">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        @*<button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>*@
+                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                    </div>
+                </div>
+                <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-12">
                     <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
                         <table class="table invoice-table">
                             <thead>
                                 <tr>
+                                    <th>Habilitar/ Deshabilitar</th>
                                     <th>Tipo Almacen</th>
                                     <th>Numero de Almacen</th>
                                     <th>Nombre de Almacen</th>
@@ -85,7 +96,8 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>WMS</td>
+                                    <td> <input type="checkbox"></td>
+                                    <td><a href=" https://localhost:44371/AltaProveedor/AltaProveedor">MS</a></td>
                                     <td>5688</td>
                                     <td>
                                         Cedis Mexico
@@ -95,7 +107,8 @@
 
                                 </tr>
                                 <tr>
-                                    <td>Provedores</td>
+                                    <td> <input type="checkbox"></td>
+                                    <td><a href=" https://localhost:44371/AltaProveedor/AltaProveedor">Provedores</a></td>
                                     <td>21778</td>
                                     <td>
                                         MOTORDRIVE S.A. DE C.V.
@@ -108,7 +121,11 @@
 
                             </tbody>
                         </table>
+                        <h4>Motivo</h4>
+                        <textarea id="comment" class="form-control"></textarea>
                     </div>
+                    <button style="visibility:hidden;" float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
+                    <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
                 </div>
             </div>
 
