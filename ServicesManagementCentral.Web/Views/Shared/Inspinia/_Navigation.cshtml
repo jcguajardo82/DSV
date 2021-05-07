@@ -1,6 +1,4 @@
-﻿@{
-    string userName = ViewBag.Login != null ? ViewBag.Login.Username : "";
-}
+﻿
 
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
@@ -25,56 +23,72 @@
                 </div>
             </li>
 
-            <li>
-                <a href="#"><i class="fa fa-first-order"></i> <span class="nav-label">Ordenes</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" aria-expanded="false">
-                    <li><a href="@Url.Action("MenuOrdenes","Ordenes")">Surtido de Ordenes</a></li>
-                    @*<li><a href="@Url.Action("OrdenSeleccionada","Ordenes")">Listado Ordenes</a></li>
-                        <li><a href="@Url.Action("OrdenDetalle","Ordenes")">Orden</a></li>
-                        <li><a href="@Url.Action("Servidores","Catalogo")">Traspaso</a></li>
-                        <li><a href="@Url.Action("Servidores","Catalogo")">Etiquetas</a></li>
-                        <li><a href="@Url.Action("Servidores","Catalogo")">Reportes</a></li>*@
+            @{
+                //string userName = ViewBag.Login != null ? ViewBag.Login.Username : "";
+                var rol = Session["UserRol"] != null ? (ServicesManagement.Web.Controllers.UserRolModel)Session["UserRol"] : new ServicesManagement.Web.Controllers.UserRolModel();
+            }
+            @{
 
-                    @*<li><a href="@Url.Action("Logs","Catalogo")">Logs</a></li>*@
-                </ul>
-            </li>
+                if (rol.idRol != null)
+                {
+                    var ds = ServicesManagement.Web.DALConfig.MenusRol_sUP(int.Parse(rol.idRol));
+                    System.Data.DataRow[] result = ds.Tables[0].Select("padreId = 0 ", "posicion ASC");
+                    foreach (System.Data.DataRow row in result)
+                    {
 
-            <li>
-                <a href="#"><i class="fa fa-table"></i> <span class="nav-label">Catalogo</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" aria-expanded="false">
-                    <li><a href="@Url.Action("Surtidores","Catalogo")">Surtidores</a></li>
-                    <li><a href="@Url.Action("Transportistas","Catalogo")">Transportistas</a></li>
-                    <li><a href="@Url.Action("Pasillos","Catalogo")">Pasillos</a></li>
-                    <li><a href="@Url.Action("PassCan","Catalogo")">Password para Cancelar</a></li>
-                </ul>
-            </li>
+                        <li>
+                            @if (row["controller"].ToString().Length != 0 || row["action"].ToString().Length != 0)
+                            {
+                                <a href="@Url.Action(row["action"].ToString(), row["controller"].ToString())"><i class="@row["icono"]"></i> <span class="nav-label">@row["descripcionCorta"]</span><span class="fa arrow"></span></a>
+                            }
+                            else
+                            {
+                                <a href="#"><i class="@row["icono"]"></i> <span class="nav-label">@row["descripcionCorta"]</span><span class="fa arrow"></span></a>
+                            }
 
+                            @{
+                                System.Data.DataRow[] result2 = ds.Tables[0].Select("padreId =" + @row["menuId"].ToString());
+                                //dt.AsEnumerable().Where( dr => dr.Field<int>( "ID" ) == 1 );
+                            }
 
-            <li>
-                <a href="#"><i class="fa fa-table"></i> <span class="nav-label">Operaciones</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" aria-expanded="false">
-                    <li><a href="@Url.Action("AltaProveedor","AltaProveedor")">Alta Proveedor</a></li>
-                    <li><a href="@Url.Action("ManualesOperativos","ManualesOperativos")">Manuales Operativos</a></li>
-                    <li><a href="@Url.Action("Actualizaciones","Actualizaciones")">Actualizaciones</a></li>
-                    <li><a href="@Url.Action("Consignaciones","Consignaciones")">Consignaciones</a></li>
-                    <li><a href="@Url.Action("EstatusReenvioMcia","EstatusReenvioMcia")">Reenvio de Mercancia</a></li>
-                    <li><a href="@Url.Action("RenviodeMercancia","RenviodeMercancia")">Reenvío de Mercancía CEDIS</a></li>
-                    <li><a href="@Url.Action("ProcesoReciboDevoluciones","ProcesoReciboDevoluciones")">Procesos Devoluciones</a></li>
-                    <li><a href="@Url.Action("ProcesoSurtido","ProcesoSurtido")">Proceso Surtido</a></li>
-                    <li><a href="@Url.Action("ProcesoReenvioMcia","ProcesoReenvioMcia")">Proceso Reenvío Mcia</a></li>
-                    <li><a href="@Url.Action("EstatusGuiaEnvio","Estatus_guia_envio")">Estatus de Guias</a></li>
-                    <li><a href="@Url.Action("Devoluciones","Devoluciones")">Devoluciones</a></li>
-                    <li><a href="@Url.Action("OrdenesCompra","OrdenesCompra")">Ordenes de Compra</a></li>
-                    <li><a href="@Url.Action("TotalOrdenes","TotalOrdenes")">Total de Ordenes</a></li>
-                    <li><a href="@Url.Action("Almacenes","Almacenes")">Almacenes</a></li>
-                    <li><a href="@Url.Action("ActualizacionesInventario","ActualizacionesInventario")">Actualizaciones</a></li>
-                    <li><a href="@Url.Action("NivelExistencia","NivelExistencia")">Nivel de Existencia</a></li>
+                            <ul class="nav nav-second-level collapse" aria-expanded="false">
+                                @foreach (System.Data.DataRow r in result2)
+                                {
+                                    <li><a href="@Url.Action(r["action"].ToString(), r["controller"].ToString())">@r["descripcionCorta"]</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
 
+                }
+                else
+                {
+                    Response.Redirect("~/Security/Login");
+                }
+            }
+            @*<li>
+                    <a href="#"><i class="fa fa-tasks"></i> <span class="nav-label">Ordenes</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse" aria-expanded="false">
+                        <li><a href="@Url.Action("MenuOrdenes","Ordenes")">Surtido de Ordenes</a></li>
+                        <li><a href="@Url.Action("OrdenSeleccionada","Ordenes")">Listado Ordenes</a></li>
+                            <li><a href="@Url.Action("OrdenDetalle","Ordenes")">Orden</a></li>
+                            <li><a href="@Url.Action("Servidores","Catalogo")">Traspaso</a></li>
+                            <li><a href="@Url.Action("Servidores","Catalogo")">Etiquetas</a></li>
+                            <li><a href="@Url.Action("Servidores","Catalogo")">Reportes</a></li>
 
+                        <li><a href="@Url.Action("Logs","Catalogo")">Logs</a></li>
+                    </ul>
+                </li>
 
-                </ul>
-            </li>
-
+                <li>
+                    <a href="#"><i class="fa fa-tools"></i> <span class="nav-label">Catalogo</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse" aria-expanded="false">
+                        <li><a href="@Url.Action("Surtidores","Catalogo")">Surtidores</a></li>
+                        <li><a href="@Url.Action("Transportistas","Catalogo")">Transportistas</a></li>
+                        <li><a href="@Url.Action("Pasillos","Catalogo")">Pasillos</a></li>
+                        <li><a href="@Url.Action("PassCan","Catalogo")">Password para Cancelar</a></li>
+                    </ul>
+                </li>*@
         </ul>
 
     </div>
