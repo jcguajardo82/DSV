@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Total Ordenes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style id="compiled-css" type="text/css">
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+    }
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+    th {
+        /*background: #1AB394;*/
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+                <div class="col col-xs-3 col col-md-3 col col-lg-3">
+                    <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>No. Orden</th>
+                                    <th>Fecha Creación</th>
+                                    <th>Cliente</th>
+                                    <th>Estatus de Orden</th>
+                                    <th>Estatus de Consignación</th>
+                                    <th>No. de Guía</th>
+                                    <th>Estatus de Guía</th>
+                                    <th>No. Orden Compra</th>
+                                    <th style="text-align:center;">Estatus Orden Compra</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1123124</td>
+                                    <td>28-Ene-2021</td>
+                                    <td>
+                                        Susana Vargas Miranda
+                                    </td>
+                                    <td>
+                                        Pago Autorizado
+                                    </td>
+                                    <td>
+                                        En espera de recolección
+                                    </td>
+                                    <td>12345654323500</td>
+                                    <td>
+                                        En tránsito
+                                    </td>
+                                    <td>567899876</td>
+                                    <td style="text-align:left;">En programación de pago</td>
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+
+    </script>
+}

@@ -1,0 +1,81 @@
+﻿@{
+    string userName = ViewBag.Login != null ? ViewBag.Login.Username : "";
+}
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <a class="navbar-minimalize"><i class="fa fa-bars"></i> </a>
+                    <span>
+                        <img alt="image" class="img-circle logo" src="@Url.Content("~/Content/images/theme/logo.png")" />
+                    </span>
+                    <span class="clear">
+                        <span class="block m-t-xs">
+                            <strong class="font-bold">Soriana</strong>
+                        </span>
+                        <span class="text-muted text-xs block">Surtido</span>
+                    </span>
+                </div>
+                <div class="logo-element">
+                    <span>
+                        <img alt="image" class="img-circle logo" style="height: 35px; width: 45px" src="@Url.Content("~/Content/images/theme/Soriana_logo.png")" />
+                    </span>
+                </div>
+            </li>
+
+            <li>
+                <a href="#"><i class="fa fa-first-order"></i> <span class="nav-label">Ordenes</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" aria-expanded="false">
+                    <li><a href="@Url.Action("MenuOrdenes","Ordenes")">Surtido de Ordenes</a></li>
+                    @*<li><a href="@Url.Action("OrdenSeleccionada","Ordenes")">Listado Ordenes</a></li>
+                        <li><a href="@Url.Action("OrdenDetalle","Ordenes")">Orden</a></li>
+                        <li><a href="@Url.Action("Servidores","Catalogo")">Traspaso</a></li>
+                        <li><a href="@Url.Action("Servidores","Catalogo")">Etiquetas</a></li>
+                        <li><a href="@Url.Action("Servidores","Catalogo")">Reportes</a></li>*@
+
+                    @*<li><a href="@Url.Action("Logs","Catalogo")">Logs</a></li>*@
+                </ul>
+            </li>
+
+            <li>
+                <a href="#"><i class="fa fa-table"></i> <span class="nav-label">Catalogo</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" aria-expanded="false">
+                    <li><a href="@Url.Action("Surtidores","Catalogo")">Surtidores</a></li>
+                    <li><a href="@Url.Action("Transportistas","Catalogo")">Transportistas</a></li>
+                    <li><a href="@Url.Action("Pasillos","Catalogo")">Pasillos</a></li>
+                    <li><a href="@Url.Action("PassCan","Catalogo")">Password para Cancelar</a></li>
+                </ul>
+            </li>
+
+
+            <li>
+                <a href="#"><i class="fa fa-table"></i> <span class="nav-label">Operaciones</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" aria-expanded="false">
+                    <li><a href="@Url.Action("AltaProveedor","AltaProveedor")">Alta Proveedor</a></li>
+                    <li><a href="@Url.Action("ManualesOperativos","ManualesOperativos")">Manuales Operativos</a></li>
+                    <li><a href="@Url.Action("Actualizaciones","Actualizaciones")">Actualizaciones</a></li>
+                    <li><a href="@Url.Action("Consignaciones","Consignaciones")">Consignaciones</a></li>
+                    <li><a href="@Url.Action("EstatusReenvioMcia","EstatusReenvioMcia")">Reenvio de Mercancia</a></li>
+                    <li><a href="@Url.Action("RenviodeMercancia","RenviodeMercancia")">Reenvío de Mercancía CEDIS</a></li>
+                    <li><a href="@Url.Action("ProcesoReciboDevoluciones","ProcesoReciboDevoluciones")">Procesos Devoluciones</a></li>
+                    <li><a href="@Url.Action("ProcesoSurtido","ProcesoSurtido")">Proceso Surtido</a></li>
+                    <li><a href="@Url.Action("ProcesoReenvioMcia","ProcesoReenvioMcia")">Proceso Reenvío Mcia</a></li>
+                    <li><a href="@Url.Action("EstatusGuiaEnvio","Estatus_guia_envio")">Estatus de Guias</a></li>
+                    <li><a href="@Url.Action("Devoluciones","Devoluciones")">Devoluciones</a></li>
+                    <li><a href="@Url.Action("OrdenesCompra","OrdenesCompra")">Ordenes de Compra</a></li>
+                    <li><a href="@Url.Action("TotalOrdenes","TotalOrdenes")">Total de Ordenes</a></li>
+                    <li><a href="@Url.Action("Almacenes","Almacenes")">Almacenes</a></li>
+                    <li><a href="@Url.Action("ActualizacionesInventario","ActualizacionesInventario")">Actualizaciones</a></li>
+                    <li><a href="@Url.Action("NivelExistencia","NivelExistencia")">Nivel de Existencia</a></li>
+
+
+
+                </ul>
+            </li>
+
+        </ul>
+
+    </div>
+</nav>

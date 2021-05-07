@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "SolicitudGuiasReenvio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style id="compiled-css" type="text/css">
+
+    h2 {
+        color: #263EEA;
+        text-align: center;
+        font-weight: bold;
+    }
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+    }
+
+
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+
+
+    th {
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+        
+    }
+
+    #button {
+        position: relative;
+        float: right;
+    }
+
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <h2>Solicitud de guias de reenvio</h2>
+
+            <div class="row" style=" display: grid; place-items: end;">
+                <div class="col col-xs-3 col col-md-3 col col-lg-3">
+                    <table >
+                        <thead>
+                            <tr>
+                                <th   background="#D52B1E"  color="#ffffff" font-weight="bold" >Guias solicitadas</th>
+                                <th><input id="txt" class="form-control" style=" color: black;" value="2"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Descripcion</th>
+                                    <th>Peso Volumetivo</th>
+                                    <th>Tipo de Envio</th>
+                                    <th>Total de guias</th>
+                                    
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1231123</td>
+                                    <td>calefactor</td>
+                                    <td>
+                                       1.2
+                                    </td>
+                                    <td>
+                                      Paqueteria
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                   
+
+                                </tr>
+                                <tr>
+                                    <td>1231123</td>
+                                    <td>calefactor</td>
+                                    <td>
+                                        1.2
+                                    </td>
+                                    <td>
+                                        Paqueteria
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t" style="text-align: right;">
+                        <button class="btn btn-primary btn-sm" type="submit">Generar guias</button> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+
+    </script>
+}
+
+

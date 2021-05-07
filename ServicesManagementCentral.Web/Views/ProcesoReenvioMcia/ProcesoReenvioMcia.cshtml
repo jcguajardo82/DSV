@@ -1,0 +1,408 @@
+﻿
+@{
+    ViewBag.Title = "Proceso Surtido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style id="compiled-css" type="text/css">
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+    }
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+    th {
+        /*background: #1AB394;*/
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center" ">
+                    <h2>Reenvio de Mercancía</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center" ">
+                    <div class="alert alert-info">
+                        097865387 - Nao Reyes Ro [exo.asb@gmail.com] - 10-mar-2021 23:32:00 -  $87.00 - Pago Autorizado
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-12 col col-md-12 col col-lg-12">
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li><a class="nav-link active" data-toggle="tab" href="#tab-1">Aceptar Reenvio</a></li>
+                            <li><a class="nav-link" data-toggle="tab" href="#tab-2">Solicitud de Guía</a></li>
+                            <li><a class="nav-link" data-toggle="tab" href="#tab-3">Cancelar Reenvio</a></li>
+                            <li><a class="nav-link" data-toggle="tab" href="#tab-4">Descarga de Guías</a></li>
+                            <li><a class="nav-link" data-toggle="tab" href="#tab-5">Confirmar Reenvio d Mcia.</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" id="tab-1" class="tab-pane active">
+                                <div class="panel-body">
+                                    <div class="tableFixHead table-responsive m-t">
+                                        <table id="tblAcepReenvio" class="table invoice-table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center;">RMA</th>
+                                                    <th style="text-align:center;">Motivo RMA</th>
+                                                    <th style="text-align:center;">ID</th>
+                                                    <th style="text-align:center;">Descripción</th>
+                                                    <th style="text-align:center;">Polizas Solicitadas para Reenvio</th>
+                                                    <th style="text-align:center;">Tipo Envío</th>
+                                                    <th style="text-align:center;">Aceptar Reenvío</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="text-align:center;">00065754</td>
+                                                    <td style="text-align:left;">Daño</td>
+                                                    <td style="text-align:center;">12311231</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:left;">1</td>
+                                                    <td style="text-align:left;">Paquetería</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">00065754</td>
+                                                    <td style="text-align:left;">Daño</td>
+                                                    <td style="text-align:center;">12311231</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:left;">1</td>
+                                                    <td style="text-align:left;">Paquetería</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">00065754</td>
+                                                    <td style="text-align:left;">Daño</td>
+                                                    <td style="text-align:center;">12311231</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:left;">1</td>
+                                                    <td style="text-align:left;">Paquetería</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">00065754</td>
+                                                    <td style="text-align:left;">Daño</td>
+                                                    <td style="text-align:center;">12311231</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:left;">1</td>
+                                                    <td style="text-align:left;">Paquetería</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">00065754</td>
+                                                    <td style="text-align:left;">Daño</td>
+                                                    <td style="text-align:center;">12311231</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:left;">1</td>
+                                                    <td style="text-align:left;">Paquetería</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <table>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                    <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
+                                                        Aceptar Reenvios
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" id="tab-2" class="tab-pane">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <table>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+
+                                                <td style="vertical-align:bottom;text-align:right">
+                                                    <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width" onclick="clickLogin()">
+                                                        Guías Solicitdas
+                                                    </button>
+                                                </td>
+                                                <td style="text-align:left;"><input type="text" class="form-control"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="tableFixHead table-responsive m-t">
+                                        <table id="tblSolicitutGuia" class="table invoice-table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center;">ID</th>
+                                                    <th style="text-align:center;">Descripción</th>
+                                                    <th style="text-align:center;">Peso Volumetrico</th>
+                                                    <th style="text-align:center;">Tipo Envío</th>
+                                                    <th style="text-align:center;">Total de Guías</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;">1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;">1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;">1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;">1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:left;">Calefactor</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;">1</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr></tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <table>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                    <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
+                                                        Generar Guías
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" id="tab-3" class="tab-pane">
+                                <div class="panel-body">
+                                    @*<div class="tableFixHead table-responsive m-t">
+                                            <table id="tblCancelAsignacion" class="table invoice-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No. Orden</th>
+                                                        <th>Fecha Creación</th>
+                                                        <th>Cliente</th>
+                                                        <th>Estatus de Orden</th>
+                                                        <th>Estatus de Consignación</th>
+                                                        <th>No. de Guía</th>
+                                                        <th>Estatus de Guía</th>
+                                                        <th>No. Orden Compra</th>
+                                                        <th style="text-align:center;">Estatus Orden Compra</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1123124</td>
+                                                        <td>28-Ene-2021</td>
+                                                        <td>
+                                                            Susana Vargas Miranda
+                                                        </td>
+                                                        <td>
+                                                            Pago Autorizado
+                                                        </td>
+                                                        <td>
+                                                            En espera de recolección
+                                                        </td>
+                                                        <td>12345654323500</td>
+                                                        <td>
+                                                            En tránsito
+                                                        </td>
+                                                        <td>567899876</td>
+                                                        <td style="text-align:left;">En programación de pago</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div role="tabpanel" id="tab-4" class="tab-pane">
+                                <div class="panel-body">
+                                    <div class="tableFixHead table-responsive m-t">
+                                        <table id="tblDescargaGuia" class="table invoice-table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center;">No. Guía</th>
+                                                    <th style="text-align:center;">ID</th>
+                                                    <th style="text-align:center;">Descripción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="text-align:center;">4562734567898230000000</td>
+                                                    <td style="text-align:center;">1234567</td>
+                                                    <td style="text-align:left;">Licon Caballero</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">4562734567898230000000</td>
+                                                    <td style="text-align:center;">1234567</td>
+                                                    <td style="text-align:left;">Licon Caballero</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">4562734567898230000000</td>
+                                                    <td style="text-align:center;">1234567</td>
+                                                    <td style="text-align:left;">Licon Caballero</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">4562734567898230000000</td>
+                                                    <td style="text-align:center;">1234567</td>
+                                                    <td style="text-align:left;">Licon Caballero</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">4562734567898230000000</td>
+                                                    <td style="text-align:center;">1234567</td>
+                                                    <td style="text-align:left;">Licon Caballero</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">4562734567898230000000</td>
+                                                    <td style="text-align:center;">1234567</td>
+                                                    <td style="text-align:left;">Licon Caballero</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" id="tab-5" class="tab-pane">
+                                <div class="panel-body">
+                                    <div class="tableFixHead table-responsive m-t">
+                                        <table id="tblConfirmEnvCon" class="table invoice-table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center;">No. Guía</th>
+                                                    <th style="text-align:center;">Peso Volumetrico</th>
+                                                    <th style="text-align:center;">Tipo Envío</th>
+                                                    <th style="text-align:center;">Confirmar Envío</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">1123124</td>
+                                                    <td style="text-align:center;">1.23</td>
+                                                    <td style="text-align:left;">Paqueteria</td>
+                                                    <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <table>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                    <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
+                                                        Confirmar Envio
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @*<script>
+            $(document).ready(function () {
+                $("#txtFiltro").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#tblOrdenes tbody tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+
+            });
+
+
+        </script>*@
+}

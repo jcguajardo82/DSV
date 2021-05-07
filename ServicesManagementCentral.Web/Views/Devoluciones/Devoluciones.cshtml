@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewBag.Title = "Ordenes de Compra";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style id="compiled-css" type="text/css">
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 420px;
+    }
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+    th {
+        /*background: #1AB394;*/
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center" ">
+                    <h2>Devoluciones</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-3 col col-md-3 col col-lg-3">
+                    <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center;">No. Consignación</th>
+                                    <th style="text-align:center;">Fecha Creación Orden</th>
+                                    <th style="text-align:center;">Solicitud RMA</th>
+                                    <th style="text-align:center;">Motivo RMA</th>
+                                    <th style="text-align:center;">Paqueteria</th>
+                                    <th style="text-align:center;">No. Guía Devolucion</th>
+                                    <th style="text-align:center;">Estatus Guía Devolucion</th>
+                                    <th style="text-align:center;">Fecha Entrega Almacén</th>
+                                    <th style="text-align:center;">Recibido Por</th>
+                                    <th style="text-align:center;">No. Provedor Almacen o Tienda</th>
+                                    <th style="text-align:center;">Nombre Provedor Almacen o Tienda</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
+                                    <td style="text-align:left;">3-mar-21</td>
+                                    <td style="text-align:left;">Reenvio</td>
+                                    <td style="text-align:left;">Daño</td>
+                                    <td style="text-align:left;">Estafeta</td>
+                                    <td style="text-align:left;"> 4562734567898230000000</td>
+                                    <td style="text-align:left;"> En tránsito</td>
+                                    <td style="text-align:left;">13-mar-21</td>
+                                    <td style="text-align:left;">SOE: Alberto Juarez</td>
+                                    <td style="text-align:left;">3457568542342363</td>
+                                    <td style="text-align:left;">Proveedor R.O.M</td>
+
+
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
+                                    <td style="text-align:left;">3-mar-21</td>
+                                    <td style="text-align:left;">Reenvio</td>
+                                    <td style="text-align:left;">Daño</td>
+                                    <td style="text-align:left;">Estafeta</td>
+                                    <td style="text-align:left;"> 4562734567898230000000</td>
+                                    <td style="text-align:left;"> En tránsito</td>
+                                    <td style="text-align:left;">13-mar-21</td>
+                                    <td style="text-align:left;">SOE: Alberto Juarez</td>
+                                    <td style="text-align:left;">3457568542342363</td>
+                                    <td style="text-align:left;">Proveedor R.O.M</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
+                                    <td style="text-align:left;">3-mar-21</td>
+                                    <td style="text-align:left;">Reenvio</td>
+                                    <td style="text-align:left;">Daño</td>
+                                    <td style="text-align:left;">Estafeta</td>
+                                    <td style="text-align:left;"> 4562734567898230000000</td>
+                                    <td style="text-align:left;"> En tránsito</td>
+                                    <td style="text-align:left;">13-mar-21</td>
+                                    <td style="text-align:left;">SOE: Alberto Juarez</td>
+                                    <td style="text-align:left;">3457568542342363</td>
+                                    <td style="text-align:left;">Proveedor R.O.M</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
+                                    <td style="text-align:left;">3-mar-21</td>
+                                    <td style="text-align:left;">Reenvio</td>
+                                    <td style="text-align:left;">Daño</td>
+                                    <td style="text-align:left;">Estafeta</td>
+                                    <td style="text-align:left;"> 4562734567898230000000</td>
+                                    <td style="text-align:left;"> En tránsito</td>
+                                    <td style="text-align:left;">13-mar-21</td>
+                                    <td style="text-align:left;">SOE: Alberto Juarez</td>
+                                    <td style="text-align:left;">3457568542342363</td>
+                                    <td style="text-align:left;">Proveedor R.O.M</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
+                                    <td style="text-align:left;">3-mar-21</td>
+                                    <td style="text-align:left;">Reenvio</td>
+                                    <td style="text-align:left;">Daño</td>
+                                    <td style="text-align:left;">Estafeta</td>
+                                    <td style="text-align:left;"> 4562734567898230000000</td>
+                                    <td style="text-align:left;"> En tránsito</td>
+                                    <td style="text-align:left;">13-mar-21</td>
+                                    <td style="text-align:left;">SOE: Alberto Juarez</td>
+                                    <td style="text-align:left;">3457568542342363</td>
+                                    <td style="text-align:left;">Proveedor R.O.M</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
+                                    <td style="text-align:left;">3-mar-21</td>
+                                    <td style="text-align:left;">Reenvio</td>
+                                    <td style="text-align:left;">Daño</td>
+                                    <td style="text-align:left;">Estafeta</td>
+                                    <td style="text-align:left;"> 4562734567898230000000</td>
+                                    <td style="text-align:left;"> En tránsito</td>
+                                    <td style="text-align:left;">13-mar-21</td>
+                                    <td style="text-align:left;">SOE: Alberto Juarez</td>
+                                    <td style="text-align:left;">3457568542342363</td>
+                                    <td style="text-align:left;">Proveedor R.O.M</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("DetalleDevolucion")
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+        function popDetalle() {
+            $('#dlgDetalle').modal('toggle');
+        }
+    </script>
+}
+

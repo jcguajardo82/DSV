@@ -1,0 +1,205 @@
+﻿
+@{
+    ViewBag.Title = "NotasdeCredito";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style id="compiled-css" type="text/css">
+
+    h2 {
+        color: #263EEA;
+        text-align: center;
+        font-weight: bold;
+    }
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+    }
+
+
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+
+
+    th {
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+    }
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <h2>Notas de Credito</h2>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <h3>Almacenes</h3>
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Numero de Proveedor</th>
+                                    <th>Nombre del Almacen</th>
+                                    <th>Folio de Orden de Compra </th>
+                                    <th>Importe de Orden de Compra</th>
+                                    <th>Folio Nota de Credito</th>
+                                    <th>Importe Nota de Credito</th>
+                                    <th>Motivo</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><u></u></u></td>
+                                    <td></td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td><u></u></u></td>
+                                    <td></td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                    </td>
+
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <h3>Transportista</h3>
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>No. Proveedor</th>
+                                    <th>Nombre del transpoprtista</th>
+                                    <th>Consignación</th>
+                                    <th>Nivel de Servicio</th>
+                                    <th>Folio Nota de Credito</th>
+                                    <th>Importe Nota de Credito</th>
+                                    <th>Motivo</th>
+                                    
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        
+                                    </td>
+                                
+
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td> </td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        
+                                    </td>
+                                    
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+
+    </script>
+}
+

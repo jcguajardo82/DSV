@@ -1,0 +1,152 @@
+﻿
+@{
+    ViewBag.Title = "RenviodeMercancia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style id="compiled-css" type="text/css">
+
+    h2 {
+        color: #263EEA;
+        text-align: center;
+        font-weight: bold;
+    }
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+    }
+
+
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+
+
+    th {
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+    }
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <h2>Reenvío de mercancía</h2>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Numero de Orden</th>
+                                    <th>Fecha y hora de creacion de la orden</th>
+                                    <th>Solicitud RMA</th>
+                                    <th>Motivo RMA</th>
+                                    <th>Paqueteria</th>
+                                    <th>Numero de la guia de devolucion</th>
+                                    <th>Estatus de Guía de devolucion</th>
+                                    <th>Fecha de entrega al almacen</th>
+                                    <th>Recibido por</th>
+                                    <th>Recibido por</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><u>7654234</u></td>
+                                    <td> 28-Ene-21</td>
+                                    <td>
+                                        Susana Vargas Miranda
+                                    </td>
+                                    <td>
+                                        En espera de Recoleccion
+                                    </td>
+                                    <td>
+                                        45627345678982300000
+                                    </td>
+                                    <td>En transito</td>
+                                    <td>
+                                        123456543212345
+                                    </td>
+                                    <td>En Almacen</td>
+                                    <td>5678909876543</td>
+                                    <td>Pagada en</td>
+
+                                </tr>
+                                <tr>
+                                    <td><u>7654234</u></td>
+                                    <td> 3-Mar-21</td>
+                                    <td>
+                                        Susana Vargas Miranda
+                                    </td>
+                                    <td>
+                                        En espera de Recoleccion
+                                    </td>
+                                    <td>
+                                        45627345678982300000
+                                    </td>
+                                    <td>En transito</td>
+                                    <td>
+                                        123456543212345
+                                    </td>
+                                    <td>Entregado</td>
+                                    <td>5678909876543</td>
+                                    <td>Programacion de pago</td>
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+
+
+
+            
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+
+    </script>
+}

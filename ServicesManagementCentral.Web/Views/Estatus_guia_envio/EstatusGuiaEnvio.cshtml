@@ -1,0 +1,231 @@
+﻿
+@{
+    ViewBag.Title = "EstatusGuiaEnvio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style id="compiled-css" type="text/css">
+
+    h2 {
+        color: #263EEA;
+        text-align: center;
+        font-weight: bold;
+    }
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+        
+    }
+
+
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+
+
+    th {
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+    }
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <h2 >Estatus de guia de envio</h2>
+
+   
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Impresión</th>
+                                    <th>Numero de consignacion</th>
+                                    <th>Tipo almacen</th>
+                                    <th>Fecha y hora de creacion de la orden</th>
+                                    <th>Tipo de Guia</th>
+                                    <th>Paqueteria</th>
+                                    <th>Numero de Guia</th>
+                                    <th>Estatus de Guía</th>
+                                    <th>Fecha de entrega</th>
+                                    <th>Nombre de quien recibio</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> <input type="checkbox"></td>
+                                    <td>7654234</td>
+                                    <td>DSV</td>
+                                    <td>
+                                        3-Mar-21
+                                    </td>
+                                    <td>
+                                        Envio
+                                    </td>
+                                    <td>
+                                        Estafeta
+                                    </td>
+                                    <td><u>12345654323500</u></td>
+                                    <td>
+                                        En tránsito
+                                    </td>
+                                    <td></td>
+                                    <td>X</td>
+
+                                </tr>
+                                <tr>
+                                    <td> <input type="checkbox"></td>
+                                    <td>7654234</td>
+                                    <td>DST</td>
+                                    <td>
+                                        3-Mar-21
+                                    </td>
+                                    <td>
+                                        Envio
+                                    </td>
+                                    <td>
+                                        DHL
+                                    </td>
+                                    <td><u>12365434323500</u></td>
+                                    <td>
+                                        Entregada
+                                    </td>
+                                    <td>13-Mar-21</td>
+                                    <td>X</td>
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <h2>Estatus de guia de reenvio</h2>
+
+            <div class="row">
+                <div class="col col-xs-3 col col-md-3 col col-lg-3">
+                    <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    
+                                    <th>Numero de consignacion</th>
+                                    <th>Tipo almacen</th>
+                                    <th>Fecha y hora de creacion de la orden</th>
+                                    <th>Tipo de Guia</th>
+                                    <th>Paqueteria</th>
+                                    <th>Numero de Guia</th>
+                                    <th>Estatus de Guía</th>
+                                    <th>Fecha de entrega</th>
+                                    <th>Nombre de quien recibio</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    
+                                    <td>7654234</td>
+                                    <td>DSV</td>
+                                    <td>
+                                        3-Mar-21
+                                    </td>
+                                    <td>
+                                        Envio
+                                    </td>
+                                    <td>
+                                        Estafeta
+                                    </td>
+                                    <td><u>12345654323500</u></td>
+                                    <td>
+                                        En tránsito
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+                                </tr>
+                                <tr>
+                                    
+                                    <td>7654234</td>
+                                    <td>DST</td>
+                                    <td>
+                                        3-Mar-21
+                                    </td>
+                                    <td>
+                                        Envio
+                                    </td>
+                                    <td>
+                                        DHL
+                                    </td>
+                                    <td><u>12365434323500</u></td>
+                                    <td>
+                                        Entregada
+                                    </td>
+                                    <td>13-Mar-21</td>
+                                    <td></td>
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                        <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+
+    </script>
+}
+
+

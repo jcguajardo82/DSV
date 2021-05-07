@@ -1,0 +1,240 @@
+﻿
+@{
+    ViewBag.Title = "EstatusReenvioMcia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style id="compiled-css" type="text/css">
+
+    h2 {
+        color: #263EEA;
+        text-align: center;
+        font-weight: bold;
+    }
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+    }
+
+
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+
+
+    th {
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+    }
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <h2>Estatus de Reenvio de Mercancia</h2>
+
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Numero de consignacion</th>                                   
+                                    <th>Numero de la consignación de reenvio/sustituto/cambio fisico</th>
+                                    <th>Tipo almacen</th>
+                                    <th>Fecha y hora de creacion de la orden</th>
+                                    <th>Nombre del Cliente</th>
+                                    <th>Estatus de la consignación almacen</th>
+                                    <th>Estatus de la consignación Home Delivery</th>
+                                    <th>Estatus de Guía de Devolucion</th>
+                                    <th>Guia de reenvio</th>
+                                    <th>Estatus de la guia de reenvio</th>
+                                    <th>Numero de Orden de Compra Nueva (DSV)</th>
+                                    <th>Estatus de orden de compra nueva (DSV)</th>
+                                    <th>Fecha y hora Tracking Consignación</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a onclick="popDetalle()" class="nav-link">7654234</a></td>
+                                    <td>-</td>
+                                    <td>DSV</td>
+                                    
+                                    <td>
+                                        28-Ene-21
+                                    </td>
+                                    <td>
+                                        Susana Vargas Miranda
+                                    </td>
+                                    <td>
+                                        Extravio
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                    </td>
+                                    <td>12345687642242</td>
+                                    <td>Entregado</td>
+                                    <td>56789876543</td>
+                                    <td>Pagada En</td>
+                                    <td>-</td>
+
+                                </tr>
+                                <tr>
+                                    <td><a onclick="popDetalle()" class="nav-link">7654234</a></td>
+                                    <td>-</td>
+                                    <td>DST</td>
+
+                                    <td>
+                                        3-Mar-21
+                                    </td>
+                                    <td>
+                                        Susana Vargas Miranda
+                                    </td>
+                                    <td>
+                                        Enviada
+                                    </td>
+                                    <td>123456654321123</td>
+                                    <td>
+                                        En Transito
+                                    </td>
+                                    <td>12345687642242</td>
+                                    <td>En Almacen</td>
+                                    <td>56789876543</td>
+                                    <td>Programacion de Pago</td>
+                                    <td>-</td>
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>RMA</th>
+                                    <th>Motivo RMA</th>
+                                    <th>ID</th>
+                                    <th>Descripcion</th>
+                                    <th>Piezas</th>
+                                    <th>Numero de la Guia de Devolucion</th>
+                                    <th>Condicion del Empaque</th>
+                                    <th>Guia del reenvio</th>
+                                    <th>Estatus de guia de reenvio</th>
+                                    <th>Fecha de entrega </th>
+                                    <th>Nombre de quien recibe</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>00007654234</td>
+                                    <td>Daño en transito</td>
+                                    <td>
+                                        123321123
+                                    </td>
+                                    <td>
+                                        Caliefactor
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>12345654323500</td>
+                                    <td>
+                                        Dañado
+                                    </td>
+                                    <td>123597641463374364</td>
+                                    <td>Entregado</td>
+                                    <td>X</td>
+                                    <td>X</td>
+
+                                </tr>
+                                <tr>
+                                    <td>00007654234</td>
+                                    <td>Daño de origen</td>
+                                    <td>
+                                        123321123
+                                    </td>
+                                    <td>
+                                        Caliefactor
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>12345654323500</td>
+                                    <td>
+                                        En buen estado
+                                    </td>
+                                    <td>123597641463374364</td>
+                                    <td>En Almacen</td>
+                                    <td>X</td>
+                                    <td>X</td>
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                        <button style="float: right;"type="button" class="btn btn-w-m btn-warning">Descargar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("DetalleEstatusReenvioMcia")
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+        function popDetalle() {
+            $('#dlgDetalle').modal('toggle');
+        }
+
+    </script>
+}
+
+

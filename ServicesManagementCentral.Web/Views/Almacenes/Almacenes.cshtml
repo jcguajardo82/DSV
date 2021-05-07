@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewBag.Title = "Almacenes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style id="compiled-css" type="text/css">
+
+    h2 {
+        color: #263EEA;
+        text-align: center;
+        font-weight: bold;
+    }
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+    }
+
+
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+
+
+    th {
+        background: #D52B1E;
+        color: #ffffff;
+        font-weight: bold;
+    }
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div>
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <h2>Almacenes</h2>
+
+            <div style=" display: grid; place-items: end;">
+                <div class="col col-xs-3 col col-md-3 col col-lg-3">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input id="txt" class="form-control" style=" color: black;"></th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo Almacen</th>
+                                    <th>Numero de Almacen</th>
+                                    <th>Nombre de Almacen</th>
+                                    <th>Dias transcurridos</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>WMS</td>
+                                    <td>5688</td>
+                                    <td>
+                                        Cedis Mexico
+                                    </td>
+                                    <td>13</td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>Provedores</td>
+                                    <td>21778</td>
+                                    <td>
+                                        MOTORDRIVE S.A. DE C.V.
+                                    </td>
+                                    <td>15</td>
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+
+    </script>
+}
+
