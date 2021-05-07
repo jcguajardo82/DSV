@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Proceso Surtido";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -75,17 +74,21 @@
                                                     <th style="text-align:center;">Polizas Solicitadas para Reenvio</th>
                                                     <th style="text-align:center;">Tipo Envío</th>
                                                     <th style="text-align:center;">Aceptar Reenvío</th>
+                                                    <th style="text-align:center;">Aceptar Reenvío</th>
+                                                    <th style="text-align:center;">EAN/Codigo de Barras </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td style="text-align:center;">00065754</td>
+
                                                     <td style="text-align:left;">Daño</td>
                                                     <td style="text-align:center;">12311231</td>
                                                     <td style="text-align:left;">Calefactor</td>
                                                     <td style="text-align:left;">1</td>
                                                     <td style="text-align:left;">Paquetería</td>
                                                     <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">00065754</td>
@@ -95,6 +98,7 @@
                                                     <td style="text-align:left;">1</td>
                                                     <td style="text-align:left;">Paquetería</td>
                                                     <td style="text-align:center;"><input type="checkbox" class="cbx" id="flexCheckDefault"></td>
+
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">00065754</td>
@@ -133,11 +137,32 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+
                                                 <td>
                                                     <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
-                                                        Aceptar Reenvios
+                                                        Aceptar Consignación
                                                     </button>
+
                                                 </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td> <input type="text" size="35" maxlength="50" value="Motivo de  Cancelacion " name=" Motivo de  Cancelacion"></td>
+                                                <td></td>
+                                                <td> <button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="alert(" La siguiente consignación será cancelada por el siguiente motivo ")"> Cancelar  Consignación </button></td>
+
+
+
+
+
+
+
+
+
+
+
+
                                             </tr>
                                         </table>
                                     </div>
@@ -309,11 +334,18 @@
                                                     <td style="text-align:center;">4562734567898230000000</td>
                                                     <td style="text-align:center;">1234567</td>
                                                     <td style="text-align:left;">Licon Caballero</td>
+
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">4562734567898230000000</td>
                                                     <td style="text-align:center;">1234567</td>
                                                     <td style="text-align:left;">Licon Caballero</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
