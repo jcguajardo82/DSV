@@ -1,0 +1,295 @@
+﻿
+@{
+    ViewBag.Title = "Menus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="overflow-y: auto; overflow-x: hidden;max-height: 550px;">      
+    <div class="row" style="padding-bottom:15px;">
+        <div class="col-xs-4 col-md-4 text-left">
+            <button class="btn btn-danger mt-4" type="button" onclick="PopAdd(0,0);"><i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="bold">Nuevo Menu</span></button>
+        </div>
+    </div>
+
+    @{if (ViewBag.Menu != null)
+        {
+            var MenuMaster = (List<ServicesManagement.Web.Models.Config.Menu>)ViewBag.Menu;
+            var groupByMenu = MenuMaster.Where(x => x.padreId == 0);
+
+            foreach (ServicesManagement.Web.Models.Config.Menu MenuList in groupByMenu)
+            {
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                @*<h5>Basic IN+ Panel <small class="m-l-sm">This is custom panel</small></h5>*@
+                                <h5>@MenuList.descripcionCorta <small class="m-l-sm">@String.Format("{0}/{1}", MenuList.controller, MenuList.action)</small></h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li>
+                                            <a onclick="PopEdit(@MenuList.menuId)" class="dropdown-item">Editar Menu</a>
+                                        </li>
+                                        <li>
+                                            <a onclick="PopAdd(@MenuList.menuId,0)" class="dropdown-item">Agregar SubMenu</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <table id="tblSubMenus_@MenuList.menuId" class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:center">Descripción</th>
+                                            <th style="text-align:center">Descripción Corta</th>
+                                            <th style="text-align:center">Icono</th>
+                                            <th style="text-align:center">Action</th>
+                                            <th style="text-align:center">Controller</th>
+                                            <th style="text-align:center">Habilitado</th>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (var item in MenuMaster.Where(x => x.padreId == MenuList.menuId))
+                                            {
+                                                <tr>
+                                                    <td>@item.descripcion</td>
+                                                    <td>@item.descripcionCorta</td>
+                                                    <td>@item.icono</td>
+                                                    <td>@item.action</td>
+                                                    <td>@item.controller</td>
+                                                    <td>
+                                                        @if (item.habilitado)
+                                                        {<p>SI</p>}
+                                                        else
+                                                        { <P>NO</P>}
+                                                    </td>
+                                                    <td style="text-align:right;">
+                                                        <button onclick="PopEdit(@item.menuId)" type="button" class="btn btn-white btn-circle"> <i class="fa fa-edit"></i></button>
+                                                        @*<button type="button" onclick="DeleteMenu(1)" class="btn btn-warning btn-circle"> <i class="fa fa-minus"></i></button>*@
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>
+<div class="modal inmodal fade" id="dlgMenus" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Agregar - Menu</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <input type="hidden" id="hddIdPadre" />
+                    <input type="hidden" id="hddIdMenu" />
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Descripción</label>
+                                <input type="text" id="txtDesc" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Descripción Corta</label>
+                                <input type="text" id="txtDescCor" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Acción</label>
+                                <input type="text" id="txtAction" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Controlador</label>
+                                <input type="text" id="txtControler" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Icono</label>
+                                <input type="text" id="txtIcono" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Habilitado</label>
+                                <select class="form-control m-b" id="ddlHabilitado">
+                                    <option value="false">NO</option>
+                                    <option value="true">SI</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" onclick="SaveMenu()" class="btn btn-primary">Guardar</button>
+                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script>
+        function PopAdd(idPadre,idMenu) {
+
+            $("#hddIdPadre").val(idPadre);
+            $("#hddIdMenu").val(idMenu);
+            $("#txtDesc").val("");
+            $("#txtDescCor").val("");
+            $("#txtAction").val("");
+            $("#txtControler").val("");
+            $("#txtIcono").val("");
+            $("#ddlHabilitado").val("false");
+            $("#dlgMenus").modal('toggle');
+        }
+
+        function PopEdit(idMenu) {
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("MenusByIdMenu", "Config")',
+                data: {
+                    menuId: idMenu
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+
+                        $("#txtDesc").val(json.resp.descripcion);
+                        $("#txtDescCor").val(json.resp.descripcionCorta);
+                        $("#txtAction").val(json.resp.action);
+                        $("#txtControler").val(json.resp.controller);
+                        $("#txtIcono").val(json.resp.icono);
+                        $("#hddIdPadre").val(json.resp.padreId);
+                        $("#hddIdMenu").val(json.resp.menuId);
+
+
+                        if (json.resp.habilitado) {
+                            $("#ddlHabilitado").val("true");
+                        } else { $("#ddlHabilitado").val("false");}
+
+
+                        $("#dlgMenus").modal('toggle');
+
+                            //$("#tblSubMenus_" + json.padreId + " tbody").remove();
+                            ////var tr;
+                            //debugger;
+                            ////Append each row to html table
+
+                            //for (var i = 0; i < json.json.length; i++) {
+                            //    tr = $('<tr/>');
+                            //    //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+
+                            //    tr.append("<td>" + json.json[i].descripcion + "</td>");
+                            //    tr.append("<td>" + json.json[i].descripcionCorta + "</td>");
+                            //    tr.append("<td>" + json.json[i].action + "</td>");
+                            //    tr.append("<td>" + json.json[i].controller + "</td>");
+                            //    //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Supplier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Supplier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                            //    //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Supplier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button></td >")
+                            //    $("#tblSubMenus_" + json.padreId).append(tr);
+                            //}
+
+                    }
+                    else{
+                        alert(json.Message);
+                    }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            bootbox.alert(errorThrown);
+
+            }
+            });
+        }
+
+        function SaveMenu() {
+            var desc = $("#txtDesc").val();
+            var descCor = $("#txtDescCor").val();
+            var descAction  = $("#txtAction").val();
+            var descControler = $("#txtControler").val();
+            var icono = $("#txtIcono").val();
+            var IdPadre = $("#hddIdPadre").val();
+            var idMenu = $("#hddIdMenu").val();
+            var _Habilitado = $("#ddlHabilitado").val();
+            debugger;
+            if (desc.length == 0) {
+                $("#txtDesc").focus();
+                return;
+            }
+            if (descCor.length == 0) {
+                $("#txtDescCor").focus();
+                return;
+            }
+            //if (descAction.length == 0) {
+            //    $("#txtAction").focus();
+            //    return;
+            //}
+            //if (descControler.length == 0) {
+            //    $("#txtControler").focus();
+            //    return;
+            //}
+
+
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("AddMenus", "Config")',
+                 data: {
+                     menuId: idMenu
+                     , descripcion: desc
+                     , descripcionCorta: descCor
+                     , padreId: IdPadre
+                     , icono: icono
+                     , accion: descAction
+                     , controlador: descControler
+                     , habilitado: _Habilitado
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success)
+                    {
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert(json.Message);
+                     }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            bootbox.alert(errorThrown);
+
+            }
+            });
+        }
+    </script>
+
+}

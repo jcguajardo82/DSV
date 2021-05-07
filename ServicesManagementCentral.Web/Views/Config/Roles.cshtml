@@ -1,0 +1,313 @@
+﻿
+@{
+    ViewBag.Title = "Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-bottom:15px;">
+    <div class="col-xs-4 col-md-4 text-left align-top">
+        <div class="form-group">
+            <label>Roles:</label>
+            <select class="form-control m-b" id="ddlRoles"></select>
+        </div>
+    </div>
+    <div class="col-xs-4 col-md-4 text-left align-top">
+        <button class="btn btn-danger mt-4" type="button" onclick="PopAdd();"><i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="bold">Nuevo Rol</span></button>
+        <button class="btn btn-warning mt-4" type="button" onclick="PopEdit();"><i class="fa fa-edit"></i>&nbsp;&nbsp;<span class="bold">Editar Rol</span></button>
+    </div>
+    <div class="col-xs-4 col-md-4 text-left align-top">
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6 col-md-6 text-left align-top">
+        <div class="ibox">
+            <div class="ibox-content">
+                <div class="panel-group" id="accordion">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgRoles" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Agregar - Rol</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <input type="hidden" id="hddIdRol" />
+
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Nombre Rol</label>
+                                <input type="text" id="txtRol" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Descripción</label>
+                                <input type="text" id="txtDesc" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Habilitado</label>
+                                <select class="form-control m-b" id="ddlHabilitado">
+                                    <option value="false">NO</option>
+                                    <option value="true">SI</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" onclick="Save()" class="btn btn-primary">Guardar</button>
+                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            ListRoles();
+        });
+        function PopEdit() {
+
+            var _idRol = $("#ddlRoles").val();
+            debugger;
+            if (_idRol == "0") {
+                $("#ddlRoles").focus();
+            }
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetRol", "Config")',
+                data: {
+                    idRol: _idRol
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        $("#hddIdRol").val(json.resp.idRol);
+                        $("#txtRol").val(json.resp.nombreRol);
+                        $("#txtDesc").val(json.resp.descripcion);
+                        if (json.resp.activo) {
+                            $("#ddlHabilitado").val("true");
+                        } else { $("#ddlHabilitado").val("false"); }
+
+                        $("#dlgRoles").modal('toggle');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+        function PopAdd() {
+            $("#hddIdRol").val("0");
+
+            $("#txtRol").val("");
+            $("#txtDesc").val("");
+            $("#ddlHabilitado").val("false");
+            $("#dlgRoles").modal('toggle');
+        }
+
+        function ListRoles() {
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("ListRoles", "Config")',
+                data: {
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#ddlRoles");
+                        sel.empty();
+
+                        $('#ddlRoles').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].idRol + '">' + json.resp[i].nombreRol + ' [' + json.resp[i].descripcion + ']</option>');
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        function Save() {
+            var _idRol = $("#hddIdRol").val();
+            var _Rol = $("#txtRol").val();
+            var _Desc = $("#txtDesc").val();
+            var _Activo = $("#ddlHabilitado").val();
+
+            if (_Rol.length == 0) {
+                $("#txtRol").focus();
+                return;
+            }
+            if (_Desc.length == 0) {
+                $("#txtDesc").focus();
+                return;
+            }
+
+
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("AddRol", "Config")',
+                data: {
+                    idRol: _idRol
+                    , nombreRol:_Rol
+                    , descripcion:_Desc
+                    , activo:_Activo
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+
+                        ListRoles();
+                        $('#dlgRoles').modal('hide');
+                        $("#ddlRoles").focus();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        $('#ddlRoles').on('change', function () {
+
+            var d = $("#accordion");
+            d.empty();
+
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("GetMenuRol", "Config")',
+                data: {
+                    idRol: this.value
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var content = '';
+
+                        debugger;
+
+                        for (var i =0; i < json.padre.length; i++) {
+                            var exp = "false";
+                            var clase = 'panel-collapse collapse in';
+                            var ch = '';
+
+                            if (json.padre[i].seleccionado == 1) { ch = 'checked';}
+                            if (i == 0) { exp='true'}
+                            content = content +"<div class='panel panel-default'>";
+                            content = content + "<div class='panel-heading'>";
+                            content = content + "<h5 class='panel-title'>";
+                            content = content + "<input type='checkbox' class='checkbox' " + ch +" value='" + json.padre[i].menuId + "' />";
+                            content = content + "<a data-toggle='collapse' data-parent='#accordion' href='#collapseOne" + json.padre[i].menuId + "'  >" + json.padre[i].descripcionCorta +"</a>";
+                            content = content + "</h5>";
+                            content = content + "</div>";
+                            content = content + " <div id='collapseOne" + json.padre[i].menuId + "' class='" + clase + "'>";
+                            content = content + " <div class='panel-body'>";
+                            content = content + " <ul class='list-group'>";
+                            for (var a = 0; a < json.resp.length; a++) {
+                                if (json.padre[i].menuId == json.resp[a].padreId) {
+                                    var ch1 = '';
+                                    if (json.resp[a].seleccionado == 1) { ch1 = 'checked'; }
+                                    content = content + "<li class='list-group-item'>";
+                                    content = content + "<input type='checkbox' class='checkbox' " + ch1 + "  value='" + json.resp[a].menuId+"' />";
+                                    content = content + "<span class='m-l-xs'>" + json.resp[a].descripcionCorta+"</span>";
+                                    content = content + "</li>";
+                                }
+                            }
+                            content = content + "</ul>";
+                            content = content + "</div>";
+                            content = content + "</div>";
+                            content = content + "</div>";
+                        }
+
+                        d.append(content);
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        });
+
+        $(document).on('change', '.checkbox', function () {
+            var _activo = 'false';
+            var _menuId = this.value;
+            if (this.checked) // if changed state is "CHECKED"
+            {
+                // do the magic here
+                _activo = 'true';
+            }
+            debugger;
+
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("SetMenuRol", "Config")',
+                data: {
+                    menuId: _menuId
+                    , rolId:$("#ddlRoles").val()
+                    , activo: _activo
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                     
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+
+
+        });
+    </script>
+
+}

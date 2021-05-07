@@ -1,0 +1,287 @@
+﻿
+@{
+    ViewBag.Title = "Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>@ViewBag.Title </h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="~/CPanel/Index">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>Configuracón</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Usuarios</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div id="tblConsulta_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+    <div class="row">
+        @*<div class="col col-xs-6">
+                <div class="dt-buttons btn-group flex-wrap">
+                    <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>
+                    <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                    <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                </div>
+            </div>*@
+        <div id="topRightSection" class="col-xs-8 col-md-8 text-right ">
+            <button type="button" class="btn btn-primary btn-circle mr-2" data-toggle="modal" onclick="PopAdd()">
+                <i class="fa fa-plus"></i>
+            </button>
+            @*<button type="button" class="btn btn-primary btn-circle mr-2" onclick="ShowFilter();">
+                    <i class="fa fa-list"></i>
+                </button>*@
+            <button type="button" class="btn btn-primary btn-circle"> <i class="fa fa-refresh"></i></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 555px;">
+                <thead class="bg-primary">
+
+                    <tr role="row">
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 50%;">Nombre</th>
+                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 20%;">Usuario</th>
+                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 20%;">Rol</th>
+                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 10%;"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgRoles" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Agregar - Usuario</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <input type="hidden" id="hddIdUsuario" />   <div class="row">
+                        <div class="col-xs-8 col-md-8">
+                            <div class="form-group">
+                                <label>Rol</label>
+                                <select class="form-control m-b" id="ddlRoles"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Usuario </label>
+                                <input type="text" id="txtUsuario" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" id="txtNombre" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Activo</label>
+                                <select class="form-control m-b" id="ddlHabilitado">
+                                    <option value="false">NO</option>
+                                    <option value="true">SI</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" onclick="Save()" class="btn btn-primary">Guardar</button>
+                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+           GetUsuarios();
+        });
+        function PopEdit(id) {
+            ListRoles();
+
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetUsuario", "Config")',
+                data: {
+                    idUsuario: id
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        $("#hddIdUsuario").val(json.resp.idUsuario);
+                        $("#txtUsuario").val(json.resp.usuario);
+                        $("#txtNombre").val(json.resp.nombre);
+                        if (json.resp.activo) {
+                            $("#ddlHabilitado").val("true");
+                        } else { $("#ddlHabilitado").val("false"); }
+
+                        $("#ddlRoles").val(json.resp.rol);
+
+                        $("#dlgRoles").modal('toggle');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        function PopAdd() {
+            ListRoles();
+            $("#hddIdUsuario").val("0");
+            $("#txtUsuario").val("");
+            $("#txtDesc").val("");
+            $("#ddlHabilitado").val("true");
+            $("#dlgRoles").modal('toggle');
+        }
+
+        function ListRoles() {
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("ListRoles", "Config")',
+                data: {
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#ddlRoles");
+                        sel.empty();
+
+                        $('#ddlRoles').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].idRol + '">' + json.resp[i].nombreRol + ' [' + json.resp[i].descripcion + ']</option>');
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        function Save() {
+            var _idUsuario = $("#hddIdUsuario").val();
+            var _Usuario = $("#txtUsuario").val();
+            var _Nombre = $("#txtNombre").val();
+            var _rol = $("#ddlRoles").val();
+            var _Activo = $("#ddlHabilitado").val();
+
+
+            if (_rol == "0") {
+                $("#ddlRoles").focus();
+                return;
+            }
+            if (_Usuario.length == 0) {
+                $("#txtUsuario").focus();
+                return;
+            }
+            if (_Nombre.length == 0) {
+                $("#txtNombre").focus();
+                return;
+            }
+
+            //string idUsuario, string nombre, string activo, string usuario, string rol
+
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("AddUsuario", "Config")',
+                data: {
+                    idUsuario: _idUsuario
+                    , nombre: _Nombre
+                    , activo: _Activo
+                    , usuario: _Usuario
+                    , rol: _rol
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        location.reload();
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        function GetUsuarios() {
+
+            //var _Id_Num_UN = $("#hddTda").val();
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("ListUsuarios", "Config")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {                        
+                        $('#tblConsulta tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+                            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+
+                            tr.append("<td>" + json.resp[i].nombre + "</td>");
+                            tr.append("<td>" + json.resp[i].usuario + "</td>");
+                            tr.append("<td>" + json.resp[i].nombreRol + "</td>");
+                            //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Supplier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Supplier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                            tr.append("<td><button onclick='PopEdit(" + json.resp[i].idUsuario + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button></td >")
+                            $('#tblConsulta').append(tr);
+                        }
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+
+            });
+
+        }
+    </script>
+}
