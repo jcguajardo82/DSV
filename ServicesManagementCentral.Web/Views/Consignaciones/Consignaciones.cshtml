@@ -55,153 +55,175 @@
         <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
             <h2>Consignaciones</h2>
 
+                <div class="row">
+                    <div class="col-sm-12">
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
-                            <thead>
-                                <tr>
-                                    <th>Numero de consignación</th>
-                                    <th>Total de Consignación</th>
-                                    <th>Tipo Almacen </th>
-                                    <th>Fecha y hora creacion orden</th>
-                                    <th>Nombre del cliente</th>
-                                    <th>Estatus de la orden</th>
-                                    <th>Estatus de la consignación</th>
-                                    <th>No. de orden de compra (Solo DSV)</th>
-                                    <th>Estatus de Orden de Compra</th>
+                        <table>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" size="25" maxlength="50" value="Filtro Información de Columnas" name=" Filtro"></td>
+                                <td>
+                                    <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
+                                        Descargar a Excel XLS
+                                    </button>
+                                </td>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><u>7654234</u></u></td>
-                                    <td>5</td>
-                                    <td>
-                                        WMS
-                                    </td>
-                                    <td>
-                                        28-Ene-21
-                                    </td>
-                                    <td>
-                                        Susana Vargas Miranda
-                                    </td>
-                                    <td>Pago autorizado</td>
-                                    <td>
-                                        En espera de recoleccion
-                                    </td>
-                                    <td>5678998767</td>
-                                    <td>En programacion de pago</td>
+                                <td>
+                                    <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
+                                        Descargar a Excel XLSX
+                                    </button>
 
-                                </tr>
-                                <tr>
-                                    <td><u>7654234</u></u></td>
-                                    <td>5</td>
-                                    <td>
-                                        WMS
-                                    </td>
-                                    <td>
-                                        3-Mar-21
-                                    </td>
-                                    <td>
-                                        Susana Vargas Miranda
-                                    </td>
-                                    <td>Pago autorizado</td>
-                                    <td>
-                                        En espera de recoleccion
-                                    </td>
-                                    <td>5678998767</td>
-                                    <td>En programacion de pago</td>
-
-                                </tr>
-
-
-
-                            </tbody>
+                                </td>
+                            </tr>
                         </table>
                     </div>
+                        <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                            <table class="table invoice-table">
+                                <thead>
+                                    <tr>
+                                        <th>Numero de consignación</th>
+                                        <th>Total importe de la Consignación</th>
+                                        <th>Tipo Almacen </th>
+                                        <th>Fecha y hora creacion orden</th>
+                                        <th>Nombre del cliente</th>
+                                        <th>Estatus de la orden</th>
+                                        <th>Estatus de la consignación Almacen</th>
+                                        <th>Estatus de la consignación Home Delivery</th>
+                                        <th>No. de orden de compra (DSV)</th>
+                                        <th>Estatus de Orden de Compra (DSV)</th>
+                                        <th>Motivo de no recolección</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><u>7654234</u></td>
+                                        <td>5</td>
+                                        <td>
+                                            WMS
+                                        </td>
+                                        <td>
+                                            28-Ene-21
+                                        </td>
+                                        <td>
+                                            Susana Vargas Miranda
+                                        </td>
+                                        <td>Pago autorizado</td>
+                                        <td>
+                                            En espera de recoleccion
+                                        </td>
+                                        <td>En transito</td>
+                                        <td>5678998767</td>
+                                        <td>En programacion de pago</td>
+                                        <td>Motivo</td>
+                                    </tr>
+                                    <tr>
+                                        <td><u>7654234</u></u></td>
+                                        <td>5</td>
+                                        <td>
+                                            WMS
+                                        </td>
+                                        <td>
+                                            3-Mar-21
+                                        </td>
+                                        <td>
+                                            Susana Vargas Miranda
+                                        </td>
+                                        <td>Pago autorizado</td>
+                                        <td>
+                                            En espera de recoleccion
+                                        </td>
+                                        <td>En transito</td>
+                                        <td>5678998767</td>
+                                        <td>En programacion de pago</td>
+                                        <td>Motivo</td>
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
                 </div>
-            </div>
-            <h2>Detalle de Consignación</h2>
+                @*<h2>Detalle de Consignación</h2>
 
-            <div class="row">
+                <div class="row">
 
-            </div>
-
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Descripcion</th>
-                                    <th>Piezas</th>
-                                    <th>Costo</th>
-                                    <th>Peso Volumetico</th>
-                                    <th>Dias de Surtido desde la creacion</th>
-                                    <th>Dias de Surtido desde la autorización</th>
-                                    <th>Fecha de envio</th>
-                                    <th>RMA</th>
-                                    <th>Estatus del RMA</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>12345678</td>
-                                    <td>Refrigerador</td>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>
-                                        $
-                                    </td>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>3</td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>X</td>
-                                    <td>X</td>
-                                    <td>Completado</td>
-
-                                </tr>
-                                <tr>
-                                    <td>12345678</td>
-                                    <td>Locion para dama</td>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>
-                                        $
-                                    </td>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>3</td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>X</td>
-                                    <td>X</td>
-                                    <td>Completado</td>
-
-                                </tr>
+                </div>
 
 
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                            <table class="table invoice-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Descripcion</th>
+                                        <th>Piezas</th>
+                                        <th>Costo</th>
+                                        <th>Peso Volumetico</th>
+                                        <th>Dias de Surtido desde la creacion</th>
+                                        <th>Dias de Surtido desde la autorización</th>
+                                        <th>Fecha de envio</th>
+                                        <th>RMA</th>
+                                        <th>Estatus del RMA</th>
 
-                            </tbody>
-                        </table>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12345678</td>
+                                        <td>Refrigerador</td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            $
+                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>3</td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>X</td>
+                                        <td>X</td>
+                                        <td>Completado</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>12345678</td>
+                                        <td>Locion para dama</td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            $
+                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>3</td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>X</td>
+                                        <td>X</td>
+                                        <td>Completado</td>
+
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
-    </div>
 </div>
 
 @section scripts {
