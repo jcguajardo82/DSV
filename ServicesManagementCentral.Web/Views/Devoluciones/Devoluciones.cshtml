@@ -50,18 +50,8 @@
                     <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
                 </div>
             </div>
-            
             <div class="row">
-                <div class="col col-xs-6">
-                    <div class="dt-buttons btn-group flex-wrap">
-                        <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>
-                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
-                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
-                    </div>
                 </div>
-            </div>
-
-            <div class="row">
                 <div class="col-sm-12">
                     <div class="tableFixHead table-responsive m-t">
                         <table id="tblConsulta" class="table invoice-table">
@@ -163,7 +153,10 @@
                                 </tr>
                             </tbody>
                         </table>
+
                     </div>
+                    <button style="visibility:hidden;" float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
+                    <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
                 </div>
             </div>
         </div>

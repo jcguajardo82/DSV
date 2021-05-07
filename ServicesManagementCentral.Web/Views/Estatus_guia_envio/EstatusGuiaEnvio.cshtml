@@ -61,7 +61,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
+                        <table class="table invoice-table" id="tablaEstatusguiaenvio">
                             <thead>
                                 <tr>
                                     <th>Impresión</th>
@@ -125,19 +125,22 @@
 
                             </tbody>
                         </table>
+                        <button style="visibility:hidden;" float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
+                        <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
                     </div>
                 </div>
             </div>
-            <h2>Estatus de guia de reenvio</h2>
+            
 
-            <div class="row">
+            <div class="row" style="visibility:hidden">
                 <div class="col col-xs-3 col col-md-3 col col-lg-3">
                     <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
+                    <h2>Estatus de guia de reenvio</h2>
                 </div>
             </div>
 
 
-            <div class="row">
+            <div class="row" style="visibility:hidden">
                 <div class="col-sm-12">
                     <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
                         <table class="table invoice-table">
@@ -204,7 +207,7 @@
 
                             </tbody>
                         </table>
-                        <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
+                        <button style="float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
                     </div>
                 </div>
             </div>
@@ -224,6 +227,80 @@
 
         });
 
+        function Exportar() {
+            var tab_text = "<meta charset='UTF-8'><table border='2px'><tr bgcolor='#87AFC6'>";
+            var textRange; var j = 0;
+            tab = document.getElementById('tablaEstatusguiaenvio'); // id of table
+
+            for (j = 0; j < tab.rows.length; j++) {
+                //tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                for (var c = 0; c < tab.rows[j].cells.length; c++) {
+                    var cell = tab.rows[j].cells[c].outerHTML;
+                    if (cell.indexOf("footertotal") > 0)
+                        tab_text += "<tr bgcolor='#87AFC6' style='font-weight: bold;'>";
+                    if (cell.indexOf("noexport") < 0)
+                        tab_text += cell;
+                }
+                tab_text += "</tr>";
+            }
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
+            var base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) };
+            var format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+            var ctx = { worksheet: "" || 'Worksheet', table: tab_text };
+            var str = base64(format(template, ctx));
+
+            var blob = b64toBlob(str, "application/vnd.ms-excel");
+            var blobUrl = URL.createObjectURL(blob);
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+            {
+                window.navigator.msSaveOrOpenBlob(blob, 'Presupuesto.xls');
+            }
+            else    //other browser not tested on IE 11
+            {
+                var a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = "Presupuesto.xls";
+                a.click();
+                //window.open(blobUrl);
+            }
+            console.log(blobUrl);
+            window.URL.revokeObjectURL(blobUrl);
+        };
+
+        function b64toBlob(b64Data, contentType, sliceSize) {
+            contentType = contentType || '';
+            sliceSize = sliceSize || 512;
+
+            var byteCharacters = atob(b64Data);
+            var byteArrays = [];
+
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                var byteNumbers = new Array(slice.length);
+                for (var i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                var byteArray = new Uint8Array(byteNumbers);
+
+                byteArrays.push(byteArray);
+            }
+
+            var blob = new Blob(byteArrays, { type: contentType });
+            return blob;
+        };
 
     </script>
 }

@@ -8,11 +8,13 @@
     /* Fix table head */
     .tableFixHead {
         overflow-y: auto;
+        
         height: 420px;
     }
 
         .tableFixHead th {
             position: sticky;
+            width: 120px;
             top: 0;
         }
 
@@ -38,7 +40,7 @@
     }
 </style>
 <div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+    <div style ="width: 100%;" class="dataTables_wrapper dt-bootstrap4 no-footer">
         <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
                 <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center" ">
@@ -51,9 +53,20 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col col-xs-6">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        @*<button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>*@
+                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                    </div>
+                </div>
+                <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-12">
                     <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
+                        <table style="overflow-x: scroll;" class="table invoice-table">
                             <thead>
                                 <tr>
                                     <th style="text-align:center;">Nombre del Producto</th>
@@ -69,6 +82,17 @@
                                     <th style="text-align:center;">Ancho</th>
                                     <th style="text-align:center;">Peso</th>
                                     <th style="text-align:center;">Peso Volumetrico</th>
+                                    <th style="text-align:center;">Peso Real</th>
+                                    <th style="text-align:center;">EAN/Codigo de barras</th>
+                                    <th style="text-align:center;">ID( #numero material SAP)</th>
+                                    <th style="text-align:center;">Stock de seguridad</th>
+                                    <th style="text-align:center;">Inventario disponible para la venta</th>
+                                    <th style="text-align:center;">Inventario Reservado</th>
+                                    <th style="text-align:center;">Estatus del codigo</th>
+                                    <th style="text-align:center;">Costo del Material</th>
+                                    <th style="text-align:center;">Fecha de cracion del Material</th>
+                                    <th style="text-align:center;">Num de proveedor que surte producto</th>
+                                    <th style="text-align:center;">Nom de proveedor que surte producto</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,6 +112,45 @@
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;">
+                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
+                                    </td>
+                                    <td style="text-align:left;">BELLEZA</td>
+                                    <td style="text-align:left;">14482</td>
+                                    <td style="text-align:left;">proveedores</td>
+                                    <td style="text-align:left;">Modermo</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">BT</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
                                 </tr>
                                 <tr>
                                     <td style="text-align:left;">
@@ -122,18 +185,12 @@
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
@@ -156,18 +213,12 @@
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
@@ -190,6 +241,17 @@
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
                                 </tr>
                                 <tr>
                                     <td style="text-align:left;">
@@ -202,6 +264,45 @@
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">BT</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;">
+                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
+                                    </td>
+                                    <td style="text-align:left;">BELLEZA</td>
+                                    <td style="text-align:left;">14482</td>
+                                    <td style="text-align:left;">proveedores</td>
+                                    <td style="text-align:left;">Modermo</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">BT</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
+                                    <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
                                     <td style="text-align:left;">X</td>
@@ -211,6 +312,8 @@
                             </tbody>
                         </table>
                     </div>
+                    <button style="visibility:hidden;" float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
+                    <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
                 </div>
             </div>
         </div>
