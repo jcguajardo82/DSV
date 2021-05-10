@@ -270,6 +270,8 @@
   <ItemGroup>
     <Content Include="Content\blocks-Loader.gif" />
     <Content Include="Content\icon.ico" />
+    <Content Include="Content\images\theme\folder.jpg" />
+    <Content Include="Content\images\theme\folder.png" />
     <Content Include="Content\images\theme\logo.png" />
     <Content Include="Content\images\theme\profile.jpg" />
     <Content Include="Content\images\theme\Soriana.png" />
@@ -3653,6 +3655,8 @@
     <Content Include="Views\Config\Roles.cshtml" />
     <Content Include="Views\Config\Usuarios.cshtml" />
     <Content Include="Views\AutorizacionesRMA\AutorizacionesRMA.cshtml" />
+    <None Include="Properties\PublishProfiles\sorianaalmacen - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\SorianaalmacenQA - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
