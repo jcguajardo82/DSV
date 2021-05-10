@@ -41,14 +41,13 @@
     </div>
     <div class="row">
         <div class="col-sm-8">
-            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 555px;">
-                <thead class="bg-primary">
-
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
+                <thead class="bg-danger-sor">
                     <tr role="row">
                         <th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 50%;">Nombre</th>
                         <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 20%;">Usuario</th>
                         <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 20%;">Rol</th>
-                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 10%;"></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -227,7 +226,9 @@
                 success: function (json) {
                     debugger;
                     if (json.Success) {
-                        location.reload();
+                        //location.reload();
+                        GetUsuarios();
+                        $("#dlgRoles").modal('hide');
 
                     }
                     else {
@@ -255,9 +256,9 @@
                     //  Id_Num_UN: _Id_Num_UN
                 },
 
-                datatype: "html",
+                datatype: "json",
                 success: function (json) {
-                    if (json.Success) {                        
+                    if (json.Success) {
                         $('#tblConsulta tbody').empty();
                         //var tr;
                         debugger;
@@ -283,5 +284,57 @@
             });
 
         }
+        $(document).ready(function () {
+
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+
+                $('input', this).on('keyup change', function () {
+                    if (table.column(i).search() !== this.value) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+
+          var table =  $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: false,
+                    info: false,
+                    stateSave: false,
+                    select: true,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: false,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: true,
+                    fixedHeader: true
+
+                }
+            );
+        });
+
+
     </script>
 }
