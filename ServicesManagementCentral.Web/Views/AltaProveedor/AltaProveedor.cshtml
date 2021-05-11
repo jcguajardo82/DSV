@@ -37,8 +37,8 @@
                                 Almacen
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="txtIdAlmacen" />
-                            </td>
+                                <select class="form-control m-b" id="lstIdAlmacen"></select>
+                            </td>                            
                             <td style="width:15%;text-align:center;">
                                 # Almacen
                             </td>
@@ -238,10 +238,45 @@
 
 @section scripts {
     <script>
+        $(document).ready(function () {
+            IniciarCombo()
+        });
+
+        function IniciarCombo() {
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("IniciarComboTipoAlmacen", "AltaProveedor")',
+                data: {
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#lstIdAlmacen");
+                        sel.empty();
+
+                        $('#lstIdAlmacen').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].idOwner + '">' + json.resp[i].ownerName +  '</option>');
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+        }
+
         function Save() {
             var _txtNumPro = $("#txtNumPro").val();
             var _txtNomPro = $("#txtNomPro").val();
-            var _txtIdAlmacen = $("#txtIdAlmacen").val();
+            var _txtIdAlmacen = $("#lstIdAlmacen").val();
             var _txtNumAlmacen = $("#txtNumAlmacen").val();
             var _txtCalle = $("#txtCalle").val();
             var _txtNumExt = $("#txtNumExt").val();
@@ -257,6 +292,7 @@
             var _txtTelContCom = $("#txtTelContCom").val();
             var _txtEmailO = $("#txtEmailO").val();
             var _txtEmailC = $("#txtEmailC").val();
+            var _creationId = 't_joserp';
 
             if (_txtNumPro.length == 0) {
                 $("#txtNumPro").focus();
@@ -355,6 +391,7 @@
                     , operInfoEmail: _txtTelContCom
                     , commInfoPhone: _txtEmailO
                     , commInfoEmail: _txtEmailC
+                    , creationId: _creationId
                 },
                 datatype: "html",
                 success: function (json) {
@@ -373,6 +410,5 @@
                 }
             });
         }
-
     </script>
 }

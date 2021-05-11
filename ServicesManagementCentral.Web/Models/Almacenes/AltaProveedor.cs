@@ -25,6 +25,14 @@ namespace ServicesManagement.Web.Models.Almacenes
         public string operInfoEmail { get; set; }
         public string commInfoPhone { get; set; }
         public string commInfoEmail { get; set; }
+        public string creationId { get; set; }
 
     }
+
+    public class Owners
+    {
+        int idOwner { get; set; }
+        string ownerName { get; set; }
+    }
+
 }

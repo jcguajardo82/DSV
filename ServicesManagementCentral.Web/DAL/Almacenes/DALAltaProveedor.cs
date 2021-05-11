@@ -13,7 +13,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
     {
         public static DataSet SuppliersWH_iUP(int idSupplierWH, string supplierName, int idSupplierWHCode, int idOwner, string addressStreet, string addressNumberExt, string addressNumberInt, 
             string addressCity, string addressPostalCode, string addressState, string addressReference1, string addressReference2, string commInfoName, string operInfoName, string operInfoPhone, 
-            string operInfoEmail, string commInfoPhone, string commInfoEmail)
+            string operInfoEmail, string commInfoPhone, string commInfoEmail, string creationId)
         {
 
             DataSet ds = new DataSet();
@@ -48,6 +48,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
                 parametros.Add("@operInfoEmail", operInfoEmail);
                 parametros.Add("@commInfoPhone", commInfoPhone);
                 parametros.Add("@commInfoEmail", commInfoEmail);
+                parametros.Add("@creationId", creationId);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[common].[SuppliersWH_iUP]", false, parametros);
 
