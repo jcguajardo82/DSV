@@ -303,6 +303,46 @@
                 $("#txtEmailC").focus();
                 return;
             }
+
+
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GrabarProveedor", "AltaProveedor")',
+                data: {
+                    idSupplierWH: _txtNumPro
+                    , supplierName: _txtNomPro
+                    , addressStreet: _txtCalle
+                    , addressNumberExt: _txtNumExt
+                    , addressNumberInt: _txtNumInt
+                    , addressCity: _txtCiudad
+                    , addressPostalCode: _txtCodPos
+                    , addressState: _txtEdo
+                    , addressReference1: _txtEntCal1
+                    , addressReference2: _txtEntCal2
+                    , commInfoName: _txtNomContOper
+                    , operInfoName: _txtNomContCom
+                    , operInfoPhone: _txtTelContOper
+                    , operInfoEmail: _txtTelContCom
+                    , commInfoPhone: _txtEmailO
+                    , commInfoEmail: _txtEmailC
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        alert(json.Message);
+                        location.reload();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
         }
 
     </script>
