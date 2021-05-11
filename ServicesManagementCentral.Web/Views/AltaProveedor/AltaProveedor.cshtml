@@ -14,8 +14,6 @@
                 <div class="row">
                     <table style="width:100%;">
                         <tr>
-
-
                             <td style="width:15%;text-align:center;">
                                 Numero de Proveedor
                             </td>
@@ -27,6 +25,25 @@
                             </td>
                             <td>
                                 <input type="text" class="form-control" id="txtNomPro" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"><hr /></td>
+                        </tr>
+                    </table>
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Almacen
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="txtIdAlmacen" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                # Almacen
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="txtNumAlmacen" />
                             </td>
                         </tr>
                         <tr>
@@ -224,6 +241,8 @@
         function Save() {
             var _txtNumPro = $("#txtNumPro").val();
             var _txtNomPro = $("#txtNomPro").val();
+            var _txtIdAlmacen = $("#txtIdAlmacen").val();
+            var _txtNumAlmacen = $("#txtNumAlmacen").val();
             var _txtCalle = $("#txtCalle").val();
             var _txtNumExt = $("#txtNumExt").val();
             var _txtNumInt = $("#txtNumInt").val();
@@ -245,6 +264,14 @@
             }
             if (_txtNomPro.length == 0) {
                 $("#txtNomPro").focus();
+                return;
+            }
+            if (_txtIdAlmacen.length == 0) {
+                $("#txtIdAlmacen").focus();
+                return;
+            }
+            if (_txtNumAlmacen.length == 0) {
+                $("#txtNumAlmacen").focus();
                 return;
             }
             if (_txtCalle.length == 0) {
@@ -312,6 +339,8 @@
                 data: {
                     idSupplierWH: _txtNumPro
                     , supplierName: _txtNomPro
+                    , idSupplierWHCode: _txtIdAlmacen
+                    , idOwner: _txtNumAlmacen
                     , addressStreet: _txtCalle
                     , addressNumberExt: _txtNumExt
                     , addressNumberInt: _txtNumInt
@@ -331,7 +360,7 @@
                 success: function (json) {
                     debugger;
                     if (json.Success) {
-                        alert(json.Message);
+                        alert("Inserción exitosa");
                         location.reload();
                     }
                     else {
