@@ -2,222 +2,308 @@
     Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 
-    <div class="wrapper wrapper-content animated fadeInRight" style="padding-top: 0px;">
-        <div class="row">
-            <div class="col-xs-12 col-md-12 col-lg-12">
-                <div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-12 col-lg-12 text-center">
-                            <h2> Alta de Almacenes</h2>
-                        </div>
+<div class="wrapper wrapper-content animated fadeInRight" style="padding-top: 0px;">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12 text-center">
+                        <h2> Alta de Almacenes</h2>
                     </div>
-                    <div class="row">
-                        <table style="width:100%;">
-                            <tr>
-                                
-
-                                <td style="width:15%;text-align:center;">
-                                    Numero de Proveedor
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" id="txtNomPro" />
-                                </td>
-                                <td style="width:15%;text-align:center;">
-                                    Nombre de Proveedor
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" id="txtNomPro" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6"><hr /></td>
-                            </tr>
-                        </table>
-                        <table style="width:100%;">
-                            <tr>
-                                <td colspan="6">
-                                    <b> Direccion del Almacén </b>
-                                </td>
-                            </tr>
-                           
-                            <tr>
-                                <td style="width:15%;text-align:center;">
-                                    Calle
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width:15%;text-align:center;">
-                                    Número Exterior
-
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" id="txtNomPro" />
-                                </td>
-                                <td style="width:15%;text-align:center;">
-                                    Número Interior
-
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" id="txtNomPro" />
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td style="width:15%;text-align:center;">
-                                    Cuidad/Delegación/Municipio
-
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width:15%;text-align:center;">
-                                    CP.
-
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="number" min="1" max="99999" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width:15%;text-align:center;">
-                                    Estado
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width:15%;text-align:center;">
-                                    Entre calle 1
-
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width:15%;text-align:center;">
-                                    Entre calle 2
-
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width:15%;text-align:center;">
-                                    
-                                </td>
-                                <td style="text-align:left;">
-                                    
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6"><hr /></td>
-                            </tr>
-                        </table>
-                        <table style="width:100%;">
-                            <tr>
-                                <td colspan="3">
-                                    <b>
-                                        Infomación de contacto operativo
-                                    </b>
-                                </td>
-                                <td colspan="3">
-                                    <b>
-                                        Infomación de contacto comercial
-                                    </b>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td style="width:15%;text-align:center;">
-                                    Nombre de contacto Operativo
-
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width: 10%;">
-                                </td>
+                </div>
+                <div class="row">
+                    <table style="width:100%;">
+                        <tr>
 
 
-                                <td style="width:15%;text-align:center;">
-                                    Nombre de contacto Operativo
+                            <td style="width:15%;text-align:center;">
+                                Numero de Proveedor
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="txtNumPro" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Nombre de Proveedor
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="txtNomPro" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"><hr /></td>
+                        </tr>
+                    </table>
+                    <table style="width:100%;">
+                        <tr>
+                            <td colspan="6">
+                                <b> Direccion del Almacén </b>
+                            </td>
+                        </tr>
 
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width: 10%;">
-                                </td>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Calle
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtCalle" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Número Exterior
 
-                            </tr>
-                            <tr>
-                                <td style="width:15%;text-align:center;">
-                                    Teléfono del contacto Operativo
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="txtNumExt" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Número Interior
 
-                                </td>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="txtNumInt" />
+                            </td>
 
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
+                        </tr>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Cuidad/Delegación/Municipio
 
-                                </td>
-                                <td style="width: 10%;">
-                                </td>
-                                <td style="width:15%;text-align:center;">
-                                    Teléfono del contacto Operativo
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtCiudad" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                CP.
 
-                                </td>
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Estado
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtEdo" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Entre calle 1
+
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtEntCal1" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Entre calle 2
+
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtEntCal2" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                            </td>
+                            <td style="text-align:left;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"><hr /></td>
+                        </tr>
+                    </table>
+                    <table style="width:100%;">
+                        <tr>
+                            <td colspan="3">
+                                <b>
+                                    Infomación de contacto operativo
+                                </b>
+                            </td>
+                            <td colspan="3">
+                                <b>
+                                    Infomación de contacto comercial
+                                </b>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Nombre de contacto Operativo
+
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtNomContOper" />
+                            </td>
+                            <td style="width: 10%;">
+                            </td>
 
 
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width: 10%;">
-                                </td>
+                            <td style="width:15%;text-align:center;">
+                                Nombre de contacto Comercial
+
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtNomContCom" />
+                            </td>
+                            <td style="width: 10%;">
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Teléfono del contacto Operativo
+
+                            </td>
+
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtTelContOper" />
+
+                            </td>
+                            <td style="width: 10%;">
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Teléfono del contacto Comercial
+
+                            </td>
 
 
-                            </tr>
-                            <tr>
-                                <td style="width:15%;text-align:center;">
-                                    Correo electrónico
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtTelContCom" />
+                            </td>
+                            <td style="width: 10%;">
+                            </td>
 
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width: 10%;">
-                                </td>
 
-                                <td style="width:15%;text-align:center;">
-                                    Correo electrónico
+                        </tr>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Correo electrónico
 
-                                </td>
-                                <td style="text-align:left;">
-                                    <input type="text" class="form-control" id="txtNoPro" />
-                                </td>
-                                <td style="width: 10%;">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6"><br /></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-white">GUARDAR</button>
-                                </td>
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtEmailO" />
+                            </td>
+                            <td style="width: 10%;">
+                            </td>
 
-                                <td>
-                                    <button type="button" class="btn btn-primary" onclick="TraspasaOrden()">EDITAR</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6"><br /><br /><br /></td>
-                            </tr>
+                            <td style="width:15%;text-align:center;">
+                                Correo electrónico
 
-                        </table>
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtEmailC" />
+                            </td>
+                            <td style="width: 10%;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"><br /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-white" onclick="Save()">GUARDAR</button>
+                            </td>
 
-                    </div>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="TraspasaOrden()">EDITAR</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"><br /><br /><br /></td>
+                        </tr>
+
+                    </table>
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 
+@section scripts {
+    <script>
+        function Save() {
+            var _txtNumPro = $("#txtNumPro").val();
+            var _txtNomPro = $("#txtNomPro").val();
+            var _txtCalle = $("#txtCalle").val();
+            var _txtNumExt = $("#txtNumExt").val();
+            var _txtNumInt = $("#txtNumInt").val();
+            var _txtCiudad = $("#txtCiudad").val();
+            var _txtCodPos = $("#txtCodPos").val();
+            var _txtEdo = $("#txtEdo").val();
+            var _txtEntCal1 = $("#txtEntCal1").val();
+            var _txtEntCal2 = $("#txtEntCal2").val();
+            var _txtNomContOper = $("#txtNomContOper").val();
+            var _txtNomContCom = $("#txtNomContCom").val();
+            var _txtTelContOper = $("#txtTelContOper").val();
+            var _txtTelContCom = $("#txtTelContCom").val();
+            var _txtEmailO = $("#txtEmailO").val();
+            var _txtEmailC = $("#txtEmailC").val();
+
+            if (_txtNumPro.length == 0) {
+                $("#txtNumPro").focus();
+                return;
+            }
+            if (_txtNomPro.length == 0) {
+                $("#txtNomPro").focus();
+                return;
+            }
+            if (_txtCalle.length == 0) {
+                $("#txtCalle").focus();
+                return;
+            }
+            if (_txtNumExt.length == 0) {
+                $("#txtNumExt").focus();
+                return;
+            }
+            if (_txtNumInt.length == 0) {
+                $("#txtNumInt").focus();
+                return;
+            }
+            if (_txtCiudad.length == 0) {
+                $("#txtCiudad").focus();
+                return;
+            }
+            if (_txtCodPos.length == 0) {
+                $("#txtCodPos").focus();
+                return;
+            }
+            if (_txtEdo.length == 0) {
+                $("#txtEdo").focus();
+                return;
+            }
+            if (_txtEntCal1.length == 0) {
+                $("#txtEntCal1").focus();
+                return;
+            }
+            if (_txtEntCal2.length == 0) {
+                $("#txtEntCal2").focus();
+                return;
+            }
+            if (_txtNomContOper.length == 0) {
+                $("#txtNomContOper").focus();
+                return;
+            }
+            if (_txtNomContCom.length == 0) {
+                $("#txtNomContCom").focus();
+                return;
+            }
+            if (_txtTelContOper.length == 0) {
+                $("#txtTelContOper").focus();
+                return;
+            }
+            if (_txtTelContCom.length == 0) {
+                $("#txtTelContCom").focus();
+                return;
+            }
+            if (_txtEmailO.length == 0) {
+                $("#txtEmailO").focus();
+                return;
+            }
+            if (_txtEmailC.length == 0) {
+                $("#txtEmailC").focus();
+                return;
+            }
+        }
+
+    </script>
+}
