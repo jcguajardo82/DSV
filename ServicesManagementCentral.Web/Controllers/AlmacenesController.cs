@@ -37,7 +37,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<SuppliersWHForAproval>(DALAlmacenes.SuppliersWHStock_sUP(int.Parse(idSupplierWH), int.Parse(idSupplierWHCode)).Tables[0]);
+                var list = DataTableToModel.ConvertTo<SuppliersWHStock>(DALAlmacenes.SuppliersWHStock_sUP(int.Parse(idSupplierWH), int.Parse(idSupplierWHCode)).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
