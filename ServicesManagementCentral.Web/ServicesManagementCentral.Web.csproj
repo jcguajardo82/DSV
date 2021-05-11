@@ -3589,6 +3589,18 @@
     <Content Include="Content\plugins\clockpicker\assets\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\plugins\clockpicker\assets\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\plugins\clockpicker\assets\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\ManualesOpPDF\Contenidos.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ManualesOpPDF\Empaque.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ManualesOpPDF\Inventarios.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ManualesOpPDF\operaciones.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <Content Include="Views\Shared\Inspinia\_Footer.cshtml" />
     <Content Include="Views\Shared\Inspinia\_Navigation.cshtml" />

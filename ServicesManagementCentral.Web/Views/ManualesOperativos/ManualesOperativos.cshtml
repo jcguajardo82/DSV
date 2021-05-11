@@ -13,34 +13,46 @@
                         <h2>Manuales Operativos</h2>
                     </div>
                 </div>
-                <div class="row" style="height:490px;">
+                <div class="row" style="height:490px; overflow-x:auto;">
                     <table style="width:100%;">
                         <tr>
                             <td style="text-align:left;padding-left:50px;">
                                 <h2><i class="fa fa-certificate"></i> Manual de Operación</h2>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Procesos para surtir y enviar una orden</span>
-                                <button style="float: left";" type="button" class="btn btn-w-m btn-warning">Descargar</button>
+                                <button name="operacionespdf" onclick="verPDF('operaciones.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-operacionespdf" >Mostrar</button>
+                                <button name="operacionespdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-operacionespdf">Ocultar</button>
+                                <iframe id="operacionespdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
                             </td>
                         </tr>
+
                         <tr>
                             <td style="text-align:left;padding-left:50px;">
                                 <h2><i class="fa fa-certificate"></i> Manual de Empaque</h2>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Tipos de empaque que se deben utilizar para un adecuado envio</span>
-                                <button style="float: left;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
+                                <button name="empaquepdf" onclick="verPDF('Empaque.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-empaquepdf">Mostrar</button>
+                                <button name="empaquepdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-empaquepdf">Ocultar</button>
+                                <iframe id="empaquepdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+
                             </td>
                         </tr>
                         <tr>
                             <td style="text-align:left;padding-left:50px;">
                                 <h2><i class="fa fa-certificate"></i> Manual de Actualización de Inventario</h2>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para mantener actualizado tu inventario en la página</span>
-                                <button style="float: left;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
+                                <button name="inventariospdf" onclick="verPDF('Inventarios.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-inventariospdf">Mostrar</button>
+                                <button name="inventariospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-inventariospdf">Ocultar</button>
+                                <iframe id="inventariospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+
                             </td>
                         </tr>
                         <tr>
                             <td style="text-align:left;padding-left:50px;">
                                 <h2><i class="fa fa-certificate"></i> Manual Actualización de Contenido</h2>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para actualizar el contenido de un producto</span>
-                                <button style="float: left;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
+                                <button name="contenidospdf" onclick="verPDF('Contenidos.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-contenidospdf">Mostrar</button>
+                                <button name="contenidospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-contenidospdf">Ocultar</button>
+                                <iframe id="contenidospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+
                             </td>
                         </tr>
                     </table>
@@ -50,3 +62,35 @@
     </div>
 </div>
 
+@section scripts {
+    <script>
+
+        $(document).ready(function () {
+
+           
+
+        });
+        function verPDF(PDF,opcion) {
+
+
+            var host = window.location.origin
+            $("#"+ opcion).attr("src", host + "/Content/ManualesOpPDF/" + PDF)
+            $("#"+ opcion).show()
+            
+            //var opcion = $(this).id
+            $(".ver-" + opcion).hide()
+            $(".ocultar-" + opcion).show()
+
+
+        }
+        function ocultarPDF(opcion) {
+            //var opcion = $(this).id
+            $(".ver-" + opcion).show()
+            $(".ocultar-" + opcion).hide()
+            $("#" + opcion).hide()
+
+
+        }
+
+    </script>
+}
