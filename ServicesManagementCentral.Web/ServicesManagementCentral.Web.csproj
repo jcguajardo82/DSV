@@ -215,7 +215,6 @@
     <Compile Include="Controllers\TotalOrdenesController.cs" />
     <Compile Include="Controllers\SolicitudGuiasReenvioController.cs" />
     <Compile Include="DALConfig.cs" />
-    <Compile Include="DAL\Almacenes\DALAlmacenes.cs" />
     <Compile Include="DAL\Almacenes\DALAltaProveedor.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
