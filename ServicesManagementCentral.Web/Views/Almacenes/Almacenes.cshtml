@@ -4,27 +4,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-    <div>
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
-            <h2>Almacenes</h2>
-            <div class="row">
-                <div class="col-sm-12">
-                    <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
-                        <thead class="bg-danger-sor">
-                            <tr>
-                                <th>Acción</th>
-                                <th>Habilitado</th>
-                                <th>Tipo Almacen</th>
-                                <th>No. Almacen</th>
-                                <th>Dias transcurridos</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th name='accion'>Acción</th>
+                        <th>Habilitado</th>
+                        <th>Tipo Almacen</th>
+                        <th>No. Almacen</th>
+                        <th>Dias transcurridos</th>
+                        <th name='accion'></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -222,6 +217,7 @@
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
+                        
                         $('#tblConsulta tbody').empty();
                         //var tr;
                         debugger;
@@ -230,7 +226,7 @@
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
                             //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                            if (!json.resp[i].habilitado) { tr.append("<td><button  title='Click para habilitar'  onclick='Habilitar(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")' type ='button' class= 'btn btn-white btn-circle'> <i class='fa fa-check'></i></button></td >"); }
+                            if (!json.resp[i].habilitado) { tr.append("<td><button   title='Click para habilitar'  onclick='Habilitar(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")' type ='button' class= 'btn btn-white btn-circle'> <i class='fa fa-check'></i></button></td >"); }
                             else {
                                 tr.append("<td><button title='Click para deshabilitar' onclick='popDesHabilitar(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-ban'></i></button></td >");
                             }
@@ -247,6 +243,7 @@
 
                             $('#tblConsulta').append(tr);
                         }
+                        $('#tblConsulta').data.reload();
                     }
                     else {
                         alert(json.Message);
@@ -271,6 +268,7 @@
                 return;
             }
             UpdateStatus($("#hddNoProveedor").val(), $("#HddNoAlmacen").val(), false, motCan);
+            $("#dlgDesHabilitar").modal('hide');
         }
 
         function Habilitar(noProveedor, noAlmacen) {
@@ -292,7 +290,9 @@
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
-                        GetSuppliers();
+                        //GetSuppliers();
+                        location.reload();
+                       
                     } else {
                         alert(json.Message);
                     }
@@ -307,22 +307,27 @@
         }
 
     </script>
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
         $(document).ready(function () {
-            //$('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
-            //$('#tblConsulta thead tr:eq(1) th').each(function (i) {
-            //    var title = $(this).text();
-            //    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
 
-            //    $('input', this).on('keyup change', function () {
-            //        if (table.column(i).search() !== this.value) {
-            //            table
-            //                .column(i)
-            //                .search(this.value)
-            //                .draw();
-            //        }
-            //    });
-            //});
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
 
             table = $("#tblConsulta").DataTable(
                 {
@@ -341,6 +346,7 @@
                         style: 'single'
                     },
                     //Paggin
+
                     paging: true,
                     pageLength: 10,
                     lengthMenu: [10, 25, 50, 100, 500],
@@ -355,7 +361,8 @@
                     fixedHeader: {
                         header: true,
                         footer: true
-                    }
+                    },
+                    "scrollX": true
 
                 }
             );
