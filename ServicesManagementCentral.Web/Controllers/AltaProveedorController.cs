@@ -54,5 +54,19 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+        public ActionResult ConsecutivoAlmacen(int idSupplierWH)
+        {
+            try 
+            { 
+                var ConsAlmacen = DataTableToModel.ConvertTo<Consecutivo>(DALAltaProveedor.SuppliersWHCode_sUP(idSupplierWH).Tables[0]);
+                var result = new { Success = true, resp = ConsAlmacen };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

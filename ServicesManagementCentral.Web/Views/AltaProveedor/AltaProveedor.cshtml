@@ -18,7 +18,11 @@
                                 Numero de Proveedor
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="txtNumPro" />
+                                @Html.TextBox("txtNumPro", null, new
+                                    {
+                                    @class = "form-control ;",
+                                    @onkeydown = "javascript:onkeydown_busqueda(event)"
+                                    })
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Nombre de Proveedor
@@ -242,6 +246,46 @@
             IniciarCombo()
         });
 
+        function onkeydown_busqueda(e) {
+
+            switch (e.which) {
+                case 9:
+                case 13:
+                case 19:
+                    ObtenerArt();
+                    break;
+            }
+        }
+
+        function ObtenerArt() {
+            var _txtNumPro = $("#txtNumPro").val();
+            if (_txtNumPro.length != 0) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("ConsecutivoAlmacen", "AltaProveedor")',
+                    data: {
+                        idSupplierWH: _txtNumPro
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        debugger;
+                        if (json.Success) {
+                            $("#txtNumAlmacen").val(json.resp[0].idSupplierWHCode);
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            }
+        }
+
         function IniciarCombo() {
             $.ajax({
                 async: false,
@@ -405,7 +449,7 @@
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(errorThrown);
+                    alert(errorThrown);
 
                 }
             });

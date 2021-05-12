@@ -35,4 +35,8 @@ namespace ServicesManagement.Web.Models.Almacenes
         public string ownerName { get; set; }
     }
 
+    public class Consecutivo
+    {
+        public int idSupplierWHCode { get; set; }
+    }
 }
