@@ -65,8 +65,7 @@
     /* Fix table head */
     .tableFixHead {
         overflow-y: auto;
-        height: 300px;        
-
+        height: 300px;
     }
 
         .tableFixHead th {
@@ -229,7 +228,7 @@
                                     var dt = ds.Tables[0];
                                     foreach (System.Data.DataRow p in dt.Rows)
                                     {
-                                        <li id="@p["Id_Carrier"]"  onclick="onchangeDropTrans(this)"><a>@p["Name"]</a></li>
+                                        <li id="@p["Id_Carrier"]" onclick="onchangeDropTrans(this)"><a>@p["Name"]</a></li>
                                     }
                                 }
                             </ul>
@@ -282,7 +281,7 @@
 
                                                     @if (@p["Id_Num_OrdenStat"].ToString() == "12")
                                                     {
-                                                        <input  type="checkbox" class="cbx" value="@p["Id_Num_Orden"]" id="flexCheckDefault">
+                                                        <input type="checkbox" class="cbx" value="@p["Id_Num_Orden"]" id="flexCheckDefault">
                                                     }
                                                     else if (@p["Id_Num_OrdenStat"].ToString() == "12" & @p["OrdenStatTda"].ToString() == "11")
                                                     {
@@ -328,7 +327,7 @@
                                                 <td style="text-align:center">
                                                     @if (@p["Id_Num_OrdenStat"].ToString() == "9")
                                                     {
-                                                        <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new { order = @p["Id_Num_Orden"] })"
+                                                        <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new { guia = @p["Id_Num_GuiaEmb"] })"
                                                            title="Click para ver el detalle de la orden" class="btn btn-link">@p["Id_Num_GuiaEmb"]</a>
                                                     }
                                                 </td>
@@ -343,7 +342,7 @@
                 </div>
             </div>
         </div>
-    </div>        
+    </div>
 </div>
 <input id="Orders" name="Orders" value="0" style="visibility:hidden" />
 
@@ -452,7 +451,7 @@
                 if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
                     //$('#ConfirmMessageResponse').val('Yes');
                     debugger;
-                    FinalizaEmbarque(id_categoria, listaO);
+                    FinalizaEmbarque(id_categoria, listaO, id_categoria);
                 } else {
                     //$('#ConfirmMessageResponse').val('No');
                     return false;
@@ -464,14 +463,15 @@
         }
 
 
-        function FinalizaEmbarque(tran, listaO) {
+        function FinalizaEmbarque(tran, listaO, tId) {
                 $.ajax({
                     async: false,
                     type: "POST",
                     url: '@Url.Action("FinalizarTransportista", "Ordenes")',
                     data: {
                         OrderNo: listaO,
-                        trans: tran
+                        trans: tran,
+                        tId: tId
                     },
                     datatype: "html",
                     success: function (json) {

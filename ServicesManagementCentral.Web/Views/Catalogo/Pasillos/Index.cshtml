@@ -170,8 +170,8 @@
                     <div class="row">
                         <div class="col col-xs-6 col-md-6 col-md-6" style="overflow:auto;height:450px;">
                             <div style="padding:4px 0px 4px 4px">
-                                <button class="btn-white btn btn-xs" onclick="CheckAll('tblLineasIzq')">Marcar Todas</button>
-                                <button class="btn-white btn btn-xs" onclick="QuitarLineasElegidas()">Quitar Elegidas</button>
+                                <button class="btn-white btn btn-xs" id="btnCheckLineasIzq" onclick="CheckAll('tblLineasIzq')">Marcar Todas</button>
+                                <button class="btn-white btn btn-xs" id="btnQuitarLineasElegidas" onclick="QuitarLineasElegidas()">Quitar Elegidas</button>
                             </div>
                             <table class="table table-borderless" id="tblLineasIzq">
                                 <tbody></tbody>
@@ -180,8 +180,8 @@
                         </div>
                         <div class="col col-xs-6 col-md-6 col-md-6" style="overflow:auto;height:450px;">
                             <div style="padding:4px 0px 4px 4px">
-                                <button class="btn-white btn btn-xs" id="btnCheckEle" onclick="CheckAll('tblLineasDer')">Marcar Todas</button>
-                                <button class="btn-white btn btn-xs" onclick="AgregarLineasElegidas()">Agregar Elegidas</button>
+                                <button class="btn-white btn btn-xs" id="btnCheckLineasDer" onclick="CheckAll('tblLineasDer')">Marcar Todas</button>
+                                <button class="btn-white btn btn-xs" id="btnAgregarLineasElegidas" onclick="AgregarLineasElegidas()">Agregar Elegidas</button>
                             </div>
                             <table class="table table-borderless" id="tblLineasDer">
                                 @*<tr>
@@ -283,6 +283,21 @@
                     success: function (json) {
                             debugger;
                             if (json.Success) {
+
+
+                                //pcastgon
+                                if (json.json.Id_Num_PasilloTipo == "1") {
+
+                                    document.getElementById("btnCheckLineasIzq").style.visibility = "visible";
+                                    document.getElementById("btnQuitarLineasElegidas").style.visibility = "visible";
+                                    document.getElementById("btnCheckLineasDer").style.visibility = "visible";
+                                    document.getElementById("btnAgregarLineasElegidas").style.visibility = "visible";
+                                } else {
+                                    document.getElementById("btnCheckLineasIzq").style.visibility = "hidden";
+                                    document.getElementById("btnQuitarLineasElegidas").style.visibility = "hidden";
+                                    document.getElementById("btnCheckLineasDer").style.visibility = "hidden";
+                                    document.getElementById("btnAgregarLineasElegidas").style.visibility = "hidden";
+                                }
 
                                 $('#lblDescPasCat').text(_Nom_PasilloTipo);
                                 LlenaDdlDivision(json.json.Division, "#ddlDivPasCat")

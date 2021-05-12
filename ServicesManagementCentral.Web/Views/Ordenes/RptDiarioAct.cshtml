@@ -37,54 +37,54 @@
                                     <td width="15%" align="center"><font face="verdana" size="2"><b>Importe</b></font></td>
                                 </tr>
                                 @{
-                                    int index = 0;
-                                    decimal total = 0;
-                                    if (Session["OEntregadas"] != null)
-                                    {
-                                        System.Data.DataSet ds = (System.Data.DataSet)Session["OEntregadas"];
+                                int index = 0;
+                                decimal total = 0;
+                                if (Session["OEntregadas"] != null)
+                                {
+                                System.Data.DataSet ds = (System.Data.DataSet)Session["OEntregadas"];
 
-                                        var dt = ds.Tables[0];
+                                var dt = ds.Tables[0];
 
-                                        foreach (System.Data.DataRow p in dt.Rows)
+                                foreach (System.Data.DataRow p in dt.Rows)
+                                {
+                                <tr>
+                                    <td width="09%" style="text-align:right;">@p["Orden"]</td>
+                                    <td width="30%">@p["Cliente"]</td>
+                                    <td width="23%" style="text-align:center;">@p["Compromiso"]</td>
+                                    <td width="23%" style="text-align:center;">@p["Entregada"]</td>
+                                    <td style="text-align:right;">
+                                        @foreach (System.Data.DataRow item in DALServicesM.RepDiaSurtido(2, DateTime.Now.ToString("yyyy/MM/dd"), DateTime.Now.ToString("yyyy/MM/dd")
+                                        , int.Parse(p["Orden"].ToString()), int.Parse(Session["Id_Num_UN"].ToString())).Tables[0].Rows)
                                         {
-                                            <tr>
-                                                <td width="09%" style="text-align:right;">@p["Orden"]</td>
-                                                <td width="30%">@p["Cliente"]</td>
-                                                <td width="23%" style="text-align:center;">@p["Compromiso"]</td>
-                                                <td width="23%" style="text-align:center;">@p["Entregada"]</td>
-                                                <td style="text-align:right;">
-                                                    @foreach (System.Data.DataRow item in DALServicesM.RepDiaSurtido(2, DateTime.Now.ToString("yyyy/MM/dd"), DateTime.Now.ToString("yyyy/MM/dd")
-                                                   , int.Parse(p["Orden"].ToString()), int.Parse(Session["Id_Num_UN"].ToString())).Tables[0].Rows)
-                                                    {
 
-                                                        if (item["Importe"] == null)
-                                                        {
-                                                            <font face=verdana size=2 color=#ff0000>Importe no<br>encontrado</font>
-                                                        }
-                                                        else
-                                                        {
-                                                            if (item["Importe"].ToString().Equals("0"))
-                                                            {
-                                                                <font face=verdana size=2 color=#ff0000>
-                                                                    <b>@item["Importe"]</b>
-                                                                </font>
-                                                            }
-                                                            else
-                                                            {
-                                                                <font face=verdana size=2>
-                                                                    <b>@item["Importe"]</b>
-                                                                </font>
-                                                                total = total + decimal.Parse(@item["Importe"].ToString());
-                                                            }
-                                                        }
-
-
-                                                    }
-                                                </td>
-                                            </tr>
-                                            index++;
+                                        if (item["Importe"] == null)
+                                        {
+                                        <font face=verdana size=2 color=#ff0000>Importe no<br>encontrado</font>
                                         }
-                                    }
+                                        else
+                                        {
+                                        if (item["Importe"].ToString().Equals("0"))
+                                        {
+                                        <font face=verdana size=2 color=#ff0000>
+                                            <b>@item["Importe"]</b>
+                                        </font>
+                                        }
+                                        else
+                                        {
+                                        <font face=verdana size=2>
+                                            <b>@item["Importe"]</b>
+                                        </font>
+                                        total = total + decimal.Parse(@item["Importe"].ToString());
+                                        }
+                                        }
+
+
+                                        }
+                                    </td>
+                                </tr>
+                                index++;
+                                }
+                                }
                                 }
                             </tbody>
 
@@ -115,28 +115,28 @@
                                 <td width="20%" align="center"><font face="verdana" size="2"><b>Motivo</b></font></td>
                             </tr>
                             @{
-                                index = 0;
+                            index = 0;
 
-                                if (Session["OCanceladas"] != null)
-                                {
-                                    System.Data.DataSet ds = (System.Data.DataSet)Session["OCanceladas"];
+                            if (Session["OCanceladas"] != null)
+                            {
+                            System.Data.DataSet ds = (System.Data.DataSet)Session["OCanceladas"];
 
-                                    var dt = ds.Tables[0];
+                            var dt = ds.Tables[0];
 
-                                    foreach (System.Data.DataRow p in dt.Rows)
-                                    {
-                                        <tr>
-                                            <td style="text-align:right;">@p["Orden"]</td>
-                                            <td>@p["CustomerName"]</td>
-                                            <td>@p["CustomerEmail"]</td>
-                                            <td style="text-align:center;">@p["Fecha"]</td>
-                                            <td style="text-align:center;">@p["FecCan"]</td>
-                                            <td style="text-align:center;">@p["Motivo"]</td>
-                                        </tr>
+                            foreach (System.Data.DataRow p in dt.Rows)
+                            {
+                            <tr>
+                                <td style="text-align:right;">@p["Orden"]</td>
+                                <td>@p["CustomerName"]</td>
+                                <td>@p["CustomerEmail"]</td>
+                                <td style="text-align:center;">@p["Fecha"]</td>
+                                <td style="text-align:center;">@p["FecCan"]</td>
+                                <td style="text-align:center;">@p["Motivo"]</td>
+                            </tr>
 
-                                        index++;
-                                    }
-                                }
+                            index++;
+                            }
+                            }
                             }
                         </tbody>
                         <tfoot>
@@ -161,51 +161,51 @@
                                 <td width="15%" align="center"><font face="verdana" size="2"><b>Status</b></font></td>
                             </tr>
                             @{
-                                index = 0;
-                                total = 0;
-                                if (Session["OPendientesEnt"] != null)
-                                {
-                                    System.Data.DataSet ds = (System.Data.DataSet)Session["OPendientesEnt"];
+                            index = 0;
+                            total = 0;
+                            if (Session["OPendientesEnt"] != null)
+                            {
+                            System.Data.DataSet ds = (System.Data.DataSet)Session["OPendientesEnt"];
 
-                                    var dt = ds.Tables[0];
+                            var dt = ds.Tables[0];
 
-                                    foreach (System.Data.DataRow p in dt.Rows)
+                            foreach (System.Data.DataRow p in dt.Rows)
+                            {
+                            <tr>
+                                <td style="text-align:right;">@p["Orden"]</td>
+                                <td>@p["Cliente"]</td>
+                                <td style="text-align:center;">@p["Fecha"]</td>
+                                <td style="text-align:center;">@p["Compromiso"]</td>
+                                <td style="text-align:right;">
+                                    @foreach (System.Data.DataRow item in DALServicesM.RepDiaSurtido(2, DateTime.Now.ToString("yyyy/MM/dd"), DateTime.Now.ToString("yyyy/MM/dd")
+                                    , int.Parse(p["Orden"].ToString()), int.Parse(Session["Id_Num_UN"].ToString())).Tables[0].Rows)
                                     {
-                                        <tr>
-                                            <td style="text-align:right;">@p["Orden"]</td>
-                                            <td>@p["Cliente"]</td>
-                                            <td style="text-align:center;">@p["Fecha"]</td>
-                                            <td style="text-align:center;">@p["Compromiso"]</td>
-                                            <td style="text-align:right;">
-                                                @foreach (System.Data.DataRow item in DALServicesM.RepDiaSurtido(2, DateTime.Now.ToString("yyyy/MM/dd"), DateTime.Now.ToString("yyyy/MM/dd")
-                                               , int.Parse(p["Orden"].ToString()), int.Parse(Session["Id_Num_UN"].ToString())).Tables[0].Rows)
-                                                {
 
-                                                    if (item["TotalOfertaSurt"] == null)
-                                                    {
-                                                        if (item["TotalNormalSurt"] == null)
-                                                        {
-                                                            <font face=verdana size=2 color=#ff0000>Importe no<br>encontrado</font>
-                                                        }
-                                                        else
-                                                        {
-                                                            <font face=verdana size=2> @item["TotalNormalSurt"]</font>
-                                                            total = total + decimal.Parse(@item["TotalNormalSurt"].ToString());
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <font face=verdana size=2> @item["TotalOfertaSurt"]</font>
-                                                        total = total + decimal.Parse(@item["TotalOfertaSurt"].ToString());
-                                                    }
-
-                                                }
-                                            </td>
-                                            <td style="text-align:center;">@p["Status"]</td>
-                                        </tr>
-                                        index++;
+                                    if (item["TotalOfertaSurt"] == null)
+                                    {
+                                    if (item["TotalNormalSurt"] == null)
+                                    {
+                                    <font face=verdana size=2 color=#ff0000>Importe no<br>encontrado</font>
                                     }
-                                }
+                                    else
+                                    {
+                                    <font face=verdana size=2> @item["TotalNormalSurt"]</font>
+                                    total = total + decimal.Parse(@item["TotalNormalSurt"].ToString());
+                                    }
+                                    }
+                                    else
+                                    {
+                                    <font face=verdana size=2> @item["TotalOfertaSurt"]</font>
+                                    total = total + decimal.Parse(@item["TotalOfertaSurt"].ToString());
+                                    }
+
+                                    }
+                                </td>
+                                <td style="text-align:center;">@p["Status"]</td>
+                            </tr>
+                            index++;
+                            }
+                            }
                             }
                         </tbody>
                         <tfoot>
@@ -232,52 +232,52 @@
                                 <td width="15%" align="center"><font face="verdana" size="2"><b>Status</b></font></td>
                             </tr>
                             @{
-                                index = 0;
-                                total = 0;
-                                if (Session["OPendientesSurt"] != null)
-                                {
-                                    System.Data.DataSet ds = (System.Data.DataSet)Session["OPendientesSurt"];
+                            index = 0;
+                            total = 0;
+                            if (Session["OPendientesSurt"] != null)
+                            {
+                            System.Data.DataSet ds = (System.Data.DataSet)Session["OPendientesSurt"];
 
-                                    var dt = ds.Tables[0];
+                            var dt = ds.Tables[0];
 
-                                    foreach (System.Data.DataRow p in dt.Rows)
+                            foreach (System.Data.DataRow p in dt.Rows)
+                            {
+                            <tr>
+                                <td style="text-align:right;">@p["Orden"]</td>
+                                <td>@p["Cliente"]</td>
+                                <td style="text-align:center;">@p["Fecha"]</td>
+                                <td style="text-align:center;">@p["Compromiso"]</td>
+                                <td style="text-align:right;">
+                                    @foreach (System.Data.DataRow item in DALServicesM.RepDiaSurtido(2, DateTime.Now.ToString("yyyy/MM/dd"), DateTime.Now.ToString("yyyy/MM/dd")
+                                    , int.Parse(p["Orden"].ToString()), int.Parse(Session["Id_Num_UN"].ToString())).Tables[0].Rows)
                                     {
-                                        <tr>
-                                            <td style="text-align:right;">@p["Orden"]</td>
-                                            <td>@p["Cliente"]</td>
-                                            <td style="text-align:center;">@p["Fecha"]</td>
-                                            <td style="text-align:center;">@p["Compromiso"]</td>
-                                            <td style="text-align:right;">
-                                                @foreach (System.Data.DataRow item in DALServicesM.RepDiaSurtido(2, DateTime.Now.ToString("yyyy/MM/dd"), DateTime.Now.ToString("yyyy/MM/dd")
-                                               , int.Parse(p["Orden"].ToString()), int.Parse(Session["Id_Num_UN"].ToString())).Tables[0].Rows)
-                                                {
 
-                                                    if (item["TotalOfertaComp"] == null)
-                                                    {
-                                                        if (item["TotalNormalComp"] == null)
-                                                        {
-                                                            <font face=verdana size=2 color=#ff0000>Importe no<br>encontrado</font>
-                                                        }
-                                                        else
-                                                        {
-
-                                                            <font face=verdana size=2> @item["TotalNormalComp"]</font>
-                                                            total = total + decimal.Parse(@item["TotalNormalComp"].ToString());
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <font face=verdana size=2> @item["TotalOfertaComp"]</font>
-                                                        total = total + decimal.Parse(@item["TotalOfertaComp"].ToString());
-                                                    }
-
-                                                }
-                                            </td>
-                                            <td style="text-align:center;">@p["Status"]</td>
-                                        </tr>
-                                        index++;
+                                    if (item["TotalOfertaComp"] == null)
+                                    {
+                                    if (item["TotalNormalComp"] == null)
+                                    {
+                                    <font face=verdana size=2 color=#ff0000>Importe no<br>encontrado</font>
                                     }
-                                }
+                                    else
+                                    {
+
+                                    <font face=verdana size=2> @item["TotalNormalComp"]</font>
+                                    total = total + decimal.Parse(@item["TotalNormalComp"].ToString());
+                                    }
+                                    }
+                                    else
+                                    {
+                                    <font face=verdana size=2> @item["TotalOfertaComp"]</font>
+                                    total = total + decimal.Parse(@item["TotalOfertaComp"].ToString());
+                                    }
+
+                                    }
+                                </td>
+                                <td style="text-align:center;">@p["Status"]</td>
+                            </tr>
+                            index++;
+                            }
+                            }
                             }
                         </tbody>
                         <tfoot>

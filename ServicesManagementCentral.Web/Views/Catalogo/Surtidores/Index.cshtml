@@ -2,127 +2,127 @@
 
 
 
-@{
+    @{
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     ViewBag.Title = "Surtidores";
 
-}
+    }
 
 
 
-<div class="row wrapper border-bottom white-bg page-heading">
-   <div class="col-lg-10">
-        <h2>@ViewBag.Title </h2>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="~/CPanel/Index">Home</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a>Catalogo</a>
-            </li>
-            <li class="breadcrumb-item active">
-                <strong>Sutidores</strong>
-            </li>
-        </ol>
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>@ViewBag.Title </h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="~/CPanel/Index">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a>Catalogo</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <strong>Sutidores</strong>
+                </li>
+            </ol>
+        </div>
     </div>
-</div>
-<div class="row mt-2 mb-3">
-    <div class="col-12">
-        <div class="collapse" id="filter">
-            <div class="card card-body">
-                <form id="frmFilter">
-                    <div class="row">
+    <div class="row mt-2 mb-3">
+        <div class="col-12">
+            <div class="collapse" id="filter">
+                <div class="card card-body">
+                    <form id="frmFilter">
+                        <div class="row">
 
-                        <div class="col col-xs-12 col-md-4">
+                            <div class="col col-xs-12 col-md-4">
 
-                            <div class="form-group">
+                                <div class="form-group">
 
-                                <label>Unidad de negocio</label>
+                                    <label>Unidad de negocio</label>
 
-                                <input type="text" placeholder="Nombre de la UN" name="txtNomUn" class="form-control">
+                                    <input type="text" placeholder="Nombre de la UN" name="txtNomUn" class="form-control">
+
+                                </div>
+
+                            </div>
+
+                            <div class="col col-xs-12 col-md-4">
+
+                                <div class="form-group">
+
+                                    <label>Nombre</label>
+
+                                    <input type="text" placeholder="Nombre del Surtidor" name="txtSurtidor" class="form-control">
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="col col-xs-12 col-md-4 text-right">
+
+                                <button class="btn btn-success mt-4" type="button" onclick="Servicios.RefreshTable();"><i class="fa fa-search"></i>&nbsp;&nbsp;<span class="bold">Buscar</span></button>
 
                             </div>
 
                         </div>
 
-                        <div class="col col-xs-12 col-md-4">
-
-                            <div class="form-group">
-
-                                <label>Nombre</label>
-
-                                <input type="text" placeholder="Nombre del Surtidor" name="txtSurtidor" class="form-control">
-
-                            </div>
-
-                        </div>
 
 
+                    </form>
 
-                        <div class="col col-xs-12 col-md-4 text-right">
-
-                            <button class="btn btn-success mt-4" type="button" onclick="Servicios.RefreshTable();"><i class="fa fa-search"></i>&nbsp;&nbsp;<span class="bold">Buscar</span></button>
-
-                        </div>
-
-                    </div>
-
-
-
-                </form>
+                </div>
 
             </div>
 
         </div>
 
     </div>
-
-</div>
-<div id="tblConsulta_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-    <div class="row">
-        <div class="col col-xs-6">
-            <div class="dt-buttons btn-group flex-wrap">
-                <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>
-                <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
-                <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+    <div id="tblConsulta_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="row">
+            <div class="col col-xs-6">
+                <div class="dt-buttons btn-group flex-wrap">
+                    <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>
+                    <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                    <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                </div>
+            </div>
+            <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
+                <button type="button" class="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target="#dlgCreateServicios">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-primary btn-circle mr-2" onclick="ShowFilter();">
+                    <i class="fa fa-list"></i>
+                </button><button type="button" class="btn btn-primary btn-circle"> <i class="fa fa-refresh"></i></button>
             </div>
         </div>
-        <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
-            <button type="button" class="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target="#dlgCreateServicios">
-                <i class="fa fa-plus"></i>
-            </button>
-            <button type="button" class="btn btn-primary btn-circle mr-2" onclick="ShowFilter();">
-                <i class="fa fa-list"></i>
-            </button><button type="button" class="btn btn-primary btn-circle"> <i class="fa fa-refresh"></i></button>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 1115px;">
+                    <thead class="bg-primary">
+                        <tr role="row">
+                            <th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 213px;">Num</th>
+                            <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 221px;">Unidad de Negocio</th>
+                            <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 225px;">Nombre</th>
+                            <th style="width: 50px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
+    <input id="inTP" name="inTP" value="A" style="visibility:hidden" />
+    <input id="Id_Carrier" name="Id_Carrier" value="A" style="visibility:hidden" />
 
-    <div class="row">
-        <div class="col-sm-12">
-            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 1115px;">
-                <thead class="bg-primary">
-                    <tr role="row">
-                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 213px;">Num</th>
-                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 221px;">Unidad de Negocio</th>
-                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 225px;">Nombre</th>
-                        <th style="width: 50px;"></th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<input id="inTP" name="inTP" value="A" style="visibility:hidden" />
-<input id="Id_Carrier" name="Id_Carrier" value="A" style="visibility:hidden" />
-
-@Html.Partial("Surtidores/Create")
+    @Html.Partial("Surtidores/Create")
 
 
 
-@section scripts {
+    @section scripts {
 
 
 
@@ -229,7 +229,7 @@
                 type: "GET",
                 url: '@Url.Action("GetSurtidor", "Catalogo")',
                 data: {
-                    num : id
+                    num: id
                 },
                 datatype: "html",
                 success: function (json) {
@@ -253,8 +253,7 @@
 
 
         function DeleteSurtidores(id) {
-            if (confirm('Esta seguro que desea eliminar el Surtidor : ' + id))
-            {
+            if (confirm('Esta seguro que desea eliminar el Surtidor : ' + id)) {
                 $.ajax({
                     async: false,
                     type: "GET",
@@ -285,7 +284,7 @@
                     num: document.getElementById("Id_Carrier").value
                     , name: document.getElementById("nameS").value
                     , un: document.getElementById("Id_Num_UN").value
-                    ,  status: $("#ddlEstatus").val()
+                    , status: $("#ddlEstatus").val()
                     , Id_Num_Empleado: document.getElementById("numE").value
                 },
 
@@ -311,14 +310,14 @@
         };
 
 
-         function GetEmployee(emp) {
+        function GetEmployee(emp) {
 
             $.ajax({
                 async: false,
                 type: "GET",
                 url: '@Url.Action("GetSurtidorApi", "Catalogo")',
                 data: {
-                    num: document.getElementById("numE").value                   
+                    num: document.getElementById("numE").value
                 },
 
                 datatype: "html",
@@ -329,15 +328,15 @@
                     else { alert("Empleado no existe en Base de Datos") }
 
                 }
-                    , error: function (jqXHR, textStatus, errorThrown) {
-                        bootbox.alert(errorThrown);
-                    }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
             });
 
         }
     </script>
 
-}
+    }
 
 
 

@@ -44,66 +44,64 @@
 
 @section scripts {
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            GetPassCan();
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetPassCan();
+    });
+
+    function ShowFilter() {
+        $("#filter").collapse('toggle');
+    };
+
+    function GetPassCan() {
+
+        debugger;
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("GetPassCan", "Catalogo")',
+            data: {
+                //  Id_Num_UN: _Id_Num_UN
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+
+
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                bootbox.alert(errorThrown);
+
+            }
         });
+    }
 
-        function ShowFilter() {
-            $("#filter").collapse('toggle');
-        };
+    function SavePassCan() {
 
-        function GetPassCan()
-        {
+        var _PassCan = $("#txtPassCan").val();
 
-            debugger;
-            $.ajax({
-                async: false,
-                type: "GET",
-                url: '@Url.Action("GetPassCan", "Catalogo")',
-                data: {
-                    //  Id_Num_UN: _Id_Num_UN
-                },
-                datatype: "html",
-                success: function (json) {
-                    if (json.Success) {
+        debugger;
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("UpdatePassCancel", "Catalogo")',
+            data: {
+                PassCan: _PassCan
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
 
-
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(errorThrown);
 
                 }
-            });
-        }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
 
-        function SavePassCan()
-        {
-
-            var _PassCan = $("#txtPassCan").val();
-
-            debugger;
-            $.ajax({
-                async: false,
-                type: "POST",
-                url: '@Url.Action("UpdatePassCancel", "Catalogo")',
-                data: {
-                      PassCan: _PassCan
-                },
-                datatype: "html",
-                success: function (json) {
-                    if (json.Success) {
-
-
-                    } 
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    alert(errorThrown);
-
-                }
-            });
-        }
-    </script>
+            }
+        });
+    }
+</script>
 }
 

@@ -59,6 +59,19 @@ namespace ServicesManagement.Web.Controllers
         public string fecha { get; set; }
         public string NombeDia { get; set; }
     }
+
+    public class FinEmbarque
+    {
+        public string nombre { get; set; }
+        public string comentarios { get; set; }
+        public string fechaE { get; set; }
+        public string timeD { get; set; }
+        public string fechaAsigTrans { get; set; }
+        public string ShipperName { get; set; }
+        public string OrderNo { get; set; }
+        public string flagE { get; set; }
+        public string idex { get; set; }
+    }
     #endregion
 
     public class OrdenesController : Controller
@@ -72,7 +85,6 @@ namespace ServicesManagement.Web.Controllers
             try
             {
                 Session["listaUN"] = DALServicesM.GetUN();
-
                 return View();
             }
             catch (Exception x)
@@ -349,7 +361,7 @@ namespace ServicesManagement.Web.Controllers
 
         [HttpPost]
         public JsonResult FinalizarEmbarque(string OrderNo, string tId, string trans, string ue, string store, string status
-, string bolsas, string contenedores, string hieleras, string checkPinPad)
+    , string bolsas, string contenedores, string hieleras, string checkPinPad)
         {
 
             try
@@ -418,7 +430,7 @@ namespace ServicesManagement.Web.Controllers
 
                 string[] array = OrderNo.Split(',');
 
-                
+
 
                 int index_orders = 0;
                 foreach (string value in array)
@@ -472,7 +484,7 @@ namespace ServicesManagement.Web.Controllers
                         o.Orden.NumeroUnidadEjecucion = ue;
                         o.Orden.NumeroTienda = Convert.ToInt32(store);
                         o.Expedidor.NombreExpedidor = trans;
-
+                        o.Expedidor.NumeroTransaccion = tId;
                         //o.Expedidor.MultipleOrdenes = true;
 
                         //foreach (string no in OrderNo.Split(','))
@@ -548,7 +560,7 @@ namespace ServicesManagement.Web.Controllers
 
                         o.Expedidor.MultipleOrdenes = true;
                         o.Expedidor.NumeroOrdenes = new List<string>();
-
+                        o.Expedidor.NumeroTransaccion = tId;
                         //foreach (string no in OrderNo.Split(','))
                         //{
                         //    if (string.IsNullOrEmpty(no)) { continue; }
@@ -613,7 +625,127 @@ namespace ServicesManagement.Web.Controllers
 
             }
         }
+        [HttpPost]
+        public ActionResult FinalizarEntrega(List<FinEmbarque> Guias)
+        {
 
+            try
+            {
+                string mensaje = "Alta exitosa";
+                bool succes = true;
+                foreach (FinEmbarque item in Guias)
+                {
+
+                    #region Validacion Fecha
+                    CultureInfo ci = new CultureInfo("Es-Es");//
+
+                    try
+                    {
+                        var input = Convert.ToDateTime(item.fechaE + " " + item.timeD);
+                        var maxDate = DateTime.Now.AddHours(-5);
+                        var minDate = Convert.ToDateTime(item.fechaAsigTrans); ;
+
+
+                        //return input >= minDate && input <= maxDate;
+
+
+                        if (input < minDate || input > maxDate)
+                        {
+                            var result2 = new
+                            {
+                                Success = false,
+                                Message = string.Format("ORDEN:{3} .-La hora de entrega debe estar dentro de los horarios: {0} - {1} . Hora ingresada : {2}"
+                                , minDate, maxDate, input, item.OrderNo)
+                                ,
+                                Index = item.idex
+                            };
+
+                            return Json(result2, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw ex;
+                    }
+                    #endregion
+
+                    #region LLamado al Api
+                    string status = string.Empty, ue = string.Empty, store = string.Empty;
+
+                    System.Data.DataSet d = DALServicesM.GetOrdersByOrderNo(item.OrderNo);
+
+                    foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
+                    {
+
+                        status = r1["StatusUe"].ToString();
+                        ue = r1["UeNo"].ToString();
+                        store = r1["StoreNum"].ToString();
+
+                    }
+
+
+                    string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Finaliza_Entrega"];
+
+                    //metodo mio
+                    InformacionOrden o = new InformacionOrden();
+
+                    o.Orden = new InformacionDetalleOrden();
+                    o.Orden.NumeroOrden = item.OrderNo;
+
+
+                    o.Orden.EstatusUnidadEjecucion = status;
+                    o.Orden.NumeroUnidadEjecucion = ue;
+                    o.Orden.NumeroTienda = Convert.ToInt32(store);
+                    o.Expedidor.NombreExpedidor = item.ShipperName;
+
+                    o.Entrega.IdentificadorQuienRecibe = item.nombre;
+                    o.Entrega.FechaEntrega = item.fechaE + " " + item.timeD;
+
+                    o.Entrega.Comentarios = item.comentarios;
+                    o.Entrega.NombreQuienRecibe = item.nombre;
+
+                    o.Entrega.OrdenEntregada = item.flagE.Equals("N") ? false : true;
+                    //o.Expedidor.NumeroBolsas = 1;
+                    //o.Expedidor.NumeroContenedores = 1;
+                    //o.Expedidor.NumeroEnfriadores = 1;
+
+
+                    string json2 = string.Empty;
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    //json2 = js.Serialize(o);
+                    js = null;
+                    json2 = JsonConvert.SerializeObject(o);
+                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                    Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
+
+
+                    Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+
+                    Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Finaliza_Entrega"], "", json2);
+
+                    Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
+                    #endregion
+                }
+
+                var result = new { Success = succes, Message = mensaje };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception x)
+            {
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.ERROR, "", false, x);
+
+                var result = new { Success = false, Message = x.Message, Index = 0 };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        /*
         [HttpPost]
         public JsonResult FinalizarEntrega(string OrderNo, string tId, string trans, string ue, string store
             , string status, string ide, string fechaD, string timeD, string comments, string flagE, string fecAsigTrans)
@@ -626,7 +758,7 @@ namespace ServicesManagement.Web.Controllers
                 try
                 {
                     var input = Convert.ToDateTime(fechaD + " " + timeD);
-                    var maxDate = DateTime.Now.AddHours(-6);
+                    var maxDate = DateTime.Now.AddHours(-5);
                     var minDate = Convert.ToDateTime(fecAsigTrans); ;
 
 
@@ -720,7 +852,7 @@ namespace ServicesManagement.Web.Controllers
 
             }
         }
-
+        */
 
         public ActionResult ConsultaDetalle(string order)
         {
@@ -760,9 +892,9 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult RecepcionGuiaEmbarque(string order)
+        public ActionResult RecepcionGuiaEmbarque(string guia)
         {
-            if (string.IsNullOrEmpty(order))
+            if (string.IsNullOrEmpty(guia))
             {
                 return RedirectToAction("OrdenSeleccionada", "Ordenes");
             }
@@ -772,7 +904,7 @@ namespace ServicesManagement.Web.Controllers
             }
             else
             {
-                Session["OrderSelected"] = DALServicesM.GetOrdersByOrderNo(order);
+                Session["OrderSelected"] = DALServicesM.GetOrdersByGuiaEmb(guia);
             }
             return View();
 
@@ -1429,8 +1561,8 @@ namespace ServicesManagement.Web.Controllers
             int hora = 9;
             if (fechaSelec.ToUpper().Equals("HOY"))
             {
-                //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-6).Hour.ToString() + ":00";
-                var fec = DateTime.Now.AddHours(-6).ToString();
+                //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
+                var fec = DateTime.Now.AddHours(-5).ToString();
                 hora = Convert.ToDateTime(fec).AddHours(3).Hour;
             }
 
@@ -1462,15 +1594,15 @@ namespace ServicesManagement.Web.Controllers
                         Dias dia = new Dias();
                         if (i == 0)
                         {
-                            dia.fecha = DateTime.Now.AddHours(-6).ToString("yyyy/MM/dd");
-                            dia.NombeDia = string.Format("HOY - {0}", NombreMesDia(DateTime.Now.AddHours(-6)));//ci.DateTimeFormat.DayNames[DateTime.Now.Date.Day];
+                            dia.fecha = DateTime.Now.AddHours(-5).ToString("yyyy/MM/dd");
+                            dia.NombeDia = string.Format("HOY - {0}", NombreMesDia(DateTime.Now.AddHours(-5)));//ci.DateTimeFormat.DayNames[DateTime.Now.Date.Day];
                         }
                         else
                         {
-                            dia.fecha = DateTime.Now.AddHours(-6).AddDays(i).ToString("yyyy/MM/dd");
+                            dia.fecha = DateTime.Now.AddHours(-5).AddDays(i).ToString("yyyy/MM/dd");
 
-                            dia.NombeDia = string.Format("{0} - {1}", ci.DateTimeFormat.DayNames[(int)DateTime.Now.AddHours(-6).Date.AddDays(i).DayOfWeek].ToUpper()
-                                , NombreMesDia(DateTime.Now.AddHours(-6).AddDays(i)));
+                            dia.NombeDia = string.Format("{0} - {1}", ci.DateTimeFormat.DayNames[(int)DateTime.Now.AddHours(-5).Date.AddDays(i).DayOfWeek].ToUpper()
+                                , NombreMesDia(DateTime.Now.AddHours(-5).AddDays(i)));
                         }
                         dias.Add(dia);
                     }

@@ -214,6 +214,46 @@ namespace ServicesManagement.Web
         }
 
 
+        public static DataSet GetOrdersByGuiaEmb(string Id_Num_GuiaEmb)
+        {
+
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@Id_Num_GuiaEmb", Id_Num_GuiaEmb);
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "upCorpOms_Cns_OrdersByGuia", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
         #region Carriers
 
         public static DataSet GetCarriers()
@@ -2054,7 +2094,7 @@ namespace ServicesManagement.Web
                     decimal? TotalNormalComp = (decimal?)item["TotalNormalComp"];
                     decimal? TotalOfertaComp = (decimal?)item["TotalOfertaComp"];
                     decimal? TotalNormalSurt = (decimal?)item["TotalNormalSurt"];
-                    decimal? TotalOfertaSurt = (decimal?)item["TotalOfertaSurt"];                    
+                    decimal? TotalOfertaSurt = (decimal?)item["TotalOfertaSurt"];
 
 
                     if (TotalOfertaComp < TotalNormalComp)
@@ -2105,7 +2145,8 @@ namespace ServicesManagement.Web
                                 if (Id_Num_FormaPago == 4) { vlst4 = vlst4 + TotalOfertaSurt; }
                                 if (Id_Num_FormaPago == 5) { vlst5 = vlst5 + TotalOfertaSurt; }
                             }
-                            else {
+                            else
+                            {
                                 cobrado = TotalNormalSurt;
                                 vltotal = vltotal + TotalNormalSurt;
                                 if (Id_Num_FormaPago == 1) { vlst1 = vlst1 + TotalNormalSurt; }
