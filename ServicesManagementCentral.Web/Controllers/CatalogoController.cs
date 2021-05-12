@@ -71,7 +71,7 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public async Task<ActionResult> AddTransportistas(string num, string name, string un)
+        public ActionResult AddTransportistas(string num, string name, string un)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public async Task<ActionResult> EditTransportistas(string num, string name, string un, string status)
+        public ActionResult EditTransportistas(string num, string name, string un, string status)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public async Task<ActionResult> DeleteTransportistas(string num)
+        public ActionResult DeleteTransportistas(string num)
 
         {
             try
@@ -119,80 +119,37 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public async Task<JsonResult> GetTransportista(string num)
+        public ActionResult GetTransportista(string num)
 
         {
-
-
-
             try
 
             {
 
                 DataSet d = DALServicesM.GetCarrier(num);
-
-
-
                 ServicesManagement.Web.Models.OMSModels.CarrierModel c = new ServicesManagement.Web.Models.OMSModels.CarrierModel();
 
-
-
                 if (!Soriana.FWK.FmkTools.DatosDB.IsNullOrEmptyDataSet(d))
-
                 {
-
                     if (!Soriana.FWK.FmkTools.DatosDB.IsNullOrEmptyDatatable(d.Tables[0]))
-
                     {
-
                         foreach (DataRow r in d.Tables[0].Rows)
-
                         {
-
-
-
                             c.Name = r["Name"].ToString();
-
                             c.Id_Num_UN = Convert.ToInt32(r["Id_Num_UN"]);
-
                             c.Id_Num_Empleado = r["Id_Num_Empleado"].ToString();
-
                         }
-
                     }
-
-
-
                 }
 
-
-
-
-
                 var result = new { Success = true, json = c };
-
-
-
                 return Json(result, JsonRequestBehavior.AllowGet);
-
-
-
             }
-
             catch (Exception x)
-
             {
-
                 var result = new { Success = false, Message = x.Message };
-
-
-
                 return Json(result, JsonRequestBehavior.AllowGet);
-
-
-
             }
-
         }
         #endregion
 
@@ -993,7 +950,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 if (!Soriana.FWK.FmkTools.DatosDB.IsNullOrEmptyDatatable(d.Tables[0]))
                 {
-
+                    List.Id_Num_PasilloTipo = d.Tables[0].Rows[0]["Id_Num_PasilloTipo"].ToString();
                     Division = ConvertTo<DivisionModel>(d.Tables[1]);
                     Categoria = ConvertTo<CategoriaModel>(d.Tables[2]);
                     Linea = ConvertTo<PasilloUnLinea>(d.Tables[3]);
