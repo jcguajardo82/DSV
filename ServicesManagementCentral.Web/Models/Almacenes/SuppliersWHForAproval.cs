@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -15,5 +16,9 @@ namespace ServicesManagement.Web.Models.Almacenes
         public string inventario { get; set; }
         public string diasTrans { get; set; }
         public string nombreAlmacen { get; set; }
+
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        public string FechaStock { get; set; }
+        public int NumCodigos { get; set; }
     }
 }

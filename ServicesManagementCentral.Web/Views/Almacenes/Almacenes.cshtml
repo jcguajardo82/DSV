@@ -18,7 +18,9 @@
                         <th>No. Proveedor</th>
                         <th>Nombre Proveedor</th>
                         <th>Dias transcurridos</th>
-                        <th name='accion'></th>
+                        <th>Fecha Actulización</th>
+                        <th name='accion'>No. Codigos</th>
+                        @*<th name='accion'></th>*@
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -237,11 +239,13 @@
                             else { tr.append("<td><p>SI</p></td>");}
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].noAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].nombreAlmacen + "</td>");
+                            tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
                             tr.append("<td>" + json.resp[i].noProveedor + "</td>");
                             tr.append("<td>" + json.resp[i].nombreProv + "</td>");
                             tr.append("<td>" + json.resp[i].diasTrans + "</td>");
-                            tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
+                            tr.append("<td>" + json.resp[i].FechaStock + "</td>");
+                            tr.append("<td>" + json.resp[i].NumCodigos + "</td>");
+                            //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
 
 
 
