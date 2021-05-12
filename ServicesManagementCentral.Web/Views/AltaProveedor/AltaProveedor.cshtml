@@ -102,8 +102,15 @@
                                 CP.
 
                             </td>
-                            <td style="text-align:left;">
+                            @*<td style="text-align:left;">
                                 <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
+                            </td>*@
+                            <td>
+                                @Html.TextBox("txtCodPos", null, new
+                                    {
+                                    @class = "form-control ;",
+                                    @onkeydown = "javascript:onkeydown_cp(event)"
+                                    })
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Estado
@@ -252,6 +259,17 @@
             IniciarCombo()
         });
 
+        function onkeydown_cp(e) {
+
+            switch (e.which) {
+                case 9:
+                case 13:
+                case 19:
+                    RellenarCP();
+                    break;
+            }
+        }
+
         function onkeydown_busqueda(e) {
 
             switch (e.which) {
@@ -261,6 +279,11 @@
                     ObtenerDatos();
                     break;
             }
+        }
+
+        function RellenarCP() {
+            var _txtCodPos = ("00000" + $("#txtCodPos").val()).substr(-5, 5);
+            $("#txtCodPos").val(_txtCodPos);
         }
 
         function ObtenerDatos() {
