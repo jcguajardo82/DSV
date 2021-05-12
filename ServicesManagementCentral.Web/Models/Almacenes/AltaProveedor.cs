@@ -11,6 +11,7 @@ namespace ServicesManagement.Web.Models.Almacenes
         public string supplierName { get; set; }
         public int idSupplierWHCode { get; set; }
         public int idOwner { get; set; }
+        public string SupplierWHName { get; set; }
         public string addressStreet { get; set; }
         public string addressNumberExt { get; set; }
         public string addressNumberInt { get; set; }
@@ -38,5 +39,6 @@ namespace ServicesManagement.Web.Models.Almacenes
     public class Consecutivo
     {
         public int idSupplierWHCode { get; set; }
+        public string supplierName { get; set; }
     }
 }

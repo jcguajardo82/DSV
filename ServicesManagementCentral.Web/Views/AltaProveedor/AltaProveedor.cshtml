@@ -15,7 +15,7 @@
                     <table style="width:100%;">
                         <tr>
                             <td style="width:15%;text-align:center;">
-                                Numero de Proveedor
+                                Número de Proveedor
                             </td>
                             <td>
                                 @Html.TextBox("txtNumPro", null, new
@@ -38,16 +38,22 @@
                     <table style="width:100%;">
                         <tr>
                             <td style="width:15%;text-align:center;">
-                                Almacen
+                                Tipo Almacén
                             </td>
                             <td>
                                 <select class="form-control m-b" id="lstIdAlmacen"></select>
-                            </td>                            
+                            </td>
                             <td style="width:15%;text-align:center;">
-                                # Almacen
+                                Número Almacén
                             </td>
                             <td>
                                 <input type="text" class="form-control" id="txtNumAlmacen" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Nombre Almacén
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="txtNomAlmacen" />
                             </td>
                         </tr>
                         <tr>
@@ -252,12 +258,12 @@
                 case 9:
                 case 13:
                 case 19:
-                    ObtenerArt();
+                    ObtenerDatos();
                     break;
             }
         }
 
-        function ObtenerArt() {
+        function ObtenerDatos() {
             var _txtNumPro = $("#txtNumPro").val();
             if (_txtNumPro.length != 0) {
                 $.ajax({
@@ -272,6 +278,7 @@
                         debugger;
                         if (json.Success) {
                             $("#txtNumAlmacen").val(json.resp[0].idSupplierWHCode);
+                            $("#txtNomPro").val(json.resp[0].supplierName);
                         }
                         else {
                             alert(json.Message);
@@ -322,6 +329,7 @@
             var _txtNomPro = $("#txtNomPro").val();
             var _txtIdAlmacen = $("#lstIdAlmacen").val();
             var _txtNumAlmacen = $("#txtNumAlmacen").val();
+            var _txtNomAlmacen = $("#txtNomAlmacen").val();
             var _txtCalle = $("#txtCalle").val();
             var _txtNumExt = $("#txtNumExt").val();
             var _txtNumInt = $("#txtNumInt").val();
@@ -352,6 +360,10 @@
             }
             if (_txtNumAlmacen.length == 0) {
                 $("#txtNumAlmacen").focus();
+                return;
+            }
+            if (_txtNomAlmacen.length == 0) {
+                $("#txtNomAlmacen").focus();
                 return;
             }
             if (_txtCalle.length == 0) {
@@ -419,8 +431,9 @@
                 data: {
                     idSupplierWH: _txtNumPro
                     , supplierName: _txtNomPro
-                    , idSupplierWHCode: _txtIdAlmacen
-                    , idOwner: _txtNumAlmacen
+                    , idOwner: _txtIdAlmacen //2 SP
+                    , idSupplierWHCode: _txtNumAlmacen //combo Tipo
+                    , SupplierWHName: _txtNomAlmacen
                     , addressStreet: _txtCalle
                     , addressNumberExt: _txtNumExt
                     , addressNumberInt: _txtNumInt

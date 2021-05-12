@@ -11,7 +11,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
 {
     public class DALAltaProveedor
     {
-        public static DataSet SuppliersWH_iUP(int idSupplierWH, string supplierName, int idSupplierWHCode, int idOwner, string addressStreet, string addressNumberExt, string addressNumberInt, 
+        public static DataSet SuppliersWH_iUP(int idSupplierWH, string supplierName, int idSupplierWHCode, int idOwner, string SupplierWHName, string addressStreet, string addressNumberExt, string addressNumberInt, 
             string addressCity, string addressPostalCode, string addressState, string addressReference1, string addressReference2, string commInfoName, string operInfoName, string operInfoPhone, 
             string operInfoEmail, string commInfoPhone, string commInfoEmail, string creationId)
         {
@@ -34,6 +34,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
                 parametros.Add("@supplierName", supplierName);
                 parametros.Add("@idSupplierWHCode", idSupplierWHCode);
                 parametros.Add("@idOwner", idOwner);
+                parametros.Add("@SupplierWHName", SupplierWHName);
                 parametros.Add("@addressStreet", addressStreet);
                 parametros.Add("@addressNumberExt", addressNumberExt);
                 parametros.Add("@addressNumberInt", addressNumberInt);

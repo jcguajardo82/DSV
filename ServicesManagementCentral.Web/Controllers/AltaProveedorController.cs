@@ -34,13 +34,13 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult GrabarProveedor(int idSupplierWH, string supplierName, int idSupplierWHCode, int idOwner, string addressStreet, string addressNumberExt, string addressNumberInt,
+        public ActionResult GrabarProveedor(int idSupplierWH, string supplierName, int idSupplierWHCode, int idOwner, string SupplierWHName, string addressStreet, string addressNumberExt, string addressNumberInt,
             string addressCity, string addressPostalCode, string addressState, string addressReference1, string addressReference2, string commInfoName, string operInfoName, string operInfoPhone,
             string operInfoEmail, string commInfoPhone, string commInfoEmail, string creationId)
         {
             try
             {
-                var list = DALAltaProveedor.SuppliersWH_iUP(idSupplierWH, supplierName, idSupplierWHCode, idOwner, addressStreet, addressNumberExt, 
+                var list = DALAltaProveedor.SuppliersWH_iUP(idSupplierWH, supplierName, idSupplierWHCode, idOwner, SupplierWHName, addressStreet, addressNumberExt, 
                     addressNumberInt, addressCity, addressPostalCode, addressState, addressReference1, addressReference2, commInfoName, operInfoName, 
                     operInfoPhone, operInfoEmail, commInfoPhone, commInfoEmail, creationId);
 
