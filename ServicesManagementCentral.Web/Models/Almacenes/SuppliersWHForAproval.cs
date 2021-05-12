@@ -14,5 +14,6 @@ namespace ServicesManagement.Web.Models.Almacenes
         public bool habilitado { get; set; }
         public string inventario { get; set; }
         public string diasTrans { get; set; }
+        public string nombreAlmacen { get; set; }
     }
 }

@@ -14,6 +14,9 @@
                         <th>Habilitado</th>
                         <th>Tipo Almacen</th>
                         <th>No. Almacen</th>
+                        <th>Nombre Almacen</th>
+                        <th>No. Proveedor</th>
+                        <th>Nombre Proveedor</th>
                         <th>Dias transcurridos</th>
                         <th name='accion'></th>
                     </tr>
@@ -234,8 +237,9 @@
                             else { tr.append("<td><p>SI</p></td>");}
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].noAlmacen + "</td>");
-                            //tr.append("<td>" + json.resp[i].noProveedor + "</td>");
-                            //tr.append("<td>" + json.resp[i].nombreProv + "</td>");
+                            tr.append("<td>" + json.resp[i].nombreAlmacen + "</td>");
+                            tr.append("<td>" + json.resp[i].noProveedor + "</td>");
+                            tr.append("<td>" + json.resp[i].nombreProv + "</td>");
                             tr.append("<td>" + json.resp[i].diasTrans + "</td>");
                             tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
 
@@ -243,7 +247,8 @@
 
                             $('#tblConsulta').append(tr);
                         }
-                        $('#tblConsulta').data.reload();
+                        
+
                     }
                     else {
                         alert(json.Message);
@@ -290,7 +295,7 @@
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
-                        //GetSuppliers();
+                        //GetSuppliers();                        
                         location.reload();
                        
                     } else {
@@ -314,7 +319,7 @@
             $('#tblConsulta thead tr:eq(1) th').each(function (i) {
                 if ($(this).attr('name') != "accion") {
                     var title = $(this).text();
-                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
 
                     $('input', this).on('keyup change', function () {
                         if (table.column(i).search() !== this.value) {
@@ -359,8 +364,7 @@
                     buttons: ['csv', 'excel'],
                     orderCellsTop: false,
                     fixedHeader: {
-                        header: true,
-                        footer: true
+                        header: true             
                     },
                     "scrollX": true
 
