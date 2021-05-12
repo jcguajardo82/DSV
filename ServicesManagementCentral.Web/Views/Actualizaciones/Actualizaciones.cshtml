@@ -16,7 +16,7 @@
                 <div class="row" style="height:490px;">
                     <table style="width:100%;padding-top:50px;">
                         <!-- cambio -->
-                        <tr> 
+                        <tr>
                             <td></td>
                             <td style="text-align:center;padding-left:50px;">
                                 <h3> Actualizacion de Inventario</h3><br />
@@ -26,14 +26,21 @@
                                 <span>
                                     Cargar inventario
                                 </span>
+                                <br />
+                                <input name="docInv" id="docInv" type="file" accept=".csv" img src="~/Content/images/theme/folder.png" style="width:240px;height:110px;" runat="server" />
+                                <br />
                             </td>
                             <td style="text-align:center;padding-left:50px;">
                                 <h3> Actualizacion de Contenido</h3><br />
+                                <br />
                                 <img src="~/Content/images/theme/folder.png" style="width:140px;height:110px;" />
                                 <br />
                                 <span>
                                     Actualizar contenido
                                 </span>
+                                <br />
+                                <input name="docCont" id="docCont" type="file" accept=".csv" img src="~/Content/images/theme/folder.png" style="width:240px;height:110px;" />
+                                <br />
                             </td>
                             <td></td>
                         </tr>
@@ -45,3 +52,38 @@
     </div>
 </div>
 
+@section scripts {
+    <script>
+        $('#docInv').on('change', function () {
+            var fileReader = new FileReader();
+            var fileReader1 = new FileReader();
+            var fileReader2 = new FileReader();
+            fileReader.onload = function () {
+                var data = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+            };
+            fileReader.readAsText($('#docInv').prop('files')[0]);
+            console.log(fileReader);
+            console.log(fileReader.result);
+            //fileReader1.readAsBinaryString($('#docInv').prop('files')[0]);
+            //console.log(fileReader1);
+            //console.log(fileReader1.result);
+            //fileReader2.readAsDataURL($('#docInv').prop('files')[0]);
+            //console.log(fileReader2);
+            //console.log(fileReader2.result);
+        });
+
+        //var fileInput = document.getElementById("docInv"),
+
+        //    readFile = function () {
+        //        var reader = new FileReader();
+        //        reader.onload = function () {
+        //            document.getElementById('docInv').innerHTML = reader.result;
+        //        };
+        //        // start reading the file. When it is done, calls the onload event defined above.
+        //        reader.readAsBinaryString(fileInput.files[0]);
+        //    };
+
+        //fileInput.addEventListener('change', readFile);
+
+    </script>
+}
