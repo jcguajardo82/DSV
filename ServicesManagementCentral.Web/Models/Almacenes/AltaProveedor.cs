@@ -31,8 +31,8 @@ namespace ServicesManagement.Web.Models.Almacenes
 
     public class Owners
     {
-        int idOwner { get; set; }
-        string ownerName { get; set; }
+        public int idOwner { get; set; }
+        public string ownerName { get; set; }
     }
 
 }

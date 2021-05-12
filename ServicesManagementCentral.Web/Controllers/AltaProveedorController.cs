@@ -22,11 +22,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                DataSet list = DALAltaProveedor.spOwners_sUP();
-                var tabla = list.Tables[0];
                 var dropdownVD = DataTableToModel.ConvertTo<Owners>(DALAltaProveedor.spOwners_sUP().Tables[0]);
-                var dropdownLT = DataTableToModel.ConvertTo<Owners>(list.Tables[0]);
-                var dropdownTA = DataTableToModel.ConvertTo<Owners>(tabla);
                 //DataTableToModel.ConvertTo<ServicesManagement.Web.Models.Almacenes.SPOwners_sUP>(DALAltaProveedor.spOwners_sUP().Tables[0])
                 var result = new { Success = true, resp = dropdownVD };
                 return Json(result, JsonRequestBehavior.AllowGet);
