@@ -212,6 +212,7 @@
     <Compile Include="Controllers\ActualizacionesInventarioController.cs" />
     <Compile Include="Controllers\ConsignacionesController.cs" />
     <Compile Include="Controllers\EstatusReenvioMciaController.cs" />
+    <Compile Include="Controllers\ReportesPDPController.cs" />
     <Compile Include="Controllers\TotalOrdenesController.cs" />
     <Compile Include="Controllers\SolicitudGuiasReenvioController.cs" />
     <Compile Include="DALConfig.cs" />
@@ -267,6 +268,7 @@
     <Compile Include="Models\PasilloUnReporteMapModel.cs" />
     <Compile Include="Models\PasilloUnRepPasillo.cs" />
     <Compile Include="Models\PassCancelModel.cs" />
+    <Compile Include="Models\ReportesPDP\ReportesPDP.cs" />
     <Compile Include="Models\RestInterfazMethods.cs" />
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="Models\UNModel.cs" />
@@ -3662,6 +3664,7 @@
     <Content Include="Views\AutorizacionesRMA\AutorizacionesRMA.cshtml" />
     <None Include="Properties\PublishProfiles\sorianaalmacen - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SorianaalmacenQA - Web Deploy.pubxml" />
+    <Content Include="Views\ReportesPDP\FormaPago.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
