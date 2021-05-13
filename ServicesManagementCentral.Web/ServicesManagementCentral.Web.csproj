@@ -3665,6 +3665,7 @@
     <None Include="Properties\PublishProfiles\sorianaalmacen - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SorianaalmacenQA - Web Deploy.pubxml" />
     <Content Include="Views\ReportesPDP\FormaPago.cshtml" />
+    <Content Include="Views\ReportesPDP\CanalPago.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

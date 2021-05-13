@@ -1,9 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Forma de Pago";
+    ViewBag.Title = "Canal de Pago";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>FormaPago</h2>
+<h2>Canal de Pago</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
@@ -12,7 +12,6 @@
                     <tr>
                         <th>No. Orden</th>
                         <th>Fecha</th>
-                        <th>Tipo Almacen</th>
                         <th>No Consignacion</th>
                         <th>Monto</th>
                         <th>Tipo de Pago</th>
@@ -20,72 +19,37 @@
                         <th>Fecha Entrega</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    @{
+                        if (ViewBag.Reporte != null)
+                        {
+
+                            var reportes = (List<ServicesManagement.Web.Models.ReportesPDP.ReportesPDP>)ViewBag.Menu;
+                            if (reportes != null)
+                            {
+                                foreach (ServicesManagement.Web.Models.ReportesPDP.ReportesPDP r in reportes)
+                                {
+                                    <tr>
+                                        <td>@r.NoOrden</td>
+                                        <td>@r.Fecha</td>
+                                        <td>@r.NoConsignacion</td>
+                                        <td>@r.Monto</td>
+                                        <td>@r.TipoPAgo</td>
+                                        <td>@r.Origen</td>
+                                        <td>@r.Fecha</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }
+
+                </tbody>
             </table>
         </div>
     </div>
 </div>
 @section scripts {
-    <script>
-        $(document).ready(function () {
-            GetReporte();
-        });
 
-        function GetReporte() {
-
-            //var _Id_Num_UN = $("#hddTda").val();
-
-            debugger;
-
-            $.ajax({
-                async: false,
-                type: "GET",
-                url: '@Url.Action("GetFormaPago", "ReportesPDP")',
-                data: {
-                    //  Id_Num_UN: _Id_Num_UN
-                },
-
-                datatype: "json",
-                success: function (json) {
-                    if (json.Success) {
-
-                        $('#tblConsulta tbody').empty();
-                        //var tr;
-                        debugger;
-                        //Append each row to html table
-
-                        for (var i = 0; i < json.resp.length; i++) {
-                            tr = $('<tr/>');
-
-
-                            tr.append("<td>" + json.resp[i].NoOrden + "</td>");
-                            tr.append("<td>" + json.resp[i].Fecha + "</td>");
-                            tr.append("<td>" + json.resp[i].NoConsignacion + "</td>");
-                            tr.append("<td>" + json.resp[i].Monto + "</td>");
-                            tr.append("<td>" + json.resp[i].TipoPAgo + "</td>");
-                            tr.append("<td>" + json.resp[i].Origen + "</td>");
-                            tr.append("<td>" + json.resp[i].FecEntrega + "</td>");
-
-
-                            $('#tblConsulta').append(tr);
-                        }
-
-
-                    }
-                    else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert("errorThrown");
-                }
-
-            });
-
-        }
-
-    </script>
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
         $(document).ready(function () {
@@ -143,7 +107,7 @@
                     "scrollX": true
 
                 }
-            );            
+            );
         });
     </script>
 }
