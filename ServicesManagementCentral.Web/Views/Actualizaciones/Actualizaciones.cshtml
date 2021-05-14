@@ -58,39 +58,28 @@
         $('#docInv').on('change', function () {
             var fileReader = new FileReader();
             fileReader.onload = function () {
-                // var data = fileReader.result;  
+                // var data = fileReader.result;
                 document.getElementById('docInvout').innerHTML = fileReader.result; // data <-- in this var you have the file data in Base64 format
                 var fileExcel = document.getElementById('docInvout').innerHTML.split(",");
                 var elemExcel = document.getElementById('docInvout').innerHTML.split(",").length;
                 var HeaderProv = fileExcel[1];
                 var TrailerProv = fileExcel[elemExcel - 5];
-                var temp1 = fileExcel[5];
-                var n1 = fileExcel[5].split("\n");
-                var temp2 = fileExcel[10];
-                var n2 = fileExcel[10].split("\n");
-                var temp3 = fileExcel[15];
-                var n3 = fileExcel[15].split("\n");
-                var temp4 = fileExcel[20];
-                var n4 = fileExcel[20].split("\n");
-                var temp5 = fileExcel[25];
-                var n5 = fileExcel[25].split("\n");
-                var temp6 = fileExcel[30];
-                var n6 = fileExcel[30].split("\n");
-                var temp7 = fileExcel[35];
-                var n7 = fileExcel[35].split("\n");
-                
+
                 if (HeaderProv != TrailerProv) {
                     alert("Los campos Proveedor no coinciden!");
+                    return;
                 }
                 var HeaderAlm = fileExcel[2];
                 var TrailerAlm = fileExcel[elemExcel - 4];
                 if (HeaderAlm != TrailerAlm) {
                     alert("Los campos Almacen no coinciden!");
+                    return;
                 }
                 var HeaderFec = fileExcel[3];
                 var TrailerFec = fileExcel[elemExcel - 3];
                 if (HeaderFec != TrailerFec) {
                     alert("Los campos Fecha no coinciden!");
+                    return;
                 }
                 var sumDisp = 0;
                 for (var i = 7; i + 9 <= fileExcel.length; i = i + 5) {
@@ -99,7 +88,32 @@
                 var TrailerSum = fileExcel[elemExcel - 1];
                 if (sumDisp != TrailerSum) {
                     alert("No coincide el Total Disponible!");
+                    return;
                 }
+
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("InsertaArchivo", "Actualizaciones")',
+                    data: {
+                        ArchivoCSV: document.getElementById('docInvout').innerHTML
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        debugger;
+                        if (json.Success) {
+                            alert(json.resp);
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
             };
             fileReader.readAsText($('#docInv').prop('files')[0]);
             console.log(fileReader);
