@@ -1,199 +1,81 @@
 ﻿
-@{
-    ViewBag.Title = "ManualesOperativos_CargaManual";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
-<div class="wrapper wrapper-content animated fadeInRight" style="padding-top: 0px;">
-    <div class="row">
-        <div class="col-xs-12 col-md-12 col-lg-12">
-            <div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
-                <div class="row">
-                    <div class="col-xs-12 col-md-12 col-lg-12 text-center">
-                        <h2>Manuales Operativos</h2>
+@{ ViewBag.Title = "Carga Manual"; }
+
+
+
+<div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
+    <h2>Manules Operativos</h2>
+</div>
+<div>
+    <table style="width:100%;">
+        <tr>
+            <td style="text-align:left;padding-left:50px;">
+                <h2><i></i> Tipo de Almacen:</h2>
+                <div class="col-sm-10">
+                    <select>
+                        @{if (ViewBag.Owner != null)
+                            {
+                                var Lista = (List<ServicesManagement.Web.Models.ManualesOperativosModels>)ViewBag.Owner;
+                                foreach (ServicesManagement.Web.Models.ManualesOperativosModels Item in Lista)
+                                {
+                                    <option value="@Item.idOwner">@Item.ownerName</option>
+                                    }
+                                }
+                            }
+                        </select>
+
+
                     </div>
-                </div>
-                <div class="row" style="height:490px;">
-                    <table style="width:100%;">
-                        <tr>
-                            <td style="text-align:left;padding-left:50px;">
-                                <h2><i></i> Dirigido a:</h2>
-                                <div class="col-sm-10">
-                                    <select class="form-control m-b">
-                                        <option disabled selected>Selecciona una opción</option>
-                                        <option>DSV</option>
-                                        <option>DST</option>
-                                        <option>WMS</option>
-                                    </select>
+                </td>
+            </tr>
+        </table>
 
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:left;padding-left:50px;">
-                                <h2><i></i> Examinar</h2>
-                                <div class="col-sm-10"><input type="text" class="form-control"> Cargar Manual</div>
-                            </td>
-                        </tr>
+    </div>
 
-                    </table>
-                </div>
-                <div class="row" style="height:490px;">
-                    <table style="width:100%;">
-                        <tr>
-                            <td style="text-align:right;padding-left:50px;">
-                                <h2><b> Ver Manuales:</b></h2>
-                                <h2><u> DST </u></h2>
-                                <h2><u> DSV </u></h2>
-                                <h2><u> CEDIS </u></h2>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
 
+
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Message
+        </div>}
+
+    @using (Html.BeginForm("Save", "ManualesOperativos", FormMethod.Post,
+        new { enctype = "multipart/form-data" }))
+
+    {
+        @Html.AntiForgeryToken();
+
+
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-offset-6">
+
+
+                <div class="form-group">
+                    @Html.LabelFor(d => d.Examinar)
+                    @Html.TextBoxFor(d => d.Examinar, new { @class = "form-control", type = "file", accept = ".pdf , .docx" })
+                    @Html.ValidationMessageFor(d => d.Examinar, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group" style="text-align:right;">
+                    <input type="submit" class="btn btn-success" value="Cargar Manual">
+                </div>
             </div>
         </div>
-    </div>
-</div>
+        <div class="row" style="height:245px;">
+            <table style="width:100%;">
+                <tr>
+                    <td style="text-align:right;padding-left:25px;">
+                        <h2><b> Ver Manuales:</b></h2>
+                        <h2><u> DST </u></h2>
+                        <h2><u> DSV </u></h2>
+                        <h2><u> CEDIS </u></h2>
+                    </td>
+                </tr>
+            </table>
+        </div>}
 
-
-@section scripts {
-    <script>
-        function Save() {
-            var _txtNumPro = $("#txtNumPro").val();
-            var _txtNomPro = $("#txtNomPro").val();
-            var _txtIdAlmacen = $("#txtIdAlmacen").val();
-            var _txtNumAlmacen = $("#txtNumAlmacen").val();
-            var _txtCalle = $("#txtCalle").val();
-            var _txtNumExt = $("#txtNumExt").val();
-            var _txtNumInt = $("#txtNumInt").val();
-            var _txtCiudad = $("#txtCiudad").val();
-            var _txtCodPos = $("#txtCodPos").val();
-            var _txtEdo = $("#txtEdo").val();
-            var _txtEntCal1 = $("#txtEntCal1").val();
-            var _txtEntCal2 = $("#txtEntCal2").val();
-            var _txtNomContOper = $("#txtNomContOper").val();
-            var _txtNomContCom = $("#txtNomContCom").val();
-            var _txtTelContOper = $("#txtTelContOper").val();
-            var _txtTelContCom = $("#txtTelContCom").val();
-            var _txtEmailO = $("#txtEmailO").val();
-            var _txtEmailC = $("#txtEmailC").val();
-
-            if (_txtNumPro.length == 0) {
-                $("#txtNumPro").focus();
-                return;
-            }
-            if (_txtNomPro.length == 0) {
-                $("#txtNomPro").focus();
-                return;
-            }
-            if (_txtIdAlmacen.length == 0) {
-                $("#txtIdAlmacen").focus();
-                return;
-            }
-            if (_txtNumAlmacen.length == 0) {
-                $("#txtNumAlmacen").focus();
-                return;
-            }
-            if (_txtCalle.length == 0) {
-                $("#txtCalle").focus();
-                return;
-            }
-            if (_txtNumExt.length == 0) {
-                $("#txtNumExt").focus();
-                return;
-            }
-            if (_txtNumInt.length == 0) {
-                $("#txtNumInt").focus();
-                return;
-            }
-            if (_txtCiudad.length == 0) {
-                $("#txtCiudad").focus();
-                return;
-            }
-            if (_txtCodPos.length == 0) {
-                $("#txtCodPos").focus();
-                return;
-            }
-            if (_txtEdo.length == 0) {
-                $("#txtEdo").focus();
-                return;
-            }
-            if (_txtEntCal1.length == 0) {
-                $("#txtEntCal1").focus();
-                return;
-            }
-            if (_txtEntCal2.length == 0) {
-                $("#txtEntCal2").focus();
-                return;
-            }
-            if (_txtNomContOper.length == 0) {
-                $("#txtNomContOper").focus();
-                return;
-            }
-            if (_txtNomContCom.length == 0) {
-                $("#txtNomContCom").focus();
-                return;
-            }
-            if (_txtTelContOper.length == 0) {
-                $("#txtTelContOper").focus();
-                return;
-            }
-            if (_txtTelContCom.length == 0) {
-                $("#txtTelContCom").focus();
-                return;
-            }
-            if (_txtEmailO.length == 0) {
-                $("#txtEmailO").focus();
-                return;
-            }
-            if (_txtEmailC.length == 0) {
-                $("#txtEmailC").focus();
-                return;
-            }
-
-
-             $.ajax({
-                async: false,
-                type: "GET",
-                url: '@Url.Action("MostrarPdf", "ManualesOperativos")',
-                data: {
-                    idSupplierWH: _txtNumPro
-                    , supplierName: _txtNomPro
-                    , idSupplierWHCode: _txtIdAlmacen
-                    , idOwner: _txtNumAlmacen
-                    , addressStreet: _txtCalle
-                    , addressNumberExt: _txtNumExt
-                    , addressNumberInt: _txtNumInt
-                    , addressCity: _txtCiudad
-                    , addressPostalCode: _txtCodPos
-                    , addressState: _txtEdo
-                    , addressReference1: _txtEntCal1
-                    , addressReference2: _txtEntCal2
-                    , commInfoName: _txtNomContOper
-                    , operInfoName: _txtNomContCom
-                    , operInfoPhone: _txtTelContOper
-                    , operInfoEmail: _txtTelContCom
-                    , commInfoPhone: _txtEmailO
-                    , commInfoEmail: _txtEmailC
-                },
-                datatype: "html",
-                success: function (json) {
-                    debugger;
-                    if (json.Success) {
-                        alert("Inserción exitosa");
-                        location.reload();
-                    }
-                    else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(errorThrown);
-
-                }
-            });
-        }
-
-    </script>
-}
