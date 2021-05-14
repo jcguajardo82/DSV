@@ -3677,6 +3677,8 @@
     <Content Include="Views\Consignaciones\Consignaciones_CEDIS.cshtml" />
     <Content Include="Views\Consignaciones\Consignaciones_Proveedores.cshtml" />
     <Content Include="Views\OrdenesDST\OrdenSeleccionada.cshtml" />
+    <Content Include="Views\OrdenesDST\ConsultaDetalle.cshtml" />
+    <Content Include="Views\OrdenesDST\Embarque.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
