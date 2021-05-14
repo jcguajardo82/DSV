@@ -204,6 +204,7 @@
     <Compile Include="Controllers\NivelExistenciaController.cs" />
     <Compile Include="Controllers\OperacionesController.cs" />
     <Compile Include="Controllers\OrdenesCompraController.cs" />
+    <Compile Include="Controllers\OrdenesDSTController.cs" />
     <Compile Include="Controllers\ProcesoReciboDevolucionesController.cs" />
     <Compile Include="Controllers\RenviodeMercanciaController.cs" />
     <Compile Include="Controllers\ProcesoSurtido.cs" />
@@ -3675,6 +3676,7 @@
     <Content Include="Views\ReportesPDP\CanalGenerarOrden.cshtml" />
     <Content Include="Views\Consignaciones\Consignaciones_CEDIS.cshtml" />
     <Content Include="Views\Consignaciones\Consignaciones_Proveedores.cshtml" />
+    <Content Include="Views\OrdenesDST\OrdenSeleccionada.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
