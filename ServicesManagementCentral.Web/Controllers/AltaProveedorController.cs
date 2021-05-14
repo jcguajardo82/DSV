@@ -13,7 +13,7 @@ namespace ServicesManagement.Web.Controllers
 {
     public class AltaProveedorController : Controller
     {
-        // GET: ManualesOperativos
+        
         public ActionResult AltaProveedor()
         {
             return View();

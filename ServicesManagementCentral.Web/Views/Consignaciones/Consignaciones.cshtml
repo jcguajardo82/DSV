@@ -3,290 +3,423 @@
     ViewBag.Title = "Consignaciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@*<style id="compiled-css" type="text/css">
-
-        h2 {
-            color: #263EEA;
-            text-align: center;
-            font-weight: bold;
-        }
-        /* Fix table head */
-        .tableFixHead {
-            overflow-y: auto;
-            height: 300px;
-        }
 
 
-
-            .tableFixHead th {
-                position: sticky;
-                top: 0;
-            }
-
-
-
-        /* Just common table stuff. */
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            table-layout: fixed;
-            word-wrap: break-word;
-        }
-
-
-
-        th, td {
-            padding: 8px 16px;
-        }
-
-
-
-
-        th {
-            background: #D52B1E;
-            color: #ffffff;
-            font-weight: bold;
-        }
-    </style>*@
-
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
             <h2>Consignaciones</h2>
-            <div class="row mt-2 mb-3">
-                <div class="col-12">
-                    <div>
-                        <div class="card card-body">
-                            <form id="frmFilter">
-                                <div class="row">
-                                    <div class="col col-xs-12 col-md-2">
-                                        <div class="input-group date" id="datetimepicker2">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <input class="form-control datepicker" id="txtFecIni" name="txtFecIni"
-                                                   type="text" placeholder="Inicio">
-                                        </div>
-                                    </div>
-                                    <div class="col col-xs-12 col-md-2">
-                                        <div class="input-group date" id="datetimepicker3">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <input class="form-control datepicker" id="txtFecFin" name="txtFecFin"
-                                                   type="text" placeholder="Fin">
-                                        </div>
-                                    </div>
-                                    <div class="col col-xs-12 col-md-4">
-                                        <div class="form-group">
-                                            <input type="text" size="25" maxlength="50" class="form-control" placeholder="Filtro Información de Columnas" name=" Filtro">
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col col-xs-12 col-md-4 text-right">
-                                        <button class="btn btn-success mt-4" type="button" onclick="Servicios.RefreshTable();"><i class="fa fa-search"></i>&nbsp;&nbsp;<span class="bold">Buscar</span></button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th>Numero de consignación</th>
+                        <th>Total importe de la Consignación</th>
+                        <th>Tipo Almacen </th>
+                        <th>Fecha y hora creacion orden</th>
+                        <th>Nombre del cliente</th>
+                        <th>Estatus de la orden</th>
+                        <th>Estatus de la consignación Almacen</th>
+                        <th>Estatus de la consignación Home Delivery</th>
+                        <th>No. de orden de compra (DSV)</th>
+                        <th>Estatus de Orden de Compra (DSV)</th>
+                        @*<th class="sorting">Motivo de no recolección</th>*@
+                        @*<th name='accion'></th>*@
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgInventarios" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Almacen - Inventario </h4>
             </div>
-            <div class="row">
-                <div class="col col-xs-1">
-                    <div class="dt-buttons btn-group flex-wrap">
-                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>XLS</span></button>
-                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>XLSX</span></button>
-                    </div>
-                </div>
-                <div class="col col-xs-2">
-
-                </div>
-                <div class="col col-xs-2">
-
-                </div>
-                <div class="col col-xs-2">
-
-                </div>
-                <div class="col col-xs-2">
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    @*<div id="tblOrdenes" class="tableFixHead table-responsive m-t">*@
-                    <div id="tblOrdenes">
-                        <table class="table invoice-table dataTable">
-                            <thead class="bg-danger-sor">
-                                <tr>
-                                    <th class="sorting">Numero de consignación</th>
-                                    <th class="sorting">Total importe de la Consignación</th>
-                                    <th class="sorting">Tipo Almacen </th>
-                                    <th class="sorting">Fecha y hora creacion orden</th>
-                                    <th class="sorting">Nombre del cliente</th>
-                                    <th class="sorting">Estatus de la orden</th>
-                                    <th class="sorting">Estatus de la consignación Almacen</th>
-                                    <th class="sorting">Estatus de la consignación Home Delivery</th>
-                                    <th class="sorting">No. de orden de compra (DSV)</th>
-                                    <th class="sorting">Estatus de Orden de Compra (DSV)</th>
-                                    <th class="sorting">Motivo de no recolección</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><u>7654234</u></td>
-                                    <td>5</td>
-                                    <td>
-                                        WMS
-                                    </td>
-                                    <td>
-                                        28-Ene-21
-                                    </td>
-                                    <td>
-                                        Susana Vargas Miranda
-                                    </td>
-                                    <td>Pago autorizado</td>
-                                    <td>
-                                        En espera de recoleccion
-                                    </td>
-                                    <td>En transito</td>
-                                    <td>5678998767</td>
-                                    <td>En programacion de pago</td>
-                                    <td>Motivo</td>
-                                </tr>
-                                <tr>
-                                    <td><u>7654234</u></u></td>
-                                    <td>5</td>
-                                    <td>
-                                        WMS
-                                    </td>
-                                    <td>
-                                        3-Mar-21
-                                    </td>
-                                    <td>
-                                        Susana Vargas Miranda
-                                    </td>
-                                    <td>Pago autorizado</td>
-                                    <td>
-                                        En espera de recoleccion
-                                    </td>
-                                    <td>En transito</td>
-                                    <td>5678998767</td>
-                                    <td>En programacion de pago</td>
-                                    <td>Motivo</td>
-                                </tr>
-
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            @*<h2>Detalle de Consignación</h2>
-
-                <div class="row">
-
-                </div>
-
-
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                            <table class="table invoice-table">
-                                <thead>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
+                                <thead class="bg-danger-sor">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Descripcion</th>
-                                        <th>Piezas</th>
-                                        <th>Costo</th>
-                                        <th>Peso Volumetico</th>
-                                        <th>Dias de Surtido desde la creacion</th>
-                                        <th>Dias de Surtido desde la autorización</th>
-                                        <th>Fecha de envio</th>
-                                        <th>RMA</th>
-                                        <th>Estatus del RMA</th>
-
+                                        <th>idOwner</th>
+                                        <th>ProductSKU</th>
+                                        <th>barCode</th>
+                                        <th>productName</th>
+                                        <th>productCategoryId</th>
+                                        <th>qtyStockSafety</th>
+                                        <th>qtyStockForSale</th>
+                                        <th>qtyStockReserved</th>
+                                        <th>dimmensionLarge</th>
+                                        <th>dimmensionHeight</th>
+                                        <th>dimmensionWeightVol</th>
+                                        <th>dimmensionWeightReal</th>
+                                        <th>productStatus</th>
+                                        <th>productMaterialCost</th>
+                                        <th>productCreationDate</th>
+                                        <th>idSupplierOrigin</th>
+                                        <th>idSupplierOriginName</th>
                                     </tr>
+                                    @*[idSupplierWH]
+                                        ,[]
+                                        ,[]
+                                        ,[]
+                                        ,[]
+                                        ,[]
+                                        ,[]
+                                        ,[]*@
+
+
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>12345678</td>
-                                        <td>Refrigerador</td>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>
-                                            $
-                                        </td>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>3</td>
-                                        <td>
-                                            2
-                                        </td>
-                                        <td>X</td>
-                                        <td>X</td>
-                                        <td>Completado</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>12345678</td>
-                                        <td>Locion para dama</td>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>
-                                            $
-                                        </td>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>3</td>
-                                        <td>
-                                            2
-                                        </td>
-                                        <td>X</td>
-                                        <td>X</td>
-                                        <td>Completado</td>
-
-                                    </tr>
-
-
-
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
-                </div>*@
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                @*<button type="button" onclick="Save()" class="btn btn-primary">Guardar</button>*@
+                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgDesHabilitar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Almacen - Autorización</h4>
+                <input type="hidden" id="hddNoProveedor" />
+                <input type="hidden" id="HddNoAlmacen" />
+
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="form-group">
+                                <label>Motivo por el cual se Inhabilita: </label>
+                                <textarea class="form-control m-b" id="txtMotCan" rows="6" maxlength="250"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" onclick="Inhabilitar()" class="btn btn-primary">Inhabilitar</button>
+                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+            </div>
         </div>
     </div>
 </div>
 
 @section scripts {
     <script>
-        $(function () {
-
-            $('#datetimepicker2').datetimepicker({
-                locale: 'es'
-                , format: "DD/MM/yyyy"
-            });
-            $('#datetimepicker3').datetimepicker({
-                locale: 'es'
-                , format: "DD/MM/yyyy"
-            });
+        @*$(document).ready(function () {
+            GetSuppliers();
         });
 
-        $(document).ready(function () {
-            $("#txtFiltro").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#tblOrdenes tbody tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+        function popDesHabilitar(noProveedor, noAlmacen) {
+            $("#hddNoProveedor").val(noProveedor);
+            $("#HddNoAlmacen").val(noAlmacen);
+            $("#dlgDesHabilitar").modal('toggle');
+        }
+
+        function PopInv(noProveedor, noAlmacen){
+
+           $("#dlgInventarios").modal('toggle');
+
+
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("GetSuppliersWHStock", "almacenes")',
+                data: {
+                    idSupplierWH: noProveedor,
+                    idSupplierWHCode: noAlmacen
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        $('#tblInventarios tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+
+                            tr.append("<td>" + json.resp[i].idOwner + "</td>");
+                            tr.append("<td>" + json.resp[i].ProductSKU + "</td>");
+                            tr.append("<td>" + json.resp[i].barCode + "</td>");
+                            tr.append("<td>" + json.resp[i].productName + "</td>");
+                            tr.append("<td>" + json.resp[i].productCategoryId + "</td>");
+                            tr.append("<td>" + json.resp[i].qtyStockSafety + "</td>");
+                            tr.append("<td>" + json.resp[i].qtyStockForSale + "</td>");
+                            tr.append("<td>" + json.resp[i].qtyStockReserved + "</td>");
+                            tr.append("<td>" + json.resp[i].dimmensionLarge + "</td>");
+                            tr.append("<td>" + json.resp[i].dimmensionHeight + "</td>");
+                            tr.append("<td>" + json.resp[i].dimmensionWeightVol + "</td>");
+                            tr.append("<td>" + json.resp[i].dimmensionWeightReal + "</td>");
+
+                            tr.append("<td>" + json.resp[i].productStatus + "</td>");
+                            tr.append("<td>" + json.resp[i].productMaterialCost + "</td>");
+                            tr.append("<td>" + json.resp[i].productCreationDate + "</td>");
+                            tr.append("<td>" + json.resp[i].idSupplierOrigin + "</td>");
+                            tr.append("<td>" + json.resp[i].idSupplierOriginName + "</td>");
+
+                            /*
+                                        <th>idOwner</th>
+                                        <th>ProductSKU</th>
+                                        <th>barCode</th>
+                                        <th>productName</th>
+                                        <th>productCategoryId</th>
+                                        <th>qtyStockSafety</th>
+                                        <th>qtyStockForSale</th>
+                                        <th>qtyStockReserved</th>
+                                        <th>dimmensionLarge</th>
+                                        <th>dimmensionHeight</th>
+                                        <th>dimmensionWeightVol</th>
+                                        <th>dimmensionWeightReal</th>
+                                        <th>productStatus</th>
+                                        <th>productMaterialCost</th>
+                                        <th>productCreationDate</th>
+                                        <th>idSupplierOrigin</th>
+                                        <th>idSupplierOriginName</th>
+                                        */
+                            $('#tblInventarios').append(tr);
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }
+        function GetSuppliers() {
+
+            //var _Id_Num_UN = $("#hddTda").val();
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetSuppliers", "almacenes")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        
+                        $('#tblConsulta tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+                            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+                            if (!json.resp[i].habilitado) { tr.append("<td><button   title='Click para habilitar'  onclick='Habilitar(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")' type ='button' class= 'btn btn-white btn-circle'> <i class='fa fa-check'></i></button></td >"); }
+                            else {
+                                tr.append("<td><button title='Click para deshabilitar' onclick='popDesHabilitar(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-ban'></i></button></td >");
+                            }
+                            if (!json.resp[i].habilitado) { tr.append("<td><p>NO</p></td>"); }
+                            else { tr.append("<td><p>SI</p></td>");}
+                            tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
+                            tr.append("<td>" + json.resp[i].noAlmacen + "</td>");
+                            tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
+                            tr.append("<td>" + json.resp[i].noProveedor + "</td>");
+                            tr.append("<td>" + json.resp[i].nombreProv + "</td>");
+                            tr.append("<td>" + json.resp[i].diasTrans + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaStock + "</td>");
+                            tr.append("<td>" + json.resp[i].NumCodigos + "</td>");
+                            //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
+
+
+
+                            $('#tblConsulta').append(tr);
+                        }
+                        
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
             });
 
-        });
+        }
 
+
+        function Inhabilitar() {
+
+            var motCan = $("#txtMotCan").val();
+
+            if (motCan.length == 0) {
+                $("#txtMotCan").focus();
+                return;
+            }
+            UpdateStatus($("#hddNoProveedor").val(), $("#HddNoAlmacen").val(), false, motCan);
+            $("#dlgDesHabilitar").modal('hide');
+        }
+
+        function Habilitar(noProveedor, noAlmacen) {
+            UpdateStatus(noProveedor, noAlmacen, true, '');
+        }
+        function UpdateStatus(noProveedor, noAlmacen, _bitenable, _enableCause) {
+            //string bitenable, string enableCause
+             $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("UpdateSuppliersWH", "almacenes")',
+                data: {
+                    idSupplierWH: noProveedor,
+                    idSupplierWHCode: noAlmacen,
+                    bitenable: _bitenable,
+                    enableCause: _enableCause
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        //GetSuppliers();                        
+                        location.reload();
+                       
+                    } else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            })
+
+        }*@
 
     </script>
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true             
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+            $("#tblInventarios").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true,
+                        footer: true
+                    },
+                    "scrollX": true
+                    , "options": {
+                        "emptyTable": "No records to display..."
+                    }
+
+                }
+            );
+        });
+    </script>
 }
+
 
 
