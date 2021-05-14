@@ -274,6 +274,7 @@
     <Compile Include="Models\PassCancelModel.cs" />
     <Compile Include="Models\ReportesPDP\ReportesPDP.cs" />
     <Compile Include="Models\RestInterfazMethods.cs" />
+    <Compile Include="Models\SubirArchivos\CargaManuales.cs" />
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="Models\UNModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -3498,6 +3499,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Files\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Inspinia\bootstrap.css.map" />
