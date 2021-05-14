@@ -217,6 +217,7 @@
     <Compile Include="Controllers\TotalOrdenesController.cs" />
     <Compile Include="Controllers\SolicitudGuiasReenvioController.cs" />
     <Compile Include="DALConfig.cs" />
+    <Compile Include="DAL\Actualizaciones\DALActualizaciones.cs" />
     <Compile Include="DAL\Almacenes\DALAlmacenes.cs" />
     <Compile Include="DAL\Almacenes\DALAltaProveedor.cs" />
     <Compile Include="DAL\ManualesOperativos\DALManualesOperativos.cs" />

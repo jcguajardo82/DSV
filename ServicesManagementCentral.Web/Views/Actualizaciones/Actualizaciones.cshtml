@@ -28,7 +28,7 @@
                                 </span>
                                 <br />
                                 <input name="docInv" id="docInv" type="file" accept=".csv" img src="~/Content/images/theme/folder.png" style="width:240px;height:110px;" runat="server" />
-                                <output id="docInvout" />
+                                <output type="hidden" id="docInvout" />
                                 <br />
                             </td>
                             <td style="text-align:center;padding-left:50px;">
@@ -82,8 +82,15 @@
                     return;
                 }
                 var sumDisp = 0;
+                var totCod = 0;
                 for (var i = 7; i + 9 <= fileExcel.length; i = i + 5) {
                     sumDisp = sumDisp + parseInt(fileExcel[i]);
+                    totCod += 1;
+                }
+                var TrailerTotCod = fileExcel[elemExcel - 2];
+                if (totCod != TrailerTotCod) {
+                    alert("No coincide el Total de Códigos!");
+                    return;
                 }
                 var TrailerSum = fileExcel[elemExcel - 1];
                 if (sumDisp != TrailerSum) {
@@ -103,6 +110,7 @@
                         debugger;
                         if (json.Success) {
                             alert(json.resp);
+                            location.reload();
                         }
                         else {
                             alert(json.Message);
