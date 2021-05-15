@@ -1144,7 +1144,7 @@ namespace ServicesManagement.Web.Controllers
                         var msj = string.Format("Orden {0}. Cambio de tienda. Anterior:  {1}. Nueva: {2}"
                            , NumOrden, NumUnNva, Session["Id_Num_UN"].ToString());
 
-                        DataSet ds = DALServicesM.TraspasaOrdenDeTienda(int.Parse(NumOrden), int.Parse(Session["Id_Num_UN"].ToString()));
+                        DataSet ds = DALServicesM.TraspasaOrdenDeTienda(NumOrden, int.Parse(Session["Id_Num_UN"].ToString()));
 
                         var result = new { Success = true, Message = msj };
                         return Json(result, JsonRequestBehavior.AllowGet);
@@ -1649,7 +1649,7 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult ActualizaFecEntre(string fecha, string rangoHora, string OrdenNo
+        public ActionResult ActualizaFecEntre(string fecha, string rangoHora, string UeNo
             , string fechaOriginal, string pass)
         {
             try
@@ -1671,9 +1671,9 @@ namespace ServicesManagement.Web.Controllers
                     if (dbPass.Equals(pass))
                     {
                         var nuevaFecEnt = (fecha + " " + rangoHora);
-                        DataSet ds = DALServicesM.Fec_Entrega_Uup(int.Parse(OrdenNo), nuevaFecEnt);
+                        DataSet ds = DALServicesM.Fec_Entrega_Uup(UeNo, nuevaFecEnt);
 
-                        string msj = string.Format("Orden: {0}.Cambio de fecha de entrega. Anterior {1}. Nueva {2}", OrdenNo
+                        string msj = string.Format("Orden: {0}.Cambio de fecha de entrega. Anterior {1}. Nueva {2}", UeNo
                             , fechaOriginal, nuevaFecEnt);
 
                         var result = new { Success = true, Message = msj };

@@ -47,7 +47,7 @@
                                                     <th colspan="2" style="text-align: left; padding-left: 16px; padding-top: 20px">
                                                         @*<IMG SRC=resources/Logo-Soriana_283x57.jpg ALT=Soriana BORDER=0 WIDTH=283 HEIGHT=57>*@
                                                     </th>
-                                                    <th colspan="2" style="text-align: right; padding-right: 200px; padding-top: 20px"><span style="font-size: 25px; font-weight: bold;">Orden: </span><span style="font-size: 25px; font-weight: bold;">@p["OrderNo"]</span></th>
+                                                    <th colspan="2" style="text-align: right; padding-right: 200px; padding-top: 20px"><span style="font-size: 25px; font-weight: bold;">Consignación: </span><span style="font-size: 25px; font-weight: bold;">@p["UeNo"]</span></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -57,7 +57,7 @@
                                                     </td>
                                                     <td style="text-align: right;"></td>
                                                     <td style="text-align: right;">
-                                                        <a class="btn btn-danger" onclick="popUpCanOrden(@p["OrderNo"])">Cancela / Autoriza</a>
+                                                        <a class="btn btn-danger" onclick="popUpCanOrden(@p["UeNo"])">Cancela / Autoriza</a>
                                                         @*<a class="btn btn-danger" href=CancelaOrden.asp?orden =101098126>Cancela / Autoriza</a>*@
                                                     </td>
                                                     <td style="text-align: left;">
@@ -81,7 +81,7 @@
                                                                     }
                                                                     else
                                                                     {
-                                                                        <a href="@Url.Action("Embarque", "Ordenes", new {​​​​ order = @p["OrderNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
+                                                                        <a href="@Url.Action("Embarque", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
                                                                     }
                                                                 </p>
                                                             }
@@ -94,7 +94,7 @@
                                     </div>
                                 </div>
 
-                                <input id="OrderNo" name="OrderNo" value="@p["OrderNo"]" style="visibility:hidden" />
+                                <input id="OrderNo" name="OrderNo" value="@p["UeNo"]" style="visibility:hidden" />
                                 <input id="UeNo" name="UeNo" value="@p["UeNo"]" style="visibility:hidden" />
                                 <input id="StoreNum" name="StoreNum" value="@p["StoreNum"]" style="visibility:hidden" />
                                 <input id="OrderStatus" name="OrderStatus" value="@p["StatusUe"]" style="visibility:hidden" />
