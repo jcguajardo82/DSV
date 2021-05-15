@@ -1911,7 +1911,7 @@ namespace ServicesManagement.Web
         #endregion
 
         #region Cancelacion Orden
-        public static DataSet CancelaOrden_Uup(int Orden, string motivo = "", int Id_Num_MotCan = 0)
+        public static DataSet CancelaOrden_Uup(int Orden, string motivo = "", int Id_Num_MotCan = 0,string UeNo="")
         {
             DataSet ds = new DataSet();
 
@@ -1932,10 +1932,17 @@ namespace ServicesManagement.Web
                 parametros.Add("@motivo", motivo);
                 if (Id_Num_MotCan != 0)
                     parametros.Add("@Id_Num_MotCan", Id_Num_MotCan);
+                parametros.Add("@UeNo", UeNo);
 
 
+                //[dbo].[ecCancelaOrden_Uup_V2]
+                //@Orden INT
+                //, @motivo            VARCHAR(50)
+                //,@Id_Num_MotCan TINYINT = NULL
+                //, @UeNo            VARCHAR(25
 
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "ecCancelaOrden_Uup", false, parametros);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "ecCancelaOrden_Uup_V2", false, parametros);
 
                 return ds;
             }
@@ -2246,7 +2253,7 @@ namespace ServicesManagement.Web
 
         public static void UpdProductsToOrder(string OrderNo, string PosBarcode, string PosProductDescription
             , string PosQuantity, string PosPriceNormalSale, string PosPriceOfferSale
-            , string ProductId, string UnitMeasure, string comments)
+            , string ProductId, string UnitMeasure, string comments,string UeNo)
         {
 
 
@@ -2275,8 +2282,11 @@ namespace ServicesManagement.Web
                 parametros.Add("@ProductId", ProductId);
                 parametros.Add("@UnitMeasure", UnitMeasure);
                 parametros.Add("@Desc_ArtCarObser", comments);
+                parametros.Add("@UeNo", UeNo);
 
-                Soriana.FWK.FmkTools.SqlHelper.ExecuteNonQuery(CommandType.StoredProcedure, "upCorpOms_Upd_ProductsToOrder", false, parametros);
+                
+
+                Soriana.FWK.FmkTools.SqlHelper.ExecuteNonQuery(CommandType.StoredProcedure, "upCorpOms_Upd_ProductsToOrder_v2", false, parametros);
 
 
             }

@@ -911,7 +911,7 @@ namespace ServicesManagement.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetCodigoApi(string cod, string cant, string clave, string medida, string action, string order, string comentarios)
+        public JsonResult GetCodigoApi(string cod, string cant, string clave, string medida, string action, string order, string comentarios, string UeNo)
         {
             try
             {
@@ -1004,7 +1004,8 @@ namespace ServicesManagement.Web.Controllers
                 o.ProductosSuministrar.Add(p);
 
                 //DALServicesM.UpdProductsToOrder(order, cod, p.DescripcionArticulo, cant, p.Precio.ToString(), p.Precio.ToString(), p.IdentificadorProducto, medida, comentarios);
-                DALServicesM.UpdProductsToOrder(order, cod, p.DescripcionArticulo, cant, p.Precio.ToString(), p.Precio.ToString(), p.IdentificadorProducto, medida, action.Trim().Equals("HB") ? "hacia abajo" : "hacia arriba"); //comentarios);
+                DALServicesM.UpdProductsToOrder(order, cod, p.DescripcionArticulo, cant, p.Precio.ToString(), p.Precio.ToString(), p.IdentificadorProducto
+                    , medida, action.Trim().Equals("HB") ? "hacia abajo" : "hacia arriba", UeNo); //comentarios);
                 var result = new { Success = true, json = codigo.Description };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -1342,7 +1343,7 @@ namespace ServicesManagement.Web.Controllers
 
         #region Cancelacion de Orden
         [HttpPost]
-        public JsonResult CancelOrder(string OrderNo, string pass, string Id_Num_MotCan = "0", string motivoCancelacion = "")
+        public JsonResult CancelOrder(string OrderNo, string pass, string Id_Num_MotCan = "0", string motivoCancelacion = "", string UeNo = "")
         {
             try
             {
@@ -1356,7 +1357,7 @@ namespace ServicesManagement.Web.Controllers
                     {
                         if (ds.Tables[0].Rows[0][0].ToString().Equals(pass))
                         {
-                            DALServicesM.CancelaOrden_Uup(int.Parse(OrderNo), motivoCancelacion, int.Parse(Id_Num_MotCan));
+                            DALServicesM.CancelaOrden_Uup(int.Parse(OrderNo), motivoCancelacion, int.Parse(Id_Num_MotCan), UeNo);
 
                             isSucces = true;
                         }
