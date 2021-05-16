@@ -23,7 +23,7 @@
         int index = 0;
         foreach (System.Data.DataRow p in dt.Rows)
         {
-            
+
             <div class="row">
                 <div class="col-sm-3"><h2>Consignación: @p["UeNo"]</h2></div>
                 <div class="col-sm-5"><h2>Fecha Arribo: @p["DeliveryDate"]</h2> </div>
@@ -155,76 +155,6 @@
                                     }
                                 }
 
-
-
-
-                                @*
-                                    <tr>
-                                        <td style="text-align:center">
-                                            <a href="@Url.Action(" OrdenDetalle","Ordenes")" title="Click para ver el detalle de la orden" class="btn btn-link">100998006</a>
-                                        </td>
-                                        <td style="text-align:right">5</td>
-                                        <td style="text-align:center">Entrega en Tienda</td>
-                                        <td style="text-align:center">2020-11-10 19:00</td>
-                                        <td style="text-align:center"> <span class="label label-danger">2020-11-10 19:00</span></td>
-                                        <td>AMEX VS Entrega</td>
-                                        <td>Juan Perez</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align:center">
-                                            <a href="@Url.Action(" DespOrden","Ordenes")" title="Click para ver el detalle de la orden" class="btn btn-link">100998006</a>
-                                        </td>
-                                        <td style="text-align:right">5</td>
-                                        <td>Entrega en Tienda</td>
-                                        <td style="text-align:center">2020-11-10 19:00</td>
-                                        <td style="text-align:center">2020-11-10 19:00</td>
-                                        <td>AMEX VS Entrega</td>
-                                        <td>Juan Perez</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align:center">
-                                            <a href="@Url.Action(" OrdenDetalle","Ordenes")" title="Click para ver el detalle de la orden" class="btn btn-link">100998006</a>
-                                        </td>
-                                        <td style="text-align:right">5</td>
-                                        <td style="text-align:center">Entrega en Tienda</td>
-                                        <td style="text-align:center">2020-11-10 19:00</td>
-                                        <td style="text-align:center"> <span class="label label-danger">2020-11-10 19:00</span></td>
-                                        <td>AMEX VS Entrega</td>
-                                        <td>Juan Perez</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align:center">
-                                            <a href="@Url.Action(" DespOrden","Ordenes")" title="Click para ver el detalle de la orden" class="btn btn-link">100998006</a>
-                                        </td>
-                                        <td style="text-align:right">5</td>
-                                        <td>Entrega en Tienda</td>
-                                        <td style="text-align:center">2020-11-10 19:00</td>
-                                        <td style="text-align:center">2020-11-10 19:00</td>
-                                        <td>AMEX VS Entrega</td>
-                                        <td>Juan Perez</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align:center">
-                                            <a href="@Url.Action(" OrdenDetalle","Ordenes")" title="Click para ver el detalle de la orden" class="btn btn-link">100998006</a>
-                                        </td>
-                                        <td style="text-align:right">5</td>
-                                        <td style="text-align:center">Entrega en Tienda</td>
-                                        <td style="text-align:center">2020-11-10 19:00</td>
-                                        <td style="text-align:center"> <span class="label label-danger">2020-11-10 19:00</span></td>
-                                        <td>AMEX VS Entrega</td>
-                                        <td>Juan Perez</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align:center">
-                                            <a href="@Url.Action(" DespOrden","Ordenes")" title="Click para ver el detalle de la orden" class="btn btn-link">100998006</a>
-                                        </td>
-                                        <td style="text-align:right">5</td>
-                                        <td>Entrega en Tienda</td>
-                                        <td style="text-align:center">2020-11-10 19:00</td>
-                                        <td style="text-align:center">2020-11-10 19:00</td>
-                                        <td>AMEX VS Entrega</td>
-                                        <td>Juan Perez</td>
-                                    </tr>*@
                             </tbody>
                         </table>
                     </div>
@@ -284,7 +214,118 @@
             }
             if (UeType.Equals("DST"))
             {
-                <div class="row"><h2>Aqui debe de ir DST</h2></div>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Guias diponibles: </h5> <select class="form-control" id="sel1">
+                                    <option>4562734567898230000000</option>
+                                    <option>4536732345621340000000</option>
+                                </select>
+                                <h5>Embalaje</h5><br />
+                                Su Embalaje
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <a class="link-primary" onclick="popEmbalaje()">+ AGREGAR OTRO PAQUETE</a>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <select class="form-control" id="sel1">
+                                            <option>KG/CM</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table id="tblEmbalaje" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 1115px;">
+                                            <thead class="bg-primary">
+                                                <tr role="row">
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>NO DE PAQUETES</b><br />Max. 25</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO X PAQUETE</b><br />Peso max. 1000kg</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>DIMENSIONES X PAQUETE</b><br />L X AN X AL</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @*<tr>
+                                                    <td>1</td>
+                                                    <td>KG</td>
+                                                    <td>X X X</td>
+                                                </tr>*@
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <b>Fecha de Envio</b>
+                                        <div class="alert alert-warning">
+                                            Vernes, 28 de mayo de 2021
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal inmodal fade" id="dlgAddProdcut" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header pt-3 pb-1">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <p>Embalaje</p>
+                            </div>
+                            <div class="modal-body">
+                                <form id="frmCreateServicios">
+                                    <table class="table" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Cantidad</th>
+                                                <th>Peso KG</th>
+                                                <th colspan="3" style="text-align:center;">Dimensiones (cm)</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="form-control input-sm" placeholder="Cantidad" id="txtCant" /></td>
+                                           
+                                                <td><input type="text" class="form-control input-sm" placeholder="KG" id="txtKG"/></td>
+                                          
+                                                <td><input type="text" class="form-control input-sm" placeholder="Largo" id="txtLargo" /></td>
+                                            
+                                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" id="txtAncho" /></td>
+                                            
+                                                <td><input type="text" class="form-control input-sm" placeholder="Altura" id="txtAltura"/></td>
+                                            </tr>
+                                        </tbody>
+                                        @*<tfoot>
+                                            <tr>
+                                                <td><b>Total</b></td>                                            
+                                                <td><b>1</b></td>                                            
+                                                <td><b>0.5 KG</b></td>
+                                                <td colspan="3"></td>
+                                            </tr>
+
+                                        </tfoot>*@
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id=" btnActualizaMp" onclick="AddEmbalaje()">Asignar Guía</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             }
         }
     </div>
@@ -293,11 +334,19 @@
 
     <script type="text/javascript">
     $(document).ready(function () {
-        GetSuetidores();
+        //GetSurtidores();
 
     });
 
+        function AddEmbalaje() {
 
+            
+            $('#tblEmbalaje').append('<tr><td>' + $("#txtCant").val() + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLargo").val() + ' x ' + $("#txtAncho").val() + ' x ' + $("#txtAltura").val()+' </td></tr>');
+        }
+
+        function popEmbalaje() {
+            $('#dlgAddProdcut').modal('show');
+        }
 
     function FinalizaEmbarque() {
 
