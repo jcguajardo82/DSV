@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Gma.QrCodeNet.Encoding;
+using Gma.QrCodeNet.Encoding.Windows.Render;
 using ServicesManagement.Web.Models;
 using Soriana.OMS.Ordenes.Common.DTO;
 using System;
@@ -15,6 +17,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -905,10 +909,46 @@ namespace ServicesManagement.Web.Controllers
             else
             {
                 Session["OrderSelected"] = DALServicesM.GetOrdersByGuiaEmb(guia);
+                GenerarCodigoQR(guia);
             }
             return View();
 
         }
+        public ActionResult GenerarCodigoQR(string guia)
+        {
+            try
+            {
+                string readString = guia;
+                QrEncoder qrEncoder = new QrEncoder(ErrorCorrectionLevel.H);
+                QrCode qrCode = new QrCode();
+
+                qrEncoder.TryEncode(guia, out qrCode);
+
+                GraphicsRenderer renderer = new GraphicsRenderer(new FixedCodeSize(400, QuietZoneModules.Zero), Brushes.Black, Brushes.White);
+
+                MemoryStream ms = new MemoryStream();
+
+                renderer.WriteToStream(qrCode.Matrix, ImageFormat.Png, ms);
+                var imageTemporal = new Bitmap(ms);
+                var imagen = new Bitmap(imageTemporal, new Size(new Point(200, 200)));
+                //(Image)imageTemporal.BackgroundImage = imagen;
+
+                // Guardar en el disco duro la imagen (Carpeta del proyecto)
+                var filename = guia + "_.png";
+                string pngGuia = Path.Combine(Server.MapPath("~/Files/"), filename);
+                imagen.Save(pngGuia, ImageFormat.Png);
+
+                var result = new { Success = true, resp = pngGuia };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
 
         [HttpPost]
         public JsonResult GetCodigoApi(string cod, string cant, string clave, string medida, string action, string order, string comentarios, string UeNo)

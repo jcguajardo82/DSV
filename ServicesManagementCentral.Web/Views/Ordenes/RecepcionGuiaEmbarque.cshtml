@@ -107,7 +107,7 @@
                                                     <div class="row">
                                                         <div class="col-2">
                                                             <div class="col-md-2">
-                                                                <img src="~/Files/qr.png" width="200"height="200">
+                                                                <img src="/Files/@p["TrackingNo"]_.png" width="200" height="200">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -659,7 +659,7 @@
     <link href="~/Content/PrintModal.css" rel="stylesheet" />
     @*@Scripts.Render("~/plugins/dataPicker")
         @Scripts.Render("~/plugins/slimScroll")*@
-    <script type="text/javascript">
+<script type="text/javascript">
         document.getElementById("btnPrint").onclick = function () {
 
             //$('.demo').printThis({
@@ -689,7 +689,32 @@
             window.print();
         }
 
+    function GenerarQR(guia) {
+            var _guia = guia
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GenerarCodigoQR", "Ordenes")',
+                data: {
+                    guia: _guia
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        json.resp
+                        //sel.empty();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
 
+                }
+            });
+        }
 
         $('.input-group.date').datepicker({
             closeText: 'Cerrar',
@@ -959,7 +984,7 @@
                 datatype: "html",
                 success: function (json) {
                     if (json.Success) {
-
+                        document.getElementById("pathQR").value = json.resp;
                         //location.reload();
 
                         return false;
@@ -978,7 +1003,7 @@
         function ShowFilter() {
             $("#filter").collapse('toggle');
         };
-    </script>
+</script>
 }
 
 
