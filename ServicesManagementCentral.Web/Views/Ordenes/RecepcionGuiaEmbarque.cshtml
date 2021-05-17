@@ -35,9 +35,7 @@
             System.Data.DataSet ds = (System.Data.DataSet)Session["OrderSelected"];
             var dt = ds.Tables[0];
 
-
             int index = 0;
-
             foreach (System.Data.DataRow p in dt.Rows)
             {
                 index++;
@@ -51,70 +49,76 @@
                 var tipoEntrega = p["DeliveryType"].ToString();
                 if (tipoEntrega == "Entrega a domicilio")
                 {
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="ibox-content">
-                                <div class="feed-activity-list">
-                                    <div class="feed-element">
-                                        <div>
-                                            @if (index == 1)
-                                            {
-                                                <i class="fa fa-bus payment-icon-big text-success"></i>
-                                                <h4>Guia ED</h4>
-                                                <h4 class="text-navy">@p["TrackingNo"]</h4>
-                                                <p>
-                                                    <span><strong>Chofer:</strong> @p["ShipperName"]</span><br>
-                                                    <span><strong>Fecha Asignacion:</strong> @p["CarrierDate"]</span>
-                                                </p>
-                                                <table id="tblGuias" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
-                                                    <thead class="bg-danger-sor">
-                                                        <tr>
-                                                            <th>Orden:</th>
-                                                            <th>Entrega:</th>
-                                                            <th>Nombre del Cliente:</th>
-                                                            <th>Dirección:</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (System.Data.DataRow pr in dt.Rows)
-                                                        {
+                    if (index == 1)
+                    {
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="ibox-content">
+                                    <div class="feed-activity-list">
+                                        <div class="feed-element">
+                                            <div>
+                                                @if (index == 1)
+                                                {
+                                                    <i class="fa fa-bus payment-icon-big text-success"></i>
+                                                    <h4>Guia ED</h4>
+                                                    <h4 class="text-navy">@p["TrackingNo"]</h4>
+                                                    <p>
+                                                        <span><strong>Chofer:</strong> @p["ShipperName"]</span><br>
+                                                        <span><strong>Fecha Asignacion:</strong> @p["CarrierDate"]</span>
+                                                    </p>
+                                                    <table id="tblGuias" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
+                                                        <thead class="bg-danger-sor">
                                                             <tr>
-                                                                <td class="text-navy">@pr["OrderNo"]</td>
-                                                                <td class="text-navy">@pr["OrderDeliveryDate"].ToString()</td>
-                                                                <td class="text-navy">@pr["CustomerName"]</td>
-                                                                <td>
-                                                                    @pr["Address1"]<br>
-                                                                    @pr["Address2"], @pr["PostalCode"]<br>
-                                                                    @pr["Phone"]
-                                                                </td>
+                                                                <th>Orden:</th>
+                                                                <th>Entrega:</th>
+                                                                <th>Nombre del Cliente:</th>
+                                                                <th>Dirección:</th>
                                                             </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            }
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (System.Data.DataRow pr in dt.Rows)
+                                                            {
+                                                                <tr>
+                                                                    <td class="text-navy">@pr["OrderNo"]</td>
+                                                                    <td class="text-navy">@pr["OrderDeliveryDate"].ToString()</td>
+                                                                    <td class="text-navy">@pr["CustomerName"]</td>
+                                                                    <td>
+                                                                        @pr["Address1"]<br>
+                                                                        @pr["Address2"], @pr["PostalCode"]<br>
+                                                                        @pr["Phone"]
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="row">
-                                <div class="payment-card">
-                                    <div class="col-md-12">
-                                        <form role="form" id="payment-form">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="col-md-8">
+                            @if (index == 1)
+                            {
+                                <div class="col-lg-4">
+                                    <div class="row">
+                                        <div class="payment-card">
+                                            <div class="col-md-12">
+                                                <form role="form" id="payment-form">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="col-md-8">
 
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
-                    </div>
+                    }
                 }
                 else
                 {
@@ -152,8 +156,6 @@
                                             </address>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -179,8 +181,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group">
@@ -188,14 +188,10 @@
                                                         <div class="input-group">
                                                             <input type="text" class="form-control" id="nombre_@index" name="nombre_@index" placeholder="Nombre e Identificacion" required="">
                                                             <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
-
-
                                                             @*<label class="col-sm-3 col-form-label">Nombre e Identificación:</label>*@
 
                                                             @*<div class="col-sm-9"><input type="text" id="nombre" name="nombre" placeholder="Nombre e Identificación" class="form-control"></div>
                                                                 <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>*@
-
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -207,7 +203,7 @@
                                                         <div class="input-group date">
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                             <input class="form-control datepicker" id="fechaE_@index" name="fechaE_@index"
-                                                                   placeholder="Del" type="text" value="">
+                                                                    placeholder="Del" type="text" value="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -239,8 +235,6 @@
                                                         </div>
                                                     </div>*@
                                             </div>
-
-
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="col-md-12">
@@ -266,24 +260,18 @@
                                                 </div>
                                             </div>
                                         </form>
-
                                     </div>
-
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 }
             }
         }
-
-    }
-
-
+     }
 
 </div>
+
 <div id="printThis" class="fa-democrat twelve columns">
     <div class="modal inmodal fade" id="dlgGuia" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl">
