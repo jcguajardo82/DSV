@@ -25,7 +25,7 @@
                             var dt6 = ds.Tables[5];
                             var dt7 = ds.Tables[6];
 
-
+                            var UeType = string.Empty;
 
                             string OrderMovementDate = string.Empty;
                             if (dt4.Rows.Count > 0)
@@ -74,16 +74,23 @@
                                                             {
                                                                 <p>
                                                                     Siguiente movimiento:
-
                                                                     @if (p["OrderStatus"].ToString().Trim().Equals("9"))
                                                                     {
                                                                         <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new {​​​​ guia = @p["TrackingNo"] }​​​​)" title="Click para confirmar" class="btn btn-link"> Confirma entrega (Captura de datos finales de entrega de pedido.)</a>
                                                                     }
                                                                     else
                                                                     {
-                                                                        <a href="@Url.Action("Embarque", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
+                                                                        if (p["UeType"].ToString().Trim().Equals("SETC"))
+                                                                        {
+                                                                            <a href="@Url.Action("Embarque", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a href="@Url.Action("Embarque", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de paquetes (Captura numero de paquetes a utilizar.)</a>
+                                                                        }
                                                                     }
                                                                 </p>
+
                                                             }
                                                         }
                                                     </td>
@@ -98,6 +105,8 @@
                                 <input id="UeNo" name="UeNo" value="@p["UeNo"]" style="visibility:hidden" />
                                 <input id="StoreNum" name="StoreNum" value="@p["StoreNum"]" style="visibility:hidden" />
                                 <input id="OrderStatus" name="OrderStatus" value="@p["StatusUe"]" style="visibility:hidden" />
+                                <input id="UeType" name="UeType" value="@p["UeType"]" style="visibility:hidden" />
+                                UeType = @p["UeType"].ToString();
 
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -500,60 +509,60 @@
 
 
                                                     @*<tr style="padding: 0; text-space-collapse: collapse">
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>1</small></td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                                                <small>
-                                                                    303917<br>
-                                                                    230570000005
-                                                                </small>
-                                                            </td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>CUERO CERDO KG                                                                                                                                                                                                                                                 </small></td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                                                <small>
-                                                                    0.3 Kg   <br>0.3 Kg   <br><b>0.3 Kg   </b>
-                                                                </small>
-                                                            </td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                                                <small>
-                                                                    $44.90<br>$44.90<br><b>$38.90</b>
-                                                                </small>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>1</small></td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
+                                                <small>
+                                                    303917<br>
+                                                    230570000005
+                                                </small>
+                                            </td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>CUERO CERDO KG                                                                                                                                                                                                                                                 </small></td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
+                                                <small>
+                                                    0.3 Kg   <br>0.3 Kg   <br><b>0.3 Kg   </b>
+                                                </small>
+                                            </td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
+                                                <small>
+                                                    $44.90<br>$44.90<br><b>$38.90</b>
+                                                </small>
 
-                                                            </td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                                                <small>
-                                                                    $13.47<br>$13.47<br><b>$13.47</b>
-                                                                </small>
+                                            </td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
+                                                <small>
+                                                    $13.47<br>$13.47<br><b>$13.47</b>
+                                                </small>
 
-                                                            </td>
-                                                        </tr>
+                                            </td>
+                                        </tr>
 
-                                                        <tr style="padding: 0; text-space-collapse: collapse">
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>2</small></td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                                                <small>
-                                                                    676018<br>
-                                                                    7501198350104
-                                                                </small>
-                                                            </td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>AGUA MINERAL CANADA DRY 1 LT PET                                                                                                                                                                                                                               </small></td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                                                <small>
-                                                                    2 Pza  <br>1 Pza  <br><b>1 Pza  </b>
-                                                                </small>
-                                                            </td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                                                <small>
-                                                                    $14.00<br>$14.00<br><b>$14.00</b>
-                                                                </small>
+                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>2</small></td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
+                                                <small>
+                                                    676018<br>
+                                                    7501198350104
+                                                </small>
+                                            </td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>AGUA MINERAL CANADA DRY 1 LT PET                                                                                                                                                                                                                               </small></td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
+                                                <small>
+                                                    2 Pza  <br>1 Pza  <br><b>1 Pza  </b>
+                                                </small>
+                                            </td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
+                                                <small>
+                                                    $14.00<br>$14.00<br><b>$14.00</b>
+                                                </small>
 
-                                                            </td>
-                                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                                                <small>
-                                                                    $28.00<br>$14.00<br><b>$14.00</b>
-                                                                </small>
+                                            </td>
+                                            <td style="text-align: left; padding: 0; text-space-collapse: collapse">
+                                                <small>
+                                                    $28.00<br>$14.00<br><b>$14.00</b>
+                                                </small>
 
-                                                            </td>
-                                                        </tr>*@
+                                            </td>
+                                        </tr>*@
 
                                                 </tbody>
                                                 <tfoot>
