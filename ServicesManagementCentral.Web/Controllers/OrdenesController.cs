@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Gma.QrCodeNet.Encoding;
+using Gma.QrCodeNet.Encoding.Windows.Render;
 using ServicesManagement.Web.Models;
 using Soriana.OMS.Ordenes.Common.DTO;
 using System;
@@ -15,6 +17,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -905,13 +909,49 @@ namespace ServicesManagement.Web.Controllers
             else
             {
                 Session["OrderSelected"] = DALServicesM.GetOrdersByGuiaEmb(guia);
+                GenerarCodigoQR(guia);
             }
             return View();
 
         }
+        public ActionResult GenerarCodigoQR(string guia)
+        {
+            try
+            {
+                string readString = guia;
+                QrEncoder qrEncoder = new QrEncoder(ErrorCorrectionLevel.H);
+                QrCode qrCode = new QrCode();
+
+                qrEncoder.TryEncode(guia, out qrCode);
+
+                GraphicsRenderer renderer = new GraphicsRenderer(new FixedCodeSize(400, QuietZoneModules.Zero), Brushes.Black, Brushes.White);
+
+                MemoryStream ms = new MemoryStream();
+
+                renderer.WriteToStream(qrCode.Matrix, ImageFormat.Png, ms);
+                var imageTemporal = new Bitmap(ms);
+                var imagen = new Bitmap(imageTemporal, new Size(new Point(200, 200)));
+                //(Image)imageTemporal.BackgroundImage = imagen;
+
+                // Guardar en el disco duro la imagen (Carpeta del proyecto)
+                var filename = guia + "_.png";
+                string pngGuia = Path.Combine(Server.MapPath("~/Files/"), filename);
+                imagen.Save(pngGuia, ImageFormat.Png);
+
+                var result = new { Success = true, resp = pngGuia };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
 
         [HttpPost]
-        public JsonResult GetCodigoApi(string cod, string cant, string clave, string medida, string action, string order, string comentarios)
+        public JsonResult GetCodigoApi(string cod, string cant, string clave, string medida, string action, string order, string comentarios, string UeNo)
         {
             try
             {
@@ -1004,7 +1044,8 @@ namespace ServicesManagement.Web.Controllers
                 o.ProductosSuministrar.Add(p);
 
                 //DALServicesM.UpdProductsToOrder(order, cod, p.DescripcionArticulo, cant, p.Precio.ToString(), p.Precio.ToString(), p.IdentificadorProducto, medida, comentarios);
-                DALServicesM.UpdProductsToOrder(order, cod, p.DescripcionArticulo, cant, p.Precio.ToString(), p.Precio.ToString(), p.IdentificadorProducto, medida, action.Trim().Equals("HB") ? "hacia abajo" : "hacia arriba"); //comentarios);
+                DALServicesM.UpdProductsToOrder(order, cod, p.DescripcionArticulo, cant, p.Precio.ToString(), p.Precio.ToString(), p.IdentificadorProducto
+                    , medida, action.Trim().Equals("HB") ? "hacia abajo" : "hacia arriba", UeNo); //comentarios);
                 var result = new { Success = true, json = codigo.Description };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -1144,7 +1185,7 @@ namespace ServicesManagement.Web.Controllers
                         var msj = string.Format("Orden {0}. Cambio de tienda. Anterior:  {1}. Nueva: {2}"
                            , NumOrden, NumUnNva, Session["Id_Num_UN"].ToString());
 
-                        DataSet ds = DALServicesM.TraspasaOrdenDeTienda(int.Parse(NumOrden), int.Parse(Session["Id_Num_UN"].ToString()));
+                        DataSet ds = DALServicesM.TraspasaOrdenDeTienda(NumOrden, int.Parse(Session["Id_Num_UN"].ToString()));
 
                         var result = new { Success = true, Message = msj };
                         return Json(result, JsonRequestBehavior.AllowGet);
@@ -1342,7 +1383,7 @@ namespace ServicesManagement.Web.Controllers
 
         #region Cancelacion de Orden
         [HttpPost]
-        public JsonResult CancelOrder(string OrderNo, string pass, string Id_Num_MotCan = "0", string motivoCancelacion = "")
+        public JsonResult CancelOrder(string OrderNo, string pass, string Id_Num_MotCan = "0", string motivoCancelacion = "", string UeNo = "")
         {
             try
             {
@@ -1356,7 +1397,7 @@ namespace ServicesManagement.Web.Controllers
                     {
                         if (ds.Tables[0].Rows[0][0].ToString().Equals(pass))
                         {
-                            DALServicesM.CancelaOrden_Uup(int.Parse(OrderNo), motivoCancelacion, int.Parse(Id_Num_MotCan));
+                            DALServicesM.CancelaOrden_Uup(int.Parse(OrderNo), motivoCancelacion, int.Parse(Id_Num_MotCan), UeNo);
 
                             isSucces = true;
                         }
@@ -1649,7 +1690,7 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult ActualizaFecEntre(string fecha, string rangoHora, string OrdenNo
+        public ActionResult ActualizaFecEntre(string fecha, string rangoHora, string UeNo
             , string fechaOriginal, string pass)
         {
             try
@@ -1671,9 +1712,9 @@ namespace ServicesManagement.Web.Controllers
                     if (dbPass.Equals(pass))
                     {
                         var nuevaFecEnt = (fecha + " " + rangoHora);
-                        DataSet ds = DALServicesM.Fec_Entrega_Uup(int.Parse(OrdenNo), nuevaFecEnt);
+                        DataSet ds = DALServicesM.Fec_Entrega_Uup(UeNo, nuevaFecEnt);
 
-                        string msj = string.Format("Orden: {0}.Cambio de fecha de entrega. Anterior {1}. Nueva {2}", OrdenNo
+                        string msj = string.Format("Orden: {0}.Cambio de fecha de entrega. Anterior {1}. Nueva {2}", UeNo
                             , fechaOriginal, nuevaFecEnt);
 
                         var result = new { Success = true, Message = msj };

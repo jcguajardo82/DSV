@@ -28,7 +28,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h1>Orden</h1>
+        <h1>Consignacion</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="~/ordenes/Index">Home</a>
@@ -42,7 +42,11 @@
         </ol>
     </div>
 </div>
+
 <div class="wrapper wrapper-content animated fadeInRight" style="padding-top: 0px;">
+    @{
+        var UeType = string.Empty;
+    }
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
@@ -127,14 +131,16 @@
                                 <input id="OrderStatus" name="OrderStatus" value="@p["StatusUe"]" style="visibility:hidden" />
                                 <input type="hidden" id="hddIdSurtidor" value="@p["Id_Supplier"]" />
                                 <input type="hidden" id="hddFecEntrega" value=" @p["OrderDeliveryDate"]" />
+                                <input id="UeType" name="UeType" value="@p["UeType"]" style="visibility:hidden" />
+                                UeType = @p["UeType"].ToString();
 
                                 <div class="row">
 
                                     <div class="col-sm-4 text-left">
-                                        <h4>No. Orden</h4>
+                                        <h4>No. Consignacion</h4>
                                         <h4 class="text-navy">
 
-                                            <a href="@Url.Action("ConsultaDetalle","Ordenes", new { order = @p["OrderNo"].ToString()})">  @p["UeNo"]</a>
+                                            <a href="@Url.Action("ConsultaDetalle","Ordenes", new { order = @p["UeNo"].ToString()})">  @p["UeNo"]</a>
                                         </h4>
                                         <p>
                                             <span><strong>Fecha de Solicitud:</strong> @p["OrderDate"]</span><br>
@@ -216,6 +222,7 @@
                                 <table class="table invoice-table">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Num</th>
                                             <th>Codigo</th>
                                             <th style="text-align:left;">Descripción</th>
@@ -225,8 +232,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
-
 
                                         @foreach (System.Data.DataRow p in dt2.Rows)
                                         {
@@ -240,6 +245,9 @@
                                             }
 
                                             <tr>
+                                                <td>
+                                                    <img class="image" src="@p["ArticuloFoto"]" width=90 height=90>
+                                                </td>
                                                 <td>@index</td>
                                                 <td>@p["Barcode"]</td>
                                                 <td style="text-align:left;">
@@ -285,7 +293,14 @@
                                             {
                                                 <tr>
                                                     <td>@string.Format("{0}.- {1}", index, @p["OrderComments"])</td>
-                                                    <td>  <a class="text-muted" onclick="DelObserv(@p["Id_Cnsc_CarObs"],@p["CnscOrder"])"><i class="fa fa-close"></i> Eliminar</a></td>
+                                                    @if (UeType.Equals("SETC"))
+                                                    {
+                                                        <td>  <a class="text-muted" onclick="DelObserv(@p["Id_Cnsc_CarObs"],@p["CnscOrder"])"><i class="fa fa-close"></i> Eliminar</a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
+                                                    }
                                                 </tr>
                                                 index++;
                                             }
@@ -300,9 +315,104 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox">
+    @if (UeType.Equals("SETC"))
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <table class="table shoping-cart-table">
+                                <tbody>
+                                    <tr>
+                                        <td width="90">
+                                            <div class="cart-product-imitation">
+                                                <i class="fa fa-product-hunt"></i>
+                                            </div>
+                                        </td>
+                                        <td class="desc">
+                                            <h3>
+                                                <a href="#" class="text-navy">
+                                                    Ajustes a la Orden
+                                                </a>
+                                            </h3>
+                                            <div class="form-group row">
+                                                <label class="col-sm-1 col-form-label">Codigo:</label>
+
+                                                <div class="col-sm-3"><input type="number" placeholder="codigo" id="in_codigo" class="form-control"></div>
+
+                                                <label class="col-sm-1 col-form-label">Cantidad:</label>
+
+                                                @*<div class="col-sm-2"><input type="number" placeholder="cantidad" id="in_cantidad" class="form-control"></div>*@
+                                                <div class="col-sm-2">
+                                                    <input type="number" pattern="^[0-9]+" placeholder="cantidad" id="in_cantidad" min="0"
+                                                           class="form-control" oninput="this.value = Math.max(this.value, 0)">
+                                                </div>
+
+                                                <div class="col-sm-3">
+
+                                                    @*<select class="form-control" id="IdMedida" name="IdMedida">
+                                                            <option selected="selected" value="1">--Unidad de Medida--</option>
+                                                            <option value="KG">KG</option>
+                                                            <option value="PZA">PZA</option>
+                                                        </select>*@
+                                                </div>
+
+                                                <div class="col-sm-2">
+                                                    <dl class="xl m-b-none">
+                                                        <dt> Ajuste de peso (si aplica)</dt>
+                                                        <dd>
+                                                            <div>
+                                                                <label>
+                                                                    <input type="radio" checked="" value="HA" id="optionsRadios1" name="optionsRadios"> Hacia arriba
+                                                                </label>
+                                                            </div>
+                                                        </dd>
+                                                        <dd>
+                                                            <div>
+                                                                <label>
+                                                                    <input type="radio" value="HB" id="optionsRadios2" name="optionsRadios"> Hacia abajo
+                                                                </label>
+                                                            </div>
+                                                        </dd>
+                                                    </dl>
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Clave Autorizacion:</label>
+
+                                                <div class="col-sm-6"><input type="password" placeholder="clave autorizacion" id="autorization" class="form-control"></div>
+
+
+                                            </div>
+                                        </td>
+                                        <td width="65"></td>
+                                        <td>
+                                            <div class="m-t-sm">
+                                                <a onclick="AddCodigo()" class="text-muted"><i class="fa fa-plus"></i> Agregar</a>
+                                                @*|
+                                                    <a href="#" class="text-muted"><i class="fa fa-trash"></i> Remove</a>*@
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr></tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
                 <div class="ibox-content">
                     <div class="table-responsive">
                         <table class="table shoping-cart-table">
@@ -310,135 +420,43 @@
                                 <tr>
                                     <td width="90">
                                         <div class="cart-product-imitation">
-                                            <i class="fa fa-product-hunt"></i>
+                                            <i class="fa fa-comment"></i>
                                         </div>
                                     </td>
                                     <td class="desc">
                                         <h3>
                                             <a href="#" class="text-navy">
-                                                Ajustes a la Orden
+                                                Observaciones
                                             </a>
                                         </h3>
                                         <div class="form-group row">
-                                            <label class="col-sm-1 col-form-label">Codigo:</label>
+                                            <label class="col-sm-3 col-form-label">AGREGAR OBSERVACIONES:</label>
 
-                                            <div class="col-sm-3"><input type="number" placeholder="codigo" id="in_codigo" class="form-control"></div>
+                                            <div class="col-sm-3"><input type="text" id="txtObservaciones" placeholder="observaciones" class="form-control"></div>
 
-                                            <label class="col-sm-1 col-form-label">Cantidad:</label>
-
-                                            @*<div class="col-sm-2"><input type="number" placeholder="cantidad" id="in_cantidad" class="form-control"></div>*@
-                                            <div class="col-sm-2">
-                                                <input type="number" pattern="^[0-9]+" placeholder="cantidad" id="in_cantidad" min="0"
-                                                       class="form-control" oninput="this.value = Math.max(this.value, 0)">
-                                            </div>
-
-                                            <div class="col-sm-3">
-
-                                                @*<select class="form-control" id="IdMedida" name="IdMedida">
-                                                        <option selected="selected" value="1">--Unidad de Medida--</option>
-                                                        <option value="KG">KG</option>
-                                                        <option value="PZA">PZA</option>
-                                                    </select>*@
-                                            </div>
-
-                                            <div class="col-sm-2">
-                                                <dl class="xl m-b-none">
-                                                    <dt> Ajuste de peso (si aplica)</dt>
-                                                    <dd>
-                                                        <div>
-                                                            <label>
-                                                                <input type="radio" checked="" value="HA" id="optionsRadios1" name="optionsRadios"> Hacia arriba
-                                                            </label>
-                                                        </div>
-                                                    </dd>
-                                                    <dd>
-                                                        <div>
-                                                            <label>
-                                                                <input type="radio" value="HB" id="optionsRadios2" name="optionsRadios"> Hacia abajo
-                                                            </label>
-                                                        </div>
-                                                    </dd>
-                                                </dl>
-                                            </div>
 
                                         </div>
 
                                     </td>
 
-                                    <td>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Clave Autorizacion:</label>
-
-                                            <div class="col-sm-6"><input type="password" placeholder="clave autorizacion" id="autorization" class="form-control"></div>
-
-
-                                        </div>
-                                    </td>
+                                    <td></td>
                                     <td width="65"></td>
                                     <td>
                                         <div class="m-t-sm">
-                                            <a onclick="AddCodigo()" class="text-muted"><i class="fa fa-plus"></i> Agregar</a>
+                                            <a onclick="AddObserv()" class="text-muted"><i class="fa fa-plus"></i> Agregar</a>
                                             @*|
                                                 <a href="#" class="text-muted"><i class="fa fa-trash"></i> Remove</a>*@
                                         </div>
                                     </td>
 
                                 </tr>
-                                <tr></tr>
-
-
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox-content">
-                <div class="table-responsive">
-                    <table class="table shoping-cart-table">
-                        <tbody>
-                            <tr>
-                                <td width="90">
-                                    <div class="cart-product-imitation">
-                                        <i class="fa fa-comment"></i>
-                                    </div>
-                                </td>
-                                <td class="desc">
-                                    <h3>
-                                        <a href="#" class="text-navy">
-                                            Observaciones
-                                        </a>
-                                    </h3>
-                                    <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label">AGREGAR OBSERVACIONES:</label>
-
-                                        <div class="col-sm-3"><input type="text" id="txtObservaciones" placeholder="observaciones" class="form-control"></div>
-
-
-                                    </div>
-
-                                </td>
-
-                                <td></td>
-                                <td width="65"></td>
-                                <td>
-                                    <div class="m-t-sm">
-                                        <a onclick="AddObserv()" class="text-muted"><i class="fa fa-plus"></i> Agregar</a>
-                                        @*|
-                                            <a href="#" class="text-muted"><i class="fa fa-trash"></i> Remove</a>*@
-                                    </div>
-                                </td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+    }
 </div>
 
 <style id="compiled-css" type="text/css">
@@ -532,7 +550,8 @@
                     action: radioValue,
                     medida: "",
                     order: document.getElementById("OrderNo").value,
-                    comentarios: document.getElementById("txtObservaciones").value
+                    comentarios: document.getElementById("txtObservaciones").value,
+                    UeNo: document.getElementById("UeNo").value
                 },
                 datatype: "html",
                 success: function (json) {
@@ -703,8 +722,11 @@
             });
         }
 
+        var images = $(".image");
 
-
+        $(images).on("error", function (event) {
+            $(event.target).attr("src", "/Content/images/theme/none.jpg");
+        });
 
 
     </script>
@@ -712,7 +734,7 @@
     <script>
         function popActualizaMP(OrderNo) {
             //GetMotivoCambioFP
-            $('#lblOrdenObsFP').text(document.getElementById("OrderNo").value);
+            $('#lblOrdenObsFP').text(document.getElementById("UeNo").value);
             $('#dlgActualizaMp').modal('toggle');
 
              $.ajax({
@@ -909,7 +931,7 @@
             //ActualizaFecEntre(string fecha, string rangoHora,string OrdenNo)
             var _fecha = $("#ddlDias").val();
             var _rangoHora = $("#ddlHoras").val();
-            var _OrdenNo = $("#OrderNo").val();
+            var _UeNo = $("#UeNo").val();
             var _fechaOriginal = $("#hddFecEntrega").val();
             var _pass = $("#txtPassUpdHr").val();
 
@@ -924,7 +946,7 @@
                  data: {
                      fecha: _fecha
                      , rangoHora: _rangoHora
-                     , OrdenNo: _OrdenNo
+                     , UeNo: _UeNo
                      , fechaOriginal: _fechaOriginal
                      , pass: _pass
                 },

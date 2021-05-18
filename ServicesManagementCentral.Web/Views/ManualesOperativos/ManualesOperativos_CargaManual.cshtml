@@ -1,4 +1,4 @@
-﻿
+﻿@model ServicesManagementCentral.Web.Models.SubirArchivos.CargaManuales
 
 @{ ViewBag.Title = "Carga Manual"; }
 
@@ -20,62 +20,62 @@
                                 foreach (ServicesManagement.Web.Models.ManualesOperativosModels Item in Lista)
                                 {
                                     <option value="@Item.idOwner">@Item.ownerName</option>
-                                    }
                                 }
                             }
-                        </select>
+                        }
+                    </select>
 
 
-                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+
+
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Message
+    </div>}
+
+@using (Html.BeginForm("Save", "ManualesOperativos", FormMethod.Post,
+    new { enctype = "multipart/form-data" }))
+
+{
+    @Html.AntiForgeryToken();
+
+
+
+
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-6">
+
+
+            <div class="form-group">
+                @Html.LabelFor(d => d.Examinar)
+                    @Html.TextBoxFor(d => d.Examinar, new { @class = "form-control", type = "file", accept = ".pdf , .docx" })
+                    @Html.ValidationMessageFor(d => d.Examinar, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="form-group" style="text-align:right;">
+                <input type="submit" class="btn btn-success" value="Cargar Manual">
+            </div>
+        </div>
+    </div>
+    <div class="row" style="height:245px;">
+        <table style="width:100%;">
+            <tr>
+                <td style="text-align:right;padding-left:25px;">
+                    <h2><b> Ver Manuales:</b></h2>
+                    <h2><u> DST </u></h2>
+                    <h2><u> DSV </u></h2>
+                    <h2><u> CEDIS </u></h2>
                 </td>
             </tr>
         </table>
-
-    </div>
-
-
-
-
-    @if (ViewBag.Message != null)
-    {
-        <div class="alert alert-success" role="alert">
-            @ViewBag.Message
-        </div>}
-
-    @using (Html.BeginForm("Save", "ManualesOperativos", FormMethod.Post,
-        new { enctype = "multipart/form-data" }))
-
-    {
-        @Html.AntiForgeryToken();
-
-
-
-
-        <div class="row">
-            <div class="col-md-12 col-lg-offset-6">
-
-
-                <div class="form-group">
-                    @*@Html.LabelFor(d => d.Examinar)
-                    @Html.TextBoxFor(d => d.Examinar, new { @class = "form-control", type = "file", accept = ".pdf , .docx" })
-                    @Html.ValidationMessageFor(d => d.Examinar, "", new { @class = "text-danger" })*@
-
-                </div>
-                <div class="form-group" style="text-align:right;">
-                    <input type="submit" class="btn btn-success" value="Cargar Manual">
-                </div>
-            </div>
-        </div>
-        <div class="row" style="height:245px;">
-            <table style="width:100%;">
-                <tr>
-                    <td style="text-align:right;padding-left:25px;">
-                        <h2><b> Ver Manuales:</b></h2>
-                        <h2><u> DST </u></h2>
-                        <h2><u> DSV </u></h2>
-                        <h2><u> CEDIS </u></h2>
-                    </td>
-                </tr>
-            </table>
-        </div>}
+    </div>}
 
