@@ -288,6 +288,7 @@
     <Content Include="Content\images\theme\folder.jpg" />
     <Content Include="Content\images\theme\folder.png" />
     <Content Include="Content\images\theme\logo.png" />
+    <Content Include="Content\images\theme\none.jpg" />
     <Content Include="Content\images\theme\profile.jpg" />
     <Content Include="Content\images\theme\Soriana.png" />
     <Content Include="Content\images\theme\Soriana_logo.png" />
