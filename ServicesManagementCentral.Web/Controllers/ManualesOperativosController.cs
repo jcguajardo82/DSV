@@ -11,6 +11,7 @@ using ServicesManagement.Web.Helpers;
 using ServicesManagement.Web.DAL.ManualesOperativos;
 using ServicesManagement.Web.Models;
 using System.Data;
+using ServicesManagement.Web.Models.ManualesOp;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -31,11 +32,14 @@ namespace ServicesManagement.Web.Controllers
 
             return View(vacio);
         }
+
         public ActionResult ManualesOperativos_CargaManual()
         {
-           // var list = DALManualesOperativos.Llenartipoalmacen();
-           var list = DataTableToModel.ConvertTo<ManualesOperativosModels>(DALManualesOperativos.Llenartipoalmacen().Tables[0]);
+            // var list = DALManualesOperativos.Llenartipoalmacen();
+            var list = DataTableToModel.ConvertTo<ManualesOperativosModels>(DALManualesOperativos.Llenartipoalmacen().Tables[0]);
             ViewBag.Owners = list;
+            ViewBag.Manuals = DataTableToModel.ConvertTo<ManualTypesModel>(DALManualesOperativos.spManualTypes_sUP().Tables[0]);
+
 
             if (TempData["Message"] != null)
                 ViewBag.Message = TempData["Message"].ToString();
@@ -44,6 +48,7 @@ namespace ServicesManagement.Web.Controllers
             // GET: Archivo
 
         }
+
         [HttpPost]
         public ActionResult Save(CargaManuales model)
         {
@@ -77,6 +82,62 @@ namespace ServicesManagement.Web.Controllers
             {
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UploadFiles()
+        {
+            // Checking no of files injected in Request object 
+            if (Request.Files.Count > 0)
+            {
+                try
+                {
+
+                    var idOwner = Request.Form["idOwner"].ToString();
+                    var idManual = Request.Form["idManual"].ToString();
+                    var ManualDesc = Request.Form["ManualDesc"].ToString();
+                    var ownerName = Request.Form["ownerName"].ToString();
+
+                    //  Get all files from Request object  
+                    HttpFileCollectionBase files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
+                        //string filename = Path.GetFileName(Request.Files[i].FileName);  
+
+                        HttpPostedFileBase file = files[i];
+                        string fname;
+
+                        // Checking for Internet Explorer  
+                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        {
+                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                            fname = testfiles[testfiles.Length - 1];
+                        }
+                        else
+                        {
+                            fname = file.FileName;
+                        }
+
+                        fname = string.Format("{0}_{1}_{2}", ownerName, ManualDesc, fname);
+                        // Get the complete folder path and store the file inside it.  
+                        var path = Path.Combine(Server.MapPath("~/Files/"), fname);
+                        file.SaveAs(path);
+
+                        DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, fname, DateTime.Now, User.Identity.Name);
+                    }
+                    // Returns message that successfully uploaded  
+                    return Json("File Uploaded Successfully!");
+                }
+                catch (Exception ex)
+                {
+                    return Json("Error occurred. Error details: " + ex.Message);
+                }
+            }
+            else
+            {
+                return Json("No files selected.");
             }
         }
     }

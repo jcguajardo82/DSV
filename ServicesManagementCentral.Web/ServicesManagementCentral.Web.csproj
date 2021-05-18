@@ -239,6 +239,7 @@
     <Compile Include="Models\Consignaciones\ConsignacionesProveedor.cs" />
     <Compile Include="Models\EmpleadoModels.cs" />
     <Compile Include="Models\ManualesOperativosModels.cs" />
+    <Compile Include="Models\ManualesOp\ManualTypesModel.cs" />
     <Compile Include="Models\MotivosCancel.cs" />
     <Compile Include="Controllers\OrdenesController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
