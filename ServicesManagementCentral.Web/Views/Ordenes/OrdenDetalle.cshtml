@@ -140,7 +140,7 @@
                                         <h4>No. Consignacion</h4>
                                         <h4 class="text-navy">
 
-                                            <a href="@Url.Action("ConsultaDetalle","Ordenes", new { order = @p["OrderNo"].ToString()})">  @p["UeNo"]</a>
+                                            <a href="@Url.Action("ConsultaDetalle","Ordenes", new { order = @p["UeNo"].ToString()})">  @p["UeNo"]</a>
                                         </h4>
                                         <p>
                                             <span><strong>Fecha de Solicitud:</strong> @p["OrderDate"]</span><br>
@@ -222,6 +222,7 @@
                                 <table class="table invoice-table">
                                     <thead>
                                         <tr>
+                                            <th>Foto</th>
                                             <th>Num</th>
                                             <th>Codigo</th>
                                             <th style="text-align:left;">Descripción</th>
@@ -231,8 +232,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
-
 
                                         @foreach (System.Data.DataRow p in dt2.Rows)
                                         {
@@ -246,6 +245,9 @@
                                             }
 
                                             <tr>
+                                                <td>
+                                                    <img class="image" src="@p["ArticuloFoto"]" width=90 height=90>
+                                                </td>
                                                 <td>@index</td>
                                                 <td>@p["Barcode"]</td>
                                                 <td style="text-align:left;">
@@ -720,8 +722,11 @@
             });
         }
 
+        var images = $(".image");
 
-
+        $(images).on("error", function (event) {
+            $(event.target).attr("src", "/Content/images/theme/none.jpg");
+        });
 
 
     </script>

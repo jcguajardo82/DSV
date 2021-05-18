@@ -218,10 +218,10 @@
                     <div class="col-lg-10">
                         <div class="ibox">
                             <div class="ibox-title">
-                                <h5>Guias disponibles: </h5> <select class="form-control" id="sel1">
+                                @*<h5>Guias disponibles: </h5> <select class="form-control" id="sel1">
                                     <option>4562734567898230000000</option>
                                     <option>4536732345621340000000</option>
-                                </select>
+                                </select>*@
                                 <h5>Embalaje</h5><br />
                                 Su Embalaje
                                 <div class="ibox-tools">
@@ -250,6 +250,7 @@
                                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>NO DE PAQUETES</b><br />Max. 25</th>
                                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO X PAQUETE</b><br />Peso max. 1000kg</th>
                                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>DIMENSIONES X PAQUETE</b><br />L X AN X AL (cm)</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>GUIA DE EMBARQUE</b><br /></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -342,7 +343,7 @@
         function AddEmbalaje() {
 
             
-            $('#tblEmbalaje').append('<tr><td>' + $("#txtCant").val() + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLargo").val() + ' x ' + $("#txtAncho").val() + ' x ' + $("#txtAltura").val()+' </td></tr>');
+            $('#tblEmbalaje').append('<tr><td>' + $("#txtCant").val() + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLargo").val() + ' x ' + $("#txtAncho").val() + ' x ' + $("#txtAltura").val() +' </td><td>4562734500</td></tr>');
         }
 
         function popEmbalaje() {
