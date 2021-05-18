@@ -1,0 +1,288 @@
+﻿
+@{
+    ViewBag.Title = "Consignaciones_Proveedores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<style id="compiled-css" type="text/css">
+
+        h2 {
+            color: #263EEA;
+            text-align: center;
+            font-weight: bold;
+        }
+        /* Fix table head */
+        .tableFixHead {
+            overflow-y: auto;
+            height: 300px;
+        }
+
+
+
+            .tableFixHead th {
+                position: sticky;
+                top: 0;
+            }
+
+
+
+        /* Just common table stuff. */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+
+
+
+        th, td {
+            padding: 8px 16px;
+        }
+
+
+
+
+        th {
+            background: #D52B1E;
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>*@
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <h2>Consignaciones</h2>
+            <div class="row mt-2 mb-3">
+                <div class="col-12">
+                    <div>
+                        <div class="card card-body">
+                            <form id="frmFilter">
+                                <div class="row">
+                                    <div class="col col-xs-12 col-md-2">
+                                        <div class="input-group date" id="datetimepicker2">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <input class="form-control datepicker" id="txtFecIni" name="txtFecIni"
+                                                   type="text" placeholder="Inicio">
+                                        </div>
+                                    </div>
+                                    <div class="col col-xs-12 col-md-2">
+                                        <div class="input-group date" id="datetimepicker3">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <input class="form-control datepicker" id="txtFecFin" name="txtFecFin"
+                                                   type="text" placeholder="Fin">
+                                        </div>
+                                    </div>
+                                    <div class="col col-xs-12 col-md-4">
+                                        <div class="form-group">
+                                            <input type="text" size="25" maxlength="50" class="form-control" placeholder="Filtro Información de Columnas" name=" Filtro">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col col-xs-12 col-md-4 text-right">
+                                        <button class="btn btn-success mt-4" type="button" onclick="Servicios.RefreshTable();"><i class="fa fa-search"></i>&nbsp;&nbsp;<span class="bold">Buscar</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-1">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>XLS</span></button>
+                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>XLSX</span></button>
+                    </div>
+                </div>
+                <div class="col col-xs-2">
+
+                </div>
+                <div class="col col-xs-2">
+
+                </div>
+                <div class="col col-xs-2">
+
+                </div>
+                <div class="col col-xs-2">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    @*<div id="tblOrdenes" class="tableFixHead table-responsive m-t">*@
+                    <div id="tblOrdenes">
+                        <table class="table invoice-table dataTable">
+                            <thead class="bg-danger-sor">
+                                <tr>
+                                    <th class="sorting">Numero de consignación</th>                                  
+                                    <th class="sorting">Fecha y hora creacion orden</th>
+                                    <th class="sorting">Estatus de envio</th>
+                                    <th class="sorting">Estatus de la consignación Entrega</th>
+                                    <th class="sorting">No. de orden de compra (DSV)</th>
+                                    <th class="sorting">Estatus de Orden de Compra (DSV)</th>
+                                    <th class="sorting">Motivo de no recolección</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><u>7654234</u></td>
+                                    <td>5</td>
+                                    <td>
+                                        WMS
+                                    </td>
+                                    <td>
+                                        28-Ene-21
+                                    </td>
+                                    <td>
+                                        Susana Vargas Miranda
+                                    </td>
+                                    <td>Pago autorizado</td>
+                                    <td>
+                                        En espera de recoleccion
+                                    </td>
+                                    <td>En transito</td>
+                                    <td>5678998767</td>
+                                    <td>En programacion de pago</td>
+                                    <td>Motivo</td>
+                                </tr>
+                                <tr>
+                                    <td><u>7654234</u></u></td>
+                                    <td>5</td>
+                                    <td>
+                                        WMS
+                                    </td>
+                                    <td>
+                                        3-Mar-21
+                                    </td>
+                                    <td>
+                                        Susana Vargas Miranda
+                                    </td>
+                                    <td>Pago autorizado</td>
+                                    <td>
+                                        En espera de recoleccion
+                                    </td>
+                                    <td>En transito</td>
+                                    <td>5678998767</td>
+                                    <td>En programacion de pago</td>
+                                    <td>Motivo</td>
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @*<h2>Detalle de Consignación</h2>
+
+                <div class="row">
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
+                            <table class="table invoice-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Descripcion</th>
+                                        <th>Piezas</th>
+                                        <th>Costo</th>
+                                        <th>Peso Volumetico</th>
+                                        <th>Dias de Surtido desde la creacion</th>
+                                        <th>Dias de Surtido desde la autorización</th>
+                                        <th>Fecha de envio</th>
+                                        <th>RMA</th>
+                                        <th>Estatus del RMA</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12345678</td>
+                                        <td>Refrigerador</td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            $
+                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>3</td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>X</td>
+                                        <td>X</td>
+                                        <td>Completado</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>12345678</td>
+                                        <td>Locion para dama</td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            $
+                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>3</td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>X</td>
+                                        <td>X</td>
+                                        <td>Completado</td>
+
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(function () {
+
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "DD/MM/yyyy"
+            });
+            $('#datetimepicker3').datetimepicker({
+                locale: 'es'
+                , format: "DD/MM/yyyy"
+            });
+        });
+
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblOrdenes tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+
+    </script>
+}
+
+

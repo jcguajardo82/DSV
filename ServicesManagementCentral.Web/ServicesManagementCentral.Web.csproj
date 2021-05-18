@@ -220,6 +220,9 @@
     <Compile Include="DAL\Actualizaciones\DALActualizaciones.cs" />
     <Compile Include="DAL\Almacenes\DALAlmacenes.cs" />
     <Compile Include="DAL\Almacenes\DALAltaProveedor.cs" />
+    <Compile Include="DAL\Consignaciones\DALConsignacionesAdm.cs" />
+    <Compile Include="DAL\Consignaciones\DALConsignacionesCEDIS.cs" />
+    <Compile Include="DAL\Consignaciones\DALConsignacionesProveedor.cs" />
     <Compile Include="DAL\ManualesOperativos\DALManualesOperativos.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
@@ -228,6 +231,9 @@
     <Compile Include="Models\Config\Menu.cs" />
     <Compile Include="Models\Config\Rol.cs" />
     <Compile Include="Models\Config\Usuario.cs" />
+    <Compile Include="Models\Consignaciones\ConsignacionesAdm.cs" />
+    <Compile Include="Models\Consignaciones\ConsignacionesCEDIS.cs" />
+    <Compile Include="Models\Consignaciones\ConsignacionesProveedor.cs" />
     <Compile Include="Models\EmpleadoModels.cs" />
     <Compile Include="Models\ManualesOperativosModels.cs" />
     <Compile Include="Models\MotivosCancel.cs" />

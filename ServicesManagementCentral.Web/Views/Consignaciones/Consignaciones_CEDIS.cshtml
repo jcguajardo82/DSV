@@ -1,11 +1,11 @@
 ﻿
 @{
-    ViewBag.Title = "Consignaciones";
+    ViewBag.Title = "Consignaciones_CEDIS";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-            <h2>Consignaciones</h2>
+<h2>Consignaciones</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
@@ -22,7 +22,7 @@
                         <th>Estatus de la consignación Home Delivery</th>
                         <th>No. de orden de compra (DSV)</th>
                         <th>Estatus de Orden de Compra (DSV)</th>
-                        @*<th class="sorting">Motivo de no recolección</th>*@
+                        @*<th>Motivo de no recolección</th>*@
                         @*<th name='accion'></th>*@
                     </tr>
                 </thead>
@@ -45,23 +45,15 @@
                             <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
                                 <thead class="bg-danger-sor">
                                     <tr>
-                                        <th>idOwner</th>
-                                        <th>ProductSKU</th>
-                                        <th>barCode</th>
-                                        <th>productName</th>
-                                        <th>productCategoryId</th>
-                                        <th>qtyStockSafety</th>
-                                        <th>qtyStockForSale</th>
-                                        <th>qtyStockReserved</th>
-                                        <th>dimmensionLarge</th>
-                                        <th>dimmensionHeight</th>
-                                        <th>dimmensionWeightVol</th>
-                                        <th>dimmensionWeightReal</th>
-                                        <th>productStatus</th>
-                                        <th>productMaterialCost</th>
-                                        <th>productCreationDate</th>
-                                        <th>idSupplierOrigin</th>
-                                        <th>idSupplierOriginName</th>
+                                        <th>Numero de consignación</th>
+                                        <th>Total de importe de la Consignación</th>
+                                        <th>Tipo Almacen </th>
+                                        <th>Fecha y hora creacion orden</th>
+                                        <th>Nombre del cliente</th>
+                                        <th>Estatus de la orden</th>
+                                        <th>Estatus de la consignación Almacen</th>
+                                        <th>Estatus de la consignación Home Delivery</th>
+                                        
                                     </tr>
                                     @*[idSupplierWH]
                                         ,[]
@@ -121,11 +113,11 @@
 
 @section scripts {
     <script>
-        $(document).ready(function () {
-            GetconsignacionesAdm();
+        @*$(document).ready(function () {
+            GetSuppliers();
         });
 
-        @*function popDesHabilitar(noProveedor, noAlmacen) {
+        function popDesHabilitar(noProveedor, noAlmacen) {
             $("#hddNoProveedor").val(noProveedor);
             $("#HddNoAlmacen").val(noAlmacen);
             $("#dlgDesHabilitar").modal('toggle');
@@ -207,8 +199,8 @@
                 }
 
             });
-        }*@
-        function GetconsignacionesAdm() {
+        }
+        function GetSuppliers() {
 
             //var _Id_Num_UN = $("#hddTda").val();
 
@@ -217,7 +209,7 @@
             $.ajax({
                 async: false,
                 type: "GET",
-                url: '@Url.Action("GetconsignacionesAdm", "consignaciones")',
+                url: '@Url.Action("GetSuppliers", "almacenes")',
                 data: {
                     //  Id_Num_UN: _Id_Num_UN
                 },
@@ -234,22 +226,20 @@
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
                             //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                           
-                            tr.append("<td>" + json.resp[i].Consignacion + "</td>");
-                            tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");  
+                            if (!json.resp[i].habilitado) { tr.append("<td><button   title='Click para habilitar'  onclick='Habilitar(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")' type ='button' class= 'btn btn-white btn-circle'> <i class='fa fa-check'></i></button></td >"); }
+                            else {
+                                tr.append("<td><button title='Click para deshabilitar' onclick='popDesHabilitar(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-ban'></i></button></td >");
+                            }
+                            if (!json.resp[i].habilitado) { tr.append("<td><p>NO</p></td>"); }
+                            else { tr.append("<td><p>SI</p></td>");}
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaCreacion + "  " + json.resp[i].HoraCreacion +"</td>");
-                            tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusConsignacionAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusConsignacionEntrega + "</td>");
-                            tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");
-                            //tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
-                            //tr.append("<td>" + json.resp[i].OrdenCompra + "</td>");
-                            
-                            
-                            //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
+                            tr.append("<td>" + json.resp[i].noAlmacen + "</td>");
+                            tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
+                            tr.append("<td>" + json.resp[i].noProveedor + "</td>");
+                            tr.append("<td>" + json.resp[i].nombreProv + "</td>");
+                            tr.append("<td>" + json.resp[i].diasTrans + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaStock + "</td>");
+                            tr.append("<td>" + json.resp[i].NumCodigos + "</td>");
                             //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
 
 
@@ -273,7 +263,7 @@
         }
 
 
-       @* function Inhabilitar() {
+        function Inhabilitar() {
 
             var motCan = $("#txtMotCan").val();
 
@@ -372,9 +362,9 @@
                     //sServerMethod: "GET",
                     buttons: ['csv', 'excel'],
                     orderCellsTop: false,
-                    //fixedHeader: {
-                    //    header: true            
-                    //},
+                    fixedHeader: {
+                        header: true
+                    },
                     "scrollX": true
 
                 }
@@ -422,6 +412,7 @@
         });
     </script>
 }
+
 
 
 
