@@ -69,7 +69,7 @@
                                                     <table id="tblGuias" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
                                                         <thead class="bg-danger-sor">
                                                             <tr>
-                                                                <th>Orden:</th>
+                                                                <th>Consignación:</th>
                                                                 <th>Entrega:</th>
                                                                 <th>Nombre del Cliente:</th>
                                                                 <th>Dirección:</th>
@@ -79,7 +79,7 @@
                                                             @foreach (System.Data.DataRow pr in dt.Rows)
                                                             {
                                                                 <tr>
-                                                                    <td class="text-navy">@pr["OrderNo"]</td>
+                                                                    <td class="text-navy">@pr["UeNo"]</td>
                                                                     <td class="text-navy">@pr["OrderDeliveryDate"].ToString()</td>
                                                                     <td class="text-navy">@pr["CustomerName"]</td>
                                                                     <td>
