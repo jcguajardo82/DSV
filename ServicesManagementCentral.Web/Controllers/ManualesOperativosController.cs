@@ -16,6 +16,8 @@ namespace ServicesManagement.Web.Controllers
 {
     public class ManualesOperativosController : Controller
     {
+        
+        #region ManualesOperativos
 
         // GET: ManualesOperativos
         public ActionResult ManualesOperativos()
@@ -31,6 +33,32 @@ namespace ServicesManagement.Web.Controllers
 
             return View(vacio);
         }
+
+        public ActionResult CargaPDF(int idManual, int idOwner)
+        {
+            try
+            {
+                var list = DALManualesOperativos.MostrarPDF(idManual, idOwner);
+                string URL = list.Tables[0].Rows[0]["manualFilename"].ToString();
+
+                if (string.IsNullOrWhiteSpace(URL))
+                    return Json(new { Success = false, Message = "No se encontro la informacion del manual." }, JsonRequestBehavior.AllowGet);
+
+                var result = new { Success = true, Message = "OK", URL };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+
+        }
+
+        #endregion
+
+
         public ActionResult ManualesOperativos_CargaManual()
         {
            // var list = DALManualesOperativos.Llenartipoalmacen();
