@@ -70,7 +70,7 @@
                 <a href="~/CPanel/Index">Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="@Url.Action(" Index","Ordenes")">Ordenes</a>
+                <a href="@Url.Action("Index","Ordenes")">Ordenes</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Embarque</strong>
@@ -101,7 +101,7 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 111px;">Cant. Pedida</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Precio Internet</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 124px;">Cantidad Surtida</th>
-
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 24px;">Seleccionar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -129,6 +129,7 @@
                                         int index = 0;
                                         foreach (System.Data.DataRow p in dt.Rows)
                                         {
+                                            index ++;
                                             <tr>
                                                 <td style="text-align:right">@p["Barcode"]<br />@p["ProductId"]</td>
                                                 <td style="text-align:center">@p["ProductName"]</td>
@@ -142,16 +143,11 @@
                                                     {
                                                         @p["pe_price"]
                                                     }
-
                                                 </td>
                                                 <td>@p["e_Quantity"]</td>
+                                                <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@index.ToString()" /> </td>
                                             </tr>
-
-
-
                                         }
-
-
                                     }
                                 }
 
@@ -289,34 +285,29 @@
                                     <table class="table" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Cantidad</th>
-                                                <th>Peso KG</th>
-                                                <th colspan="3" style="text-align:center;">Dimensiones (cm)</th>
-
+                                                <th colspan="2">Tipo</th>
+                                                <th colspan="5" style="text-align:center;">Dimensiones (cm)</th>
+                                                <th colspan="1" id="colPeso" style="display:none">Peso KG</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><input type="text" class="form-control input-sm" placeholder="Cantidad" id="txtCant" /></td>
-                                           
-                                                <td><input type="text" class="form-control input-sm" placeholder="KG" id="txtKG"/></td>
-                                          
-                                                <td><input type="text" class="form-control input-sm" placeholder="Largo" id="txtLargo" /></td>
-                                            
-                                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" id="txtAncho" /></td>
-                                            
-                                                <td><input type="text" class="form-control input-sm" placeholder="Altura" id="txtAltura"/></td>
+                                                <td><input type="radio" checked="" value="Sobre" class="js-rate-type" id="optionsRadios1" name="optionsRadios"> Sobre</td>
+                                                <td><input type="radio" value="Paquete" id="optionsRadios2" name="optionsRadios"> Paquete</td>
+
+                                                <td><input type="text" class="form-control input-s-lg" placeholder="Largo" id="txtLg" /></td>
+
+                                                <td><input type="text" class="form-control input-s-lg" placeholder="Ancho" id="txtAn" /></td>
+
+                                                <td><input type="text" class="form-control input-sm" placeholder="Largo" style="display:none" id="txtLargo" /></td>
+
+                                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" style="display:none" id="txtAncho" /></td>
+
+                                                <td><input type="text" class="form-control input-sm" placeholder="Altura" style="display:none" id="txtAltura" /></td>
+
+                                                <td><input type="text" class="form-control input-sm" placeholder="KG" style="display:none" id="txtKG" /></td>
                                             </tr>
                                         </tbody>
-                                        @*<tfoot>
-                                            <tr>
-                                                <td><b>Total</b></td>                                            
-                                                <td><b>1</b></td>                                            
-                                                <td><b>0.5 KG</b></td>
-                                                <td colspan="3"></td>
-                                            </tr>
-
-                                        </tfoot>*@
                                     </table>
                                 </form>
                             </div>
@@ -337,6 +328,30 @@
     <script type="text/javascript">
     $(document).ready(function () {
         //GetSurtidores();
+        $("input[name=optionsRadios]").change(function () {
+            var sobreType = $('.js-rate-type')[0];
+            var paqueteType = $("input[name=optionsRadios]")[1].checked;
+            $(".form-control input-sm").toggle(sobreType.checked);
+            $(".form-control input-s-lg").toggle(paqueteType.checked);
+            if (sobreType.checked) {
+                $('#txtLg').show();
+                $('#txtAn').show();
+                $('#colPeso').hide();
+                $('#txtKG').hide();
+                $('#txtLargo').hide();
+                $('#txtAncho').hide();
+                $('#txtAltura').hide();
+            }
+            else {
+                $('#txtLg').hide();
+                $('#txtAn').hide();
+                $('#colPeso').show();
+                $('#txtKG').show();
+                $('#txtLargo').show();
+                $('#txtAncho').show();
+                $('#txtAltura').show();
+            }
+        }).change()
 
     });
 
