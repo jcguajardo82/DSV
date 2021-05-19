@@ -273,14 +273,23 @@
                                         var dt1 = ds.Tables[1];
 
                                         int index = 0;
+                                        string IdGuia = string.Empty;
+                                        string IdGuiaPaq = string.Empty;
+                                        string GuiaPaqEstatusDesc = string.Empty;
+                                        var IdGuias = "";
+                                        var IdGuiasPaq = "";
+                                        var GuiasPaqEstatusDesc = "";
 
                                         foreach (System.Data.DataRow p in dt.Rows)
                                         {
+                                            IdGuias = "";
+                                            IdGuiasPaq = "";
+                                            GuiasPaqEstatusDesc = "";
                                             <tr>
 
                                                 <td style="text-align:center;">
 
-                                                    <a href="@Url.Action("ConsultaDetalle","Ordenes", new { order = @p["UeNo"] })"
+                                                    <a href="@Url.Action("ConsultaDetalle", "Ordenes", new { order = @p["UeNo"] })"
                                                        title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
                                                 </td>
                                                 <td style="text-align:center;">
@@ -339,15 +348,32 @@
                                                     }
                                                 </td>
 
-                                            @foreach (System.Data.DataRow p1 in dt1.Rows)
-                                             {
-                                                if (@p["UeNo"].ToString() == p1["UeNo"].ToString())
+                                                @foreach (System.Data.DataRow p1 in dt1.Rows)
                                                 {
-                                                    <td>@p1["IdGuias"]</td>
-                                                    <td>@p1["IdGuiaPaq"]</td>
-                                                    <td>@p1["GuiaPaqEstatusDesc"]</td>
+                                                    IdGuia = p1["IdGuias"].ToString();
+                                                    IdGuiaPaq = p1["IdGuiaPaq"].ToString();
+                                                    GuiaPaqEstatusDesc = p1["GuiaPaqEstatusDesc"].ToString();
+                                                    string ordUeNo = p["UeNo"].ToString();
+                                                    string embUeNo = p1["UeNo"].ToString();
+                                                    if (ordUeNo == embUeNo)
+                                                    {
+                                                        if (@IdGuias == "")
+                                                        {
+                                                            IdGuias = IdGuia;
+                                                            IdGuiasPaq = IdGuiaPaq;
+                                                            GuiasPaqEstatusDesc = GuiaPaqEstatusDesc;
+                                                        }
+                                                        else
+                                                        {
+                                                            IdGuias = IdGuias + "," + IdGuia;
+                                                            IdGuiasPaq = IdGuiaPaq + "," + IdGuiaPaq;
+                                                            GuiasPaqEstatusDesc = GuiasPaqEstatusDesc + "," + GuiaPaqEstatusDesc;
+                                                        }
+                                                    }   
                                                 }
-                                             }
+                                                <td>@IdGuias</td>
+                                                <td>@IdGuiasPaq</td>
+                                                <td>@GuiasPaqEstatusDesc</td>
                                             </tr>
                                         }
                                     }
