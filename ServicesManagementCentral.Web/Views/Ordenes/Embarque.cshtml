@@ -286,8 +286,9 @@
                                         <thead>
                                             <tr>
                                                 <th colspan="2">Tipo</th>
-                                                <th colspan="5" style="text-align:center;">Dimensiones (cm)</th>
-                                                <th colspan="1" id="colPeso" style="display:none">Peso KG</th>
+                                                <th colspan="1" id="colCant" >Cantidad</th>
+                                                <th colspan="1" id="colPeso" >Peso KG</th>
+                                                <th colspan="6" style="text-align:center;">Dimensiones (cm)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -295,17 +296,19 @@
                                                 <td><input type="radio" checked="" value="Sobre" class="js-rate-type" id="optionsRadios1" name="optionsRadios"> Sobre</td>
                                                 <td><input type="radio" value="Paquete" id="optionsRadios2" name="optionsRadios"> Paquete</td>
 
-                                                <td><input type="text" class="form-control input-s-lg" placeholder="Largo" id="txtLg" /></td>
+                                                <td><input type="text" class="form-control input-sm" placeholder="CantEmb" id="txCant" /></td>
 
-                                                <td><input type="text" class="form-control input-s-lg" placeholder="Ancho" id="txtAn" /></td>
+                                                <td><input type="text" class="form-control input-sm" placeholder="KG" id="txtKG" /></td>
 
-                                                <td><input type="text" class="form-control input-sm" placeholder="Largo" style="display:none" id="txtLargo" /></td>
+                                                <td><input type="text" class="form-control input-sm" placeholder="Largo" id="txtLg" /></td>
 
-                                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" style="display:none" id="txtAncho" /></td>
+                                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" id="txtAn" /></td>
 
-                                                <td><input type="text" class="form-control input-sm" placeholder="Altura" style="display:none" id="txtAltura" /></td>
+                                                @*<td><input type="text" class="form-control input-sm" placeholder="Largo" style="display:none" id="txtLargo" /></td>
 
-                                                <td><input type="text" class="form-control input-sm" placeholder="KG" style="display:none" id="txtKG" /></td>
+                                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" style="display:none" id="txtAncho" /></td>*@
+
+                                                <td><input type="text" class="form-control input-sm" placeholder="Alto" style="display:none" id="txtAltura" /></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -336,19 +339,15 @@
             if (sobreType.checked) {
                 $('#txtLg').show();
                 $('#txtAn').show();
-                $('#colPeso').hide();
-                $('#txtKG').hide();
-                $('#txtLargo').hide();
-                $('#txtAncho').hide();
+                //$('#txtLargo').hide();
+                //$('#txtAncho').hide();
                 $('#txtAltura').hide();
             }
             else {
-                $('#txtLg').hide();
-                $('#txtAn').hide();
-                $('#colPeso').show();
-                $('#txtKG').show();
-                $('#txtLargo').show();
-                $('#txtAncho').show();
+                //$('#txtLg').hide();
+                //$('#txtAn').hide();
+                //$('#txtLargo').show();
+                //$('#txtAncho').show();
                 $('#txtAltura').show();
             }
         }).change()

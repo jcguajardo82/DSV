@@ -270,6 +270,7 @@
                                         System.Data.DataSet ds = (System.Data.DataSet)Session["listaOrdersEmbarcar"];
 
                                         var dt = ds.Tables[0];
+                                        var dt1 = ds.Tables[1];
 
                                         int index = 0;
 
@@ -338,6 +339,15 @@
                                                     }
                                                 </td>
 
+                                            @foreach (System.Data.DataRow p1 in dt1.Rows)
+                                             {
+                                                if (@p["UeNo"].ToString() == p1["UeNo"].ToString())
+                                                {
+                                                    <td>@p1["IdGuias"]</td>
+                                                    <td>@p1["IdGuiaPaq"]</td>
+                                                    <td>@p1["GuiaPaqEstatusDesc"]</td>
+                                                }
+                                             }
                                             </tr>
                                         }
                                     }
