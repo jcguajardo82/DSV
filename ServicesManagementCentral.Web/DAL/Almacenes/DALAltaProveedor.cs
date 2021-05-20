@@ -12,9 +12,8 @@ namespace ServicesManagement.Web.DAL.Almacenes
     {
         public static DataSet SuppliersWH_iUP(int idSupplierWH, string supplierName, int idSupplierWHCode, int idOwner, string SupplierWHName, string addressStreet, string addressNumberExt, string addressNumberInt, 
             string addressCity, string addressPostalCode, string addressState, string addressReference1, string addressReference2, string commInfoName, string operInfoName, string operInfoPhone, 
-            string operInfoEmail, string commInfoPhone, string commInfoEmail, string creationId)
-        {
-
+            string operInfoEmail, string commInfoPhone, string commInfoEmail, string creationId,int idOperType,int idShipType,bool bitVehicles)
+        { 
             DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
@@ -48,7 +47,11 @@ namespace ServicesManagement.Web.DAL.Almacenes
                 parametros.Add("@operInfoEmail", operInfoEmail);
                 parametros.Add("@commInfoPhone", commInfoPhone);
                 parametros.Add("@commInfoEmail", commInfoEmail);
-                parametros.Add("@creationId", creationId);
+                parametros.Add("@idOperType", idOperType);
+                parametros.Add("@idShipType", idShipType);
+                parametros.Add("@bitVehicles", bitVehicles);
+
+
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[common].[SuppliersWH_iUP]", false, parametros);
 
@@ -66,6 +69,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
             }
 
         }
+
         public static DataSet spOwners_sUP()
         {
 

@@ -431,6 +431,11 @@
             var _txtEmailO = $("#txtEmailO").val();
             var _txtEmailC = $("#txtEmailC").val();
             var _creationId = 't_joserp';
+            var _idOperType = $("#ddlOperations").val();
+            var _idShipType = $("#ddlShipments").val();
+            var _bitVehicles = document.getElementById("chVehiculo").checked ;
+               //string idOperType, string idShipType, string bitVehicles
+
 
             if (_txtNumPro.length == 0) {
                 $("#txtNumPro").focus();
@@ -535,6 +540,11 @@
                     , commInfoPhone: _txtTelContCom
                     , commInfoEmail: _txtEmailC
                     , creationId: _creationId
+                    , idOperType: _idOperType
+                    , idShipType: _idShipType
+                    , bitVehicles: _bitVehicles
+
+                  
                 },
                 datatype: "html",
                 success: function (json) {

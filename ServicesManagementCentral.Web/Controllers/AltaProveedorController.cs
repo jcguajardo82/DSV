@@ -53,13 +53,13 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult GrabarProveedor(int idSupplierWH, string supplierName, int idSupplierWHCode, int idOwner, string SupplierWHName, string addressStreet, string addressNumberExt, string addressNumberInt,
             string addressCity, string addressPostalCode, string addressState, string addressReference1, string addressReference2, string commInfoName, string operInfoName, string operInfoPhone,
-            string operInfoEmail, string commInfoPhone, string commInfoEmail, string creationId)
+            string operInfoEmail, string commInfoPhone, string commInfoEmail, string creationId, string idOperType, string idShipType, string bitVehicles)
         {
             try
             {
                 var list = DALAltaProveedor.SuppliersWH_iUP(idSupplierWH, supplierName, idSupplierWHCode, idOwner, SupplierWHName, addressStreet, addressNumberExt,
                     addressNumberInt, addressCity, addressPostalCode, addressState, addressReference1, addressReference2, commInfoName, operInfoName,
-                    operInfoPhone, operInfoEmail, commInfoPhone, commInfoEmail, creationId);
+                    operInfoPhone, operInfoEmail, commInfoPhone, commInfoEmail,User.Identity.Name,int.Parse(idOperType),int.Parse(idShipType),bool.Parse(bitVehicles));
 
                 var result = new { Success = true, Message = "OK" };
                 return Json(result, JsonRequestBehavior.AllowGet);
