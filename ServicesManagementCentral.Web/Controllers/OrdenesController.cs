@@ -19,6 +19,8 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Drawing;
 using System.Drawing.Imaging;
+using ServicesManagement.Web.DAL.Embarques;
+using ServicesManagement.Web.Helpers;
 
 namespace ServicesManagement.Web.Controllers
 {
