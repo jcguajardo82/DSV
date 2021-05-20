@@ -13,9 +13,13 @@ namespace ServicesManagement.Web.Controllers
 {
     public class AltaProveedorController : Controller
     {
-        
+
         public ActionResult AltaProveedor()
         {
+            ViewBag.Operations = DataTableToModel.ConvertTo<SuppliersWHOperations>(DALAltaProveedor.SuppliersWHOperations_sUP().Tables[0]);
+            ViewBag.Shipments = DataTableToModel.ConvertTo<SuppliersWHShipments>(DALAltaProveedor.SuppliersWHShipments_sUP().Tables[0]);
+            ViewBag.Owners = DataTableToModel.ConvertTo<Owners>(DALAltaProveedor.spOwners_sUP().Tables[0]);
+
             return View();
         }
         public ActionResult IniciarComboTipoAlmacen()
@@ -40,8 +44,8 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DALAltaProveedor.SuppliersWH_iUP(idSupplierWH, supplierName, idSupplierWHCode, idOwner, SupplierWHName, addressStreet, addressNumberExt, 
-                    addressNumberInt, addressCity, addressPostalCode, addressState, addressReference1, addressReference2, commInfoName, operInfoName, 
+                var list = DALAltaProveedor.SuppliersWH_iUP(idSupplierWH, supplierName, idSupplierWHCode, idOwner, SupplierWHName, addressStreet, addressNumberExt,
+                    addressNumberInt, addressCity, addressPostalCode, addressState, addressReference1, addressReference2, commInfoName, operInfoName,
                     operInfoPhone, operInfoEmail, commInfoPhone, commInfoEmail, creationId);
 
                 var result = new { Success = true, Message = "OK" };
@@ -56,8 +60,8 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult ConsecutivoAlmacen(int idSupplierWH)
         {
-            try 
-            { 
+            try
+            {
                 var ConsAlmacen = DataTableToModel.ConvertTo<Consecutivo>(DALAltaProveedor.SuppliersWHCode_sUP(idSupplierWH).Tables[0]);
                 var result = new { Success = true, resp = ConsAlmacen };
                 return Json(result, JsonRequestBehavior.AllowGet);
