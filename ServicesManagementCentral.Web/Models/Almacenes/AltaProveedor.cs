@@ -27,6 +27,9 @@ namespace ServicesManagement.Web.Models.Almacenes
         public string commInfoPhone { get; set; }
         public string commInfoEmail { get; set; }
         public string creationId { get; set; }
+        public int idOperType { get; set; }
+        public int idShipType { get; set; }
+        public bool bitVehicles { get; set; }
 
     }
 
