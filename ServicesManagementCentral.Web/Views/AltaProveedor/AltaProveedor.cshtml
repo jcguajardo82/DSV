@@ -35,6 +35,60 @@
                             <td colspan="6"><hr /></td>
                         </tr>
                     </table>
+
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Tipo de Operacón
+                            </td>
+                            <td style="width:35%;text-align:center;">
+                                <select id="ddlOperations" class="form-control">
+                                    @{if (ViewBag.Operations != null)
+                                        {
+                                            var Lista = (List<ServicesManagement.Web.Models.Almacenes.SuppliersWHOperations>)ViewBag.Operations;
+                                            foreach (ServicesManagement.Web.Models.Almacenes.SuppliersWHOperations Item in Lista)
+                                            {
+                                                <option value="@Item.idOperType">@Item.OperTypeDesc</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Tipo de Envío
+                            </td>
+                            <td style="width:35%;text-align:center;">
+                                <select id="ddlShipments" class="form-control">
+                                    @{if (ViewBag.Shipments != null)
+                                        {
+                                            var Lista = (List<ServicesManagement.Web.Models.Almacenes.SuppliersWHShipments>)ViewBag.Shipments;
+                                            foreach (ServicesManagement.Web.Models.Almacenes.SuppliersWHShipments Item in Lista)
+                                            {
+                                                <option value="@Item.idShipType">@Item.ShipTypeDesc</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                ¿Envía vehículos de motor?
+                            </td>
+                            <td style="width:35%;text-align:left;">
+                                <input type="checkbox" id="chVehiculo" class="checkbox" />
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><hr /></td>
+                        </tr>
+                    </table>
+
                     <table style="width:100%;">
                         <tr>
                             <td style="width:15%;text-align:center;">
@@ -103,8 +157,8 @@
 
                             </td>
                             @*<td style="text-align:left;">
-                                <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
-                            </td>*@
+                                    <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
+                                </td>*@
                             <td>
                                 @Html.TextBox("txtCodPos", null, new
                                     {
@@ -134,10 +188,8 @@
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtEntCal2" />
                             </td>
-                            <td style="width:15%;text-align:center;">
-                            </td>
-                            <td style="text-align:left;">
-                            </td>
+                            <td style="width:15%;text-align:center;"></td>
+                            <td style="text-align:left;"></td>
                         </tr>
                         <tr>
                             <td colspan="6"><hr /></td>
@@ -165,8 +217,7 @@
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtNomContOper" />
                             </td>
-                            <td style="width: 10%;">
-                            </td>
+                            <td style="width: 10%;"></td>
 
 
                             <td style="width:15%;text-align:center;">
@@ -176,8 +227,7 @@
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtNomContCom" />
                             </td>
-                            <td style="width: 10%;">
-                            </td>
+                            <td style="width: 10%;"></td>
 
                         </tr>
                         <tr>
@@ -190,8 +240,7 @@
                                 <input type="text" class="form-control" id="txtTelContOper" />
 
                             </td>
-                            <td style="width: 10%;">
-                            </td>
+                            <td style="width: 10%;"></td>
                             <td style="width:15%;text-align:center;">
                                 Teléfono del contacto Comercial
 
@@ -201,8 +250,7 @@
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtTelContCom" />
                             </td>
-                            <td style="width: 10%;">
-                            </td>
+                            <td style="width: 10%;"></td>
 
 
                         </tr>
@@ -214,8 +262,7 @@
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtEmailO" />
                             </td>
-                            <td style="width: 10%;">
-                            </td>
+                            <td style="width: 10%;"></td>
 
                             <td style="width:15%;text-align:center;">
                                 Correo electrónico
@@ -224,21 +271,19 @@
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtEmailC" />
                             </td>
-                            <td style="width: 10%;">
-                            </td>
+                            <td style="width: 10%;"></td>
                         </tr>
                         <tr>
                             <td colspan="6"><br /></td>
                         </tr>
                         <tr>
-                            <td colspan="4">
-                            </td>
+                            <td colspan="4"></td>
                             <td>
                                 <button type="button" class="btn btn-white" onclick="Save()">GUARDAR</button>
                             </td>
                             @*<td>
-                                <button type="button" class="btn btn-primary" onclick="TraspasaOrden()">EDITAR</button>
-                            </td>*@
+                                    <button type="button" class="btn btn-primary" onclick="TraspasaOrden()">EDITAR</button>
+                                </td>*@
                         </tr>
                         <tr>
                             <td colspan="6"><br /><br /><br /></td>
