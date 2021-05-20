@@ -20,7 +20,20 @@ namespace ServicesManagement.Web.Controllers
             ViewBag.Shipments = DataTableToModel.ConvertTo<SuppliersWHShipments>(DALAltaProveedor.SuppliersWHShipments_sUP().Tables[0]);
             ViewBag.Owners = DataTableToModel.ConvertTo<Owners>(DALAltaProveedor.spOwners_sUP().Tables[0]);
 
-            return View();
+            var prov = new AltaProveedor();
+
+            if (Request.QueryString["idSupplierWH"] != null && Request.QueryString["idSupplierWHCode"] != null) {
+                int idSupplierWH = 0, idSupplierWHCode = 0;
+
+                idSupplierWH = int.Parse(Request.QueryString["idSupplierWH"].ToString());
+                idSupplierWHCode = int.Parse(Request.QueryString["idSupplierWHCode"].ToString());
+
+                prov = DataTableToModel.ConvertTo<AltaProveedor>(DALAltaProveedor.SuppliersWHByCode_sUP(idSupplierWH, idSupplierWHCode).Tables[0]).FirstOrDefault();
+            }
+
+
+
+            return View(prov);
         }
         public ActionResult IniciarComboTipoAlmacen()
         {

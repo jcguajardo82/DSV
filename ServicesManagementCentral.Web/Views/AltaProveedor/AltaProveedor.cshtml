@@ -1,4 +1,6 @@
-﻿@{ ViewBag.Title = "Alta de Almacenes";
+﻿@model ServicesManagement.Web.Models.Almacenes.AltaProveedor
+
+@{ ViewBag.Title = "Alta de Almacenes";
     Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 
@@ -18,7 +20,7 @@
                                 Número de Proveedor
                             </td>
                             <td>
-                                @Html.TextBox("txtNumPro", null, new
+                                @Html.TextBox("txtNumPro", Model.idSupplierWH, new
                                     {
                                     @class = "form-control ;",
                                     @onkeydown = "javascript:onkeydown_busqueda(event)"
@@ -28,14 +30,13 @@
                                 Nombre de Proveedor
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="txtNomPro" />
+                                <input type="text" class="form-control" id="txtNomPro" value="@Model.supplierName" />
                             </td>
                         </tr>
                         <tr>
                             <td colspan="6"><hr /></td>
                         </tr>
                     </table>
-
                     <table style="width:100%;">
                         <tr>
                             <td style="width:15%;text-align:center;">
@@ -48,7 +49,13 @@
                                             var Lista = (List<ServicesManagement.Web.Models.Almacenes.SuppliersWHOperations>)ViewBag.Operations;
                                             foreach (ServicesManagement.Web.Models.Almacenes.SuppliersWHOperations Item in Lista)
                                             {
-                                                <option value="@Item.idOperType">@Item.OperTypeDesc</option>
+                                                if (Model.idOperType == Item.idOperType)
+                                                {
+                                                    <option value="@Item.idOperType" selected>@Item.OperTypeDesc</option>}
+                                                else
+                                                {
+                                                    <option value="@Item.idOperType">@Item.OperTypeDesc</option>}
+
                                             }
                                         }
                                     }
@@ -67,7 +74,13 @@
                                             var Lista = (List<ServicesManagement.Web.Models.Almacenes.SuppliersWHShipments>)ViewBag.Shipments;
                                             foreach (ServicesManagement.Web.Models.Almacenes.SuppliersWHShipments Item in Lista)
                                             {
-                                                <option value="@Item.idShipType">@Item.ShipTypeDesc</option>
+
+                                                if (Model.idShipType == Item.idShipType)
+                                                {
+                                                    <option value="@Item.idShipType" selected>@Item.ShipTypeDesc</option>}
+                                                else
+                                                {
+                                                    <option value="@Item.idShipType">@Item.ShipTypeDesc</option>}
                                             }
                                         }
                                     }
@@ -80,7 +93,11 @@
                                 ¿Envía vehículos de motor?
                             </td>
                             <td style="width:35%;text-align:left;">
-                                <input type="checkbox" id="chVehiculo" class="checkbox" />
+                                @if (Model.bitVehicles)
+                                {<input type="checkbox" id="chVehiculo" checked class="checkbox" />}
+                                else
+                                { <input type="checkbox" id="chVehiculo" class="checkbox" />}
+
                             </td>
                             <td></td>
                         </tr>
@@ -88,26 +105,44 @@
                             <td colspan="3"><hr /></td>
                         </tr>
                     </table>
-
                     <table style="width:100%;">
                         <tr>
                             <td style="width:15%;text-align:center;">
                                 Tipo Almacén
                             </td>
                             <td>
-                                <select class="form-control m-b" id="lstIdAlmacen"></select>
+                                <select class="form-control m-b" id="lstIdAlmacen">
+                                    @{if (ViewBag.Owners != null)
+                                        {
+                                            var Lista = (List<ServicesManagement.Web.Models.Almacenes.Owners>)ViewBag.Owners;
+                                            foreach (ServicesManagement.Web.Models.Almacenes.Owners Item in Lista)
+                                            {
+                                                if (Model.idOwner == Item.idOwner)
+                                                {
+                                                    <option value="@Item.idOwner" selected>@Item.ownerName</option>}
+                                                else
+                                                {
+                                                    <option value="@Item.idOwner">@Item.ownerName</option>}
+                                            }
+                                        }
+                                    }
+                                </select>
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Número Almacén
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="txtNumAlmacen" />
+
+                                @if (Model.idSupplierWHCode.ToString()=="0")
+                                {<input type="text" class="form-control" id="txtNumAlmacen" />}
+                                else
+                                { <input type="text" class="form-control" value="@Model.idSupplierWHCode" id="txtNumAlmacen" />}
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Nombre Almacén
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="txtNomAlmacen" />
+                                <input type="text" class="form-control" id="txtNomAlmacen" value="@Model.SupplierWHName" />
                             </td>
                         </tr>
                         <tr>
@@ -126,41 +161,37 @@
                                 Calle
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtCalle" />
+                                <input type="text" class="form-control" id="txtCalle" value="@Model.addressStreet"/>
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Número Exterior
-
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="txtNumExt" />
+                                <input type="text" class="form-control" id="txtNumExt" value="@Model.addressNumberExt" />
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Número Interior
-
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="txtNumInt" />
+                                <input type="text" class="form-control" id="txtNumInt" value="@Model.addressNumberInt" />
                             </td>
 
                         </tr>
                         <tr>
                             <td style="width:15%;text-align:center;">
                                 Cuidad/Delegación/Municipio
-
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtCiudad" />
+                                <input type="text" class="form-control" id="txtCiudad" value="@Model.addressCity" />
                             </td>
                             <td style="width:15%;text-align:center;">
                                 CP.
-
                             </td>
                             @*<td style="text-align:left;">
                                     <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
                                 </td>*@
                             <td>
-                                @Html.TextBox("txtCodPos", null, new
+                                @Html.TextBox("txtCodPos", Model.addressPostalCode, new
                                     {
                                     @class = "form-control ;",
                                     @onkeydown = "javascript:onkeydown_cp(event)"
@@ -170,7 +201,7 @@
                                 Estado
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtEdo" />
+                                <input type="text" class="form-control" id="txtEdo" value="@Model.addressState"/>
                             </td>
                         </tr>
                         <tr>
@@ -179,14 +210,14 @@
 
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtEntCal1" />
+                                <input type="text" class="form-control" id="txtEntCal1" value="@Model.addressReference1" />
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Entre calle 2
 
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtEntCal2" />
+                                <input type="text" class="form-control" id="txtEntCal2" value="@Model.addressReference2"/>
                             </td>
                             <td style="width:15%;text-align:center;"></td>
                             <td style="text-align:left;"></td>
@@ -215,17 +246,14 @@
 
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtNomContOper" />
+                                <input type="text" class="form-control" id="txtNomContOper" value="@Model.operInfoName"/>                                         
                             </td>
                             <td style="width: 10%;"></td>
-
-
                             <td style="width:15%;text-align:center;">
                                 Nombre de contacto Comercial
-
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtNomContCom" />
+                                <input type="text" class="form-control" id="txtNomContCom" value="@Model.commInfoName" />
                             </td>
                             <td style="width: 10%;"></td>
 
@@ -233,26 +261,18 @@
                         <tr>
                             <td style="width:15%;text-align:center;">
                                 Teléfono del contacto Operativo
-
                             </td>
-
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtTelContOper" />
-
+                                <input type="text" class="form-control" id="txtTelContOper" value="@Model.operInfoPhone" />                                
                             </td>
                             <td style="width: 10%;"></td>
                             <td style="width:15%;text-align:center;">
                                 Teléfono del contacto Comercial
-
                             </td>
-
-
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtTelContCom" />
+                                <input type="text" class="form-control" id="txtTelContCom" value="@Model.commInfoPhone"/>
                             </td>
                             <td style="width: 10%;"></td>
-
-
                         </tr>
                         <tr>
                             <td style="width:15%;text-align:center;">
@@ -260,16 +280,15 @@
 
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtEmailO" />
+                                <input type="text" class="form-control" id="txtEmailO" value="@Model.operInfoEmail" />
                             </td>
                             <td style="width: 10%;"></td>
 
                             <td style="width:15%;text-align:center;">
-                                Correo electrónico
-
+                                Correo electrónico                                
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtEmailC" />
+                                <input type="text" class="form-control" id="txtEmailC" value="@Model.commInfoEmail" />
                             </td>
                             <td style="width: 10%;"></td>
                         </tr>
@@ -509,11 +528,11 @@
                     , addressState: _txtEdo
                     , addressReference1: _txtEntCal1
                     , addressReference2: _txtEntCal2
-                    , commInfoName: _txtNomContOper
-                    , operInfoName: _txtNomContCom
-                    , operInfoPhone: _txtTelContOper
-                    , operInfoEmail: _txtTelContCom
-                    , commInfoPhone: _txtEmailO
+                    , commInfoName: _txtNomContCom 
+                    , operInfoName: _txtNomContOper
+                    , operInfoPhone: _txtTelContOper  
+                    , operInfoEmail: _txtEmailO
+                    , commInfoPhone: _txtTelContCom
                     , commInfoEmail: _txtEmailC
                     , creationId: _creationId
                 },
