@@ -1808,42 +1808,61 @@ namespace ServicesManagement.Web.Controllers
 
         #region Embarques
         //consulta que devuelve siguiente folio disponible de guias de embarque.
-        public ActionResult SigFolioDisp(string guia)
+        public ActionResult SigFolioDisp()
         {
-            if (string.IsNullOrEmpty(guia))
+            try
             {
-                return RedirectToAction("OrdenSeleccionada", "Ordenes");
+                var cabeceraGuia = DALEmbarques.upCorpOms_Cns_NextTracking();
+                var result = new { Success = true, resp = cabeceraGuia };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
-            else if (Session["Id_Num_UN"] == null)
+            catch (Exception x)
             {
-                return RedirectToAction("Index", "Ordenes");
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
-            else
-            {
-                Session["OrderSelected"] = DALServicesM.GetOrdersByGuiaEmb(guia);
-                GenerarCodigoQR(guia);
-            }
-            return View();
 
         }
 
-        //creacion de paquete en DB, relacion de guia x SKU.productos
-        public ActionResult CreacionPaq(string guia)
+        //la cabecera de la guia
+        public ActionResult CreacionCabeceraGuia(string UeNo, int OrderNo, string IdTracking, int idOwner,
+            string PackageType, decimal PackageLength, decimal PackageWidth, decimal PackageHeight, decimal PackageWeight,
+            string CreationId)
         {
-            if (string.IsNullOrEmpty(guia))
+            try
             {
-                return RedirectToAction("OrdenSeleccionada", "Ordenes");
+                var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, idOwner,
+            PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+            CreationId);
+                var result = new { Success = true, resp = cabeceraGuia };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
-            else if (Session["Id_Num_UN"] == null)
+            catch (Exception x)
             {
-                return RedirectToAction("Index", "Ordenes");
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
-            else
+
+        }
+
+        //el detalle producto a producto
+        public ActionResult DetalleProdaProd(string UeNo, int OrderNo, string IdTracking, string TrackingType,
+            int ProductId, decimal Barcode, string ProductName,
+            string CreationId)
+        {
+            try
             {
-                Session["OrderSelected"] = DALServicesM.GetOrdersByGuiaEmb(guia);
-                GenerarCodigoQR(guia);
+                var detalleProd = DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(UeNo, OrderNo, IdTracking, TrackingType,
+            ProductId, Barcode, ProductName,
+            CreationId);
+                var result = new { Success = true, resp = detalleProd };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
-            return View();
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
 
         }
 
