@@ -1804,5 +1804,47 @@ namespace ServicesManagement.Web.Controllers
         }
         #endregion
 
+        #region Embarques
+        //consulta que devuelve siguiente folio disponible de guias de embarque.
+        public ActionResult SigFolioDisp(string guia)
+        {
+            if (string.IsNullOrEmpty(guia))
+            {
+                return RedirectToAction("OrdenSeleccionada", "Ordenes");
+            }
+            else if (Session["Id_Num_UN"] == null)
+            {
+                return RedirectToAction("Index", "Ordenes");
+            }
+            else
+            {
+                Session["OrderSelected"] = DALServicesM.GetOrdersByGuiaEmb(guia);
+                GenerarCodigoQR(guia);
+            }
+            return View();
+
+        }
+
+        //creacion de paquete en DB, relacion de guia x SKU.productos
+        public ActionResult CreacionPaq(string guia)
+        {
+            if (string.IsNullOrEmpty(guia))
+            {
+                return RedirectToAction("OrdenSeleccionada", "Ordenes");
+            }
+            else if (Session["Id_Num_UN"] == null)
+            {
+                return RedirectToAction("Index", "Ordenes");
+            }
+            else
+            {
+                Session["OrderSelected"] = DALServicesM.GetOrdersByGuiaEmb(guia);
+                GenerarCodigoQR(guia);
+            }
+            return View();
+
+        }
+
+        #endregion
     }
 }
