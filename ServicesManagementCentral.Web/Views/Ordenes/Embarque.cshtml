@@ -337,8 +337,8 @@
             $(".form-control input-sm").toggle(sobreType.checked);
             $(".form-control input-s-lg").toggle(paqueteType.checked);
             if (sobreType.checked) {
-                $('#txtLg').show();
-                $('#txtAn').show();
+                //$('#txtLg').show();
+                //$('#txtAn').show();
                 //$('#txtLargo').hide();
                 //$('#txtAncho').hide();
                 $('#txtAltura').hide();
@@ -356,11 +356,172 @@
 
         function AddEmbalaje() {
 
-            
-            $('#tblEmbalaje').append('<tr><td>' + $("#txtCant").val() + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLargo").val() + ' x ' + $("#txtAncho").val() + ' x ' + $("#txtAltura").val() +' </td><td></td></tr>');
+            var selProd = 0;
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked")) {
+                    selProd ++
+                }
+            });
+            if (selProd == 0) {
+                alert("No ha seleccionado productos");
+                return;
+            }
+
+            var _txCant = $("#txCant").val();
+            if (_txCant.length == 0) {
+                alert("Campo cantidad vacío!");
+                $("#txCant").focus();
+                return;
+            }
+            var _txtKG = $("#txtKG").val();
+            if (_txtKG.length == 0) {
+                alert("Campo Peso kg vacío!");
+                $("#txtKG").focus();
+                return;
+            }
+            var _txtLg = $("#txtLg").val();
+            if (_txtLg.length == 0) {
+                alert("Campo Largo vacío!");
+                $("#txtLg").focus();
+                return;
+            }
+            var _txtAn = $("#txtAn").val();
+            if (_txtAn.length == 0) {
+                alert("Campo Ancho vacío!");
+                $("#txtAn").focus();
+                return;
+            }
+            var _txtAl = $("#txtAltura").val();
+            var PackageType = "Sobre";
+            var paqueteType = $("input[name=optionsRadios]")[1].checked;
+            if (paqueteType.checked) {
+                PackageType = "Paquete";
+                if (_txtAltura.length == 0) {
+                    alert("Campo Altura vacío!");
+                    $("#txtAltura").focus();
+                    return;
+                }
+            }
+            else {
+                var _txtAl = "0";
+                $("#txtAltura").val("0");
+            }
+
+            var IdTracking = "";
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("SigFolioDisp", "Ordenes")',
+                data: {
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        IdTracking = json.resp;
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+
+            });
+
+            var TrackingType = "Normal";
+            var _UeNo = $("#UeNo").val();
+            var _OrderNo = $("#OrderNo").val();
+            var CreationId = 't_joserp';
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("CreacionCabeceraGuia", "Ordenes")',
+                data: {
+                    UeNo: _UeNo,
+                    OrderNo: _OrderNo,
+                    IdTracking: IdTracking,
+                    TrackingType: TrackingType,
+                    PackageType: PackageType,
+                    PackageLength: _txtLg,
+                    PackageWidth: _txtAn,
+                    PackageHeight: _txtAl,
+                    PackageWeight: _txtKG,
+                    CreationId: CreationId
+                },
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        //alert("success");
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+
+            });
+
+            var i = 0;
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked")) {
+                    row = $(this).closest("tr");
+                    var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
+                    var Barcode = arrBarProd[0];
+                    var ProductId = arrBarProd[1];
+                    var ProductName = $(row)[0].cells[1].innerText;
+                    $.ajax({
+                        async: false,
+                        type: "GET",
+                        url: '@Url.Action("DetalleProdaProd", "Ordenes")',
+                        data: {
+                            UeNo: _UeNo,
+                            OrderNo: _OrderNo,
+                            IdTracking: IdTracking,
+                            TrackingType: TrackingType,
+                            ProductId: ProductId,
+                            Barcode: Barcode,
+                            ProductName: ProductName,
+                            CreationId: CreationId
+                        },
+                        datatype: "html",
+                        success: function (json) {
+                            if (json.Success) {
+                                //alert(json.resp);
+                            }
+                            else {
+                                alert(json.Message);
+                            }
+                        }
+                        , error: function (jqXHR, textStatus, errorThrown) {
+                            alert(errorThrown);
+
+                        }
+
+                    });
+                }
+                i++;
+            });
+
+            $('#tblEmbalaje').append('<tr><td>' + $("#txCant").val() + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLg").val() + ' x ' + $("#txtAn").val() + ' x ' + $("#txtAltura").val() + ' </td><td>' + IdTracking + '</td></tr>');
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked")) {
+                    this.checked = false;
+                }
+            });
         }
 
         function popEmbalaje() {
+            $("#txCant").val("");
+            $('#txtKG').val("");
+            $('#txtLg').val("");
+            $('#txtAn').val("");
+            $('#txtAltura').val("");
             $('#dlgAddProdcut').modal('show');
         }
 

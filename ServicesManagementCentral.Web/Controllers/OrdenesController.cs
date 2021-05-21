@@ -1812,8 +1812,8 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var cabeceraGuia = DALEmbarques.upCorpOms_Cns_NextTracking();
-                var result = new { Success = true, resp = cabeceraGuia };
+                var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"];
+                var result = new { Success = true, resp = FolioDisp };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
@@ -1825,15 +1825,15 @@ namespace ServicesManagement.Web.Controllers
         }
 
         //la cabecera de la guia
-        public ActionResult CreacionCabeceraGuia(string UeNo, int OrderNo, string IdTracking, int idOwner,
+        public ActionResult CreacionCabeceraGuia(string UeNo, int OrderNo, string IdTracking, string TrackingType,
             string PackageType, decimal PackageLength, decimal PackageWidth, decimal PackageHeight, decimal PackageWeight,
             string CreationId)
         {
             try
             {
-                var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, idOwner,
+                var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
             PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-            CreationId);
+            CreationId).Tables[0].Rows[0][0];
                 var result = new { Success = true, resp = cabeceraGuia };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -1847,14 +1847,14 @@ namespace ServicesManagement.Web.Controllers
 
         //el detalle producto a producto
         public ActionResult DetalleProdaProd(string UeNo, int OrderNo, string IdTracking, string TrackingType,
-            int ProductId, decimal Barcode, string ProductName,
+            decimal ProductId, decimal Barcode, string ProductName,
             string CreationId)
         {
             try
             {
                 var detalleProd = DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(UeNo, OrderNo, IdTracking, TrackingType,
             ProductId, Barcode, ProductName,
-            CreationId);
+            CreationId).Tables[0].Rows[0][0];
                 var result = new { Success = true, resp = detalleProd };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

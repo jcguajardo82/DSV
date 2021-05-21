@@ -46,7 +46,7 @@ namespace ServicesManagement.Web.DAL.Embarques
 
         }
 
-        public static DataSet upCorpOms_Ins_UeNoTracking(string UeNo, int OrderNo, string IdTracking, int idOwner,
+        public static DataSet upCorpOms_Ins_UeNoTracking(string UeNo, int OrderNo, string IdTracking, string TrackingType,
             string PackageType, decimal PackageLength, decimal PackageWidth, decimal PackageHeight, decimal PackageWeight,
             string CreationId)
         {
@@ -68,7 +68,7 @@ namespace ServicesManagement.Web.DAL.Embarques
                 parametros.Add("@UeNo", UeNo);
                 parametros.Add("@OrderNo", OrderNo);
                 parametros.Add("@IdTracking", IdTracking);
-                parametros.Add("@idOwner", idOwner);
+                parametros.Add("@TrackingType", TrackingType);
                 parametros.Add("@PackageType", PackageType);
                 parametros.Add("@PackageLength", PackageLength);
                 parametros.Add("@PackageWidth", PackageWidth);
@@ -94,7 +94,7 @@ namespace ServicesManagement.Web.DAL.Embarques
         }
 
         public static DataSet upCorpOms_Ins_UeNoTrackingDetail(string UeNo, int OrderNo, string IdTracking, string TrackingType,
-            int ProductId, decimal Barcode, string ProductName, 
+            decimal ProductId, decimal Barcode, string ProductName, 
             string CreationId)
         {
 
