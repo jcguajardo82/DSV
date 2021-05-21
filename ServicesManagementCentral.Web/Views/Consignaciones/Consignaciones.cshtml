@@ -31,12 +31,12 @@
         </div>
     </div>
 </div>
-<div class="modal inmodal fade" id="dlgInventarios" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal fade" id="detalleconsignacion" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header pt-3 pb-1">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Almacen - Inventario </h4>
+                <h4 class="modal-title">Detalle Consignación </h4>
             </div>
             <div class="modal-body">
                 <form id="frmCreateServicios">
@@ -45,23 +45,23 @@
                             <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
                                 <thead class="bg-danger-sor">
                                     <tr>
-                                        <th>idOwner</th>
-                                        <th>ProductSKU</th>
-                                        <th>barCode</th>
-                                        <th>productName</th>
-                                        <th>productCategoryId</th>
-                                        <th>qtyStockSafety</th>
-                                        <th>qtyStockForSale</th>
-                                        <th>qtyStockReserved</th>
-                                        <th>dimmensionLarge</th>
-                                        <th>dimmensionHeight</th>
-                                        <th>dimmensionWeightVol</th>
-                                        <th>dimmensionWeightReal</th>
+                                        <th>id</th>
+                                        <th>Descripción</th>
+                                        <th>Piezas</th>
+                                        <th>Costo Unitario</th>
+                                        <th>Peso volumetrico Unitario</th>
+                                        <th>Surtido/Dias transcurridos desde la cración</th>
+                                        <th>Surtido/Dias transcurridos desde la autorización</th>
+                                        <th>Fecha de envio</th>
+                                        <th>RMA</th>
+                                        <th>Estatus del RMA</th>
+                                        <th>EAN/Codigo de barras</th>
+                                        @*<th>dimmensionWeightReal</th>
                                         <th>productStatus</th>
                                         <th>productMaterialCost</th>
                                         <th>productCreationDate</th>
                                         <th>idSupplierOrigin</th>
-                                        <th>idSupplierOriginName</th>
+                                        <th>idSupplierOriginName</th>*@
                                     </tr>
                                     @*[idSupplierWH]
                                         ,[]
@@ -125,24 +125,23 @@
             GetconsignacionesAdm();
         });
 
-        @*function popDesHabilitar(noProveedor, noAlmacen) {
+        function popDesHabilitar(noProveedor, noAlmacen) {
             $("#hddNoProveedor").val(noProveedor);
             $("#HddNoAlmacen").val(noAlmacen);
             $("#dlgDesHabilitar").modal('toggle');
         }
 
-        function PopInv(noProveedor, noAlmacen){
+        function PopDetlleC(Consignacion){
 
-           $("#dlgInventarios").modal('toggle');
-
+            $("#detalleconsignacion").modal('toggle');
+            /*$("#Consignacion").val(Consignacion);*/
 
             $.ajax({
                 async: false,
                 type: "POST",
-                url: '@Url.Action("GetSuppliersWHStock", "almacenes")',
+                url: '@Url.Action("GetDetalleConsignacionAdm", "consignaciones")',
                 data: {
-                    idSupplierWH: noProveedor,
-                    idSupplierWHCode: noAlmacen
+                    consignacion: Consignacion
                 },
 
                 datatype: "json",
@@ -207,7 +206,7 @@
                 }
 
             });
-        }*@
+        }
         function GetconsignacionesAdm() {
 
             //var _Id_Num_UN = $("#hddTda").val();
@@ -235,7 +234,9 @@
                             tr = $('<tr/>');
                             //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
                            
-                            tr.append("<td>" + json.resp[i].Consignacion + "</td>");
+                        /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
+                            tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion +"</a></td>");
+                            /*tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + json.resp[i].Consignacion + "</a></td>");*/
                             tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");  
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].FechaCreacion + "  " + json.resp[i].HoraCreacion +"</td>");

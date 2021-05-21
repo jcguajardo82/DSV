@@ -116,6 +116,7 @@
                 // Checking whether FormData is available in browser
                 if (window.FormData !== undefined) {
 
+                    var servername = window.location.origin;
                     var fileUpload = $("#FileUpload1").get(0);
                     var files = fileUpload.files;
 
@@ -132,6 +133,7 @@
                     fileData.append('ownerName', _ownerName);
                     fileData.append('idManual', _idManual);
                     fileData.append('ManualDesc', _ManualDesc);
+                    fileData.append('servername', servername);
 
 
 

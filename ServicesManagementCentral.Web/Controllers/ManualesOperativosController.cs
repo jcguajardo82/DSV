@@ -125,6 +125,7 @@ namespace ServicesManagement.Web.Controllers
                     var idManual = Request.Form["idManual"].ToString();
                     var ManualDesc = Request.Form["ManualDesc"].ToString();
                     var ownerName = Request.Form["ownerName"].ToString();
+                    string servername = Request.Form["servername"].ToString();
 
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
@@ -148,11 +149,16 @@ namespace ServicesManagement.Web.Controllers
                         }
 
                         fname = string.Format("{0}_{1}_{2}", ownerName, ManualDesc, fname);
+
                         // Get the complete folder path and store the file inside it.  
                         var path = Path.Combine(Server.MapPath("~/Files/"), fname);
+                        var pathServerName = servername + "/Files/" + fname;
+
                         file.SaveAs(path);
 
-                        DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, fname, DateTime.Now, User.Identity.Name);
+                       // DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, fname, DateTime.Now, User.Identity.Name);
+
+                        DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, pathServerName, DateTime.Now, User.Identity.Name);
                     }
                     // Returns message that successfully uploaded  
                     return Json("File Uploaded Successfully!");
