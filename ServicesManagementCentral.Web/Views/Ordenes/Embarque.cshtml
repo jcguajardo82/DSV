@@ -286,7 +286,6 @@
                                         <thead>
                                             <tr>
                                                 <th colspan="2">Tipo</th>
-                                                <th colspan="1" id="colCant" >Cantidad</th>
                                                 <th colspan="1" id="colPeso" >Peso KG</th>
                                                 <th colspan="6" style="text-align:center;">Dimensiones (cm)</th>
                                             </tr>
@@ -295,8 +294,6 @@
                                             <tr>
                                                 <td><input type="radio" checked="" value="Sobre" class="js-rate-type" id="optionsRadios1" name="optionsRadios"> Sobre</td>
                                                 <td><input type="radio" value="Paquete" id="optionsRadios2" name="optionsRadios"> Paquete</td>
-
-                                                <td><input type="text" class="form-control input-sm" placeholder="CantEmb" id="txCant" /></td>
 
                                                 <td><input type="text" class="form-control input-sm" placeholder="KG" id="txtKG" /></td>
 
@@ -337,17 +334,9 @@
             $(".form-control input-sm").toggle(sobreType.checked);
             $(".form-control input-s-lg").toggle(paqueteType.checked);
             if (sobreType.checked) {
-                //$('#txtLg').show();
-                //$('#txtAn').show();
-                //$('#txtLargo').hide();
-                //$('#txtAncho').hide();
                 $('#txtAltura').hide();
             }
             else {
-                //$('#txtLg').hide();
-                //$('#txtAn').hide();
-                //$('#txtLargo').show();
-                //$('#txtAncho').show();
                 $('#txtAltura').show();
             }
         }).change()
@@ -364,13 +353,6 @@
             });
             if (selProd == 0) {
                 alert("No ha seleccionado productos");
-                return;
-            }
-
-            var _txCant = $("#txCant").val();
-            if (_txCant.length == 0) {
-                alert("Campo cantidad vacío!");
-                $("#txCant").focus();
                 return;
             }
             var _txtKG = $("#txtKG").val();
@@ -508,7 +490,7 @@
                 i++;
             });
 
-            $('#tblEmbalaje').append('<tr><td>' + $("#txCant").val() + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLg").val() + ' x ' + $("#txtAn").val() + ' x ' + $("#txtAltura").val() + ' </td><td>' + IdTracking + '</td></tr>');
+            $('#tblEmbalaje').append('<tr><td>' + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLg").val() + ' x ' + $("#txtAn").val() + ' x ' + $("#txtAltura").val() + ' </td><td>' + IdTracking + '</td></tr>');
             $('input[type=checkbox][id*=chkSel_]').each(function () {
                 if ($(this).is(":checked")) {
                     this.checked = false;
@@ -517,7 +499,6 @@
         }
 
         function popEmbalaje() {
-            $("#txCant").val("");
             $('#txtKG').val("");
             $('#txtLg').val("");
             $('#txtAn').val("");

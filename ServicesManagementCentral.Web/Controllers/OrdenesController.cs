@@ -1807,6 +1807,24 @@ namespace ServicesManagement.Web.Controllers
         #endregion
 
         #region Embarques
+
+        //Cabeceras y productos
+        public ActionResult LstCabecerasGuiasProds(string UeNo, int OrderNo)
+        {
+            try
+            {
+                var cabecerasGuia = DALEmbarques.upCorpOms_Cns_UeNoTracking(UeNo, OrderNo).Tables[0].Rows[0][0];
+                var productosOrden = DALEmbarques.upCorpOms_Cns_UeNoTracking(UeNo, OrderNo).Tables[0].Rows[0][0];
+                var result = new { Success = true, resp = cabecerasGuia, prod = productosOrden };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
         //consulta que devuelve siguiente folio disponible de guias de embarque.
         public ActionResult SigFolioDisp()
         {
