@@ -19,6 +19,8 @@
         System.Data.DataSet ds = (System.Data.DataSet)Session["OrderSelected"];
         var dt = ds.Tables[0];
 
+        System.Data.DataSet dsOP = (System.Data.DataSet)Session["OrderPackages"];
+
 
         int index = 0;
         foreach (System.Data.DataRow p in dt.Rows)
@@ -145,7 +147,28 @@
                                                     }
                                                 </td>
                                                 <td>@p["e_Quantity"]</td>
-                                                <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@index.ToString()" /> </td>
+                                                @if (Session["OrderPackages"] != null)
+                                                {
+                                                    System.Data.DataSet dsOP = (System.Data.DataSet)Session["OrderPackages"];
+                                                    if (dsOP.Tables[0].Rows[0][0].ToString() != "no hay datos de esa Consignacion")
+                                                    {
+                                                        var dtPG = dsOP.Tables[1];
+                                                        foreach (System.Data.DataRow pg in dtPG.Rows)
+                                                        {
+                                                            if (@p["Barcode"].ToString() == @pg["Barcode"].ToString())
+                                                            {
+                                                                if (@pg["ConGuia"].ToString() == "1")
+                                                                {
+                                                                    <td style="text-align:center"><input class="form-check-input" type="checkbox" checked ="checked" disabled="disabled" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             </tr>
                                         }
                                     }
@@ -250,11 +273,26 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @*<tr>
-                                                    <td>1</td>
-                                                    <td>KG</td>
-                                                    <td>X X X</td>
-                                                </tr>*@
+                                                @if (Session["OrderPackages"] != null)
+                                                {
+                                                    System.Data.DataSet dsOP = (System.Data.DataSet)Session["OrderPackages"];
+                                                    if (dsOP.Tables[0].Rows[0][0].ToString() != "no hay datos de esa Consignacion")
+                                                    {
+                                                        var dtOP = dsOP.Tables[0];
+                                                        foreach (System.Data.DataRow op in dtOP.Rows)
+                                                        {
+                                                            <tr>
+                                                                <td>@op["PackageType"]</td>
+                                                                <td>@op["PackageWeight"]</td>
+                                                                <td>@op["PackageLength"] x @op["PackageWidth"] x @op["PackageHeight"]</td>
+                                                                <td style="text-align:center;">
+                                                                    <a onclick="popUpLstProds(@op["IdTracking"])"
+                                                                       title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
@@ -340,171 +378,179 @@
                 $('#txtAltura').show();
             }
         }).change()
-
+        chkLst;
     });
 
-        function AddEmbalaje() {
+    function AddEmbalaje() {
 
-            var selProd = 0;
-            $('input[type=checkbox][id*=chkSel_]').each(function () {
-                if ($(this).is(":checked")) {
-                    selProd ++
-                }
-            });
-            if (selProd == 0) {
-                alert("No ha seleccionado productos");
+        var selProd = 0;
+        $('input[type=checkbox][id*=chkSel_]').each(function () {
+            if ($(this).is(":checked")) {
+                selProd ++
+            }
+        });
+        if (selProd == 0) {
+            alert("No ha seleccionado productos");
+            return;
+        }
+        var _txtKG = $("#txtKG").val();
+        if (_txtKG.length == 0) {
+            alert("Campo Peso kg vacío!");
+            $("#txtKG").focus();
+            return;
+        }
+        var _txtLg = $("#txtLg").val();
+        if (_txtLg.length == 0) {
+            alert("Campo Largo vacío!");
+            $("#txtLg").focus();
+            return;
+        }
+        var _txtAn = $("#txtAn").val();
+        if (_txtAn.length == 0) {
+            alert("Campo Ancho vacío!");
+            $("#txtAn").focus();
+            return;
+        }
+        var _txtAl = $("#txtAltura").val();
+        var PackageType = "Sobre";
+        var paqueteType = $("input[name=optionsRadios]")[1].checked;
+        if (paqueteType.checked) {
+            PackageType = "Paquete";
+            if (_txtAltura.length == 0) {
+                alert("Campo Altura vacío!");
+                $("#txtAltura").focus();
                 return;
             }
-            var _txtKG = $("#txtKG").val();
-            if (_txtKG.length == 0) {
-                alert("Campo Peso kg vacío!");
-                $("#txtKG").focus();
-                return;
-            }
-            var _txtLg = $("#txtLg").val();
-            if (_txtLg.length == 0) {
-                alert("Campo Largo vacío!");
-                $("#txtLg").focus();
-                return;
-            }
-            var _txtAn = $("#txtAn").val();
-            if (_txtAn.length == 0) {
-                alert("Campo Ancho vacío!");
-                $("#txtAn").focus();
-                return;
-            }
-            var _txtAl = $("#txtAltura").val();
-            var PackageType = "Sobre";
-            var paqueteType = $("input[name=optionsRadios]")[1].checked;
-            if (paqueteType.checked) {
-                PackageType = "Paquete";
-                if (_txtAltura.length == 0) {
-                    alert("Campo Altura vacío!");
-                    $("#txtAltura").focus();
-                    return;
-                }
-            }
-            else {
-                var _txtAl = "0";
-                $("#txtAltura").val("0");
-            }
-
-            var IdTracking = "";
-            $.ajax({
-                async: false,
-                type: "GET",
-                url: '@Url.Action("SigFolioDisp", "Ordenes")',
-                data: {
-
-                },
-                datatype: "html",
-                success: function (json) {
-                    if (json.Success) {
-                        IdTracking = json.resp;
-                    }
-                    else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    alert(errorThrown);
-
-                }
-
-            });
-
-            var TrackingType = "Normal";
-            var _UeNo = $("#UeNo").val();
-            var _OrderNo = $("#OrderNo").val();
-            var CreationId = 't_joserp';
-            $.ajax({
-                async: false,
-                type: "GET",
-                url: '@Url.Action("CreacionCabeceraGuia", "Ordenes")',
-                data: {
-                    UeNo: _UeNo,
-                    OrderNo: _OrderNo,
-                    IdTracking: IdTracking,
-                    TrackingType: TrackingType,
-                    PackageType: PackageType,
-                    PackageLength: _txtLg,
-                    PackageWidth: _txtAn,
-                    PackageHeight: _txtAl,
-                    PackageWeight: _txtKG,
-                    CreationId: CreationId
-                },
-                datatype: "html",
-                success: function (json) {
-                    if (json.Success) {
-                        //alert("success");
-                    }
-                    else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    alert(errorThrown);
-
-                }
-
-            });
-
-            var i = 0;
-            $('input[type=checkbox][id*=chkSel_]').each(function () {
-                if ($(this).is(":checked")) {
-                    row = $(this).closest("tr");
-                    var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
-                    var Barcode = arrBarProd[0];
-                    var ProductId = arrBarProd[1];
-                    var ProductName = $(row)[0].cells[1].innerText;
-                    $.ajax({
-                        async: false,
-                        type: "GET",
-                        url: '@Url.Action("DetalleProdaProd", "Ordenes")',
-                        data: {
-                            UeNo: _UeNo,
-                            OrderNo: _OrderNo,
-                            IdTracking: IdTracking,
-                            TrackingType: TrackingType,
-                            ProductId: ProductId,
-                            Barcode: Barcode,
-                            ProductName: ProductName,
-                            CreationId: CreationId
-                        },
-                        datatype: "html",
-                        success: function (json) {
-                            if (json.Success) {
-                                //alert(json.resp);
-                            }
-                            else {
-                                alert(json.Message);
-                            }
-                        }
-                        , error: function (jqXHR, textStatus, errorThrown) {
-                            alert(errorThrown);
-
-                        }
-
-                    });
-                }
-                i++;
-            });
-
-            $('#tblEmbalaje').append('<tr><td>' + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLg").val() + ' x ' + $("#txtAn").val() + ' x ' + $("#txtAltura").val() + ' </td><td>' + IdTracking + '</td></tr>');
-            $('input[type=checkbox][id*=chkSel_]').each(function () {
-                if ($(this).is(":checked")) {
-                    this.checked = false;
-                }
-            });
+        }
+        else {
+            var _txtAl = "0";
+            $("#txtAltura").val("0");
         }
 
-        function popEmbalaje() {
-            $('#txtKG').val("");
-            $('#txtLg').val("");
-            $('#txtAn').val("");
-            $('#txtAltura').val("");
-            $('#dlgAddProdcut').modal('show');
-        }
+        var IdTracking = "";
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("SigFolioDisp", "Ordenes")',
+            data: {
+
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    IdTracking = json.resp;
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+
+        var TrackingType = "Normal";
+        var _UeNo = $("#UeNo").val();
+        var _OrderNo = $("#OrderNo").val();
+        var CreationId = 't_joserp';
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("CreacionCabeceraGuia", "Ordenes")',
+            data: {
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                IdTracking: IdTracking,
+                TrackingType: TrackingType,
+                PackageType: PackageType,
+                PackageLength: _txtLg,
+                PackageWidth: _txtAn,
+                PackageHeight: _txtAl,
+                PackageWeight: _txtKG,
+                CreationId: CreationId
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    //alert("success");
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+
+        var i = 0;
+        $('input[type=checkbox][id*=chkSel_]').each(function () {
+            if ($(this).is(":checked")) {
+                row = $(this).closest("tr");
+                var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
+                var Barcode = arrBarProd[0];
+                var ProductId = arrBarProd[1];
+                var ProductName = $(row)[0].cells[1].innerText;
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("DetalleProdaProd", "Ordenes")',
+                    data: {
+                        UeNo: _UeNo,
+                        OrderNo: _OrderNo,
+                        IdTracking: IdTracking,
+                        TrackingType: TrackingType,
+                        ProductId: ProductId,
+                        Barcode: Barcode,
+                        ProductName: ProductName,
+                        CreationId: CreationId
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            //alert(json.resp);
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            }
+            i++;
+        });
+
+        $('#tblEmbalaje').append('<tr><td>' + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLg").val() + ' x ' + $("#txtAn").val() + ' x ' + $("#txtAltura").val() + ' </td><td>' + IdTracking + '</td></tr>');
+        $('input[type=checkbox][id*=chkSel_]').each(function () {
+            if ($(this).is(":checked")) {
+                this.checked = false;
+            }
+        });
+    }
+
+    function popEmbalaje() {
+        $('#txtKG').val("");
+        $('#txtLg').val("");
+        $('#txtAn').val("");
+        $('#txtAltura').val("");
+        $('#dlgAddProdcut').modal('show');
+    }
+
+    function popUpLstProds(idTracking) {
+
+    }
+
+    function chkLst() {
+
+    }
 
     function FinalizaEmbarque() {
 
@@ -546,8 +592,6 @@
         });
 
     }
-
-
 
     function ShowFilter() {
         $("#filter").collapse('toggle');

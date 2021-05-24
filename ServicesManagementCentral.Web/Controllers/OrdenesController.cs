@@ -893,7 +893,12 @@ namespace ServicesManagement.Web.Controllers
             else
             {
                 Session["OrderSelected"] = DALServicesM.GetOrdersByOrderNo(order);
+                System.Data.DataSet dOP = (System.Data.DataSet)Session["OrderSelected"];
+                var txtUeNo = dOP.Tables[0].Rows[0]["UeNo"].ToString();
+                int decOrder = int.Parse(dOP.Tables[0].Rows[0]["OrderNo"].ToString());
+                Session["OrderPackages"] = DALEmbarques.upCorpOms_Cns_UeNoTracking(txtUeNo, decOrder);
             }
+            
             return View();
 
         }
