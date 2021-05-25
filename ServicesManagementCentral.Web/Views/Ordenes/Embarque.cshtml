@@ -375,9 +375,9 @@
                                     <table id ="tblShowProduct" class="table" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th colspan="1">Código </th>
-                                                <th colspan="2">Producto</th>
-                                                <th colspan="4">Descripción</th>
+                                                <th>Código </th>
+                                                <th>Producto</th>
+                                                <th>Descripción</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -633,6 +633,21 @@
             datatype: "html",
             success: function (json) {
                 if (json.Success) {
+                    $("#tblShowProduct tbody").empty();
+                    //$("#tblShowProduct tbody").remove();
+                    //var tr;
+                    debugger;
+                    //Append each row to html table
+                    for (var i = 0; i < json.resp.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + json.resp[i].Barcode + "</td>");
+                        tr.append("<td>" + json.resp[i].ProductId + "</td>");
+                        tr.append("<td>" + json.resp[i].ProductName + "</td>");
+                        //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                        //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                        $('#tblShowProduct').append(tr);
+
+                    }
                     $('#dlgShowProdcut').modal('show');
                 }
                 else {
