@@ -82,15 +82,15 @@
     <br />
     <div id="tblConsulta_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
         @*<div class="row">
-                <div class="col col-xs-6">
-                    <div class="dt-buttons btn-group flex-wrap">
-                        <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>
-                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
-                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
-                    </div>
+            <div class="col col-xs-6">
+                <div class="dt-buttons btn-group flex-wrap">
+                    <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>
+                    <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                    <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
                 </div>
+            </div>
 
-            </div>*@
+        </div>*@
         <div id="table-scroll">
             <div id="tblConsulta_Surtido" class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer" style="height:300px;">
                 <div class="row">
@@ -131,7 +131,7 @@
                                         int index = 0;
                                         foreach (System.Data.DataRow p in dt.Rows)
                                         {
-                                            index ++;
+                                            index++;
                                             <tr>
                                                 <td style="text-align:right">@p["Barcode"]<br />@p["ProductId"]</td>
                                                 <td style="text-align:center">@p["ProductName"]</td>
@@ -159,7 +159,7 @@
                                                             {
                                                                 if (@pg["ConGuia"].ToString() == "1")
                                                                 {
-                                                                    <td style="text-align:center"><input class="form-check-input" type="checkbox" checked ="checked" disabled="disabled" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                    <td style="text-align:center"><input class="form-check-input" type="checkbox" checked="checked" disabled="disabled" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
                                                                 }
                                                                 else
                                                                 {
@@ -167,6 +167,10 @@
                                                                 }
                                                             }
                                                         }
+                                                    }
+                                                    else
+                                                    {
+                                                        <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
                                                     }
                                                 }
                                             </tr>
@@ -266,10 +270,11 @@
                                         <table id="tblEmbalaje" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 1115px;">
                                             <thead class="bg-primary">
                                                 <tr role="row">
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>NO DE PAQUETES</b><br />Max. 25</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TIPO PAQUETE</b><br /></th>
                                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO X PAQUETE</b><br />Peso max. 1000kg</th>
                                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>DIMENSIONES X PAQUETE</b><br />L X AN X AL (cm)</th>
                                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>GUIA DE EMBARQUE</b><br /></th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>ACCIÓN</b><br /></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -289,6 +294,7 @@
                                                                     <a onclick="popUpLstProds(@op["IdTracking"])"
                                                                        title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
                                                                 </td>
+                                                                <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op["IdTracking"]")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
                                                             </tr>
                                                         }
                                                     }
@@ -303,7 +309,7 @@
                                         <b>Fecha de Envio</b>
                                         <div class="alert alert-warning">
                                             Vernes, 28 de mayo de 2021
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -324,7 +330,7 @@
                                         <thead>
                                             <tr>
                                                 <th colspan="2">Tipo</th>
-                                                <th colspan="1" id="colPeso" >Peso KG</th>
+                                                <th colspan="1" id="colPeso">Peso KG</th>
                                                 <th colspan="6" style="text-align:center;">Dimensiones (cm)</th>
                                             </tr>
                                         </thead>
@@ -357,6 +363,35 @@
                     </div>
                 </div>
 
+                <div class="modal inmodal fade" id="dlgShowProdcut" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header pt-3 pb-1">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <p>Lista de Productos</p>
+                            </div>
+                            <div class="modal-body">
+                                <form id="frmShowServicios">
+                                    <table id ="tblShowProduct" class="table" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="1">Código </th>
+                                                <th colspan="2">Producto</th>
+                                                <th colspan="4">Descripción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             }
         }
     </div>
@@ -378,14 +413,13 @@
                 $('#txtAltura').show();
             }
         }).change()
-        chkLst;
     });
 
     function AddEmbalaje() {
 
         var selProd = 0;
         $('input[type=checkbox][id*=chkSel_]').each(function () {
-            if ($(this).is(":checked")) {
+            if ($(this).is(":checked") && $(this).is(":disabled") == false) {
                 selProd ++
             }
         });
@@ -489,7 +523,7 @@
 
         var i = 0;
         $('input[type=checkbox][id*=chkSel_]').each(function () {
-            if ($(this).is(":checked")) {
+            if ($(this).is(":checked") && $(this).is(":disabled") == false) {
                 row = $(this).closest("tr");
                 var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
                 var Barcode = arrBarProd[0];
@@ -528,12 +562,14 @@
             i++;
         });
 
-        $('#tblEmbalaje').append('<tr><td>' + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLg").val() + ' x ' + $("#txtAn").val() + ' x ' + $("#txtAltura").val() + ' </td><td>' + IdTracking + '</td></tr>');
+        //$('#tblEmbalaje').append('<tr><td>' + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLg").val() + ' x ' + $("#txtAn").val() + ' x ' + $("#txtAltura").val() + ' </td><td>' + IdTracking + '</td></tr>');
         $('input[type=checkbox][id*=chkSel_]').each(function () {
-            if ($(this).is(":checked")) {
+            if ($(this).is(":checked") && $(this).is(":disabled") == false) {
                 this.checked = false;
             }
         });
+
+        location.reload();
     }
 
     function popEmbalaje() {
@@ -544,12 +580,71 @@
         $('#dlgAddProdcut').modal('show');
     }
 
-    function popUpLstProds(idTracking) {
+    function DeletePaquete(idTracking) {
+        var TrackingType = "Normal";
+        var _UeNo = $("#UeNo").val();
+        var _OrderNo = $("#OrderNo").val();
+        var idTracking = idTracking;
 
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("BorrarPaquete", "Ordenes")',
+            data: {
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                IdTracking: idTracking,
+                TrackingType: TrackingType
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    location.reload();
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
     }
 
-    function chkLst() {
+    function popUpLstProds(idTracking) {
+        
+        //var TrackingType = "Normal";
+        var _UeNo = $("#UeNo").val();
+        var _OrderNo = $("#OrderNo").val();
+        var idTracking = idTracking;
 
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("LstProdPaquete", "Ordenes")',
+            data: {
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                IdTracking: idTracking,
+                //TrackingType: TrackingType
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    $('#dlgShowProdcut').modal('show');
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
     }
 
     function FinalizaEmbarque() {
@@ -581,7 +676,6 @@
             datatype: "html",
             success: function (json) {
                 if (json.Success) {
-
                     window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
                 }
             }

@@ -1847,6 +1847,40 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+        //listar productos de  paquete
+        public ActionResult LstProdPaquete(string UeNo, int OrderNo, string IdTracking)
+        {
+            try
+            {
+                var listaProd = DataTableToModel.ConvertTo<UeNoTrackingDetail>(DALEmbarques.upCorpOms_Cns_UeNoTrackingDetail(UeNo, OrderNo, IdTracking).Tables[0]);
+                var result = new { Success = true, resp = listaProd };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        //borrar paquete
+        public ActionResult BorrarPaquete(string UeNo, int OrderNo, string IdTracking, string TrackingType)
+        {
+            try
+            {
+                var paqueteBorrado = DALEmbarques.upCorpOms_Del_UeNoTrackingFull(UeNo, OrderNo, IdTracking, TrackingType).Tables[0].Rows[0][0];
+                var result = new { Success = true, resp = paqueteBorrado };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
         //la cabecera de la guia
         public ActionResult CreacionCabeceraGuia(string UeNo, int OrderNo, string IdTracking, string TrackingType,
             string PackageType, decimal PackageLength, decimal PackageWidth, decimal PackageHeight, decimal PackageWeight,
