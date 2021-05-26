@@ -893,7 +893,12 @@ namespace ServicesManagement.Web.Controllers
             else
             {
                 Session["OrderSelected"] = DALServicesM.GetOrdersByOrderNo(order);
+                System.Data.DataSet dOP = (System.Data.DataSet)Session["OrderSelected"];
+                var txtUeNo = dOP.Tables[0].Rows[0]["UeNo"].ToString();
+                int decOrder = int.Parse(dOP.Tables[0].Rows[0]["OrderNo"].ToString());
+                Session["OrderPackages"] = DALEmbarques.upCorpOms_Cns_UeNoTracking(txtUeNo, decOrder);
             }
+            
             return View();
 
         }
@@ -1807,13 +1812,65 @@ namespace ServicesManagement.Web.Controllers
         #endregion
 
         #region Embarques
+
+        //Cabeceras y productos
+        public ActionResult LstCabecerasGuiasProds(string UeNo, int OrderNo)
+        {
+            try
+            {
+                var cabecerasGuia = DALEmbarques.upCorpOms_Cns_UeNoTracking(UeNo, OrderNo).Tables[0].Rows[0][0];
+                var productosOrden = DALEmbarques.upCorpOms_Cns_UeNoTracking(UeNo, OrderNo).Tables[0].Rows[0][0];
+                var result = new { Success = true, resp = cabecerasGuia, prod = productosOrden };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
         //consulta que devuelve siguiente folio disponible de guias de embarque.
         public ActionResult SigFolioDisp()
         {
             try
             {
-                var cabeceraGuia = DALEmbarques.upCorpOms_Cns_NextTracking();
-                var result = new { Success = true, resp = cabeceraGuia };
+                var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"];
+                var result = new { Success = true, resp = FolioDisp };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        //listar productos de  paquete
+        public ActionResult LstProdPaquete(string UeNo, int OrderNo, string IdTracking)
+        {
+            try
+            {
+                var listaProd = DataTableToModel.ConvertTo<UeNoTrackingDetail>(DALEmbarques.upCorpOms_Cns_UeNoTrackingDetail(UeNo, OrderNo, IdTracking).Tables[0]);
+                var result = new { Success = true, resp = listaProd };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        //borrar paquete
+        public ActionResult BorrarPaquete(string UeNo, int OrderNo, string IdTracking, string TrackingType)
+        {
+            try
+            {
+                var paqueteBorrado = DALEmbarques.upCorpOms_Del_UeNoTrackingFull(UeNo, OrderNo, IdTracking, TrackingType).Tables[0].Rows[0][0];
+                var result = new { Success = true, resp = paqueteBorrado };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
@@ -1825,15 +1882,15 @@ namespace ServicesManagement.Web.Controllers
         }
 
         //la cabecera de la guia
-        public ActionResult CreacionCabeceraGuia(string UeNo, int OrderNo, string IdTracking, int idOwner,
+        public ActionResult CreacionCabeceraGuia(string UeNo, int OrderNo, string IdTracking, string TrackingType,
             string PackageType, decimal PackageLength, decimal PackageWidth, decimal PackageHeight, decimal PackageWeight,
             string CreationId)
         {
             try
             {
-                var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, idOwner,
+                var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
             PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-            CreationId);
+            CreationId).Tables[0].Rows[0][0];
                 var result = new { Success = true, resp = cabeceraGuia };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -1847,14 +1904,14 @@ namespace ServicesManagement.Web.Controllers
 
         //el detalle producto a producto
         public ActionResult DetalleProdaProd(string UeNo, int OrderNo, string IdTracking, string TrackingType,
-            int ProductId, decimal Barcode, string ProductName,
+            decimal ProductId, decimal Barcode, string ProductName,
             string CreationId)
         {
             try
             {
                 var detalleProd = DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(UeNo, OrderNo, IdTracking, TrackingType,
             ProductId, Barcode, ProductName,
-            CreationId);
+            CreationId).Tables[0].Rows[0][0];
                 var result = new { Success = true, resp = detalleProd };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

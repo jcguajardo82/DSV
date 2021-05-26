@@ -272,6 +272,7 @@
     <Compile Include="Models\LineaModel.cs" />
     <Compile Include="Models\MotivoCambioFP.cs" />
     <Compile Include="Models\OMSModels.cs" />
+    <Compile Include="Models\Ordenes.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\OrderSelected.cs" />
     <Compile Include="Models\PasilloUnCapturaAvance.cs" />
