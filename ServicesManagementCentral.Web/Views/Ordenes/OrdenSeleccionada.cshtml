@@ -488,14 +488,21 @@
 
             var id_categoria = $(el).attr('id');
             var listaO = document.getElementById("Orders").value;
+            var digito = listaO.split("-");
             debugger;
             if (listaO != "0") {
-                if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
-                    //$('#ConfirmMessageResponse').val('Yes');
-                    debugger;
-                    FinalizaEmbarque(id_categoria, listaO, id_categoria);
-                } else {
-                    //$('#ConfirmMessageResponse').val('No');
+                if (digito[1] == "1") {
+                    if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
+                        //$('#ConfirmMessageResponse').val('Yes');
+                        debugger;
+                        FinalizaEmbarque(id_categoria, listaO, id_categoria);
+                    } else {
+                        //$('#ConfirmMessageResponse').val('No');
+                        return false;
+                    }
+                }
+                else {
+                    alert("Orden seleccionada no válida");
                     return false;
                 }
             } else {
