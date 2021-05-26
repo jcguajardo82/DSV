@@ -448,9 +448,9 @@
         var _txtAl = $("#txtAltura").val();
         var PackageType = "Sobre";
         var paqueteType = $("input[name=optionsRadios]")[1].checked;
-        if (paqueteType.checked) {
+        if (paqueteType) {
             PackageType = "Paquete";
-            if (_txtAltura.length == 0) {
+            if ($("#txtAltura").length == 0) {
                 alert("Campo Altura vacío!");
                 $("#txtAltura").focus();
                 return;
