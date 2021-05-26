@@ -10,7 +10,6 @@ namespace ServicesManagement.Web.DAL.Consignaciones
 {
     public class DALConsignacionesAdm
     {
-
         public static DataSet upCorpAlmacen_Cns_Consigments()
         {
 

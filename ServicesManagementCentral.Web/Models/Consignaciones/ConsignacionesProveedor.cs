@@ -8,7 +8,6 @@ namespace ServicesManagement.Web.Models.Consignaciones
     public class ConsignacionesProveedor
     {
 
-
         public string Consignacion { get; set; }
         public string TotalConsignacion { get; set; }
         public string TipoAlmacen { get; set; }

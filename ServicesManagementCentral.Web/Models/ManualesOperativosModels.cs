@@ -7,6 +7,7 @@ namespace ServicesManagement.Web.Models
 {
     public class ManualesOperativosModels
     {
+
         public int idOwner { get; set; }
         public string ownerName { get; set; }
 

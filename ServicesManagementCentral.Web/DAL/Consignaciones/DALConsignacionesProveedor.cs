@@ -13,7 +13,6 @@ namespace ServicesManagement.Web.DAL.Consignaciones
 
         public static DataSet upCorpAlmacen_Cns_ConsigmentsProveedor()
         {
-
             DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];

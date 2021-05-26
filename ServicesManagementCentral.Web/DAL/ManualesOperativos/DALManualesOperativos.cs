@@ -13,7 +13,6 @@ namespace ServicesManagement.Web.DAL.ManualesOperativos
 
         public static DataSet MostrarPDF(int idManual, int idOwner)
         {
-
             DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];

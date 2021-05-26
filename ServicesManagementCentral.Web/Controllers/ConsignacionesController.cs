@@ -12,7 +12,6 @@ namespace ServicesManagement.Web.Controllers
     public class ConsignacionesController : Controller
     {
 
-
         #region Consignaciones Administrador
         public ActionResult Consignaciones()
         {

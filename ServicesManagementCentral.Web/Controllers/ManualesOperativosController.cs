@@ -19,7 +19,6 @@ namespace ServicesManagement.Web.Controllers
     {
         
         #region ManualesOperativos
-
         // GET: ManualesOperativos
         public ActionResult ManualesOperativos()
         {

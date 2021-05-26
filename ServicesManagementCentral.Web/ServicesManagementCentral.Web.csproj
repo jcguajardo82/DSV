@@ -231,6 +231,8 @@
     <Compile Include="Helpers\DataTableToModel.cs" />
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHForAproval.cs" />
+    <Compile Include="Models\Almacenes\SuppliersWHOperations.cs" />
+    <Compile Include="Models\Almacenes\SuppliersWHShipments.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHStock.cs" />
     <Compile Include="Models\Config\Menu.cs" />
     <Compile Include="Models\Config\Rol.cs" />
@@ -241,6 +243,7 @@
     <Compile Include="Models\Consignaciones\DetalleConsignaciones.cs" />
     <Compile Include="Models\EmpleadoModels.cs" />
     <Compile Include="Models\ManualesOperativosModels.cs" />
+    <Compile Include="Models\ManualesOp\ManualTypesModel.cs" />
     <Compile Include="Models\MotivosCancel.cs" />
     <Compile Include="Controllers\OrdenesController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />

@@ -7,6 +7,7 @@ namespace ServicesManagement.Web.Models.Consignaciones
 {
     public class DetalleConsignaciones
     {
+
             public string IdSupplierWH { get; set; }
             public string IdSupplierWHCode { get; set; }
             public string IdOwner { get; set; }
