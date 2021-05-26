@@ -302,9 +302,11 @@
                                             </tbody>
                                         </table>
                                     </div>
-
                                 </div>
                                 <div class="row">
+                                    <div class="col-lg-12" style="text-align:right;">
+                                        <a class="btn btn-danger" onclick="FinalizaEmbarqueDST()">Surtir Orden</a>
+                                    </div>
                                     <div class="col-lg-10">
                                         <b>Fecha de Envio</b>
                                         <div class="alert alert-warning">
@@ -614,7 +616,7 @@
     }
 
     function popUpLstProds(idTracking) {
-        
+
         //var TrackingType = "Normal";
         var _UeNo = $("#UeNo").val();
         var _OrderNo = $("#OrderNo").val();
@@ -660,6 +662,44 @@
             }
 
         });
+    }
+
+    function FinalizaEmbarqueDST() {
+
+        var ch = "0";
+        //if (document.getElementById('CheckPinPad').checked) {
+        //    ch = "1";
+        //}
+
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("FinalizarEmbarque", "Ordenes")',
+            data: {
+                //num: id
+
+                OrderNo: document.getElementById("OrderNo").value,
+                ue: document.getElementById("UeNo").value,
+                store: document.getElementById("StoreNum").value,
+                status: document.getElementById("OrderStatus").value,
+                bolsas: 0, //document.getElementById("in_bolsas").value,
+                contenedores: 0, //document.getElementById("in_contenedores").value,
+
+                hieleras: 0, //document.getElementById("in_hieleras").value,
+                checkPinPad: ch
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                bootbox.alert(errorThrown);
+
+            }
+        });
+
     }
 
     function FinalizaEmbarque() {
