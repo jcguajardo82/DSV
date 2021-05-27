@@ -27,12 +27,15 @@ namespace ServicesManagement.Web.DAL.Actualizaciones
             {
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
+                string[] fecha = StockDate.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                string fechaParam = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
+
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@idSupplierWH", idSupplierWH);
                 parametros.Add("@idSupplierWHCode", idSupplierWHCode);
                 parametros.Add("@stockLevel", stockLevel);
                 parametros.Add("@stockCodes", stockCodes);
-                parametros.Add("@StockDate", StockDate);
+                parametros.Add("@StockDate", fechaParam);
                 parametros.Add("@StockTime", StockTime);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[common].[SuppliersWHStockHeader_iUP]", false, parametros);
@@ -106,6 +109,9 @@ namespace ServicesManagement.Web.DAL.Actualizaciones
             {
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
+                string[] fecha = StockDate.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                string fechaParam = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
+
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@idSupplierWH", idSupplierWH);
                 parametros.Add("@idSupplierWHCode", idSupplierWHCode);
@@ -114,7 +120,7 @@ namespace ServicesManagement.Web.DAL.Actualizaciones
                 parametros.Add("@qtyStockSafety", qtyStockSafety);
                 parametros.Add("@qtyStockForSale", qtyStockForSale);
                 parametros.Add("@qtyStockReserved", qtyStockReserved);
-                parametros.Add("@StockDate", StockDate);
+                parametros.Add("@StockDate", fechaParam);
                 parametros.Add("@StockTime", StockTime);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[common].[SuppliersWHStockDetail_iUP]", false, parametros);

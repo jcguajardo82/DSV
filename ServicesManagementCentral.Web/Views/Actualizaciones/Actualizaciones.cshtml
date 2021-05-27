@@ -58,7 +58,6 @@
         $('#docInv').on('change', function () {
             var fileReader = new FileReader();
             fileReader.onload = function () {
-                // var data = fileReader.result;
                 document.getElementById('docInvout').innerHTML = fileReader.result; // data <-- in this var you have the file data in Base64 format
                 var fileExcel = document.getElementById('docInvout').innerHTML.split(",");
                 var elemExcel = document.getElementById('docInvout').innerHTML.split(",").length;
@@ -109,6 +108,7 @@
                     success: function (json) {
                         debugger;
                         if (json.Success) {
+                            $("#docInvout").val("");
                             alert(json.resp);
                             location.reload();
                         }
@@ -117,8 +117,8 @@
                         }
                     }
                     , error: function (jqXHR, textStatus, errorThrown) {
-                        alert(errorThrown);
-
+                        alert(jqXHR.responseText);
+                        location.reload();
                     }
 
                 });
