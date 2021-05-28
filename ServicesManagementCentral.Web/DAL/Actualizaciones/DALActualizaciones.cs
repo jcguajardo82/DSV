@@ -93,7 +93,7 @@ namespace ServicesManagement.Web.DAL.Actualizaciones
         }
 
         public static DataSet SuppliersWHStockDetail_iUP(int idSupplierWH, int idSupplierWHCode, decimal barCode, decimal stockLevel,
-            decimal qtyStockSafety, decimal qtyStockForSale, decimal qtyStockReserved, string StockDate, string StockTime)
+            decimal qtyStockSafety, decimal qtyStockForSale, decimal qtyStockReserved, string StockDate, string StockTime, int bitInsertDMOk)
         {
 
             DataSet ds = new DataSet();
@@ -122,6 +122,7 @@ namespace ServicesManagement.Web.DAL.Actualizaciones
                 parametros.Add("@qtyStockReserved", qtyStockReserved);
                 parametros.Add("@StockDate", fechaParam);
                 parametros.Add("@StockTime", StockTime);
+                parametros.Add("@bitInsertDMOk", bitInsertDMOk);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[common].[SuppliersWHStockDetail_iUP]", false, parametros);
 

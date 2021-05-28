@@ -32,13 +32,13 @@ namespace ServicesManagement.Web.Controllers
 
                 for (int i = 7; i + 9 <= fileExcel.Length; i = i + 5)
                 {
-                    var insInv = DALActualizaciones.SuppliersWHStockDetail_iUP(int.Parse(fileExcel[1]), int.Parse(fileExcel[2]), 
-                        decimal.Parse(fileExcel[i-1]), int.Parse(fileExcel[i]), int.Parse(fileExcel[i + 2]), 0, int.Parse(fileExcel[i + 1]), 
-                        fileExcel[3], fileExcel[4]);
-
                     var insDMInv = DALActualizaciones.up_Corp_Vendor_Ins_Inventario(int.Parse(fileExcel[1]), int.Parse(fileExcel[2]),
                         decimal.Parse(fileExcel[i - 1]), int.Parse(fileExcel[i]), int.Parse(fileExcel[i + 2]), 0, int.Parse(fileExcel[i + 1]),
                         fileExcel[3], fileExcel[4]);
+                    int bitInsertDMOk = insDMInv.Tables[0].Rows[0][0].ToString() == "OK" ? 1 : 0; 
+                    var insInv = DALActualizaciones.SuppliersWHStockDetail_iUP(int.Parse(fileExcel[1]), int.Parse(fileExcel[2]), 
+                        decimal.Parse(fileExcel[i-1]), int.Parse(fileExcel[i]), int.Parse(fileExcel[i + 2]), 0, int.Parse(fileExcel[i + 1]), 
+                        fileExcel[3], fileExcel[4], bitInsertDMOk);
                 }
 
                 var result = new { Success = true, resp = readString };
