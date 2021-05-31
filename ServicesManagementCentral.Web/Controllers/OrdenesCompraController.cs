@@ -22,5 +22,29 @@ namespace ServicesManagement.Web.Controllers
 
             return View();
         }
+
+      
+        public ActionResult GetOrdenesCompraDetalle(string Consignacion)
+        {
+            try
+            {
+                List<upCorpOMS_Cns_UeNoShoppingOrdersDetail> list = new List<upCorpOMS_Cns_UeNoShoppingOrdersDetail> ();
+
+                var ds = DALOrdenesCompra.upCorpOMS_Cns_UeNoShoppingOrdersDetail(Consignacion);
+
+                if (ds.Tables.Count > 0)
+                {
+                    list = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoShoppingOrdersDetail>(ds.Tables[0]);
+                }
+               
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ServicesManagement.Web.DAL.NivelExistencia;
+using ServicesManagement.Web.Helpers;
+using ServicesManagement.Web.Models.NivelExistencia;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +14,12 @@ namespace ServicesManagement.Web.Controllers
         // GET: NivelExistencia
         public ActionResult NivelExistencia()
         {
+            List<upCorpOMS_Cns_UeNoTotalsByOrder> list = new List<upCorpOMS_Cns_UeNoTotalsByOrder>();
+
+            list = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoTotalsByOrder>(DALNivelExistencia.upCorpOMS_Cns_UeNoStockLevels().Tables[0]);
+
+            ViewBag.Orders = list;
+
             return View();
         }
     }
