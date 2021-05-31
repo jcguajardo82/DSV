@@ -1890,7 +1890,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
             PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-            CreationId).Tables[0].Rows[0][0];
+            User.Identity.Name).Tables[0].Rows[0][0];
                 var result = new { Success = true, resp = cabeceraGuia };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -1911,7 +1911,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 var detalleProd = DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(UeNo, OrderNo, IdTracking, TrackingType,
             ProductId, Barcode, ProductName,
-            CreationId).Tables[0].Rows[0][0];
+            User.Identity.Name).Tables[0].Rows[0][0];
                 var result = new { Success = true, resp = detalleProd };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
