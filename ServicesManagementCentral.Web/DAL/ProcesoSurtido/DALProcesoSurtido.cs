@@ -112,7 +112,7 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
                 parametros.Add("@IdCause", IdCause);
                 parametros.Add("@UeNo", UeNo);
 
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeCancelCauses]", false, parametros);
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Del_UeNoSupplyProcess]", false, parametros);
 
                 return ds;
             }
