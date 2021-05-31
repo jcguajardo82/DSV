@@ -237,6 +237,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xs-2 col-md-2 col-lg-2">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        <div class="input-group-prepend">
+                            <div class="input-group-btn">
+                                <button class="btn btn-lg btn-primary" type="submit" onclick="onclickDropTransDTS()">
+                                    DTS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-xs-10 col-md-10 col-lg-10">
                     <div class="col col-xs-3 col col-md-3 col col-lg-3">
                         <input id="txtFiltroEmbarcar" class="form-control" type="search" placeholder="Search..">
@@ -488,21 +499,14 @@
 
             var id_categoria = $(el).attr('id');
             var listaO = document.getElementById("Orders").value;
-            var digito = listaO.split("-");
             debugger;
             if (listaO != "0") {
-                if (digito[1] == "1") {
-                    if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
-                        //$('#ConfirmMessageResponse').val('Yes');
-                        debugger;
-                        FinalizaEmbarque(id_categoria, listaO, id_categoria);
-                    } else {
-                        //$('#ConfirmMessageResponse').val('No');
-                        return false;
-                    }
-                }
-                else {
-                    alert("Orden seleccionada no válida");
+                if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
+                    //$('#ConfirmMessageResponse').val('Yes');
+                    debugger;
+                    FinalizaEmbarque(id_categoria, listaO, id_categoria);
+                } else {
+                    //$('#ConfirmMessageResponse').val('No');
                     return false;
                 }
             } else {
@@ -511,6 +515,56 @@
 
         }
 
+        function onclickDropTransDTS() {
+
+            var id_categoria = "999"; //$(el).attr('id');
+            var listaO = document.getElementById("Orders").value;
+            var digito = listaO.split("-");
+            debugger;
+            if (listaO != "0") {
+                //if (digito[1] == "4") {
+                    if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
+                        //$('#ConfirmMessageResponse').val('Yes');
+                        debugger;
+                        FinalizaEmbarqueDTS(id_categoria, listaO, id_categoria);
+                    } else {
+                        //$('#ConfirmMessageResponse').val('No');
+                        return false;
+                    }
+                //}
+                //else {
+                //    alert("Orden seleccionada no válida");
+                //    return false;
+                //}
+            } else {
+                alert("No hay ordenes seleccionadas");
+            }
+
+        }
+
+        function FinalizaEmbarqueDTS(tran, listaO, tId) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("FinalizarTransportista", "Ordenes")',
+                    data: {
+                        OrderNo: listaO,
+                        trans: tran,
+                        tId: tId
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            location.reload();
+                            // window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+        }
 
         function FinalizaEmbarque(tran, listaO, tId) {
                 $.ajax({
