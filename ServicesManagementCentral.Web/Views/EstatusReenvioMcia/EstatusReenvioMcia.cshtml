@@ -3,289 +3,444 @@
     ViewBag.Title = "EstatusReenvioMcia";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style id="compiled-css" type="text/css">
 
-    h2 {
-        color: #263EEA;
-        text-align: center;
-        font-weight: bold;
-    }
-    /* Fix table head */
-    .tableFixHead {
-        overflow-y: auto;
-        height: 300px;
-    }
+<h2>Estatus de Reenvio de Mercancia</h2>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th>Numero de consignacion</th>
+                        <th>Numero de la consignación de reenvio/sustituto/cambio fisico</th>
+                        <th>Tipo almacen</th>
+                        <th>Fecha y hora de creacion de la orden</th>
+                        <th>Nombre del Cliente</th>
+                        <th>Estatus de la consignación almacen</th>
+                        <th>Estatus de la consignación Home Delivery</th>
+                        <th>Estatus de Guía de Devolucion</th>
+                        <th>Guia de reenvio</th>
+                        <th>Estatus de la guia de reenvio</th>
+                        <th>Numero de Orden de Compra Nueva (DSV)</th>
+                        <th>Estatus de orden de compra nueva (DSV)</th>
+                        <th>Fecha y hora Tracking Consignación</th>
+                        @*<th></th>*@
+                        @*<th name='accion'></th>*@
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-
-
-        .tableFixHead th {
-            position: sticky;
-            top: 0;
-        }
-
-
-
-    /* Just common table stuff. */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        table-layout: fixed;
-        word-wrap: break-word;
-    }
-
-
-
-    th, td {
-        padding: 8px 16px;
-    }
-
-
-
-
-    th {
-        background: #D52B1E;
-        color: #ffffff;
-        font-weight: bold;
-    }
-
-    .asc:after {
-        content: ' ↑';
-    }
-
-    .desc:after {
-        content: " ↓";
-    }
-</style>
-
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
-            <h2>Estatus de Reenvio de Mercancia</h2>
-
-            <div class="row">
-                <div class="col col-xs-6">
-                    <div class="dt-buttons btn-group flex-wrap">
-                        @*<button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>*@
-                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
-                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
-                    </div>
-                </div>
-                <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
-                </div>
+<div class="modal inmodal fade" id="detalleconsignacion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Detalle Consignación </h4>
             </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
+                                <thead class="bg-danger-sor">
+                                    <tr>
+                                        <th>RMA</th>
+                                        <th>Motivo RMA</th>
+                                        <th>ID</th>
+                                        <th>Descripcion</th>
+                                        <th>Piezas</th>
+                                        <th>Numero de la Guia de Devolucion</th>
+                                        <th>Condicion del Empaque</th>
+                                        <th>Guia del reenvio</th>
+                                        <th>Estatus de guia de reenvio</th>
+                                        <th>Fecha de entrega </th>
+                                        <th>Nombre de quien recibe</th>
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="col col-xs-3 col col-md-3 col col-lg-3">
-                        <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-
-                        <table class="table invoice-table">
-                            <thead>
-                                <tr>
-                                    <th>Numero de consignacion</th>
-                                    <th>Numero de la consignación de reenvio/sustituto/cambio fisico</th>
-                                    <th>Tipo almacen</th>
-                                    <th>Fecha y hora de creacion de la orden</th>
-                                    <th>Nombre del Cliente</th>
-                                    <th>Estatus de la consignación almacen</th>
-                                    <th>Estatus de la consignación Home Delivery</th>
-                                    <th>Estatus de Guía de Devolucion</th>
-                                    <th>Guia de reenvio</th>
-                                    <th>Estatus de la guia de reenvio</th>
-                                    <th>Numero de Orden de Compra Nueva (DSV)</th>
-                                    <th>Estatus de orden de compra nueva (DSV)</th>
-                                    <th>Fecha y hora Tracking Consignación</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><a onclick="popDetalle()" class="nav-link">7654234</a></td>
-                                    <td>-</td>
-                                    <td>DSV</td>
-
-                                    <td>
-                                        28-Ene-21
-                                    </td>
-                                    <td>
-                                        Susana Vargas Miranda
-                                    </td>
-                                    <td>
-                                        Extravio
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                    </td>
-                                    <td>12345687642242</td>
-                                    <td>Entregado</td>
-                                    <td>56789876543</td>
-                                    <td>Pagada En</td>
-                                    <td>-</td>
-
-                                </tr>
-                                <tr>
-                                    <td><a onclick="popDetalle()" class="nav-link">7654234</a></td>
-                                    <td>-</td>
-                                    <td>DST</td>
-
-                                    <td>
-                                        3-Mar-21
-                                    </td>
-                                    <td>
-                                        Susana Vargas Miranda
-                                    </td>
-                                    <td>
-                                        Enviada
-                                    </td>
-                                    <td>123456654321123</td>
-                                    <td>
-                                        En Transito
-                                    </td>
-                                    <td>12345687642242</td>
-                                    <td>En Almacen</td>
-                                    <td>56789876543</td>
-                                    <td>Programacion de Pago</td>
-                                    <td>-</td>
-
-                                </tr>
-
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <button style="visibility:hidden;" float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
-                    <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
-                </div>
+                </form>
             </div>
-
-
-
-
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
-                            <thead>
-                                <tr>
-                                    <th>RMA</th>
-                                    <th>Motivo RMA</th>
-                                    <th>ID</th>
-                                    <th>Descripcion</th>
-                                    <th>Piezas</th>
-                                    <th>Numero de la Guia de Devolucion</th>
-                                    <th>Condicion del Empaque</th>
-                                    <th>Guia del reenvio</th>
-                                    <th>Estatus de guia de reenvio</th>
-                                    <th>Fecha de entrega </th>
-                                    <th>Nombre de quien recibe</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>00007654234</td>
-                                    <td>Daño en transito</td>
-                                    <td>
-                                        123321123
-                                    </td>
-                                    <td>
-                                        Caliefactor
-                                    </td>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>12345654323500</td>
-                                    <td>
-                                        Dañado
-                                    </td>
-                                    <td>123597641463374364</td>
-                                    <td>Entregado</td>
-                                    <td>X</td>
-                                    <td>X</td>
-
-                                </tr>
-                                <tr>
-                                    <td>00007654234</td>
-                                    <td>Daño de origen</td>
-                                    <td>
-                                        123321123
-                                    </td>
-                                    <td>
-                                        Caliefactor
-                                    </td>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>12345654323500</td>
-                                    <td>
-                                        En buen estado
-                                    </td>
-                                    <td>123597641463374364</td>
-                                    <td>En Almacen</td>
-                                    <td>X</td>
-                                    <td>X</td>
-
-                                </tr>
-
-
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <button style="visibility:hidden;" float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
-                    <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                @*<button type="button" onclick="Save()" class="btn btn-primary">Guardar</button>*@
+                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
             </div>
         </div>
     </div>
 </div>
-@Html.Partial("DetalleEstatusReenvioMcia")
+
+<!--<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta2" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th>RMA</th>
+                        <th>Motivo RMA</th>
+                        <th>ID</th>
+                        <th>Descripcion</th>
+                        <th>Piezas</th>
+                        <th>Numero de la Guia de Devolucion</th>
+                        <th>Condicion del Empaque</th>
+                        <th>Guia del reenvio</th>
+                        <th>Estatus de guia de reenvio</th>
+                        <th>Fecha de entrega </th>
+                        <th>Nombre de quien recibe</th>-->
+                        @*<th></th>*@
+                        @*<th name='accion'></th>*@
+                    <!--</tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>-->
+
 @section scripts {
     <script>
         $(document).ready(function () {
-            $("#txtFiltro").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#tblOrdenes tbody tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-
+            GetSuppliers();
         });
-        function popDetalle() {
-            $('#dlgDetalle').modal('toggle');
+
+        function popDesHabilitar(noProveedor, noAlmacen) {
+            $("#hddNoProveedor").val(noProveedor);
+            $("#HddNoAlmacen").val(noAlmacen);
+            $("#dlgDesHabilitar").modal('toggle');
         }
 
+        function PopDetlleC(Consignacion){
 
-        $('th').click(function () {
-            var table = $(this).parents('table').eq(0)
-           // var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-            this.asc = !this.asc
-            //if (!this.asc) {
-            //    rows = rows.reverse()
-            //}
-            //for (var i = 0; i < rows.length; i++) {
-            //    table.append(rows[i])
-            //}
-            setIcon($(this), this.asc);
-        })
-        function setIcon(element, asc) {
-            $("th").each(function (index) {
-                $(this).removeClass("sorting");
-                $(this).removeClass("asc");
-                $(this).removeClass("desc");
+            $("#detalleconsignacion").modal('toggle');
+            /*$("#Consignacion").val(Consignacion);*/
+
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("GetDetalleConsignacionDSV", "EstatusReenvioMcia")',
+                data: {
+                    consignacion: Consignacion
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        $('#tblInventarios tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+
+                            tr.append("<td>" + json.resp[i].RMA + "</td>");
+                            tr.append("<td>" + json.resp[i].MotivoRMA + "</td>");
+                            tr.append("<td>" + json.resp[i].ID + "</td>");
+                            tr.append("<td>" + json.resp[i].Descripcion + "</td>");
+                            tr.append("<td>" + json.resp[i].NumeroGuiaDevolucion + "</td>");
+                            tr.append("<td>" + json.resp[i].CondicionEmpaque + "</td>");
+                            tr.append("<td>" + json.resp[i].Guiareenvio + "</td>");
+                            tr.append("<td>" + json.resp[i].Estatusguiareenvio + "</td>");
+                            tr.append("<td>" + json.resp[i].Fechaentrega + "</td>");
+                            tr.append("<td>" + json.resp[i].Nombrequienrecibe + "</td>");
+                          
+
+                            //tr.append("<td>" + json.resp[i].productStatus + "</td>");
+                            //tr.append("<td>" + json.resp[i].productMaterialCost + "</td>");
+                            //tr.append("<td>" + json.resp[i].productCreationDate + "</td>");
+                            //tr.append("<td>" + json.resp[i].idSupplierOrigin + "</td>");
+                            //tr.append("<td>" + json.resp[i].idSupplierOriginName + "</td>");
+
+                            $('#tblInventarios').append(tr);
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
             });
-            element.addClass("sorting");
-            if (asc) element.addClass("asc");
-            else element.addClass("desc");
         }
+        function GetSuppliers() {
+
+            //var _Id_Num_UN = $("#hddTda").val();
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetreenviomciaDSV", "EstatusReenvioMcia")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        $('#tblConsulta tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+                        tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a></td>");
+                        /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
+                        tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
+                        tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
+                        tr.append("<td>" + json.resp[i].FechaOrden + "  " + json.resp[i].HoraOrden + "</td>");
+                        tr.append("<td>" + json.resp[i].Cliente + "</td>");
+                        tr.append("<td>" + json.resp[i].EstatusAlmacen + "</td>");
+                        tr.append("<td>" + json.resp[i].EstatusHomeD + "</td>");
+                        tr.append("<td>" + json.resp[i].EstatusGuiaDevol + "</td>");
+                        tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
+                        tr.append("<td>" + json.resp[i].GuiaReenvioEstatus + "</td>");
+                        tr.append("<td>" + json.resp[i].OrdenDSV + "</td>");
+                        tr.append("<td>" + json.resp[i].OredenDSVStatus + "</td>");
+                            //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
+                            //AltaProveedor/AltaProveedor
+
+
+                            $('#tblConsulta').append(tr);
+
+
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
+        }
+
+
+        //function Inhabilitar() {
+
+        //    var motCan = $("#txtMotCan").val();
+
+        //    if (motCan.length == 0) {
+        //        $("#txtMotCan").focus();
+        //        return;
+        //    }
+        //    UpdateStatus($("#hddNoProveedor").val(), $("#HddNoAlmacen").val(), false, motCan);
+        //    $("#dlgDesHabilitar").modal('hide');
+        //}
+
+        //function Habilitar(noProveedor, noAlmacen) {
+        //    UpdateStatus(noProveedor, noAlmacen, true, '');
+        //}
+        @*function UpdateStatus(noProveedor, noAlmacen, _bitenable, _enableCause) {
+            //string bitenable, string enableCause
+             $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("UpdateSuppliersWH", "almacenes")',
+                data: {
+                    idSupplierWH: noProveedor,
+                    idSupplierWHCode: noAlmacen,
+                    bitenable: _bitenable,
+                    enableCause: _enableCause
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        //GetSuppliers();
+                        location.reload();
+
+                    } else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            })
+
+        }*@
 
     </script>
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+
+            // 2° seccion
+            $('#tblConsulta2 thead tr').clone(true).appendTo('#tblConsulta2 thead');
+            $('#tblConsulta2 thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta2").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+        });
+    </script>
 }
+
+
+@*@Html.Partial("DetalleEstatusReenvioMcia")
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+                $("#txtFiltro").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#tblOrdenes tbody tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+
+            });
+            function popDetalle() {
+                $('#dlgDetalle').modal('toggle');
+            }
+
+
+            $('th').click(function () {
+                var table = $(this).parents('table').eq(0)
+               // var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+                this.asc = !this.asc
+                //if (!this.asc) {
+                //    rows = rows.reverse()
+                //}
+                //for (var i = 0; i < rows.length; i++) {
+                //    table.append(rows[i])
+                //}
+                setIcon($(this), this.asc);
+            })
+            function setIcon(element, asc) {
+                $("th").each(function (index) {
+                    $(this).removeClass("sorting");
+                    $(this).removeClass("asc");
+                    $(this).removeClass("desc");
+                });
+                element.addClass("sorting");
+                if (asc) element.addClass("asc");
+                else element.addClass("desc");
+            }
+
+        </script>
+    }*@
 
 

@@ -154,25 +154,19 @@
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
 
-                            tr.append("<td>" + json.resp[i].idOwner + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductSKU + "</td>");
-                            tr.append("<td>" + json.resp[i].barCode + "</td>");
-                            tr.append("<td>" + json.resp[i].productName + "</td>");
-                            tr.append("<td>" + json.resp[i].productCategoryId + "</td>");
-                            tr.append("<td>" + json.resp[i].qtyStockSafety + "</td>");
-                            tr.append("<td>" + json.resp[i].qtyStockForSale + "</td>");
-                            tr.append("<td>" + json.resp[i].qtyStockReserved + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionLarge + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionHeight + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionWeightVol + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionWeightReal + "</td>");
-
-                            tr.append("<td>" + json.resp[i].productStatus + "</td>");
-                            tr.append("<td>" + json.resp[i].productMaterialCost + "</td>");
-                            tr.append("<td>" + json.resp[i].productCreationDate + "</td>");
-                            tr.append("<td>" + json.resp[i].idSupplierOrigin + "</td>");
-                            tr.append("<td>" + json.resp[i].idSupplierOriginName + "</td>");
-
+                           
+                            tr.append("<td>" + json.resp[i].ID + "</td>");
+                            tr.append("<td>" + json.resp[i].Descripcion + "</td>");
+                            tr.append("<td>" + json.resp[i].Piezas + "</td>");
+                            tr.append("<td>" + json.resp[i].CostoUnitario + "</td>");
+                            tr.append("<td>" + json.resp[i].PesoVolumetrico + "</td>");
+                            tr.append("<td>" + json.resp[i].DiasDesdeCreacion + "</td>");
+                            tr.append("<td>" + json.resp[i].DiasDesdeAutoriza + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaEnvio + "</td>");
+                            tr.append("<td>" + json.resp[i].IdRMA + "</td>");
+                            tr.append("<td>" + json.resp[i].StatusRMA + "</td>");
+                            tr.append("<td>" + json.resp[i].EAN + "</td>");
+                            
                             /*
                                         <th>idOwner</th>
                                         <th>ProductSKU</th>
@@ -234,7 +228,7 @@
                             //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
                            
                         /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
-                            tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion +"</a></td>");
+                            tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(\"" + json.resp[i].Consignacion + "\")'>" + json.resp[i].Consignacion +"</a></td>");
                             /*tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + json.resp[i].Consignacion + "</a></td>");*/
                             tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");  
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");

@@ -3,247 +3,370 @@
     ViewBag.Title = "EstatusGuiaEnvio";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style id="compiled-css" type="text/css">
-
-    h2 {
-        color: #263EEA;
-        text-align: center;
-        font-weight: bold;
-    }
-    /* Fix table head */
-    .tableFixHead {
-        overflow-y: auto;
-        height: 300px;
-        
-    }
 
 
 
-        .tableFixHead th {
-            position: sticky;
-            top: 0;
-        }
-
-
-
-    /* Just common table stuff. */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        table-layout: fixed;
-        word-wrap: break-word;
-    }
-
-
-
-    th, td {
-        padding: 8px 16px;
-    }
-
-
-
-
-    th {
-        background: #D52B1E;
-        color: #ffffff;
-        font-weight: bold;
-    }
-</style>
-
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
-            <h2 >Estatus de guia de envio</h2>
-
-   
-
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
-                            <thead>
-                                <tr>
-                                    <th>Impresión</th>
-                                    <th>Numero de consignacion</th>
-                                    <th>Tipo almacen</th>
-                                    <th>Fecha y hora de creacion de la orden</th>
-                                    <th>Tipo de Guia</th>
-                                    <th>Paqueteria</th>
-                                    <th>Numero de Guia</th>
-                                    <th>Estatus de Guía</th>
-                                    <th>Fecha de entrega</th>
-                                    <th>Nombre de quien recibio</th>
-                                    <th></th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td> <input type="checkbox"></td>
-                                    <td>7654234</td>
-                                    <td>DSV</td>
-                                    <td>
-                                        3-Mar-21
-                                    </td>
-                                    <td>
-                                        Envio
-                                    </td>
-                                    <td>
-                                        Estafeta
-                                    </td>
-                                    <td><u>12345654323500</u></td>
-                                    <td>
-                                        En tránsito
-                                    </td>
-                                    <td></td>
-                                    <td>X</td>
-
-                                </tr>
-                                <tr>
-                                    <td> <input type="checkbox"></td>
-                                    <td>7654234</td>
-                                    <td>DST</td>
-                                    <td>
-                                        3-Mar-21
-                                    </td>
-                                    <td>
-                                        Envio
-                                    </td>
-                                    <td>
-                                        DHL
-                                    </td>
-                                    <td><u>12365434323500</u></td>
-                                    <td>
-                                        Entregada
-                                    </td>
-                                    <td>13-Mar-21</td>
-                                    <td>X</td>
-
-                                </tr>
-
-
-
-                            </tbody>
-                        </table>
-                        <table>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <h2>Estatus de guia de reenvio</h2>
-
-            <div class="row">
-                <div class="col col-xs-3 col col-md-3 col col-lg-3">
-                    <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
-                            <thead>
-                                <tr>
-                                    
-                                    <th>Numero de consignacion</th>
-                                    <th>Tipo almacen</th>
-                                    <th>Fecha y hora de creacion de la orden</th>
-                                    <th>Tipo de Guia</th>
-                                    <th>Paqueteria</th>
-                                    <th>Numero de Guia</th>
-                                    <th>Estatus de Guía</th>
-                                    <th>Fecha de entrega</th>
-                                    <th>Nombre de quien recibio</th>
-                                    <th>Impresion</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-
-                                    <td>7654234</td>
-                                    <td>DSV</td>
-                                    <td>
-                                        3-Mar-21
-                                    </td>
-                                    <td>
-                                        Envio
-                                    </td>
-                                    <td>
-                                        Estafeta
-                                    </td>
-                                    <td><u>12345654323500</u></td>
-                                    <td>
-                                        En tránsito
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td> <input type="checkbox"></td>
-
-
-                                </tr>
-                                <tr>
-
-                                    <td>7654234</td>
-                                    <td>DST</td>
-                                    <td>
-                                        3-Mar-21
-                                    </td>
-                                    <td>
-                                        Envio
-                                    </td>
-                                    <td>
-                                        DHL
-                                    </td>
-                                    <td><u>12365434323500</u></td>
-                                    <td>
-                                        Entregada
-                                    </td>
-                                    <td>13-Mar-21</td>
-                                    <td></td>
-                                    <td> <input type="checkbox"></td>
-
-                                </tr>
-
-
-
-                            </tbody>
-                        </table>
-                        <table>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                        </table>
-                    </div>
-                </div>
-            </div>
+<h2>Estatus de guia de envio</h2>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        @*<th name='accion'>Acción</th>
+        <th>Habilitado</th>
+        <th>Tipo Almacen</th>
+        <th>No. Almacen</th>
+        <th>Nombre Almacen</th>
+        <th>No. Proveedor</th>
+        <th>Nombre Proveedor</th>
+        <th>Dias transcurridos</th>
+        <th>Fecha Actulización</th>
+        <th name='accion'>No. Codigos</th>*@
+                        @*<th>Impresión</th>*@
+                        <th>Numero de consignacion</th>
+                        <th>Consignacion de Reenvio</th>
+                        <th>Tipo almacen</th>
+                        <th>Fecha y hora de creacion de la orden</th>
+                        <th>Tipo de Guia</th>
+                        <th>Paqueteria</th>
+                        <th>Numero de Guia</th>
+                        <th>Estatus de Guía</th>
+                        <th>Fecha de entrega</th>
+                        <th>Nombre de quien recibio</th>
+                        @*<th></th>*@
+                        @*<th name='accion'></th>*@
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 </div>
 
+
+<!--<h2>Estatus de guia de reenvio</h2>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta2" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>-->
+                        @*<th name='accion'>Acción</th>
+        <th>Habilitado</th>
+        <th>Tipo Almacen</th>
+        <th>No. Almacen</th>
+        <th>Nombre Almacen</th>
+        <th>No. Proveedor</th>
+        <th>Nombre Proveedor</th>
+        <th>Dias transcurridos</th>
+        <th>Fecha Actulización</th>
+        <th name='accion'>No. Codigos</th>*@
+                        <!--<th>Numero de consignacion</th>
+                        <th>Tipo almacen</th>
+                        <th>Fecha y hora de creacion de la orden</th>
+                        <th>Tipo de Guia</th>
+                        <th>Paqueteria</th>
+                        <th>Numero de Guia</th>
+                        <th>Estatus de Guía</th>
+                        <th>Fecha de entrega</th>
+                        <th>Nombre de quien recibio</th>
+                        <th>Impresion</th>-->
+                        @*<th></th>*@
+                        @*<th name='accion'></th>*@
+                    <!--</tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>-->
+
 @section scripts {
     <script>
         $(document).ready(function () {
-            $("#txtFiltro").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#tblOrdenes tbody tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+            GetSuppliers();
+        });
+
+        function popDesHabilitar(noProveedor, noAlmacen) {
+            $("#hddNoProveedor").val(noProveedor);
+            $("#HddNoAlmacen").val(noAlmacen);
+            $("#dlgDesHabilitar").modal('toggle');
+        }
+
+        @*function PopInv(noProveedor, noAlmacen){
+
+           $("#dlgInventarios").modal('toggle');
+
+
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("GetSuppliersWHStock", "almacenes")',
+                data: {
+                    idSupplierWH: noProveedor,
+                    idSupplierWHCode: noAlmacen
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        $('#tblInventarios tbody').empty();
+                        var tr;
+                        debugger;
+                        Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+
+                            tr.append("<td>" + json.resp[i].idOwner + "</td>");
+                            tr.append("<td>" + json.resp[i].ProductSKU + "</td>");
+                            tr.append("<td>" + json.resp[i].barCode + "</td>");
+                            tr.append("<td>" + json.resp[i].productName + "</td>");
+                            tr.append("<td>" + json.resp[i].productCategoryId + "</td>");
+                            tr.append("<td>" + json.resp[i].qtyStockSafety + "</td>");
+                            tr.append("<td>" + json.resp[i].qtyStockForSale + "</td>");
+                            tr.append("<td>" + json.resp[i].qtyStockReserved + "</td>");
+                            tr.append("<td>" + json.resp[i].dimmensionLarge + "</td>");
+                            tr.append("<td>" + json.resp[i].dimmensionHeight + "</td>");
+                            tr.append("<td>" + json.resp[i].dimmensionWeightVol + "</td>");
+                            tr.append("<td>" + json.resp[i].dimmensionWeightReal + "</td>");
+
+                            tr.append("<td>" + json.resp[i].productStatus + "</td>");
+                            tr.append("<td>" + json.resp[i].productMaterialCost + "</td>");
+                            tr.append("<td>" + json.resp[i].productCreationDate + "</td>");
+                            tr.append("<td>" + json.resp[i].idSupplierOrigin + "</td>");
+                            tr.append("<td>" + json.resp[i].idSupplierOriginName + "</td>");
+
+                            
+                                        <th>idOwner</th>
+                                        <th>ProductSKU</th>
+                                        <th>barCode</th>
+                                        <th>productName</th>
+                                        <th>productCategoryId</th>
+                                        <th>qtyStockSafety</th>
+                                        <th>qtyStockForSale</th>
+                                        <th>qtyStockReserved</th>
+                                        <th>dimmensionLarge</th>
+                                        <th>dimmensionHeight</th>
+                                        <th>dimmensionWeightVol</th>
+                                        <th>dimmensionWeightReal</th>
+                                        <th>productStatus</th>
+                                        <th>productMaterialCost</th>
+                                        <th>productCreationDate</th>
+                                        <th>idSupplierOrigin</th>
+                                        <th>idSupplierOriginName</th>
+                                        
+                            $('#tblInventarios').append(tr);
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }*@
+        function GetSuppliers() {
+
+            //var _Id_Num_UN = $("#hddTda").val();
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("Getestatusreenvioenviomcia", "Estatus_guia_envio")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        $('#tblConsulta tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+                            tr.append("<td>" + json.resp[i].consignacion + "</td>");
+                            tr.append("<td>" + json.resp[i].consignacionReenvio + "</td>");
+                            tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaOrden + "  " + json.resp[i].HoraOrden + "</td>");
+                            tr.append("<td>" + json.resp[i].TipoGuia + "</td>");
+                            tr.append("<td>" + json.resp[i].Paqueteria + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaNro + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaStatus + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaEntrega + "  " + json.resp[i].HoraEntrega + "</td>");
+                            tr.append("<td>" + json.resp[i].QuienRecibio + "</td>");
+
+                            //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
+                            //AltaProveedor/AltaProveedor
+
+
+                            $('#tblConsulta').append(tr);
+                        }
+
+                    }
+                
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
             });
 
-        });
+        }
 
 
     </script>
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+
+            // 2° seccion
+            $('#tblConsulta2 thead tr').clone(true).appendTo('#tblConsulta2 thead');
+            $('#tblConsulta2 thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta2").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+        });
+    </script>
 }
+
+
+@*@section scripts {
+    <script>
+            $(document).ready(function () {
+                $("#txtFiltro").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#tblOrdenes tbody tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+
+            });
+
+
+        </script>
+}*@
 
 
