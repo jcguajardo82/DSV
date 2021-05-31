@@ -227,6 +227,7 @@
     <Compile Include="DAL\Consignaciones\DALConsignacionesCEDIS.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesProveedor.cs" />
     <Compile Include="DAL\ManualesOperativos\DALManualesOperativos.cs" />
+    <Compile Include="DAL\NivelExistencia\DALNivelExistencia.cs" />
     <Compile Include="DAL\OrdenesCompra\DALOrdenesCompra.cs" />
     <Compile Include="DAL\Ordenes\DALEmbarques.cs" />
     <Compile Include="DAL\ProcesoSurtido\DALProcesoSurtido.cs" />
@@ -247,6 +248,7 @@
     <Compile Include="Models\EmpleadoModels.cs" />
     <Compile Include="Models\ManualesOperativosModels.cs" />
     <Compile Include="Models\ManualesOp\ManualTypesModel.cs" />
+    <Compile Include="Models\NivelExistencia\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrdersDetail.cs" />
     <Compile Include="Models\ProcesoSurtido\OrderFacts_UE_CancelCauses.cs" />
