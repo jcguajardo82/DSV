@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ServicesManagement.Web.Models.ProcesoReciboDevoluciones;
 using ServicesManagement.Web.DAL.ProcesoReciboDevoluciones;
 using ServicesManagement.Web.Helpers;
 
@@ -17,6 +18,24 @@ namespace ServicesManagement.Web.Controllers
             Session["ListaConsignaciones"] = DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolProcess(idOwner);
             return View();
         }
+
+        //listar productos de  consignación
+        public ActionResult LstProdPaquete(string UeNo)
+        {
+            try
+            {
+                var listaProd = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoDevolDetail>(DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolDetail(UeNo).Tables[0]);
+                var result = new { Success = true, resp = listaProd };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
 
         //Aceptar Devolución
         public ActionResult AceptarDevolucion(string UeNo, int OrderNo, string IdTrackingService, string TrackingType, decimal Barcode, string CreationId)

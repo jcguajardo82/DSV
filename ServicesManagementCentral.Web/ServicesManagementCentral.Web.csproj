@@ -230,6 +230,7 @@
     <Compile Include="DAL\NivelExistencia\DALNivelExistencia.cs" />
     <Compile Include="DAL\OrdenesCompra\DALOrdenesCompra.cs" />
     <Compile Include="DAL\Ordenes\DALEmbarques.cs" />
+    <Compile Include="DAL\ProcesoReciboDevoluciones\DALProcesoReciboDevoluciones.cs" />
     <Compile Include="DAL\ProcesoSurtido\DALProcesoSurtido.cs" />
     <Compile Include="DAL\TotalOrdenes\DALTotalOrdenes.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Models\NivelExistencia\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrdersDetail.cs" />
+    <Compile Include="Models\ProcesoReciboDevoluciones\ProcesoReciboDevoluciones.cs" />
     <Compile Include="Models\ProcesoSurtido\OrderFacts_UE_CancelCauses.cs" />
     <Compile Include="Models\MotivosCancel.cs" />
     <Compile Include="Controllers\OrdenesController.cs" />

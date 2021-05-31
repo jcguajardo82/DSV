@@ -62,27 +62,51 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="tableFixHead table-responsive m-t">
-                        <table id="tblConsulta_Devoluciones" class="table table-striped table-bordered table-hover">
-                            <thead class="bg-primary">
+                        <table id="tblConsulta_Devoluciones" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                            <thead class="bg-danger-sor">
                                 <tr role="row">
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 130px;">Numero de Consignación</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Numero de Consignación</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Fecha y hora de creacion de la Consignación</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">RMA</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Solicitud RMA</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Motivo RMA</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Paqueteria</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Numero de la guia de devolucion</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Estatus de Guía de devolucion</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">RMA</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Solicitud RMA</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Motivo RMA</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Paqueteria</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Numero de la guia de devolucion</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Estatus de Guía de devolucion</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Fecha de entrega al almacen</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Recibido por</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Días Vigentes Guia</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Recibido por</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Días Vigentes Guia</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @{
                                     if (Session["ListaConsignaciones"] != null)
-                                    { 
-                                    
+                                    {
+                                        System.Data.DataSet ds = (System.Data.DataSet)Session["ListaConsignaciones"];
+
+                                        var dt = ds.Tables[0];
+
+                                        int index = 0;
+
+                                        foreach (System.Data.DataRow p in dt.Rows)
+                                        {
+                                            <tr>
+                                                <td style="text-align:center;">
+                                                    <a id="@p["UeNo"]" onclick="popUpLstProds(this)"
+                                                       title="Click para ver la lista de productos asociados a la consignación" class="btn btn-link">@p["UeNo"].ToString()</a>
+                                                </td>
+                                                <td style="text-align:right">@p["OrderDate"] - @p["OrderTime"] </td>
+                                                <td style="text-align:center">@p["UeNoRMA"]</td>
+                                                <td style="text-align:center">@p["ConsigmentType"]</td>
+                                                <td style="text-align:center">@p["TrackingType"]</td>
+                                                <td style="text-align:center"> @p["TrackingServiceName"]</td>
+                                                <td style="text-align:center">@p["IdTrackingService"]</td>
+                                                <td style="text-align:center"> @p["TrackingServiceStatus"]</td>
+                                                <td style="text-align:center"> @p["TrackingDeliveryDate"] - @p["TrackingDeliveryTime"] </td>
+                                                <td style="text-align:center">@p["TrackingDeliveredTo"]</td>
+                                                <td style="text-align:center"> @p["DiasVigencia"]</td>
+                                            </tr>
+                                        }
                                     }
                                 }
                             </tbody>
@@ -91,6 +115,41 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal inmodal fade" id="dlgShowProdcut" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header pt-3 pb-1">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <p>Lista de Productos</p>
+                    </div>
+                    <div class="modal-body">
+                        <form id="frmShowServicios">
+                            <table id="tblShowProduct" class="table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>RMA </th>
+                                        <th>EAN</th>
+                                        <th>Descripción</th>
+                                        <th>Piezas</th>
+                                        <th>Guía</th>
+                                        <th>Condiciones</th>
+                                        <th>Motivo</th>
+                                        <th>Recibo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -105,6 +164,55 @@
             });
 
         });
+
+    function popUpLstProds(el) {
+
+        var _UeNo = $(el).attr('id');
+
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("LstProdPaquete", "ProcesoReciboDevoluciones")',
+            data: {
+                UeNo: _UeNo
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    $("#tblShowProduct tbody").empty();
+                    //$("#tblShowProduct tbody").remove();
+                    //var tr;
+                    debugger;
+                    //Append each row to html table
+                    for (var i = 0; i < json.resp.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + json.resp[i].idRMA + "</td>");
+                        tr.append("<td>" + json.resp[i].BarCode + "</td>");
+                        //tr.append("<td>" + json.resp[i].ProductId + "</td>");
+                        tr.append("<td>" + json.resp[i].ProductName + "</td>");
+                        tr.append("<td>" + json.resp[i].Quantity + "</td>");
+                        tr.append("<td>" + json.resp[i].IdTrackingService + "</td>");
+                        tr.append("<td>" + json.resp[i].PackageCondition + "</td>");
+                        tr.append("<td>" + json.resp[i].MotivoDevol + "</td>");
+                        tr.append("<td>" + json.resp[i].ItemReturned + "</td>");
+                        //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                        //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                        $('#tblShowProduct').append(tr);
+
+                    }
+                    $('#dlgShowProdcut').modal('show');
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+    }
 
 
     </script>
