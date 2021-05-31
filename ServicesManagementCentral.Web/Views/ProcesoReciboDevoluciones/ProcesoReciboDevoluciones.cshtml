@@ -65,8 +65,9 @@
                         <table class="table invoice-table dataTable">
                             <thead class="bg-danger-sor">
                                 <tr>
-                                    <th class="sorting">Numero de Orden</th>
-                                    <th class="sorting">Fecha y hora de creacion de la orden</th>
+                                    <th class="sorting">Numero de Consignación</th>
+                                    <th class="sorting">Fecha y hora de creacion de la Consignación</th>
+                                    <th class="sorting">RMA</th>
                                     <th class="sorting">Solicitud RMA</th>
                                     <th class="sorting">Motivo RMA</th>
                                     <th class="sorting">Paqueteria</th>
@@ -74,14 +75,14 @@
                                     <th class="sorting">Estatus de Guía de devolucion</th>
                                     <th class="sorting">Fecha de entrega al almacen</th>
                                     <th class="sorting">Recibido por</th>
-                                    <th class="sorting">EAN/Código Barras</th>
                                     <th class="sorting">Días Vigentes Guia</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><u>7654234</u></td>
+                                    <td><u>821282101-3</u></td>
                                     <td> 3-Mar-21</td>
+                                    <td>821287480-3</td>
                                     <td>
                                         Reenvio
                                     </td>
@@ -97,12 +98,12 @@
                                     </td>
                                     <td>13-Mar-21</td>
                                     <td>SOE: Alberto Juarez</td>
-                                    <td>456273456789</td>
                                     <td>1</td>
                                 </tr>
                                 <tr>
-                                    <td><u>7654234</u></td>
+                                    <td><u>821282171-3</u></td>
                                     <td> 3-Mar-21</td>
+                                    <td>821287484-3</td>
                                     <td>
                                         Reenvio
                                     </td>
@@ -118,7 +119,6 @@
                                     </td>
                                     <td>13-Mar-21</td>
                                     <td>SOE: Alberto Juarez</td>
-                                    <td>456273456789</td>
                                     <td>1</td>
                                 </tr>
                             </tbody>
@@ -145,38 +145,39 @@
                             <thead class="bg-danger-sor">
                                 <tr>
                                     <th class="sorting">RMA</th>
+                                    <th class="sorting">EAN/Código Barras</th>
                                     <th class="sorting">ID</th>
                                     <th class="sorting">Descripcion</th>
                                     <th class="sorting">Piezas</th>
                                     <th class="sorting">Numero de Guia de devolucion</th>
                                     <th class="sorting">Condiciones del paquete</th>
+                                    <th class="sorting">Motivo de Devol.</th>
                                     <th class="sorting">Recibo</th>
-                                    <th class="sorting">EAN/Código Barras</th>
-                                    <th class="sorting">Días Vigentes Guia</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>7654234</td>
-                                    <td>DSV</td>
-                                    <td> Calefactor</td>
+                                    <td>821287480-3</td>
+                                    <td>9021312899368128</td>
+                                    <td>100470</td>
+                                    <td> Calefactor 20 lts</td>
                                     <td>1</td>
                                     <td>45627345678982300000000000</td>
                                     <td>En buen estado</td>
+                                    <td>Daño</td>
                                     <td><input type="checkbox" onclick="return false" checked></td>
-                                    <td>9021312899368128</td>
-                                    <td>1</td>
                                 </tr>
                                 <tr>
-                                    <td>7654234</td>
-                                    <td>DSV</td>
-                                    <td> Calefactor</td>
+                                    <td>821287480-3</td>
+                                    <td>9021312899368128</td>
+                                    <td>100477</td>
+                                    <td> Calefactor 40 lts</td>
                                     <td>1</td>
                                     <td>45627345678982300000000000</td>
                                     <td>En buen estado</td>
+                                    <td>Daño</td>
                                     <td><input type="checkbox" onclick="return false" checked></td>
-                                    <td>9021312899368128</td>
-                                    <td>1</td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -184,7 +185,7 @@
                                     <td colspan="7"></td>
                                     <td colspan="2" style="text-align:right;">
                                         <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
-                                            Confirmar Devolución
+                                            Confirmar de Recibido
                                         </button>
 
                                     </td>
