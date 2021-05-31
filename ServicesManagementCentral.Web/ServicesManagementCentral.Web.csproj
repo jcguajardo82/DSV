@@ -226,12 +226,16 @@
     <Compile Include="DAL\Consignaciones\DALConsignacionesAdm.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesCEDIS.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesProveedor.cs" />
+    <Compile Include="DAL\EstatusGuiasEnvio\DALEstatusGuiasEnvio.cs" />
+    <Compile Include="DAL\EstatusReenvioMcia\DALEstatusReenvioMcia.cs" />
     <Compile Include="DAL\ManualesOperativos\DALManualesOperativos.cs" />
     <Compile Include="DAL\NivelExistencia\DALNivelExistencia.cs" />
     <Compile Include="DAL\OrdenesCompra\DALOrdenesCompra.cs" />
     <Compile Include="DAL\Ordenes\DALEmbarques.cs" />
     <Compile Include="DAL\ProcesoReciboDevoluciones\DALProcesoReciboDevoluciones.cs" />
     <Compile Include="DAL\ProcesoSurtido\DALProcesoSurtido.cs" />
+    <Compile Include="DAL\ReenvioMcia\DALReenvioMciaCEDIS.cs" />
+    <Compile Include="DAL\ReenvioMcia\DALReenvioMciaProveedores.cs" />
     <Compile Include="DAL\TotalOrdenes\DALTotalOrdenes.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
@@ -247,6 +251,9 @@
     <Compile Include="Models\Consignaciones\ConsignacionesProveedor.cs" />
     <Compile Include="Models\Consignaciones\DetalleConsignaciones.cs" />
     <Compile Include="Models\EmpleadoModels.cs" />
+    <Compile Include="Models\EstatusGuiasEnvio\EstatusGuiasEnvio.cs" />
+    <Compile Include="Models\EstatusReenvioMcia\DetalleEstatusReenvioMcia.cs" />
+    <Compile Include="Models\EstatusReenvioMcia\EstatusReenvioMcia.cs" />
     <Compile Include="Models\ManualesOperativosModels.cs" />
     <Compile Include="Models\ManualesOp\ManualTypesModel.cs" />
     <Compile Include="Models\NivelExistencia\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
@@ -298,6 +305,9 @@
     <Compile Include="Models\PasilloUnRepPasillo.cs" />
     <Compile Include="Models\PassCancelModel.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcess.cs" />
+    <Compile Include="Models\ReemvioMcia\DetalleReenvioMciaCEDIS.cs" />
+    <Compile Include="Models\ReemvioMcia\ReenvioMciaCEDIS.cs" />
+    <Compile Include="Models\ReemvioMcia\ReenvioMciaProveedor.cs" />
     <Compile Include="Models\ReportesPDP\ReportesPDP.cs" />
     <Compile Include="Models\RestInterfazMethods.cs" />
     <Compile Include="Models\SubirArchivos\CargaManuales.cs" />
