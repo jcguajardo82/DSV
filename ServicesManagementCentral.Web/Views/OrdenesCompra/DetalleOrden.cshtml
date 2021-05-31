@@ -1,59 +1,59 @@
 ﻿<div class="modal inmodal fade" id="dlgDetalle" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header pt-3 pb-1">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Orden de compra 76859403</h4>
+                <h4 class="modal-title" id="lblModal"></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="tableFixHead table-responsive m-t">
-                            <table class="table invoice-table">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align:center;">ID</th>
-                                        <th style="text-align:center;">Descripción</th>
-                                        <th style="text-align:center;">Piezas</th>
-                                        <th style="text-align:center;">Costo</th>   
-                                        <th style="text-align:center;">EAN/Código de barras</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td style="text-align:left;">1234567</td>
-                                        <td style="text-align:left;">Refrigerador</td>
-                                        <td style="text-align:left;">1</td>
-                                        <td style="text-align:left;">$123.00</td>
-                                        <td style="text-align:center;"> - </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align:left;">1234567</td>
-                                        <td style="text-align:left;">Refrigerador</td>
-                                        <td style="text-align:left;">1</td>
-                                        <td style="text-align:left;">$123.00</td>
-                                        <td style="text-align:center;"> - </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align:left;">1234567</td>
-                                        <td style="text-align:left;">Refrigerador</td>
-                                        <td style="text-align:left;">1</td>
-                                        <td style="text-align:left;">$123.00</td>
-                                        <td style="text-align:center;"> - </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align:left;">1234567</td>
-                                        <td style="text-align:left;">Refrigerador</td>
-                                        <td style="text-align:left;">1</td>
-                                        <td style="text-align:left;">$123.00</td>
-                                        <td style="text-align:center;"> - </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <table id="tblDetalle" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                            <thead class="bg-danger-sor">
+                 
+                                <tr>
+                                    <th style="text-align:center;">EAN/Código de barras</th>
+                                    <th style="text-align:center;">ID</th>
+                                    <th style="text-align:center;">Descripción</th>
+                                    <th style="text-align:center;">Piezas</th>
+                                    <th style="text-align:center;">Costo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:center;">7501012300292</td>
+                                    <td style="text-align:left;">1043997</td>
+                                    <td style="text-align:left;">SECADORA TIMCO BASIC</td>
+                                    <td style="text-align:left;">1</td>
+                                    <td style="text-align:left;">$234.00</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">3412242610089</td>
+                                    <td style="text-align:left;">1045311           </td>
+                                    <td style="text-align:left;">COLONIA ADIDAS 100 MILILITROS</td>
+                                    <td style="text-align:left;">1</td>
+                                    <td style="text-align:left;">$219.00</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">4897059690100</td>
+                                    <td style="text-align:left;">11040264</td>
+                                    <td style="text-align:left;">DISP AGUA DACE AGUA FRIA Y CALIENTE SILE</td>
+                                    <td style="text-align:left;">1</td>
+                                    <td style="text-align:left;">$934.00</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">7503020426810</td>
+                                    <td style="text-align:left;">11140736</td>
+                                    <td style="text-align:left;">PARILLA DE GAS DE 4 QUEMADORES  EMPOTRAR</td>
+                                    <td style="text-align:left;">1</td>
+                                    <td style="text-align:left;">$3540.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>

@@ -1,110 +1,158 @@
-﻿
+﻿@using ServicesManagement.Web.Models.TotalOrdenes
 @{
     ViewBag.Title = "Total Ordenes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style id="compiled-css" type="text/css">
-    /* Fix table head */
-    .tableFixHead {
-        overflow-y: auto;
-        height: 300px;
-    }
-
-        .tableFixHead th {
-            position: sticky;
-            top: 0;
+@*<style id="compiled-css" type="text/css">
+        /* Fix table head */
+        .tableFixHead {
+            overflow-y: auto;
+            height: 300px;
         }
 
-    /* Just common table stuff. */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        table-layout: fixed;
-        word-wrap: break-word;
-    }
+            .tableFixHead th {
+                position: sticky;
+                top: 0;
+            }
 
-    th, td {
-        padding: 8px 16px;
-    }
+        /* Just common table stuff. */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+
+        th, td {
+            padding: 8px 16px;
+        }
 
 
-    th {
-        /*background: #1AB394;*/
-        background: #D52B1E;
-        color: #ffffff;
-        font-weight: bold;
-        text-align: center;
-    }
-</style>
+        th {
+            /*background: #1AB394;*/
+            background: #D52B1E;
+            color: #ffffff;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>*@
 <div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
     <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
-            <div class="row">
-                <div class="col col-xs-3 col col-md-3 col col-lg-3">
-                    <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
-                            <thead>
-                                <tr>
-                                    <th>No. Orden</th>
-                                    <th>Fecha Creación</th>
-                                    <th>Cliente</th>
-                                    <th>Estatus de Orden</th>
-                                    <th>Estatus de Consignación</th>
-                                    <th>No. de Guía</th>
-                                    <th>Estatus de Guía</th>
-                                    <th>No. Orden Compra</th>
-                                    <th style="text-align:center;">Estatus Orden Compra</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1123124</td>
-                                    <td>28-Ene-2021</td>
-                                    <td>
-                                        Susana Vargas Miranda
-                                    </td>
-                                    <td>
-                                        Pago Autorizado
-                                    </td>
-                                    <td>
-                                        En espera de recolección
-                                    </td>
-                                    <td>12345654323500</td>
-                                    <td>
-                                        En tránsito
-                                    </td>
-                                    <td>567899876</td>
-                                    <td style="text-align:left;">En programación de pago</td>
-                                </tr>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <table id="tblConsulta" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                    <thead class="bg-danger-sor">
+                        <tr>
+                            <th>No. Consignacion</th>
+                            <th>Fecha Creación</th>
+                            <th>Cliente</th>
+                            <th>Estatus de Orden</th>
+                            <th>Estatus de Consignación</th>
+                            <th>No. de Guía</th>
+                            <th>Estatus de Guía</th>
+                            <th>No. Orden Compra</th>
+                            <th style="text-align:center;">Estatus Orden Compra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                            IEnumerable<upCorpOMS_Cns_UeNoTotalsByOrder> list = ViewBag.Orders as IEnumerable<upCorpOMS_Cns_UeNoTotalsByOrder>;
+                        }
+                        @foreach (upCorpOMS_Cns_UeNoTotalsByOrder item in list)
+                        {
+                            <tr>
+
+                                <td style="text-align:left;">@item.consignacion</td>
+                                <td style="text-align: left;">@Convert.ToDateTime(item.FechaCreacion).ToString("dd-MM-yyyy")</td>
+                                <td style="text-align:left;">@item.Cliente</td>
+                                <td style="text-align:left;">@item.EstatusOrdenCompra</td>
+                                <td style="text-align:left;">@item.EstatusConsignacion</td>
+                                <td style="text-align:left;">@item.NroGuia</td>
+                                <td style="text-align:left;">@item.EstatusGuia</td>
+
+                                <td style="text-align:left;">@item.OrdenCompra</td>
+                                <td style="text-align:left;">@item.EstatusOrdenCompra</td>
+
+                            </tr>
 
 
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
+
     </div>
 </div>
 
 @section scripts {
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
+
         $(document).ready(function () {
-            $("#txtFiltro").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#tblOrdenes tbody tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
             });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+
 
         });
 
 
     </script>
+   
 }

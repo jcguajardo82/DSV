@@ -1,334 +1,151 @@
-﻿
+﻿@using ServicesManagement.Web.Models.NivelExistencia
 @{
     ViewBag.Title = "Nivel de Existencia";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style id="compiled-css" type="text/css">
-    /* Fix table head */
-    .tableFixHead {
-        overflow-y: auto;
-        
-        height: 420px;
-    }
+<div class="row">
+    <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center" ">
+        <h2>Niveles de Existencia</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <table id="tblConsulta" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+            <thead class="bg-danger-sor">
+                <tr>
+                    <th style="text-align:center;">EAN/Codigo de barras</th>
+                    <th style="text-align:center;">ID (#numero material SAP)</th>
+                    <th style="text-align:center;">Nombre del Producto</th>
+                    <th style="text-align:center;">Grupo de Categorías</th>
+                    <th style="text-align:center;">No. Proveedor</th>
+                    <th style="text-align:center;">T. Almacen</th>
+                    <th style="text-align:center;">Nombre Proveedor</th>
+                    <th style="text-align:center;">Nombre Almacen</th>
+                    <th style="text-align:center;">Nivel de Existencias</th>
+                    <th style="text-align:center;">Inventario Reservado</th>
+                    <th style="text-align:center;">Inventario disponible para la venta</th>
+                    <th style="text-align:center;">Stock de seguridad</th>
+                    <th style="text-align:center;">Tipo de Articulo</th>
+                    <th style="text-align:center;">Largo</th>
+                    <th style="text-align:center;">Alto</th>
+                    <th style="text-align:center;">Ancho</th>
+                    <th style="text-align:center;">Peso</th>
+                    <th style="text-align:center;">Peso Volumetrico</th>
+                    <th style="text-align:center;">Peso Real</th>
+                    <th style="text-align:center;">Estatus del codigo</th>
+                    <th style="text-align:center;">Costo del Material</th>
+                    <th style="text-align:center;">Fecha de cracion del Material</th>
+                    <th style="text-align:center;">Num de proveedor que surte producto</th>
+                    <th style="text-align:center;">Nom de proveedor que surte producto</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
 
-        .tableFixHead th {
-            position: sticky;
-            width: 120px;
-            top: 0;
-        }
+                    IEnumerable<upCorpOMS_Cns_UeNoTotalsByOrder> list = ViewBag.Orders as IEnumerable<upCorpOMS_Cns_UeNoTotalsByOrder>;
+                }
+                @foreach (upCorpOMS_Cns_UeNoTotalsByOrder item in list)
+                {
+                    <tr>
 
-    /* Just common table stuff. */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        table-layout: fixed;
-        word-wrap: break-word;
-    }
+                        <td style="text-align:left;">@item.EAN</td>
 
-    th, td {
-        padding: 8px 16px;
-    }
+                        <td style="text-align:left;">@item.SKU</td>
+                        <td style="text-align:left;">@item.Descripcion</td>
+                        <td style="text-align:left;">@item.Categoria</td>
+                        <td style="text-align:left;">@item.NombreProveedor</td>
+                        <td style="text-align:left;">@item.TipoAlmacen</td>
+                        <td style="text-align:left;">@item.NombreProveedor</td>
+                        <td style="text-align:left;">@item.NombreAlmacen</td>
 
+                        <td style="text-align:left;">@item.NivelExistencia</td>
+                        <td style="text-align:left;">@item.InvReservado</td>
+                        <td style="text-align:left;">@item.InvVenta</td>
+                        <td style="text-align:left;">@item.InvSeguridad</td>
+                        <td style="text-align:left;">@item.TipoArticulo</td>
+                        <td style="text-align:left;">@item.Largo</td>
+                        <td style="text-align:left;">@item.Alto</td>
+                        <td style="text-align:left;">@item.Ancho</td>
+                        <td style="text-align:left;">@item.Peso</td>
+                        <td style="text-align:left;">@item.PesoVol</td>
+                        <td style="text-align:left;">@item.PesoReal</td>
+                        <td style="text-align:left;">@item.EstatusProducto</td>
+                        <td style="text-align:left;">@item.CostoMaterial</td>
+                        <td style="text-align:left;">@item.FechaCreacion</td>
 
-    th {
-        /*background: #1AB394;*/
-        background: #D52B1E;
-        color: #ffffff;
-        font-weight: bold;
-        text-align: center;
-    }
-</style>
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-    <div style ="width: 100%;" class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
-            <div class="row">
-                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center" ">
-                    <h2>Niveles de Existencia</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-xs-3 col col-md-3 col col-lg-3">
-                    <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-xs-6">
-                    <div class="dt-buttons btn-group flex-wrap">
-                        @*<button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>*@
-                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
-                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
-                    </div>
-                </div>
-                <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="tblOrdenes" class="tableFixHead table-responsive m-t">
-                        <table style="overflow-x: scroll;" class="table invoice-table">
-                            <thead>
-                                <tr>
-                                    <th style="text-align:center;">Nombre del Producto</th>
-                                    <th style="text-align:center;">Grupo de Categorías</th>
-                                    <th style="text-align:center;">No. Almacen</th>
-                                    <th style="text-align:center;">T. Almacen</th>
-                                    <th style="text-align:center;">Nombre Almacen</th>
-                                    <th style="text-align:center;">Nivel de Existencias</th>
-                                    <th style="text-align:center;">Inventario Reservado</th>
-                                    <th style="text-align:center;">Tipo de Articulo</th>
-                                    <th style="text-align:center;">Largo</th>
-                                    <th style="text-align:center;">Alto</th>
-                                    <th style="text-align:center;">Ancho</th>
-                                    <th style="text-align:center;">Peso</th>
-                                    <th style="text-align:center;">Peso Volumetrico</th>
-                                    <th style="text-align:center;">Peso Real</th>
-                                    <th style="text-align:center;">EAN/Codigo de barras</th>
-                                    <th style="text-align:center;">ID( #numero material SAP)</th>
-                                    <th style="text-align:center;">Stock de seguridad</th>
-                                    <th style="text-align:center;">Inventario disponible para la venta</th>
-                                    <th style="text-align:center;">Inventario Reservado</th>
-                                    <th style="text-align:center;">Estatus del codigo</th>
-                                    <th style="text-align:center;">Costo del Material</th>
-                                    <th style="text-align:center;">Fecha de cracion del Material</th>
-                                    <th style="text-align:center;">Num de proveedor que surte producto</th>
-                                    <th style="text-align:center;">Nom de proveedor que surte producto</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">
-                                        Loción Nautica Eau de Toilette Aqua Rush 100 ml
-                                    </td>
-                                    <td style="text-align:left;">BELLEZA</td>
-                                    <td style="text-align:left;">14482</td>
-                                    <td style="text-align:left;">proveedores</td>
-                                    <td style="text-align:left;">Modermo</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">BT</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                    <td style="text-align:left;">X</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <button style="visibility:hidden;" float: right;" type="button" onclick="Exportar();" class="btn btn-w-m btn-warning">Descargar</button>
-                    <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
-                </div>
-            </div>
-        </div>
+                        <td style="text-align:left;">@item.NroProvOrigen</td>
+                        <td style="text-align:left;">@item.NomProvOrigen</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
 @section scripts {
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
+
         $(document).ready(function () {
-            $("#txtFiltro").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#tblOrdenes tbody tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
             });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+
 
         });
 

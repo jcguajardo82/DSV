@@ -1,143 +1,74 @@
-﻿
+﻿@using ServicesManagement.Web.Models.OrdenesCompra;
+
 @{
     ViewBag.Title = "Ordenes de Compra";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style id="compiled-css" type="text/css">
-    /* Fix table head */
-    .tableFixHead {
-        overflow-y: auto;
-        height: 420px;
-    }
-
-        .tableFixHead th {
-            position: sticky;
-            top: 0;
-        }
-
-    /* Just common table stuff. */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        table-layout: fixed;
-        word-wrap: break-word;
-    }
-
-    th, td {
-        padding: 8px 16px;
-    }
-
-
-    th {
-        /*background: #1AB394;*/
-        background: #D52B1E;
-        color: #ffffff;
-        font-weight: bold;
-        text-align: center;
-    }
-</style>
 <div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
     <div class="dataTables_wrapper dt-bootstrap4 no-footer">
         <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center" ">
+                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
                     <h2>Ordenes de Compra</h2>
                 </div>
             </div>
             <div class="row">
-                <div class="col col-xs-3 col col-md-3 col col-lg-3">
-                    <input id="txtFiltro" class="form-control" type="search" placeholder="Search..">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-xs-6">
-                    <div class="dt-buttons btn-group flex-wrap">
-                        @*<button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>*@
-                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
-                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
-                    </div>
-                </div>
-                <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="tableFixHead table-responsive m-t">
-                        <table class="table invoice-table">
-                            <thead>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <table id="tblConsulta" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                        <thead class="bg-danger-sor">
+                            <tr>
+                                <th style="text-align:center;"> No. Consignación</th>
+                                <th style="text-align:center;">Tipo de Consignación</th>
+                                <th style="text-align:center;">Estatus del Pedido</th>
+                                <th style="text-align:center;">Estatus del la Consignación</th>
+                                <th style="text-align:center;">No. Proveedor</th>
+                                <th style="text-align:center;">Nombre Proveedor</th>
+                                <th style="text-align:center;">No. Almacén</th>
+                                <th style="text-align:center;">Nombre Almacen</th>
+                                <th style="text-align:center;">No. Orden Compra</th>
+                                <th style="text-align:center;">Importe</th>
+                                <th style="text-align:center;">Estatus Orden Compra</th>
+                                <th style="text-align:center;">Periodo Orden Compra</th>
+                                <th style="text-align:center;">Fecha del pedido</th>
+                                <th style="text-align:center;">Hora del pedido</th>
+                                <th style="text-align:center;">Fecha de recibo</th>
+                                <th style="text-align:center;">Hora de recibo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+
+                                IEnumerable<upCorpOMS_Cns_UeNoShoppingOrders> list = ViewBag.Orders as IEnumerable<upCorpOMS_Cns_UeNoShoppingOrders>;
+                            }
+                            @foreach (upCorpOMS_Cns_UeNoShoppingOrders item in list)
+                            {
                                 <tr>
-                                    <th style="text-align:center;">No. Consignación</th>
-                                    <th style="text-align:center;">Estatus del Pedido</th>
-                                    <th style="text-align:center;">Estatus del la Consignación</th>
-                                    <th style="text-align:center;">No. Almacén</th>
-                                    <th style="text-align:center;">Nombre Almacen</th>
-                                    <th style="text-align:center;">No. Orden Compra</th>
-                                    <th style="text-align:center;">Importe</th>
-                                    <th style="text-align:center;">Estatus Orden Compra</th>
-                                    <th style="text-align:center;">Periodo Orden Compra</th>
+
+                                    <td style="text-align:left;"><a onclick="popDetalle('@item.consignacion')" class="link">  @item.consignacion</a></td>
+                                    <td style="text-align: left;">@item.TipoConsignacion</td>
+                                    <td style="text-align:left;">@item.EstatusPedido</td>
+                                    <td style="text-align:left;">@item.EstatusConsignacion</td>
+                                    <td style="text-align:left;">@item.NroProveedor</td>
+                                    <td style="text-align:left;">@item.NombreProveedor</td>
+                                    <td style="text-align:left;">@item.NroAlmacen</td>
+                                    <td style="text-align:left;">@item.NombreAlmacen</td>
+                                    <td style="text-align:left;">@item.OrdenCompra</td>
+                                    <td style="text-align:left;">@item.Importe</td>
+                                    <td style="text-align:left;">@item.EstatusOrdenCompra</td>
+                                    <td style="text-align:left;">@item.PeriodoOrdenCompra</td>
+                                    <td style="text-align:left;">@item.FechaPedido</td>
+                                    <td style="text-align:left;">@item.HoraPedido</td>
+                                    <td style="text-align:left;">@item.FechaPedidoRecibo</td>
+                                    <td style="text-align:left;">@item.HoraPedidoRecibo</td>
+
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="text-align:left;">a03456</td>
-                                    <td style="text-align:left;">3456</td>
-                                    <td style="text-align:left;">Enviada</td>
-                                    <td style="text-align:left;">5688</td>
-                                    <td style="text-align:left;">Cedis México</td>
-                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
-                                    <td style="text-align:left;">$123.00</td>
-                                    <td style="text-align:left;">Por pagar</td>
-                                    <td style="text-align:left;">-</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">a03456</td>
-                                    <td style="text-align:left;">3456</td>
-                                    <td style="text-align:left;">Enviada</td>
-                                    <td style="text-align:left;">5688</td>
-                                    <td style="text-align:left;">Cedis México</td>
-                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
-                                    <td style="text-align:left;">$123.00</td>
-                                    <td style="text-align:left;">Por pagar</td>
-                                    <td style="text-align:left;">-</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">a03456</td>
-                                    <td style="text-align:left;">3456</td>
-                                    <td style="text-align:left;">Enviada</td>
-                                    <td style="text-align:left;">5688</td>
-                                    <td style="text-align:left;">Cedis México</td>
-                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
-                                    <td style="text-align:left;">$123.00</td>
-                                    <td style="text-align:left;">Por pagar</td>
-                                    <td style="text-align:left;">-</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">a03456</td>
-                                    <td style="text-align:left;">3456</td>
-                                    <td style="text-align:left;">Enviada</td>
-                                    <td style="text-align:left;">5688</td>
-                                    <td style="text-align:left;">Cedis México</td>
-                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
-                                    <td style="text-align:left;">$123.00</td>
-                                    <td style="text-align:left;">Por pagar</td>
-                                    <td style="text-align:left;">-</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:left;">a03456</td>
-                                    <td style="text-align:left;">3456</td>
-                                    <td style="text-align:left;">Enviada</td>
-                                    <td style="text-align:left;">5688</td>
-                                    <td style="text-align:left;">Cedis México</td>
-                                    <td style="text-align:left;"> <a onclick="popDetalle()" class="nav-link">76859403</a></td>
-                                    <td style="text-align:left;">$123.00</td>
-                                    <td style="text-align:left;">Por pagar</td>
-                                    <td style="text-align:left;">-</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button style="float: right;" type="button" class="btn btn-w-m btn-warning">Descargar</button>
-                    </div>
+
+
+
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -145,20 +76,183 @@
 </div>
 @Html.Partial("DetalleOrden")
 @section scripts {
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
+
         $(document).ready(function () {
-            $("#txtFiltro").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#tblOrdenes tbody tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
             });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
 
         });
 
-        function popDetalle() {
-            $('#dlgDetalle').modal('toggle');
-        }
+        iniciarDetalle();
     </script>
+}
+
+
+<script>
+
+
+
+    function iniciarDetalle() {
+                   table.clear().draw();
+                        table.destroy();
+        $("#tblDetalle").DataTable(
+            {
+                dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                processing: true,
+                searching: true,
+                ordering: true,
+                order: [[1, 'asc']],
+                filter: true,
+                info: false,
+                stateSave: false,
+                select: false,
+                select: {
+                    style: 'single'
+                },
+                //Paggin
+
+                paging: true,
+                pageLength: 10,
+                lengthMenu: [10, 25, 50, 100, 500],
+
+                // destroy: true, //destruye automaticamente la referencia a la tabla
+                //Ajax
+                //serverSide: true,
+                //bServerSide: true,
+                //sServerMethod: "GET",
+                buttons: ['csv', 'excel'],
+                orderCellsTop: false,
+                fixedHeader: {
+                    header: true
+                },
+                "scrollX": true
+
+            }
+        );
+    }
+
+    function popDetalle(consignacion){
+
+        $('#lblModal').text('Consignacón ' + consignacion);
+        $("#dlgDetalle").modal('toggle');
+
+
+            $.ajax({
+                async: false,
+                type: "get",
+                url: '@Url.Action("GetOrdenesCompraDetalle", "OrdenesCompra")',
+                data: {
+                    Consignacion: consignacion
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        //$('#tblDetalle tbody').empty();
+                        ////var tr;
+                        //debugger;
+                        ////Append each row to html table
+
+                        //for (var i = 0; i < json.resp.length; i++) {
+                        //    tr = $('<tr/>');
+
+                        //    tr.append("<td>" + json.resp[i].EAN + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ID + "</td>");
+                        //    tr.append("<td>" + json.resp[i].Descripcion + "</td>");
+                        //    tr.append("<td>" + json.resp[i].Piezas + "</td>");
+                        //    tr.append("<td>" + json.resp[i].CostoUnitario + "</td>");
+
+                        //    $('#tblDetalle').append(tr);
+                        //}
+
+                        var table = $('#tblDetalle').DataTable();
+                      
+                        //table.clear().draw();
+                        //table.destroy();
+                        //iniciarDetalle();
+                        for (var i = 0; i < json.resp.length; i++) {
+                          
+
+                            table.row.add([
+                                json.resp[i].EAN
+                                , json.resp[i].ID 
+                                , json.resp[i].Descripcion
+                                , json.resp[i].Piezas
+                                , json.resp[i].CostoUnitario
+
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }
+</script>
 }
 
