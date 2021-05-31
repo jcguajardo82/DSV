@@ -20,7 +20,7 @@ namespace ServicesManagement.Web.Controllers
 
             ViewBag.Orders = list;
 
-            return View(list);
+            return View();
         }
     }
 }

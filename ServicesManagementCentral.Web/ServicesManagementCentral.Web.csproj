@@ -230,6 +230,7 @@
     <Compile Include="DAL\OrdenesCompra\DALOrdenesCompra.cs" />
     <Compile Include="DAL\Ordenes\DALEmbarques.cs" />
     <Compile Include="DAL\ProcesoSurtido\DALProcesoSurtido.cs" />
+    <Compile Include="DAL\TotalOrdenes\DALTotalOrdenes.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHForAproval.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="Models\RestInterfazMethods.cs" />
     <Compile Include="Models\SubirArchivos\CargaManuales.cs" />
     <Compile Include="Models\SupplierModel.cs" />
+    <Compile Include="Models\TotalOrdenes\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
     <Compile Include="Models\UNModel.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoTracking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
