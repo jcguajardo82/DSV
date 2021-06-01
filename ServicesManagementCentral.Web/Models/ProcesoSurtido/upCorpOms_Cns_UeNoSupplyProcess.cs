@@ -12,9 +12,9 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
         public int SKU { get; set; }
         public string EAN { get; set; }
         public string Descripcion { get; set; }
-        public decimal Piezas { get; set; }
-        public decimal Precio { get; set; }
-        public decimal PrecioOrigen { get; set; }
+        public double Piezas { get; set; }
+        public double Precio { get; set; }
+        public double PrecioOrigen { get; set; }
         public string UnidadMedida { get; set; }
         public string PesoAsignado { get; set; }
         public string Observaciones { get; set; }
@@ -28,4 +28,12 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
     {
         public string mensaje { get; set; }
     }
+
+    public class Encabezado
+    {
+        public string Concatenado { get; set; }
+        public string idSupplierWH { get; set; }
+        public string SupplierName { get; set; }
+    }
+
 }

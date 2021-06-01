@@ -3,43 +3,7 @@
     ViewBag.Title = "Proceso Surtido";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@*<style id="compiled-css" type="text/css">
-        /* Fix table head */
-        .tableFixHead {
-            overflow-y: auto;
-            height: 300px;
-        }
 
-            .tableFixHead th {
-                position: sticky;
-                top: 0;
-            }
-
-        /* Just common table stuff. */
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            table-layout: fixed;
-            word-wrap: break-word;
-        }
-
-        th, td {
-            padding: 8px 16px;
-        }
-
-
-        th {
-            /*background: #1AB394;*/
-            background: #D52B1E;
-            color: #ffffff;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        function seleccionar_todo() {
-            for (i=0;i<document.f1.elements.length;i++) if(document.f1.elements[i].type == "checkbox") document.f1.elements[i].checked=1
-        }
-    </style>*@
 <div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
     <div class="dataTables_wrapper dt-bootstrap4 no-footer">
         <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
@@ -50,11 +14,17 @@
             </div>
             <div class="row">
                 <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
-                    <div class="alert alert-info">
-                        097865387 - Nao Reyes Ro [exo.asb@gmail.com] - 10-mar-2021 23:32:00 -  $87.00 - Pago Autorizado
-                        @*<input id="hddUeNo" type="hidden" value="@ViewBag.UeNo" />
-                            <input id="hddOrderNo" type="hidden" value="@ViewBag.OrderNo" />*@
-                    </div>
+                    @if (ViewBag.Header != null)
+                    {
+                        Encabezado list = ViewBag.Header as Encabezado;
+                        <div class="alert alert-info">
+                            @list.Concatenado
+                        </div>
+                        <input type="hidden" id="hddIdSupplierWH" value="@list.idSupplierWH" />
+                        <input type="hidden" id="hddSupplierName" value="@list.SupplierName" />
+                        <input type="hidden" id="hddUeNo" value="@ViewBag.UeNo" />
+                        <input type="hidden" id="hddOrderNo" value="@ViewBag.OrderNo" />
+                    }
                 </div>
             </div>
             <div class="row">
@@ -99,7 +69,15 @@
                                                                 <td style="text-align:left;">@item.Descripcion</td>
                                                                 <td style="text-align:right;">@item.Piezas</td>
                                                                 <td style="text-align:left;">@item.TipoEnvio</td>
-                                                                <td style="text-align:center;"><input type="checkbox" value="@item.EAN" class="checkbox" id="flexCheckDefault"></td>
+                                                                @if (item.Suplido)
+                                                                {
+                                                                    <td style="text-align:center;">x</td>
+                                                                    @*<td style="text-align:center;"><input type="checkbox" name="chbConsig" value="@item.EAN" class="checkbox" id="flexCheckDefault" checked disabled="disabled"></td>*@
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="text-align:center;"><input type="checkbox" name="chbConsig" value="@item.EAN" class="checkbox" id="flexCheckDefault"></td>
+                                                                }
                                                             </tr>
 
 
@@ -109,58 +87,61 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                                <table style="width:100%">
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
-                                                                Aceptar Consignación
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <select id="ddlMotCan" class="form-control">
-                                                                @{
-                                                                    if (ViewBag.MotCan != null)
-                                                                    {
-                                                                        IEnumerable<OrderFacts_UE_CancelCauses> listCan = ViewBag.MotCan as IEnumerable<OrderFacts_UE_CancelCauses>;
-                                                                        foreach (OrderFacts_UE_CancelCauses item in listCan)
+                                        @if (ViewBag.ArtSup == null)
+                                        {
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    <table style="width:100%">
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>
+                                                                <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="Consignacion()">
+                                                                    Aceptar Consignación
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>
+                                                                <select id="ddlMotCan" class="form-control">
+                                                                    @{
+                                                                        if (ViewBag.MotCan != null)
                                                                         {
-                                                                            <option value="@item.IdCause">@item.Cause_Desc</option>
+                                                                            IEnumerable<OrderFacts_UE_CancelCauses> listCan = ViewBag.MotCan as IEnumerable<OrderFacts_UE_CancelCauses>;
+                                                                            foreach (OrderFacts_UE_CancelCauses item in listCan)
+                                                                            {
+                                                                                <option value="@item.IdCause">@item.Cause_Desc</option>
+
+                                                                            }
+                                                                            <option value="99">Otro</option>
 
                                                                         }
-                                                                        <option value="99">Otro</option>
 
                                                                     }
-
-                                                                }
-                                                            </select>
+                                                                </select>
 
 
-                                                        </td>
-                                                        <td></td>
-                                                        <td>
-                                                            <button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="Cancelar()"> Cancelar  Consignación </button>
-                                                            @*<button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="alert('La siguiente consignación será cancelada por el siguiente motivo')"> Cancelar  Consignación </button>*@
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td><textarea id="txtOtro" maxlength="50" placeholder="Describir Otro" class="form-control" rows="4" cols="50"></textarea></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </table>
+                                                            </td>
+                                                            <td></td>
+                                                            <td>
+                                                                <button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="Cancelar()"> Cancelar  Consignación </button>
+                                                                @*<button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="alert('La siguiente consignación será cancelada por el siguiente motivo')"> Cancelar  Consignación </button>*@
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td><textarea id="txtOtro" maxlength="50" placeholder="Describir Otro" class="form-control" rows="4" cols="50"></textarea></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
                                             </div>
-                                        </div>
+                                        }
                                     </div>
                                 </div>
                                 <div role="tabpanel" id="tab-2" class="tab-pane">
@@ -338,7 +319,7 @@
 
             //var _Id_Num_UN = $("#hddTda").val();
 
-            debugger;
+
 
             $.ajax({
                 async: false,
@@ -420,7 +401,7 @@
                     _Cause_Desc = $("#txtOtro").val();
                 }
             }
-            debugger;
+
              $.ajax({
                 async: false,
                 type: "GET",
@@ -444,6 +425,52 @@
                 }
 
             });
+        }
+
+        function Consignacion() {
+            var values = [];
+            var markedCheckbox = document.getElementsByName('chbConsig');
+            debugger;
+            for (var checkbox of markedCheckbox) {
+                debugger;
+                if (checkbox.checked)
+                    values.push(checkbox.value);
+                   // document.body.append(checkbox.value + ' ');
+            }
+         //public ActionResult Consignacion(List<string> items, string UeNo, string OrderNo, string NombreExpedidor, string NumeroTransaccion)
+            if (values.length != 0) {
+                var _UeNo = $("#hddUeNo").val();
+                var _OrderNo = $("#hddOrderNo").val();
+                var _NombreSurtidor = $("#hddSupplierName").val();
+                var _SurtidorID = $("#hddIdSupplierWH").val();
+
+
+                 $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("Consignacion", "ProcesoSurtido")',
+                    data: {
+                        items: values
+                        , UeNo: _UeNo
+                        , OrderNo: _OrderNo
+                        , NombreSurtidor: _NombreSurtidor
+                        , SurtidorID: _SurtidorID
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            location.reload();
+                            // window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+
+            }
         }
     </script>
 

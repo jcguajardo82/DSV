@@ -1,12 +1,16 @@
-﻿using ServicesManagement.Web.DAL.Embarques;
+﻿using Newtonsoft.Json;
+using ServicesManagement.Web.DAL.Embarques;
 using ServicesManagement.Web.DAL.ProcesoSurtido;
 using ServicesManagement.Web.Helpers;
 using ServicesManagement.Web.Models.ProcesoSurtido;
+using Soriana.OMS.Ordenes.Common.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -16,8 +20,8 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult ProcesoSurtido()
         {
 
-            int OrderNo = 101141812;
-            string UeNo = "101141812-1";
+            int OrderNo = 101180999;
+            string UeNo = "101180999-3";
             var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcess(UeNo, OrderNo);
 
             //ViewBag.OrderNo = OrderNo; 
@@ -25,9 +29,12 @@ namespace ServicesManagement.Web.Controllers
             TempData["OrderNo"] = OrderNo;
             TempData["UeNo"] = UeNo;
 
+            ViewBag.OrderNo = OrderNo;
+            ViewBag.UeNo = UeNo;
+
 
             ViewBag.MotCan = DataTableToModel.ConvertTo<OrderFacts_UE_CancelCauses>(DALProcesoSurtido.upCorpOms_Cns_UeCancelCauses(2).Tables[0]);
-
+            ViewBag.Header = DataTableToModel.ConvertTo<Encabezado>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcessHeader(UeNo, OrderNo).Tables[0]).FirstOrDefault();
 
             if (ds.Tables.Count == 1)
             {
@@ -35,8 +42,18 @@ namespace ServicesManagement.Web.Controllers
             }
             else
             {
+                var list= DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[0]);
 
-                ViewBag.UeNoSupplyProcess = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[0]);
+                var totSup = list.Where(x => x.Suplido == true).ToList();
+
+
+                if (list.Count == totSup.Count)
+                {
+                    ViewBag.ArtSup = true;
+                }
+
+                ViewBag.UeNoSupplyProcess = list;
+                ViewBag.Encabezado = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[1]);
             }
 
             return View();
@@ -86,8 +103,6 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
-
-
         public ActionResult Cancelar(string Cause_Desc, string IdCause)
         {
             try
@@ -117,6 +132,101 @@ namespace ServicesManagement.Web.Controllers
             {
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Consignacion(List<string> items, string UeNo, string OrderNo, string NombreSurtidor, string SurtidorID)
+        {
+            try
+            {
+
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_FinalizarSurtido"];
+                System.Data.DataSet d = DALServicesM.GetOrdersByOrderNo(UeNo);
+                string status = string.Empty, store = string.Empty;
+                foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
+                {
+
+                    status = r1["StatusUe"].ToString();
+                    //ue = r1["UeNo"].ToString();
+                    store = r1["StoreNum"].ToString();
+
+                }
+                //metodo mio
+                InformacionOrden o = new InformacionOrden();
+
+                o.Orden = new InformacionDetalleOrden();
+                o.Orden.NumeroOrden = OrderNo;
+                o.Orden.EsPickingManual = true;
+                o.Orden.EstatusUnidadEjecucion = "0";
+                o.Orden.NumeroUnidadEjecucion = UeNo;
+                o.Orden.NumeroTienda = Convert.ToInt32(store);
+                o.Surtidor = new InformacionSurtidor();
+                o.Surtidor.SurtidorID = Convert.ToInt32(SurtidorID);
+                o.Surtidor.NombreSurtidor = NombreSurtidor;
+
+                var prodcuts = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcess(UeNo, int.Parse(OrderNo)).Tables[0]);
+
+         
+
+                foreach (var item in items)
+                {
+                    var a = new InformacionProductoSuministrado();
+
+                    var p = prodcuts.Where(x => x.EAN == item).ToList();
+
+
+                    a.IdentificadorProducto = p[0].SKU.ToString();
+                    a.CodigoBarra = p[0].EAN;
+                    a.DescripcionArticulo = p[0].Descripcion;
+                    a.Cantidad = p[0].Piezas;
+
+
+                    a.Precio = p[0].Precio;
+                    a.Observaciones = p[0].Observaciones;
+                    a.UnidadMedida = p[0].UnidadMedida;
+                    a.NumeroOrden = p[0].OrderNo.ToString();
+                    //a.FueSuministrado = true;
+                    a.Cantidad = p[0].Piezas;
+
+                    o.ProductosSuministrados.Add(a);
+                }
+
+
+
+                string json2 = string.Empty;
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                //json2 = js.Serialize(o);
+
+
+                json2 = JsonConvert.SerializeObject(o);
+
+                js = null;
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"], "", json2);
+
+
+
+
+                var result = new { Success = true, Message = "Alta exitosa" };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception x)
+            {
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.ERROR, "", false, x);
+
+                var result = new { Success = false, Message = x.Message };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
             }
         }
     }
