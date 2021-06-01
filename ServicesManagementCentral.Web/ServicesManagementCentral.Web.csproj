@@ -3721,6 +3721,13 @@
     <Content Include="Views\OrdenesDST\OrdenSeleccionada.cshtml" />
     <Content Include="Views\OrdenesDST\ConsultaDetalle.cshtml" />
     <Content Include="Views\OrdenesDST\Embarque.cshtml" />
+    <Content Include="Views\ReportesPDP\Creditos.cshtml" />
+    <Content Include="Views\ReportesPDP\Liquidaciones.cshtml" />
+    <Content Include="Views\ReportesPDP\ReservacionesSaldo.cshtml" />
+    <Content Include="Views\ReportesPDP\Creditos - Copy %283%29.cshtml" />
+    <Content Include="Views\ReportesPDP\Creditos - Copy %284%29.cshtml" />
+    <Content Include="Views\ReportesPDP\Creditos - Copy %285%29.cshtml" />
+    <Content Include="Views\ReportesPDP\Creditos - Copy %286%29.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
