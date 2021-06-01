@@ -19,6 +19,7 @@ namespace ServicesManagement.Web.Models.Consignaciones
         public string EstatusConsignacionEntrega { get; set; }
         public string NroOrdenCompra { get; set; }
         public string EstatusOrdenCompra { get; set; }
+        public string OrdenCompra { get; set; }
 
 
 
