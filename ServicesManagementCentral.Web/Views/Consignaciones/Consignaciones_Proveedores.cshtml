@@ -233,7 +233,7 @@
                             //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
 
                            /* tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
-                            tr.append("<td><a href='ProcesoSurtido/ProcesoSurtido?OrderNo =" + "101141812" + "&UeNo=" + "101141812-1" + "' title='Click para ir al proveedor' class='link-primary' >" + json.resp[i].Consignacion + "</td>");
+                            tr.append("<td><a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' >" + json.resp[i].Consignacion + "</td>");
                             tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].FechaCreacion + "  " + json.resp[i].HoraCreacion +"</td>");
