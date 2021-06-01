@@ -60,9 +60,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-xs-12 col-md-12">
                     <div class="tableFixHead table-responsive m-t">
-                        <table id="tblConsulta_Devoluciones" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                        <table id="tblConsulta_Devoluciones" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
                             <thead class="bg-danger-sor">
                                 <tr role="row">
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Numero de Consignación</th>
@@ -71,8 +71,8 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Solicitud RMA</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Motivo RMA</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Paqueteria</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Numero de la guia de devolucion</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Estatus de Guía de devolucion</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Guia de devolucion</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Estatus Guía de devolucion</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Fecha de entrega al almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Recibido por</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Días Vigentes Guia</th>
@@ -126,18 +126,18 @@
                     <div class="modal-body">
                         <div class="col-xs-12 col-md-12">
                             <form id="frmShowServicios">
-                                <table id="tblShowProduct" class="table" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 70px;">RMA</th>
+                                <table id="tblShowProduct" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" style="width:100%">
+                                    <thead class="bg-danger-sor">
+                                        <tr role="row">
+                                            <th style="width: 50px;">RMA</th>
                                             <th style="width: 100px;">EAN</th>
-                                            <th style="width: 100px;">ID</th>
+                                            <th style="width: 80px;">ID</th>
                                             <th style="width: 100px;">Descripción</th>
-                                            <th style="width: 70px;">Piezas</th>
-                                            <th style="width: 70px;">Guía</th>
+                                            <th style="width: 50px;">Piezas</th>
+                                            <th style="width: 50px;">Guía</th>
                                             <th style="width: 100px;">Condiciones</th>
                                             <th style="width: 100px;">Motivo</th>
-                                            <th style="width: 70px;">Recibo</th>
+                                            <th style="width: 50px;">Recibo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -158,6 +158,7 @@
 </div>
 <input id="selUeNo" name="selUeNo" value="" style="visibility:hidden" />
 <input id="selOrderNo" name="selOrderNo" value="" style="visibility:hidden" />
+<input id="selTrackingType" name="selTrackingType" value="" style="visibility:hidden" />
 
 @section scripts {
     <script>
@@ -201,11 +202,12 @@
                         tr.append("<td>" + json.resp[i].IdTrackingService + "</td>");
                         tr.append("<td>" + json.resp[i].PackageCondition + "</td>");
                         tr.append("<td>" + json.resp[i].MotivoDevol + "</td>");
+                        $('#selTrackingType').val(json.resp[i].TrackingType);
                         if (json.resp[i].ItemReturned == 0) {
-                            tr.append("<td><input class='form-check-input' name='chElegible' type='checkbox'  id=chkSel_" + json.resp[i].BarCode + " /></td>");
+                            tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox'  id=chkSel_" + json.resp[i].BarCode + " /></td>");
                         }
                         else {
-                            tr.append("<td><input class='form-check-input' name='chElegible' type='checkbox' checked='checked' value='' id='chkSel_" + json.resp[i].BarCode + " /></td>");
+                            tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' checked='checked' value='' id='chkSel_" + json.resp[i].BarCode + " /></td>");
                         }
                         //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
                         //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
@@ -229,16 +231,16 @@
     function Confirmar() {
         var _UeNo = $("#selUeNo").val();
         var _OrderNo = $("#selOrderNo").val();
-        var _TrackingType = 'NORMAL';
+        var _TrackingType = $('#selTrackingType').val();
         var CreationId = 't_joserp';
         var i = 0;
         $('input[type=checkbox][id*=chkSel_]').each(function () {
             if ($(this).is(":checked")) {
                 row = $(this).closest("tr");
-                var Barcode = $(row)[0].cells[1].innerText; 
-                var ProductId = $(row)[0].cells[2].innerText; 
+                var Barcode = $(row)[0].cells[1].innerText;
+                var ProductId = $(row)[0].cells[2].innerText;
                 var ProductName = $(row)[0].cells[3].innerText;
-                var _IdTrackingService = $(row)[0].cells[5].innerText;;
+                var _IdTrackingService = $(row)[0].cells[5].innerText;
                 $.ajax({
                     async: false,
                     type: "GET",
@@ -246,7 +248,7 @@
                     data: {
                         UeNo: _UeNo,
                         OrderNo: _OrderNo,
-                        IdTracking: _IdTrackingService,
+                        IdTrackingService: _IdTrackingService,
                         TrackingType: _TrackingType,
                         ProductId: ProductId,
                         Barcode: Barcode,

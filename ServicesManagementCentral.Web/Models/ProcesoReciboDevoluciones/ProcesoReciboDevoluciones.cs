@@ -20,6 +20,7 @@ namespace ServicesManagement.Web.Models.ProcesoReciboDevoluciones
         public string IdTrackingService { get; set; }
         public string PackageCondition { get; set; }
         public string MotivoDevol { get; set; }
+        public string TrackingType { get; set; }
         public int ItemReturned { get; set; }
     }
 }
