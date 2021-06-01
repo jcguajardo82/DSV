@@ -20,15 +20,29 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult ProcesoSurtido()
         {
 
-            int OrderNo = 101180999;
-            string UeNo = "101180999-3";
-            var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcess(UeNo, OrderNo);
+            int OrderNo = 0;
+            string UeNo = string.Empty;
+
 
             //ViewBag.OrderNo = OrderNo; 
             //ViewBag.UeNo = UeNo; 
-            TempData["OrderNo"] = OrderNo;
-            TempData["UeNo"] = UeNo;
 
+            if (Request.QueryString["OrderNo"] != null && Request.QueryString["UeNo"] != null)
+            {
+                OrderNo = int.Parse(Request.QueryString["OrderNo"].ToString());
+                UeNo = Request.QueryString["UeNo"].ToString();
+            }
+            else
+            {
+                var msj = new msj();
+                msj.mensaje = "No existe la consignacion.";
+
+                ViewBag.Mensaje = msj;
+
+                return View();
+            }
+
+            var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcess(UeNo, OrderNo);
             ViewBag.OrderNo = OrderNo;
             ViewBag.UeNo = UeNo;
 
@@ -42,7 +56,7 @@ namespace ServicesManagement.Web.Controllers
             }
             else
             {
-                var list= DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[0]);
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[0]);
 
                 var totSup = list.Where(x => x.Suplido == true).ToList();
 
@@ -167,7 +181,7 @@ namespace ServicesManagement.Web.Controllers
 
                 var prodcuts = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcess(UeNo, int.Parse(OrderNo)).Tables[0]);
 
-         
+
 
                 foreach (var item in items)
                 {
