@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "Canal de Pago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Canal de Pago</h2>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                       <th>Orden ID</th>
+                       <th>Carrito</th>
+                       <th>ID Transacción</th>
+                       <th>Fecha Creacion</th>
+                       <th>Forma Pago</th>
+                       <th>Monto Total Orden</th>
+                       <th>SKU Catálogo</th>
+                       <th>Nombre Articulo</th>
+                       <th>Canal Compra</th>
+                       <th>3D/Safe Key</th>
+                       <th>Estatus de Pago</th>
+                       <th>Tipo ALmacen</th>
+                       <th>Consignación ID</th>
+                       <th>No. Pzas Consignación</th>
+                       <th>Monto Consignación</th>
+                       <th>Costo Envio</th>
+                       <th>Banco</th>
+                       <th>Bin</th>
+                       <th>Sufijo</th>
+                       <th>Tipo Tarjeta</th>
+                       <th>Marca</th>
+                       <th>No. Autorización</th>
+                       <th>Nombre Persona Registrada</th>
+                       <th>Apellido P</th>
+                       <th>Apellido M</th>
+                       <th>No Tarjeta Lealtad</th>
+                       <th>Métdo de Envio</th>
+                       <th>Correo</th>
+                       <th>Nombre de Persona a Recibir</th>
+                       <th>Apellido P</th>
+                       <th>Apellido M</th>
+                       <th>Teléfono</th>
+                       <th>Calle</th>
+                       <th>Colonia</th>
+                       <th>Ciudad</th>
+                       <th>Número</th>
+                       <th>Interioe</th>
+                       <th>CP</th>
+                       <th>Estatus Orden</th>
+                       <th>Estatus ENvio</th>
+                       <th>Estatus Logistica Inversa</th>
+                       <th>No. RMA</th>
+                       <th>Nombre de quien Cancela</th>
+                       <th>Motivo Cancelacion</th>
+                       <th>Fecha Cancelación</th>
+                       <th>Hora Cancelación</th>
+                       <th>Monto Cancelación</th>
+                       <th>Consignacion ID Cancelada</th>
+                       <th>Monto Consignacion ID Cancelada</th>
+                       <th>No Piezas Consignación</th>
+                       <th>Fecha INgreso RMA</th>
+                       <th>Consignación ID Devolución</th>
+                       <th>Detalle de la Consignación Ingresada (SKU)</th>
+                       <th>No Pzas Consignación</th>
+                       <th>Fecha Devolución</th>
+                       <th>Hora Decolución</th>
+                       <th>Monto Devolución Consignación</th>
+                       <th>Fecha Reembolso</th>
+                       <th>Hora Reembolso</th>
+                       <th>Forma de Pago donde se aplico Rembolso</th>
+                       <th>BIN Tarjeta</th>
+                       <th>Sufijo Tarjeta</th>
+                       <th>Reembolso Manual</th>
+                       <th>Reembolso Automatico</th>
+                       <th>ID Transacción Reembolso</th>
+                       <th>No Tarjeta Lealtad</th>
+                       <th>Puntos</th>
+                       <th>Tipo de Reembolso Programa Lealtad</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts {
+
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+        });
+    </script>
+}
+
