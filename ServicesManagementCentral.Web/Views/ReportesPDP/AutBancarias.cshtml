@@ -1,6 +1,5 @@
-﻿
-@{
-    ViewBag.Title = "Forma de Pago";
+﻿@{
+    ViewBag.Title = "AutBancarias";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>FormaPago</h2>
@@ -13,15 +12,28 @@
                         <th>Orden ID</th>
                         <th>Carrito</th>
                         <th>ID Transacción</th>
+                        <th>Mes Creación</th>
                         <th>Fecha Creación</th>
-                        <th>Forma de Pago</th>
-                        <th>Monto total de la orden</th>
+                        <th>Hora Creacón</th>
+                        <th>No. Afiliación</th>
+                        <th>Adquiriente</th>
+                        <th>Monto de Orden</th>
+                        <th>Decison emisor</th>
+                        <th>Codigo rechazo</th>
+                        <th>Descripcion rechazo</th>
+                        <th>Catálogo</th>
+                        <th>Tipo Entrega</th>
+                        <th>Tipo de Transporte</th>
+                        <th>Tipo almacen</th>
                         <th>SKU Cátalogo</th>
                         <th>Nombre del Articulo</th>
-                        <th>Canal de compra </th>
+                        <th>Canal de Compra</th>
+                        <th>Forma de Pago</th>
                         <th>3D/safe key</th>
+                        <th>3D/safe key</th>
+                        <th>Codigos</th>
+                        <th>SIGNIFICADO DE CODIGO</th>
                         <th>Estatus de Pago</th>
-                        <th>Tipo almacen </th>
                         <th>Consignación ID</th>
                         <th>No.Pzas Consignación</th>
                         <th>Monto Consignación</th>
@@ -34,7 +46,7 @@
                         <th>Marca</th>
                         <th>No. Autorizacion</th>
                         <th>Msi</th>
-                        <th>Nombre Persona Registrada</th>
+                        <th>Nombre de persona registrada</th>
                         <th>Apellido P</th>
                         <th>Apellido M</th>
                         <th>No Tarjeta Lealtad</th>
@@ -51,36 +63,13 @@
                         <th>Interior</th>
                         <th>CP</th>
                         <th>Estatus Orden</th>
-                        <th>Estatus Envio</th>
-                        <th>EStatus logistica Inversa</th>
-                        <th>No. RMA</th>
-                        <th>Nombre Quien Cancela</th>
-                        <th>Motivo Cancelación</th>
-                        <th>Fecha de cancelacion</th>
-                        <td>hora de cancelacion </td>
-                        <th>Monto de Cancelación</th>
-                        <th>Consignación ID Cancelada</th>
-                        <th>Monto Consignación Cancelada</th>
-                        <th>No. Pzas Consignación</th>
-                        <th>Fecha Ingreso RMA</th>
-                        <th>Consignación ID Devolución</th>
-                        <th>Detalle de la Consignación ingresada</th>
-                        <th>No. Piezas de la Consignación</th>
-                        <th>Fecha Decolución</th>
-                        <th>Hora Devolución</th>
-                        <th>Monto Devolución Consignación</th>
-                        <th>Fecha Reembolso</th>
-                        <th>Hora Reembolso</th>
-                        <th>Monto Reembolso</th>
-                        <th>Forma de pago donde se aplico reembolso</th>
-                        <th>BIN Tarjeta</th>
-                        <th>Sufijo Tarjeta</th>
-                        <th>Reembolso Manual</th>
-                        <th>Reembolso automatico</th>
-                        <th>ID transaccion Reembolso</th>
-                        <th>No Tarjeta Lealtad</th>
-                        <th>Puntos </th>
-                        <th>Tipo de Reembolso Programa de Lealtad </th>
+
+
+
+
+
+
+
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -89,8 +78,7 @@
     </div>
 </div>
 @section scripts {
-    <script>
-        $(document).ready(function () {
+<script>$(document).ready(function () {
             //GetReporte();
         });
 
@@ -146,12 +134,9 @@
 
             });
 
-        }
-
-    </script>
+        }</script>
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
-    <script>
-        $(document).ready(function () {
+<script>$(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(1) th').each(function (i) {
                 if ($(this).attr('name') != "accion") {
@@ -206,8 +191,7 @@
                     "scrollX": true
 
                 }
-            );            
-        });
-    </script>
+            );
+        });</script>
 }
 
