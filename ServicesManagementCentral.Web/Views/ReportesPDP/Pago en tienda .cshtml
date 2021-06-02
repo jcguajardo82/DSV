@@ -1,0 +1,231 @@
+﻿
+@{
+    ViewBag.Title = "Forma de Pago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>FormaPago</h2>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th>Orden ID</th>
+                        <th>Carrito</th>
+                        <th>ID Transacción</th>
+                        <th>Relate Consigment</th>
+                        <th>Canal de Compra</th>
+                        <th>Mes Creacón</th>
+                        <th>Fecha Creación</th>
+                        <th>Hora Creacón</th>
+                        <th>No. Afiliación</th>
+                        <th>Adquiriente</th>
+                        <th>Catálogo</th>
+                        <th>Tipo Entrega</th>
+                        <th>Tipo de Transporte</th>
+                        <th>Forma de Pago</th>
+                        <th>3D/safe key</th>
+                        <th>Estatus de Pago</th>
+                        <th>No. Afiliación</th>
+                        <th>Adquiriente</th>
+                        <th>Monto Orden</th>
+                        <th>Código Rechazo</th>
+                        <th>Descripción Rechazo</th>
+                        <th>SKU Cátalogo</th>
+                        <th>Nombre del Articulo</th>
+                        <th>Consignación ID</th>
+                        <th>No.Pzas Consignación</th>
+                        <th>Monto Consignación</th>
+                        <th>Costo Envio</th>
+                        <th>Monto Total Orden</th>
+                        <th>Banco</th>
+                        <th>Bin</th>
+                        <th>Sufijo</th>
+                        <th>Tipo Tarjeta</th>
+                        <th>Marca</th>
+                        <th>No. Autorizacion</th>
+                        <th>Msi</th>
+                        <th>Puntos Aplicados</th>
+                        <th>Promociones Aplicadas</th>
+                        <th>Apellido P</th>
+                        <th>Apellido M</th>
+                        <th>No Tarjeta Lealtad</th>
+                        <th>Método Envio</th>
+                        <th>Correo</th>
+                        <th>Nombre Persona a Recibir</th>
+                        <th>Apellido P</th>
+                        <th>Apellido M</th>
+                        <th>Teléfono</th>
+                        <th>Calle</th>
+                        <th>Colonia</th>
+                        <th>Ciudad</th>
+                        <th>Número</th>
+                        <th>Interior</th>
+                        <th>CP</th>
+                        <th>Estatus Orden</th>
+                        <th>Tipo Almacen</th>
+                        <th>Estatus Envio</th>
+                        <th>EStatus logistica Inversa</th>
+                        <th>No. RMA</th>
+                        <th>Nombre Quien Cancela</th>
+                        <th>Motivo Cancelación</th>
+                        <th>Monto de Cancelación</th>
+                        <th>Consignación ID Cancelada</th>
+                        <th>Monto Consignación Cancelada</th>
+                        <th>No. Pzas Consignación</th>
+                        <th>Fecha Liberación Saldo</th>
+                        <th>Hora Liberacion Saldo</th>
+                        <th>Monto de Saldo Liberado</th>
+                        <th>Fecha Ingreso RMA</th>
+                        <th>Consignación ID Devolución</th>
+                        <th>Detalle de la Consignación ingresada</th>
+                        <th>No. Piezas de la Consignación</th>
+                        <th>Fecha Decolución</th>
+                        <th>Hora Devolución</th>
+                        <th>Monto Devolución Consignación</th>
+                        <th>Consignación ID Reenviado</th>
+                        <th>No PIezas Consignación ID Reenviado</th>
+                        <th>Fecha Reembolso</th>
+                        <th>Hora Reembolso</th>
+                        <th>Monto Reembolso</th>
+                        <th>Forma de pago donde se aplico reembolso</th>
+                        <th>BIN Tarjeta</th>
+                        <th>Sufijo Tarjeta</th>
+                        <th>Consignación ID Reenviado</th>
+                        <th>No. de Piezas Consignación Reenviado</th>
+                        <th>Fecha Consignación</th>
+                        <th>Fecha Reembolso</th>
+                        <th>Hora Reembolso</th>
+                        <th>Forma de Pago donde se aplico el Reembolso</th>
+                        <th>BIN tarjeta</th>
+                        <th>Sufijo Tarjeta</th>           
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            //GetReporte();
+        });
+
+        function GetReporte() {
+
+            //var _Id_Num_UN = $("#hddTda").val();
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetFormaPago", "ReportesPDP")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        $('#tblConsulta tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+
+
+                            tr.append("<td>" + json.resp[i].NoOrden + "</td>");
+                            tr.append("<td>" + json.resp[i].Fecha + "</td>");
+                            tr.append("<td>" + json.resp[i].NoConsignacion + "</td>");
+                            tr.append("<td>" + json.resp[i].Monto + "</td>");
+                            tr.append("<td>" + json.resp[i].TipoPAgo + "</td>");
+                            tr.append("<td>" + json.resp[i].Origen + "</td>");
+                            tr.append("<td>" + json.resp[i].FecEntrega + "</td>");
+
+
+                            $('#tblConsulta').append(tr);
+                        }
+
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
+        }
+
+    </script>
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );            
+        });
+    </script>
+}
+
