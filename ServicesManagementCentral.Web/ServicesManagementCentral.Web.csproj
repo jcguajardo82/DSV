@@ -3725,7 +3725,6 @@
     <Content Include="Views\OrdenesDST\Embarque.cshtml" />
     <Content Include="Views\ReportesPDP\Creditos.cshtml" />
     <Content Include="Views\ReportesPDP\Liquidaciones.cshtml" />
-    <Content Include="Views\ReportesPDP\Creditos - Copy %285%29.cshtml" />
     <Content Include="Views\ReportesPDP\PagoTienda.cshtml" />
     <Content Include="Views\ReportesPDP\Mensajerias.cshtml" />
     <Content Include="Views\ReportesPDP\ContraCargos.cshtml" />
@@ -3736,16 +3735,16 @@
     <Content Include="Views\ReportesPDP\Reintento.cshtml" />
     <Content Include="Views\ReportesPDP\Reversiones de saldo.cshtml" />
     <Content Include="Views\ReportesPDP\Pago en tienda .cshtml" />
-    <Content Include="Views\ReportesPDP\CREDITOSV02.cshtml" />
     <Content Include="Views\ReportesPDP\Canaldecompra.cshtml" />
-    <Content Include="Views\ReportesPDP\AutorizacionesDMYRM.cshtml" />
     <Content Include="Views\ReportesPDP\BorradoTokens.cshtml" />
     <Content Include="Views\ReportesPDP\CreacionTokens.cshtml" />
     <Content Include="Views\ReportesPDP\Detenciones.cshtml" />
     <Content Include="Views\ReportesPDP\TotalTokens.cshtml" />
     <Content Include="Views\ReportesPDP\Validaciones.cshtml" />
     <Content Include="Views\ReportesPDP\Reintentos.cshtml" />
-    <Content Include="Views\ReportesPDP\Autorizaciones bancarias.cshtml" />
+    <Content Include="Views\ReportesPDP\AutBancarias.cshtml" />
+    <Content Include="Views\ReportesPDP\AutDM.cshtml" />
+    <Content Include="Views\ReportesPDP\AutRM.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

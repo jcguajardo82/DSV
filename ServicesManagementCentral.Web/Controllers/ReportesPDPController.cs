@@ -44,6 +44,16 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
+        public ActionResult Canaldecompra()
+        {
+            var list = new List<ReportesPDP>();
+
+            ViewBag.Reporte = list;
+
+
+            return View();
+        }
+
         public ActionResult CanalGenerarOrden()
         {
             var list = new List<ReportesPDP>();
