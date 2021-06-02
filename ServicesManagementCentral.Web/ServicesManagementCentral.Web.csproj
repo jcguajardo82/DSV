@@ -220,6 +220,7 @@
     <Compile Include="Controllers\TotalOrdenesController.cs" />
     <Compile Include="Controllers\SolicitudGuiasReenvioController.cs" />
     <Compile Include="DALConfig.cs" />
+    <Compile Include="DAL\ActualizacionesInventario\DALActualizacionesInventario.cs" />
     <Compile Include="DAL\Actualizaciones\DALActualizaciones.cs" />
     <Compile Include="DAL\Almacenes\DALAlmacenes.cs" />
     <Compile Include="DAL\Almacenes\DALAltaProveedor.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="DAL\ReenvioMcia\DALReenvioMciaProveedores.cs" />
     <Compile Include="DAL\TotalOrdenes\DALTotalOrdenes.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
+    <Compile Include="Models\ActualizacionesInventario.cs" />
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHForAproval.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHOperations.cs" />

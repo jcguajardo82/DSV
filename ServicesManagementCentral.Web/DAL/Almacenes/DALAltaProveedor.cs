@@ -47,6 +47,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
                 parametros.Add("@operInfoEmail", operInfoEmail);
                 parametros.Add("@commInfoPhone", commInfoPhone);
                 parametros.Add("@commInfoEmail", commInfoEmail);
+                parametros.Add("@creationId", creationId);
                 parametros.Add("@idOperType", idOperType);
                 parametros.Add("@idShipType", idShipType);
                 parametros.Add("@bitVehicles", bitVehicles);
