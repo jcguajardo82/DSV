@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "Canal de Pago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Canal de Pago</h2>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th>Orden ID</th>
+                        <th>Carrito</th>
+                        <th>ID transaccion</th>
+                        <th>Fecha de creación</th>
+                        <th>Hora de creación</th>
+                        <th>No. Afiliacion</th>
+                        <th>Adquirente</th>
+                        <th>Catálogo</th>
+                        <th>Tipo entrega</th>
+                        <th>Tipo de transporte</th>
+                        <th>Sku cátalogo</th>
+                        <th>Nombre del artículo </th>
+                        <th>Canal de compra</th>
+                        <th>Forma de pago </th>
+                        <th>3D/safe key</th>
+                        <th>Códigos</th>
+                        <th> SIGINIFICADO DE CÓDIGO</th>
+                        <th>Merchant Id</th>
+                        <th>Riquest ID</th>
+                        <th>Reply Flay</th>
+                        <th>Reply Mensage</th>
+                        <th>Credit link 1</th>
+                        <th>Estatus de pago </th>
+                        <th>Consignación ID</th>
+                        <th>No de piezas de la consignación</th>
+                        <th>Monto Consignación</th>
+                        <th>Costo de envío</th>
+                        <th>Monto total de la orden</th>
+                        <th>Banco</th>
+                        <th>Bin</th>
+                        <th>Sufijo</th>
+                        <th>Tipo de tarjeta</th>
+                        <th>Marca</th>
+                        <th>No. Autorizacion </th>
+                        <th>MSI</th>
+                        <th>Puntos Aplicados</th>
+                        <th>Promociones aplicadas</th>
+                        <th>Nombre persona registrada </th>
+                        <th>Apellido_P</th>
+                        <th>Apellido_M</th>
+                        <th>No tarjeta de lealtad</th>
+                        <th>Método de Envío</th>
+                        <th>Correo</th>
+                        <th>Nombre de persona a recibir</th>
+                        <th>Apellido_P</th>
+                        <th>Apellido_M</th>
+                       <thTeléfono></thTeléfono>
+                       <th>Calle</th>
+                       <th>Colonia</th>
+                       <th>Ciudad</th>
+                       <th>Número</th>
+                       <th>Interior</th>
+                       <th>CP</th>
+                       <th>Estatus de la orden </th>
+                     
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts {
+
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+        });
+    </script>
+}
+
