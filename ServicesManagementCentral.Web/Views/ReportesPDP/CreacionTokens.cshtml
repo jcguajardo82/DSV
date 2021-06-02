@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewBag.Title = "Canal de Pago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Canal de Pago</h2>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th>customer_account_id</th>
+                        <th>recurring_payment_event_amount</th>
+                        <th>recurring_payment_amount</th>
+                        <th>subscription_title</th>
+                        <th>subscription_status</th>
+                        <th>subscription_payment_method</th>
+                        <th>recurring_start_date</th>
+                        <th>recurring_number_of_payments</th>
+                        <th>recurring_frequency</th>
+                        <th>recurring_approval_required</th>
+                        <th>recurring_payment_event_approved_by</th>
+                        <th>recurring_payment_event_approved_by</th>
+                        <th>recurring_automatic_renew</th>
+                        <th>setup_fee</th>
+                        <th>setup_fee_currency</th>
+                        <th>subscription_type</th>
+                        <th>last_subscription_status</th>
+                        <th>next_scheduled_date</th>
+                        <th>event_retry_count</th>
+                        <th>payments_success</th>
+                        <th>payment_success_amount</th>
+                        <th>installment_sequence</th>
+                        <th>installment_total_count</th>
+                        <th>payment_request_id</th>
+                        <th>subscription_id</th>
+                        <th>transaction_date</th>
+                        <th>merchant_ref_number</th>
+                        <th>transaction_ref_number</th>
+                        <th>e_commerce_indicator</th>
+                        <th>customer_firstname</th>
+                        <th>customer_lastname</th>
+                        <th>bill_address1</th>
+                        <th>bill_address2</th>
+                        <th>bill_city</th>
+                        <th>bill_state</th>
+                        <th>bill_zip</th>
+                        <th>bill_country</th>
+                        <th>company_name</th>
+                        <th>customer_email</th>
+                        <th>customer_phone</th>
+                        <th>customer_ipaddress</th>
+                        <th>ship_to_firstname</th>
+                        <th>ship_to_lastname</th>
+                        <th>ship_to_address1</th>
+                        <th>ship_to_address2</th>
+                        <th>ship_to_city</th>
+                        <th>ship_to_state</th>
+                        <th>ship_to_zip</th>
+                        <th>ship_to_country</th>
+                        <th>ship_to_company_name</th>
+                        <th>card_type</th>
+                        <th>customer_cc_expmo</th>
+                        <th>customer_cc_expyr</th>
+                        <th>customer_cc_startmo</th>
+                        <th>customer_cc_startyr</th>
+                        <th>customer_cc_issue-number</th>
+                        <th>account_suffix</th>
+                        <th>ecp_account_type</th>
+                        <th>ecp_rdfi</th>
+                        <th>ics_applications</th>
+                        <th>payment_processor</th>
+                        <th>currency_code</th>
+                        <th>reason_code</th>
+                        <th>auth_rcode</th>
+                        <th>auth_code</th>
+                        <th>auth_type</th>
+                        <th>auth_auth_avs</th>
+                        <th>auth_auth_response</th>
+                        <th>auth_cavv_response</th>
+                        <th>ics_rcode</th>
+                        <th>ics_rflag</th>
+                        <th>ics_rmsg</th>
+                        <th>request_token</th>
+                        <th>request_token</th>
+                        <th>merchant_defined_data1</th>
+                        <th>merchant_defined_data2</th>
+                        <th>merchant_defined_data3</th>
+                        <th>merchant_defined_data4</th>
+                        <th>tax_amount</th>
+                        <th>comments</th>
+                        <th>merchant_secure_data1</th>
+                        <th>merchant_secure_data2</th>
+                        <th>merchant_secure_data3</th>
+                        <th>merchant_secure_data4</th>
+                        <th>merchant_id</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts {
+
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+        });
+    </script>
+}
+
