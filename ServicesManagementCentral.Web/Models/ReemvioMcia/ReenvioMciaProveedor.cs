@@ -7,7 +7,6 @@ namespace ServicesManagement.Web.Models.ReemvioMcia
 {
     public class ReenvioMciaProveedor
     {
-
         public string Consignacion { get; set; }
         public string ConsignacionReenvio { get; set; }
         public string TipoAlmacen { get; set; }

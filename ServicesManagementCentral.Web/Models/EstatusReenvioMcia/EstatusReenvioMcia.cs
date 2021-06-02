@@ -7,7 +7,6 @@ namespace ServicesManagement.Web.Models.EstatusReenvioMcia
 {
     public class EstatusReenvioMcia
     {
-
         public string Consignacion { get; set; }
         public string TotalConsignacion { get; set; }
         public string TipoAlmacen { get; set; }

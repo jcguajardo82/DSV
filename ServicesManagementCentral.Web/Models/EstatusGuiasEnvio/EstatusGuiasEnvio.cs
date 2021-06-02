@@ -7,6 +7,7 @@ namespace ServicesManagement.Web.Models.EstatusGuiasEnvio
 {
     public class EstatusGuiasEnvio
     {
+
         public string consignacion { get; set; }
         public string consignacionReenvio { get; set; }
         public string TipoAlmacen { get; set; }

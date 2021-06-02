@@ -11,6 +11,7 @@ namespace ServicesManagement.Web.DAL.EstatusGuiasEnvio
     public class DALEstatusGuiasEnvio
     {
 
+
         public static DataSet upCorpOMS_Cns_UeNoShipmentStatus()
         {
             DataSet ds = new DataSet();

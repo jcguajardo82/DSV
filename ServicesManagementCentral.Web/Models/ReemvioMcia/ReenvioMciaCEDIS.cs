@@ -7,7 +7,6 @@ namespace ServicesManagement.Web.Models.ReemvioMcia
 {
     public class ReenvioMciaCEDIS
     {
-
         public string Consignacion { get; set; }
         public string ConsignacionReenvio { get; set; }
         public string FechaOrden { get; set; }

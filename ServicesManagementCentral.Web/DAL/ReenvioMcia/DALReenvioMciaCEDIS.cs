@@ -11,9 +11,6 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
     public class DALReenvioMciaCEDIS
     {
 
-
-        
-
                public static DataSet upCorpOMS_Cns_UeNoReshipmentCedis()
         {
             DataSet ds = new DataSet();

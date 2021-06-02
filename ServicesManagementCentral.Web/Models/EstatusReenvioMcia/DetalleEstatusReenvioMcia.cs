@@ -7,7 +7,6 @@ namespace ServicesManagement.Web.Models.EstatusReenvioMcia
 {
     public class DetalleEstatusReenvioMcia
     {
-
         public string RMA { get; set; }
         public string MotivoRMA { get; set; }
         public string ID { get; set; }
