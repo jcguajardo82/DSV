@@ -11,6 +11,7 @@ using ServicesManagement.Web.Helpers;
 
 namespace ServicesManagement.Web.Controllers
 {
+    [Authorize]
     public class ProcesoReciboDevolucionesController : Controller
     {
         // GET: ProcesoReciboDevoluciones

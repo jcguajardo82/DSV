@@ -79,7 +79,7 @@ namespace ServicesManagement.Web.Controllers
         public string idex { get; set; }
     }
     #endregion
-
+    [Authorize]
     public class OrdenesController : Controller
     {
         string UrlApi = "";
