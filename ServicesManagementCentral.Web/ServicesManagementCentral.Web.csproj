@@ -3733,8 +3733,6 @@
     <Content Include="Views\ReportesPDP\Bancos.cshtml" />
     <Content Include="Views\ReportesPDP\Bines.cshtml" />
     <Content Include="Views\ReportesPDP\Reintento.cshtml" />
-    <Content Include="Views\ReportesPDP\Reversiones de saldo.cshtml" />
-    <Content Include="Views\ReportesPDP\Pago en tienda .cshtml" />
     <Content Include="Views\ReportesPDP\Canaldecompra.cshtml" />
     <Content Include="Views\ReportesPDP\BorradoTokens.cshtml" />
     <Content Include="Views\ReportesPDP\CreacionTokens.cshtml" />
@@ -3745,6 +3743,7 @@
     <Content Include="Views\ReportesPDP\AutBancarias.cshtml" />
     <Content Include="Views\ReportesPDP\AutDM.cshtml" />
     <Content Include="Views\ReportesPDP\AutRM.cshtml" />
+    <Content Include="Views\ReportesPDP\ReservacionesSaldo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
