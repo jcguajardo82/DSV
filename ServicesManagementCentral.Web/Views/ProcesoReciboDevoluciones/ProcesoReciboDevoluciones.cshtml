@@ -191,7 +191,7 @@
                 var sel = $("#ddlCauses");
                 sel.empty();
 
-                $('#ddlCauses').get(0).options[0] = new Option("--SELECCIONE--", "0");
+               sel.get(0).options[0] = new Option("--SELECCIONE--", "0");
                 for (var i = 0; i < json.resp.length; i++) {
                     sel.append('<option value="' + json.resp[i].IdCause + '">' + json.resp[i].Cause_Desc + '</option>');
                 }
@@ -221,7 +221,7 @@
                 var sel = $("#ddlMotivos");
                 sel.empty();
 
-                $('#ddlMotivos').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                sel.get(0).options[0] = new Option("--SELECCIONE--", "0");
                 for (var i = 0; i < json.resp.length; i++) {
                     sel.append('<option value="' + json.resp[i].IdCause + '">' + json.resp[i].Cause_Desc + '</option>');
                 }
@@ -254,6 +254,16 @@
             success: function (json) {
                 if (json.Success) {
                     $("#tblShowProduct tbody").empty();
+                    //ListDevoluciones();
+                    //ListCondiciones();
+                    var causesSelect = $("<select></select>");
+                    var motivosSelect = $("<select></select>");
+                    $.each(json.lstCond, function (index, causes) {
+                        $("<option>").val(causes.IdCause).text(causes.Cause_Desc).appendTo(causesSelect);
+                    });
+                    $.each(json.lstDev, function (index, motivos) {
+                        $("<option>").val(motivos.IdCause).text(motivos.Cause_Desc).appendTo(motivosSelect);
+                    });
                     //$("#tblShowProduct tbody").remove();
                     //var tr;
                     //Append each row to html table
@@ -267,10 +277,8 @@
                         tr.append("<td>" + json.resp[i].IdTrackingService + "</td>");
                         $('#selTrackingType').val(json.resp[i].TrackingType);
                         if ($('#selRecibido').val() == 0) {
-                            ListDevoluciones(i);
-                            ListCondiciones(i);
-                            tr.append("<td><select class='form-control m-b' id='ddlCauses'></select> </td>");
-                            tr.append("<td><select class='form-control m-b' id='ddlMotivos'></select> </td>");
+                            tr.append("<td>" + causesSelect[0].outerHTML + "</td>");
+                            tr.append("<td>" + motivosSelect[0].outerHTML + "</td>");
                             tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' id=chkSel_" + json.resp[i].BarCode + " /></td>");
                         }
                         else {
