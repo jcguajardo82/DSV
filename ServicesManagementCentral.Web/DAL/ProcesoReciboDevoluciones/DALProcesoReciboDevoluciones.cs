@@ -153,7 +153,8 @@ namespace ServicesManagement.Web.DAL.ProcesoReciboDevoluciones
 
         }
 
-        public static DataSet upCorpOMS_Ins_UeNoDevolProcess(string UeNo, int OrderNo, string IdTrackingService, string TrackingType, decimal Barcode, string CreationId)
+        public static DataSet upCorpOMS_Ins_UeNoDevolProcess(string UeNo, int OrderNo, string IdTrackingService, string TrackingType, decimal Barcode, string CreationId,
+            string PackageCondition, string MotivoDevol)
         {
 
             DataSet ds = new DataSet();
@@ -176,6 +177,8 @@ namespace ServicesManagement.Web.DAL.ProcesoReciboDevoluciones
                 parametros.Add("@TrackingType", TrackingType);
                 parametros.Add("@Barcode", Barcode);
                 parametros.Add("@CreationId", CreationId);
+                parametros.Add("@PackageCondition", PackageCondition);
+                parametros.Add("@MotivoDevol", MotivoDevol);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Ins_UeNoDevolProcess]", false, parametros);
 
