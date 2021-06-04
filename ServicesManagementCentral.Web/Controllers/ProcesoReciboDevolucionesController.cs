@@ -18,11 +18,11 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult ProcesoReciboDevoluciones()
         {
             var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
-            int idOwner = 3;
+            int idOwner = 1;
 
             if (ds.Tables[0].Rows.Count == 0)
             {
-                idOwner = 3;
+                idOwner = 2;
             }
             else
             {
@@ -32,11 +32,85 @@ namespace ServicesManagement.Web.Controllers
                     rol.idRol = item["rol"].ToString();
                     rol.nombreRol = item["nombreRol"].ToString();
                     Session["UserRol"] = rol;
+                    idOwner = 4;
                 }
             }
             
             Session["ListaConsignaciones"] = DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolProcess(idOwner);
             return View();
+        }
+
+        //Combo Condiciones
+        public ActionResult ListCondiciones()
+        {
+            try
+            {
+                var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+                int idOwner = 1;
+
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    idOwner = 2;
+                }
+                else
+                {
+                    foreach (DataRow item in ds.Tables[0].Rows)
+                    {
+                        UserRolModel rol = new UserRolModel();
+                        rol.idRol = item["rol"].ToString();
+                        rol.nombreRol = item["nombreRol"].ToString();
+                        Session["UserRol"] = rol;
+                        idOwner = 3;
+                    }
+                }
+
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_UeCondCauses>(DALProcesoReciboDevoluciones.upCorpOms_Cns_UeCondCauses(idOwner).Tables[0]);
+
+                var result = new { Success = true, resp = list,  };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        //Combo Devoluciones
+        public ActionResult ListDevoluciones()
+        {
+            try
+            {
+                var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+                int idOwner = 1;
+
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    idOwner = 2;
+                }
+                else
+                {
+                    foreach (DataRow item in ds.Tables[0].Rows)
+                    {
+                        UserRolModel rol = new UserRolModel();
+                        rol.idRol = item["rol"].ToString();
+                        rol.nombreRol = item["nombreRol"].ToString();
+                        Session["UserRol"] = rol;
+                        idOwner = 3;
+                    }
+                }
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_UeDevolCauses>(DALProcesoReciboDevoluciones.upCorpOms_Cns_UeDevolCauses(idOwner).Tables[0]);
+
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         //listar productos de  consignación

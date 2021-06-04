@@ -23,4 +23,25 @@ namespace ServicesManagement.Web.Models.ProcesoReciboDevoluciones
         public string TrackingType { get; set; }
         public int ItemReturned { get; set; }
     }
+
+    public class upCorpOms_Cns_UeCondCauses
+    {
+        public int IdCause { get; set; }
+        public string Cause_Desc { get; set; }
+        public int idOwner { get; set; }
+        public int Bit_deleted { get; set; }
+        public string CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+    }
+
+    public class upCorpOms_Cns_UeDevolCauses
+    {
+        public int IdCause { get; set; }
+        public string Cause_Desc { get; set; }
+        public int idOwner { get; set; }
+        public int Bit_deleted { get; set; }
+        public string CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+    }
+
 }
