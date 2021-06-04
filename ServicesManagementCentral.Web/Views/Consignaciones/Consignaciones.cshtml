@@ -21,6 +21,11 @@
                         <th>Estatus de la consignación Home Delivery</th>
                         <th>No. de orden de compra (DSV)</th>
                         <th>Estatus de Orden de Compra (DSV)</th>
+                        <th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>
+                        <th>Guia de devolucion</th>
+                        <th>Estatus de la Guia de Devolucion</th>
+                        <th>Guia de reenvio</th>
+                        <th>Estatus de Guía de Reenvio</th>
                         @*<th class="sorting">Motivo de no recolección</th>*@
                         @*<th name='accion'></th>*@
                     </tr>
@@ -239,6 +244,11 @@
                             tr.append("<td>" + json.resp[i].EstatusConsignacionEntrega + "</td>");
                             tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
                             //tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
                             //tr.append("<td>" + json.resp[i].OrdenCompra + "</td>");
                             

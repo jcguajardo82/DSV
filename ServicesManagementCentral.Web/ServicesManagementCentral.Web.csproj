@@ -3728,6 +3728,8 @@
     <Content Include="Views\ReportesPDP\PagoTienda.cshtml" />
     <Content Include="Views\ReportesPDP\Mensajerias.cshtml" />
     <Content Include="Views\ReportesPDP\ContraCargos.cshtml" />
+    <Content Include="Views\Estatus_guia_envio\EstatusGuiaEnvioCEDIS.cshtml" />
+    <Content Include="Views\Estatus_guia_envio\EstatusGuiaEnvioProveedor.cshtml" />
     <Content Include="Views\ReportesPDP\Validadores3Ds-SafeKey.cshtml" />
     <Content Include="Views\ReportesPDP\MoviemientosLealtad.cshtml" />
     <Content Include="Views\ReportesPDP\Bancos.cshtml" />

@@ -18,6 +18,11 @@
                         <th>Nombre del cliente</th>
                         <th>Estatus de la orden</th>
                         <th>Motivo de no recoliección</th>
+                        <th>Estatus de la Consignacion a reenviar</th>
+                        <th>guia de devolucion</th>
+                        <th>Estatus de la Guia de Devolucion</th>
+                        <th>Guia de reenvio</th>
+                        <th>Estatus de Guía de Reenvio</th>
                         @*<th>Motivo de no recolección</th>*@
                         @*<th name='accion'></th>*@
                     </tr>
@@ -230,6 +235,11 @@
                             tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusConsignacionAlmacen + "</td>");
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
                             //tr.append("<td>" + json.resp[i].EstatusConsignacionEntrega + "</td>");
                             //tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
                             //tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");

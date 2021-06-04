@@ -12,9 +12,9 @@ namespace ServicesManagement.Web.Controllers
     public class Estatus_guia_envioController : Controller
     {
 
-        
 
-        #region RenviodeMercanciaProveedor
+
+        #region EstatusGuiaEnvioAdmin
 
 
         // GET: Estatus_guia_envio
@@ -25,6 +25,62 @@ namespace ServicesManagement.Web.Controllers
 
 
         public ActionResult Getestatusreenvioenviomcia()
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<EstatusGuiasEnvio>(DALEstatusGuiasEnvio.upCorpOMS_Cns_UeNoShipmentStatus().Tables[0]);
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
+
+     
+        #region EstatusGuiaEnvioCEDIS
+
+
+        // GET: Estatus_guia_envio
+        public ActionResult EstatusGuiaEnvioCEDIS()
+        {
+            return View();
+        }
+
+
+        public ActionResult GetestatusreenvioenviomciaCEDIS()
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<EstatusGuiasEnvio>(DALEstatusGuiasEnvio.upCorpOMS_Cns_UeNoShipmentStatus().Tables[0]);
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
+
+
+        #region EstatusGuiaEnvioProveedor
+
+
+        // GET: Estatus_guia_envio
+        public ActionResult EstatusGuiaEnvioProveedor()
+        {
+            return View();
+        }
+
+
+        public ActionResult GetestatusreenvioenviomciaProveedor()
         {
             try
             {

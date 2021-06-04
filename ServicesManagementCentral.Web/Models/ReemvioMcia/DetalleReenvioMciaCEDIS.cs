@@ -7,7 +7,6 @@ namespace ServicesManagement.Web.Models.ReemvioMcia
 {
     public class DetalleReenvioMciaCEDIS
     {
-
         public string RMA { get; set; }
         public string MotivoRMA { get; set; }
         public string ID { get; set; }
