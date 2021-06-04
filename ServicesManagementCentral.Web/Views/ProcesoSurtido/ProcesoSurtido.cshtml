@@ -35,7 +35,8 @@
                             <ul class="nav nav-tabs" role="tablist">
                                 <li><a class="nav-link active" data-toggle="tab" href="#tab-1">Aceptar Consignación</a></li>
                                 <li><a class="nav-link" data-toggle="tab" href="#tab-2">Solicitud de Guía</a></li>
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>
+                                <!-- se comenta pues esta por hacerse -->
+                                @*<li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>*@
                             </ul>
                             <div class="tab-content">
                                 <div role="tabpanel" id="tab-1" class="tab-pane active">
@@ -239,7 +240,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div role="tabpanel" id="tab-3" class="tab-pane">
+                                @*<div role="tabpanel" id="tab-3" class="tab-pane">
                                     <div class="panel-body">
                                         <div class="tableFixHead table-responsive m-t">
                                             <table id="tblDescargaGuia" class="table invoice-table">
@@ -326,7 +327,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     }
@@ -426,6 +427,19 @@
 
         $(document).ready(function () {
             //GetSolicitarGuia();
+            $("input[name=optionsRadios]").change(function () {
+                var sobreType = $('.js-rate-type')[0];
+                var paqueteType = $("input[name=optionsRadios]")[1].checked;
+                $(".form-control input-sm").toggle(sobreType.checked);
+                $(".form-control input-s-lg").toggle(paqueteType.checked);
+                if (sobreType.checked) {
+                    $('#txtAltura').hide();
+                }
+                else {
+                    $('#txtAltura').show();
+                }
+            }).change()
+
         });
 
             function popUpLstProds(idTracking) {

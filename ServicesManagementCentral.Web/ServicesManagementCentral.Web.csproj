@@ -307,6 +307,7 @@
     <Compile Include="Models\PasilloUnRepPasillo.cs" />
     <Compile Include="Models\PassCancelModel.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcess.cs" />
+    <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcessSel.cs" />
     <Compile Include="Models\ReemvioMcia\DetalleReenvioMciaCEDIS.cs" />
     <Compile Include="Models\ReemvioMcia\ReenvioMciaCEDIS.cs" />
     <Compile Include="Models\ReemvioMcia\ReenvioMciaProveedor.cs" />
