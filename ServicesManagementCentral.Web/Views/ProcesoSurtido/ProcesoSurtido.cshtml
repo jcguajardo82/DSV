@@ -53,10 +53,6 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @*<div class="seleccionartodo">
-                                                                <a href="javascript:seleccionar_todo()">Marcar todos</a>
-                                                                <input type="checkbox" class="cbx" id="flexCheckDefault">
-                                                            </div>*@
                                                         @{
 
                                                             IEnumerable<upCorpOms_Cns_UeNoSupplyProcess> list = ViewBag.UeNoSupplyProcess as IEnumerable<upCorpOms_Cns_UeNoSupplyProcess>;
@@ -147,9 +143,9 @@
                                 <div role="tabpanel" id="tab-2" class="tab-pane">
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                                <table id="tblSolicitutGuia" style="width:100%" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
-                                                    <thead class="bg-danger-sor" style="width:100%">
+                                            <div class="col-sm-10 col-md-10 col-lg-10">
+                                                <table id="tblSolicitutGuia" class="table table-stripedtblSolicitutGuia table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                                                    <thead class="bg-danger-sor">
                                                         <tr>
                                                             <th style="text-align:center;">EAN</th>
                                                             <th style="text-align:center;">Descripción</th>
@@ -157,43 +153,88 @@
                                                             <th style="text-align:center;">Artículo en guía</th>
                                                         </tr>
                                                     </thead>
+                                                    <tbody>
+                                                        @{
 
+                                                            IEnumerable<upCorpOms_Cns_UeNoSupplyProcessSel> listP = ViewBag.PorProcesar as IEnumerable<upCorpOms_Cns_UeNoSupplyProcessSel>;
+
+                                                        }
+
+                                                        @if (listP.Count() == 0)
+                                                        {
+                                                            <tr>
+                                                                <td colspan="4">No Existen Artículos disponibles</td>
+                                                            </tr>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (upCorpOms_Cns_UeNoSupplyProcessSel item in listP)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.EAN</td>
+                                                                    <td style="text-align:left;">@item.Descripcion</td>
+                                                                    <td style="text-align:right;">@item.Piezas</td>
+
+                                                                    @if (item.ConGuia == 1)
+                                                                    {
+                                                                        <td style="text-align:center;">x</td>
+                                                                        @*<td style="text-align:center;"><input type="checkbox" name="chbConsig" value="@item.EAN" class="checkbox" id="flexCheckDefault" checked disabled="disabled"></td>*@
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td style="text-align:center;"><input type="checkbox" value="@item.SKU" class="checkbox" id="chkSel_@item.EAN.ToString()"></td>
+                                                                    }
+                                                                </tr>
+
+
+
+                                                            }
+                                                        }
+
+                                                    </tbody>
                                                 </table>
-                                                <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
-                                                    Solicitar Guía
+                                            </div>
+                                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                                <button type="button" class="btn btn-primary block full-width m-b" onclick="popEmbalaje()">
+                                                    Agregar Paquete
                                                 </button>
                                             </div>
+
                                         </div>
                                         <div class="row">
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th style="text-align:center;">No. de Guía</th>
-                                                        <th style="text-align:center;">Alto (mts)</th>
-                                                        <th style="text-align:center;">Largo (mts)</th>
-                                                        <th style="text-align:center;">Ancho (mts)</th>
-                                                        <th style="text-align:center;">Peso (kg)</th>
-                                                        <th style="text-align:center;">Peso REAL</th>
-                                                        <th style="text-align:center;">Tipo Envío</th>
-                                                        <th style="text-align:center;">Total de artículos en guía</th>
-                                                        <th>    </th>
+                                            <table id="tblEmbalaje" class="table table-stripedtblSolicitutGuia table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                                                <thead class="bg-danger-sor">
+                                                    <tr role="row">
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TIPO PAQUETE</b><br /></th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO X PAQUETE</b><br />Peso max. 1000kg</th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>DIMENSIONES X PAQUETE</b><br />L X AN X AL (cm)</th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>GUIA DE EMBARQUE</b><br /></th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>ACCIÓN</b><br /></th>
                                                     </tr>
                                                 </thead>
-                                                <tr>
-                                                    <td>Guía 2</td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>71 (en automático)</td>
-                                                    <td>Paquetería (en automático)</td>
-                                                    <td>ES LA SUMA EN AUTOMÁTICO DE LOS ARTÍCULOS SELECCIONADOS EN EL DETALLE</td>
-                                                    <td>
-                                                        <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
-                                                            Confirmar solicitud de guía
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                <tbody>
+                                                    @if (Session["OrderPackages"] != null)
+                                                    {
+                                                        System.Data.DataSet dsOP = (System.Data.DataSet)Session["OrderPackages"];
+                                                        if (dsOP.Tables[0].Rows[0][0].ToString() != "no hay datos de esa Consignacion")
+                                                        {
+                                                            var dtOP = dsOP.Tables[0];
+                                                            foreach (System.Data.DataRow op in dtOP.Rows)
+                                                            {
+                                                                <tr>
+                                                                    <td>@op["PackageType"]</td>
+                                                                    <td>@op["PackageWeight"]</td>
+                                                                    <td>@op["PackageLength"] x @op["PackageWidth"] x @op["PackageHeight"]</td>
+                                                                    <td style="text-align:center;">
+                                                                        <a onclick="popUpLstProds(@op["IdTracking"])"
+                                                                           title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
+                                                                    </td>
+                                                                    <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op["IdTracking"]")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    }
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -307,13 +348,134 @@
         </div>
     </div>
 </div>
+<div class="modal inmodal fade" id="dlgAddProdcut" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Embalaje</p>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <table class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Tipo</th>
+                                <th colspan="1" id="colPeso">Peso KG</th>
+                                <th colspan="6" style="text-align:center;">Dimensiones (cm)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="radio" checked="" value="Sobre" class="js-rate-type" id="optionsRadios1" name="optionsRadios"> Sobre</td>
+                                <td><input type="radio" value="Paquete" id="optionsRadios2" name="optionsRadios"> Paquete</td>
 
+                                <td><input type="text" class="form-control input-sm" placeholder="KG" id="txtKG" /></td>
+
+                                <td><input type="text" class="form-control input-sm" placeholder="Largo" id="txtLg" /></td>
+
+                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" id="txtAn" /></td>
+
+                                @*<td><input type="text" class="form-control input-sm" placeholder="Largo" style="display:none" id="txtLargo" /></td>
+
+                                    <td><input type="text" class="form-control input-sm" placeholder="Ancho" style="display:none" id="txtAncho" /></td>*@
+
+                                <td><input type="text" class="form-control input-sm" placeholder="Alto" style="display:none" id="txtAltura" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id=" btnActualizaMp" onclick="AddEmbalaje()">Asignar Guía</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgShowProdcut" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Lista de Productos</p>
+            </div>
+            <div class="modal-body">
+                <form id="frmShowServicios">
+                    <table id="tblShowProduct" class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Código </th>
+                                <th>Producto</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts {
     <script>
 
         $(document).ready(function () {
-            GetSolicitarGuia();
+            //GetSolicitarGuia();
         });
+
+            function popUpLstProds(idTracking) {
+
+        //var TrackingType = "Normal";
+                var _UeNo = $("#hddUeNo").val();
+                var _OrderNo = $("#hddOrderNo").val();
+        var idTracking = idTracking;
+
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("LstProdPaquete", "Ordenes")',
+            data: {
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                IdTracking: idTracking,
+                //TrackingType: TrackingType
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    $("#tblShowProduct tbody").empty();
+                    //$("#tblShowProduct tbody").remove();
+                    //var tr;
+                    debugger;
+                    //Append each row to html table
+                    for (var i = 0; i < json.resp.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + json.resp[i].Barcode + "</td>");
+                        tr.append("<td>" + json.resp[i].ProductId + "</td>");
+                        tr.append("<td>" + json.resp[i].ProductName + "</td>");
+                        //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                        //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                        $('#tblShowProduct').append(tr);
+
+                    }
+                    $('#dlgShowProdcut').modal('show');
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+    }
 
         function GetSolicitarGuia() {
 
@@ -374,6 +536,174 @@
 
             });
 
+        }
+
+          function AddEmbalaje() {
+
+        debugger;
+        var selProd = 0;
+        $('input[type=checkbox][id*=chkSel_]').each(function () {
+            if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                selProd ++
+            }
+        });
+        if (selProd == 0) {
+            alert("No ha seleccionado productos");
+            return;
+        }
+        var _txtKG = $("#txtKG").val();
+        if (_txtKG.length == 0) {
+            alert("Campo Peso kg vacío!");
+            $("#txtKG").focus();
+            return;
+        }
+        var _txtLg = $("#txtLg").val();
+        if (_txtLg.length == 0) {
+            alert("Campo Largo vacío!");
+            $("#txtLg").focus();
+            return;
+        }
+        var _txtAn = $("#txtAn").val();
+        if (_txtAn.length == 0) {
+            alert("Campo Ancho vacío!");
+            $("#txtAn").focus();
+            return;
+        }
+        var _txtAl = $("#txtAltura").val();
+        var PackageType = "Sobre";
+        var paqueteType = $("input[name=optionsRadios]")[1].checked;
+        if (paqueteType) {
+            PackageType = "Paquete";
+            if ($("#txtAltura").length == 0) {
+                alert("Campo Altura vacío!");
+                $("#txtAltura").focus();
+                return;
+            }
+        }
+        else {
+            var _txtAl = "0";
+            $("#txtAltura").val("0");
+        }
+
+        var IdTracking = "";
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("SigFolioDisp", "Ordenes")',
+            data: {
+
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    IdTracking = json.resp;
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+
+        var TrackingType = "Normal";
+        var _UeNo = $("#hddUeNo").val();
+        var _OrderNo = $("#hddOrderNo").val();
+              var CreationId = 't_joserp';
+              debugger;
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("CreacionCabeceraGuia", "Ordenes")',
+            data: {
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                IdTracking: IdTracking,
+                TrackingType: TrackingType,
+                PackageType: PackageType,
+                PackageLength: _txtLg,
+                PackageWidth: _txtAn,
+                PackageHeight: _txtAl,
+                PackageWeight: _txtKG,
+                CreationId: CreationId
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    //alert("success");
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+
+        var i = 0;
+        $('input[type=checkbox][id*=chkSel_]').each(function () {
+            if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                row = $(this).closest("tr");
+                var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
+                var Barcode = arrBarProd[0];
+                var ProductId = $(this).val();  //arrBarProd[1];
+                var ProductName = $(row)[0].cells[1].innerText;
+                debugger;
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("DetalleProdaProd", "Ordenes")',
+                    data: {
+                        UeNo: _UeNo,
+                        OrderNo: _OrderNo,
+                        IdTracking: IdTracking,
+                        TrackingType: TrackingType,
+                        ProductId: ProductId,
+                        Barcode: Barcode,
+                        ProductName: ProductName,
+                        CreationId: CreationId
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            //alert(json.resp);
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            }
+            i++;
+        });
+
+        //$('#tblEmbalaje').append('<tr><td>' + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLg").val() + ' x ' + $("#txtAn").val() + ' x ' + $("#txtAltura").val() + ' </td><td>' + IdTracking + '</td></tr>');
+        $('input[type=checkbox][id*=chkSel_]').each(function () {
+            if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                this.checked = false;
+            }
+        });
+
+        location.reload();
+    }
+
+        function popEmbalaje() {
+            $('#txtKG').val("");
+            $('#txtLg').val("");
+            $('#txtAn').val("");
+            $('#txtAltura').val("");
+            $('#dlgAddProdcut').modal('show');
         }
 
         $("#ddlMotCan")
@@ -472,6 +802,39 @@
 
             }
         }
+
+           function DeletePaquete(idTracking) {
+        var TrackingType = "Normal";
+        var _UeNo = $("#hddUeNo").val();
+        var _OrderNo = $("#hddOrderNo").val();
+        var idTracking = idTracking;
+
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("BorrarPaquete", "Ordenes")',
+            data: {
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                IdTracking: idTracking,
+                TrackingType: TrackingType
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    location.reload();
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+    }
     </script>
 
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
@@ -535,7 +898,45 @@
             );
 
 
+          table2=  $("#tblSolicitutGuia").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
 
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    //destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true,
+                    @* "language": {
+
+                "emptyTable": '@ViewBag.MensajeSolGuia'
+            }*@
+                }
+        );
         });
 
         function iniciatblSolicitutGuia() {
