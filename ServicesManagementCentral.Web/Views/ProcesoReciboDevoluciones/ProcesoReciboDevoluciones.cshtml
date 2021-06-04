@@ -256,7 +256,7 @@
                     $("#tblShowProduct tbody").empty();
                     //ListDevoluciones();
                     //ListCondiciones();
-                    var causesSelect = $("<select></select>");
+                    var causesSelect = $("<select ></select>");
                     var motivosSelect = $("<select></select>");
                     $.each(json.lstCond, function (index, causes) {
                         $("<option>").val(causes.IdCause).text(causes.Cause_Desc).appendTo(causesSelect);
@@ -318,6 +318,8 @@
                 var ProductId = $(row)[0].cells[2].innerText;
                 var ProductName = $(row)[0].cells[3].innerText;
                 var _IdTrackingService = $(row)[0].cells[5].innerText;
+                var PackageCondition = $(row)[0].cells[6].innerText;
+                var MotivoDevol = $(row)[0].cells[7].innerText;
                 $.ajax({
                     async: false,
                     type: "GET",
@@ -330,7 +332,9 @@
                         ProductId: ProductId,
                         Barcode: Barcode,
                         ProductName: ProductName,
-                        CreationId: CreationId
+                        CreationId: CreationId,
+                        PackageCondition: PackageCondition,
+                        MotivoDevol: MotivoDevol
                     },
                     datatype: "html",
                     success: function (json) {
