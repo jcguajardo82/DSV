@@ -12,14 +12,14 @@
                     <tr>
                         <th name='accion'>Acción</th>
                         <th>Habilitado</th>
-                        <th>Tipo Almacen</th>
-                        <th>No. Almacen</th>
-                        <th>Nombre Almacen</th>
-                        <th>No. Proveedor</th>
-                        <th>Nombre Proveedor</th>
-                        <th>Dias transcurridos</th>
-                        <th>Fecha Actulización</th>
-                        <th name='accion'>No. Codigos</th>
+                        <th>Tipo de Almacen</th>
+                        <th>Numero de Almacen</th>
+                        <th>Nombre de Almacen</th>
+                        <th>Numero de Proveedor</th>
+                        <th>Nombre de Proveedor</th>
+                        <th>Dias Transcurridos</th>
+                        <th>Fecha de Ultima Actualización</th>
+                        <th name='accion'>Cantidad de Codigos</th>
                         @*<th name='accion'></th>*@
                     </tr>
                 </thead>
@@ -42,9 +42,9 @@
                             <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
                                 <thead class="bg-danger-sor">
                                     <tr>
-                                        <th>nro.proveedor</th>
-                                        <th>nro.almacen</th>
-                                        <th>nro.tipo almacen</th>
+                                        <th>Nro. de Proveedor</th>
+                                        <th>Nro. de Almacen</th>
+                                        <th>Tipo de Almacen</th>
                                         <th>SKU de producto</th>
                                         <th>EAN/Codigo de Barras</th>
                                         <th>Nombre de producto</th>
@@ -63,12 +63,11 @@
                                         <th>Estatus de producto</th>
                                         <th>Costo de Material</th>
                                         <th>Fecha Creación</th>
-                                        <th>Nro.Proveedor Origen</th>
-                                        <th>Nombre Proiveedor Origen</th>
+                                        <th>Nro. Proveedor Origen</th>
+                                        <th>Nombre Proveedor Origen</th>
                                         <th>Tipo de almacen</th>
-                                        <th> Nombre de Proveedor</th>
+                                        <th>Nombre de Proveedor</th>
                                         <th>Nombre de Almacen</th>
-
 
                                     </tr>
                                 </thead>
@@ -180,7 +179,6 @@
                             tr.append("<td>" + json.resp[i].OwnerName + "</td>");
                             tr.append("<td>" + json.resp[i].SupplierName + "</td>");
                             tr.append("<td>" + json.resp[i].SupplierWHName + "</td>");
-
 
                             $('#tblInventarios').append(tr);
                         }

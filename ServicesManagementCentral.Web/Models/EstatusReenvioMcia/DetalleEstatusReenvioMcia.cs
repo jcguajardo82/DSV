@@ -9,15 +9,17 @@ namespace ServicesManagement.Web.Models.EstatusReenvioMcia
     {
         public string RMA { get; set; }
         public string MotivoRMA { get; set; }
+        public string EAN { get; set; }
         public string ID { get; set; }
         public string Descripcion { get; set; }
-        public string NumeroGuiaDevolucion { get; set; }
-        public string CondicionEmpaque { get; set; }
-        public string Guiareenvio { get; set; }
-        public string Estatusguiareenvio { get; set; }
-        public string Fechaentrega { get; set; }
-        public string Nombrequienrecibe { get; set; }
-       
+        public string Piezas { get; set; }
+        public string GuiaDevol { get; set; }
+        public string PaqueteCondiciones { get; set; }
+        public string GuiaReenvio { get; set; }
+        public string GuiaStatus { get; set; }
+        public string FechaEntrega { get; set; }
+        public string HoraEntrega { get; set; }
+        public string QuienRecibio { get; set; }
 
     }
 }

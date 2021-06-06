@@ -14,12 +14,13 @@
                         <th>Numero de consignación</th>
                         <th>Total de importe de la Consignación</th>
                         <th>Tipo Almacen </th>
-                        <th>Fecha y hora creacion orden</th>
+                        <th>Fecha creacion de orden</th>
+                        <th>Hora creacion de orden</th>
                         <th>Nombre del cliente</th>
                         <th>Estatus de la orden</th>
                         <th>Motivo de no recoliección</th>
                         <th>Estatus de la Consignacion a reenviar</th>
-                        <th>guia de devolucion</th>
+                        <th>Guia de devolucion</th>
                         <th>Estatus de la Guia de Devolucion</th>
                         <th>Guia de reenvio</th>
                         <th>Estatus de Guía de Reenvio</th>
@@ -32,12 +33,12 @@
         </div>
     </div>
 </div>
-<div class="modal inmodal fade" id="dlgInventarios" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal fade" id="detalleconsignacion" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header pt-3 pb-1">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Almacen - Inventario </h4>
+                <h4 class="modal-title">Detalle Consignación</h4>
             </div>
             <div class="modal-body">
                 <form id="frmCreateServicios">
@@ -46,25 +47,20 @@
                             <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
                                 <thead class="bg-danger-sor">
                                     <tr>
-                                        <th>Numero de consignación</th>
-                                        <th>Total de importe de la Consignación</th>
-                                        <th>Tipo Almacen </th>
-                                        <th>Fecha y hora creacion orden</th>
-                                        <th>Nombre del cliente</th>
-                                        <th>Estatus de la orden</th>
-                                        <th>Motivo de no recoliección</th>
-                                        @* <th>Estatus de la consignación Home Delivery</th>*@
+                                        <th>EAN/Codigo de barras</th>
+                                        <th>id</th>
+                                        <th>Descripción</th>
+                                        <th>Piezas</th>
+                                        <th>Costo Unitario</th>
+                                        <th>Peso volumetrico Unitario</th>
+                                        <th>Surtido/Dias transcurridos desde la cración</th>
+                                        <th>Surtido/Dias transcurridos desde la autorización</th>
+                                        <th>Fecha de envio</th>
+                                        <th>Hora de envio</th>
+                                        <th>RMA</th>
+                                        <th>Estatus del RMA</th>
 
                                     </tr>
-                                    @*[idSupplierWH]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]*@
-
 
                                 </thead>
                                 <tbody></tbody>
@@ -118,24 +114,23 @@
             GetconsignacionesAdm();
         });
 
-        @*function popDesHabilitar(noProveedor, noAlmacen) {
+                function popDesHabilitar(noProveedor, noAlmacen) {
             $("#hddNoProveedor").val(noProveedor);
             $("#HddNoAlmacen").val(noAlmacen);
             $("#dlgDesHabilitar").modal('toggle');
         }
 
-        function PopInv(noProveedor, noAlmacen){
+        function PopDetlleC(Consignacion){
 
-           $("#dlgInventarios").modal('toggle');
-
+            $("#detalleconsignacion").modal('toggle');
+            /*$("#Consignacion").val(Consignacion);*/
 
             $.ajax({
                 async: false,
                 type: "POST",
-                url: '@Url.Action("GetSuppliersWHStock", "almacenes")',
+                url: '@Url.Action("GetDetalleConsignacionAdm", "consignaciones")',
                 data: {
-                    idSupplierWH: noProveedor,
-                    idSupplierWHCode: noAlmacen
+                    consignacion: Consignacion
                 },
 
                 datatype: "json",
@@ -149,44 +144,19 @@
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
 
-                            tr.append("<td>" + json.resp[i].idOwner + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductSKU + "</td>");
-                            tr.append("<td>" + json.resp[i].barCode + "</td>");
-                            tr.append("<td>" + json.resp[i].productName + "</td>");
-                            tr.append("<td>" + json.resp[i].productCategoryId + "</td>");
-                            tr.append("<td>" + json.resp[i].qtyStockSafety + "</td>");
-                            tr.append("<td>" + json.resp[i].qtyStockForSale + "</td>");
-                            tr.append("<td>" + json.resp[i].qtyStockReserved + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionLarge + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionHeight + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionWeightVol + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionWeightReal + "</td>");
+                            tr.append("<td>" + json.resp[i].EAN + "</td>");
+                            tr.append("<td>" + json.resp[i].ID + "</td>");
+                            tr.append("<td>" + json.resp[i].Descripcion + "</td>");
+                            tr.append("<td>" + json.resp[i].Piezas + "</td>");
+                            tr.append("<td>" + json.resp[i].CostoUnitario + "</td>");
+                            tr.append("<td>" + json.resp[i].PesoVolumetrico + "</td>");
+                            tr.append("<td>" + json.resp[i].DiasDesdeCreacion + "</td>");
+                            tr.append("<td>" + json.resp[i].DiasDesdeAutoriza + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaEnvio + "</td>");
+                            tr.append("<td>" + json.resp[i].HoraEnvio + "</td>");
+                            tr.append("<td>" + json.resp[i].IdRMA + "</td>");
+                            tr.append("<td>" + json.resp[i].StatusRMA + "</td>");
 
-                            tr.append("<td>" + json.resp[i].productStatus + "</td>");
-                            tr.append("<td>" + json.resp[i].productMaterialCost + "</td>");
-                            tr.append("<td>" + json.resp[i].productCreationDate + "</td>");
-                            tr.append("<td>" + json.resp[i].idSupplierOrigin + "</td>");
-                            tr.append("<td>" + json.resp[i].idSupplierOriginName + "</td>");
-
-                            /*
-                                        <th>idOwner</th>
-                                        <th>ProductSKU</th>
-                                        <th>barCode</th>
-                                        <th>productName</th>
-                                        <th>productCategoryId</th>
-                                        <th>qtyStockSafety</th>
-                                        <th>qtyStockForSale</th>
-                                        <th>qtyStockReserved</th>
-                                        <th>dimmensionLarge</th>
-                                        <th>dimmensionHeight</th>
-                                        <th>dimmensionWeightVol</th>
-                                        <th>dimmensionWeightReal</th>
-                                        <th>productStatus</th>
-                                        <th>productMaterialCost</th>
-                                        <th>productCreationDate</th>
-                                        <th>idSupplierOrigin</th>
-                                        <th>idSupplierOriginName</th>
-                                        */
                             $('#tblInventarios').append(tr);
                         }
                     }
@@ -200,7 +170,8 @@
                 }
 
             });
-        }*@
+        }
+
         function GetconsignacionesAdm() {
 
             //var _Id_Num_UN = $("#hddTda").val();
@@ -231,15 +202,18 @@
                             tr.append("<td>" + json.resp[i].Consignacion + "</td>");
                             tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaCreacion + "  " + json.resp[i].HoraCreacion +"</td>");
+                            tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
+                            tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
                             tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusConsignacionAlmacen + "</td>");
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
+
+                            tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
+
                             //tr.append("<td>" + json.resp[i].EstatusConsignacionEntrega + "</td>");
                             //tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
                             //tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");

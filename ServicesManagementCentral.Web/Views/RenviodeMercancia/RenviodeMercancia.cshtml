@@ -10,15 +10,15 @@
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                 <thead class="bg-danger-sor">
                     <tr>
-                        <th>Numero de Consignacion</th>
                         <th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>
+                        <th>Numero de Consignacion</th>
                         <th>Fecha y hora de creacion de la orden</th>
                         <th>Nombre del Cliente</th>
                         <th>Estatus de la Consignacion a reenviar</th>
-                        <th>guia de devolucion</th>
-                        <th>Estatus de la Guia de Devolucion</th>
                         <th>Guia de reenvio</th>
-                        <th>Estatus de Guía de Reenvio</th>
+                        <th>Guia de devolucion</th>
+                        @*<th>Estatus de Guía de Reenvio</th>*@
+                        @*<th>Estatus de la Guia de Devolucion</th>*@
 
                         @*<th></th>*@
                         @*<th name='accion'></th>*@
@@ -45,34 +45,20 @@
                             <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
                                 <thead class="bg-danger-sor">
                                     <tr>
-                                        <th>idOwner</th>
-                                        <th>ProductSKU</th>
-                                        <th>barCode</th>
-                                        <th>productName</th>
-                                        <th>productCategoryId</th>
-                                        <th>qtyStockSafety</th>
-                                        <th>qtyStockForSale</th>
-                                        <th>qtyStockReserved</th>
-                                        <th>dimmensionLarge</th>
-                                        <th>dimmensionHeight</th>
-                                        <th>dimmensionWeightVol</th>
-                                        <th>dimmensionWeightReal</th>
-                                        <th>productStatus</th>
-                                        <th>productMaterialCost</th>
-                                        <th>productCreationDate</th>
-                                        <th>idSupplierOrigin</th>
-                                        <th>idSupplierOriginName</th>
+                                        <th>RMA</th>
+                                        <th>Motivo RMA</th>
+                                        <th>EAN/Codigo de Barras</th>
+                                        <th>SKU del Producto</th>
+                                        <th>Descripcion</th>
+                                        <th>Cantidad de Piezas</th>
+                                        <th>Guia de Devolucion</th>
+                                        <th>Condiciones del Paquete</th>
+                                        <th>Guia de Reenvio</th>
+                                        <th>Estatus Guia de Reenvio</th>
+                                        <th>Fecha de Entrega</th>
+                                        <th>Hora de Entrega</th>
+                                        <th>Nombre de quien recibio</th>
                                     </tr>
-                                    @*[idSupplierWH]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]*@
-
-
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -129,14 +115,17 @@
 
                             tr.append("<td>" + json.resp[i].RMA + "</td>");
                             tr.append("<td>" + json.resp[i].MotivoRMA + "</td>");
+                            tr.append("<td>" + json.resp[i].EAN + "</td>");
                             tr.append("<td>" + json.resp[i].ID + "</td>");
                             tr.append("<td>" + json.resp[i].Descripcion + "</td>");
-                            tr.append("<td>" + json.resp[i].NumeroGuiaDevolucion + "</td>");
-                            tr.append("<td>" + json.resp[i].CondicionEmpaque + "</td>");
-                            tr.append("<td>" + json.resp[i].Guiareenvio + "</td>");
-                            tr.append("<td>" + json.resp[i].Estatusguiareenvio + "</td>");
-                            tr.append("<td>" + json.resp[i].Fechaentrega + "</td>");
-                            tr.append("<td>" + json.resp[i].Nombrequienrecibe + "</td>");
+                            tr.append("<td>" + json.resp[i].Piezas + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaDevol + "</td>");
+                            tr.append("<td>" + json.resp[i].PaqueteCondiciones + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaReenvio + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaStatus + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaEntrega + "</td>");
+                            tr.append("<td>" + json.resp[i].HoraEntrega + "</td>");
+                            tr.append("<td>" + json.resp[i].QuienRecibio + "</td>");
 
                             $('#tblInventarios').append(tr);
                         }
@@ -174,15 +163,16 @@
                         //var tr;
                         debugger;
                         //Append each row to html table
-                        tr.append("<td>" + json.resp[i].Consignacion + "</td>");
                         tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].ConsignacionReenvio + "," + json.resp[i].ConsignacionReenvio + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
+                        tr.append("<td>" + json.resp[i].Consignacion + "</td>");
                         tr.append("<td>" + json.resp[i].FechaOrden + "  " + json.resp[i].HoraOrden + "</td>");
                         tr.append("<td>" + json.resp[i].Cliente + "</td>");
                         tr.append("<td>" + json.resp[i].OrdenReenvioStatus + "</td>");
-                        tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
-                        tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
                         tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
-                        tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
+                        tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
+
+                        //tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
+                        //tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
                         //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
                         //AltaProveedor/AltaProveedor
 
