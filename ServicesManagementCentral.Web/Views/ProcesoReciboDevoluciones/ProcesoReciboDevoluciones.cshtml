@@ -157,6 +157,7 @@
                                             <input id="FileUpload1" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
                                             <label for="FileUpload1" class="custom-file-label">Seleccionar Archivo...</label>
                                         </div>
+                                        <input type="button" class="btn btn-success btn-file" id="btnUpload" value="Subir Archivo" />
                                     </div>
                                 </td>
                                 <td></td>
@@ -188,21 +189,7 @@
         $(document).ready(function () {
             $('#btnUpload').click(function () {
 
-                var _idOwner = $("#ddlOwner").val();
-                var _ownerName = $("#ddlOwner option:selected").text();
-
-                var _idManual = $("#ddlManual").val();
-                var _ManualDesc = $("#ddlManual option:selected").text();
-
-                if (_idOwner == "0") {
-                    $("#ddlOwner").focus();
-                    return;
-                }
-
-                if (_idManual == "0") {
-                    $("#ddlManual").focus();
-                    return;
-                }
+                var _idselUeNo = $("#selUeNo").val();
 
                 // Checking whether FormData is available in browser
                 if (window.FormData !== undefined) {
@@ -220,10 +207,7 @@
                     }
 
                     // Adding one more key to FormData object
-                    fileData.append('idOwner', _idOwner);
-                    fileData.append('ownerName', _ownerName);
-                    fileData.append('idManual', _idManual);
-                    fileData.append('ManualDesc', _ManualDesc);
+                    fileData.append('idUeNo', _idselUeNo);
                     fileData.append('servername', servername);
 
 

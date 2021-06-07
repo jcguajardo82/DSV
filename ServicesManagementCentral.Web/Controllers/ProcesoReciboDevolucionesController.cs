@@ -25,10 +25,7 @@ namespace ServicesManagement.Web.Controllers
                 try
                 {
 
-                    var idOwner = Request.Form["idOwner"].ToString();
-                    var idManual = Request.Form["idManual"].ToString();
-                    var ManualDesc = Request.Form["ManualDesc"].ToString();
-                    var ownerName = Request.Form["ownerName"].ToString();
+                    var idUeNo = Request.Form["idUeNo"].ToString();
                     string servername = Request.Form["servername"].ToString();
 
                     //  Get all files from Request object  
@@ -37,6 +34,9 @@ namespace ServicesManagement.Web.Controllers
                     {
                         //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
                         //string filename = Path.GetFileName(Request.Files[i].FileName);  
+
+                        DateTime dt = DateTime.Now;
+                        string dateTime = dt.ToString("yyyyMMddHHmmssfff");
 
                         HttpPostedFileBase file = files[i];
                         string fname;
@@ -52,7 +52,7 @@ namespace ServicesManagement.Web.Controllers
                             fname = file.FileName;
                         }
 
-                        fname = string.Format("{0}_{1}_{2}", ownerName, ManualDesc, fname);
+                        fname = string.Format("{0}_{1}_{2}", idUeNo, "devolucion", dateTime);
 
                         // Get the complete folder path and store the file inside it.  
                         var path = Path.Combine(Server.MapPath("~/Files/"), fname);
