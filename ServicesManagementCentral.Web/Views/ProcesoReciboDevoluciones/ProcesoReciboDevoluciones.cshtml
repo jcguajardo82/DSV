@@ -147,11 +147,25 @@
                             </form>
                         </div>
                         <button type="button" class="btn btn-white" onclick="Confirmar()">Confirmar Devolución</button>
+                        <table style="width:100%;padding-top:50px;">
+                            <!-- cambio -->
+                            <tr>
+                                <td style="text-align:left;padding-left:50px;">
+                                    <div class="col-sm-8">
+                                        <br />
+                                        <div class="custom-file">
+                                            <input id="FileUpload1" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                            <label for="FileUpload1" class="custom-file-label">Seleccionar Archivo...</label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -166,6 +180,74 @@
 
 @section scripts {
     <script type="text/javascript">
+
+                $('.custom-file-input').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+        $(document).ready(function () {
+            $('#btnUpload').click(function () {
+
+                var _idOwner = $("#ddlOwner").val();
+                var _ownerName = $("#ddlOwner option:selected").text();
+
+                var _idManual = $("#ddlManual").val();
+                var _ManualDesc = $("#ddlManual option:selected").text();
+
+                if (_idOwner == "0") {
+                    $("#ddlOwner").focus();
+                    return;
+                }
+
+                if (_idManual == "0") {
+                    $("#ddlManual").focus();
+                    return;
+                }
+
+                // Checking whether FormData is available in browser
+                if (window.FormData !== undefined) {
+
+                    var servername = window.location.origin;
+                    var fileUpload = $("#FileUpload1").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('idOwner', _idOwner);
+                    fileData.append('ownerName', _ownerName);
+                    fileData.append('idManual', _idManual);
+                    fileData.append('ManualDesc', _ManualDesc);
+                    fileData.append('servername', servername);
+
+
+
+                    $.ajax({
+                       // url: '/ManualesOperativos/UploadFiles',
+                        url: '@Url.Action("UploadFiles", "ProcesoReciboDevoluciones")',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (result) {
+                            alert(result);
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+                } else {
+                    alert("FormData is not supported.");
+                }
+            });
+        });
+
         $(document).ready(function () {
             $("#txtFiltro").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
@@ -256,7 +338,7 @@
                     $("#tblShowProduct tbody").empty();
                     //ListDevoluciones();
                     //ListCondiciones();
-                    var causesSelect = $("<select ></select>");
+                    var causesSelect = $("<select></select>");
                     var motivosSelect = $("<select></select>");
                     $.each(json.lstCond, function (index, causes) {
                         $("<option>").val(causes.IdCause).text(causes.Cause_Desc).appendTo(causesSelect);
