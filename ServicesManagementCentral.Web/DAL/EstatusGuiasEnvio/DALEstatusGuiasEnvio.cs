@@ -62,7 +62,7 @@ namespace ServicesManagement.Web.DAL.EstatusGuiasEnvio
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                parametros.Add("@idOwner", 2); // parametro CEDIS fijo
+                parametros.Add("@idOwner", 3); // parametro CEDIS fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoShipmentStatus]", false, parametros);
@@ -97,7 +97,7 @@ namespace ServicesManagement.Web.DAL.EstatusGuiasEnvio
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                parametros.Add("@idOwner", 3); // parametro Proveedor fijo
+                parametros.Add("@idOwner", 4); // parametro Proveedor fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoShipmentStatus]", false, parametros);

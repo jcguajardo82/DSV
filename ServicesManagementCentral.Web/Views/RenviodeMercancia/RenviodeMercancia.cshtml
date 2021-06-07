@@ -12,7 +12,8 @@
                     <tr>
                         <th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>
                         <th>Numero de Consignacion</th>
-                        <th>Fecha y hora de creacion de la orden</th>
+                        <th>Fecha de creacion de la orden</th>
+                        <th>Hora de creacion de la orden</th>
                         <th>Nombre del Cliente</th>
                         <th>Estatus de la Consignacion a reenviar</th>
                         <th>Guia de reenvio</th>
@@ -165,7 +166,8 @@
                         //Append each row to html table
                         tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].ConsignacionReenvio + "," + json.resp[i].ConsignacionReenvio + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
                         tr.append("<td>" + json.resp[i].Consignacion + "</td>");
-                        tr.append("<td>" + json.resp[i].FechaOrden + "  " + json.resp[i].HoraOrden + "</td>");
+                        tr.append("<td>" + json.resp[i].FechaOrden + "</td>");
+                        tr.append("<td>" + json.resp[i].HoraOrden + "</td>");
                         tr.append("<td>" + json.resp[i].Cliente + "</td>");
                         tr.append("<td>" + json.resp[i].OrdenReenvioStatus + "</td>");
                         tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");

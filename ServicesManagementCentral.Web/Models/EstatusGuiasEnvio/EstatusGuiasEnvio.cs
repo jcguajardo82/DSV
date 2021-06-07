@@ -8,8 +8,8 @@ namespace ServicesManagement.Web.Models.EstatusGuiasEnvio
     public class EstatusGuiasEnvio
     {
 
-        public string consignacion { get; set; }
-        public string consignacionReenvio { get; set; }
+        public string Consignacion { get; set; }
+        public string ConsignacionOrigen { get; set; }
         public string TipoAlmacen { get; set; }
         public string FechaOrden { get; set; }
         public string HoraOrden { get; set; }

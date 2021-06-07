@@ -36,4 +36,20 @@ namespace ServicesManagement.Web.Models.Almacenes
 
 
     }
+    public class SuppliersWHContacInfo
+    {
+        public string IdSupplierWH { get; set; }
+        public string SupplierName { get; set; }
+        public string IdSupplierWHCode { get; set; }
+        public string SupplierWHName { get; set; }
+
+        public string operInfoName { get; set; }
+        public string operInfoPhone { get; set; }
+        public string operInfoEmail { get; set; }
+        public string commInfoName { get; set; }
+        public string commInfoPhone { get; set; }
+        public string commInfoEmail { get; set; }
+
+
+    }
 }

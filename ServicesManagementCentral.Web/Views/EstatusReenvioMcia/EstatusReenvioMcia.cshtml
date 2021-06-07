@@ -12,10 +12,11 @@
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                 <thead class="bg-danger-sor">
                     <tr>
-                        <th>Numero de la consignación de reenvio/sustituto/cambio fisico</th>
+                        <th>Consignación de reenvio/sustituto/cambio fisico</th>
                         <th>Numero de consignacion</th>
                         <th>Tipo almacen</th>
-                        <th>Fecha y hora de creacion de la orden</th>
+                        <th>Fecha de creacion de la orden</th>
+                        <th>Hora de creacion de la orden</th>
                         <th>Nombre del Cliente</th>
                         <th>Estatus de la consignación almacen</th>
                         <th>Estatus de la consignación Home Delivery</th>
@@ -175,7 +176,8 @@
                         tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a></td>");
                         /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
                         tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                        tr.append("<td>" + json.resp[i].FechaOrden + "  " + json.resp[i].HoraOrden + "</td>");
+                        tr.append("<td>" + json.resp[i].FechaOrden + "</td>");
+                        tr.append("<td>" + json.resp[i].HoraOrden + "</td>");
                         tr.append("<td>" + json.resp[i].Cliente + "</td>");
                         tr.append("<td>" + json.resp[i].EstatusAlmacen + "</td>");
                         tr.append("<td>" + json.resp[i].EstatusHomeD + "</td>");
