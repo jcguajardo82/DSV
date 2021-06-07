@@ -204,6 +204,13 @@
                     // Looping over all files and add it to FormData object
                     for (var i = 0; i < files.length; i++) {
                         fileData.append(files[i].name, files[i]);
+                        var nameext = files[i].name.split(".");
+                        if (nameext[1] != "png" & nameext[1] != "jpg")
+                        {
+                            alert("Extensión no válida");
+                            return;
+                        }
+
                     }
 
                     // Adding one more key to FormData object
