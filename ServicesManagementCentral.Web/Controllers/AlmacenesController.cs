@@ -49,6 +49,22 @@ namespace ServicesManagement.Web.Controllers
         }
 
         [HttpPost]
+        public ActionResult GetSuppliersWHContacInfo(string idSupplierWH, string idSupplierWHCode)
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<SuppliersWHContacInfo>(DALAlmacenes.SuppliersContacts_sUP(int.Parse(idSupplierWH), int.Parse(idSupplierWHCode)).Tables[0]);
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public ActionResult UpdateSuppliersWH(string idSupplierWH, string idSupplierWHCode, string bitenable, string enableCause)
         {
             try

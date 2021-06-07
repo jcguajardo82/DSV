@@ -1,11 +1,11 @@
 ﻿
 @{
-    ViewBag.Title = "EstatusGuiaEnvio";
+    ViewBag.Title = "Estatus Guias de Envio";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<h2>Estatus de guia de envio</h2>
+<h2>Estatus Guias de Envio</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
@@ -13,25 +13,27 @@
                 <thead class="bg-danger-sor">
                     <tr>
                         @*<th name='accion'>Acción</th>
-        <th>Habilitado</th>
-        <th>Tipo Almacen</th>
-        <th>No. Almacen</th>
-        <th>Nombre Almacen</th>
-        <th>No. Proveedor</th>
-        <th>Nombre Proveedor</th>
-        <th>Dias transcurridos</th>
-        <th>Fecha Actulización</th>
-        <th name='accion'>No. Codigos</th>*@
+                        <th>Habilitado</th>
+                        <th>Tipo Almacen</th>
+                        <th>No. Almacen</th>
+                        <th>Nombre Almacen</th>
+                        <th>No. Proveedor</th>
+                        <th>Nombre Proveedor</th>
+                        <th>Dias transcurridos</th>
+                        <th>Fecha Actulización</th>
+                        <th name='accion'>No. Codigos</th>*@
                         @*<th>Impresión</th>*@
                         <th>Numero de consignacion</th>
-                        <th>Consignacion de Reenvio</th>
+                        @*<th>Consignacion de Reenvio</th>*@
                         <th>Tipo almacen</th>
-                        <th>Fecha y hora de creacion de la orden</th>
+                        <th>Fecha de creacion de la orden</th>
+                        <th>Hora de creacion de la orden</th>
                         <th>Tipo de Guia</th>
                         <th>Paqueteria</th>
                         <th>Numero de Guia</th>
                         <th>Estatus de Guía</th>
                         <th>Fecha de entrega</th>
+                        <th>Hora de entrega</th>
                         <th>Nombre de quien recibio</th>
                         @*<th></th>*@
                         @*<th name='accion'></th>*@
@@ -159,15 +161,17 @@
 
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
-                            tr.append("<td>" + json.resp[i].consignacion + "</td>");
-                            tr.append("<td>" + json.resp[i].consignacionReenvio + "</td>");
+                            tr.append("<td>" + json.resp[i].Consignacion + "</td>");
+                            //tr.append("<td>" + json.resp[i].consignacionReenvio + "</td>");
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaOrden + "  " + json.resp[i].HoraOrden + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaOrden + "</td>");
+                            tr.append("<td>" + json.resp[i].HoraOrden + "</td>");
                             tr.append("<td>" + json.resp[i].TipoGuia + "</td>");
                             tr.append("<td>" + json.resp[i].Paqueteria + "</td>");
                             tr.append("<td>" + json.resp[i].GuiaNro + "</td>");
                             tr.append("<td>" + json.resp[i].GuiaStatus + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaEntrega + "  " + json.resp[i].HoraEntrega + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaEntrega + "</td>");
+                            tr.append("<td>" + json.resp[i].HoraEntrega + "</td>");
                             tr.append("<td>" + json.resp[i].QuienRecibio + "</td>");
 
                             //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");

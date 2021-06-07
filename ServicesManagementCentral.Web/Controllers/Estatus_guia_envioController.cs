@@ -56,7 +56,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<EstatusGuiasEnvio>(DALEstatusGuiasEnvio.upCorpOMS_Cns_UeNoShipmentStatus().Tables[0]);
+                var list = DataTableToModel.ConvertTo<EstatusGuiasEnvio>(DALEstatusGuiasEnvio.upCorpOMS_Cns_UeNoShipmentStatusCEDIS().Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -84,7 +84,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<EstatusGuiasEnvio>(DALEstatusGuiasEnvio.upCorpOMS_Cns_UeNoShipmentStatus().Tables[0]);
+                var list = DataTableToModel.ConvertTo<EstatusGuiasEnvio>(DALEstatusGuiasEnvio.upCorpOMS_Cns_UeNoShipmentStatusProveedor().Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

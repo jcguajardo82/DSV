@@ -12,7 +12,8 @@
                         <th>Numero de consignación</th>
                         <th>Total importe de la Consignación</th>
                         <th>Tipo Almacen </th>
-                        <th>Fecha y hora creacion orden</th>
+                        <th>Fecha creacion de orden</th>
+                        <th>Hora creacion de orden</th>
                         <th>Nombre del cliente</th>
                         <th>Estatus de la orden</th>
                         <th>Estatus de la consignación Almacen</th>
@@ -47,33 +48,20 @@
                             <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
                                 <thead class="bg-danger-sor">
                                     <tr>
-                                        <th>idOwner</th>
-                                        <th>ProductSKU</th>
-                                        <th>barCode</th>
-                                        <th>productName</th>
-                                        <th>productCategoryId</th>
-                                        <th>qtyStockSafety</th>
-                                        <th>qtyStockForSale</th>
-                                        <th>qtyStockReserved</th>
-                                        <th>dimmensionLarge</th>
-                                        <th>dimmensionHeight</th>
-                                        <th>dimmensionWeightVol</th>
-                                        <th>dimmensionWeightReal</th>
-                                        <th>productStatus</th>
-                                        <th>productMaterialCost</th>
-                                        <th>productCreationDate</th>
-                                        <th>idSupplierOrigin</th>
-                                        <th>idSupplierOriginName</th>
-                                    </tr>
-                                    @*[idSupplierWH]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]
-                                        ,[]*@
+                                        <th>EAN/Codigo de barras</th>
+                                        <th>id</th>
+                                        <th>Descripción</th>
+                                        <th>Piezas</th>
+                                        <th>Costo Unitario</th>
+                                        <th>Peso volumetrico Unitario</th>
+                                        <th>Surtido/Dias transcurridos desde la cración</th>
+                                        <th>Surtido/Dias transcurridos desde la autorización</th>
+                                        <th>Fecha de envio</th>
+                                        <th>Hora de envio</th>
+                                        <th>RMA</th>
+                                        <th>Estatus del RMA</th>
 
+                                    </tr>
 
                                 </thead>
                                 <tbody></tbody>
@@ -236,31 +224,30 @@
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
                             //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-
                            /* tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
+
                             tr.append("<td><a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' >" + json.resp[i].Consignacion + "</td>");
                             tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaCreacion + "  " + json.resp[i].HoraCreacion +"</td>");
+                            tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
+                            tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
                             tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusConsignacionAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusConsignacionEntrega + "</td>");
                             tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
+
+                            tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
+
                             //tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
                             //tr.append("<td>" + json.resp[i].OrdenCompra + "</td>");
-
-
                             //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
                             //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
-
-
 
                             $('#tblConsulta').append(tr);
                         }

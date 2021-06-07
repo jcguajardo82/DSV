@@ -9,6 +9,7 @@ namespace ServicesManagement.Web.Models.Consignaciones
     {
 
         public string Consignacion { get; set; }
+        public string OrdenCompra { get; set; }
         public string TotalConsignacion { get; set; }
         public string TipoAlmacen { get; set; }
         public string FechaCreacion { get; set; }
@@ -17,11 +18,17 @@ namespace ServicesManagement.Web.Models.Consignaciones
         public string EstatusEnvio { get; set; }
         public string EstatusConsignacionAlmacen { get; set; }
         public string EstatusConsignacionEntrega { get; set; }
+        public string MotivoNoRecoleccion { get; set; }
         public string NroOrdenCompra { get; set; }
         public string EstatusOrdenCompra { get; set; }
-        public string OrdenCompra { get; set; }
+        public string NroProveedor { get; set; }
+        public string NombreProveedor { get; set; }
 
-
+        public string ConsignacionReenvio { get; set; }
+        public string GuiaDevolNro { get; set; }
+        public string GuiaDevolStatus { get; set; }
+        public string GuiaReenvioNro { get; set; }
+        public string GuiaReenvioStatus { get; set; }
 
         ////[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         //public string FechaStock { get; set; }
