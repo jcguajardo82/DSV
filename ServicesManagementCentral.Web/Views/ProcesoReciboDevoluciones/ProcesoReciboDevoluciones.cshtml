@@ -179,7 +179,6 @@
 <input id="selTrackingType" name="selTrackingType" value="" style="visibility:hidden" />
 <input id="selRecibido" name="selRecibido" value="" style="visibility:hidden" />
 <select class="form-control m-b" style="visibility:hidden" id="ddlCauses"></select>
-<select class="form-control m-b" style="visibility:hidden" id="ddlMotivos"></select>
 
 @section scripts {
     <script type="text/javascript">
@@ -349,7 +348,7 @@
                         $('#selTrackingType').val(json.resp[i].TrackingType);
                         if ($('#selRecibido').val() == 0) {
                             tr.append("<td>" + causesSelect[0].outerHTML + "</td>");
-                            tr.append("<td><input type='text' class='form-control' name 'txtMotivo' /></td>");
+                            tr.append("<td><input type='text' class='form-control' name='txtMotivo' /></td>");
                             tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' id=chkSel_" + json.resp[i].BarCode + " /></td>");
                         }
                         else {
@@ -389,7 +388,11 @@
                 var ProductId = $(row)[0].cells[2].innerText;
                 var ProductName = $(row)[0].cells[3].innerText;
                 var _IdTrackingService = $(row)[0].cells[5].innerText;
-                var PackageCondition = $(row)[0].cells[6].innerText;
+                for (var i = 0; i < $(row)[0].cells[6].childNodes[0].childElementCount; i++) {
+                    if ($(row)[0].cells[6].childNodes[0][i].selected == true) {
+                        var PackageCondition = $(row)[0].cells[6].childNodes[0][i].innerText; 
+                    }  
+                }
                 var MotivoDevol = $(row)[0].cells[7].children[0].value;
                 $.ajax({
                     async: false,
