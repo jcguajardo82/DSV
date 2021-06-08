@@ -66,7 +66,8 @@
                             <thead class="bg-danger-sor">
                                 <tr role="row">
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Numero de Consignación</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Fecha y hora de creacion de la Consignación</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Fecha de creación</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Hora de creación</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">RMA</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Solicitud RMA</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Motivo RMA</th>
@@ -95,7 +96,8 @@
                                                     <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["Recibido"])"
                                                        title="Click para ver la lista de productos asociados a la consignación" class="btn btn-link">@p["UeNo"].ToString()</a>
                                                 </td>
-                                                <td style="text-align:right">@p["OrderDate"] - @p["OrderTime"] </td>
+                                                <td style="text-align:right">@p["OrderDate"] </td>
+                                                <td style="text-align:right">@p["OrderTime"] </td>
                                                 <td style="text-align:center">@p["UeNoRMA"]</td>
                                                 <td style="text-align:center">@p["ConsigmentType"]</td>
                                                 <td style="text-align:center">@p["TrackingType"]</td>
@@ -329,13 +331,9 @@
                     $("#tblShowProduct tbody").empty();
                     //ListDevoluciones();
                     //ListCondiciones();
-                    var causesSelect = $("<select></select>");
-                    var motivosSelect = $("<select></select>");
+                    var causesSelect = $("<select class='form-control m-b' ></select>");
                     $.each(json.lstCond, function (index, causes) {
                         $("<option>").val(causes.IdCause).text(causes.Cause_Desc).appendTo(causesSelect);
-                    });
-                    $.each(json.lstDev, function (index, motivos) {
-                        $("<option>").val(motivos.IdCause).text(motivos.Cause_Desc).appendTo(motivosSelect);
                     });
                     //$("#tblShowProduct tbody").remove();
                     //var tr;
@@ -351,7 +349,7 @@
                         $('#selTrackingType').val(json.resp[i].TrackingType);
                         if ($('#selRecibido').val() == 0) {
                             tr.append("<td>" + causesSelect[0].outerHTML + "</td>");
-                            tr.append("<td>" + motivosSelect[0].outerHTML + "</td>");
+                            tr.append("<td><input type='text' class='form-control' name 'txtMotivo' /></td>");
                             tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' id=chkSel_" + json.resp[i].BarCode + " /></td>");
                         }
                         else {
@@ -392,7 +390,7 @@
                 var ProductName = $(row)[0].cells[3].innerText;
                 var _IdTrackingService = $(row)[0].cells[5].innerText;
                 var PackageCondition = $(row)[0].cells[6].innerText;
-                var MotivoDevol = $(row)[0].cells[7].innerText;
+                var MotivoDevol = $(row)[0].cells[7].children[0].value;
                 $.ajax({
                     async: false,
                     type: "GET",
