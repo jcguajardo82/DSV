@@ -757,7 +757,8 @@
             datatype: "html",
             success: function (json) {
                 if (json.Success) {
-                    window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                    location.reload();
+                    //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
                 }
             }
             , error: function (jqXHR, textStatus, errorThrown) {
