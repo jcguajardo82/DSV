@@ -42,8 +42,8 @@
                             <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
                                 <thead class="bg-danger-sor">
                                     <tr>
-                                        <th>Nro. de Proveedor</th>
-                                        <th>Nro. de Almacen</th>
+                                        <th>Numero de Proveedor</th>
+                                        <th>Numero de Almacen</th>
                                         <th>Tipo de Almacen</th>
                                         <th>SKU de producto</th>
                                         <th>EAN/Codigo de Barras</th>
@@ -63,7 +63,7 @@
                                         <th>Estatus de producto</th>
                                         <th>Costo de Material</th>
                                         <th>Fecha Creación</th>
-                                        <th>Nro. Proveedor Origen</th>
+                                        <th>Numero Proveedor Origen</th>
                                         <th>Nombre Proveedor Origen</th>
                                         <th>Tipo de almacen</th>
                                         <th>Nombre de Proveedor</th>
@@ -129,9 +129,9 @@
                             <table id="tblContactos" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
                                 <thead class="bg-danger-sor">
                                     <tr>
-                                        <th>Nro. de Proveedor</th>
+                                        <th>Numero de Proveedor</th>
                                         <th>Nombre de Proveedor</th>
-                                        <th>Nro. de Almacen</th>
+                                        <th>Numero de Almacen</th>
                                         <th>Nombre de Almacen</th>
 
                                         <th>Contacto Operativo Nombre</th>
@@ -198,28 +198,31 @@
 
                             tr.append("<td>" + json.resp[i].IdSupplierWH + "</td>");
                             tr.append("<td>" + json.resp[i].IdSupplierWHCode + "</td>");
-                            tr.append("<td>" + json.resp[i].IdOwner + "</td>");
+                            tr.append("<td>" + json.resp[i].OwnerName + "</td>");
                             tr.append("<td>" + json.resp[i].ProductSKU + "</td>");
                             tr.append("<td>" + json.resp[i].BarCode + "</td>");
                             tr.append("<td>" + json.resp[i].ProductName + "</td>");
                             tr.append("<td>" + json.resp[i].ProductCategoryId + "</td>");
-                            tr.append("<td>" + json.resp[i].QtyStockReserved + "</td>");
+
                             tr.append("<td>" + json.resp[i].StockLevel + "</td>");
                             tr.append("<td>" + json.resp[i].QtyStockSafety + "</td>");
                             tr.append("<td>" + json.resp[i].QtyStockForSale + "</td>");
                             tr.append("<td>" + json.resp[i].QtyStockReserved + "</td>");
+
                             tr.append("<td>" + json.resp[i].ProductType + "</td>");
                             tr.append("<td>" + json.resp[i].DimmensionLarge + "</td>");
                             tr.append("<td>" + json.resp[i].DimmensionHeight + "</td>");
                             tr.append("<td>" + json.resp[i].DimmensionWidth + "</td>");
+                            tr.append("<td>" + json.resp[i].DimmensionWeight + "</td>");
                             tr.append("<td>" + json.resp[i].DimmensionWeightVol + "</td>");
                             tr.append("<td>" + json.resp[i].DimmensionWeightReal + "</td>");
+
                             tr.append("<td>" + json.resp[i].ProductStatus + "</td>");
                             tr.append("<td>" + json.resp[i].ProductMaterialCost + "</td>");
                             tr.append("<td>" + json.resp[i].ProductCreationDate + "</td>");
                             tr.append("<td>" + json.resp[i].IdSupplierOrigin + "</td>");
                             tr.append("<td>" + json.resp[i].IdSupplierOriginName + "</td>");
-                            tr.append("<td>" + json.resp[i].OwnerName + "</td>");
+                            tr.append("<td>" + json.resp[i].IdOwner + "</td>");
                             tr.append("<td>" + json.resp[i].SupplierName + "</td>");
                             tr.append("<td>" + json.resp[i].SupplierWHName + "</td>");
 

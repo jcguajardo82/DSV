@@ -1,0 +1,229 @@
+﻿@model IEnumerable<SelectListItem>
+@{
+    ViewBag.Title = "Manuales Operativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight" style="padding-top: 0px;">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12 text-center">
+                        <h2>Manuales Operativos</h2>
+                    </div>
+                </div>
+
+                <table style="width:100%;">
+                    <tr>
+                        <td style="text-align:left;padding-left:50px;">
+                            <h2><i></i></h2>
+                            <div class="col-sm-10">
+                                @*@Html.DropDownList("tipoalmacen", Model, new { @id = "TP", @class = "form-control m-b" })*@
+
+
+                                @*<select class="form-control m-b">
+                                        <option disabled selected>Selecciona una opción</option>
+                                        <option>DSV</option>
+                                        <option>DST</option>
+                                        <option>WMS</option>
+                                    </select>*@
+
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="row" style="height:490px; overflow-x:auto;">
+                    <table style="width:100%;">
+                        <tr>
+                            @*<td style="text-align:left;padding-left:50px;">
+                                    <h2><i class="fa fa-certificate"></i> Manual de Operación</h2>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Procesos para surtir y enviar una orden</span>
+                                    <button name="operacionespdf" onclick="verPDF('operaciones.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-operacionespdf">Mostrar</button>
+                                    <button name="operacionespdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-operacionespdf">Ocultar</button>
+                                    <iframe id="operacionespdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+                                </td>*@
+                            <td style="text-align:left;padding-left:50px;">
+                                <h2><i class="fa fa-certificate"></i> Manual de Operación</h2>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Procesos para surtir y enviar una orden</span>
+                                <button name="operacionespdf" onclick="verPDF(1, this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-operacionespdf">Mostrar</button>
+                                <button name="operacionespdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-operacionespdf">Ocultar</button>
+                                <iframe id="operacionespdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            @*<td style="text-align:left;padding-left:50px;">
+                                    <h2><i class="fa fa-certificate"></i> Manual de Empaque</h2>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Tipos de empaque que se deben utilizar para un adecuado envio</span>
+                                    <button name="empaquepdf" onclick="verPDF('Empaque.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-empaquepdf">Mostrar</button>
+                                    <button name="empaquepdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-empaquepdf">Ocultar</button>
+                                    <iframe id="empaquepdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+
+                                </td>*@
+                            <td style="text-align:left;padding-left:50px;">
+                                <h2><i class="fa fa-certificate"></i> Manual de Empaque</h2>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Tipos de empaque que se deben utilizar para un adecuado envio</span>
+                                <button name="empaquepdf" onclick="verPDF(2, this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-empaquepdf">Mostrar</button>
+                                <button name="empaquepdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-empaquepdf">Ocultar</button>
+                                <iframe id="empaquepdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            @*<td style="text-align:left;padding-left:50px;">
+                                    <h2><i class="fa fa-certificate"></i> Manual de Actualización de Inventario</h2>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para mantener actualizado tu inventario en la página</span>
+                                    <button name="inventariospdf" onclick="verPDF('Inventarios.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-inventariospdf">Mostrar</button>
+                                    <button name="inventariospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-inventariospdf">Ocultar</button>
+                                    <iframe id="inventariospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+
+                                </td>*@
+                            <td style="text-align:left;padding-left:50px;">
+                                <h2><i class="fa fa-certificate"></i> Manual de Actualización de Inventario</h2>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para mantener actualizado tu inventario en la página</span>
+                                <button name="inventariospdf" onclick="verPDF(3, this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-inventariospdf">Mostrar</button>
+                                <button name="inventariospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-inventariospdf">Ocultar</button>
+                                <iframe id="inventariospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            @*<td style="text-align:left;padding-left:50px;">
+                                    <h2><i class="fa fa-certificate"></i> Manual Actualización de Contenido</h2>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para actualizar el contenido de un producto</span>
+                                    <button name="contenidospdf" onclick="verPDF('Contenidos.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-contenidospdf">Mostrar</button>
+                                    <button name="contenidospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-contenidospdf">Ocultar</button>
+                                    <iframe id="contenidospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+
+                                </td>*@
+                            <td style="text-align:left;padding-left:50px;">
+                                <h2><i class="fa fa-certificate"></i> Manual Actualización de Contenido</h2>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para actualizar el contenido de un producto</span>
+                                <button name="contenidospdf" onclick="verPDF(4, this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-contenidospdf">Mostrar</button>
+                                <button name="contenidospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-contenidospdf">Ocultar</button>
+                                <iframe id="contenidospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        $(document).ready(function () {
+
+
+
+        });
+
+
+
+
+    /*    function select() {*/
+
+
+
+
+             @*$.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("llenarselect", "ManualesOperativos")',
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        alert("Inserción exitosa");
+                        location.reload();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }*@
+
+        //-----------------------------------------------------------------------
+        //function verPDF(PDF,opcion) {
+        //    var host = window.location.origin
+
+
+        //    $("#"+ opcion).attr("src", host + "/Content/ManualesOpPDF/" + PDF)
+        //    $("#"+ opcion).show()
+
+
+        //    $(".ver-" + opcion).hide()
+        //    $(".ocultar-" + opcion).show()
+
+
+        //}
+        function ocultarPDF(opcion) {
+
+            $(".ver-" + opcion).show()
+            $(".ocultar-" + opcion).hide()
+            $("#" + opcion).hide()
+
+
+        }
+
+        //--------------------------------------------------------------
+        
+        
+        
+        function verPDF(idManual, opcion) {
+            //var tipoAlmacen = $("#TP").val();
+            var tipoAlmacen = 4;
+         debugger;
+        
+            //if (tipoAlmacen == 0) {
+            //    $("#TP").focus();
+            //    return;
+            //}
+
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("CargaPDF", "ManualesOperativos")',
+                 data: {
+                     idManual: idManual,
+                     idOwner: tipoAlmacen
+
+                },
+                datatype: "html",
+                success: function (json) {
+                   
+                    if (json.Success) {
+
+                        $("#" + opcion).attr("src", json.URL)
+                        $("#"+ opcion).show()
+
+                        $(".ver-" + opcion).hide()
+                        $(".ocultar-" + opcion).show()
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        }
+
+
+
+
+    </script>
+}

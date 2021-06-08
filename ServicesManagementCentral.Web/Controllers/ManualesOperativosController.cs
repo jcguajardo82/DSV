@@ -34,6 +34,21 @@ namespace ServicesManagement.Web.Controllers
             return View(vacio);
         }
 
+        public ActionResult ManualesOperativos_Proveedor()
+        {
+            var tipoalmacen = DALManualesOperativos.Llenartipoalmacen();
+
+            var manualesOperativosModels = tipoalmacen.Tables[0].AsEnumerable().Select(item => new SelectListItem { Value = (item.Field<int>("idOwner")).ToString(), Text = item.Field<string>("ownerName") }) as IEnumerable<SelectListItem>;
+            var vacio = new List<SelectListItem>() {
+                new SelectListItem { Value = "0", Text = "-Seleccione una opcion-" }
+            } as IEnumerable<SelectListItem>;
+
+            vacio = vacio.Union(manualesOperativosModels);
+
+            return View(vacio);
+        }
+
+
         public ActionResult CargaPDF(int idManual, int idOwner)
         {
             try
