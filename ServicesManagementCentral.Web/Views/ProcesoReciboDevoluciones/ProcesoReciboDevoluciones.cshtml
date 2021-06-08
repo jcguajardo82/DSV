@@ -186,17 +186,21 @@
 
             $('#tblConsulta_Devoluciones thead tr').clone(true).appendTo('#tblConsulta_Devoluciones thead');
             $('#tblConsulta_Devoluciones thead tr:eq(1) th').each(function (i) {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
 
-                $('input', this).on('keyup change', function () {
-                    if (table.column(i).search() !== this.value) {
-                        table
-                            .column(i)
-                            .search(this.value)
-                            .draw();
-                    }
-                });
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
             });
 
             var table = $("#tblConsulta_Devoluciones").DataTable(
