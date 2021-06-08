@@ -4,42 +4,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style id="compiled-css" type="text/css">
-    h2 {
-        color: #263EEA;
-        text-align: center;
-        font-weight: bold;
-    }
-    /* Fix table head */
-    .tableFixHead {
-        overflow-y: auto;
-        height: 300px;
-    }
-
-        .tableFixHead th {
-            position: sticky;
-            top: 0;
+@*<style id="compiled-css" type="text/css">
+        h2 {
+            color: #263EEA;
+            text-align: center;
+            font-weight: bold;
+        }
+        /* Fix table head */
+        .tableFixHead {
+            overflow-y: auto;
+            height: 300px;
         }
 
+            .tableFixHead th {
+                position: sticky;
+                top: 0;
+            }
 
-    /* Just common table stuff. */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        table-layout: fixed;
-        word-wrap: break-word;
-    }
 
-    th, td {
-        padding: 8px 16px;
-    }
+        /* Just common table stuff. */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
 
-    th {
-        background: #D52B1E;
-        color: #ffffff;
-        font-weight: bold;
-    }
-</style>
+        th, td {
+            padding: 8px 16px;
+        }
+
+        th {
+            background: #D52B1E;
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>*@
 
 <div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
     <div class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -94,7 +94,7 @@
                                             <tr>
                                                 <td style="text-align:center;">
                                                     <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["Recibido"])"
-                                                       title="Click para ver la lista de productos asociados a la consignación" class="btn btn-link">@p["UeNo"].ToString()</a>
+                                                       title="Click para ver la lista de productos asociados a la consignación" class="link"><u>@p["UeNo"].ToString()</u></a>
                                                 </td>
                                                 <td style="text-align:right">@p["OrderDate"] </td>
                                                 <td style="text-align:right">@p["OrderTime"] </td>
@@ -169,6 +169,7 @@
                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
 
@@ -182,65 +183,11 @@
 
 @section scripts {
     <script type="text/javascript">
-        $(document).ready(function () {
-
-            $('#tblConsulta_Devoluciones thead tr').clone(true).appendTo('#tblConsulta_Devoluciones thead');
-            $('#tblConsulta_Devoluciones thead tr:eq(1) th').each(function (i) {
-                if ($(this).attr('name') != "accion") {
-                    var title = $(this).text();
-                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
-
-                    $('input', this).on('keyup change', function () {
-                        if (table.column(i).search() !== this.value) {
-                            table
-                                .column(i)
-                                .search(this.value)
-                                .draw();
-                        }
-                    });
-                } else {
-                    $(this).empty();
-                }
-            });
-
-            var table = $("#tblConsulta_Devoluciones").DataTable(
-                {
-                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
-                    processing: true,
-                    searching: true,
-                    ordering: true,
-                    order: [[1, 'asc']],
-                    filter: false,
-                    info: false,
-                    stateSave: false,
-                    select: true,
-                    select: {
-                        style: 'single'
-                    },
-                    //Paggin
-                    paging: false,
-                    pageLength: 10,
-                    lengthMenu: [10, 25, 50, 100, 500],
-
-                    // destroy: true, //destruye automaticamente la referencia a la tabla
-                    //Ajax
-                    //serverSide: true,
-                    //bServerSide: true,
-                    //sServerMethod: "GET",
-                    buttons: ['csv', 'excel'],
-                    orderCellsTop: true,
-                    fixedHeader: true
-
-                }
-            );
-        });
-
-                $('.custom-file-input').on('change', function () {
+        $('.custom-file-input').on('change', function () {
             let fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
+
         $(document).ready(function () {
             $('#btnUpload').click(function () {
 
@@ -292,16 +239,6 @@
                     alert("FormData is not supported.");
                 }
             });
-        });
-
-        $(document).ready(function () {
-            $("#txtFiltro").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#tblOrdenes tbody tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-
         });
 
     function ListDevoluciones() {
@@ -444,8 +381,8 @@
                 var _IdTrackingService = $(row)[0].cells[5].innerText;
                 for (var i = 0; i < $(row)[0].cells[6].childNodes[0].childElementCount; i++) {
                     if ($(row)[0].cells[6].childNodes[0][i].selected == true) {
-                        var PackageCondition = $(row)[0].cells[6].childNodes[0][i].innerText; 
-                    }  
+                        var PackageCondition = $(row)[0].cells[6].childNodes[0][i].innerText;
+                    }
                 }
                 var MotivoDevol = $(row)[0].cells[7].children[0].value;
                 $.ajax({
@@ -485,5 +422,67 @@
         location.reload();
     }
 
+    </script>
+
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta_Devoluciones thead tr').clone(true).appendTo('#tblConsulta_Devoluciones thead');
+            $('#tblConsulta_Devoluciones thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta_Devoluciones").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+        });
     </script>
 }
