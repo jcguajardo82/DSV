@@ -34,6 +34,10 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
         public string Concatenado { get; set; }
         public string idSupplierWH { get; set; }
         public string SupplierName { get; set; }
+        public string StoreNum { get; set; }
+        public string StatusUe { get; set; }
+
+
     }
 
 }
