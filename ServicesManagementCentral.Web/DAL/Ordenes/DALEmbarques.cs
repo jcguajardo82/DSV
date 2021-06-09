@@ -162,7 +162,7 @@ namespace ServicesManagement.Web.DAL.Embarques
 
         public static DataSet upCorpOms_Ins_UeNoTracking(string UeNo, int OrderNo, string IdTracking, string TrackingType,
             string PackageType, decimal PackageLength, decimal PackageWidth, decimal PackageHeight, decimal PackageWeight,
-            string CreationId)
+            string CreationId, string IdTrackingService = "")
         {
 
             DataSet ds = new DataSet();
@@ -189,6 +189,7 @@ namespace ServicesManagement.Web.DAL.Embarques
                 parametros.Add("@PackageHeight", PackageHeight);
                 parametros.Add("@PackageWeight", PackageWeight);
                 parametros.Add("@CreationId", CreationId);
+                parametros.Add("@IdTrackingService", IdTrackingService);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoTracking]", false, parametros);
 
@@ -206,6 +207,7 @@ namespace ServicesManagement.Web.DAL.Embarques
             }
 
         }
+
 
         public static DataSet upCorpOms_Ins_UeNoTrackingDetail(string UeNo, int OrderNo, string IdTracking, string TrackingType,
             decimal ProductId, decimal Barcode, string ProductName, 
