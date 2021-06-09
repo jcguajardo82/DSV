@@ -20,24 +20,12 @@
                         <td style="text-align:left;padding-left:50px;">
                             <h2><i></i></h2>
                             <div class="col-sm-10">
-                                @*@Html.DropDownList("tipoalmacen", Model, new { @id = "TP", @class = "form-control m-b" })*@
-
-
-                                @*<select class="form-control m-b">
-                                        <option disabled selected>Selecciona una opción</option>
-                                        <option>DSV</option>
-                                        <option>DST</option>
-                                        <option>WMS</option>
-                                    </select>*@
+                                <input class="form-check-input" type="checkbox" value="" id="chkSel_AP" />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(1)"
+                                   title="Click para ver el aviso de privacidad" class="link"><u>Aviso Privacidad</u></a>
+                                <br />
 
                             </div>
-                        </td>
-                        <td style="text-align:right;padding-left:50px;">
-                            <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(1)"
-                               title="Click para ver el aviso de privacidad" class="link"><u>Aviso Privacidad</u></a>
-                        </td>
-                        <td style="text-align:left">
-                            <input class="form-check-input" type="checkbox" value="" id="chkSel_AP" />
                         </td>
                     </tr>
                 </table>
