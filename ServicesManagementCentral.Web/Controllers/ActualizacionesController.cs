@@ -39,6 +39,8 @@ namespace ServicesManagement.Web.Controllers
                 {
 
                     string servername = Request.Form["servername"].ToString();
+                    string nombre = Request.Form["nombre"].ToString();
+                    string extension = Request.Form["extension"].ToString();
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
                     for (int i = 0; i < files.Count; i++)
@@ -63,7 +65,7 @@ namespace ServicesManagement.Web.Controllers
                             fname = file.FileName;
                         }
 
-                        fname = string.Format("{0}_{1}_{2}", "Ej", "contenido", dateTime);
+                        fname = string.Format("{0}_{1}_{2}", nombre, "contenido", dateTime + "." + extension);
 
                         // Get the complete folder path and store the file inside it.  
                         var path = Path.Combine(Server.MapPath("~/Files/"), fname);

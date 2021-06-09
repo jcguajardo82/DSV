@@ -26,7 +26,7 @@
                                 <div class="col-sm-8">
                                     <br />
                                     <div class="custom-file">
-                                        <input id="FileUpload1" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                        <input id="FileUpload1" type="file" class="custom-file-input" accept=".xls,.xlsx,.csv">
                                         <label for="FileUpload1" class="custom-file-label">Seleccionar Archivo...</label>
                                     </div>
                                     <input type="button" class="btn btn-success btn-file" id="btnUpload" value="Subir Archivo" />
@@ -61,8 +61,10 @@
                 // Looping over all files and add it to FormData object
                 for (var i = 0; i < files.length; i++) {
                     fileData.append(files[i].name, files[i]);
+                    var nameext = files[i].name.split(".");
                 }
 
+                fileData.append('extension', nameext[1]);
                 fileData.append('servername', servername);
 
                 $.ajax({
@@ -118,17 +120,12 @@
                     for (var i = 0; i < files.length; i++) {
                         fileData.append(files[i].name, files[i]);
                         var nameext = files[i].name.split(".");
-                        if (nameext[1] != "png" & nameext[1] != "jpg")
-                        {
-                            alert("Extensión no válida");
-                            return;
-                        }
-
                     }
 
                     // Adding one more key to FormData object
                     fileData.append('servername', servername);
-
+                    fileData.append('nombre', nameext[0]);
+                    fileData.append('extension', nameext[1]);
 
 
                     $.ajax({
