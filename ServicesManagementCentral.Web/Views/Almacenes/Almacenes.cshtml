@@ -29,53 +29,53 @@
     </div>
 </div>
 <div class="modal inmodal fade" id="dlgInventarios" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl" >
         <div class="modal-content">
             <div class="modal-header pt-3 pb-1">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title">Almacen - Inventario </h4>
             </div>
             <div class="modal-body">
-                <form id="frmCreateServicios">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-12">
-                            <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
-                                <thead class="bg-danger-sor">
-                                    <tr>
-                                        <th>Numero de Proveedor</th>
-                                        <th>Numero de Almacen</th>
-                                        <th>Tipo de Almacen</th>
-                                        <th>SKU de producto</th>
-                                        <th>EAN/Codigo de Barras</th>
-                                        <th>Nombre de producto</th>
-                                        <th>Grupo de categorias</th>
-                                        <th>Nivel de existencia</th>
-                                        <th>Inventario de seguridad</th>
-                                        <th>Inventario a la venta</th>
-                                        <th>Inventario Reservado</th>
-                                        <th>Tipo de articulo</th>
-                                        <th>Largo</th>
-                                        <th>Alto</th>
-                                        <th>Ancho</th>
-                                        <th>Peso</th>
-                                        <th>Peso Volumetrico</th>
-                                        <th>Peso Real</th>
-                                        <th>Estatus de producto</th>
-                                        <th>Costo de Material</th>
-                                        <th>Fecha Creación</th>
-                                        <th>Numero Proveedor Origen</th>
-                                        <th>Nombre Proveedor Origen</th>
-                                        <th>Tipo de almacen</th>
-                                        <th>Nombre de Proveedor</th>
-                                        <th>Nombre de Almacen</th>
 
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <table id="tblInventarios" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                            <thead class="bg-danger-sor">
+                                <tr>
+                                    <th>Numero de Proveedor</th>
+                                    <th>Numero de Almacen</th>
+                                    <th>Tipo de Almacen</th>
+                                    <th>SKU de producto</th>
+                                    <th>EAN/Codigo de Barras</th>
+                                    <th>Nombre de producto</th>
+                                    <th>Grupo de categorias</th>
+                                    <th>Nivel de existencia</th>
+                                    <th>Inventario de seguridad</th>
+                                    <th>Inventario a la venta</th>
+                                    <th>Inventario Reservado</th>
+                                    <th>Tipo de articulo</th>
+                                    <th>Largo</th>
+                                    <th>Alto</th>
+                                    <th>Ancho</th>
+                                    <th>Peso</th>
+                                    <th>Peso Volumetrico</th>
+                                    <th>Peso Real</th>
+                                    <th>Estatus de producto</th>
+                                    <th>Costo de Material</th>
+                                    <th>Fecha Creación</th>
+                                    <th>Numero Proveedor Origen</th>
+                                    <th>Nombre Proveedor Origen</th>
+                                    <th>Tipo de almacen</th>
+                                    <th>Nombre de Proveedor</th>
+                                    <th>Nombre de Almacen</th>
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
-                </form>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
@@ -188,46 +188,90 @@
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
-                        $('#tblInventarios tbody').empty();
-                        //var tr;
-                        debugger;
-                        //Append each row to html table
+                        //$('#tblInventarios tbody').empty();
+                        ////var tr;
+                        //debugger;
+                        ////Append each row to html table
 
+                        //for (var i = 0; i < json.resp.length; i++) {
+                        //    tr = $('<tr/>');
+
+                        //    tr.append("<td>" + json.resp[i].IdSupplierWH + "</td>");
+                        //    tr.append("<td>" + json.resp[i].IdSupplierWHCode + "</td>");
+                        //    tr.append("<td>" + json.resp[i].OwnerName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductSKU + "</td>");
+                        //    tr.append("<td>" + json.resp[i].BarCode + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductCategoryId + "</td>");
+
+                        //    tr.append("<td>" + json.resp[i].StockLevel + "</td>");
+                        //    tr.append("<td>" + json.resp[i].QtyStockSafety + "</td>");
+                        //    tr.append("<td>" + json.resp[i].QtyStockForSale + "</td>");
+                        //    tr.append("<td>" + json.resp[i].QtyStockReserved + "</td>");
+
+                        //    tr.append("<td>" + json.resp[i].ProductType + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionLarge + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionHeight + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionWidth + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionWeight + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionWeightVol + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionWeightReal + "</td>");
+
+                        //    tr.append("<td>" + json.resp[i].ProductStatus + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductMaterialCost + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductCreationDate + "</td>");
+                        //    tr.append("<td>" + json.resp[i].IdSupplierOrigin + "</td>");
+                        //    tr.append("<td>" + json.resp[i].IdSupplierOriginName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].IdOwner + "</td>");
+                        //    tr.append("<td>" + json.resp[i].SupplierName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].SupplierWHName + "</td>");
+
+                        //    $('#tblInventarios').append(tr);
+                        //}
+
+                        var table = $('#tblInventarios').DataTable();
+
+                        //table.clear().draw();
+                        //table.destroy();
+                        //iniciarDetalle();
+
+                        table.clear().draw();
                         for (var i = 0; i < json.resp.length; i++) {
-                            tr = $('<tr/>');
 
-                            tr.append("<td>" + json.resp[i].IdSupplierWH + "</td>");
-                            tr.append("<td>" + json.resp[i].IdSupplierWHCode + "</td>");
-                            tr.append("<td>" + json.resp[i].OwnerName + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductSKU + "</td>");
-                            tr.append("<td>" + json.resp[i].BarCode + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductName + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductCategoryId + "</td>");
 
-                            tr.append("<td>" + json.resp[i].StockLevel + "</td>");
-                            tr.append("<td>" + json.resp[i].QtyStockSafety + "</td>");
-                            tr.append("<td>" + json.resp[i].QtyStockForSale + "</td>");
-                            tr.append("<td>" + json.resp[i].QtyStockReserved + "</td>");
+                            table.row.add([
+                                json.resp[i].IdSupplierWH
+                                , json.resp[i].IdSupplierWHCode
+                                , json.resp[i].OwnerName
+                                , json.resp[i].ProductSKU
+                                , json.resp[i].BarCode
 
-                            tr.append("<td>" + json.resp[i].ProductType + "</td>");
-                            tr.append("<td>" + json.resp[i].DimmensionLarge + "</td>");
-                            tr.append("<td>" + json.resp[i].DimmensionHeight + "</td>");
-                            tr.append("<td>" + json.resp[i].DimmensionWidth + "</td>");
-                            tr.append("<td>" + json.resp[i].DimmensionWeight + "</td>");
-                            tr.append("<td>" + json.resp[i].DimmensionWeightVol + "</td>");
-                            tr.append("<td>" + json.resp[i].DimmensionWeightReal + "</td>");
+                                , json.resp[i].ProductName
+                                , json.resp[i].ProductCategoryId
+                                , json.resp[i].StockLevel
+                                , json.resp[i].QtyStockSafety
+                                , json.resp[i].QtyStockForSale
+                                , json.resp[i].QtyStockReserved
+                                , json.resp[i].ProductType
+                                , json.resp[i].DimmensionLarge
+                                , json.resp[i].DimmensionHeight
+                                , json.resp[i].DimmensionWidth
+                                , json.resp[i].DimmensionWeight
+                                , json.resp[i].DimmensionWeightVol
+                                , json.resp[i].DimmensionWeightReal
+                                , json.resp[i].ProductStatus
+                                , json.resp[i].ProductMaterialCost
+                                , json.resp[i].ProductCreationDate
+                                , json.resp[i].IdSupplierOrigin
+                                , json.resp[i].IdSupplierOriginName
+                                , json.resp[i].IdOwner
+                                , json.resp[i].SupplierName
+                                , json.resp[i].SupplierWHName
 
-                            tr.append("<td>" + json.resp[i].ProductStatus + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductMaterialCost + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductCreationDate + "</td>");
-                            tr.append("<td>" + json.resp[i].IdSupplierOrigin + "</td>");
-                            tr.append("<td>" + json.resp[i].IdSupplierOriginName + "</td>");
-                            tr.append("<td>" + json.resp[i].IdOwner + "</td>");
-                            tr.append("<td>" + json.resp[i].SupplierName + "</td>");
-                            tr.append("<td>" + json.resp[i].SupplierWHName + "</td>");
 
-                            $('#tblInventarios').append(tr);
+                            ]).draw();
                         }
+                        table.columns.adjust().draw();
                     }
                     else {
                         alert(json.Message);
@@ -462,6 +506,74 @@
                 }
             );
 
+
+            $('#tblInventarios thead tr').clone(true).appendTo('#tblInventarios thead');
+            $('#tblInventarios thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+
+            table2 = $("#tblInventarios").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true,
+                        footer: true
+                    },
+                    "scrollX": true
+                    , "scrollY": "400px"
+                    , "scrollCollapse": true
+                    , "options": {
+                        "emptyTable": "No records to display..."
+                    }
+
+                }
+            );
+        });
+
+        function IniciarInventario() {
+
+
+
             $("#tblInventarios").DataTable(
                 {
                     dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
@@ -501,7 +613,7 @@
 
                 }
             );
-        });
+        }
     </script>
 }
 
