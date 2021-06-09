@@ -12,21 +12,25 @@
                 <thead class="bg-danger-sor">
                     <tr>
                         <th>Numero de consignación</th>
-                        <th>Total importe de la Consignación</th>
-                        <th>Tipo Almacen </th>
+                        @*<th>Total importe de la Consignación</th>*@
+                        @*<th>Tipo Almacen </th>*@
                         <th>Fecha creacion de orden</th>
                         <th>Hora creacion de orden</th>
+                        <th>Fecha Pago Autorizado</th>
+                        <th>Fecha Limite Entrega Paqueteria</th>
                         <th>Nombre del cliente</th>
-                        <th>Estatus de la orden</th>
+                        @*<th>Estatus de la orden</th>*@
                         <th>Estatus de la consignación Surtido</th>
                         <th>Estatus de la consignación Envio</th>
                         <th>No. de orden de compra (DSV)</th>
                         <th>Estatus de Orden de Compra (DSV)</th>
-                        <th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>
-                        <th>Guia de devolucion</th>
-                        <th>Estatus de la Guia de Devolucion</th>
-                        <th>Guia de reenvio</th>
-                        <th>Estatus de Guía de Reenvio</th>
+                        <th>No. Guía</th>
+                        <th>Vigencia Guía</th>
+                        @* <th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
+                        @* <th>Guia de devolucion</th>*@
+                        @*<th>Estatus de la Guia de Devolucion</th>*@
+                        @*<th>Guia de reenvio</th>*@
+                        @*<th>Estatus de Guía de Reenvio</th>*@
                         @*<th class="sorting">Motivo de no recolección</th>*@
                         @*<th name='accion'></th>*@
                     </tr>
@@ -210,22 +214,29 @@
                         /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
                             tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(\"" + json.resp[i].Consignacion + "\")'><u>" + json.resp[i].Consignacion +"</u></a></td>");
                             /*tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + json.resp[i].Consignacion + "</a></td>");*/
-                            tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");  
-                            tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
+                            //tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");  
+                            //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
                             tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
+
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
+
                             tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
+                            //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusConsignacionAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusConsignacionEntrega + "</td>");
                             tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");
 
-                            tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
+                            tr.append("<td></td>");
+                            tr.append("<td></td>");
+
+                            //tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
+                            //tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
+                            //tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
+                            //tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
+                            //tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
                             
                             //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
                             //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
