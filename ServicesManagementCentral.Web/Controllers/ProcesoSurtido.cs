@@ -82,8 +82,8 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                int OrderNo = 101141812;
-                string UeNo = "101141812-1";
+                int OrderNo = 101184110;
+                string UeNo = "101184110-4";
                 msj msg = new msj();
                 List<upCorpOms_Cns_UeNoTracking.Guia> guias = new List<upCorpOms_Cns_UeNoTracking.Guia>();
                 List<upCorpOms_Cns_UeNoTracking.Item> items = new List<upCorpOms_Cns_UeNoTracking.Item>();

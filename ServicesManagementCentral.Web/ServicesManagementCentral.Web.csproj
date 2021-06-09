@@ -3668,6 +3668,10 @@
     <Content Include="Content\ManualesOpPDF\Inventarios.pdf" />
     <Content Include="Content\ManualesOpPDF\operaciones.pdf" />
     <Content Include="Files\AvisoPrivacidad.pdf" />
+    <Content Include="Files\Plantilla_Contenido-A.xlsx" />
+    <Content Include="Files\Plantilla_Contenido-B.xlsx" />
+    <Content Include="Files\FDD DSV Actualizacion Nivel de Inventario Proveedor V1_1.docx" />
+    <Content Include="Files\DSV Macro v1.41.xlsm" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\Inspinia\_Footer.cshtml" />
     <Content Include="Views\Shared\Inspinia\_Navigation.cshtml" />

@@ -175,35 +175,39 @@
                         $('#tblConsulta tbody').empty();
                         //var tr;
                         debugger;
-                        //Append each row to html table
-                        tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
-                        tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a></td>");
-                        /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
-                        //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                        //tr.append("<td>" + json.resp[i].FechaOrden + "</td>");
-                        //tr.append("<td>" + json.resp[i].HoraOrden + "</td>");
-                        tr.append("<td>" + json.resp[i].Cliente + "</td>");
-                        tr.append("<td>" + json.resp[i].EstatusAlmacen + "</td>");
-                        tr.append("<td>" + json.resp[i].EstatusHomeD + "</td>");
-                        //tr.append("<td>" + json.resp[i].EstatusGuiaDevol + "</td>");
-                        tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
-                        tr.append("<td></td>");  // Aqui debe ir la GUIA de DEVOLUCION
-                        //tr.append("<td>" + json.resp[i].GuiaReenvioEstatus + "</td>");
-                        tr.append("<td>" + json.resp[i].OrdenDSV + "</td>");
-                        tr.append("<td>" + json.resp[i].OredenDSVStatus + "</td>");
-                        tr.append("<td> </td>");
-                        tr.append("<td> </td>");
-                        tr.append("<td> </td>");
-                        //tr.append("<td></td>");
-                        //tr.append("<td></td>");
-                        //tr.append("<td></td>");
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+
+                            //Append each row to html table
+                            tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
+                            tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a></td>");
+                            /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
+                            //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
+                            //tr.append("<td>" + json.resp[i].FechaOrden + "</td>");
+                            //tr.append("<td>" + json.resp[i].HoraOrden + "</td>");
+                            tr.append("<td>" + json.resp[i].Cliente + "</td>");
+                            tr.append("<td>" + json.resp[i].EstatusAlmacen + "</td>");
+                            tr.append("<td>" + json.resp[i].EstatusHomeD + "</td>");
+                            //tr.append("<td>" + json.resp[i].EstatusGuiaDevol + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
+                            //tr.append("<td></td>");  // Aqui debe ir la GUIA de DEVOLUCION
+                            //tr.append("<td>" + json.resp[i].GuiaReenvioEstatus + "</td>");
+                            tr.append("<td>" + json.resp[i].OrdenDSV + "</td>");
+                            tr.append("<td>" + json.resp[i].OrdenDSVStatus + "</td>");
+                            tr.append("<td> </td>");
+                            tr.append("<td> </td>");
+                            tr.append("<td> </td>");
+
+                            //tr.append("<td></td>");
+                            //tr.append("<td></td>");
+                            //tr.append("<td></td>");
                             //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
                             //AltaProveedor/AltaProveedor
 
-
                             $('#tblConsulta').append(tr);
 
-
+                        }
 
                     }
                     else {

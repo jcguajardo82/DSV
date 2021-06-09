@@ -26,7 +26,7 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                parametros.Add("@idOwner", 3); // parametro Proveedor fijo
+                parametros.Add("@idOwner", 4); // parametro Proveedor fijo
                 //parametros.Add("@Consignacion", "101187901-3"); // parametro Proveedor fijo
 
 
@@ -63,8 +63,8 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                //parametros.Add("@Consignacion", consignacion);
-                parametros.Add("@Consignacion", "101187901-3"); // parametro Proveedor fijo
+                parametros.Add("@Consignacion", consignacion);
+                // parametros.Add("@Consignacion", "101187901-3"); // parametro Proveedor fijo
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoReshipmentDetail]", false, parametros);
 

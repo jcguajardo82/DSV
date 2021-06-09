@@ -42,6 +42,11 @@ namespace ServicesManagement.Web.Models.Consignaciones
         public string GuiaReenvioNro { get; set; }
         public string GuiaReenvioStatus { get; set; }
 
+        public string GuiaEnvio { get; set; }
+        public string GuiaVig { get; set; }
+        public string FechaPago { get; set; }
+        public string FechaLimite { get; set; }
+
         ////[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         //public string FechaStock { get; set; }
         //public int NumCodigos { get; set; }

@@ -17,7 +17,7 @@
                         <th>Fecha creacion de orden</th>
                         <th>Hora creacion de orden</th>
                         <th>Fecha Pago Autorizado</th>
-                        <th>Fecha Limite Entrega Paqueteria</th>
+                        <th>Fecha Limite Entrega a la Paqueteria</th>
                         <th>Nombre del cliente</th>
                         @*<th>Estatus de la orden</th>*@
                         <th>Estatus de la consignación Surtido</th>
@@ -219,8 +219,8 @@
                             tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
                             tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
 
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
+                            tr.append("<td>" + json.resp[i].FechaPago + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaLimite + "</td>");
 
                             tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
                             //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
@@ -229,8 +229,8 @@
                             tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");
 
-                            tr.append("<td></td>");
-                            tr.append("<td></td>");
+                            tr.append("<td>" + json.resp[i].GuiaEnvio + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaVig + "</td>");
 
                             //tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
                             //tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");

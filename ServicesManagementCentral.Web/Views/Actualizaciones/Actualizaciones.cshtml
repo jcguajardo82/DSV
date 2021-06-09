@@ -33,7 +33,7 @@
                             </td>
                             <td style="text-align:center;padding-left:50px;">
                                 <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(1)"
-                                   title="Click para ver el Manual de Carga Inventario-Proveedor" class="link"><u>Manual de Carga Inventario-Proveedor</u></a>
+                                   title="Click para ver plantilla de Inventario del Proveedor" class="link"><u>Plantilla para carga de inventario</u></a>
                                 <br />
                             </td>
                             <td></td>
@@ -121,7 +121,7 @@
         });
 
         function popUpShowPDF(txtValor) {
-            var url2 = '@Url.Content("~/").ToString()' + "Files/FDD DSV Actualizacion Nivel de Inventario Proveedor V1_1.docx";
+            var url2 = '@Url.Content("~/").ToString()' + "Files/DSV Macro v1.41.xlsm";
             window.open(url2);
         }
 

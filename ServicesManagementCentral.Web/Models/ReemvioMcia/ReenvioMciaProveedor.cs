@@ -19,7 +19,7 @@ namespace ServicesManagement.Web.Models.ReemvioMcia
         public string GuiaReenvioNro { get; set; }
         public string GuiaReenvioEstatus { get; set; }
         public string OrdenDSV { get; set; }
-        public string OredenDSVStatus { get; set; }
+        public string OrdenDSVStatus { get; set; }
 
     }
 }
