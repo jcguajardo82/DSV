@@ -1,180 +1,121 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "ProcesoReciboDevoluciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<style id="compiled-css" type="text/css">
-        h2 {
-            color: #263EEA;
-            text-align: center;
-            font-weight: bold;
-        }
-        /* Fix table head */
-        .tableFixHead {
-            overflow-y: auto;
-            height: 300px;
-        }
+<h2>Devolución Autorizada (RMA)</h2>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Numero de Consignación</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Fecha de creación</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 55px;">Hora de creación</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">RMA</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Solicitud RMA</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Motivo RMA</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Paqueteria</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Guia de devolucion</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Estatus Guía</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Fecha de entrega al almacen</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Recibido por</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Días Vigentes Guia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Session["ListaConsignaciones"] != null)
+                        {
+                            System.Data.DataSet ds = (System.Data.DataSet)Session["ListaConsignaciones"];
 
-            .tableFixHead th {
-                position: sticky;
-                top: 0;
-            }
+                            var dt = ds.Tables[0];
 
+                            int index = 0;
 
-        /* Just common table stuff. */
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            table-layout: fixed;
-            word-wrap: break-word;
-        }
-
-        th, td {
-            padding: 8px 16px;
-        }
-
-        th {
-            background: #D52B1E;
-            color: #ffffff;
-            font-weight: bold;
-        }
-    </style>*@
-
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
-            <h2>Devolución Autorizada (RMA)</h2>
-
-
-
-            <div class="row">
-                <div class="col col-xs-6">
-                    <div class="dt-buttons btn-group flex-wrap">
-                        @*<button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>*@
-                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
-                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
-                    </div>
-                </div>
-                <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
-                </div>
+                            foreach (System.Data.DataRow p in dt.Rows)
+                            {
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["Recibido"])"
+                                            title="Click para ver la lista de productos asociados a la consignación" class="link"><u>@p["UeNo"].ToString()</u></a>
+                                    </td>
+                                    <td style="text-align:right">@p["OrderDate"] </td>
+                                    <td style="text-align:right">@p["OrderTime"] </td>
+                                    <td style="text-align:center">@p["UeNoRMA"]</td>
+                                    <td style="text-align:center">@p["ConsigmentType"]</td>
+                                    <td style="text-align:center">@p["TrackingType"]</td>
+                                    <td style="text-align:center"> @p["TrackingServiceName"]</td>
+                                    <td style="text-align:center">@p["IdTrackingService"]</td>
+                                    <td style="text-align:center"> @p["TrackingServiceStatus"]</td>
+                                    <td style="text-align:center"> @p["TrackingDeliveryDate"] - @p["TrackingDeliveryTime"] </td>
+                                    <td style="text-align:center">@p["TrackingDeliveredTo"]</td>
+                                    <td style="text-align:center"> @p["DiasVigencia"]</td>
+                                    <td style="visibility:hidden"> @p["Recibido"]</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgShowProdcut" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pt-lg-5 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Lista de Productos</p>
             </div>
-            <div class="row">
+            <div class="modal-body">
                 <div class="col-xs-12 col-md-12">
-                    <div class="tableFixHead table-responsive m-t">
-                        <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                    <form id="frmShowServicios">
+                        <table id="tblShowProduct" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" style="width:100%">
                             <thead class="bg-danger-sor">
                                 <tr role="row">
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Numero de Consignación</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Fecha de creación</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 55px;">Hora de creación</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">RMA</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Solicitud RMA</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Motivo RMA</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Paqueteria</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Guia de devolucion</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Estatus Guía</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Fecha de entrega al almacen</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Recibido por</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Días Vigentes Guia</th>
+                                    <th class="text-center sorting" style="width: 50px;">RMA</th>
+                                    <th class="text-center sorting" style="width: 100px;">EAN</th>
+                                    <th class="text-center sorting" style="width: 80px;">ID</th>
+                                    <th class="text-center sorting" style="width: 100px;">Descripción</th>
+                                    <th class="text-center sorting" style="width: 50px;">Piezas</th>
+                                    <th class="text-center sorting" style="width: 50px;">Guía</th>
+                                    <th class="text-center sorting" style="width: 100px;">Condiciones</th>
+                                    <th class="text-center sorting" style="width: 100px;">Comentario</th>
+                                    <th class="text-center sorting" style="width: 50px;">Recibo</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @{
-                                    if (Session["ListaConsignaciones"] != null)
-                                    {
-                                        System.Data.DataSet ds = (System.Data.DataSet)Session["ListaConsignaciones"];
-
-                                        var dt = ds.Tables[0];
-
-                                        int index = 0;
-
-                                        foreach (System.Data.DataRow p in dt.Rows)
-                                        {
-                                            <tr>
-                                                <td style="text-align:center;">
-                                                    <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["Recibido"])"
-                                                       title="Click para ver la lista de productos asociados a la consignación" class="link"><u>@p["UeNo"].ToString()</u></a>
-                                                </td>
-                                                <td style="text-align:right">@p["OrderDate"] </td>
-                                                <td style="text-align:right">@p["OrderTime"] </td>
-                                                <td style="text-align:center">@p["UeNoRMA"]</td>
-                                                <td style="text-align:center">@p["ConsigmentType"]</td>
-                                                <td style="text-align:center">@p["TrackingType"]</td>
-                                                <td style="text-align:center"> @p["TrackingServiceName"]</td>
-                                                <td style="text-align:center">@p["IdTrackingService"]</td>
-                                                <td style="text-align:center"> @p["TrackingServiceStatus"]</td>
-                                                <td style="text-align:center"> @p["TrackingDeliveryDate"] - @p["TrackingDeliveryTime"] </td>
-                                                <td style="text-align:center">@p["TrackingDeliveredTo"]</td>
-                                                <td style="text-align:center"> @p["DiasVigencia"]</td>
-                                                <td style="visibility:hidden"> @p["Recibido"]</td>
-                                            </tr>
-                                        }
-                                    }
-                                }
                             </tbody>
                         </table>
-                    </div>
+                    </form>
+                </div>
+                <button type="button" class="btn btn-white" onclick="Confirmar()">Confirmar Devolución</button>
+                <table style="width:100%;padding-top:50px;">
+                    <!-- cambio -->
+                    <tr>
+                        <td style="text-align:left;padding-left:50px;">
+                            <div class="col-sm-8">
+                                <br />
+                                <div class="custom-file">
+                                    <input id="FileUpload1" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                    <label for="FileUpload1" class="custom-file-label">Seleccionar Archivo...</label>
+                                </div>
+                                <input type="button" class="btn btn-success btn-file" id="btnUpload" value="Subir Archivo" />
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-
-        <div class="modal inmodal fade" id="dlgShowProdcut" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header pt-lg-5 pb-1">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <p>Lista de Productos</p>
-                    </div>
-                    <div class="modal-body">
-                        <div class="col-xs-12 col-md-12">
-                            <form id="frmShowServicios">
-                                <table id="tblShowProduct" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" style="width:100%">
-                                    <thead class="bg-danger-sor">
-                                        <tr role="row">
-                                            <th class="text-center sorting" style="width: 50px;">RMA</th>
-                                            <th class="text-center sorting" style="width: 100px;">EAN</th>
-                                            <th class="text-center sorting" style="width: 80px;">ID</th>
-                                            <th class="text-center sorting" style="width: 100px;">Descripción</th>
-                                            <th class="text-center sorting" style="width: 50px;">Piezas</th>
-                                            <th class="text-center sorting" style="width: 50px;">Guía</th>
-                                            <th class="text-center sorting" style="width: 100px;">Condiciones</th>
-                                            <th class="text-center sorting" style="width: 100px;">Comentario</th>
-                                            <th class="text-center sorting" style="width: 50px;">Recibo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </form>
-                        </div>
-                        <button type="button" class="btn btn-white" onclick="Confirmar()">Confirmar Devolución</button>
-                        <table style="width:100%;padding-top:50px;">
-                            <!-- cambio -->
-                            <tr>
-                                <td style="text-align:left;padding-left:50px;">
-                                    <div class="col-sm-8">
-                                        <br />
-                                        <div class="custom-file">
-                                            <input id="FileUpload1" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
-                                            <label for="FileUpload1" class="custom-file-label">Seleccionar Archivo...</label>
-                                        </div>
-                                        <input type="button" class="btn btn-success btn-file" id="btnUpload" value="Subir Archivo" />
-                                    </div>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </table>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
+
 <input id="selUeNo" name="selUeNo" value="" style="visibility:hidden" />
 <input id="selOrderNo" name="selOrderNo" value="" style="visibility:hidden" />
 <input id="selTrackingType" name="selTrackingType" value="" style="visibility:hidden" />
@@ -222,7 +163,7 @@
 
 
                     $.ajax({
-                       // url: '/ManualesOperativos/UploadFiles',
+                        // url: '/ManualesOperativos/UploadFiles',
                         url: '@Url.Action("UploadFiles", "ProcesoReciboDevoluciones")',
                         type: "POST",
                         contentType: false, // Not to set any content header
@@ -241,118 +182,25 @@
             });
         });
 
-    function ListDevoluciones() {
+        function ListDevoluciones() {
 
-        $.ajax({
-        async: false,
-        type: "GET",
-        url: '@Url.Action("ListDevoluciones", "ProcesoReciboDevoluciones")',
-        data: {
-
-        },
-        datatype: "html",
-        success: function (json) {
-            if (json.Success) {
-                var sel = $("#ddlCauses");
-                sel.empty();
-
-               sel.get(0).options[0] = new Option("--SELECCIONE--", "0");
-                for (var i = 0; i < json.resp.length; i++) {
-                    sel.append('<option value="' + json.resp[i].IdCause + '">' + json.resp[i].Cause_Desc + '</option>');
-                }
-            }
-            else {
-                alert(json.Message);
-            }
-        }
-        , error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.responseText);
-
-        }
-    });
-}
-
-    function ListCondiciones() {
-        $.ajax({
-        async: false,
-        type: "GET",
-        url: '@Url.Action("ListCondiciones", "ProcesoReciboDevoluciones")',
-        data: {
-
-        },
-        datatype: "html",
-        success: function (json) {
-            if (json.Success) {
-                var sel = $("#ddlMotivos");
-                sel.empty();
-
-                sel.get(0).options[0] = new Option("--SELECCIONE--", "0");
-                for (var i = 0; i < json.resp.length; i++) {
-                    sel.append('<option value="' + json.resp[i].IdCause + '">' + json.resp[i].Cause_Desc + '</option>');
-                }
-            }
-            else {
-                alert(json.Message);
-            }
-        }
-        , error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.responseText);
-
-        }
-    });
-}
-
-    function popUpLstProds(el, bitRecibido) {
-        var _UeNo = $(el).attr('id');
-        $('#selUeNo').val($(el).attr('id'));
-        $('#selOrderNo').val($(el).attr('name'));
-        $('#selRecibido').val(bitRecibido);
-
-        $.ajax({
+            $.ajax({
             async: false,
             type: "GET",
-            url: '@Url.Action("LstProdPaquete", "ProcesoReciboDevoluciones")',
+            url: '@Url.Action("ListDevoluciones", "ProcesoReciboDevoluciones")',
             data: {
-                UeNo: _UeNo
+
             },
             datatype: "html",
             success: function (json) {
                 if (json.Success) {
-                    $("#tblShowProduct tbody").empty();
-                    //ListDevoluciones();
-                    //ListCondiciones();
-                    var causesSelect = $("<select class='form-control m-b' ></select>");
-                    $.each(json.lstCond, function (index, causes) {
-                        $("<option>").val(causes.IdCause).text(causes.Cause_Desc).appendTo(causesSelect);
-                    });
-                    //$("#tblShowProduct tbody").remove();
-                    //var tr;
-                    //Append each row to html table
-                    for (var i = 0; i < json.resp.length; i++) {
-                        tr = $('<tr/>');
-                        tr.append("<td>" + json.resp[i].idRMA + "</td>");
-                        tr.append("<td>" + json.resp[i].BarCode + "</td>");
-                        tr.append("<td>" + json.resp[i].ProductId + "</td>");
-                        tr.append("<td>" + json.resp[i].ProductName + "</td>");
-                        tr.append("<td>" + json.resp[i].Quantity + "</td>");
-                        tr.append("<td>" + json.resp[i].IdTrackingService + "</td>");
-                        $('#selTrackingType').val(json.resp[i].TrackingType);
-                        if ($('#selRecibido').val() == 0) {
-                            tr.append("<td>" + causesSelect[0].outerHTML + "</td>");
-                            tr.append("<td><input type='text' class='form-control' name='txtMotivo' /></td>");
-                            tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' id=chkSel_" + json.resp[i].BarCode + " /></td>");
-                        }
-                        else {
-                            tr.append("<td>" + json.resp[i].PackageCondition + "</td>");
-                            tr.append("<td>" + json.resp[i].MotivoDevol + "</td>");
-                            tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' disabled='disabled' checked='checked' id='chkSel_" + json.resp[i].BarCode + " /></td>");
-                        }
-                        //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
-                        //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
-                        $('#tblShowProduct').append(tr);
+                    var sel = $("#ddlCauses");
+                    sel.empty();
 
+                   sel.get(0).options[0] = new Option("--SELECCIONE--", "0");
+                    for (var i = 0; i < json.resp.length; i++) {
+                        sel.append('<option value="' + json.resp[i].IdCause + '">' + json.resp[i].Cause_Desc + '</option>');
                     }
-                    $('#dlgShowProdcut').modal('show');
                 }
                 else {
                     alert(json.Message);
@@ -362,65 +210,158 @@
                 alert(jqXHR.responseText);
 
             }
-
         });
     }
 
-    function Confirmar() {
-        var _UeNo = $("#selUeNo").val();
-        var _OrderNo = $("#selOrderNo").val();
-        var _TrackingType = $('#selTrackingType').val();
-        var CreationId = 't_joserp';
-        var i = 0;
-        $('input[type=checkbox][id*=chkSel_]').each(function () {
-            if ($(this).is(":checked")) {
-                row = $(this).closest("tr");
-                var Barcode = $(row)[0].cells[1].innerText;
-                var ProductId = $(row)[0].cells[2].innerText;
-                var ProductName = $(row)[0].cells[3].innerText;
-                var _IdTrackingService = $(row)[0].cells[5].innerText;
-                for (var i = 0; i < $(row)[0].cells[6].childNodes[0].childElementCount; i++) {
-                    if ($(row)[0].cells[6].childNodes[0][i].selected == true) {
-                        var PackageCondition = $(row)[0].cells[6].childNodes[0][i].innerText;
+        function ListCondiciones() {
+            $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("ListCondiciones", "ProcesoReciboDevoluciones")',
+            data: {
+
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    var sel = $("#ddlMotivos");
+                    sel.empty();
+
+                    sel.get(0).options[0] = new Option("--SELECCIONE--", "0");
+                    for (var i = 0; i < json.resp.length; i++) {
+                        sel.append('<option value="' + json.resp[i].IdCause + '">' + json.resp[i].Cause_Desc + '</option>');
                     }
                 }
-                var MotivoDevol = $(row)[0].cells[7].children[0].value;
-                $.ajax({
-                    async: false,
-                    type: "GET",
-                    url: '@Url.Action("AceptarDevolucion", "ProcesoReciboDevoluciones")',
-                    data: {
-                        UeNo: _UeNo,
-                        OrderNo: _OrderNo,
-                        IdTrackingService: _IdTrackingService,
-                        TrackingType: _TrackingType,
-                        ProductId: ProductId,
-                        Barcode: Barcode,
-                        ProductName: ProductName,
-                        CreationId: CreationId,
-                        PackageCondition: PackageCondition,
-                        MotivoDevol: MotivoDevol
-                    },
-                    datatype: "html",
-                    success: function (json) {
-                        if (json.Success) {
-                            //alert(json.resp);
-                        }
-                        else {
-                            alert(json.Message);
-                        }
-                    }
-                    , error: function (jqXHR, textStatus, errorThrown) {
-                        alert(jqXHR.responseText);
-
-                    }
-
-                });
+                else {
+                    alert(json.Message);
+                }
             }
-            i++;
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.responseText);
+
+            }
         });
-        location.reload();
     }
+
+        function popUpLstProds(el, bitRecibido) {
+            var _UeNo = $(el).attr('id');
+            $('#selUeNo').val($(el).attr('id'));
+            $('#selOrderNo').val($(el).attr('name'));
+            $('#selRecibido').val(bitRecibido);
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("LstProdPaquete", "ProcesoReciboDevoluciones")',
+                data: {
+                    UeNo: _UeNo
+                },
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        $("#tblShowProduct tbody").empty();
+                        //ListDevoluciones();
+                        //ListCondiciones();
+                        var causesSelect = $("<select class='form-control m-b' ></select>");
+                        $.each(json.lstCond, function (index, causes) {
+                            $("<option>").val(causes.IdCause).text(causes.Cause_Desc).appendTo(causesSelect);
+                        });
+                        //$("#tblShowProduct tbody").remove();
+                        //var tr;
+                        //Append each row to html table
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+                            tr.append("<td>" + json.resp[i].idRMA + "</td>");
+                            tr.append("<td>" + json.resp[i].BarCode + "</td>");
+                            tr.append("<td>" + json.resp[i].ProductId + "</td>");
+                            tr.append("<td>" + json.resp[i].ProductName + "</td>");
+                            tr.append("<td>" + json.resp[i].Quantity + "</td>");
+                            tr.append("<td>" + json.resp[i].IdTrackingService + "</td>");
+                            $('#selTrackingType').val(json.resp[i].TrackingType);
+                            if ($('#selRecibido').val() == 0) {
+                                tr.append("<td>" + causesSelect[0].outerHTML + "</td>");
+                                tr.append("<td><input type='text' class='form-control' name='txtMotivo' /></td>");
+                                tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' id=chkSel_" + json.resp[i].BarCode + " /></td>");
+                            }
+                            else {
+                                tr.append("<td>" + json.resp[i].PackageCondition + "</td>");
+                                tr.append("<td>" + json.resp[i].MotivoDevol + "</td>");
+                                tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' disabled='disabled' checked='checked' id='chkSel_" + json.resp[i].BarCode + " /></td>");
+                            }
+                            //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                            //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                            $('#tblShowProduct').append(tr);
+
+                        }
+                        $('#dlgShowProdcut').modal('show');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR.responseText);
+
+                }
+
+            });
+        }
+
+        function Confirmar() {
+            var _UeNo = $("#selUeNo").val();
+            var _OrderNo = $("#selOrderNo").val();
+            var _TrackingType = $('#selTrackingType').val();
+            var CreationId = 't_joserp';
+            var i = 0;
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked")) {
+                    row = $(this).closest("tr");
+                    var Barcode = $(row)[0].cells[1].innerText;
+                    var ProductId = $(row)[0].cells[2].innerText;
+                    var ProductName = $(row)[0].cells[3].innerText;
+                    var _IdTrackingService = $(row)[0].cells[5].innerText;
+                    for (var i = 0; i < $(row)[0].cells[6].childNodes[0].childElementCount; i++) {
+                        if ($(row)[0].cells[6].childNodes[0][i].selected == true) {
+                            var PackageCondition = $(row)[0].cells[6].childNodes[0][i].innerText;
+                        }
+                    }
+                    var MotivoDevol = $(row)[0].cells[7].children[0].value;
+                    $.ajax({
+                        async: false,
+                        type: "GET",
+                        url: '@Url.Action("AceptarDevolucion", "ProcesoReciboDevoluciones")',
+                        data: {
+                            UeNo: _UeNo,
+                            OrderNo: _OrderNo,
+                            IdTrackingService: _IdTrackingService,
+                            TrackingType: _TrackingType,
+                            ProductId: ProductId,
+                            Barcode: Barcode,
+                            ProductName: ProductName,
+                            CreationId: CreationId,
+                            PackageCondition: PackageCondition,
+                            MotivoDevol: MotivoDevol
+                        },
+                        datatype: "html",
+                        success: function (json) {
+                            if (json.Success) {
+                                //alert(json.resp);
+                            }
+                            else {
+                                alert(json.Message);
+                            }
+                        }
+                        , error: function (jqXHR, textStatus, errorThrown) {
+                            alert(jqXHR.responseText);
+
+                        }
+
+                    });
+                }
+                i++;
+            });
+            location.reload();
+        }
 
     </script>
 

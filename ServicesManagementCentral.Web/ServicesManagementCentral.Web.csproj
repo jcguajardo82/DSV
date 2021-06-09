@@ -3763,6 +3763,7 @@
     <Content Include="Views\ReportesPDP\AutRM.cshtml" />
     <Content Include="Views\ReportesPDP\ReservacionesSaldo.cshtml" />
     <Content Include="Views\ManualesOperativos\ManualesOperativos_Proveedor.cshtml" />
+    <Content Include="Views\Actualizaciones\ActualizacionesContenido.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

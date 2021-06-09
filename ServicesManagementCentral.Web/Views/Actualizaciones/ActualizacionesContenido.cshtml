@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "Actualizaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight" style="padding-top: 0px;">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12 text-center">
+                        <h2>Administración de Contenido</h2>
+                    </div>
+                </div>
+                <div class="row" style="height:490px;">
+                    <table style="width:100%;padding-top:50px;">
+                        <!-- cambio -->
+                        <tr>
+                            <td></td>
+                            <td style="text-align:center;padding-left:50px;">
+                                <h3> Añadir Contenido</h3><br />
+                                <br />
+                                <img src="~/Content/images/theme/folder.png" style="width:140px;height:110px;" />
+                                <br />
+                                <div class="col-sm-8">
+                                    <br />
+                                    <div class="custom-file">
+                                        <input id="FileUpload1" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                        <label for="FileUpload1" class="custom-file-label">Seleccionar Archivo...</label>
+                                    </div>
+                                    <input type="button" class="btn btn-success btn-file" id="btnUpload" value="Subir Archivo" />
+                                </div>
+                            </td>
+                            <td style="text-align:center;padding-left:50px;">
+
+                            </td>
+                            <td></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $('#docInv').on('change', function () {
+            var fileReader = new FileReader();
+            fileReader.onload = function () {
+                document.getElementById('docInvout').innerHTML = fileReader.result; // data <-- in this var you have the file data in Base64 format
+                var servername = window.location.origin;
+                var fileUpload = $("#docInvout").get(0);
+                var files = fileUpload.files;
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                fileData.append('servername', servername);
+
+                $.ajax({
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    url: '@Url.Action("UploadFiles", "Actualizaciones")',
+                    data: {
+                        ArchivoCSV: document.getElementById('docInvout').innerHTML,
+                        servername: servername
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        debugger;
+                        if (json.Success) {
+                            $("#docInvout").val("");
+                            location.reload();
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(jqXHR.responseText);
+                        location.reload();
+                    }
+
+                });
+            };
+            fileReader.readAsText($('#docInv').prop('files')[0]);
+            console.log(fileReader);
+        });
+
+        $('.custom-file-input').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+        $(document).ready(function () {
+            $('#btnUpload').click(function () {
+
+                // Checking whether FormData is available in browser
+                if (window.FormData !== undefined) {
+
+                    var servername = window.location.origin;
+                    var fileUpload = $("#FileUpload1").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                        var nameext = files[i].name.split(".");
+                        if (nameext[1] != "png" & nameext[1] != "jpg")
+                        {
+                            alert("Extensión no válida");
+                            return;
+                        }
+
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('servername', servername);
+
+
+
+                    $.ajax({
+                        // url: '/ManualesOperativos/UploadFiles',
+                        url: '@Url.Action("UploadFiles", "Actualizaciones")',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (result) {
+                            alert(result);
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+                } else {
+                    alert("FormData is not supported.");
+                }
+            });
+        });
+
+    </script>
+}
