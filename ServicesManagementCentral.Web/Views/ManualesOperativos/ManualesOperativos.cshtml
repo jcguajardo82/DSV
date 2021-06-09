@@ -21,16 +21,14 @@
                             <h2><i></i> Tipo de Almacen:</h2>
                             <div class="col-sm-10">
                                 @Html.DropDownList("tipoalmacen", Model, new { @id = "TP", @class = "form-control m-b" })
-
-
-                                @*<select class="form-control m-b">
-                                        <option disabled selected>Selecciona una opción</option>
-                                        <option>DSV</option>
-                                        <option>DST</option>
-                                        <option>WMS</option>
-                                    </select>*@
-
                             </div>
+                        </td>
+                        <td style="text-align:right;padding-left:50px;">
+                            <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(1)"
+                               title="Click para ver el aviso de privacidad" class="link"><u>Aviso Privacidad</u></a>
+                        </td>
+                        <td style="text-align:left">
+                            <input class="form-check-input" type="checkbox" value="" id="chkSel_AP" />
                         </td>
                     </tr>
                 </table>
@@ -114,6 +112,7 @@
         </div>
     </div>
 </div>
+<input id="chkAviso" name="chkAviso" value="" style="visibility:hidden" />
 
 @section scripts {
     <script>
@@ -124,7 +123,10 @@
 
         });
 
-
+        function popUpShowPDF(txtValor) {
+            $("#chkAviso").val(txtValor);
+            $("#chkSel_AP").attr("checked", true);
+        }
 
 
     /*    function select() {*/
@@ -183,7 +185,17 @@
         
         function verPDF(idManual, opcion) {
             var tipoAlmacen = $("#TP").val();
-         debugger;
+            debugger;
+
+            if ($("#chkSel_AP")[0].checked == false) {
+                $("#chkSel_AP").focus();
+                return;
+            }
+
+            if ($("#chkAviso").val() == "") {
+                $("#chkSel_AP").focus();
+                return;
+            }
         
             if (tipoAlmacen == 0) {
                 $("#TP").focus();
