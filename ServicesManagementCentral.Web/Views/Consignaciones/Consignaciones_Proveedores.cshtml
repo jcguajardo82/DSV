@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Consignaciones_Proveedores";
+    ViewBag.Title = "Envio de Pedidos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Consignaciones</h2>
+<h2>Envio de Pedidos</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
@@ -11,7 +11,7 @@
                     <tr>
                         <th>Numero de Pedido</th>
                         <th>Total importe del Pedido</th>
-                        <th>Tipo Almacen </th>
+                        @*<th>Tipo Almacen </th>*@
                         <th>Fecha creacion de orden</th>
                         <th>Hora creacion de orden</th>
                         <th>Nombre del cliente</th>
@@ -228,7 +228,7 @@
 
                             tr.append("<td><a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u></td>");
                             tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");
-                            tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
+                            //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
                             tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
                             tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
