@@ -331,7 +331,7 @@
     <script>
         $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
-            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+            $('#tblConsulta thead tr:eq(0) th').each(function (i) {
                 if ($(this).attr('name') != "accion") {
                     var title = $(this).text();
                     $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
