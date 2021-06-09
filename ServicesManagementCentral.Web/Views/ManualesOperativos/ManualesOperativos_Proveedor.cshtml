@@ -135,6 +135,8 @@
         function popUpShowPDF(txtValor) {
             $("#chkAviso").val(txtValor);
             $("#chkSel_AP").attr("checked", true);
+            var url2 = '@Url.Content("~/").ToString()' + "Files/AvisoPrivacidad.pdf";
+            window.open(url2);
         }
 
 

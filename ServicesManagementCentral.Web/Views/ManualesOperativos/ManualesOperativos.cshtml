@@ -126,6 +126,9 @@
         function popUpShowPDF(txtValor) {
             $("#chkAviso").val(txtValor);
             $("#chkSel_AP").attr("checked", true);
+            var url2 = '@Url.Content("~/").ToString()' + "Files/AvisoPrivacidad.pdf";
+            window.open(url2);
+
         }
 
 
@@ -180,9 +183,9 @@
         }
 
         //--------------------------------------------------------------
-        
-        
-        
+
+
+
         function verPDF(idManual, opcion) {
             var tipoAlmacen = $("#TP").val();
             debugger;
@@ -196,7 +199,7 @@
                 $("#chkSel_AP").focus();
                 return;
             }
-        
+
             if (tipoAlmacen == 0) {
                 $("#TP").focus();
                 return;
@@ -213,7 +216,7 @@
                 },
                 datatype: "html",
                 success: function (json) {
-                   
+
                     if (json.Success) {
 
                         $("#" + opcion).attr("src", json.URL)
