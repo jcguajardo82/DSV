@@ -3663,6 +3663,7 @@
     <Content Include="Content\ManualesOpPDF\Empaque.pdf" />
     <Content Include="Content\ManualesOpPDF\Inventarios.pdf" />
     <Content Include="Content\ManualesOpPDF\operaciones.pdf" />
+    <Content Include="Files\AvisoPrivacidad.pdf" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\Inspinia\_Footer.cshtml" />
     <Content Include="Views\Shared\Inspinia\_Navigation.cshtml" />
