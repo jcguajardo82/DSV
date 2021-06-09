@@ -31,6 +31,8 @@ namespace ServicesManagement.Web.Models.Almacenes
         public int idShipType { get; set; }
         public bool bitVehicles { get; set; }
 
+        public string addressCol { get; set; }
+
     }
 
     public class Owners

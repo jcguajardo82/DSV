@@ -205,6 +205,8 @@
                             </td>
                         </tr>
                         <tr>
+                            <td style="width:15%;text-align:center;">Colonia</td>
+                            <td style="text-align:left;"><input type="text" class="form-control" id="txtCol" value="@Model.addressCol" /></td>
                             <td style="width:15%;text-align:center;">
                                 Entre calle 1
 
@@ -217,10 +219,9 @@
 
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtEntCal2" value="@Model.addressReference2"/>
+                                <input type="text" class="form-control" id="txtEntCal2" value="@Model.addressReference2" />
                             </td>
-                            <td style="width:15%;text-align:center;"></td>
-                            <td style="text-align:left;"></td>
+
                         </tr>
                         <tr>
                             <td colspan="6"><hr /></td>
@@ -433,6 +434,7 @@
             var _creationId = 't_joserp';
             var _idOperType = $("#ddlOperations").val();
             var _idShipType = $("#ddlShipments").val();
+            var _addressCol = $("#txtCol").val();
             var _bitVehicles = document.getElementById("chVehiculo").checked ;
                //string idOperType, string idShipType, string bitVehicles
 
@@ -543,7 +545,7 @@
                     , idOperType: _idOperType
                     , idShipType: _idShipType
                     , bitVehicles: _bitVehicles
-
+                    , addressCol: _addressCol
                   
                 },
                 datatype: "html",
