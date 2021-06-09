@@ -16,7 +16,7 @@
                 </div>
                 <div class="logo-element">
                     <span>
-                        <img alt="image" class="img-circle logo"  style="height: 35px; width: 45px" src="@Url.Content("~/Content/images/theme/Soriana_logo.png")" />
+                        <img alt="image" class="img-circle logo" style="height: 35px; width: 45px" src="@Url.Content("~/Content/images/theme/Soriana_logo.png")" />
                     </span>
                 </div>
             </li>
@@ -57,6 +57,12 @@
                             </ul>
                         </li>
                     }
+
+                }
+                else
+                {
+
+                    Response.Redirect("~/Security/Login");
 
                 }
 
