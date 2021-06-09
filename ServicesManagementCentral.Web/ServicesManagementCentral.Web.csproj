@@ -95,6 +95,9 @@
     <Reference Include="NPOI.OpenXmlFormats, Version=2.5.3.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.5.3\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=105.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.0.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Soriana.FWK">
       <HintPath>..\ThidParts\Soriana.FWK\Soriana.FWK.dll</HintPath>
     </Reference>
@@ -268,6 +271,7 @@
     <Compile Include="Models\DTO_StockProveedor\ProductStock.cs" />
     <Compile Include="Models\DTO_StockProveedor\SupplierStockDto.cs" />
     <Compile Include="Models\EmpleadoModels.cs" />
+    <Compile Include="Models\EstafetaRequestModel.cs" />
     <Compile Include="Models\EstatusGuiasEnvio\EstatusGuiasEnvio.cs" />
     <Compile Include="Models\EstatusReenvioMcia\DetalleEstatusReenvioMcia.cs" />
     <Compile Include="Models\EstatusReenvioMcia\EstatusReenvioMcia.cs" />

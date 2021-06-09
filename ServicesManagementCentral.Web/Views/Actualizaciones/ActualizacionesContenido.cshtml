@@ -33,7 +33,11 @@
                                 </div>
                             </td>
                             <td style="text-align:center;padding-left:50px;">
-
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(1)"
+                                   title="Click para ver el Template de Contenido A" class="link"><u>Template Contenido A</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(2)"
+                                   title="Click para ver el Template de Contenido B" class="link"><u>Template Contenido B</u></a>
                             </td>
                             <td></td>
                         </tr>
@@ -47,6 +51,16 @@
 
 @section scripts {
     <script>
+        function popUpShowPDF(txtValor) {
+            if (txtValor == 1) {
+                var url2 = '@Url.Content("~/").ToString()' + "Files/Plantilla_Contenido-A.xlsx";
+            }
+            else {
+            var url2 = '@Url.Content("~/").ToString()' + "Files/Plantilla_Contenido-B.xlsx";
+            }
+            window.open(url2);
+        }
+
         $('#docInv').on('change', function () {
             var fileReader = new FileReader();
             fileReader.onload = function () {
