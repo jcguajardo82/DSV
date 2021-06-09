@@ -5,9 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
                 <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
                     <h2>Ordenes de Compra</h2>
@@ -18,10 +15,10 @@
                     <table id="tblConsulta" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
                         <thead class="bg-danger-sor">
                             <tr>
-                                <th style="text-align:center;"> No. Consignación</th>
-                                <th style="text-align:center;">Tipo de Consignación</th>
+                                <th style="text-align:center;"> No. Pedido</th>
+                                <th style="text-align:center;">Tipo de Pedido</th>
                                 <th style="text-align:center;">Estatus del Pedido</th>
-                                <th style="text-align:center;">Estatus del la Consignación</th>
+                                <th style="text-align:center;">Estatus del la Pedido</th>
                                 <th style="text-align:center;">No. Proveedor</th>
                                 <th style="text-align:center;">Nombre Proveedor</th>
                                 <th style="text-align:center;">No. Almacén</th>
@@ -71,9 +68,7 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+
 @Html.Partial("DetalleOrden")
 @section scripts {
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@

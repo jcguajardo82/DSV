@@ -36,56 +36,58 @@
             text-align: center;
         }
     </style>*@
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <table id="tblConsulta" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
-                    <thead class="bg-danger-sor">
-                        <tr>
-                            <th>No. Consignacion</th>
-                            <th>Fecha Creación</th>
-                            <th>Cliente</th>
-                            <th>Estatus de Orden</th>
-                            <th>Estatus de Consignación</th>
-                            <th>No. de Guía</th>
-                            <th>Estatus de Guía</th>
-                            <th>No. Orden Compra</th>
-                            <th style="text-align:center;">Estatus Orden Compra</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-
-                            IEnumerable<upCorpOMS_Cns_UeNoTotalsByOrder> list = ViewBag.Orders as IEnumerable<upCorpOMS_Cns_UeNoTotalsByOrder>;
-                        }
-                        @foreach (upCorpOMS_Cns_UeNoTotalsByOrder item in list)
-                        {
-                            <tr>
-
-                                <td style="text-align:left;">@item.consignacion</td>
-                                <td style="text-align: left;">@Convert.ToDateTime(item.FechaCreacion).ToString("dd-MM-yyyy")</td>
-                                <td style="text-align:left;">@item.Cliente</td>
-                                <td style="text-align:left;">@item.EstatusOrdenCompra</td>
-                                <td style="text-align:left;">@item.EstatusConsignacion</td>
-                                <td style="text-align:left;">@item.NroGuia</td>
-                                <td style="text-align:left;">@item.EstatusGuia</td>
-
-                                <td style="text-align:left;">@item.OrdenCompra</td>
-                                <td style="text-align:left;">@item.EstatusOrdenCompra</td>
-
-                            </tr>
-
-
-
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+<div class="row">
+    <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
+        <h2>Total de Ordenes</h2>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <table id="tblConsulta" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+            <thead class="bg-danger-sor">
+                <tr>
+                    <th>No. Pedido</th>
+                    <th>Fecha Creación</th>
+                    <th>Cliente</th>
+                    <th>Estatus de Orden</th>
+                    <th>Estatus de Pedido</th>
+                    <th>No. de Guía</th>
+                    <th>Estatus de Guía</th>
+                    <th>No. Orden Compra</th>
+                    <th style="text-align:center;">Estatus Orden Compra</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+
+                    IEnumerable<upCorpOMS_Cns_UeNoTotalsByOrder> list = ViewBag.Orders as IEnumerable<upCorpOMS_Cns_UeNoTotalsByOrder>;
+                }
+                @foreach (upCorpOMS_Cns_UeNoTotalsByOrder item in list)
+                {
+                    <tr>
+
+                        <td style="text-align:left;">@item.consignacion</td>
+                        <td style="text-align: left;">@Convert.ToDateTime(item.FechaCreacion).ToString("dd-MM-yyyy")</td>
+                        <td style="text-align:left;">@item.Cliente</td>
+                        <td style="text-align:left;">@item.EstatusOrdenCompra</td>
+                        <td style="text-align:left;">@item.EstatusConsignacion</td>
+                        <td style="text-align:left;">@item.NroGuia</td>
+                        <td style="text-align:left;">@item.EstatusGuia</td>
+
+                        <td style="text-align:left;">@item.OrdenCompra</td>
+                        <td style="text-align:left;">@item.EstatusOrdenCompra</td>
+
+                    </tr>
+
+
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 
 @section scripts {
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
@@ -154,5 +156,5 @@
 
 
     </script>
-   
+
 }
