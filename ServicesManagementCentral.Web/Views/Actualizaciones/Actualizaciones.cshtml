@@ -32,7 +32,9 @@
                                 <br />
                             </td>
                             <td style="text-align:center;padding-left:50px;">
-
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(1)"
+                                   title="Click para ver el Manual de Carga Inventario-Proveedor" class="link"><u>Manual de Carga Inventario-Proveedor</u></a>
+                                <br />
                             </td>
                             <td></td>
                         </tr>
@@ -118,18 +120,10 @@
             console.log(fileReader);
         });
 
-        //var fileInput = document.getElementById("docInv"),
-
-        //    readFile = function () {
-        //        var reader = new FileReader();
-        //        reader.onload = function () {
-        //            document.getElementById('docInv').innerHTML = reader.result;
-        //        };
-        //        // start reading the file. When it is done, calls the onload event defined above.
-        //        reader.readAsBinaryString(fileInput.files[0]);
-        //    };
-
-        //fileInput.addEventListener('change', readFile);
+        function popUpShowPDF(txtValor) {
+            var url2 = '@Url.Content("~/").ToString()' + "Files/FDD DSV Actualizacion Nivel de Inventario Proveedor V1_1.docx";
+            window.open(url2);
+        }
 
     </script>
 }
