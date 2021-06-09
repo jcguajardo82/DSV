@@ -62,7 +62,7 @@
             <div class="row">
                 <div class="col-xs-12 col-md-12">
                     <div class="tableFixHead table-responsive m-t">
-                        <table id="tblConsulta_Devoluciones" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                        <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
                             <thead class="bg-danger-sor">
                                 <tr role="row">
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Numero de Consignación</th>
@@ -427,8 +427,8 @@
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
         $(document).ready(function () {
-            $('#tblConsulta_Devoluciones thead tr').clone(true).appendTo('#tblConsulta_Devoluciones thead');
-            $('#tblConsulta_Devoluciones thead tr:eq(1) th').each(function (i) {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
                 if ($(this).attr('name') != "accion") {
                     var title = $(this).text();
                     $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
@@ -446,14 +446,14 @@
                 }
             });
 
-            table = $("#tblConsulta_Devoluciones").DataTable(
+            table = $("#tblConsulta").DataTable(
                 {
                     dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
                     processing: true,
                     searching: true,
-                    ordering: true,
+                    ordering: false,
                     order: [[1, 'asc']],
                     filter: true,
                     info: false,
