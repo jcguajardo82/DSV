@@ -193,10 +193,16 @@
                 $("#chkSel_AP").focus();
                 return;
             }
+            else {
+                $("#chkAviso").val("1");
+            }
 
             if ($("#chkAviso").val() == "") {
                 $("#chkSel_AP").focus();
                 return;
+            }
+            else {
+                $("#chkSel_AP").attr("checked", true);
             }
 
             if (tipoAlmacen == 0) {
