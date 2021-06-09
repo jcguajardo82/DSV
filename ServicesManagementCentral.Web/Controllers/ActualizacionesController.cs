@@ -12,6 +12,7 @@ using ServicesManagement.Web.Models.DTO;
 using System.Configuration;
 using System.Web.Script.Serialization;
 using Microsoft.ServiceBus.Messaging;
+using RestSharp;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -65,13 +66,31 @@ namespace ServicesManagement.Web.Controllers
                             fname = file.FileName;
                         }
 
-                        fname = string.Format("{0}_{1}_{2}", nombre, "contenido", dateTime + "." + extension);
+                        //fname = string.Format("{0}_{1}_{2}", nombre, "contenido", dateTime + "." + extension);
+                        fname = string.Format("{0}_{1}", nombre, "." + extension);
+
 
                         // Get the complete folder path and store the file inside it.  
                         var path = Path.Combine(Server.MapPath("~/Files/"), fname);
                         var pathServerName = servername + "/Files/" + fname;
 
                         file.SaveAs(path);
+
+                        RestClient restClient = new RestClient(System.Configuration.ConfigurationManager.AppSettings["api_Upload_Files"]);
+                        RestRequest restRequest = new RestRequest("/Soriana_Upload_Files");
+                        restRequest.RequestFormat = DataFormat.Json;
+                        restRequest.Method = Method.POST;
+                        restRequest.AddHeader("Authorization", "Authorization");
+                        restRequest.AddHeader("Content-Type", "multipart/form-data");
+                        restRequest.AddFile("content", path);
+                        var response = restClient.Execute(restRequest);
+
+
+                        if (response.StatusDescription.Equals("Bad Request")) {
+
+                            return Json("File Uploaded ERROR!");
+
+                        }
 
                         // DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, fname, DateTime.Now, User.Identity.Name);
 

@@ -21,6 +21,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using ServicesManagement.Web.DAL.Embarques;
 using ServicesManagement.Web.Helpers;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -1888,9 +1890,15 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
+                string guia =    CreateGuiaEstafeta(UeNo, OrderNo);
+
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
             PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-            User.Identity.Name).Tables[0].Rows[0][0];
+            User.Identity.Name,guia).Tables[0].Rows[0][0];
+
+                               
+
+
                 var result = new { Success = true, resp = cabeceraGuia };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -1901,6 +1909,99 @@ namespace ServicesManagement.Web.Controllers
             }
 
         }
+
+
+        public string CreateGuiaEstafeta(string UeNo, int OrderNo) {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@OrderNo", OrderNo);
+                
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Sel_EstafetaInfo]", false, parametros);
+
+            }
+            catch (SqlException ex)
+            {
+                return "ERRSQL";
+            }
+            catch (System.Exception ex)
+            {
+                return "ERR";
+            }
+
+
+            foreach (DataRow r in ds.Tables[0].Rows) {
+
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                EstafetaRequestModel m = new EstafetaRequestModel();
+
+                m.serviceTypeId = "1";
+                m.DestinationInfo = new AddressModel();
+
+                m.DestinationInfo.address1 = r["Address1"].ToString();
+                m.DestinationInfo.address2 = r["Address2"].ToString();
+                m.DestinationInfo.cellPhone = r["Phone"].ToString();
+                m.DestinationInfo.city = r["City"].ToString();
+                m.DestinationInfo.contactName = r["CustomerName"].ToString();
+                m.DestinationInfo.corporateName = r["CustomerName"].ToString();
+                m.DestinationInfo.customerNumber = r["CustomerNo"].ToString();
+                m.DestinationInfo.neighborhood = r["NameReceives"].ToString();
+                m.DestinationInfo.phoneNumber = r["Phone"].ToString();
+                m.DestinationInfo.state = r["StateCode"].ToString();
+                m.DestinationInfo.zipCode = r["PostalCode"].ToString();
+
+                
+                //OrderNo
+                //    CnscOrder
+                //    StoreNum
+                //    UeNo
+                //    StatusUe
+                //    OrderDate
+                //    OrderTime
+                //    CustomerNo  
+                //    CustomerName 
+                //    Phone   
+                //    Address1 
+                //    Address2    
+                //    City 
+                //    StateCode   
+                //    PostalCode 
+                //    Reference   
+                //    NameReceives 
+                //    Total   
+
+
+                string json2 = JsonConvert.SerializeObject(m);
+
+                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Estafeta_Guia"], "", json2);
+
+                string msg = r2.message;
+
+                ResponseModels re = JsonConvert.DeserializeObject<ResponseModels>(r2.message);
+
+                return re.Guia;
+
+            }
+
+            return string.Empty;
+
+        }
+
 
         //el detalle producto a producto
         public ActionResult DetalleProdaProd(string UeNo, int OrderNo, string IdTracking, string TrackingType,
