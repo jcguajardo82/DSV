@@ -4,7 +4,7 @@
 }
 
 
-            <h2>Envio de Pedidos</h2>
+<h2>Envio de Pedidos</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
@@ -40,47 +40,42 @@
         </div>
     </div>
 </div>
+
+
 <div class="modal inmodal fade" id="detalleconsignacion" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header pt-3 pb-1">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Detalle Consignación</h4>
+                <h4 class="modal-title">Detalle Consignación </h4>
             </div>
             <div class="modal-body">
-                <form id="frmCreateServicios">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-12">
-                            <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
-                                <thead class="bg-danger-sor">
-                                    <tr>
-                                        <th>EAN/Codigo de barras</th>
-                                        <th>id</th>
-                                        <th>Descripción</th>
-                                        <th>Piezas</th>
-                                        <th>Costo Unitario</th>
-                                        <th>Peso volumetrico Unitario</th>
-                                        <th>Surtido/Dias transcurridos desde la cración</th>
-                                        <th>Surtido/Dias transcurridos desde la autorización</th>
-                                        <th>Fecha de envio</th>
-                                        <th>Hora de envio</th>
-                                        <th>RMA</th>
-                                        <th>Estatus del RMA</th>
 
-                                        @*<th>dimmensionWeightReal</th>
-                                        <th>productStatus</th>
-                                        <th>productMaterialCost</th>
-                                        <th>productCreationDate</th>
-                                        <th>idSupplierOrigin</th>
-                                        <th>idSupplierOriginName</th>*@
-                                    </tr>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <table id="tblInventarios" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                            <thead class="bg-danger-sor">
+                                <tr>
+                                    <th>EAN/Codigo de barras</th>
+                                    <th>id</th>
+                                    <th>Descripción</th>
+                                    <th>Piezas</th>
+                                    <th>Costo Unitario</th>
+                                    <th>Peso volumetrico Unitario</th>
+                                    <th>Surtido/Dias transcurridos desde la cración</th>
+                                    <th>Surtido/Dias transcurridos desde la autorización</th>
+                                    <th>Fecha de envio</th>
+                                    <th>Hora de envio</th>
+                                    <th>RMA</th>
+                                    <th>Estatus del RMA</th>
 
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
-                </form>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
@@ -90,6 +85,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal inmodal fade" id="dlgDesHabilitar" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -135,10 +131,10 @@
 
         function PopDetlleC(Consignacion){
 
-            $("#detalleconsignacion").modal('toggle');
-            /*$("#Consignacion").val(Consignacion);*/
+             $("#detalleconsignacion").modal('toggle');
 
-            $.ajax({
+
+                    $.ajax({
                 async: false,
                 type: "POST",
                 url: '@Url.Action("GetDetalleConsignacionAdm", "consignaciones")',
@@ -149,29 +145,38 @@
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
-                        $('#tblInventarios tbody').empty();
-                        //var tr;
-                        debugger;
-                        //Append each row to html table
 
+
+                        var table = $('#tblInventarios').DataTable();
+
+                        table.clear().draw();
                         for (var i = 0; i < json.resp.length; i++) {
-                            tr = $('<tr/>');
 
-                            tr.append("<td>" + json.resp[i].EAN + "</td>");                           
-                            tr.append("<td>" + json.resp[i].ID + "</td>");
-                            tr.append("<td>" + json.resp[i].Descripcion + "</td>");
-                            tr.append("<td>" + json.resp[i].Piezas + "</td>");
-                            tr.append("<td>" + json.resp[i].CostoUnitario + "</td>");
-                            tr.append("<td>" + json.resp[i].PesoVolumetrico + "</td>");
-                            tr.append("<td>" + json.resp[i].DiasDesdeCreacion + "</td>");
-                            tr.append("<td>" + json.resp[i].DiasDesdeAutoriza + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaEnvio + "</td>");
-                            tr.append("<td>" + json.resp[i].HoraEnvio + "</td>");
-                            tr.append("<td>" + json.resp[i].IdRMA + "</td>");
-                            tr.append("<td>" + json.resp[i].StatusRMA + "</td>");
 
-                            $('#tblInventarios').append(tr);
+                            table.row.add([
+                                json.resp[i].EAN
+                                , json.resp[i].ID
+                                , json.resp[i].Descripcion
+                                , json.resp[i].Piezas
+                                , json.resp[i].CostoUnitario
+
+                                , json.resp[i].PesoVolumetrico
+                                , json.resp[i].DiasDesdeCreacion
+                                , json.resp[i].DiasDesdeAutoriza
+                                , json.resp[i].FechaEnvio
+                                , json.resp[i].HoraEnvio
+                                , json.resp[i].IdRMA
+                                , json.resp[i].StatusRMA
+                                //, "fdnvdiuvhjd"
+                                //, "dgrfgfdg"
+
+                            ]).draw();
                         }
+                        //table.columns.adjust().draw();
+
+                        setTimeout(function () {
+                            table.columns.adjust().draw();
+                        }, 200);
                     }
                     else {
                         alert(json.Message);
@@ -184,6 +189,7 @@
 
             });
         }
+
         function GetconsignacionesAdm() {
 
             //var _Id_Num_UN = $("#hddTda").val();
@@ -210,11 +216,11 @@
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
                             //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                           
+
                         /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
                             tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(\"" + json.resp[i].Consignacion + "\")'><u>" + json.resp[i].Consignacion +"</u></a></td>");
                             /*tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + json.resp[i].Consignacion + "</a></td>");*/
-                            //tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");  
+                            //tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
                             tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
@@ -237,7 +243,7 @@
                             //tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
                             //tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
                             //tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
-                            
+
                             //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
                             //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
 
@@ -261,53 +267,6 @@
 
         }
 
-
-       @* function Inhabilitar() {
-
-            var motCan = $("#txtMotCan").val();
-
-            if (motCan.length == 0) {
-                $("#txtMotCan").focus();
-                return;
-            }
-            UpdateStatus($("#hddNoProveedor").val(), $("#HddNoAlmacen").val(), false, motCan);
-            $("#dlgDesHabilitar").modal('hide');
-        }
-
-        function Habilitar(noProveedor, noAlmacen) {
-            UpdateStatus(noProveedor, noAlmacen, true, '');
-        }
-        function UpdateStatus(noProveedor, noAlmacen, _bitenable, _enableCause) {
-            //string bitenable, string enableCause
-             $.ajax({
-                async: false,
-                type: "POST",
-                url: '@Url.Action("UpdateSuppliersWH", "almacenes")',
-                data: {
-                    idSupplierWH: noProveedor,
-                    idSupplierWHCode: noAlmacen,
-                    bitenable: _bitenable,
-                    enableCause: _enableCause
-                },
-
-                datatype: "json",
-                success: function (json) {
-                    if (json.Success) {
-                        //GetSuppliers();
-                        location.reload();
-
-                    } else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert("errorThrown");
-                }
-
-            })
-
-        }*@
 
     </script>
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
@@ -361,13 +320,81 @@
                     //sServerMethod: "GET",
                     buttons: ['csv', 'excel'],
                     orderCellsTop: false,
-                    //fixedHeader: {
-                    //    header: true            
-                    //},
+                    fixedHeader: {
+                        header: false
+                    },
                     "scrollX": true
 
                 }
             );
+
+
+            $('#tblInventarios thead tr').clone(true).appendTo('#tblInventarios thead');
+            $('#tblInventarios thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+
+            table2 = $("#tblInventarios").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true,
+                        footer: true
+                    },
+                    "scrollX": true
+                    , "scrollY": "400px"
+                    , "scrollCollapse": true
+                    , "options": {
+                        "emptyTable": "No records to display..."
+                    }
+
+                }
+            );
+        });
+
+        function IniciarInventario() {
+
+
 
             $("#tblInventarios").DataTable(
                 {
@@ -408,7 +435,7 @@
 
                 }
             );
-        });
+        }
     </script>
 }
 
