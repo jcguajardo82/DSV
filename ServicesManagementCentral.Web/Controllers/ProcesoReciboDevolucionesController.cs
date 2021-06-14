@@ -216,12 +216,12 @@ namespace ServicesManagement.Web.Controllers
 
         //Aceptar Devolución
         public ActionResult AceptarDevolucion(string UeNo, int OrderNo, string IdTrackingService, string TrackingType, decimal Barcode, string CreationId,
-            string PackageCondition, string MotivoDevol)
+            string PackageCondition, string ReturnedComment)
         {
             try
             {
                 var aceptadaDevolucion = DALProcesoReciboDevoluciones.upCorpOMS_Ins_UeNoDevolProcess(UeNo, OrderNo, IdTrackingService, TrackingType, Barcode, User.Identity.Name,
-                    PackageCondition, MotivoDevol).Tables[0].Rows[0][0];
+                    PackageCondition, ReturnedComment).Tables[0].Rows[0][0];
                 var result = new { Success = true, resp = aceptadaDevolucion };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

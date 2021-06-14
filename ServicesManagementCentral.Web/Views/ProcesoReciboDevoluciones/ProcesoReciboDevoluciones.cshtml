@@ -91,15 +91,16 @@
                         <table id="tblShowProduct" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" style="width:100%">
                             <thead class="bg-danger-sor">
                                 <tr role="row">
-                                    <th  style="width: 50px;">RMA</th>
-                                    <th  style="width: 100px;">EAN</th>
-                                    <th  style="width: 80px;">ID</th>
-                                    <th  style="width: 100px;">Descripción</th>
-                                    <th  style="width: 50px;">Piezas</th>
-                                    <th  style="width: 50px;">Guía</th>
-                                    <th  style="width: 100px;">Condiciones</th>
-                                    <th  style="width: 100px;">Comentario</th>
-                                    <th  style="width: 50px;">Recibo</th>
+                                    <th style="width: 50px;">RMA</th>
+                                    <th style="width: 100px;">EAN</th>
+                                    <th style="width: 80px;">ID</th>
+                                    <th style="width: 100px;">Descripción</th>
+                                    <th style="width: 50px;">Piezas</th>
+                                    <th style="width: 50px;">Guía</th>
+                                    <th style="width: 100px;">Condiciones</th>
+                                    <th style="width: 70px;">Motivo</th>
+                                    <th style="width: 100px;">Comentario</th>
+                                    <th style="width: 50px;">Recibo</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -296,12 +297,14 @@
                             $('#selTrackingType').val(json.resp[i].TrackingType);
                             if ($('#selRecibido').val() == 0) {
                                 tr.append("<td>" + causesSelect[0].outerHTML + "</td>");
+                                tr.append("<td>" + json.resp[i].Cause_Desc + "</td>");
                                 tr.append("<td><input type='text' class='form-control' name='txtMotivo' /></td>");
                                 tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' id=chkSel_" + json.resp[i].BarCode + " /></td>");
                             }
                             else {
                                 tr.append("<td>" + json.resp[i].PackageCondition + "</td>");
-                                tr.append("<td>" + json.resp[i].MotivoDevol + "</td>");
+                                tr.append("<td>" + json.resp[i].Cause_Desc + "</td>");
+                                tr.append("<td>" + json.resp[i].ReturnedComment + "</td>");
                                 tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' disabled='disabled' checked='checked' id='chkSel_" + json.resp[i].BarCode + " /></td>");
                             }
                             //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
@@ -341,7 +344,7 @@
                             var PackageCondition = $(row)[0].cells[6].childNodes[0][i].innerText;
                         }
                     }
-                    var MotivoDevol = $(row)[0].cells[7].children[0].value;
+                    var MotivoDevol = $(row)[0].cells[8].children[0].value;
                     $.ajax({
                         async: false,
                         type: "GET",

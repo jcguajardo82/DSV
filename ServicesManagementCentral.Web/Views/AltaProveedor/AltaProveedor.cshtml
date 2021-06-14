@@ -51,7 +51,7 @@
                                             {
                                                 if (Model.idOperType == Item.idOperType)
                                                 {
-                                                    <option value="@Item.idOperType" selected>@Item.OperTypeDesc</option>}
+                                                    <option selected="selected" value="@Item.idOperType">@Item.OperTypeDesc</option>}
                                                 else
                                                 {
                                                     <option value="@Item.idOperType">@Item.OperTypeDesc</option>}
@@ -77,7 +77,7 @@
 
                                                 if (Model.idShipType == Item.idShipType)
                                                 {
-                                                    <option value="@Item.idShipType" selected>@Item.ShipTypeDesc</option>}
+                                                    <option selected="selected" value="@Item.idShipType">@Item.ShipTypeDesc</option>}
                                                 else
                                                 {
                                                     <option value="@Item.idShipType">@Item.ShipTypeDesc</option>}
@@ -119,13 +119,15 @@
                                             {
                                                 if (Model.idOwner == Item.idOwner)
                                                 {
-                                                    <option value="@Item.idOwner" selected>@Item.ownerName</option>}
+                                                    <option selected="selected" value="@Item.idOwner">@Item.ownerName</option>
+                                                }
                                                 else
                                                 {
-                                                    <option value="@Item.idOwner">@Item.ownerName</option>}
+                                                    <option value="@Item.idOwner">@Item.ownerName</option>
+                                                }
                                             }
                                         }
-                                    }
+                                      }
                                 </select>
                             </td>
                             <td style="width:15%;text-align:center;">
@@ -320,7 +322,7 @@
 @section scripts {
     <script>
         $(document).ready(function () {
-            IniciarCombo()
+            //IniciarCombo()
         });
 
         function onkeydown_cp(e) {
