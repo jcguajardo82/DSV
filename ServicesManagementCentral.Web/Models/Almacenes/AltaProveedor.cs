@@ -30,8 +30,8 @@ namespace ServicesManagement.Web.Models.Almacenes
         public int idOperType { get; set; }
         public int idShipType { get; set; }
         public bool bitVehicles { get; set; }
-
         public string addressCol { get; set; }
+        public string ownerName { get; set; }
 
     }
 
