@@ -32,12 +32,54 @@
                                     <input type="button" class="btn btn-success btn-file" id="btnUpload" value="Subir Archivo" />
                                 </div>
                             </td>
-                            <td style="text-align:center;padding-left:50px;">
+                            <td style="text-align:right;padding-left:50px;">
+                                <h3> Plantillas </h3>
+
                                 <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(1)"
-                                   title="Click para ver el Template de Contenido A" class="link"><u>Template Contenido A</u></a>
+                                   title="Click para ver el Formato Alta de Productos - Alimentos Preparados y Panaderia" class="link"><u>Formato Alta de Productos - Alimentos Preparados y Panaderia</u></a>
                                 <br />
                                 <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(2)"
-                                   title="Click para ver el Template de Contenido B" class="link"><u>Template Contenido B</u></a>
+                                   title="Click para ver el Formato Alta de Productos - Bebes, Accesorios" class="link"><u>Formato Alta de Productos - Bebes, Accesorios</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(3)"
+                                   title="Click para ver el Formato Alta de Productos - Bebes, Blancos" class="link"><u>Formato Alta de Productos - Bebes, Blancos</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(4)"
+                                   title="Click para ver el Formato Alta de Productos - Bebes, Muebles" class="link"><u>Formato Alta de Productos - Bebes, Muebles</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(5)"
+                                   title="Click para ver el Formato Alta de Productos - Bebes, Ropa" class="link"><u>Formato Alta de Productos - Bebes, Ropa</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(6)"
+                                   title="Click para ver el Formato Alta de Productos - Calzado" class="link"><u>Formato Alta de Productos - Calzado</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(7)"
+                                   title="Click para ver el Formato Alta de Productos - Carnicos empacados y granel" class="link"><u>Formato Alta de Productos - Carnicos empacados y granel</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(8)"
+                                   title="Click para ver el Formato Alta de Productos - Frutas verduras y ensaladas" class="link"><u>Formato Alta de Productos - Frutas verduras y ensaladas</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(9)"
+                                   title="Click para ver el Formato Alta de Productos - Lacteos" class="link"><u>Formato Alta de Productos - Lacteos</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(10)"
+                                   title="Click para ver el Formato Alta de Productos - Moda Joyeria" class="link"><u>Formato Alta de Productos - Moda Joyeria</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(11)"
+                                   title="Click para ver el Formato Alta de Productos - Moda Lentes" class="link"><u>Formato Alta de Productos - Moda Lentes</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(12)"
+                                   title="Click para ver el Formato Alta de Productos - Moda Otros Accesorios" class="link"><u>Formato Alta de Productos - Moda Otros Accesorios</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(13)"
+                                   title="Click para ver el Formato Alta de Productos - Moda Relojes" class="link"><u>Formato Alta de Productos - Moda Relojes</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(14)"
+                                   title="Click para ver el Formato Alta de Productos - Ropa" class="link"><u>Formato Alta de Productos - Ropa</u></a>
+                                <br />
+                                <a id="txtAviso" name="txtAviso" onclick="popUpShowPDF(15)"
+                                   title="Click para ver el Formato Alta de Productos - Salchichoneria y Congelados" class="link"><u>Formato Alta de Productos - Salchichoneria y Congelados</u></a>
+
                             </td>
                             <td></td>
                         </tr>
@@ -52,12 +94,61 @@
 @section scripts {
     <script>
         function popUpShowPDF(txtValor) {
-            if (txtValor == 1) {
+
+            switch (txtValor) {
+                case 1:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Alimentos_Preparados_y_Panaderia.xlsx";
+                    break;
+                case 2:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Bebes_Accesorios.xlsx";
+                    break;
+                case 3:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Bebes_Blancos.xlsx";
+                    break;
+                case 4:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Bebes_Muebles.xlsx";
+                    break;
+                case 5:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Bebes_Ropa.xlsx";
+                    break;
+                case 6:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Calzado.xlsx";
+                    break;
+                case 7:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Carnicos_empacados_y_granel.xlsx";
+                    break;
+                case 8:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Frutas_verduras_y_ensaladas.xlsx";
+                    break;
+                case 9:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Lacteos.xlsx";
+                    break;
+                case 10:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Moda_Joyeria.xlsx";
+                    break;
+                case 11:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Moda_Lentes.xlsx";
+                    break;
+                case 12:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Moda_Otros_Accesorios.xlsx";
+                    break;
+                case 13:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Moda_Relojes.xlsx";
+                    break;
+                case 14:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Ropa.xlsx";
+                    break;
+                case 15:
+                    var url2 = '@Url.Content("~/").ToString()' + "Files/Formato_Alta_de_Productos_Salchichoneria_y_Congelados.xlsx";
+                    break;
+            }
+
+            @*if (txtValor == 1) {
                 var url2 = '@Url.Content("~/").ToString()' + "Files/Plantilla_Contenido-A.xlsx";
             }
             else {
             var url2 = '@Url.Content("~/").ToString()' + "Files/Plantilla_Contenido-B.xlsx";
-            }
+            }*@
             window.open(url2);
         }
 

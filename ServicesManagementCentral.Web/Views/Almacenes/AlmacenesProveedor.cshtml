@@ -1,0 +1,619 @@
+﻿
+@{
+    ViewBag.Title = "Almacenes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Almacenes</h2>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        @*<th name='accion'>Acción</th>*@
+                        <th>Habilitado</th>
+                        <th>Tipo de Almacen</th>
+                        <th>Numero de Almacen</th>
+                        <th>Nombre de Almacen</th>
+                        <th>Numero de Proveedor</th>
+                        <th>Nombre de Proveedor</th>
+                        <th>Dias Transcurridos</th>
+                        <th>Fecha de Ultima Actualización</th>
+                        <th name='accion'>Cantidad de Codigos</th>
+                        @*<th name='accion'></th>*@
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgInventarios" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" >
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Almacen - Inventario </h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <table id="tblInventarios" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                            <thead class="bg-danger-sor">
+                                <tr>
+                                    <th>Numero de Proveedor</th>
+                                    <th>Numero de Almacen</th>
+                                    <th>Tipo de Almacen</th>
+                                    <th>SKU de producto</th>
+                                    <th>EAN/Codigo de Barras</th>
+                                    <th>Nombre de producto</th>
+                                    <th>Grupo de categorias</th>
+                                    <th>Nivel de existencia</th>
+                                    <th>Inventario de seguridad</th>
+                                    <th>Inventario a la venta</th>
+                                    <th>Inventario Reservado</th>
+                                    <th>Tipo de articulo</th>
+                                    <th>Largo</th>
+                                    <th>Alto</th>
+                                    <th>Ancho</th>
+                                    <th>Peso</th>
+                                    <th>Peso Volumetrico</th>
+                                    <th>Peso Real</th>
+                                    <th>Estatus de producto</th>
+                                    <th>Costo de Material</th>
+                                    <th>Fecha Creación</th>
+                                    <th>Numero Proveedor Origen</th>
+                                    <th>Nombre Proveedor Origen</th>
+                                    <th>Tipo de almacen</th>
+                                    <th>Nombre de Proveedor</th>
+                                    <th>Nombre de Almacen</th>
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                @*<button type="button" onclick="Save()" class="btn btn-primary">Guardar</button>*@
+                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgDesHabilitar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Almacen - Autorización</h4>
+                <input type="hidden" id="hddNoProveedor" />
+                <input type="hidden" id="HddNoAlmacen" />
+
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="form-group">
+                                <label>Motivo por el cual se Inhabilita: </label>
+                                <textarea class="form-control m-b" id="txtMotCan" rows="6" maxlength="250"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" onclick="Inhabilitar()" class="btn btn-primary">Inhabilitar</button>
+                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgContactos" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Almacen - Contactos Operativo y Comercial </h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <table id="tblContactos" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
+                                <thead class="bg-danger-sor">
+                                    <tr>
+                                        <th>Numero de Proveedor</th>
+                                        <th>Nombre de Proveedor</th>
+                                        <th>Numero de Almacen</th>
+                                        <th>Nombre de Almacen</th>
+
+                                        <th>Contacto Operativo Nombre</th>
+                                        <th>Contacto Operativo Telefono</th>
+                                        <th>Contacto Operativo Correo</th>
+
+                                        <th>Contacto Comercial Nombre</th>
+                                        <th>Contacto Comercial Telefono</th>
+                                        <th>Contacto Comercial Correo</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                @*<button type="button" onclick="Save()" class="btn btn-primary">Guardar</button>*@
+                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            GetSuppliers();
+        });
+
+        function popDesHabilitar(noProveedor, noAlmacen) {
+            $("#hddNoProveedor").val(noProveedor);
+            $("#HddNoAlmacen").val(noAlmacen);
+            $("#dlgDesHabilitar").modal('toggle');
+        }
+
+        function PopInv(noProveedor, noAlmacen){
+
+           $("#dlgInventarios").modal('toggle');
+
+
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("GetSuppliersWHStock", "almacenes")',
+                data: {
+                    idSupplierWH: noProveedor,
+                    idSupplierWHCode: noAlmacen
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        //$('#tblInventarios tbody').empty();
+                        ////var tr;
+                        //debugger;
+                        ////Append each row to html table
+
+                        //for (var i = 0; i < json.resp.length; i++) {
+                        //    tr = $('<tr/>');
+
+                        //    tr.append("<td>" + json.resp[i].IdSupplierWH + "</td>");
+                        //    tr.append("<td>" + json.resp[i].IdSupplierWHCode + "</td>");
+                        //    tr.append("<td>" + json.resp[i].OwnerName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductSKU + "</td>");
+                        //    tr.append("<td>" + json.resp[i].BarCode + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductCategoryId + "</td>");
+
+                        //    tr.append("<td>" + json.resp[i].StockLevel + "</td>");
+                        //    tr.append("<td>" + json.resp[i].QtyStockSafety + "</td>");
+                        //    tr.append("<td>" + json.resp[i].QtyStockForSale + "</td>");
+                        //    tr.append("<td>" + json.resp[i].QtyStockReserved + "</td>");
+
+                        //    tr.append("<td>" + json.resp[i].ProductType + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionLarge + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionHeight + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionWidth + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionWeight + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionWeightVol + "</td>");
+                        //    tr.append("<td>" + json.resp[i].DimmensionWeightReal + "</td>");
+
+                        //    tr.append("<td>" + json.resp[i].ProductStatus + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductMaterialCost + "</td>");
+                        //    tr.append("<td>" + json.resp[i].ProductCreationDate + "</td>");
+                        //    tr.append("<td>" + json.resp[i].IdSupplierOrigin + "</td>");
+                        //    tr.append("<td>" + json.resp[i].IdSupplierOriginName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].IdOwner + "</td>");
+                        //    tr.append("<td>" + json.resp[i].SupplierName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].SupplierWHName + "</td>");
+
+                        //    $('#tblInventarios').append(tr);
+                        //}
+
+                        var table = $('#tblInventarios').DataTable();
+
+                        //table.clear().draw();
+                        //table.destroy();
+                        //iniciarDetalle();
+
+                        table.clear().draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+
+                            table.row.add([
+                                json.resp[i].IdSupplierWH
+                                , json.resp[i].IdSupplierWHCode
+                                , json.resp[i].OwnerName
+                                , json.resp[i].ProductSKU
+                                , json.resp[i].BarCode
+
+                                , json.resp[i].ProductName
+                                , json.resp[i].ProductCategoryId
+                                , json.resp[i].StockLevel
+                                , json.resp[i].QtyStockSafety
+                                , json.resp[i].QtyStockForSale
+                                , json.resp[i].QtyStockReserved
+                                , json.resp[i].ProductType
+                                , json.resp[i].DimmensionLarge
+                                , json.resp[i].DimmensionHeight
+                                , json.resp[i].DimmensionWidth
+                                , json.resp[i].DimmensionWeight
+                                , json.resp[i].DimmensionWeightVol
+                                , json.resp[i].DimmensionWeightReal
+                                , json.resp[i].ProductStatus
+                                , json.resp[i].ProductMaterialCost
+                                , json.resp[i].ProductCreationDate
+                                , json.resp[i].IdSupplierOrigin
+                                , json.resp[i].IdSupplierOriginName
+                                , json.resp[i].IdOwner
+                                , json.resp[i].SupplierName
+                                , json.resp[i].SupplierWHName
+
+
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }
+        function GetSuppliers() {
+
+            //var _Id_Num_UN = $("#hddTda").val();
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetSuppliers", "almacenes")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        $('#tblConsulta tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+                            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+                            //if (!json.resp[i].habilitado) { tr.append("<td><button   title='Click para habilitar'  onclick='Habilitar(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")' type ='button' class= 'btn btn-white btn-circle'> <i class='fa fa-check'></i></button></td >"); }
+                            //else {
+                            //    tr.append("<td><button title='Click para deshabilitar' onclick='popDesHabilitar(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-ban'></i></button></td >");
+                            //}
+                            if (!json.resp[i].habilitado) { tr.append("<td><p>NO</p></td>"); }
+                            else { tr.append("<td><p>SI</p></td>");}
+                            tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
+                            tr.append("<td>" + json.resp[i].noAlmacen + "</td>");
+                            tr.append("<td><a title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
+                            tr.append("<td><a title='Click para ver contactos del Almacen' class='link-primary' onclick='PopContacts(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].noProveedor + "</a></td>");
+                            //tr.append("<td>" + json.resp[i].noProveedor + "</td>");
+                            tr.append("<td><a href='AltaProveedor/AltaProveedor?idSupplierWH=" + json.resp[i].noProveedor + "&idSupplierWHCode=" + json.resp[i].noAlmacen + "' title='Click para ir al proveedor' class='link-primary' >" + json.resp[i].nombreProv + "</td>");
+                            tr.append("<td>" + json.resp[i].diasTrans + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaStock + "</td>");
+                            tr.append("<td>" + json.resp[i].NumCodigos + "</td>");
+                            //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
+                            //AltaProveedor/AltaProveedor
+
+
+                            $('#tblConsulta').append(tr);
+                        }
+
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
+        }
+
+        function PopContacts(noProveedor, noAlmacen){
+
+           $("#dlgContactos").modal('toggle');
+
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("GetSuppliersWHContacInfo", "almacenes")',
+                data: {
+                    idSupplierWH: noProveedor,
+                    idSupplierWHCode: noAlmacen
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        $('#tblContactos tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+
+                            tr.append("<td>" + json.resp[i].IdSupplierWH + "</td>");
+                            tr.append("<td>" + json.resp[i].SupplierName + "</td>");
+                            tr.append("<td>" + json.resp[i].IdSupplierWHCode + "</td>");
+                            tr.append("<td>" + json.resp[i].SupplierWHName + "</td>");
+
+                            tr.append("<td>" + json.resp[i].operInfoName + "</td>");
+                            tr.append("<td>" + json.resp[i].operInfoPhone + "</td>");
+                            tr.append("<td>" + json.resp[i].operInfoEmail + "</td>");
+                            tr.append("<td>" + json.resp[i].commInfoName + "</td>");
+                            tr.append("<td>" + json.resp[i].commInfoPhone + "</td>");
+                            tr.append("<td>" + json.resp[i].commInfoEmail + "</td>");
+
+                            $('#tblContactos').append(tr);
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }
+
+
+        function Inhabilitar() {
+
+            var motCan = $("#txtMotCan").val();
+
+            if (motCan.length == 0) {
+                $("#txtMotCan").focus();
+                return;
+            }
+            UpdateStatus($("#hddNoProveedor").val(), $("#HddNoAlmacen").val(), false, motCan);
+            $("#dlgDesHabilitar").modal('hide');
+        }
+
+        function Habilitar(noProveedor, noAlmacen) {
+            UpdateStatus(noProveedor, noAlmacen, true, '');
+        }
+        function UpdateStatus(noProveedor, noAlmacen, _bitenable, _enableCause) {
+            //string bitenable, string enableCause
+             $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("UpdateSuppliersWH", "almacenes")',
+                data: {
+                    idSupplierWH: noProveedor,
+                    idSupplierWHCode: noAlmacen,
+                    bitenable: _bitenable,
+                    enableCause: _enableCause
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        //GetSuppliers();
+                        location.reload();
+
+                    } else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            })
+
+        }
+
+    </script>
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: false,
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+
+            $('#tblInventarios thead tr').clone(true).appendTo('#tblInventarios thead');
+            $('#tblInventarios thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+
+            table2 = $("#tblInventarios").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true,
+                        footer: true
+                    },
+                    "scrollX": true
+                    , "scrollY": "400px"
+                    , "scrollCollapse": true
+                    , "options": {
+                        "emptyTable": "No records to display..."
+                    }
+
+                }
+            );
+        });
+
+        function IniciarInventario() {
+
+
+
+            $("#tblInventarios").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true,
+                        footer: true
+                    },
+                    "scrollX": true
+                    , "options": {
+                        "emptyTable": "No records to display..."
+                    }
+
+                }
+            );
+        }
+    </script>
+}
+

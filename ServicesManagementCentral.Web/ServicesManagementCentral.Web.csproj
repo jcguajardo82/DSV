@@ -3671,6 +3671,21 @@
     <Content Include="Files\Plantilla_Contenido-A.xlsx" />
     <Content Include="Files\Plantilla_Contenido-B.xlsx" />
     <Content Include="Files\FDD DSV Actualizacion Nivel de Inventario Proveedor V1_1.docx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Alimentos_Preparados_y_Panaderia.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Bebes_Accesorios.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Bebes_Blancos.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Bebes_Muebles.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Bebes_Ropa.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Calzado.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Carnicos_empacados_y_granel.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Frutas_verduras_y_ensaladas.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Lacteos.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Moda_Joyeria.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Moda_Lentes.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Moda_Otros_Accesorios.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Moda_Relojes.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Ropa.xlsx" />
+    <Content Include="Files\Formato_Alta_de_Productos_Salchichoneria_y_Congelados.xlsx" />
     <Content Include="Files\DSV Macro v1.41.xlsm" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\Inspinia\_Footer.cshtml" />
@@ -3773,6 +3788,7 @@
     <Content Include="Views\ReportesPDP\ReservacionesSaldo.cshtml" />
     <Content Include="Views\ManualesOperativos\ManualesOperativos_Proveedor.cshtml" />
     <Content Include="Views\Actualizaciones\ActualizacionesContenido.cshtml" />
+    <Content Include="Views\Almacenes\AlmacenesProveedor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

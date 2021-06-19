@@ -17,6 +17,12 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
+        public ActionResult AlmacenesProveedor()
+        {
+            return View();
+        }
+
+
         public ActionResult GetSuppliers()
         {
             try
