@@ -35,6 +35,13 @@ namespace ServicesManagement.Web.Models.Consignaciones
         public string FechaPago { get; set; }
         public string FechaLimite { get; set; }
 
+        public string TipoGuia { get; set; }
+        public string Paqueteria { get; set; }
+        public string FechaEntrega { get; set; }
+        public string HoraEntrega { get; set; }
+        public string QuienRecibio { get; set; }
+        public string GuiaStatus { get; set; }
+
         ////[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         //public string FechaStock { get; set; }
         //public int NumCodigos { get; set; }
