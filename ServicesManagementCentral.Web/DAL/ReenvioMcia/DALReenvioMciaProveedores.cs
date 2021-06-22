@@ -27,6 +27,7 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@idOwner", 4); // parametro Proveedor fijo
+                parametros.Add("@Seccion", 0); // parametro Seccion fijo
                 //parametros.Add("@Consignacion", "101187901-3"); // parametro Proveedor fijo
 
 

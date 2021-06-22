@@ -28,6 +28,7 @@ namespace ServicesManagement.Web.DAL.EstatusReenvioMcia
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@idOwner", 3); // parametro Proveedor fijo
+                parametros.Add("@Seccion", 0); // parametro Seccion fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoReShipment]", false, parametros);
