@@ -180,7 +180,8 @@
                             tr = $('<tr/>');
 
                             //Append each row to html table
-                            tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
+                            //tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
+                            tr.append("<td><a href='ProcesoReenvioMcia/ProcesoReenvioMcia?OrderNo=" + json.resp[i].OrderNo + "&UeNo=" + json.resp[i].ConsignacionReenvio + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].ConsignacionReenvio + "</u></td>");
                             tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a></td>");
                             /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
                             //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");

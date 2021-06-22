@@ -21,5 +21,7 @@ namespace ServicesManagement.Web.Models.ReemvioMcia
         public string OrdenDSV { get; set; }
         public string OrdenDSVStatus { get; set; }
 
+        public int OrderNo { get; set; }
+
     }
 }

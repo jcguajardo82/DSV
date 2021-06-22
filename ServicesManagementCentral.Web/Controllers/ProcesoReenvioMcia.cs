@@ -15,27 +15,27 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult ProcesoReenvioMcia()
         {
 
-            int OrderNo = 101184109;
-            string UeNo = "101184109-4";
+            int OrderNo = 0;
+            string UeNo = "0";
 
 
-            ViewBag.OrderNo = OrderNo;
-            ViewBag.UeNo = UeNo;
+            //ViewBag.OrderNo = OrderNo;
+            //ViewBag.UeNo = UeNo;
 
-            //if (Request.QueryString["OrderNo"] != null && Request.QueryString["UeNo"] != null)
-            //{
-            //    OrderNo = int.Parse(Request.QueryString["OrderNo"].ToString());
-            //    UeNo = Request.QueryString["UeNo"].ToString();
-            //}
-            //else
-            //{
-            //    var msj = new msj();
-            //    msj.mensaje = "No existe la consignacion.";
+            if (Request.QueryString["OrderNo"] != null && Request.QueryString["UeNo"] != null)
+            {
+                OrderNo = int.Parse(Request.QueryString["OrderNo"].ToString());
+                UeNo = Request.QueryString["UeNo"].ToString();
+            }
+            else
+            {
+                var msj = new msj();
+                msj.mensaje = "No existe la consignacion.";
 
-            //    ViewBag.Mensaje = msj;
+                ViewBag.Mensaje = msj;
 
-            //    return View();
-            //}
+                return View();
+            }
 
             var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcess(UeNo, OrderNo);
             ViewBag.OrderNo = OrderNo;
