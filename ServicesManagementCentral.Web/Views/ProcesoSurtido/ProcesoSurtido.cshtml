@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "Proceso Surtido";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var EsVehiculo = false;
 }
 
 <div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
@@ -26,6 +28,10 @@
                         <input type="hidden" id="hddOrderNo" value="@ViewBag.OrderNo" />
                         <input type="hidden" id="hddStoreNum" value="@list.StoreNum" />
                         <input type="hidden" id="hddStatusUe" value="@list.StatusUe" />
+                        <input type="hidden" id="hddIdSupplierWHCode" value="@list.IdSupplierWHCode" />
+                        <input type="hidden" id="hddIdOwner" value="@list.IdOwner" />
+
+                        EsVehiculo = list.bitVehicles;
                     }
                 </div>
             </div>
@@ -33,10 +39,18 @@
                 <div class="col col-xs-12 col col-md-12 col col-lg-12">
                     @if (ViewBag.Mensaje == null)
                     {
+
+
                         <div class="tabs-container">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li><a class="nav-link active" data-toggle="tab" href="#tab-1">Aceptar Consignación</a></li>
                                 <li><a class="nav-link" data-toggle="tab" href="#tab-2">Solicitud de Guía</a></li>
+                                @{
+                                    if (EsVehiculo)
+                                    {
+                                        <li><a class="nav-link" data-toggle="tab" href="#tab-4">Vehículo</a></li>
+                                    }
+                                }
                                 <!-- se comenta pues esta por hacerse -->
                                 @*<li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>*@
                             </ul>
@@ -206,10 +220,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-9 right" style="text-align:right;"></div>
-                                                <div class="col-lg-3 right" style="text-align:right;">
-                                                    <a class="btn btn-primary block full-width m-b" onclick="FinalizaEmbarqueDST()">Finalizar Guías</a>
-                                                </div>
+                                            <div class="col-lg-3 right" style="text-align:right;">
+                                                <a class="btn btn-primary block full-width m-b" onclick="FinalizaEmbarqueDST()">Finalizar Guías</a>
                                             </div>
+                                        </div>
                                         <div class="row">
                                             <table id="tblEmbalaje" class="table table-stripedtblSolicitutGuia table-bordered table-hover table-responsive-md expand dataTable no-footer">
                                                 <thead class="bg-danger-sor">
@@ -250,6 +264,80 @@
 
                                     </div>
                                 </div>
+                                @if (EsVehiculo)
+                                {
+                                    if (ViewBag.Vehiculos != null)
+                                    {
+                                        upCorpOms_Cns_UeNoConsigmentsVehicles listV = ViewBag.Vehiculos as upCorpOms_Cns_UeNoConsigmentsVehicles;
+
+
+                                        <div role="tabpanel" id="tab-4" class="tab-pane">
+                                            <div class="panel-body">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Serie</td>
+                                                            <td><input type="text" id="txtSerie" class="form-control-sm" value="@listV.SerialId" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Bateria</td>
+                                                            <td><input type="text" id="txtBateria" class="form-control-sm" value="@listV.BateryId" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Entrada Por</td>
+                                                            <td><input type="text" id="txtEntradaPor" class="form-control-sm" value="@listV.EntryBy" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Fecha de Entrada</td>
+                                                            <td><input type="date" id="txtFechaEntrada"  class="form-control-sm" value="@listV.EntryDate.ToString("yyyy-MM-dd")" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>No. de Pedimento</td>
+                                                            <td><input type="text" id="txtNoPedimento" class="form-control-sm" value="@listV.PetitionId" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>No. de Motor</td>
+                                                            <td><input type="text" id="txtNoMotor" class="form-control-sm" value="@listV.MotorId" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Repuve</td>
+                                                            <td><input type="text" id="txtRepuve" class="form-control-sm" value="@listV.RepuveId" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Año</td>
+                                                            <td><input type="text" id="txtAnio" class="form-control-sm" value="@listV.Year" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Color</td>
+                                                            <td><input type="text" id="txtColor" class="form-control-sm" value="@listV.ColorId" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Modelo</td>
+                                                            <td><input type="text" id="txtModelo" class="form-control-sm" value="@listV.ModelId" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Marca</td>
+                                                            <td><input type="text" id="txtMarca" class="form-control-sm" value="@listV.BrandId" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Cilindraje</td>
+                                                            <td><input type="text" id="txtCilindraje" class="form-control-sm" value="@listV.CylinderCapacityId" /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="2" style="text-align:right;">
+                                                                <button type="button" class="btn btn-primary block full-width m-b" onclick="GuardarVehiculo()">
+                                                                    Guardar Vehículo
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    }
+                                }
                                 @*<div role="tabpanel" id="tab-3" class="tab-pane">
                                         <div class="panel-body">
                                             <div class="tableFixHead table-responsive m-t">
@@ -750,7 +838,7 @@
                 status: document.getElementById("hddStatusUe").value,
                 bolsas: 0, //document.getElementById("in_bolsas").value,
                 contenedores: 0, //document.getElementById("in_contenedores").value,
-                      
+
                 hieleras: 0, //document.getElementById("in_hieleras").value,
                 checkPinPad: ch
             },
@@ -897,7 +985,71 @@
             }
 
         });
-    }
+        }
+
+
+        function GuardarVehiculo() {
+
+
+
+            var _UeNo = document.getElementById("hddUeNo").value;
+            var _OrderNo = document.getElementById("hddOrderNo").value;
+            var _idOwner = document.getElementById("hddIdOwner").value;
+            var _idSupplierWH = document.getElementById("hddIdSupplierWH").value;
+            var _idSupplierWHCode = document.getElementById("hddIdSupplierWHCode").value;
+            var _SerialId = document.getElementById("txtSerie").value;
+            var _BateryId = document.getElementById("txtBateria").value;
+            var _EntryBy = document.getElementById("txtEntradaPor").value;
+            var _EntryDate = document.getElementById("txtFechaEntrada").value;
+            var _PetitionId = document.getElementById("txtNoPedimento").value;
+            var _MotorId = document.getElementById("txtNoMotor").value;
+            var _RepuveId = document.getElementById("txtRepuve").value;
+            var _Year = document.getElementById("txtAnio").value;
+            var _ColorId = document.getElementById("txtColor").value;
+            var _ModelId = document.getElementById("txtModelo").value;
+            var _BrandId = document.getElementById("txtMarca").value;
+            var _CylinderCapacityId = document.getElementById("txtCilindraje").value;
+
+              $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("SaveVehiculo", "ProcesoSurtido")',
+            data: {
+                //num: id
+
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                idOwner: _idOwner,
+                idSupplierWH: _idSupplierWH,
+                idSupplierWHCode: _idSupplierWHCode,
+                SerialId: _SerialId,
+                BateryId: _BateryId,
+                EntryBy: _EntryBy,
+                EntryDate: _EntryDate,
+                PetitionId: _PetitionId,
+                MotorId: _MotorId,
+                RepuveId: _RepuveId,
+                Year: _Year,
+                ColorId: _ColorId,
+                Year: _Year,
+                ModelId: _ModelId,
+                BrandId: _BrandId,
+                CylinderCapacityId: _CylinderCapacityId
+
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    location.reload();
+                    //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                bootbox.alert(errorThrown);
+
+            }
+        });
+        }
     </script>
 
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@

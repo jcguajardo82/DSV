@@ -209,5 +209,109 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
         }
 
 
+        public static DataSet upCorpOms_Ins_UeNoConsigmentsVehicles(string UeNo, int? OrderNo
+           , string idOwner, int idSupplierWH,int idSupplierWHCode,string SerialId,string BateryId,string EntryBy, DateTime EntryDate,string PetitionId
+           , string MotorId, string RepuveId, string Year, int ColorId, string ModelId, string BrandId, string CylinderCapacityId, string CreationId)
+        {
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                if (UeNo.Length > 0)
+                    parametros.Add("@UeNo", UeNo);
+                if (OrderNo != null)
+                    parametros.Add("@OrderNo", OrderNo);
+
+                parametros.Add("@idOwner", idOwner);
+                parametros.Add("@idSupplierWH", idSupplierWH);
+                parametros.Add("@idSupplierWHCode", idSupplierWHCode);
+                parametros.Add("@SerialId", SerialId);
+                parametros.Add("@BateryId", BateryId);
+                parametros.Add("@EntryBy", EntryBy);
+                parametros.Add("@EntryDate", EntryDate);
+                parametros.Add("@PetitionId", PetitionId);
+                parametros.Add("@MotorId", MotorId);
+                parametros.Add("@RepuveId", RepuveId);
+                parametros.Add("@Year", Year);
+             
+                parametros.Add("@ColorId", ColorId);
+                parametros.Add("@ModelId", ModelId);
+                parametros.Add("@BrandId", BrandId);
+                parametros.Add("@CylinderCapacityId", CylinderCapacityId);
+                parametros.Add("@CreationId", CreationId);
+                
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoConsigmentsVehicles]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public static DataSet upCorpOms_Cns_UeNoConsigmentsVehicles(string UeNo, int? OrderNo,int idSupplierWH,int idSupplierWHCode)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                if (UeNo.Length > 0)
+                    parametros.Add("@UeNo", UeNo);
+                if (OrderNo != null)
+                    parametros.Add("@OrderNo", OrderNo);
+
+                    parametros.Add("@idSupplierWH", idSupplierWH);
+                    parametros.Add("@idSupplierWHCode", idSupplierWHCode);
+
+
+
+        ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoConsigmentsVehicles]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
     }
 }
