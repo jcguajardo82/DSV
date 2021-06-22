@@ -32,7 +32,6 @@ namespace ServicesManagement.Web.Controllers
             }
 
 
-
             return View(prov);
         }
         public ActionResult IniciarComboTipoAlmacen()
