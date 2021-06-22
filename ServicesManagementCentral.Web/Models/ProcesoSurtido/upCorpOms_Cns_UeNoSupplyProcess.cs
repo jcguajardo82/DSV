@@ -32,11 +32,14 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
     public class Encabezado
     {
         public string Concatenado { get; set; }
-        public string idSupplierWH { get; set; }
+        public int idSupplierWH { get; set; }
         public string SupplierName { get; set; }
         public string StoreNum { get; set; }
         public string StatusUe { get; set; }
+        public int IdSupplierWHCode { get; set; }
+        public bool bitVehicles { get; set; }
 
+        public int IdOwner { get; set; }
 
     }
 

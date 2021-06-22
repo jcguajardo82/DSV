@@ -48,8 +48,10 @@ namespace ServicesManagement.Web.Controllers
 
 
             ViewBag.MotCan = DataTableToModel.ConvertTo<OrderFacts_UE_CancelCauses>(DALProcesoSurtido.upCorpOms_Cns_UeCancelCauses(2).Tables[0]);
-            ViewBag.Header = DataTableToModel.ConvertTo<Encabezado>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcessHeader(UeNo, OrderNo).Tables[0]).FirstOrDefault();
+            var enc = DataTableToModel.ConvertTo<Encabezado>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcessHeader(UeNo, OrderNo).Tables[0]).FirstOrDefault();
+            ViewBag.Header = enc;
             ViewBag.PorProcesar = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcessSel>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcessSel(UeNo, OrderNo).Tables[0]);
+            ViewBag.Vehiculos = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoConsigmentsVehicles>(DALProcesoSurtido.upCorpOms_Cns_UeNoConsigmentsVehicles(UeNo, OrderNo, enc.idSupplierWH, enc.IdSupplierWHCode).Tables[0]).FirstOrDefault();
             Session["OrderPackages"] = DALEmbarques.upCorpOms_Cns_UeNoTracking(UeNo, OrderNo);
 
 
@@ -245,6 +247,33 @@ namespace ServicesManagement.Web.Controllers
 
                 return Json(result, JsonRequestBehavior.AllowGet);
 
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SaveVehiculo(string UeNo, int OrderNo
+           , string idOwner, int idSupplierWH, int idSupplierWHCode, string SerialId, string BateryId,string EntryBy, string EntryDate, string PetitionId
+           , string MotorId,string RepuveId, string Year, int ColorId, string ModelId, string BrandId, string CylinderCapacityId)
+        {
+            try
+            {
+
+                    DALProcesoSurtido.upCorpOms_Ins_UeNoConsigmentsVehicles(
+                         UeNo, OrderNo
+                       , idOwner, idSupplierWH, idSupplierWHCode, SerialId, BateryId,EntryBy, Convert.ToDateTime(EntryDate), PetitionId
+                       , MotorId, RepuveId, Year, ColorId, ModelId, BrandId, CylinderCapacityId, User.Identity.Name);           
+                var result = new
+                {
+                    Success = true         
+                };
+
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
     }
