@@ -1890,6 +1890,13 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
+
+
+
+
+
+
+
                 string guia =    CreateGuiaEstafeta(UeNo, OrderNo);
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
