@@ -82,7 +82,7 @@ namespace ServicesManagement.Web.Controllers
         }
         #endregion
 
-        #region Consignaciones Proveedor
+        #region Consignaciones Proveedor Pendientes
         public ActionResult Consignaciones_Proveedores()
         {
 
@@ -107,6 +107,31 @@ namespace ServicesManagement.Web.Controllers
         }
         #endregion
 
+
+        #region Consignaciones Proveedor concluidos
+        public ActionResult Consignaciones_ProveedoresConcluidos()
+        {
+
+            return View();
+
+        }
+
+
+        public ActionResult GetconsignacionesProveedorConcluidos()
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedorConcluido().Tables[0]);
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
 
     }
 }

@@ -484,9 +484,7 @@ namespace ServicesManagement.Web.Controllers
 
                         o.Orden = new InformacionDetalleOrden();
 
-
-                        o.Orden.NumeroOrden = OrderNo;
-
+                        o.Orden.NumeroOrden = OrderNo.Replace("-","");
 
                         o.Orden.EstatusUnidadEjecucion = status;
                         o.Orden.NumeroUnidadEjecucion = ue;
@@ -513,7 +511,6 @@ namespace ServicesManagement.Web.Controllers
                         System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
-
 
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
 
@@ -557,9 +554,7 @@ namespace ServicesManagement.Web.Controllers
 
                         o.Orden = new InformacionDetalleOrden();
 
-
-                        o.Orden.NumeroOrden = array[0];
-
+                        o.Orden.NumeroOrden = array[0].Replace("-","");
 
                         o.Orden.EstatusUnidadEjecucion = status;
                         o.Orden.NumeroUnidadEjecucion = ue;
@@ -632,7 +627,7 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             }
-        }
+         }
         [HttpPost]
         public ActionResult FinalizarEntrega(List<FinEmbarque> Guias)
         {
@@ -1890,6 +1885,13 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
+
+
+
+
+
+
+
                 string guia =    CreateGuiaEstafeta(UeNo, OrderNo);
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,

@@ -519,7 +519,7 @@
 
             var id_categoria = "999"; //$(el).attr('id');
             var listaO = document.getElementById("Orders").value;
-            var digito = listaO.split("-");
+            var digito = listaO.replaceAll("-","");
             debugger;
             if (listaO != "0") {
                 //if (digito[1] == "4") {
@@ -550,7 +550,10 @@
                     data: {
                         OrderNo: listaO,
                         trans: tran,
-                        tId: tId
+                        tId: tId,
+                        ue: '',
+                        store: '',
+                        status: ''
                     },
                     datatype: "html",
                     success: function (json) {

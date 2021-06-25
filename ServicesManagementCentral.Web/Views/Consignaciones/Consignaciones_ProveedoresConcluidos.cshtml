@@ -1,8 +1,9 @@
-﻿@{
-    ViewBag.Title = "Envio de Pedidos Pendientes";
+﻿
+@{
+    ViewBag.Title = "Envio de Pedidos Concluidos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Envio de Pedidos Pendientes</h2>
+<h2>Envio de Pedidos Concluidos</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
@@ -12,18 +13,25 @@
                         <th>Numero de Pedido</th>
                         @* <th>Total importe del Pedido</th>*@
                         @*<th>Tipo Almacen </th>*@
-                        <th>Fecha creacion del pedido</th>
+                        <th>Nombre del cliente</th>
+                        @*<th>Fecha creacion del pedido</th>
                         <th>Hora creacion de pedido</th>
                         <th>Fecha Pago Autorizado</th>
-                        <th>Fecha Limite Entrega a la Paqueteria</th>
-                        <th>Nombre del cliente</th>
+                        <th>Fecha Limite Entrega a la Paqueteria</th>*@
                         @*<th>Estatus de la orden</th>*@
                         <th>Estatus del Pedido Surtido</th>
                         <th>Estatus del Pedido Envio</th>
                         <th>No. de orden de compra (DSV)</th>
                         <th>Estatus de Orden de Compra (DSV)</th>
+                        <th>Tipo de Guía</th>
+                        <th>Paqueteria</th>
                         <th>No. Guía</th>
-                        <th>Vigencia Guía</th>
+                        <th>Estatus de Guía</th>
+                        <th>Fecha de Entrega</th>
+                        <th>Hora de Entrega</th>
+                        <th>Nombre de Quien Recibio</th>
+
+                        @*<th>Vigencia Guía</th>*@
                         @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
                         @*<th>Guia de devolucion</th>*@
                         @*<th>Estatus de la Guia de Devolucion</th>*@
@@ -211,7 +219,7 @@
             $.ajax({
                 async: false,
                 type: "GET",
-                url: '@Url.Action("GetconsignacionesProveedor", "consignaciones")',
+                url: '@Url.Action("GetconsignacionesProveedorConcluidos", "consignaciones")',
                 data: {
                     //  Id_Num_UN: _Id_Num_UN
                 },
@@ -233,27 +241,31 @@
                             tr.append("<td><a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u></td>");
                             //tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");
                             //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
-                            tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
-
-                            tr.append("<td>" + json.resp[i].FechaPago + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaLimite + "</td>");
-
                             tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
+                            //tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
+                            //tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
+
+                            //tr.append("<td>" + json.resp[i].FechaPago + "</td>");
+                            //tr.append("<td>" + json.resp[i].FechaLimite + "</td>");
+
+                           
                             //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusConsignacionAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusConsignacionEntrega + "</td>");
                             tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");
 
-                            tr.append("<td>" + json.resp[i].GuiaEnvio + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaVig + "</td>");
+                            //tr.append("<td>" + json.resp[i].GuiaEnvio + "</td>");
+                            //tr.append("<td>" + json.resp[i].GuiaVig + "</td>");
 
-                            //tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
-                            //tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
-                            //tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
-                            //tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
-                            //tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
+                            tr.append("<td>" + json.resp[i].TipoGuia + "</td>");
+                            tr.append("<td>" + json.resp[i].Paqueteria + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaEnvio + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaStatus + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaEntrega + "</td>");
+                            tr.append("<td>" + json.resp[i].HoraEntrega + "</td>");
+                            tr.append("<td>" + json.resp[i].QuienRecibio + "</td>");
+
 
                             //tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
                             //tr.append("<td>" + json.resp[i].OrdenCompra + "</td>");

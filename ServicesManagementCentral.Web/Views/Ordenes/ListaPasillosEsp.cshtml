@@ -50,25 +50,25 @@
                             @foreach (System.Data.DataRow p in dtOrden.Rows)
                             {
 
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Orden<br><span style="font-size:1.3em;">@p["OrderNo"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Sucursal<br><span style="font-size:1.3em;">@p["StoreNum"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">
-                                Creación<br><span style="font-size:1.3em;">@p["OrderDate"]</span>
-                            </li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Entrega<br><span style="font-size:1.3em;">@p["OrderDeliveryDate"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Servicio<br><span style="font-size:1.3em;">@p["DeliveryType"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Surtidor<br><span style="font-size:1.3em;">@p["Supplier_Name"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Forma de Pago<br><span style="font-size:1.3em;">@p["MethodPayment"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Origen<br><span style="font-size:1.3em;">@p["CreatedBy"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Nombre del cliente<br><span style="font-size:1.3em;"> @p["Address1"] @p["Address2"] @p["City"] @p["StateCode"] @p["PostalCode"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Dirección del cliente<br><span style="font-size:1.3em;">@p["Phone"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Teléfono<br><span style="font-size:1.3em;">@p["Phone"] </span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Extensión<br><span style="font-size:1.3em;">          </span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Recibe<br><span style="font-size:1.3em;">@p["NameReceive"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Dirección de entrega<br><span style="font-size:1.3em;">@p["DeliveryAddress"]</span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Teléfono<br><span style="font-size:1.3em;"></span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Extensión<br><span style="font-size:1.3em;">          </span></li>
-                            <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Total<br><span style="font-size:1.3em;">$@p["Total"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Orden<br><span style="font-size:1.3em;">@p["OrderNo"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Sucursal<br><span style="font-size:1.3em;">@p["StoreNum"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">
+                                    Creación<br><span style="font-size:1.3em;">@p["OrderDate"]</span>
+                                </li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Entrega<br><span style="font-size:1.3em;">@p["OrderDeliveryDate"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Servicio<br><span style="font-size:1.3em;">@p["DeliveryType"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Surtidor<br><span style="font-size:1.3em;">@p["Supplier_Name"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Forma de Pago<br><span style="font-size:1.3em;">@p["MethodPayment"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Origen<br><span style="font-size:1.3em;">@p["CreatedBy"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Nombre del cliente<br><span style="font-size:1.3em;"> @p["CustomerName"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Dirección del cliente<br><span style="font-size:1.3em;">@p["Address1"] @p["Address2"] @p["City"] @p["StateCode"] @p["PostalCode"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Teléfono<br><span style="font-size:1.3em;">@p["Phone"] </span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Extensión<br><span style="font-size:1.3em;">          </span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Recibe<br><span style="font-size:1.3em;">@p["NameReceive"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Dirección de entrega<br><span style="font-size:1.3em;">@p["DeliveryAddress"]</span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Teléfono<br><span style="font-size:1.3em;"></span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Extensión<br><span style="font-size:1.3em;">          </span></li>
+                                <li style="padding:5px;border:1px solid gray;margin:5px;font-size:0.8em;">Total<br><span style="font-size:1.3em;">$@p["Total"]</span></li>
                             }
                         </ul>
                         //================OBSERVACIONES DE LA ORDEN ===================================

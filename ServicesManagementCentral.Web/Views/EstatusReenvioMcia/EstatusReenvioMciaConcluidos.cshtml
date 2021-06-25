@@ -1,11 +1,10 @@
 ﻿
-
 @{
-    ViewBag.Title = "Reenvio de Pedidos Pendientes";
+    ViewBag.Title = "Reenvio de Pedidos Concluidos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Reenvio de Pedidos Pendientes</h2>
+<h2>Reenvio de Pedidos Concluidos</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
@@ -15,8 +14,8 @@
                         <th>Consignación de reenvio/sustituto/cambio fisico</th>
                         <th>Numero de consignacion</th>
                         @*<th>Tipo almacen</th>
-                        <th>Fecha de creacion de la orden</th>
-                        <th>Hora de creacion de la orden</th>*@
+        <th>Fecha de creacion de la orden</th>
+        <th>Hora de creacion de la orden</th>*@
                         <th>Nombre del Cliente</th>
                         <th>Estatus de la consignación Surtido</th>
                         <th>Estatus de la consignación Envio</th>
@@ -28,13 +27,19 @@
                         <th>Estatus de orden de compra nueva (DSV)</th>
                         @*<th>Estatus de la Guia de Devolucion</th>*@
                         @*<th>Guia de reenvio</th>
-                        <th>Estatus de Guía de Reenvio</th>*@
+        <th>Estatus de Guía de Reenvio</th>*@
                         @*<th>Fecha y hora Tracking Consignación</th>*@
                         @*<th></th>*@
                         @*<th name='accion'></th>*@
                         <th>Numero de Guia</th>
                         <th>Vigencia de la Guia</th>
                         <th>Motivo del Reenvio</th>
+                        <th>Tipo de Guia</th>
+                        <th>Numero de Orden de Compra (DSV)</th>
+                        <th>Estatus de Orden de Compra (DSV)</th>
+                        <th>Fecha de Entrega</th>
+                        <th>Hora de Entrega</th>
+                        <th>Nombre de Quien Recibio</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -110,7 +115,7 @@
             $.ajax({
                 async: false,
                 type: "POST",
-                url: '@Url.Action("GetDetalleConsignacionDSV", "EstatusReenvioMcia")',
+                url: '@Url.Action("GetDetalleConsignacionDSVConcluidos", "EstatusReenvioMcia")',
                 data: {
                     consignacion: Consignacion
                 },
@@ -163,7 +168,7 @@
             $.ajax({
                 async: false,
                 type: "GET",
-                url: '@Url.Action("GetreenviomciaDSV", "EstatusReenvioMcia")',
+                url: '@Url.Action("GetreenviomciaDSVConcluidos", "EstatusReenvioMcia")',
                 data: {
                     //  Id_Num_UN: _Id_Num_UN
                 },
@@ -180,8 +185,7 @@
                             tr = $('<tr/>');
 
                             //Append each row to html table
-                            //tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
-                            tr.append("<td><a href='ProcesoReenvioMcia/ProcesoReenvioMcia?OrderNo=" + json.resp[i].OrderNo + "&UeNo=" + json.resp[i].ConsignacionReenvio + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].ConsignacionReenvio + "</u></td>");
+                            tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
                             tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a></td>");
                             /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
                             //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
@@ -191,14 +195,19 @@
                             tr.append("<td>" + json.resp[i].EstatusAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].EstatusHomeD + "</td>");
                             //tr.append("<td>" + json.resp[i].EstatusGuiaDevol + "</td>");
-                            /*tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");*/
+                           /* tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");*/
                             //tr.append("<td></td>");  // Aqui debe ir la GUIA de DEVOLUCION
                             //tr.append("<td>" + json.resp[i].GuiaReenvioEstatus + "</td>");
                             tr.append("<td>" + json.resp[i].OrdenDSV + "</td>");
                             tr.append("<td>" + json.resp[i].OrdenDSVStatus + "</td>");
-                            tr.append("<td> </td>");
-                            tr.append("<td> </td>");
-                            tr.append("<td> </td>");
+                            tr.append("<td>" + json.resp[i].GuiaReenvioNro + " </td>");
+                            tr.append("<td> " + json.resp[i].GuiaVig + "</td>");
+                            tr.append("<td> " + json.resp[i].MotivoReenvio + "</td>");
+                            tr.append("<td>" + json.resp[i].TipoGuia + "</td>");
+                            tr.append("<td>" + json.resp[i].Paqueteria + "</td>");
+                            tr.append("<td>" + json.resp[i].FechaEntrega + " </td>");
+                            tr.append("<td> " + json.resp[i].HoraEntrega + "</td>");
+                            tr.append("<td> " + json.resp[i].QuienRecibio + "</td>");
 
                             //tr.append("<td></td>");
                             //tr.append("<td></td>");
@@ -393,49 +402,3 @@
         });
     </script>
 }
-
-
-@*@Html.Partial("DetalleEstatusReenvioMcia")
-    @section scripts {
-        <script>
-            $(document).ready(function () {
-                $("#txtFiltro").on("keyup", function () {
-                    var value = $(this).val().toLowerCase();
-                    $("#tblOrdenes tbody tr").filter(function () {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    });
-                });
-
-            });
-            function popDetalle() {
-                $('#dlgDetalle').modal('toggle');
-            }
-
-
-            $('th').click(function () {
-                var table = $(this).parents('table').eq(0)
-               // var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-                this.asc = !this.asc
-                //if (!this.asc) {
-                //    rows = rows.reverse()
-                //}
-                //for (var i = 0; i < rows.length; i++) {
-                //    table.append(rows[i])
-                //}
-                setIcon($(this), this.asc);
-            })
-            function setIcon(element, asc) {
-                $("th").each(function (index) {
-                    $(this).removeClass("sorting");
-                    $(this).removeClass("asc");
-                    $(this).removeClass("desc");
-                });
-                element.addClass("sorting");
-                if (asc) element.addClass("asc");
-                else element.addClass("desc");
-            }
-
-        </script>
-    }*@
-
-
