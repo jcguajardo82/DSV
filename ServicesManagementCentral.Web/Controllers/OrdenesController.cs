@@ -470,6 +470,7 @@ namespace ServicesManagement.Web.Controllers
                         foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
                         {
 
+                            OrderNo = r1["OrderNo"].ToString();
                             status = r1["StatusUe"].ToString();
                             ue = r1["UeNo"].ToString();
                             store = r1["StoreNum"].ToString();
@@ -484,7 +485,8 @@ namespace ServicesManagement.Web.Controllers
 
                         o.Orden = new InformacionDetalleOrden();
 
-                        o.Orden.NumeroOrden = OrderNo.Replace("-","");
+                        // o.Orden.NumeroOrden = OrderNo.Replace("-","");
+                        o.Orden.NumeroOrden = OrderNo;
 
                         o.Orden.EstatusUnidadEjecucion = status;
                         o.Orden.NumeroUnidadEjecucion = ue;
@@ -539,7 +541,7 @@ namespace ServicesManagement.Web.Controllers
 
                         foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
                         {
-
+                            OrderNo = r1["OrderNo"].ToString();
                             status = r1["StatusUe"].ToString();
                             ue = r1["UeNo"].ToString();
                             store = r1["StoreNum"].ToString();
@@ -554,7 +556,8 @@ namespace ServicesManagement.Web.Controllers
 
                         o.Orden = new InformacionDetalleOrden();
 
-                        o.Orden.NumeroOrden = array[0].Replace("-","");
+                        //o.Orden.NumeroOrden = array[0].Replace("-","");
+                        o.Orden.NumeroOrden = OrderNo;
 
                         o.Orden.EstatusUnidadEjecucion = status;
                         o.Orden.NumeroUnidadEjecucion = ue;
