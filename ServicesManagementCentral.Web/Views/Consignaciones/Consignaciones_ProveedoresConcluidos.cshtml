@@ -14,9 +14,9 @@
                         @* <th>Total importe del Pedido</th>*@
                         @*<th>Tipo Almacen </th>*@
                         <th>Nombre del cliente</th>
-                        @*<th>Fecha creacion del pedido</th>
+                        <th>Fecha creacion del pedido</th>
                         <th>Hora creacion de pedido</th>
-                        <th>Fecha Pago Autorizado</th>
+                        @*<th>Fecha Pago Autorizado</th>
                         <th>Fecha Limite Entrega a la Paqueteria</th>*@
                         @*<th>Estatus de la orden</th>*@
                         <th>Estatus del Pedido Surtido</th>
@@ -239,6 +239,9 @@
                            /* tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
 
                             tr.append("<td><a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u></td>");
+                            tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
+                            tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
+
                             //tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");
                             //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].NombreCliente + "</td>");

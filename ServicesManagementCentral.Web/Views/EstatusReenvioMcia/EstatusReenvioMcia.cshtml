@@ -13,25 +13,15 @@
                 <thead class="bg-danger-sor">
                     <tr>
                         <th>Pedido de reenvio/sustituto/cambio fisico</th>
-                        <th>No. de pedido</th>
+                        <th>Numero de consignacion</th>
                         @*<th>Tipo almacen</th>
                         <th>Fecha de creacion de la orden</th>
                         <th>Hora de creacion de la orden</th>*@
                         <th>Nombre del Cliente</th>
-                        <th>Estatus del pedido Surtido</th>
-                        <th>Estatus del pedido Envio</th>
-                        @*<th>Estatus de Guía de Devolucion</th>*@
-                        @*<th>Guia de reenvio</th>*@
-                        @*<th>Guia de devolucion</th>*@
-                        @*<th>Estatus de la guia de reenvio</th>*@
-                        <th>Numero de Orden de Compra Nueva (DSV)</th>
-                        <th>Estatus de orden de compra nueva (DSV)</th>
-                        @*<th>Estatus de la Guia de Devolucion</th>*@
-                        @*<th>Guia de reenvio</th>
-                        <th>Estatus de Guía de Reenvio</th>*@
-                        @*<th>Fecha y hora Tracking Consignación</th>*@
-                        @*<th></th>*@
-                        @*<th name='accion'></th>*@
+                        <th>Estatus del Pedido Surtido</th>
+                        <th>Estatus del Pedido Envio</th>
+                        <th>Numero de Orden de Compra (DSV)</th>
+                        <th>Estatus de Orden de Compra (DSV)</th>
                         <th>Numero de Guia</th>
                         <th>Vigencia de la Guia</th>
                         <th>Motivo del Reenvio</th>
@@ -181,31 +171,16 @@
                             tr = $('<tr/>');
 
                             //Append each row to html table
-                            //tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
                             tr.append("<td><a href='ProcesoReenvioMcia/ProcesoReenvioMcia?OrderNo=" + json.resp[i].OrderNo + "&UeNo=" + json.resp[i].ConsignacionReenvio + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].ConsignacionReenvio + "</u></td>");
                             tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a></td>");
-                            /*tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
-                            //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                            //tr.append("<td>" + json.resp[i].FechaOrden + "</td>");
-                            //tr.append("<td>" + json.resp[i].HoraOrden + "</td>");
                             tr.append("<td>" + json.resp[i].Cliente + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusHomeD + "</td>");
-                            //tr.append("<td>" + json.resp[i].EstatusGuiaDevol + "</td>");
-                            /*tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");*/
-                            //tr.append("<td></td>");  // Aqui debe ir la GUIA de DEVOLUCION
-                            //tr.append("<td>" + json.resp[i].GuiaReenvioEstatus + "</td>");
+                            tr.append("<td>" + json.resp[i].EstatusPedidoSurtido + "</td>");
+                            tr.append("<td>" + json.resp[i].EstatusPedidoEnvio + "</td>");
                             tr.append("<td>" + json.resp[i].OrdenDSV + "</td>");
                             tr.append("<td>" + json.resp[i].OrdenDSVStatus + "</td>");
-                            tr.append("<td> </td>");
-                            tr.append("<td> </td>");
-                            tr.append("<td> </td>");
-
-                            //tr.append("<td></td>");
-                            //tr.append("<td></td>");
-                            //tr.append("<td></td>");
-                            //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
-                            //AltaProveedor/AltaProveedor
+                            tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
+                            tr.append("<td>" + json.resp[i].GuiaVig + "</td>");
+                            tr.append("<td>" + json.resp[i].MotivoReenvio + "</td>");
 
                             $('#tblConsulta').append(tr);
 
