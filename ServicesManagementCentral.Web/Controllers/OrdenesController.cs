@@ -894,6 +894,10 @@ namespace ServicesManagement.Web.Controllers
             {
                 Session["OrderSelected"] = DALServicesM.GetOrdersByOrderNo(order);
                 System.Data.DataSet dOP = (System.Data.DataSet)Session["OrderSelected"];
+                if (dOP.Tables[0].Rows[0]["uetype"].ToString() == "SETC")
+                {
+                    EmbarqueSETC(order);
+                }
                 var txtUeNo = dOP.Tables[0].Rows[0]["UeNo"].ToString();
                 int decOrder = int.Parse(dOP.Tables[0].Rows[0]["OrderNo"].ToString());
                 Session["OrderPackages"] = DALEmbarques.upCorpOms_Cns_UeNoTracking(txtUeNo, decOrder);
@@ -903,6 +907,23 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+        public ActionResult EmbarqueSETC(string order)
+        {
+            if (string.IsNullOrEmpty(order))
+            {
+                return RedirectToAction("OrdenSeleccionada", "Ordenes");
+            }
+            else if (Session["Id_Num_UN"] == null)
+            {
+                return RedirectToAction("Index", "Ordenes");
+            }
+            else
+            {
+                Session["OrderSelected"] = DALServicesM.GetOrdersByOrderNo(order);
+            }
+            return View();
+
+        }
         public ActionResult RecepcionGuiaEmbarque(string guia)
         {
             if (string.IsNullOrEmpty(guia))

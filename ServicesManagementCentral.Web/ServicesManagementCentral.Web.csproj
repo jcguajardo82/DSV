@@ -3792,6 +3792,7 @@
     <Content Include="Views\Almacenes\AlmacenesProveedor.cshtml" />
     <Content Include="Views\Consignaciones\Consignaciones_ProveedoresConcluidos.cshtml" />
     <Content Include="Views\EstatusReenvioMcia\EstatusReenvioMciaConcluidos.cshtml" />
+    <Content Include="Views\Ordenes\EmbarqueSETC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
