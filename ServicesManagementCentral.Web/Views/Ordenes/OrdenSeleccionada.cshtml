@@ -499,14 +499,20 @@
 
             var id_categoria = $(el).attr('id');
             var listaO = document.getElementById("Orders").value;
+            var tipolistaO = listaO.split("-");
             debugger;
             if (listaO != "0") {
-                if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
-                    //$('#ConfirmMessageResponse').val('Yes');
-                    debugger;
-                    FinalizaEmbarque(id_categoria, listaO, id_categoria);
+                if (tipolistaO[1] == "1") {
+                    if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
+                        //$('#ConfirmMessageResponse').val('Yes');
+                        debugger;
+                        FinalizaEmbarque(id_categoria, listaO, id_categoria);
+                    } else {
+                        //$('#ConfirmMessageResponse').val('No');
+                        return false;
+                    }
                 } else {
-                    //$('#ConfirmMessageResponse').val('No');
+                    alert("Orden seleccionada no es válida")
                     return false;
                 }
             } else {
@@ -519,10 +525,11 @@
 
             var id_categoria = "999"; //$(el).attr('id');
             var listaO = document.getElementById("Orders").value;
+            var tipolistaO = listaO.split("-");
             var digito = listaO.replaceAll("-","");
             debugger;
             if (listaO != "0") {
-                //if (digito[1] == "4") {
+                if (tipolistaO[1] == "2") {
                     if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
                         //$('#ConfirmMessageResponse').val('Yes');
                         debugger;
@@ -531,11 +538,11 @@
                         //$('#ConfirmMessageResponse').val('No');
                         return false;
                     }
-                //}
-                //else {
-                //    alert("Orden seleccionada no válida");
-                //    return false;
-                //}
+                }
+                else {
+                    alert("Orden seleccionada no válida");
+                    return false;
+                }
             } else {
                 alert("No hay ordenes seleccionadas");
             }
