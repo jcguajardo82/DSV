@@ -156,7 +156,7 @@ namespace ServicesManagement.Web
 
 
 
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "upCorpOms_Cns_OrdersByOrderNo_V2", false, parametros);
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "dbo.upCorpOms_Cns_OrdersByOrderNo_V2", false, parametros);
 
                 return ds;
             }

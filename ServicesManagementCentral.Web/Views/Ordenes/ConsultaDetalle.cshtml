@@ -82,7 +82,7 @@
                                                                     {
                                                                         if (p["UeType"].ToString().Trim().Equals("SETC"))
                                                                         {
-                                                                            <a href="@Url.Action("Embarque", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
+                                                                            <a href="@Url.Action("EmbarqueSETC", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
                                                                         }
                                                                         else
                                                                         {
@@ -132,7 +132,7 @@
                                                                         <td>
                                                                             <h5>Tipo de servicio:</h5>
                                                                             <small>
-                                                                                @p["dELIVERYtYPE"]
+                                                                                @p["DeliveryType"]
                                                                             </small>
                                                                         </td>
                                                                     </tr>

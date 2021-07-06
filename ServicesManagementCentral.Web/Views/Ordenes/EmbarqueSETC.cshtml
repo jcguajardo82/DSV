@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Orden";
+    ViewBag.Title = "Pedido";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int statusUe = -1;
 }
@@ -25,7 +25,7 @@
         {
 
             <div class="row">
-                <div class="col-sm-3"><h2>Orden: @p["OrderNo"]</h2></div>
+                <div class="col-sm-3"><h2>Pedido: @p["UeNo"]</h2></div>
                 <div class="col-sm-5"><h2>Fecha Arribo: @p["DeliveryDate"]</h2> </div>
                 <div class="col-sm-4"><H2>Surtidor: @p["Supplier_Name"]</H2></div>
             </div>

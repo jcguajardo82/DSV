@@ -882,6 +882,7 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult Embarque(string order)
         {
+            string txtchek;
             if (string.IsNullOrEmpty(order))
             {
                 return RedirectToAction("OrdenSeleccionada", "Ordenes");
@@ -894,7 +895,11 @@ namespace ServicesManagement.Web.Controllers
             {
                 Session["OrderSelected"] = DALServicesM.GetOrdersByOrderNo(order);
                 System.Data.DataSet dOP = (System.Data.DataSet)Session["OrderSelected"];
-                if (dOP.Tables[0].Rows[0]["uetype"].ToString() == "SETC")
+
+                txtchek = dOP.Tables[0].Rows[0]["UeType"].ToString().Trim();
+
+                //if (dOP.Tables[0].Rows[0]["UeType"].ToString().Trim() == "SETC")
+                if (txtchek == "SETC")
                 {
                     EmbarqueSETC(order);
                 }

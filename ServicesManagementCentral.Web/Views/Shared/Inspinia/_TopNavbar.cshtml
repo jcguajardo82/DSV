@@ -1,5 +1,6 @@
 ﻿@{
     string userName = HttpContext.Current.User.Identity.Name;//ViewBag.Login != null ? ViewBag.Login.Username : "";
+    string descTda = Session["Desc_Num_UN"] != null ? Session["Desc_Num_UN"].ToString() : "";
 }
 
 <div class="row border-bottom">
@@ -8,17 +9,27 @@
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
             <div class="row">
 
-               @* <input id="txtFiltro" style=" padding: 4px 12px; margin: 14px 5px 5px 20px; font-size: 14px; float: right;" class="form-control" type="search" placeholder="Search..">*@
+                @* <input id="txtFiltro" style=" padding: 4px 12px; margin: 14px 5px 5px 20px; font-size: 14px; float: right;" class="form-control" type="search" placeholder="Search..">*@
 
             </div>
         </div>
 
-        @if (userName != "")
-        {
-            <ul class="nav navbar-top-links navbar-right">
+        <ul class="nav navbar-top-links navbar-right">
+            @if (descTda != "")
+            {
                 <li>
-                    <img alt="image-profile" src="@Url.Content("~/Content/images/theme/profile.jpg")" class="rounded img-top-logued" />
+                    <span class="m-r-sm text-muted welcome-message" data-i18n="topnav.welcometext" id="usrLuged-Name"> @descTda</span>
                 </li>
+            }
+
+            <li>
+                @*<img alt="image-profile" src="@Url.Content("~/Content/images/theme/profile.jpg")" class="rounded img-top-logued" />*@
+            </li>
+
+
+            @if (userName != "")
+            {
+
                 <li>
                     <span class="m-r-sm text-muted welcome-message" data-i18n="topnav.welcometext" id="usrLuged-Name">@userName</span>
                 </li>
@@ -27,13 +38,14 @@
                         <i class="fa fa-sign-out"></i> Log out
                     </a>
                 </li>
-            </ul>
-        }
-        else
-        {
-            Response.Redirect("~/Security/Login");
 
-        }
-    </nav>
+            }
+            else
+            {
+                Response.Redirect("~/Security/Login");
+
+            }
+        </ul>
+        </nav>
 </div>
 
