@@ -110,7 +110,7 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td>
+                                                            <td style="width:25%;">
                                                                 <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="Consignacion()">
                                                                     Aceptar Pedido
                                                                 </button>
@@ -120,37 +120,14 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td>
-                                                                <select id="ddlMotCan" class="form-control">
-                                                                    @{
-                                                                        if (ViewBag.MotCan != null)
-                                                                        {
-                                                                            IEnumerable<OrderFacts_UE_CancelCauses> listCan = ViewBag.MotCan as IEnumerable<OrderFacts_UE_CancelCauses>;
-                                                                            foreach (OrderFacts_UE_CancelCauses item in listCan)
-                                                                            {
-                                                                                <option value="@item.IdCause">@item.Cause_Desc</option>
-
-                                                                            }
-                                                                            <option value="99">Otro</option>
-
-                                                                        }
-
-                                                                    }
-                                                                </select>
-
-
                                                             </td>
                                                             <td></td>
-                                                            <td>
-                                                                <button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="Cancelar()"> Cancelar Pedido </button>
+                                                            <td style="width:25%;">
+                                                                <button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="popCancelar()"> Cancelar Pedido </button>
                                                                 @*<button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="alert('La siguiente consignación será cancelada por el siguiente motivo')"> Cancelar  Consignación </button>*@
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td><textarea id="txtOtro" maxlength="50" placeholder="Describir Otro" class="form-control" rows="4" cols="50"></textarea></td>
-                                                            <td></td>
-                                                        </tr>
+
                                                     </table>
                                                 </div>
                                             </div>
@@ -267,73 +244,128 @@
                                 @if (EsVehiculo)
                                 {
                                     if (ViewBag.Vehiculos != null)
-                                    {
-                                        upCorpOms_Cns_UeNoConsigmentsVehicles listV = ViewBag.Vehiculos as upCorpOms_Cns_UeNoConsigmentsVehicles;
-
-
+                                    {                                    
                                         <div role="tabpanel" id="tab-4" class="tab-pane">
                                             <div class="panel-body">
-                                                <table class="table">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Serie</td>
-                                                            <td><input type="text" id="txtSerie" class="form-control-sm" value="@listV.SerialId" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Bateria</td>
-                                                            <td><input type="text" id="txtBateria" class="form-control-sm" value="@listV.BateryId" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Entrada Por</td>
-                                                            <td><input type="text" id="txtEntradaPor" class="form-control-sm" value="@listV.EntryBy" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Fecha de Entrada</td>
-                                                            <td><input type="date" id="txtFechaEntrada"  class="form-control-sm" value="@listV.EntryDate.ToString("yyyy-MM-dd")" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>No. de Pedimento</td>
-                                                            <td><input type="text" id="txtNoPedimento" class="form-control-sm" value="@listV.PetitionId" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>No. de Motor</td>
-                                                            <td><input type="text" id="txtNoMotor" class="form-control-sm" value="@listV.MotorId" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Repuve</td>
-                                                            <td><input type="text" id="txtRepuve" class="form-control-sm" value="@listV.RepuveId" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Año</td>
-                                                            <td><input type="text" id="txtAnio" class="form-control-sm" value="@listV.Year" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Color</td>
-                                                            <td><input type="text" id="txtColor" class="form-control-sm" value="@listV.ColorId" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Modelo</td>
-                                                            <td><input type="text" id="txtModelo" class="form-control-sm" value="@listV.ModelId" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Marca</td>
-                                                            <td><input type="text" id="txtMarca" class="form-control-sm" value="@listV.BrandId" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Cilindraje</td>
-                                                            <td><input type="text" id="txtCilindraje" class="form-control-sm" value="@listV.CylinderCapacityId" /></td>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <td colspan="2" style="text-align:right;">
-                                                                <button type="button" class="btn btn-primary block full-width m-b" onclick="GuardarVehiculo()">
-                                                                    Guardar Vehículo
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
+                                                <div class="row">
+                                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                                        <table class="table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Serie</td>
+                                                                    <td><input type="text" id="txtSerie" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Bateria</td>
+                                                                    <td><input type="text" id="txtBateria" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Entrada Por</td>
+                                                                    <td><input type="text" id="txtEntradaPor" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Fecha de Entrada</td>
+                                                                    <td>
+                                                                        @*<input type="date" id="txtFechaEntrada" class="form-control-sm" value="@listV.EntryDate.ToString("yyyy-MM-dd")" />*@
+                                                                        <div class="input-group date" id="datetimepicker1">
+                                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                            <input class="form-control-sm datepicker" id="txtFechaEntrada" name="txtFechaEntrada"
+                                                                                   type="text" value="">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>No. de Pedimento</td>
+                                                                    <td><input type="text" id="txtNoPedimento" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>No. de Motor</td>
+                                                                    <td><input type="text" id="txtNoMotor" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Repuve</td>
+                                                                    <td><input type="text" id="txtRepuve" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Año</td>
+                                                                    <td><input type="text" id="txtAnio" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Color</td>
+                                                                    <td><input type="text" id="txtColor" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Modelo</td>
+                                                                    <td><input type="text" id="txtModelo" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Marca</td>
+                                                                    <td><input type="text" id="txtMarca" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Cilindraje</td>
+                                                                    <td><input type="text" id="txtCilindraje" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <td colspan="2" style="text-align:right;">
+                                                                        <button type="button" class="btn btn-primary block full-width m-b" onclick="GuardarVehiculo()">
+                                                                            Guardar Vehículo
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                                        <table id="tblVehiculos" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                                                            <thead class="bg-danger-sor">
+                                                                <tr>
+                                                                    <th style="text-align:center;">Serie</th>
+                                                                    <th style="text-align:center;">Batería</th>
+                                                                    <th style="text-align:center;">Entrada Por</th>
+                                                                    <th style="text-align:center;">Fecha de Entrada</th>
+                                                                    <th style="text-align:center;">No. de Pedimento</th>
+                                                                    <th style="text-align:center;">No. de Motor</th>
+                                                                    <th style="text-align:center;">Repuve</th>
+                                                                    <th style="text-align:center;">Año</th>
+                                                                    <th style="text-align:center;">Color</th>
+                                                                    <th style="text-align:center;">Modelo</th>
+                                                                    <th style="text-align:center;">Marca</th>
+                                                                    <th style="text-align:center;">Cilindraje</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @{
+
+                                                                    IEnumerable<upCorpOms_Cns_UeNoConsigmentsVehicles> listV = ViewBag.Vehiculos as IEnumerable<upCorpOms_Cns_UeNoConsigmentsVehicles>;
+
+                                                                }
+                                                                @foreach (upCorpOms_Cns_UeNoConsigmentsVehicles item in listV)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@item.SerialId</td>
+                                                                        <td style="text-align:left;">@item.BateryId</td>
+                                                                        <td style="text-align:right;">@item.EntryBy</td>
+                                                                        <td style="text-align:left;">@item.EntryDate.ToString("dd/MM/yyyy")</td>
+                                                                        <td style="text-align:left;">@item.PetitionId</td>
+                                                                        <td style="text-align:left;">@item.MotorId</td>
+                                                                        <td style="text-align:left;">@item.RepuveId</td>
+                                                                        <td style="text-align:left;">@item.Year</td>
+                                                                        <td style="text-align:left;">@item.ColorId</td>
+                                                                        <td style="text-align:left;">@item.ModelId</td>
+                                                                        <td style="text-align:left;">@item.BrandId</td>                                                              
+                                                                        <td style="text-align:left;">@item.CylinderCapacityId</td>                                                              
+                                                                    </tr>
+
+
+
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     }
@@ -447,6 +479,57 @@
         </div>
     </div>
 </div>
+
+
+
+<div class="modal inmodal fade" id="dlgCancel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Cancelación de Pedido</p>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-4 col col-md-4 col col-lg-4">
+                        <div class="form-group">
+                            <label>Motivo de Cancelación</label>
+                            <select id="ddlMotCan" class="form-control">
+                                @{
+                                    if (ViewBag.MotCan != null)
+                                    {
+                                        IEnumerable<OrderFacts_UE_CancelCauses> listCan = ViewBag.MotCan as IEnumerable<OrderFacts_UE_CancelCauses>;
+                                        foreach (OrderFacts_UE_CancelCauses item in listCan)
+                                        {
+                                            <option value="@item.IdCause">@item.Cause_Desc</option>
+
+                                        }
+                                        <option value="99">Otro</option>
+
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col col-md-12 col col-lg-12">
+                        <textarea id="txtOtro" maxlength="50" placeholder="Describir Otro" class="form-control" rows="4" cols="50"></textarea>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Cancelar()">Cancelar Pedido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="modal inmodal fade" id="dlgAddProdcut" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -522,6 +605,14 @@
 </div>
 @section scripts {
     <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyy/MM/DD"
+            });
+         
+        });
+
 
         $(document).ready(function () {
             //GetSolicitarGuia();
@@ -650,7 +741,13 @@
 
         }
 
-          function AddEmbalaje() {
+        function popCancelar() {
+            $("#txtOtro").hide();
+            $('#txtOtro').val('');
+            $('#dlgCancel').modal('show');
+        }
+
+        function AddEmbalaje() {
 
         debugger;
         var selProd = 0;
@@ -862,7 +959,10 @@
 
                 $("#txtOtro").val('');
                 if ($("#ddlMotCan").val() == "99") {
-                        $("#txtOtro").focus();
+                    $("#txtOtro").show();
+                    $("#txtOtro").focus();
+                } else {
+                    $("#txtOtro").hide();
                 }
 
             })
@@ -954,7 +1054,7 @@
             }
         }
 
-           function DeletePaquete(idTracking) {
+        function DeletePaquete(idTracking) {
         var TrackingType = "Normal";
         var _UeNo = $("#hddUeNo").val();
         var _OrderNo = $("#hddOrderNo").val();
@@ -1113,7 +1213,7 @@
             );
 
 
-          table2=  $("#tblSolicitutGuia").DataTable(
+            $("#tblVehiculos").DataTable(
                 {
                     dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -1135,7 +1235,7 @@
                     pageLength: 10,
                     lengthMenu: [10, 25, 50, 100, 500],
 
-                    //destroy: true, //destruye automaticamente la referencia a la tabla
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
                     //Ajax
                     //serverSide: true,
                     //bServerSide: true,
@@ -1145,13 +1245,12 @@
                     fixedHeader: {
                         header: true
                     },
-                    "scrollX": true,
-                    @* "language": {
+                    "scrollX": true
 
-                "emptyTable": '@ViewBag.MensajeSolGuia'
-            }*@
                 }
-        );
+            );
+
+
         });
 
         function iniciatblSolicitutGuia() {
