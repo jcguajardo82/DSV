@@ -181,7 +181,12 @@
                             tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
                             tr.append("<td>" + json.resp[i].GuiaVig + "</td>");
                             tr.append("<td>" + json.resp[i].MotivoReenvio + "</td>");
+                            if (json.resp[i].FechaEntrega !== null) {
 
+                                tr.append("<td>" + json.resp[i].FechaEntrega + "</td>");
+                            } else {
+                                tr.append("<td></td>");
+                            }
                             $('#tblConsulta').append(tr);
 
                         }
