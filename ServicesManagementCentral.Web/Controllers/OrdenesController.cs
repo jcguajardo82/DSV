@@ -130,6 +130,10 @@ namespace ServicesManagement.Web.Controllers
                 Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtir(un);
                 Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcar(un);
                 Session["listTrans"] = DALServicesM.GetCarriersUN(int.Parse(un));
+                //agregado DST
+                Session["listTransDST"] = DALServicesM.GetCarriersUNDTS(int.Parse(un));
+
+
 
             }
             else
