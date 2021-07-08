@@ -1199,6 +1199,128 @@ namespace ServicesManagement.Web.Controllers
             }
 
         }
+
+
+        #region Transportistas DST
+
+        public ActionResult TransportistasDST()
+
+        {
+            if (Session["Id_Num_UN"] == null)
+            {
+                return RedirectToAction("Index", "Ordenes");
+            }
+            return View("TransportistasDST/Index");
+        }
+
+        [HttpGet]
+        public ActionResult GetTransportistasDST()
+
+        {
+            try
+            {
+                if (Session["Id_Num_UN"] == null)
+                {
+                    return RedirectToAction("Index", "Ordenes");
+                }
+
+                DataSet ds = DALServicesM.GetCarriersUNDST(int.Parse(Session["Id_Num_UN"].ToString()));
+                List<CarrierModel> listC = ConvertTo<CarrierModel>(ds.Tables[0]);
+                var result = new { Success = true, json = listC };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult AddTransportistasDST(string num, string name, string un)
+        {
+            try
+            {
+                DALServicesM.AddCarriersDST(num, name, Session["Id_Num_UN"].ToString());
+                var result = new { Success = true, Message = "Alta exitosa" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult EditTransportistasDST(string num, string name, string un, string status)
+        {
+            try
+            {
+                DALServicesM.EditCarriersDST(num, name, Session["Id_Num_UN"].ToString(), status);
+                var result = new { Success = true, Message = "Alta exitosa" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult DeleteTransportistasDST(string num)
+
+        {
+            try
+            {
+                DALServicesM.DeleteCarriersDST(num);
+
+                var result = new { Success = true, Message = "Eliminacion exitosa" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult GetTransportistaDST(string num)
+
+        {
+            try
+
+            {
+
+                DataSet d = DALServicesM.GetCarrierDST(num);
+                ServicesManagement.Web.Models.OMSModels.CarrierModel c = new ServicesManagement.Web.Models.OMSModels.CarrierModel();
+
+                if (!Soriana.FWK.FmkTools.DatosDB.IsNullOrEmptyDataSet(d))
+                {
+                    if (!Soriana.FWK.FmkTools.DatosDB.IsNullOrEmptyDatatable(d.Tables[0]))
+                    {
+                        foreach (DataRow r in d.Tables[0].Rows)
+                        {
+                            c.Name = r["Name"].ToString();
+                            c.Id_Num_UN = Convert.ToInt32(r["Id_Num_UN"]);
+                            c.Id_Num_Empleado = r["Id_Num_Empleado"].ToString();
+                        }
+                    }
+                }
+
+                var result = new { Success = true, json = c };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        #endregion
+
+
     }
 
 }

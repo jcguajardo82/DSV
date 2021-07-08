@@ -169,7 +169,9 @@
                                 Número Exterior
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="txtNumExt" value="@Model.addressNumberExt" />
+                                <input type="text" class="form-control" id="txtNumExt" onkeypress='return validaNumericos2(event)' value="@Model.addressNumberExt" />
+                                @*onblur="validaNumericos();"*@
+                                
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Número Interior
@@ -567,5 +569,28 @@
                 }
             });
         }
+
+        function validaNumericos1() {
+            var inputtxt = document.getElementById('txtNumExt');
+            var valor = inputtxt.value;
+            for (i = 0; i < valor.length; i++) {
+                var code = valor.charCodeAt(i);
+                if (code <= 48 || code >= 57) {
+                    inputtxt.value = "";
+                    document.getElementById('txtNumExt').focus;
+                    return;
+                }
+            }
+
+        }
+
+        function validaNumericos2(event) {
+            if (event.charCode >= 48 && event.charCode <= 57) {
+                return true;
+            }
+            return false;
+        }
+
+
     </script>
 }
