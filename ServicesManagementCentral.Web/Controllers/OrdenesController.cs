@@ -683,6 +683,8 @@ namespace ServicesManagement.Web.Controllers
                     #region LLamado al Api
                     string status = string.Empty, ue = string.Empty, store = string.Empty;
 
+                    string orderNo = string.Empty;
+
                     System.Data.DataSet d = DALServicesM.GetOrdersByOrderNo(item.OrderNo);
 
                     foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
@@ -691,7 +693,7 @@ namespace ServicesManagement.Web.Controllers
                         status = r1["StatusUe"].ToString();
                         ue = r1["UeNo"].ToString();
                         store = r1["StoreNum"].ToString();
-
+                        orderNo = r1["OrderNo"].ToString();
                     }
 
 
@@ -701,7 +703,7 @@ namespace ServicesManagement.Web.Controllers
                     InformacionOrden o = new InformacionOrden();
 
                     o.Orden = new InformacionDetalleOrden();
-                    o.Orden.NumeroOrden = item.OrderNo;
+                    o.Orden.NumeroOrden = orderNo; // item.OrderNo;
 
 
                     o.Orden.EstatusUnidadEjecucion = status;

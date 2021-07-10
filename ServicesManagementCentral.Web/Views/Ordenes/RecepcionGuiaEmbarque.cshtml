@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Orden";
+    ViewBag.Title = "Pedido";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
@@ -40,6 +40,7 @@
             {
                 index++;
                 <input id="OrderNo_@index" value="@p["OrderNo"]" style="visibility:hidden" />
+                <input id="UeNo_@index" value="@p["UeNo"]" style="visibility:hidden" />
                 <input id='ShipperName_@index' value="@p["ShipperName"]" style="visibility:hidden" />
                 <input type="hidden" id="hddFecAsigTrans_@index" value="@p["carrierDate"]" />
                 @*<input id="UeNo" name="UeNo" value="@p["UeNo"]" style="visibility:hidden" />
@@ -142,8 +143,9 @@
                                                 <span><strong>Fecha Asignacion:</strong> @p["CarrierDate"]</span>
                                             </p>
                                             @*<span>Orden:</span>*@
-                                            <h4>Orden</h4>
-                                            <h4 class="text-navy">@p["OrderNo"]</h4>
+                                            <h4>Pedido</h4>
+                                            @*<h4 class="text-navy">@p["OrderNo"]</h4>*@
+                                            <h4 class="text-navy">@p["UeNo"]</h4>
                                             <h4>Entrega</h4>
                                             <h4 class="text-navy">@p["OrderDeliveryDate"].ToString()</h4>
                                         </div>
@@ -364,7 +366,7 @@
                                                     <table border="0" cellpadding="0" style="width:100%;">
                                                         <thead>
                                                             <tr>
-                                                                <th style="text-align:center;font-weight:bold;background-color:#eee">Orden</th>
+                                                                <th style="text-align:center;font-weight:bold;background-color:#eee">Pedido</th>
                                                                 <th style="text-align:center;font-weight:bold;background-color:#eee">Entrega</th>
                                                                 <th style="text-align:center;font-weight:bold;background-color:#eee"> Dirección de Entrega</th>
                                                             </tr>
@@ -372,7 +374,8 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td>
-                                                                    <p style="text-align:center" id="txtNoOrden">@p["OrderNo"]</p>
+                                                                    @*<p style="text-align:center" id="txtNoOrden">@p["OrderNo"]</p>*@
+                                                                    <p style="text-align:center" id="txtNoOrden">@p["UeNo"]</p>
                                                                 </td>
                                                                 <td>
                                                                     <p style="text-align:center" id="txtFecEntrega">@p["OrderDeliveryDate"]</p>
@@ -580,15 +583,16 @@
 
                                                             @foreach (System.Data.DataRow p2 in dt2.Rows)
                                                             {
-                                                                <tr>
-                                                                    <td style="text-align:center;">@p2["OrderNo"]</td>
-                                                                    <td style="text-align:left;padding-right:10px;">@p2["ProductId"] / @p2["Barcode"]</td>
-                                                                    <td style="text-align:left;padding-right:10px;">@p2["ProductName"]</td>
-                                                                    <td style="text-align:right;padding-right:10px;">@p2["pe_Quantity"] @p2["UnitMeasure"]<br />@p2["e_Quantity"] @p2["UnitMeasure"]<br />@p2["c_Quantity"] @p2["UnitMeasure"]</td>
-                                                                    <td style="text-align:right;padding-right:10px;">$@p2["pe_price"]<br />$@p2["e_price"]<br />$@p2["c_price"]</td>
-                                                                    <td style="text-align:right;padding-right:10px;">$@p2["pe_tot"]<br />$@p2["e_tot"]<br />$@p2["c_tot"]</td>
+                                                            <tr>
+                                                                @*<td style="text-align:center;">@p2["OrderNo"]</td>*@
+                                                                <td style="text-align:center;">@p2["UeNo"]</td>
+                                                                <td style="text-align:left;padding-right:10px;">@p2["ProductId"] / @p2["Barcode"]</td>
+                                                                <td style="text-align:left;padding-right:10px;">@p2["ProductName"]</td>
+                                                                <td style="text-align:right;padding-right:10px;">@p2["pe_Quantity"] @p2["UnitMeasure"]<br />@p2["e_Quantity"] @p2["UnitMeasure"]<br />@p2["c_Quantity"] @p2["UnitMeasure"]</td>
+                                                                <td style="text-align:right;padding-right:10px;">$@p2["pe_price"]<br />$@p2["e_price"]<br />$@p2["c_price"]</td>
+                                                                <td style="text-align:right;padding-right:10px;">$@p2["pe_tot"]<br />$@p2["e_tot"]<br />$@p2["c_tot"]</td>
 
-                                                                </tr>
+                                                            </tr>
 
                                                             }
 
@@ -621,15 +625,16 @@
 
                                                             @foreach (System.Data.DataRow p2 in dt3.Rows)
                                                             {
-                                                                <tr>
-                                                                    <td style="text-align:center;">@p2["OrderNo"]</td>
-                                                                    <td style="text-align:left;padding-right:10px;">@p2["ProductId"] / @p2["Barcode"]</td>
-                                                                    <td style="text-align:left;padding-right:10px;">@p2["ProductName"]</td>
-                                                                    <td style="text-align:right;padding-right:10px;">@p2["pe_Quantity"] @p2["UnitMeasure"]<br />@p2["e_Quantity"] @p2["UnitMeasure"]<br />@p2["c_Quantity"] @p2["UnitMeasure"]</td>
-                                                                    <td style="text-align:right;padding-right:10px;">$@p2["pe_price"]<br />$@p2["e_price"]<br />$@p2["c_price"]</td>
-                                                                    <td style="text-align:right;padding-right:10px;">$@p2["pe_tot"]<br />$@p2["e_tot"]<br />$@p2["c_tot"]</td>
+                                                            <tr>
+                                                                @*<td style="text-align:center;">@p2["OrderNo"]</td>*@
+                                                                <td style="text-align:center;">@p2["UeNo"]</td>
+                                                                <td style="text-align:left;padding-right:10px;">@p2["ProductId"] / @p2["Barcode"]</td>
+                                                                <td style="text-align:left;padding-right:10px;">@p2["ProductName"]</td>
+                                                                <td style="text-align:right;padding-right:10px;">@p2["pe_Quantity"] @p2["UnitMeasure"]<br />@p2["e_Quantity"] @p2["UnitMeasure"]<br />@p2["c_Quantity"] @p2["UnitMeasure"]</td>
+                                                                <td style="text-align:right;padding-right:10px;">$@p2["pe_price"]<br />$@p2["e_price"]<br />$@p2["c_price"]</td>
+                                                                <td style="text-align:right;padding-right:10px;">$@p2["pe_tot"]<br />$@p2["e_tot"]<br />$@p2["c_tot"]</td>
 
-                                                                </tr>
+                                                            </tr>
                                                             }
 
                                                         </tbody>
@@ -754,7 +759,7 @@
             calendarWeeks: true,
             autoclose: true,
             //locale: 'es'
-             format: "m/dd/yyyy"
+            format: "m/dd/yyyy"
             //format: "dd/m/yyyy"
             //format: 'HH:mm'
         })
@@ -842,7 +847,8 @@
                     guia.timeD = $("#timeD_" + i).val();
                     guia.fechaAsigTrans = $("#hddFecAsigTrans_" + i).val();
                     guia.ShipperName = $("#ShipperName_" + i).val();
-                    guia.OrderNo = $("#OrderNo_" + i).val();
+                    //guia.OrderNo = $("#OrderNo_" + i).val();
+                    guia.OrderNo = $("#UeNo_" + i).val();
                     guia.flagE = radioValue;
                     guia.idex = i;
 
