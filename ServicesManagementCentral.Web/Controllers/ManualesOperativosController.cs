@@ -15,6 +15,7 @@ using ServicesManagement.Web.Models.ManualesOp;
 
 namespace ServicesManagement.Web.Controllers
 {
+    [Authorize]
     public class ManualesOperativosController : Controller
     {
         

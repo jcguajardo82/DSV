@@ -111,10 +111,12 @@ namespace ServicesManagement.Web.Controllers
             else { return RedirectToAction("OrdenSeleccionada"); }
         }
 
-        public ActionResult SeleccionTda(string un = "", string desc_un = "")
+        public ActionResult SeleccionTda(string un = "", string desc_un = "", string UnPerm_Info = "")
         {
             Session["Id_Num_UN"] = un;
             Session["Desc_Num_UN"] = desc_un;
+            // nuevo parametro
+            Session["UnPerm_Info"] = UnPerm_Info;
 
             return RedirectToAction("OrdenSeleccionada");
 
@@ -1185,7 +1187,7 @@ namespace ServicesManagement.Web.Controllers
                     return Json(result1, JsonRequestBehavior.AllowGet);
                 }
                 int idNumUn = int.Parse(Session["Id_Num_UN"].ToString());
-                var tdas = ConvertTo<UNModel>(DALServicesM.GetUN().Tables[0]);
+                var tdas = ConvertTo<UNModel>(DALServicesM.GetUNTraspaso(idNumUn).Tables[0]);
                 var tdasFiltradas = tdas.Where(p => p.Id_Num_UN != idNumUn);
                 //var data = JsonConvert.SerializeObject<List<UNModel>>(tdas);
                 var result = new { Success = true, json = tdas };

@@ -237,39 +237,46 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-2 col-md-2 col-lg-2"></div>              
-                @*nueva lista DST*@
-                <div class="col-xs-2 col-md-2 col-lg-2">
-                    <div class="dt-buttons btn-group flex-wrap">
-                        <div class="input-group-prepend">
-                            <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">Asignar Guia de Embarque DST</button>
-                            <ul id="dllTransDTS" class="dropdown-menu" x-placement="top-start" style="position: absolute; top: -2px; left: 0px; will-change: top, left;width:100%;">
-                                @if (Session["listTransDST"] != null)
-                                {
-                                    System.Data.DataSet ds = (System.Data.DataSet)Session["listTransDST"];
-                                    var dt = ds.Tables[0];
-                                    foreach (System.Data.DataRow p in dt.Rows)
-                                    {
-                                        <li id="@p["Id_Carrier"]" onclick="onchangeDropTransDST(this)"><a>@p["Name"]</a></li>
-                                    }
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                @*Nueva lista DST*@
-                <div class="col-xs-2 col-md-2 col-lg-2">  </div>
-                <div class="col-xs-2 col-md-2 col-lg-2">
-                    <div class="dt-buttons btn-group flex-wrap">
-                        <div class="input-group-prepend">
-                            <div class="input-group-btn">
-                                <button class="btn btn-lg btn-primary" type="submit" onclick="onclickDropTransDTS()">
-                                    DST
-                                </button>
+
+                @{
+                    string UnPerm_Info = Session["UnPerm_Info"].ToString().Trim();
+                    if (UnPerm_Info == "1")
+                    {
+                        @*nueva lista DST*@
+                        <div class="col-xs-2 col-md-2 col-lg-2"></div>
+                        <div class="col-xs-2 col-md-2 col-lg-2">
+                            <div class="dt-buttons btn-group flex-wrap">
+                                <div class="input-group-prepend">
+                                    <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">Asignar Guia de Embarque DST</button>
+                                    <ul id="dllTransDTS" class="dropdown-menu" x-placement="top-start" style="position: absolute; top: -2px; left: 0px; will-change: top, left;width:100%;">
+                                        @if (Session["listTransDST"] != null)
+                                        {
+                                            System.Data.DataSet ds = (System.Data.DataSet)Session["listTransDST"];
+                                            var dt = ds.Tables[0];
+                                            foreach (System.Data.DataRow p in dt.Rows)
+                                            {
+                                                <li id="@p["Id_Carrier"]" onclick="onchangeDropTransDST(this)"><a>@p["Name"]</a></li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                        @*Nueva lista DST*@
+                        @*<div class="col-xs-2 col-md-2 col-lg-2">  </div>*@
+                        <div class="col-xs-2 col-md-2 col-lg-2">
+                            <div class="dt-buttons btn-group flex-wrap">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-lg btn-primary" type="submit" onclick="onclickDropTransDTS()">
+                                            DST
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
                 <div class="col-xs-10 col-md-10 col-lg-10">
                     <div class="col col-xs-3 col col-md-3 col col-lg-3">
                         <input id="txtFiltroEmbarcar" class="form-control" type="search" placeholder="Search..">

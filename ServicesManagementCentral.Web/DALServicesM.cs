@@ -12,6 +12,7 @@ namespace ServicesManagement.Web
     public class DALServicesM
     {
 
+        #region Obtener Tiendas
         public static DataSet GetUN()
         {
 
@@ -53,6 +54,36 @@ namespace ServicesManagement.Web
         }
 
 
+        public static DataSet GetUNTraspaso(int idNumUn)
+        {
+
+            DataSet ds = new DataSet();
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@Id_Num_UN", idNumUn);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "upCorpOmsTraspaso_Cns_UN", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region Ordenes x Tienda
         public static DataSet GetOrdersByUn(string Id_Num_UN)
         {
 
@@ -92,7 +123,9 @@ namespace ServicesManagement.Web
             }
 
         }
+        #endregion
 
+        #region Obtener Surtidores
         public static DataSet GetSurtidores(string Id_Num_UN)
         {
 
@@ -132,6 +165,9 @@ namespace ServicesManagement.Web
             }
 
         }
+        #endregion
+
+        #region ObtenerOrdenes
 
         public static DataSet GetOrdersByOrderNo(string UeNo)
         {
@@ -253,6 +289,8 @@ namespace ServicesManagement.Web
             }
 
         }
+
+        #endregion
 
         #region Carriers
 
@@ -788,6 +826,8 @@ namespace ServicesManagement.Web
         }
         #endregion
 
+        #region Embarque
+
         public static DataSet GetListaEmbarcar(string Id_Num_UN, string Id_Num_Apl = "2")
         {
             DataSet ds = new DataSet();
@@ -862,6 +902,7 @@ namespace ServicesManagement.Web
                 throw ex;
             }
         }
+        #endregion
 
         #region ActualizaOrden
 
@@ -2290,6 +2331,8 @@ namespace ServicesManagement.Web
         }
         #endregion
 
+        #region Insercion Productos a la Orden
+
         public static void UpdProductsToOrder(string OrderNo, string PosBarcode, string PosProductDescription
             , string PosQuantity, string PosPriceNormalSale, string PosPriceOfferSale
             , string ProductId, string UnitMeasure, string comments,string UeNo)
@@ -2340,8 +2383,7 @@ namespace ServicesManagement.Web
                 throw ex;
             }
         }
-
-
+        #endregion
 
         #region Carriers DST
 

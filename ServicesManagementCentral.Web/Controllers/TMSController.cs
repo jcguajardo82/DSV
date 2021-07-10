@@ -14,6 +14,7 @@ using ServicesManagement.Web.Helpers;
 
 namespace ServicesManagement.Web.Controllers
 {
+    [Authorize]
     public class TMSController : Controller
     {
         string UrlApi = ConfigurationManager.AppSettings["api_TMS"].ToString();

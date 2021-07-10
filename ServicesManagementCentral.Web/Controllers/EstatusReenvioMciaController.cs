@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace ServicesManagement.Web.Controllers
 {
+    [Authorize]
     public class EstatusReenvioMciaController : Controller
     {
         #region EstatusReenvioMcia CEDIS

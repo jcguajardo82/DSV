@@ -37,7 +37,7 @@
             foreach (System.Data.DataRow p in dt.Rows)
             {
             <li class="dd-item" data-id="2">
-                <a href="@Url.Action("SeleccionTda","Ordenes", new { un=@p[0].ToString() ,desc_un=@p[1].ToString()})">
+                <a href="@Url.Action("SeleccionTda","Ordenes", new { un=@p[0].ToString() ,desc_un=@p[1].ToString(), UnPerm_Info=@p[2].ToString()})">
                     <div class="dd-handle">
                         <span class="float-right"> Call Center </span>
                         <span class="label label-success"><i class="fa fa-car"></i></span> @p[1].ToString()

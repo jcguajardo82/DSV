@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace ServicesManagement.Web.Controllers
 {
+    [Authorize]
     public class NivelExistenciaController : Controller
     {
         // GET: NivelExistencia

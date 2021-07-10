@@ -16,6 +16,7 @@ using RestSharp;
 
 namespace ServicesManagement.Web.Controllers
 {
+    [Authorize]
     public class ActualizacionesController : Controller
     {
         // GET: Actualizaciones Contenido

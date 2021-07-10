@@ -9,6 +9,7 @@ using ServicesManagement.Web.Models.Consignaciones;
 
 namespace ServicesManagement.Web.Controllers
 {
+    [Authorize]
     public class ConsignacionesController : Controller
     {
 
