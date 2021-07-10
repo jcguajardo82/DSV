@@ -50,6 +50,7 @@
                 //if (tipoEntrega == "Entrega a domicilio")
 
                 var tipoEntrega = p["UeType"].ToString();
+                // SECCION DE DROP SHIP TIENDA
                 if (tipoEntrega == "DST")
                 {
                     if (index == 1)
@@ -123,6 +124,7 @@
                         </div>
                     }
                 }
+                // SECCION DE SETC
                 else
                 {
                     <div class="row">
@@ -131,6 +133,7 @@
                                 <div class="feed-activity-list">
                                     <div class="feed-element">
                                         <div>
+                                            <!-- 01-06-2021 - correctivo -->
                                             <i class="fa fa-bus payment-icon-big text-success"></i>
                                             <h4>Guia</h4>
                                             <h4 class="text-navy">@p["TrackingNo"]</h4>
@@ -159,6 +162,8 @@
                                             </address>
                                         </div>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -184,6 +189,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group">
@@ -191,10 +198,14 @@
                                                         <div class="input-group">
                                                             <input type="text" class="form-control" id="nombre_@index" name="nombre_@index" placeholder="Nombre e Identificacion" required="">
                                                             <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+
+
                                                             @*<label class="col-sm-3 col-form-label">Nombre e Identificación:</label>*@
 
                                                             @*<div class="col-sm-9"><input type="text" id="nombre" name="nombre" placeholder="Nombre e Identificación" class="form-control"></div>
                                                                 <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>*@
+
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -206,7 +217,7 @@
                                                         <div class="input-group date">
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                             <input class="form-control datepicker" id="fechaE_@index" name="fechaE_@index"
-                                                                    placeholder="Del" type="text" value="">
+                                                                   placeholder="Del" type="text" value="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -238,6 +249,8 @@
                                                         </div>
                                                     </div>*@
                                             </div>
+
+
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="col-md-12">
@@ -263,15 +276,19 @@
                                                 </div>
                                             </div>
                                         </form>
+
                                     </div>
+
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
                 }
             }
         }
-     }
+    }
 
 </div>
 
@@ -293,18 +310,19 @@
 
                             foreach (System.Data.DataRow item in dsOrdenGuia.Tables[0].Rows)
                             {
-                                System.Data.DataSet dsM = DALServicesM.GetOrdersByOrderNo(item["OrderNo"].ToString());
+                                //System.Data.DataSet ds = DALServicesM.GetOrdersByOrderNo(item["OrderNo"].ToString());
+                                System.Data.DataSet ds = DALServicesM.GetOrdersByOrderNo(item["UeNo"].ToString());
 
-                                var dtM = dsM.Tables[0];
-                                var dt8 = dsM.Tables[6];
-                                var dt4 = dsM.Tables[3];
-                                var dt2 = dsM.Tables[5];  //no surtidos
-                                var dt3 = dsM.Tables[4];  //surtidos
+                                var dt = ds.Tables[0];
+                                var dt8 = ds.Tables[6];
+                                var dt4 = ds.Tables[3];
+                                var dt2 = ds.Tables[5];  //no surtidos
+                                var dt3 = ds.Tables[4];  //surtidos
 
-                                int indexM = 0;
-                                foreach (System.Data.DataRow pM in dtM.Rows)
+                                int index = 0;
+                                foreach (System.Data.DataRow p in dt.Rows)
                                 {
-                                    <input type="hidden" id="hddFecAsigTrans" value="@pM["carrierDate"]" />
+                                    <input type="hidden" id="hddFecAsigTrans" value="@p["carrierDate"]" />
                                     <div id="divGuia">
                                         <div class="col">
                                             <div class="col-sm-2 col-md-2 col-lg-2">
@@ -328,13 +346,13 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td>
-                                                                    <p style="text-align:center" id="txtGuia">@pM["TrackingNo"]</p>
+                                                                    <p style="text-align:center" id="txtGuia">@p["TrackingNo"]</p>
                                                                 </td>
                                                                 <td>
-                                                                    <p style="text-align:center" id="txtChofer">@pM["ShipperName"]</p>
+                                                                    <p style="text-align:center" id="txtChofer">@p["ShipperName"]</p>
                                                                 </td>
                                                                 <td>
-                                                                    <p style="text-align:center" id="txtFecAsig">@pM["CarrierDate"]</p>
+                                                                    <p style="text-align:center" id="txtFecAsig">@p["CarrierDate"]</p>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -354,13 +372,13 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td>
-                                                                    <p style="text-align:center" id="txtNoOrden">@pM["OrderNo"]</p>
+                                                                    <p style="text-align:center" id="txtNoOrden">@p["OrderNo"]</p>
                                                                 </td>
                                                                 <td>
-                                                                    <p style="text-align:center" id="txtFecEntrega">@pM["OrderDeliveryDate"]</p>
+                                                                    <p style="text-align:center" id="txtFecEntrega">@p["OrderDeliveryDate"]</p>
                                                                 </td>
                                                                 <td>
-                                                                    <p style="text-align:center" id="txtDireccion">@pM["DeliveryAddress"]</p>
+                                                                    <p style="text-align:center" id="txtDireccion">@p["DeliveryAddress"]</p>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -373,37 +391,37 @@
                                                         <tr>
                                                             <TD ALIGN='CENTER' bgcolor="#eee"><B>Forma de pago</B></TD>
                                                             @*' 1.-Credito, 2.-Bonomatic, 3.-Cheque, 8.-CheckPlus*@
-                                                            @if (@pM["MethodPaymentID"].ToString().Trim() == "1" || @pM["MethodPaymentID"].ToString().Trim() == "2" || @pM["MethodPaymentID"].ToString().Trim() == "8")
+                                                            @if (@p["MethodPaymentID"].ToString().Trim() == "1" || @p["MethodPaymentID"].ToString().Trim() == "2" || @p["MethodPaymentID"].ToString().Trim() == "8")
                                                             {
                                                                 <TD ALIGN='CENTER' bgcolor="#eee"><B>Cuenta</B></TD>
                                                             }
                                                             @*' 1.-Credito, 2.-Bonomatic, 3.-Cheque, 8.-CheckPlus*@
-                                                            @if (@pM["MethodPaymentID"].ToString() == "1")
+                                                            @if (@p["MethodPaymentID"].ToString() == "1")
                                                             {
                                                                 <TD ALIGN='CENTER' bgcolor="#eee"><B>Nombre Cliente Tarjeta</B></TD>
                                                                 <TD ALIGN='CENTER' bgcolor="#eee"><B>Expira (MMAA)</B></TD>
                                                                 <TD ALIGN='CENTER' bgcolor="#eee"><B>Banco</B></TD>
 
-                                                                if (@pM["Codigo_Autorizacion"].ToString().Trim() != "0")
+                                                                if (@p["Codigo_Autorizacion"].ToString().Trim() != "0")
                                                                 {
                                                                     <TD ALIGN='CENTER' bgcolor="#eee"><B>Autorizaci&oacute;n</B></TD>
                                                                 }
-                                                                if (@pM["NumeroAfiliacion"].ToString().Trim() != "0")
+                                                                if (@p["NumeroAfiliacion"].ToString().Trim() != "0")
                                                                 {
                                                                     <TD ALIGN='CENTER' bgcolor="#eee"><B>N&uacute;mero de Afiliaci&oacute;n</B></TD>
                                                                 }
                                                             }
-                                                            @if (@pM["MethodPaymentID"].ToString() == "2" || @pM["MethodPaymentID"].ToString() == "5" || @pM["MethodPaymentID"].ToString() == "6")
+                                                            @if (@p["MethodPaymentID"].ToString() == "2" || @p["MethodPaymentID"].ToString() == "5" || @p["MethodPaymentID"].ToString() == "6")
                                                             {
                                                                 <TD ALIGN='CENTER' bgcolor="#eee">&nbsp;</TD>
                                                             }
-                                                            @if (@pM["MethodPaymentID"].ToString() == "3")
+                                                            @if (@p["MethodPaymentID"].ToString() == "3")
                                                             {
-                                                                if (@pM["cuenta"] != null)
+                                                                if (@p["cuenta"] != null)
                                                                 {
-                                                                    if (@pM["cuenta"].ToString().Trim().Length > 0)
+                                                                    if (@p["cuenta"].ToString().Trim().Length > 0)
                                                                     {
-                                                                        if (@pM["cuenta"].ToString().Substring(0, 7) == "20000000")
+                                                                        if (@p["cuenta"].ToString().Substring(0, 7) == "20000000")
                                                                         {
                                                                             <TD ALIGN='CENTER' bgcolor="#eee"><B>Cuenta cliente frecuente</B></TD>
                                                                         }
@@ -412,38 +430,38 @@
                                                             }
                                                         </tr>
                                                         <tr>
-                                                            <TD ALIGN=CENTER>@pM["MethodPayment"].ToString().Trim()</TD>
-                                                            @if (@pM["MethodPaymentID"].ToString().Trim() == "1" || @pM["MethodPaymentID"].ToString().Trim() == "2" || @pM["MethodPaymentID"].ToString().Trim() == "8")
+                                                            <TD ALIGN=CENTER>@p["MethodPayment"].ToString().Trim()</TD>
+                                                            @if (@p["MethodPaymentID"].ToString().Trim() == "1" || @p["MethodPaymentID"].ToString().Trim() == "2" || @p["MethodPaymentID"].ToString().Trim() == "8")
                                                             {
-                                                                <TD ALIGN='CENTER'>@pM["Cta"].ToString().Trim()</TD>
+                                                                <TD ALIGN='CENTER'>@p["Cta"].ToString().Trim()</TD>
                                                             }
-                                                            @if (@pM["MethodPaymentID"].ToString() == "1")
+                                                            @if (@p["MethodPaymentID"].ToString() == "1")
                                                             {
-                                                                <TD ALIGN='CENTER'>@pM["CustomerName"]</TD>
-                                                                <TD ALIGN='CENTER'>@pM["Vec"]</TD>
-                                                                <TD ALIGN='CENTER'>@pM["Banco"]</TD>
-                                                                if (@pM["Codigo_Autorizacion"].ToString().Trim() != "0")
+                                                                <TD ALIGN='CENTER'>@p["CustomerName"]</TD>
+                                                                <TD ALIGN='CENTER'>@p["Vec"]</TD>
+                                                                <TD ALIGN='CENTER'>@p["Banco"]</TD>
+                                                                if (@p["Codigo_Autorizacion"].ToString().Trim() != "0")
                                                                 {
-                                                                    <TD ALIGN='CENTER'>@pM["Codigo_Autorizacion"]</TD>
+                                                                    <TD ALIGN='CENTER'>@p["Codigo_Autorizacion"]</TD>
                                                                 }
-                                                                if (@pM["NumeroAfiliacion"].ToString().Trim() != "0")
+                                                                if (@p["NumeroAfiliacion"].ToString().Trim() != "0")
                                                                 {
-                                                                    <TD ALIGN='CENTER'>@pM["NumeroAfiliacion"]</TD>
+                                                                    <TD ALIGN='CENTER'>@p["NumeroAfiliacion"]</TD>
                                                                 }
                                                             }
-                                                            @if (@pM["MethodPaymentID"].ToString() == "2" || @pM["MethodPaymentID"].ToString() == "5" || @pM["MethodPaymentID"].ToString() == "6")
+                                                            @if (@p["MethodPaymentID"].ToString() == "2" || @p["MethodPaymentID"].ToString() == "5" || @p["MethodPaymentID"].ToString() == "6")
                                                             {
-                                                                <TD ALIGN='CENTER'><p>Efectivo: $@pM["CashPay"].ToString() -- Vales:  $@pM["VouchersPay"].ToString() </p></TD>
+                                                                <TD ALIGN='CENTER'><p>Efectivo: $@p["CashPay"].ToString() -- Vales:  $@p["VouchersPay"].ToString() </p></TD>
                                                             }
-                                                            @if (@pM["MethodPaymentID"].ToString() == "3")
+                                                            @if (@p["MethodPaymentID"].ToString() == "3")
                                                             {
-                                                                if (@pM["cuenta"] != null)
+                                                                if (@p["cuenta"] != null)
                                                                 {
-                                                                    if (@pM["cuenta"].ToString().Trim().Length > 0)
+                                                                    if (@p["cuenta"].ToString().Trim().Length > 0)
                                                                     {
-                                                                        if (@pM["cuenta"].ToString().Substring(0, 7) == "20000000")
+                                                                        if (@p["cuenta"].ToString().Substring(0, 7) == "20000000")
                                                                         {
-                                                                            <TD ALIGN='CENTER'>@pM["cuenta"].ToString().Trim()</TD>
+                                                                            <TD ALIGN='CENTER'>@p["cuenta"].ToString().Trim()</TD>
                                                                         }
                                                                     }
                                                                 }
@@ -520,17 +538,17 @@
                                                                 </b>
                                                             </td>
                                                             <td style="text-align:left;padding-left:20px;">
-                                                                @pM["CustomerName"]
+                                                                @p["CustomerName"]
                                                             </td>
                                                         </tr>
-                                                        @if (@pM["NomCteEnt"].ToString().Length != 0)
+                                                        @if (@p["NomCteEnt"].ToString().Length != 0)
                                                         {
                                                             <tr>
                                                                 <td style="width:20%;text-align:right;">
                                                                     <b>Persona autorizada a recibir la mercanc&iacute;a:</b>
                                                                 </td>
                                                                 <td style="text-align:left;padding-left:20px;">
-                                                                    @pM["NomCteEnt"]
+                                                                    @p["NomCteEnt"]
                                                                 </td>
                                                             </tr>
                                                         }
@@ -662,7 +680,7 @@
     <link href="~/Content/PrintModal.css" rel="stylesheet" />
     @*@Scripts.Render("~/plugins/dataPicker")
         @Scripts.Render("~/plugins/slimScroll")*@
-<script type="text/javascript">
+    <script type="text/javascript">
         document.getElementById("btnPrint").onclick = function () {
 
             //$('.demo').printThis({
@@ -1006,7 +1024,7 @@
         function ShowFilter() {
             $("#filter").collapse('toggle');
         };
-</script>
+    </script>
 }
 
 
