@@ -46,8 +46,11 @@
                     <input id="StoreNum" name="StoreNum" value="@p["StoreNum"]" style="visibility:hidden" />
                     <input id="OrderStatus" name="OrderStatus" value="@p["StatusUe"]" style="visibility:hidden" />
                 *@
-                var tipoEntrega = p["DeliveryType"].ToString();
-                if (tipoEntrega == "Entrega a domicilio")
+                //var tipoEntrega = p["DeliveryType"].ToString();
+                //if (tipoEntrega == "Entrega a domicilio")
+
+                var tipoEntrega = p["UeType"].ToString();
+                if (tipoEntrega == "DST")
                 {
                     if (index == 1)
                     {
