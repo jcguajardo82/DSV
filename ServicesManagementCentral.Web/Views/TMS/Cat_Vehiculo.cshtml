@@ -1,0 +1,757 @@
+﻿
+@{
+    ViewBag.Title = "Alta de Vehiculos";
+}
+
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4"><h2>Alta de Vehiculos</h2></div>
+        <div class="col-4"></div>
+
+    </div>
+
+
+    <div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
+
+        @*<h1><a href="#" class="btn btn-primary alert-custom">Bootbox Dialog &nbsp;<i class="glyphicon glyphicon-hand-left"></i></a></h1>*@
+
+
+        <br />
+
+        <div class="row">
+            <div class="col-12">
+                <table id="example" class="table table-striped dataTable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Tipo de Vehiculo</th>
+                            <th>Modelo</th>
+                            <th>Placas</th>
+                            <th>Motor</th>
+                            <th>Marca</th>
+                            <th>Año</th>
+                            <th>Usuario de Actualización</th>
+                            <th>Fecha de Actualización</th>
+                            <th>Hora de Actualización</th>
+                            <th>Activo</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+
+                            if (Session["listaV"] != null)
+                            {
+
+                                var myDataSet = Session["listaV"] as System.Data.DataSet;
+                                foreach (System.Data.DataRow r in myDataSet.Tables[0].Rows)
+                                {
+                                    <tr>
+                                        <td>@r["Id_Vehiculo"]</td>
+                                        <td>@r["TipoVehiculo"]</td>
+                                        <td>@r["Descripcion"]</td>
+                                        <td>
+                                            @r["Placas"]
+                                        </td>
+                                        <td>@r["Motor"]</td>
+                                        @* Falta habilitar Marca y Año, cuando se obtrengan del API *@
+                                        <td>Marca-Ejemplo</td>
+                                        <td>2021</td>
+                                        @*<td>@r["Marca"]</td>*@
+                                        @*<td>@r["Anio"]</td>*@
+                                        @*<td>@r["modified_user"]</td>*@
+                                        @* Falta habilitar Marca y Año, cuando se obtrengan del API *@
+
+                                        <td>@r["created_user"]</td>
+                                        <td>@r["FechaUltModif"]</td>
+                                        <td>@r["TimeUltModif"]</td>
+
+
+                                        @*<td>@r["Estatus"]</td>*@
+                                        @if (r["Estatus"].ToString() == "True")
+                                        {
+                                            <td>Activo</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Inactivo</td>
+                                        }
+                                        <td>
+                                            @*<button type="button" onclick="SelectOrder('@r["Id_Vehiculo"]','@r["Id_Vehiculo"]')" class="btn btn-warning btn-circle"> <i class="fa fa-minus"></i></button>*@
+
+                                            <button onclick="getVehiculo('@r["Id_Vehiculo"]')" type="button" title="Editar" class="btn btn-white btn-circle"> <i class="fa fa-edit"></i></button>
+                                            <button type="button" title="Eliminar" onclick="DeleteSurtidores('@r["Id_Vehiculo"]')" class="btn btn-warning btn-circle"> <i class="fa fa-minus"></i></button>
+                                        </td>
+                                    </tr>
+
+                                    @*<button onclick="getVehiculo('@r["Id_Vehiculo"]')" type="button" class="btn btn-white btn-circle"> <i class="fa fa-edit"></i></button>
+                                        <button type="button" onclick="DeleteSurtidores('@r["Id_Vehiculo"]')" class="btn btn-warning btn-circle"> <i class="fa fa-minus"></i></button>*@
+                                    @*</td>
+                                        </tr>*@
+
+                                }
+                            }
+                        }
+
+                    </tbody>
+                    @*<tfoot>
+                            <tr>
+                                <th>Tipo Vehiculo</th>
+                                <th>Placas</th>
+                                <th>Motor</th>
+                                <th># Seguro</th>
+                                <th>Ubicacion</th>
+                                <th>Tienda</th>
+
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>*@
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="modal-form" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h2 class="modal-title">Alta de Vehiculo</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <form id="frmCreateServicios">
+
+                        <div class="row">
+
+                            <div class="col col-xs-8 col-md-4">
+
+                                @*<div class="form-group">
+
+                                        <label>Tipo de Vehiculo</label>
+
+                                        <select class="form-control" id="Id_TipoFolio" name="Id_TipoFolio">
+                                            <option selected="selected" value="1">--Tipo Vehiculo--</option>
+
+                                        </select>
+                                    </div>*@
+                                <div class="form-group">
+
+                                    <label>Modelo</label>
+
+                                    <input type="text" placeholder="Modelo" id="in_desc" name="in_desc" class="form-control" />
+
+                                </div>
+
+                            </div>
+                            <div class="col-4">
+
+                                <div class="form-group">
+
+                                    <label>Tipo de Vehiculo</label>
+
+                                    <select class="form-control" id="Id_TipoFolio" name="Id_TipoFolio">
+
+                                        @{ if (Session["lista"] != null)
+                                            {
+
+                                                var myDataSet = Session["lista"] as System.Data.DataSet;
+                                                foreach (System.Data.DataRow r in myDataSet.Tables[0].Rows)
+                                                {
+                                                    <option selected="selected" value="@r["Id_TipoVehiculo"]">@r["Descipcion"]</option>
+
+                                                }
+
+
+                                            }
+                                        }
+
+
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col col-xs-8 col-md-4">
+
+                                <div class="form-group">
+
+                                    <label>Placas</label>
+
+                                    <input type="text" placeholder="Placas" id="in_placas" name="in_placas" class="form-control" />
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col col-xs-8 col-md-4">
+                                <div class="form-group">
+
+                                    <label>Motor</label>
+
+                                    <input type="text" placeholder="Motor" id="in_motor" name="in_motor" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col col-xs-8 col-md-4">
+                                <div class="form-group">
+
+                                    <label>Marca</label>
+
+                                    <input type="text" placeholder="Marca" id="in_marca" name="in_marca" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col col-xs-8 col-md-4">
+                                <div class="form-group">
+
+                                    <label>Año</label>
+
+                                    <input type="number" onkeypress="return event.charCode >= 48" min="0" placeholder="Año" id="in_anio" name="in_anio" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4"></div>
+
+                            <div class="form-group">
+
+                                <label>Estatus</label>
+
+                                <select class="form-control" id="id_estatus" name="id_estatus">
+                                    @*<option selected="selected" value="1">--SELECCIONA--</option>*@
+                                    <option selected="selected" value="1">ACTIVO</option>
+                                    <option value="2">INACTIVO</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+
+
+                        @*<div class="row">
+                                <div class="col-12">
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Comentarios</span>
+                                        </div>
+                                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>*@
+                        @*<div class="row">
+
+                                <div class="col col-xs-8 col-md-4">
+
+                                    <div class="form-group">
+
+                                        <label>Tienda</label>
+
+                                        <select class="form-control" id="Id_TipoFolio" name="Id_TipoFolio">
+                                            <option selected="selected" value="1">--Tienda--</option>
+                                            <option value="1">24-CUMBRES</option>
+
+                                        </select>
+                                    </div>
+
+                                </div>
+
+
+                            </div>*@
+
+                    </form>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+
+                    <button type="button" onclick="ActionUpd()" class="btn btn-primary">Guardar</button>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <input id="Id_Vehiculo" name="Id_Vehiculo" value="0" style="visibility:hidden" />
+    <input id="flag_edit" name="flag_edit" value="0" style="visibility:hidden" />
+
+}
+
+
+@section scripts {
+
+
+    <link href="~/Content/plugins/datatables/datatables.css" rel="stylesheet" />
+    <script src="~/Content/plugins/datatables/datatables.min.js"></script>
+    <script src="~/Content/plugins/datatables/datatables.js"></script>
+
+    <script src="~/Scripts/bootbox.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+
+
+    <script>
+
+        $('#radioBtn a').on('click', function () {
+            var sel = $(this).data('title');
+            var tog = $(this).data('toggle');
+            $('#' + tog).prop('value', sel);
+
+            $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+            $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+        })
+
+
+        $(document).ready(function () {
+
+            $('#example thead tr').clone(true).appendTo('#example thead');
+            $('#example thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $('#example').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' },
+                        { extend: 'excel', className: 'btn-primary' },
+                        {
+                            text: 'Alta',
+                            action: function (e, dt, node, config) {
+
+                                //bootbox.alert("HOLA");
+                                $("#modal-form").modal('show');
+
+                            }
+                            , className: 'btn-primary'
+                        }
+                    ]
+                    //,"fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    //    if (aData[1] == "SETC") {
+                    //        $('td', nRow).css('background-color', '#B6BF00');
+                    //    } else if (aData[2] == "4") {
+                    //        $('td', nRow).css('background-color', 'Orange');
+                    //    }
+                    //}
+                }
+            );
+
+            GetTmsUNs();
+
+            //var varUnidadNegocio = $('#tbUnidadNegocio').DataTable();
+            //varUnidadNegocio.draw();
+
+
+
+        });
+
+        /* Bootbox Dialog box with custom Value */
+        $('.alert-custom').click(function () {
+            bootbox.dialog({
+                title: "This is a form in a modal.",
+                message: '<div class="row">  ' +
+                    '<div class="col-md-12"> ' +
+                    '<form class="form-horizontal"> ' +
+                    '<div class="form-group"> ' +
+                    '<label class="col-md-4 control-label" for="name">Name</label> ' +
+                    '<div class="col-md-4"> ' +
+                    '<input id="name" name="name" type="text" placeholder="Your name" class="form-control input-md"> ' +
+                    '<span class="help-block">Here goes your name</span> </div> ' +
+                    '</div> ' +
+                    '<div class="form-group"> ' +
+                    '<label class="col-md-4 control-label" for="awesomeness">How awesome is this?</label> ' +
+                    '<div class="col-md-4"> <div class="radio"> <label for="awesomeness-0"> ' +
+                    '<input type="radio" name="awesomeness" id="awesomeness-0" value="Really awesome" checked="checked"> ' +
+                    'Really awesome </label> ' +
+                    '</div><div class="radio"> <label for="awesomeness-1"> ' +
+                    '<input type="radio" name="awesomeness" id="awesomeness-1" value="Super awesome"> Super awesome </label> ' +
+                    '</div> ' +
+                    '</div> </div>' +
+                    '</form> </div>  </div>',
+                buttons: {
+                    success: {
+                        label: "Save",
+                        className: "btn-success",
+                        callback: function () {
+                            var name = $('#name').val();
+                            var answer = $("input[name='awesomeness']:checked").val()
+                            $('.Example').show().html("Hello " + name + ". You've chosen <b>" + answer + "</b").fadeOut(5000);
+                        }
+                    }
+                }
+            }
+            );
+        });
+
+        @*function GetTmsUNs() {
+            //var _Id_Num_UN = $("#hddTda").val();
+            //debugger;
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetVehiculos", "TMS")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+                datatype: "html",
+                success: function (json) {
+                    console.log(json);
+
+                    debugger;
+                    if (json.Success) {
+                        /*$("#tbUnidadNegocio tbody tr").remove();*/
+                        //var tr;
+                        //debugger;
+                        //Append each row to html table
+
+                        var myTable = $('#example').DataTable();
+
+                        for (var i = 0; i < json.json.length; i++) {
+                            //tr = $('<tr/>');
+                            ////tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+                            //tr.append("<td>" + json.json[i].Id_Num_UN + "</td>");
+                            //tr.append("<td>" + json.json[i].Centros + "</td>");
+                            //tr.append("<td>" + json.json[i].Latitud + "</td>");
+                            //tr.append("<td>" + json.json[i].Longitud + "</td>");
+                            //tr.append("<td>" + json.json[i].CodigosPostales + "</td>");
+                            ////tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                            //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >");
+                            //$('#tbUnidadNegocio').append(tr);
+
+                            //<th>Id</th>
+                            //            <th>Tipo Vehiculo</th>
+                            //            <th>Descripcion</th>
+                            //            <th>Placas</th>
+                            //            <th>Motor</th>
+                            //            <th>Estatus</th>
+                            //            <th>Action</th>
+
+                            //Id_Vehiculo { get; set; }
+                            //public string Descripcion { get; set; }
+                            //public string Placas { get; set; }
+                            //public string Motor { get; set; }
+                            //public bool Estatus { get; set; }
+                            //public string Fec_Movto { get; set; }
+                            //public string created_user { get; set; }
+                            //public string modified_user { get; set; }
+
+                            myTable.row.add([
+
+                                json.json[i].Id_Vehiculo,
+                                json.json[i].TipoVehiculo,
+                                json.json[i].Descripcion,
+                                json.json[i].Placas,
+                                json.json[i].Motor,
+                                json.json[i].created_user,
+                                "",
+                                "",
+                                json.json[i].Estatus,
+                                "<button onclick=\"getVehiculo(" + json.json[i].Id_Vehiculo + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button><button type=\"button\" onclick=\"DeleteSurtidores(" + json.json[i].Id_Vehiculo + ")\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-minus\"></i></button>"
+                            ]).draw();
+
+                            //myTable.row.add([item.id_user,
+                            //item.userName,
+                            //item.tienda,
+                            //"<button onclick=\"deleteUser(" + item.id_user + ")\" type=\"button\" class=\"btn btn-secondary\"> <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-trash-2 feather-sm fill-white\"><polyline points=\"3 6 5 6 21 6\"></polyline><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"></path><line x1=\"10\" y1=\"11\" x2=\"10\" y2=\"17\"></line><line x1=\"14\" y1=\"11\" x2=\"14\" y2=\"17\"></line></svg></button>"
+                            //]).draw();
+
+
+
+                            //console.log(json.json[i]);
+                        }
+                        //console.log('se redibujó');
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }*@
+
+        function ActionUpd() {
+            debugger;
+            if (document.getElementById("flag_edit").value == "1") {
+                EditSurtidores();
+            }
+            else {
+                AddSurtidores();
+            }
+        }
+
+        function AddSurtidores() {
+            //var _Id_Num_UN = $("#hddTda").val();
+            //debugger;
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("InsVehiculo", "TMS")',
+                data: {
+                    descripcion: document.getElementById("in_desc").value,
+                    motor: document.getElementById("in_motor").value,
+                    placas: document.getElementById("in_placas").value,
+                    idTipoVehiculo: $("#Id_TipoFolio").val()
+                    //marca: document.getElementById("in_marca").val(),
+                    //anio: document.getElementById("in_anio").val()
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    console.log(json);
+
+                    debugger;
+                    if (json.Success) {
+
+                        var table = $('#example').DataTable();
+
+                        table.clear().draw();
+                        table.destroy();
+
+                        $("#modal-form").modal('hide');
+
+
+                        location.reload();
+
+                        //var myTable = $('#example').DataTable();
+
+                        //for (var i = 0; i < json.json.length; i++) {
+
+                        //    myTable.row.add([
+
+                        //        json.json[i].Id_Vehiculo,
+                        //        "Camioneta",
+                        //        json.json[i].Descripcion,
+                        //        json.json[i].Placas,
+                        //        json.json[i].Motor,
+                        //        json.json[i].Estatus,
+                        //        "<button onclick=\"getVehiculo(" + json.json[i].Id_Vehiculo + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button><button type=\"button\" onclick=\"DeleteSurtidores(" + json.json[i].Id_Vehiculo +")\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-minus\"></i></button>"
+                        //    ]).draw();
+
+                        //}
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function EditSurtidores() {
+
+            var e = document.getElementById("id_estatus");
+            var strUser = e.value;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("EditVehiculo", "TMS")',
+                data: {
+                    Id: document.getElementById("Id_Vehiculo").value,
+                    descripcion: document.getElementById("in_desc").value,
+                    motor: document.getElementById("in_motor").value,
+                    placas: document.getElementById("in_placas").value,
+                    estatus: strUser
+                    //marca: document.getElementById("in_marca").val(),
+                    //anio: document.getElementById("in_anio").val()
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    console.log(json);
+
+                    debugger;
+                    if (json.Success) {
+
+                        var table = $('#example').DataTable();
+
+                        table.clear().draw();
+                        table.destroy();
+
+                        $("#modal-form").modal('hide');
+
+                        //var myTable = $('#example').DataTable();
+
+                        //for (var i = 0; i < json.json.length; i++) {
+
+                        //    myTable.row.add([
+
+                        //        json.json[i].Id_Vehiculo,
+                        //        "Camioneta",
+                        //        json.json[i].Descripcion,
+                        //        json.json[i].Placas,
+                        //        json.json[i].Motor,
+                        //        json.json[i].Estatus,
+                        //        "<button onclick=\"getVehiculo(" + json.json[i].Id_Vehiculo + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button><button type=\"button\" onclick=\"DeleteSurtidores(" + json.json[i].Id_Vehiculo + ")\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-minus\"></i></button>"
+                        //    ]).draw();
+
+                        //}
+
+                        document.getElementById("flag_edit").value = 0;
+
+                        location.reload();
+
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function DeleteSurtidores(id) {
+            if (confirm('Esta seguro que desea eliminar el vehiculo : ' + id))
+            {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("DeleteVehiculo", "TMS")',
+                    data: {
+                        Id: id
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+
+                            location.reload();
+
+                            //var table = $('#example').DataTable();
+
+                            //table.clear().draw();
+                            //table.destroy();
+
+                            //$("#modal-form").modal('hide');
+
+                            //var myTable = $('#example').DataTable();
+
+                            //for (var i = 0; i < json.json.length; i++) {
+
+                            //    myTable.row.add([
+
+                            //        json.json[i].Id_Vehiculo,
+                            //        "Camioneta",
+                            //        json.json[i].Descripcion,
+                            //        json.json[i].Placas,
+                            //        json.json[i].Motor,
+                            //        json.json[i].Estatus,
+                            //        "<button onclick=\"getVehiculo(" + json.json[i].Id_Vehiculo + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button><button type=\"button\" onclick=\"DeleteSurtidores(" + json.json[i].Id_Vehiculo + ")\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-minus\"></i></button>"
+                            //    ]).draw();
+
+                            //}
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(errorThrown);
+                    }
+                });
+            }
+        }
+
+        function getVehiculo(id) {
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetVehiculoById", "TMS")',
+                data: {
+                    Id : id
+                },
+
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+
+                        document.getElementById("Id_Vehiculo").value = json.json.Id_Vehiculo;
+                        document.getElementById("in_desc").value = json.json.Descripcion;
+                        document.getElementById("in_motor").value = json.json.Motor;
+                        document.getElementById("in_placas").value = json.json.Placas;
+
+                        document.getElementById("id_estatus").value = 1;
+                        document.getElementById("flag_edit").value = 1;
+
+
+                        $("#modal-form").modal('show');
+
+
+                    }
+                    else { alert(json.Message) }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+
+        }
+
+
+
+    </script>
+
+}

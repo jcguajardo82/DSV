@@ -233,6 +233,7 @@
     <Compile Include="Controllers\ConsignacionesController.cs" />
     <Compile Include="Controllers\EstatusReenvioMciaController.cs" />
     <Compile Include="Controllers\ReportesPDPController.cs" />
+    <Compile Include="Controllers\TMSController.cs" />
     <Compile Include="Controllers\TotalOrdenesController.cs" />
     <Compile Include="Controllers\SolicitudGuiasReenvioController.cs" />
     <Compile Include="DALConfig.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="DAL\ReenvioMcia\DALReenvioMciaCEDIS.cs" />
     <Compile Include="DAL\ReenvioMcia\DALReenvioMciaProveedores.cs" />
     <Compile Include="DAL\TotalOrdenes\DALTotalOrdenes.cs" />
+    <Compile Include="DAL\Vehiculos\DALVehiculos.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
     <Compile Include="Models\ActualizacionesInventario.cs" />
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
@@ -275,6 +277,8 @@
     <Compile Include="Models\EstatusGuiasEnvio\EstatusGuiasEnvio.cs" />
     <Compile Include="Models\EstatusReenvioMcia\DetalleEstatusReenvioMcia.cs" />
     <Compile Include="Models\EstatusReenvioMcia\EstatusReenvioMcia.cs" />
+    <Compile Include="Models\Gastos.cs" />
+    <Compile Include="Models\GastosVehiculoModel.cs" />
     <Compile Include="Models\ManualesOperativosModels.cs" />
     <Compile Include="Models\ManualesOp\ManualTypesModel.cs" />
     <Compile Include="Models\NivelExistencia\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
@@ -338,6 +342,7 @@
     <Compile Include="Models\TotalOrdenes\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
     <Compile Include="Models\UNModel.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoTracking.cs" />
+    <Compile Include="Models\VehiculoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -3793,6 +3798,8 @@
     <Content Include="Views\Consignaciones\Consignaciones_ProveedoresConcluidos.cshtml" />
     <Content Include="Views\EstatusReenvioMcia\EstatusReenvioMciaConcluidos.cshtml" />
     <Content Include="Views\Ordenes\EmbarqueSETC.cshtml" />
+    <Content Include="Views\TMS\Cat_Vehiculo.cshtml" />
+    <Content Include="Views\TMS\Gastosvehiculo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
