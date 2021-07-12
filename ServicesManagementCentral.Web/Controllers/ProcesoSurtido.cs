@@ -178,7 +178,7 @@ namespace ServicesManagement.Web.Controllers
 
                 o.Orden = new InformacionDetalleOrden();
                 o.Orden.NumeroOrden = OrderNo;
-                o.Orden.EsPickingManual = true;
+                o.Orden.EsPickingManual = false;
                 o.Orden.EstatusUnidadEjecucion = "0";
                 o.Orden.NumeroUnidadEjecucion = UeNo;
                 o.Orden.NumeroTienda = Convert.ToInt32(store);
@@ -188,8 +188,6 @@ namespace ServicesManagement.Web.Controllers
 
                 var prodcuts = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcess(UeNo, int.Parse(OrderNo)).Tables[0]);
 
-
-
                 foreach (var item in items)
                 {
                     var a = new InformacionProductoSuministrado();
@@ -197,18 +195,17 @@ namespace ServicesManagement.Web.Controllers
                     var p = prodcuts.Where(x => x.EAN == item).ToList();
 
 
-                    a.IdentificadorProducto = p[0].SKU.ToString();
-                    a.CodigoBarra = p[0].EAN;
-                    a.DescripcionArticulo = p[0].Descripcion;
-                    a.Cantidad = p[0].Piezas;
+                    a.IdentificadorProducto = p[0].SKU.ToString();                              // Product-ID
+                    a.CodigoBarra = p[0].EAN;                                                   // BarCode
+                    a.DescripcionArticulo = p[0].Descripcion;                                   // Product-Name
+                    a.Cantidad = p[0].Piezas;                                                   // Quantity
 
-
-                    a.Precio = p[0].Precio;
-                    a.Observaciones = p[0].Observaciones;
-                    a.UnidadMedida = p[0].UnidadMedida;
-                    a.NumeroOrden = p[0].OrderNo.ToString();
-                    //a.FueSuministrado = true;
-                    a.Cantidad = p[0].Piezas;
+                    a.Precio = p[0].Precio;                                                     // Price
+                    a.Observaciones = p[0].Observaciones;                                       // Observations
+                    a.UnidadMedida = p[0].UnidadMedida.Length == 0 ? " ": p[0].UnidadMedida;    // UnitMeasure
+                    a.NumeroOrden = p[0].OrderNo.ToString();                                    // OrderNo
+                    //  a.FueSuministrado = true;
+                    //  a.Cantidad = p[0].Piezas;
 
                     o.ProductosSuministrados.Add(a);
                 }
