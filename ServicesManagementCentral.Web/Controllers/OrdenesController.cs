@@ -637,7 +637,7 @@ namespace ServicesManagement.Web.Controllers
 
             }
          }
-        [HttpPost]
+            [HttpPost]
         public ActionResult FinalizarEntrega(List<FinEmbarque> Guias)
         {
 
