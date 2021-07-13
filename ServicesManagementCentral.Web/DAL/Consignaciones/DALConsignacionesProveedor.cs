@@ -29,6 +29,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@ViewType", 1); // parametro admin fijo
                 parametros.Add("@Seccion", 0); // parametro admin fijo
+                parametros.Add("@usuario", usuario); // parametro admin fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpAlmacen_Cns_Consigments]", false, parametros);
@@ -70,6 +71,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@ViewType", 1); // parametro admin fijo
                 parametros.Add("@Seccion", 1); // parametro admin fijo
+                parametros.Add("@usuario", usuario); // parametro admin fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpAlmacen_Cns_Consigments]", false, parametros);
