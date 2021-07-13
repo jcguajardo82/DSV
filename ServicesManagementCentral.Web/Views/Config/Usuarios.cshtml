@@ -89,6 +89,20 @@
                     <div class="row">
                         <div class="col-xs-6 col-md-6">
                             <div class="form-group">
+                                <label>Almacen </label>
+                                <select class="form-control m-b" id="ddlAlmacenes"></select>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
+                                <label>Tienda/Proveedor</label>
+                                <input type="number" id="txtTienda" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <div class="form-group">
                                 <label>Activo</label>
                                 <select class="form-control m-b" id="ddlHabilitado">
                                     <option value="false">NO</option>
@@ -110,7 +124,8 @@
 @section scripts {
     <script>
         $(document).ready(function () {
-           GetUsuarios();
+            GetUsuarios();
+            ListAlmacen();
         });
         function PopEdit(id) {
             ListRoles();
@@ -194,8 +209,9 @@
             var _Nombre = $("#txtNombre").val();
             var _rol = $("#ddlRoles").val();
             var _Activo = $("#ddlHabilitado").val();
-
-
+            var _IdOwner = $("#ddlAlmacenes").val();
+            var _IdTienda = $("#txtTienda").val();
+            //int IdOwner,int? IdTienda
             if (_rol == "0") {
                 $("#ddlRoles").focus();
                 return;
@@ -221,6 +237,8 @@
                     , activo: _Activo
                     , usuario: _Usuario
                     , rol: _rol
+                    , IdOwner: _IdOwner
+                    , IdTienda: _IdTienda
                 },
                 datatype: "html",
                 success: function (json) {
@@ -230,6 +248,37 @@
                         GetUsuarios();
                         $("#dlgRoles").modal('hide');
 
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        function ListAlmacen() {
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("ListAlmacen", "Config")',
+                data: {
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#ddlAlmacenes");
+                        sel.empty();
+
+                        $('#ddlAlmacenes').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].IdOwner + '">' + json.resp[i].OwnerName +'</option>');
+                        }
                     }
                     else {
                         alert(json.Message);

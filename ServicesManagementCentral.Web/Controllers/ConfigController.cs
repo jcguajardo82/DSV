@@ -222,19 +222,37 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult AddUsuario(string idUsuario, string nombre, string activo, string usuario, string rol)
+        public ActionResult AddUsuario(string idUsuario, string nombre, string activo, string usuario, string rol,int IdOwner,int? IdTienda)
         {
             try
             {
                 if (int.Parse(idUsuario) == 0)
                 {
-                    DALConfig.Usuarios_iUP(nombre, bool.Parse(activo), "sys", usuario, rol);
+                    DALConfig.Usuarios_iUP(nombre, bool.Parse(activo), "sys", usuario, rol,IdOwner,IdTienda);
                 }
                 else
                 {
-                    DALConfig.Usuarios_uUP(int.Parse(idUsuario), nombre, bool.Parse(activo), "sys", usuario, rol);
+                    DALConfig.Usuarios_uUP(int.Parse(idUsuario), nombre, bool.Parse(activo), "sys", usuario, rol,IdOwner,IdTienda);
                 }
                 var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+
+        public ActionResult ListAlmacen()
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<Owners>(DALConfig.spOwners_v2_sUP().Tables[0]);
+
+                var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)

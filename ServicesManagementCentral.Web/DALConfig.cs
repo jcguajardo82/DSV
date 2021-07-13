@@ -95,7 +95,7 @@ namespace ServicesManagement.Web
 
         }
 
-        public static DataSet Usuarios_iUP(string nombre, bool activo, string autor, string usuario, string rol)
+        public static DataSet Usuarios_iUP(string nombre, bool activo, string autor, string usuario, string rol,int IdOwner,int? IdTienda)
         {
 
             DataSet ds = new DataSet();
@@ -119,6 +119,11 @@ namespace ServicesManagement.Web
                 parametros.Add("@usuario", usuario);
                 parametros.Add("@rol", rol);
 
+                if(IdOwner!=0)
+                parametros.Add("@IdOwner", IdOwner);
+                if(IdTienda!=null)
+                parametros.Add("@IdTienda", IdTienda);
+
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[config].[usuarios_iUP]", false, parametros);
 
                 return ds;
@@ -136,7 +141,7 @@ namespace ServicesManagement.Web
 
         }
 
-        public static DataSet Usuarios_uUP(int idUsuario, string nombre, bool activo, string autor, string usuario, string rol)
+        public static DataSet Usuarios_uUP(int idUsuario, string nombre, bool activo, string autor, string usuario, string rol, int? IdOwner, int? IdTienda)
         {
 
             DataSet ds = new DataSet();
@@ -160,6 +165,12 @@ namespace ServicesManagement.Web
                 parametros.Add("@autor", autor);
                 parametros.Add("@usuario", usuario);
                 parametros.Add("@rol", rol);
+
+                if (IdOwner != 0)
+                    parametros.Add("@IdOwner", IdOwner);
+                if (IdTienda != null)
+                    parametros.Add("@IdTienda", IdTienda);
+
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[config].[usuarios_uUP]", false, parametros);
 
@@ -233,6 +244,44 @@ namespace ServicesManagement.Web
                 parametros.Add("@idUsuario", idUsuario);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[config].[usuariosById_sUP]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public static DataSet spOwners_v2_sUP()
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                //parametros.Add("@idrol", idrol);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "common.spOwners_v2_sUP", false, parametros);
 
                 return ds;
             }
