@@ -19,7 +19,7 @@ namespace ServicesManagement.Web.DAL.NivelExistencia
 
             try
             {
-                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DM"].ConnectionString);
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
                 parametros.Add("@idSupplierWH", idSupplierWH);
