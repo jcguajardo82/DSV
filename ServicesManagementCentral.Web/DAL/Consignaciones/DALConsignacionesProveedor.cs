@@ -12,7 +12,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
     {
         #region Envío de Pedidos Pendientes
 
-        public static DataSet upCorpAlmacen_Cns_ConsigmentsProveedor()
+        public static DataSet upCorpAlmacen_Cns_ConsigmentsProveedor(string usuario)
         {
             DataSet ds = new DataSet();
 
@@ -53,7 +53,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
 
         #region Envío de Pedidos Concluidos
 
-        public static DataSet upCorpAlmacen_Cns_ConsigmentsProveedorConcluido()
+        public static DataSet upCorpAlmacen_Cns_ConsigmentsProveedorConcluido(string usuario)
         {
             DataSet ds = new DataSet();
 

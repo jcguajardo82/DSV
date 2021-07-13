@@ -10,7 +10,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
 {
     public class DALConsignacionesAdm
     {
-        public static DataSet upCorpAlmacen_Cns_Consigments()
+        public static DataSet upCorpAlmacen_Cns_Consigments(string usuario)
         {
 
             DataSet ds = new DataSet();
@@ -27,6 +27,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@ViewType", 3); // parametro admin fijo
+                parametros.Add("@usuario", usuario); // parametro admin fijo
                
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpAlmacen_Cns_Consigments]", false, parametros);

@@ -11,7 +11,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
     public class DALConsignacionesCEDIS
     {
 
-        public static DataSet upCorpAlmacen_Cns_ConsigmentsCEDIS()
+        public static DataSet upCorpAlmacen_Cns_ConsigmentsCEDIS(string usuario)
         {
             DataSet ds = new DataSet();
 
