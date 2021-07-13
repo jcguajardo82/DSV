@@ -23,7 +23,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<ConsignacionesAdm>(DALConsignacionesAdm.upCorpAlmacen_Cns_Consigments().Tables[0]);
+                var list = DataTableToModel.ConvertTo<ConsignacionesAdm>(DALConsignacionesAdm.upCorpAlmacen_Cns_Consigments(User.Identity.Name).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -71,7 +71,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<ConsignacionesCEDIS>(DALConsignacionesCEDIS.upCorpAlmacen_Cns_ConsigmentsCEDIS().Tables[0]);
+                var list = DataTableToModel.ConvertTo<ConsignacionesCEDIS>(DALConsignacionesCEDIS.upCorpAlmacen_Cns_ConsigmentsCEDIS(User.Identity.Name).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -96,7 +96,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor().Tables[0]);
+                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor(User.Identity.Name).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -122,7 +122,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedorConcluido().Tables[0]);
+                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedorConcluido(User.Identity.Name).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
