@@ -53,6 +53,48 @@ namespace ServicesManagement.Web
 
         }
 
+
+        public static DataSet upCorpTms_Cns_SuppliersById(int idOwner)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@idOwner", idOwner);
+
+
+
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "tms.upCorpTms_Cns_SuppliersById", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         public static DataSet Autenticar_sUP(string Usuario)
         {
 
@@ -95,7 +137,7 @@ namespace ServicesManagement.Web
 
         }
 
-        public static DataSet Usuarios_iUP(string nombre, bool activo, string autor, string usuario, string rol,int IdOwner,int? IdTienda)
+        public static DataSet Usuarios_iUP(string nombre, bool activo, string autor, string usuario, string rol, int IdOwner, int? IdTienda)
         {
 
             DataSet ds = new DataSet();
@@ -119,10 +161,10 @@ namespace ServicesManagement.Web
                 parametros.Add("@usuario", usuario);
                 parametros.Add("@rol", rol);
 
-                if(IdOwner!=0)
-                parametros.Add("@IdOwner", IdOwner);
-                if(IdTienda!=null)
-                parametros.Add("@IdTienda", IdTienda);
+                if (IdOwner != 0)
+                    parametros.Add("@IdOwner", IdOwner);
+                if (IdTienda != 0)
+                    parametros.Add("@IdTienda", IdTienda);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[config].[usuarios_iUP]", false, parametros);
 
@@ -168,7 +210,7 @@ namespace ServicesManagement.Web
 
                 if (IdOwner != 0)
                     parametros.Add("@IdOwner", IdOwner);
-                if (IdTienda != null)
+                if (IdTienda != 0)
                     parametros.Add("@IdTienda", IdTienda);
 
 

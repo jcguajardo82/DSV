@@ -13,6 +13,10 @@ namespace ServicesManagement.Web.Models.Config
         public string usuario { get; set; }
         public string rol { get; set; }
         public string nombreRol { get; set; }
-       
+        public string IdOwner { get; set; }
+        public string IdTienda { get; set; }
+
+
+
     }
 }

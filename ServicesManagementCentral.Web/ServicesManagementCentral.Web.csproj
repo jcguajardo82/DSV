@@ -266,6 +266,7 @@
     <Compile Include="Models\Config\Menu.cs" />
     <Compile Include="Models\Config\Rol.cs" />
     <Compile Include="Models\Config\Owners.cs" />
+    <Compile Include="Models\Config\SuppliersById.cs" />
     <Compile Include="Models\Config\Usuario.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesAdm.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesCEDIS.cs" />
