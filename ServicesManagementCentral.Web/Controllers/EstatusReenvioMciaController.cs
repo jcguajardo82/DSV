@@ -56,7 +56,7 @@ namespace ServicesManagement.Web.Controllers
 
             try
             {
-                var list = DataTableToModel.ConvertTo<ReenvioMciaProveedor>(DALReenvioMciaProveedores.upCorpOMS_Cns_UeNoReShipment().Tables[0]);
+                var list = DataTableToModel.ConvertTo<ReenvioMciaProveedor>(DALReenvioMciaProveedores.upCorpOMS_Cns_UeNoReShipment( User.Identity.Name).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

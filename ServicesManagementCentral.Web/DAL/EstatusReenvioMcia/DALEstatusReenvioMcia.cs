@@ -12,7 +12,7 @@ namespace ServicesManagement.Web.DAL.EstatusReenvioMcia
     {
 
 
-        public static DataSet upCorpOMS_Cns_UeNoReShipment()
+        public static DataSet upCorpOMS_Cns_UeNoReShipment(string usuario)
         {
             DataSet ds = new DataSet();
 
@@ -29,6 +29,7 @@ namespace ServicesManagement.Web.DAL.EstatusReenvioMcia
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@idOwner", 3); // parametro Proveedor fijo
                 parametros.Add("@Seccion", 0); // parametro Seccion fijo
+                parametros.Add("@usuario", usuario); // parametro Seccion fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoReShipment]", false, parametros);

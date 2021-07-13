@@ -6,7 +6,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
 {
     public class DALAlmacenes
     {
-        public static DataSet SuppliersWHForAproval_sUP()
+        public static DataSet SuppliersWHForAproval_sUP(string usuario)
         {
 
             DataSet ds = new DataSet();
@@ -20,9 +20,10 @@ namespace ServicesManagement.Web.DAL.Almacenes
             try
             {
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@usuario", usuario);
 
-
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[common].[SuppliersWHForAproval_sUP]", false);
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[common].[SuppliersWHForAproval_sUP]", false,parametros);
 
                 return ds;
             }

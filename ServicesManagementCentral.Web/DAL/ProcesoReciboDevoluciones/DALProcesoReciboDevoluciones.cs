@@ -11,7 +11,7 @@ namespace ServicesManagement.Web.DAL.ProcesoReciboDevoluciones
     public class DALProcesoReciboDevoluciones
     {
 
-        public static DataSet upCorpOMS_Cns_UeNoDevolProcess(int idOwner)
+        public static DataSet upCorpOMS_Cns_UeNoDevolProcess(int idOwner,string usuario)
         {
 
             DataSet ds = new DataSet();
@@ -29,6 +29,7 @@ namespace ServicesManagement.Web.DAL.ProcesoReciboDevoluciones
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@IdOwner", idOwner);
+                parametros.Add("@usuario", usuario);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoDevolProcess]", false, parametros);
 

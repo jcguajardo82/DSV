@@ -99,7 +99,7 @@ namespace ServicesManagement.Web.Controllers
                 }
             }
             
-            Session["ListaConsignaciones"] = DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolProcess(idOwner);
+            Session["ListaConsignaciones"] = DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolProcess(idOwner,User.Identity.Name);
             return View();
         }
 
