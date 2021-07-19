@@ -53,7 +53,7 @@
                         <br />
 
                         <div class="custom-file">
-                            <input id="FileUpload1" type="file" class="custom-file-input" accept="application/pdf">
+                            <input id="FileUpload1" type="file" class="custom-file-input">
                             <label for="FileUpload1" class="custom-file-label">Seleccionar Archivo...</label>
                         </div>
                         <input type="button" class="btn btn-success btn-file" id="btnUpload" value="Subir Archivo" />
@@ -141,8 +141,6 @@
                     fileData.append('idManual', _idManual);
                     fileData.append('ManualDesc', _ManualDesc);
                     fileData.append('servername', servername);
-
-
 
                     $.ajax({
                        // url: '/ManualesOperativos/UploadFiles',

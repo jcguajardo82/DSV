@@ -163,9 +163,11 @@ namespace ServicesManagement.Web.Controllers
                             fname = file.FileName;
                         }
 
+                        var fileType = fname.Split('.')[1];
                         fname = string.Format("{0}_{1}_{2}", ownerName, ManualDesc, fname);
 
                         // Get the complete folder path and store the file inside it.  
+                        
                         var path = Path.Combine(Server.MapPath("~/Files/"), fname);
                         var pathServerName = servername + "/Files/" + fname;
 
@@ -173,7 +175,7 @@ namespace ServicesManagement.Web.Controllers
 
                        // DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, fname, DateTime.Now, User.Identity.Name);
 
-                        DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, pathServerName, DateTime.Now, User.Identity.Name);
+                        DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, pathServerName, DateTime.Now, User.Identity.Name, fileType.ToLower());
                     }
                     // Returns message that successfully uploaded  
                     return Json("File Uploaded Successfully!");

@@ -81,7 +81,7 @@ namespace ServicesManagement.Web.DAL.ManualesOperativos
         }
 
         public static DataSet spManualTitles_iUP(int idManual, int idOwner, string manualTitle, string manualsubTitle, string manualVersion
-           , bool bitEnable, string manualFilename, DateTime creationDate, string creationId)
+           , bool bitEnable, string manualFilename, DateTime creationDate, string creationId, string fileType)
         {
 
 
@@ -108,6 +108,7 @@ namespace ServicesManagement.Web.DAL.ManualesOperativos
                 parametros.Add("@manualFilename", manualFilename);
                 parametros.Add("@creationDate", creationDate);
                 parametros.Add("@creationId", creationId);
+                parametros.Add("@fileType", fileType);
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[common].[spManualTitles_iUP]", false, parametros);
