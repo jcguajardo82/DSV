@@ -730,11 +730,11 @@
 
                     }
                     else {
-                        bootbox.alert(Message);
+                       alert(Message);
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(errorThrown);
+                   alert(errorThrown);
                 }
 
             });
@@ -947,7 +947,7 @@
                 }
             }
             , error: function (jqXHR, textStatus, errorThrown) {
-                bootbox.alert(errorThrown);
+               alert(errorThrown);
 
             }
         });
@@ -972,7 +972,8 @@
 
             var _Cause_Desc = $("#ddlMotCan option:selected").text();
             var __IdCause = dll.val();//document.getElementById("ddlMotCan").value; //$("#ddlMotCan").val()
-
+            var _UeNo = $("#hddUeNo").val();
+            var _OrderNo = $("#hddOrderNo").val();
             if (_Cause_Desc == "99") {
                 if ($("#txtOtro").val() == "") {
                     $("#txtOtro").focus();
@@ -990,6 +991,8 @@
                 data: {
                     Cause_Desc: _Cause_Desc
                     , IdCause: __IdCause
+                    , UeNo: _UeNo
+                    , OrderNo: _OrderNo
                 },
 
                 datatype: "json",
@@ -998,11 +1001,11 @@
                         location.reload();
                     }
                     else {
-                        bootbox.alert(Message);
+                       alert(json.Message);
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(errorThrown);
+                   alert(errorThrown);
                 }
 
             });
@@ -1145,7 +1148,7 @@
                 }
             }
             , error: function (jqXHR, textStatus, errorThrown) {
-                bootbox.alert(errorThrown);
+               alert(errorThrown);
 
             }
         });

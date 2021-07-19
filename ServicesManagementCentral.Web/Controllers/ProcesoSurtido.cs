@@ -124,26 +124,17 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
-        public ActionResult Cancelar(string Cause_Desc, string IdCause)
+        public ActionResult Cancelar(string Cause_Desc, string IdCause, string UeNo, int OrderNo)
         {
             try
             {
 
-                bool successs = false;
-                string msg = "Error al obtener los datos de la consignación.";
-                if (TempData.ContainsKey("OrderNo") && TempData.ContainsKey("UeNo"))
-                {
-                    DALProcesoSurtido.upCorpOms_Del_UeNoSupplyProcess(int.Parse(TempData["OrderNo"].ToString()), Cause_Desc, int.Parse(IdCause), TempData["UeNo"].ToString());
-                    successs = true;
-                }
+                DALProcesoSurtido.upCorpOms_Del_UeNoSupplyProcess(OrderNo, Cause_Desc, int.Parse(IdCause), UeNo);
 
 
                 var result = new
                 {
-                    Success = successs
-                    ,
-                    Message = msg
-
+                    Success = true               
                 };
 
 
