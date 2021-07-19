@@ -85,5 +85,19 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+        public ActionResult GetInfoByCP(string postalCode)
+        {
+            try
+            {
+                var InfoByCP = DataTableToModel.ConvertTo<SuppliersWHPostalCode>(DALAltaProveedor.SuppliersWHPostalCode_sUP(postalCode).Tables[0]);
+                var result = new { Success = true, resp = InfoByCP };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

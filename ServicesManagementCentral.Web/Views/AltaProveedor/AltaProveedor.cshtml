@@ -186,7 +186,7 @@
                                 Cuidad/Delegación/Municipio
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtCiudad" value="@Model.addressCity" />
+                                <input type="text" class="form-control" readonly id="txtCiudad" value="@Model.addressCity" />
                             </td>
                             <td style="width:15%;text-align:center;">
                                 CP.
@@ -198,19 +198,24 @@
                                 @Html.TextBox("txtCodPos", Model.addressPostalCode, new
                                     {
                                     @class = "form-control ;",
-                                    @onkeydown = "javascript:onkeydown_cp(event)"
+                                    @onchange = "javascript:GetInfo()"
                                     })
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Estado
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtEdo" value="@Model.addressState"/>
+                                <input type="text" class="form-control" readonly id="txtEdo" value="@Model.addressState"/>
                             </td>
                         </tr>
                         <tr>
                             <td style="width:15%;text-align:center;">Colonia</td>
-                            <td style="text-align:left;"><input type="text" class="form-control" id="txtCol" value="@Model.addressCol" /></td>
+                            <td style="text-align:left;">
+                                @*<input type="text" class="form-control" id="txtCol" value="@Model.addressCol" />*@
+                                <select id="ddlColonias" class="form-control">
+                                    
+                                </select>                            
+                            </td>
                             <td style="width:15%;text-align:center;">
                                 Entre calle 1
 
@@ -327,8 +332,48 @@
             //IniciarCombo()
         });
 
+        function GetInfo() {
+            //alert($("#txtCodPos").val());
+            var _postalCode = $("#txtCodPos").val();
+
+            if (_postalCode.length == 5) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetInfoByCP", "AltaProveedor")',
+                    data: {
+                        postalCode: _postalCode
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //debugger;
+                        if (json.Success) {
+                            $("#txtEdo").val(json.resp[0].Region1Name);
+                            $("#txtCiudad").val(json.resp[0].Locality);
+
+                            var sel = $("#ddlColonias");
+                            sel.empty();
+
+                            $('#lstIdAlmacen').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            for (var i = 0; i < json.resp.length; i++) {
+                                sel.append('<option value="' + json.resp[i].SubLocality + '">' + json.resp[i].SubLocality + '</option>');
+                            }
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            }
+        }
         function onkeydown_cp(e) {
 
+            alert(e);
             switch (e.which) {
                 case 9:
                 case 13:
@@ -438,7 +483,7 @@
             var _creationId = 't_joserp';
             var _idOperType = $("#ddlOperations").val();
             var _idShipType = $("#ddlShipments").val();
-            var _addressCol = $("#txtCol").val();
+            var _addressCol = $("#ddlColonias").val();
             var _bitVehicles = document.getElementById("chVehiculo").checked ;
                //string idOperType, string idShipType, string bitVehicles
 
@@ -539,9 +584,9 @@
                     , addressState: _txtEdo
                     , addressReference1: _txtEntCal1
                     , addressReference2: _txtEntCal2
-                    , commInfoName: _txtNomContCom 
+                    , commInfoName: _txtNomContCom
                     , operInfoName: _txtNomContOper
-                    , operInfoPhone: _txtTelContOper  
+                    , operInfoPhone: _txtTelContOper
                     , operInfoEmail: _txtEmailO
                     , commInfoPhone: _txtTelContCom
                     , commInfoEmail: _txtEmailC
@@ -550,7 +595,7 @@
                     , idShipType: _idShipType
                     , bitVehicles: _bitVehicles
                     , addressCol: _addressCol
-                  
+
                 },
                 datatype: "html",
                 success: function (json) {

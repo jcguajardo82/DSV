@@ -261,6 +261,7 @@
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHForAproval.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHOperations.cs" />
+    <Compile Include="Models\Almacenes\SuppliersWHPostalCode.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHShipments.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHStock.cs" />
     <Compile Include="Models\Config\Menu.cs" />
