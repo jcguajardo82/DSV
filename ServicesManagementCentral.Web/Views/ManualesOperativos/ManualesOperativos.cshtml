@@ -36,37 +36,43 @@
                     <table style="width:100%;">
                         <tr>
                             @*<td style="text-align:left;padding-left:50px;">
-                <h2><i class="fa fa-certificate"></i> Manual de Operación</h2>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Procesos para surtir y enviar una orden</span>
-                <button name="operacionespdf" onclick="verPDF('operaciones.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-operacionespdf">Mostrar</button>
-                <button name="operacionespdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-operacionespdf">Ocultar</button>
-                <iframe id="operacionespdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
-            </td>*@
+                                    <h2><i class="fa fa-certificate"></i> Manual de Operación</h2>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Procesos para surtir y enviar una orden</span>
+                                    <button name="operacionespdf" onclick="verPDF('operaciones.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-operacionespdf">Mostrar</button>
+                                    <button name="operacionespdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-operacionespdf">Ocultar</button>
+                                    <iframe id="operacionespdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+                                </td>*@
                             <td style="text-align:left;padding-left:50px;">
                                 <h2><i class="fa fa-certificate"></i> Manual de Operación</h2>
-                                 <span> Procesos para surtir y enviar una orden</span>
+                                <span> Procesos para surtir y enviar una orden</span>
                                 <br />
                                 <button name="operacionespdf" onclick="verPDF(1, this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-operacionespdf">Mostrar</button>
                                 <button name="operacionespdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-operacionespdf">Ocultar</button>
                                 <iframe id="operacionespdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+                                
                             </td>
                         </tr>
                         <tr>
                             <td style="text-align:left;padding-left:50px;">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <iframe id="operacionespdfVideo" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+                                @*<iframe id="operacionespdfVideo" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>*@
+                                <video id="video" class="video-js vjs-default-skin" controls
+                                       preload="auto" width="300" height="480"
+                                       data-setup="{}">
+                                    <source id="source" type='video/mp4'>
+                                </video>
                             </td>
                         </tr>
 
                         <tr>
                             @*<td style="text-align:left;padding-left:50px;">
-                <h2><i class="fa fa-certificate"></i> Manual de Empaque</h2>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Tipos de empaque que se deben utilizar para un adecuado envio</span>
-                <button name="empaquepdf" onclick="verPDF('Empaque.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-empaquepdf">Mostrar</button>
-                <button name="empaquepdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-empaquepdf">Ocultar</button>
-                <iframe id="empaquepdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+                                    <h2><i class="fa fa-certificate"></i> Manual de Empaque</h2>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Tipos de empaque que se deben utilizar para un adecuado envio</span>
+                                    <button name="empaquepdf" onclick="verPDF('Empaque.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-empaquepdf">Mostrar</button>
+                                    <button name="empaquepdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-empaquepdf">Ocultar</button>
+                                    <iframe id="empaquepdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
 
-            </td>*@
+                                </td>*@
                             <td style="text-align:left;padding-left:50px;">
                                 <h2><i class="fa fa-certificate"></i> Manual de Empaque</h2>
                                 <span>Tipos de empaque que se deben utilizar para un adecuado envio</span>
@@ -85,13 +91,13 @@
                         </tr>
                         <tr>
                             @*<td style="text-align:left;padding-left:50px;">
-                <h2><i class="fa fa-certificate"></i> Manual de Actualización de Inventario</h2>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para mantener actualizado tu inventario en la página</span>
-                <button name="inventariospdf" onclick="verPDF('Inventarios.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-inventariospdf">Mostrar</button>
-                <button name="inventariospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-inventariospdf">Ocultar</button>
-                <iframe id="inventariospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+                                    <h2><i class="fa fa-certificate"></i> Manual de Actualización de Inventario</h2>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para mantener actualizado tu inventario en la página</span>
+                                    <button name="inventariospdf" onclick="verPDF('Inventarios.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-inventariospdf">Mostrar</button>
+                                    <button name="inventariospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-inventariospdf">Ocultar</button>
+                                    <iframe id="inventariospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
 
-            </td>*@
+                                </td>*@
                             <td style="text-align:left;padding-left:50px;">
                                 <h2><i class="fa fa-certificate"></i> Manual de Actualización de Inventario</h2>
                                 <span> Pasos a seguir para mantener actualizado tu inventario en la página</span>
@@ -110,13 +116,13 @@
                         </tr>
                         <tr>
                             @*<td style="text-align:left;padding-left:50px;">
-                <h2><i class="fa fa-certificate"></i> Manual Actualización de Contenido</h2>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para actualizar el contenido de un producto</span>
-                <button name="contenidospdf" onclick="verPDF('Contenidos.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-contenidospdf">Mostrar</button>
-                <button name="contenidospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-contenidospdf">Ocultar</button>
-                <iframe id="contenidospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
+                                    <h2><i class="fa fa-certificate"></i> Manual Actualización de Contenido</h2>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span> Pasos a seguir para actualizar el contenido de un producto</span>
+                                    <button name="contenidospdf" onclick="verPDF('Contenidos.pdf', this.name)" style="float: left" type="button" class="btn btn-w-m btn-warning ver-contenidospdf">Mostrar</button>
+                                    <button name="contenidospdf" onclick="ocultarPDF(this.name)" style="float: left; display:none;" type="button" class="btn btn-w-m btn-warning ocultar-contenidospdf">Ocultar</button>
+                                    <iframe id="contenidospdf" embedded=true width="600" height="780" style="border: none; display:none;"></iframe>
 
-            </td>*@
+                                </td>*@
                             <td style="text-align:left;padding-left:50px;">
                                 <h2><i class="fa fa-certificate"></i> Manual Actualización de Contenido</h2>
                                 <span> Pasos a seguir para actualizar el contenido de un producto</span>
@@ -142,6 +148,8 @@
 <input id="chkAviso" name="chkAviso" value="" style="visibility:hidden" />
 
 @section scripts {
+    <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/c/video.js"></script>
     <script>
 
         $(document).ready(function () {
@@ -218,7 +226,6 @@
 
         function verPDF(idManual, opcion) {
             var tipoAlmacen = $("#TP").val();
-            debugger;
 
             if ($("#chkSel_AP")[0].checked == false & $("#chkAviso").val() == "") {
                 $("#chkSel_AP").focus();
@@ -259,11 +266,35 @@
                             var lstURLs = json.URL.split(",");
                             $("#" + opcion).attr("src", lstURLs[0] + "#toolbar=0")
                             $("#" + opcion).show()
-                            $("#" + opcion + "Video").attr("src", lstURLs[1])
-                            $("#" + opcion + "Video").show()
+                            console.log("Show PDF AND VIDEO " + lstURLs[1]);
+                            //$("#" + opcion + "Video").attr("src", "https://localhost/DSV/Files/DST_Empaque_video1.mp4")
+                            //$("#" + opcion + "Video").show()
+                            var video = document.getElementById('video');
+                            //var source = document.createElement('source');
+
+                            //source.setAttribute('src', 'http://www.tools4movies.com/trailers/1012/Kill%20Bill%20Vol.3.mp4');
+
+                           // video.appendChild(source);
+                           // video.play();
+                            var source = document.getElementById('source');
+
+             
+                            source.src = lstURLs[1];
+                                video.load();
+                                video.play();
+
+                            //setTimeout(function () {
+                            //    video.pause();
+
+                            //    source.setAttribute('src', 'http://www.tools4movies.com/trailers/1012/Despicable%20Me%202.mp4');
+
+                            //    video.load();
+                            //    video.play();
+                            //}, 3000);
 
                         }
                         else {
+                            console.log("Show PDF");
                             $("#" + opcion).attr("src", json.URL + "#toolbar=0")
                             $("#" + opcion).show()
                             //$("#"+ opcion + "Video").show()
