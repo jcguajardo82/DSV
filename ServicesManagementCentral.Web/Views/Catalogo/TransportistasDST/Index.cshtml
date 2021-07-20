@@ -4,7 +4,7 @@
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    ViewBag.Title = "Transportistas DST";
+    ViewBag.Title = "Operadores Drop Ship Tienda";
     string descTda = Session["Desc_Num_UN"] != null ? Session["Desc_Num_UN"].ToString() : "";
 }
 
@@ -20,7 +20,7 @@
                 <a>Catalogo</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Transportistas DST</strong>
+                <strong>Operadores Drop Ship Tienda</strong>
             </li>
         </ol>
     </div>
@@ -39,8 +39,8 @@
                         </div>
                         <div class="col col-xs-12 col-md-4">
                             <div class="form-group">
-                                <label>Nombre</label>
-                                <input type="text" placeholder="Nombre del Surtidor" name="txtSurtidor" class="form-control">
+                                <label>Nombre del Operador</label>
+                                <input type="text" placeholder="Nombre del Operador" name="txtSurtidor" class="form-control">
                             </div>
                         </div>
                         <div class="col col-xs-12 col-md-4 text-right">
@@ -81,7 +81,7 @@
                     <tr role="row">
                         <th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" style="width: 80px;">Num</th>
                         <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Unidad de Negocio</th>
-                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Nombe</th>
+                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Nombre del Operador</th>
                         <th style="width: 50px;"></th>
                     </tr>
                 </thead>
@@ -223,7 +223,7 @@
         }
 
         function DeleteSurtidores(id) {
-            if (confirm('Esta seguro que desea eliminar el Transportista : ' + id)) {
+            if (confirm('Esta seguro que desea eliminar el Operador : ' + id)) {
 
                 $.ajax({
                     async: false,
