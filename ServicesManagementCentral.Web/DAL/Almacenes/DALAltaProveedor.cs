@@ -12,7 +12,8 @@ namespace ServicesManagement.Web.DAL.Almacenes
     {
         public static DataSet SuppliersWH_iUP(int idSupplierWH, string supplierName, int idSupplierWHCode, int idOwner, string SupplierWHName, string addressStreet, string addressNumberExt, string addressNumberInt, 
             string addressCity, string addressPostalCode, string addressState, string addressReference1, string addressReference2, string commInfoName, string operInfoName, string operInfoPhone, 
-            string operInfoEmail, string commInfoPhone, string commInfoEmail, string creationId,int idOperType,int idShipType,bool bitVehicles,string addressCol)
+            string operInfoEmail, string commInfoPhone, string commInfoEmail, string creationId,int idOperType,int idShipType,bool bitVehicles,string addressCol
+            ,string reference)
         { 
             DataSet ds = new DataSet();
 
@@ -52,6 +53,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
                 parametros.Add("@idShipType", idShipType);
                 parametros.Add("@bitVehicles", bitVehicles);
                 parametros.Add("@addressCol", addressCol);
+                parametros.Add("@reference", reference);
 
 
 

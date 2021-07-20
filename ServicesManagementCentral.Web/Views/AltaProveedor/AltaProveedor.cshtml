@@ -1,7 +1,11 @@
 ﻿@model ServicesManagement.Web.Models.Almacenes.AltaProveedor
 
 @{ ViewBag.Title = "Alta de Almacenes";
-    Layout = "~/Views/Shared/_Layout.cshtml"; }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool dsv = ViewBag.Dsv;
+
+    }
 
 
 <div class="wrapper wrapper-content animated fadeInRight" style="padding-top: 0px;">
@@ -111,6 +115,7 @@
                                 Tipo Almacén
                             </td>
                             <td>
+
                                 <select class="form-control m-b" id="lstIdAlmacen" readonly>
                                     @{if (ViewBag.Owners != null)
                                         {
@@ -163,7 +168,7 @@
                                 Calle
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtCalle" value="@Model.addressStreet"/>
+                                <input type="text" class="form-control" id="txtCalle" value="@Model.addressStreet" />
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Número Exterior
@@ -171,7 +176,7 @@
                             <td>
                                 <input type="text" class="form-control" id="txtNumExt" onkeypress='return validaNumericos2(event)' value="@Model.addressNumberExt" />
                                 @*onblur="validaNumericos();"*@
-                                
+
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Número Interior
@@ -192,8 +197,8 @@
                                 CP.
                             </td>
                             @*<td style="text-align:left;">
-                                    <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
-                                </td>*@
+                <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
+            </td>*@
                             <td>
                                 @Html.TextBox("txtCodPos", Model.addressPostalCode, new
                                     {
@@ -205,7 +210,7 @@
                                 Estado
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" readonly id="txtEdo" value="@Model.addressState"/>
+                                <input type="text" class="form-control" readonly id="txtEdo" value="@Model.addressState" />
                             </td>
                         </tr>
                         <tr>
@@ -213,8 +218,7 @@
                             <td style="text-align:left;">
                                 @*<input type="text" class="form-control" id="txtCol" value="@Model.addressCol" />*@
                                 <select id="ddlColonias" class="form-control">
-                                    
-                                </select>                            
+                                </select>
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Entre calle 1
@@ -229,6 +233,18 @@
                             </td>
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtEntCal2" value="@Model.addressReference2" />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            
+                          
+                            <td style="width:15%;text-align:center;">
+                                Referencia
+
+                            </td>
+                            <td style="text-align:left;" colspan="3">
+                                <input type="text" class="form-control" id="txtReferencia" value="@Model.reference" />
                             </td>
 
                         </tr>
@@ -484,7 +500,9 @@
             var _idOperType = $("#ddlOperations").val();
             var _idShipType = $("#ddlShipments").val();
             var _addressCol = $("#ddlColonias").val();
-            var _bitVehicles = document.getElementById("chVehiculo").checked ;
+            var _addressCol = $("#ddlColonias").val();
+            var _reference = $("#txtReferencia").val();
+            var _bitVehicles = "false";
                //string idOperType, string idShipType, string bitVehicles
 
 
@@ -565,7 +583,11 @@
                 return;
             }
 
+                if ($("#chVehiculo").is(':checked') ) {
+                    _bitVehicles = "true";
+                }
 
+           
              $.ajax({
                 async: false,
                 type: "GET",
@@ -595,7 +617,7 @@
                     , idShipType: _idShipType
                     , bitVehicles: _bitVehicles
                     , addressCol: _addressCol
-
+                    , reference: _reference
                 },
                 datatype: "html",
                 success: function (json) {

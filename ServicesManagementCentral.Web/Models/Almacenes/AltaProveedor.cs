@@ -32,6 +32,7 @@ namespace ServicesManagement.Web.Models.Almacenes
         public bool bitVehicles { get; set; }
         public string addressCol { get; set; }
         public string ownerName { get; set; }
+        public string reference { get; set; }
 
     }
 
