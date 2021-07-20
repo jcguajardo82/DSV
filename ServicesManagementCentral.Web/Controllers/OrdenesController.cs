@@ -544,7 +544,7 @@ namespace ServicesManagement.Web.Controllers
 
                         //System.Data.DataSet d = DALServicesM.GetOrdersByOrderNo(OrderNo);
                         System.Data.DataSet d = DALServicesM.GetOrdersByOrderNo(array[0]);
-
+                        //OrderNo = array[0];
                         foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
                         {
                             OrderNo = r1["OrderNo"].ToString();
@@ -586,7 +586,18 @@ namespace ServicesManagement.Web.Controllers
                         {
                             if (!value.Equals(array[0]))
                             {
-                                o.Expedidor.NumeroOrdenes.Add(value);
+
+                                 d = DALServicesM.GetOrdersByOrderNo(value);
+                                //OrderNo = array[0];
+                                foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
+                                {
+                                   
+
+                                    o.Expedidor.NumeroOrdenes.Add(r1["OrderNo"].ToString());
+                                }
+
+
+                                
                             }
                         }
 
@@ -636,8 +647,8 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             }
-         }
-            [HttpPost]
+        }
+        [HttpPost]
         public ActionResult FinalizarEntrega(List<FinEmbarque> Guias)
         {
 
@@ -915,7 +926,7 @@ namespace ServicesManagement.Web.Controllers
                 int decOrder = int.Parse(dOP.Tables[0].Rows[0]["OrderNo"].ToString());
                 Session["OrderPackages"] = DALEmbarques.upCorpOms_Cns_UeNoTracking(txtUeNo, decOrder);
             }
-            
+
             return View();
 
         }
@@ -1929,13 +1940,13 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-                string guia =    CreateGuiaEstafeta(UeNo, OrderNo);
+                string guia = CreateGuiaEstafeta(UeNo, OrderNo);
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
             PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-            User.Identity.Name,guia).Tables[0].Rows[0][0];
+            User.Identity.Name, guia).Tables[0].Rows[0][0];
 
-                               
+
 
 
                 var result = new { Success = true, resp = cabeceraGuia };
@@ -1950,7 +1961,8 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public string CreateGuiaEstafeta(string UeNo, int OrderNo) {
+        public string CreateGuiaEstafeta(string UeNo, int OrderNo)
+        {
 
             DataSet ds = new DataSet();
 
@@ -1968,7 +1980,7 @@ namespace ServicesManagement.Web.Controllers
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@UeNo", UeNo);
                 parametros.Add("@OrderNo", OrderNo);
-                
+
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Sel_EstafetaInfo]", false, parametros);
 
             }
@@ -1982,7 +1994,8 @@ namespace ServicesManagement.Web.Controllers
             }
 
 
-            foreach (DataRow r in ds.Tables[0].Rows) {
+            foreach (DataRow r in ds.Tables[0].Rows)
+            {
 
 
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -2004,7 +2017,7 @@ namespace ServicesManagement.Web.Controllers
                 m.DestinationInfo.state = r["StateCode"].ToString();
                 m.DestinationInfo.zipCode = r["PostalCode"].ToString();
 
-                
+
                 //OrderNo
                 //    CnscOrder
                 //    StoreNum
