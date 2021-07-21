@@ -3,9 +3,10 @@
 @{ ViewBag.Title = "Alta de Almacenes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    bool dsv = ViewBag.Dsv;
+    string dsv = string.Empty;
+    if (ViewBag.Dsv) { dsv = "disabled"; }
 
-    }
+}
 
 
 <div class="wrapper wrapper-content animated fadeInRight" style="padding-top: 0px;">
@@ -55,10 +56,12 @@
                                             {
                                                 if (Model.idOperType == Item.idOperType)
                                                 {
-                                                    <option selected="selected" value="@Item.idOperType">@Item.OperTypeDesc</option>}
+                                                    <option selected="selected" value="@Item.idOperType">@Item.OperTypeDesc</option>
+}
                                                 else
                                                 {
-                                                    <option value="@Item.idOperType">@Item.OperTypeDesc</option>}
+                                                    <option value="@Item.idOperType">@Item.OperTypeDesc</option>
+}
 
                                             }
                                         }
@@ -81,10 +84,12 @@
 
                                                 if (Model.idShipType == Item.idShipType)
                                                 {
-                                                    <option selected="selected" value="@Item.idShipType">@Item.ShipTypeDesc</option>}
+                                                    <option selected="selected" value="@Item.idShipType">@Item.ShipTypeDesc</option>
+}
                                                 else
                                                 {
-                                                    <option value="@Item.idShipType">@Item.ShipTypeDesc</option>}
+                                                    <option value="@Item.idShipType">@Item.ShipTypeDesc</option>
+}
                                             }
                                         }
                                     }
@@ -116,13 +121,25 @@
                             </td>
                             <td>
 
-                                <select class="form-control m-b" id="lstIdAlmacen" readonly>
+                                <select class="form-control m-b" id="lstIdAlmacen" @dsv>
                                     @{if (ViewBag.Owners != null)
                                         {
                                             var Lista = (List<ServicesManagement.Web.Models.Almacenes.Owners>)ViewBag.Owners;
                                             foreach (ServicesManagement.Web.Models.Almacenes.Owners Item in Lista)
                                             {
-                                                if (Model.idOwner == Item.idOwner)
+                                                if (ViewBag.Dsv)
+                                                {
+                                                    if (Item.idOwner == 4)
+                                                    {
+                                                        <option selected="selected" value="@Item.idOwner">@Item.ownerName</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@Item.idOwner">@Item.ownerName</option>
+}
+                                                }
+
+                                                else if (Model.idOwner == Item.idOwner)
                                                 {
                                                     <option selected="selected" value="@Item.idOwner">@Item.ownerName</option>
                                                 }
@@ -132,7 +149,7 @@
                                                 }
                                             }
                                         }
-                                      }
+                                    }
                                 </select>
                             </td>
                             <td style="width:15%;text-align:center;">
@@ -140,7 +157,7 @@
                             </td>
                             <td>
 
-                                @if (Model.idSupplierWHCode.ToString()=="0")
+                                @if (Model.idSupplierWHCode.ToString() == "0")
                                 {<input type="text" class="form-control" id="txtNumAlmacen" />}
                                 else
                                 { <input type="text" class="form-control" value="@Model.idSupplierWHCode" id="txtNumAlmacen" />}
@@ -197,8 +214,8 @@
                                 CP.
                             </td>
                             @*<td style="text-align:left;">
-                <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
-            </td>*@
+                                    <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
+                                </td>*@
                             <td>
                                 @Html.TextBox("txtCodPos", Model.addressPostalCode, new
                                     {
@@ -237,8 +254,8 @@
 
                         </tr>
                         <tr>
-                            
-                          
+
+
                             <td style="width:15%;text-align:center;">
                                 Referencia
 
@@ -272,7 +289,7 @@
 
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtNomContOper" value="@Model.operInfoName"/>                                         
+                                <input type="text" class="form-control" id="txtNomContOper" value="@Model.operInfoName" />
                             </td>
                             <td style="width: 10%;"></td>
                             <td style="width:15%;text-align:center;">
@@ -289,14 +306,14 @@
                                 Teléfono del contacto Operativo
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtTelContOper" value="@Model.operInfoPhone" />                                
+                                <input type="text" class="form-control" id="txtTelContOper" value="@Model.operInfoPhone" />
                             </td>
                             <td style="width: 10%;"></td>
                             <td style="width:15%;text-align:center;">
                                 Teléfono del contacto Comercial
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtTelContCom" value="@Model.commInfoPhone"/>
+                                <input type="text" class="form-control" id="txtTelContCom" value="@Model.commInfoPhone" />
                             </td>
                             <td style="width: 10%;"></td>
                         </tr>
@@ -311,7 +328,7 @@
                             <td style="width: 10%;"></td>
 
                             <td style="width:15%;text-align:center;">
-                                Correo electrónico                                
+                                Correo electrónico
                             </td>
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtEmailC" value="@Model.commInfoEmail" />
@@ -587,7 +604,7 @@
                     _bitVehicles = "true";
                 }
 
-           
+
              $.ajax({
                 async: false,
                 type: "GET",
