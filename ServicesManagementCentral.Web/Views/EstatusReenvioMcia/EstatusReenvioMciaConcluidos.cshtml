@@ -6,6 +6,35 @@
 
 <h2>Reenvio de Pedidos Concluidos</h2>
 <div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group">
+            <label>Fecha Inicio</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker1">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecIni"
+                       type="text" value="@ViewBag.FecIni">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Fecha Fin</label>
+        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+        <div class="input-group date" id="datetimepicker2">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input class="form-control datepicker" id="txtFecFin"
+                   type="text" value="@ViewBag.FecFin">
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetSuppliers()">
+            Buscar
+        </button>
+
+    </div>
+</div>
+<div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
@@ -83,8 +112,16 @@
 
 @section scripts {
     <script>
-        $(document).ready(function () {
-            GetSuppliers();
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
         });
 
         function popDesHabilitar(noProveedor, noAlmacen) {
@@ -147,49 +184,59 @@
         }
         function GetSuppliers() {
 
-            //var _Id_Num_UN = $("#hddTda").val();
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
 
-            debugger;
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
 
             $.ajax({
                 async: false,
                 type: "GET",
                 url: '@Url.Action("GetreenviomciaDSVConcluidos", "EstatusReenvioMcia")',
                 data: {
-                    //  Id_Num_UN: _Id_Num_UN
+                    FecIni: _FecIni,
+                    FecFin: _FecFin
                 },
 
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
 
-                        $('#tblConsulta tbody').empty();
-                        //var tr;
-                        debugger;
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
 
-                        for (var i = 0; i < json.resp.length; i++) {
-                            tr = $('<tr/>');
+                        myTable.row.add([
+                          
+                            json.resp[i].ConsignacionReenvio,
+                            "<a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a>",
+                            json.resp[i].Cliente,
+                            json.resp[i].EstatusPedidoSurtido,
+                            json.resp[i].EstatusPedidoEnvio,
+                            json.resp[i].OrdenDSV,
+                            json.resp[i].OrdenDSVStatus,
+                            json.resp[i].TipoGuia,
+                            json.resp[i].Paqueteria,
 
-                            //Append each row to html table
-                            tr.append("<td> " + json.resp[i].ConsignacionReenvio + "</td>");
-                            tr.append("<td><a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a></td>");
-                            tr.append("<td> " + json.resp[i].Cliente + "</td>");
-                            tr.append("<td> " + json.resp[i].EstatusPedidoSurtido + "</td>");
-                            tr.append("<td> " + json.resp[i].EstatusPedidoEnvio + "</td>");
-                            tr.append("<td> " + json.resp[i].OrdenDSV + "</td>");
-                            tr.append("<td> " + json.resp[i].OrdenDSVStatus + "</td>");
-                            tr.append("<td> " + json.resp[i].TipoGuia + "</td>");
-                            tr.append("<td> " + json.resp[i].Paqueteria + "</td>");
-                            tr.append("<td> " + json.resp[i].GuiaReenvioNro + " </td>");
-                            tr.append("<td> " + json.resp[i].GuiaStatus + "</td>");
-                            tr.append("<td> " + json.resp[i].FechaEntrega + " </td>");
-                            tr.append("<td> " + json.resp[i].HoraEntrega + "</td>");
-                            tr.append("<td> " + json.resp[i].QuienRecibio + "</td>");
-                            tr.append("<td> " + json.resp[i].MotivoReenvio + "</td>");
+                            json.resp[i].GuiaReenvioNro,
+                            json.resp[i].GuiaStatus,
+                            json.resp[i].FechaEntrega,
+                            json.resp[i].HoraEntrega,
+                            json.resp[i].QuienRecibio,
+                            json.resp[i].MotivoReenvio,
 
-                            $('#tblConsulta').append(tr);
-
-                        }
+                        ]).draw(); 
+                       
 
                     }
                     else {
@@ -370,7 +417,7 @@
 
                 }
             );
-
+            GetSuppliers();
         });
     </script>
 }

@@ -5,6 +5,35 @@
 
 <h2>Devolución Autorizada (RMA)</h2>
 <div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group">
+            <label>Fecha Inicio</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker1">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecIni"
+                       type="text" value="@ViewBag.FecIni">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Fecha Fin</label>
+        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+        <div class="input-group date" id="datetimepicker2">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input class="form-control datepicker" id="txtFecFin"
+                   type="text" value="@ViewBag.FecFin">
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="Busqueda()">
+            Buscar
+        </button>
+
+    </div>
+</div>
+<div class="row">
     <div class="col-xs-12 col-md-12">
         <div style="width:99%;">
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
@@ -380,6 +409,34 @@
                 i++;
             });
             location.reload();
+        }
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+        function Busqueda() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            window.location.href = "ProcesoReciboDevoluciones/ProcesoReciboDevoluciones?FecIni=" + _FecIni+"&FecFin="+_FecFin;
         }
 
     </script>

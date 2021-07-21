@@ -12,7 +12,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
     {
         #region Envío de Pedidos Pendientes
 
-        public static DataSet upCorpAlmacen_Cns_ConsigmentsProveedor(string usuario)
+        public static DataSet upCorpAlmacen_Cns_ConsigmentsProveedor(string usuario,DateTime FecIni,DateTime FecFin)
         {
             DataSet ds = new DataSet();
 
@@ -30,6 +30,8 @@ namespace ServicesManagement.Web.DAL.Consignaciones
                 parametros.Add("@ViewType", 1); // parametro admin fijo
                 parametros.Add("@Seccion", 0); // parametro admin fijo
                 parametros.Add("@usuario", usuario); // parametro admin fijo
+                parametros.Add("@fechaini", FecIni); // parametro admin fijo
+                parametros.Add("@fechafin", FecFin); // parametro admin fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpAlmacen_Cns_Consigments]", false, parametros);
@@ -54,7 +56,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
 
         #region Envío de Pedidos Concluidos
 
-        public static DataSet upCorpAlmacen_Cns_ConsigmentsProveedorConcluido(string usuario)
+        public static DataSet upCorpAlmacen_Cns_ConsigmentsProveedorConcluido(string usuario,DateTime FecIni,DateTime FecFin)
         {
             DataSet ds = new DataSet();
 
@@ -72,6 +74,8 @@ namespace ServicesManagement.Web.DAL.Consignaciones
                 parametros.Add("@ViewType", 1); // parametro admin fijo
                 parametros.Add("@Seccion", 1); // parametro admin fijo
                 parametros.Add("@usuario", usuario); // parametro admin fijo
+                parametros.Add("@fechaini", FecIni); // parametro admin fijo
+                parametros.Add("@fechafin", FecFin); // parametro admin fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpAlmacen_Cns_Consigments]", false, parametros);

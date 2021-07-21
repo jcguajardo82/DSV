@@ -11,7 +11,7 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
     {
 
 
-        public static DataSet upCorpOMS_Cns_UeNoReShipment(string usuario)
+        public static DataSet upCorpOMS_Cns_UeNoReShipment(string usuario,DateTime FecIni,DateTime FecFin)
         {
             DataSet ds = new DataSet();
 
@@ -29,7 +29,8 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
                 parametros.Add("@idOwner", 4); // parametro Proveedor fijo
                 parametros.Add("@Seccion", 0); // parametro Seccion fijo
                 parametros.Add("@usuario", usuario); // parametro Seccion fijo
-                //parametros.Add("@Consignacion", "101187901-3"); // parametro Proveedor fijo
+                parametros.Add("@fechaini", FecIni);
+                parametros.Add("@fechafin", FecFin);
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoReShipment]", false, parametros);
@@ -85,7 +86,7 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
 
         }
 
-        public static DataSet upCorpOMS_Cns_UeNoReShipmentConcluidos()
+        public static DataSet upCorpOMS_Cns_UeNoReShipmentConcluidos(DateTime FecIni, DateTime FecFin)
         {
             DataSet ds = new DataSet();
 
@@ -102,7 +103,9 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@idOwner", 4); // parametro Proveedor fijo
                 parametros.Add("@Seccion", 1); // parametro Seccion fijo
-                //parametros.Add("@Consignacion", "101187901-3"); // parametro Proveedor fijo
+                parametros.Add("@fechaini", FecIni);
+                parametros.Add("@fechafin", FecFin);
+
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoReShipment]", false, parametros);

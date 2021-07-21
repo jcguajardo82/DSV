@@ -18,14 +18,17 @@ namespace ServicesManagement.Web.Controllers
         #region Consignaciones Administrador
         public ActionResult Consignaciones()
         {
+            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
             return View();
         }
 
-        public ActionResult GetconsignacionesAdm()
+        public ActionResult GetconsignacionesAdm(DateTime FecIni,DateTime FecFin)
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<ConsignacionesAdm>(DALConsignacionesAdm.upCorpAlmacen_Cns_Consigments(User.Identity.Name).Tables[0]);
+                var list = DataTableToModel.ConvertTo<ConsignacionesAdm>(
+                    DALConsignacionesAdm.upCorpAlmacen_Cns_Consigments(User.Identity.Name,FecIni,FecFin).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -63,17 +66,19 @@ namespace ServicesManagement.Web.Controllers
         #region Consignaciones CEDIS
         public ActionResult Consignaciones_CEDIS()
         {
-
+            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
             return View();
 
         }
 
 
-        public ActionResult GetconsignacionesCEDIS()
+        public ActionResult GetconsignacionesCEDIS(DateTime FecIni, DateTime FecFin)
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<ConsignacionesCEDIS>(DALConsignacionesCEDIS.upCorpAlmacen_Cns_ConsigmentsCEDIS(User.Identity.Name).Tables[0]);
+                var list = DataTableToModel.ConvertTo<ConsignacionesCEDIS>(
+                    DALConsignacionesCEDIS.upCorpAlmacen_Cns_ConsigmentsCEDIS(User.Identity.Name,FecIni,FecFin).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -88,15 +93,18 @@ namespace ServicesManagement.Web.Controllers
         #region Consignaciones Proveedor Pendientes
         public ActionResult Consignaciones_Proveedores()
         {
+            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
 
             return View();
 
         }
-        public ActionResult GetconsignacionesProveedor()
+        public ActionResult GetconsignacionesProveedor(DateTime FecIni,DateTime FecFin)
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor(User.Identity.Name).Tables[0]);
+                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(
+                    DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor(User.Identity.Name,FecIni,FecFin).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -107,12 +115,12 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public FileResult ExcelConsignacionesProveedor(string op)
+        public FileResult ExcelConsignacionesProveedor(string op,DateTime FecIni,DateTime FecFin)
 
         {
 
 
-            var d = DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor(User.Identity.Name).Tables[0];
+            var d = DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor(User.Identity.Name,FecIni,FecFin).Tables[0];
 
             string nombreArchivo = "EnvíoPedidosPendientes";
 
@@ -186,17 +194,19 @@ namespace ServicesManagement.Web.Controllers
         #region Consignaciones Proveedor concluidos
         public ActionResult Consignaciones_ProveedoresConcluidos()
         {
-
+            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
             return View();
 
         }
 
 
-        public ActionResult GetconsignacionesProveedorConcluidos()
+        public ActionResult GetconsignacionesProveedorConcluidos(DateTime FecIni,DateTime FecFin)
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedorConcluido(User.Identity.Name).Tables[0]);
+                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(
+                    DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedorConcluido(User.Identity.Name,FecIni,FecFin).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

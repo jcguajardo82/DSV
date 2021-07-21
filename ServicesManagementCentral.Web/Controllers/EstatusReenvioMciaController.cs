@@ -20,6 +20,8 @@ namespace ServicesManagement.Web.Controllers
         // GET: SolicitudGuiasReenvio
         public ActionResult EstatusReenvioMcia()
         {
+            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
             return View();
 
         }
@@ -51,12 +53,13 @@ namespace ServicesManagement.Web.Controllers
 
         //GET: RenviodeMercancia
 
-        public ActionResult GetreenviomciaDSV()
+        public ActionResult GetreenviomciaDSV(DateTime FecIni, DateTime FecFin)
         {
 
             try
             {
-                var list = DataTableToModel.ConvertTo<ReenvioMciaProveedor>(DALReenvioMciaProveedores.upCorpOMS_Cns_UeNoReShipment( User.Identity.Name).Tables[0]);
+                var list = DataTableToModel.ConvertTo<ReenvioMciaProveedor>(
+                    DALReenvioMciaProveedores.upCorpOMS_Cns_UeNoReShipment( User.Identity.Name,FecIni,FecFin).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -101,16 +104,19 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult EstatusReenvioMciaConcluidos()
         {
+            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
             return View();
 
         }
 
-        public ActionResult GetreenviomciaDSVConcluidos()
+        public ActionResult GetreenviomciaDSVConcluidos(DateTime FecIni,DateTime FecFin)
         {
 
             try
             {
-                var list = DataTableToModel.ConvertTo<ReenvioMciaProveedor>(DALReenvioMciaProveedores.upCorpOMS_Cns_UeNoReShipmentConcluidos().Tables[0]);
+                var list = DataTableToModel.ConvertTo<ReenvioMciaProveedor>(
+                    DALReenvioMciaProveedores.upCorpOMS_Cns_UeNoReShipmentConcluidos(FecIni,FecFin).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

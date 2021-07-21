@@ -5,6 +5,35 @@
 
 <h2>Reenvío de mercancía</h2>
 <div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group">
+            <label>Fecha Inicio</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker1">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecIni"
+                       type="text" value="@ViewBag.FecIni">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Fecha Fin</label>
+        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+        <div class="input-group date" id="datetimepicker2">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input class="form-control datepicker" id="txtFecFin"
+                   type="text" value="@ViewBag.FecFin">
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetSuppliers()">
+            Buscar
+        </button>
+
+    </div>
+</div>
+<div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
@@ -80,10 +109,18 @@
 
 @section scripts {
     <script>
-        $(document).ready(function () {
-            GetSuppliers();
-        });
 
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
         function popDesHabilitar(noProveedor, noAlmacen) {
             $("#hddNoProveedor").val(noProveedor);
             $("#HddNoAlmacen").val(noAlmacen);
@@ -144,42 +181,50 @@
         }
         function GetSuppliers() {
 
-            //var _Id_Num_UN = $("#hddTda").val();
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
 
-            debugger;
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
 
             $.ajax({
                 async: false,
                 type: "GET",
                 url: '@Url.Action("GetreenviomciaCEDIS", "RenviodeMercancia")',
                 data: {
-                    //  Id_Num_UN: _Id_Num_UN
+                    FecIni: _FecIni,
+                    FecFin: _FecFin
                 },
 
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
 
-                        $('#tblConsulta tbody').empty();
-                        //var tr;
-                        debugger;
-                        //Append each row to html table
-                        tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].ConsignacionReenvio + "," + json.resp[i].ConsignacionReenvio + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
-                        tr.append("<td>" + json.resp[i].Consignacion + "</td>");
-                        tr.append("<td>" + json.resp[i].FechaOrden + "</td>");
-                        tr.append("<td>" + json.resp[i].HoraOrden + "</td>");
-                        tr.append("<td>" + json.resp[i].Cliente + "</td>");
-                        tr.append("<td>" + json.resp[i].OrdenReenvioStatus + "</td>");
-                        tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
-                        tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
+                        myTable.row.add([
+                            "<a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].ConsignacionReenvio + "," + json.resp[i].ConsignacionReenvio + ")'>" + json.resp[i].nombreAlmacen + "</a>",
+                            json.resp[i].Consignacion,
+                            json.resp[i].FechaOrden,
+                            json.resp[i].HoraOrden,
+                            json.resp[i].Cliente,
+                            json.resp[i].OrdenReenvioStatus,
+                            json.resp[i].GuiaReenvioNro,
+                            json.resp[i].GuiaDevolNro,
 
-                        //tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
-                        //tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
-                        //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
-                        //AltaProveedor/AltaProveedor
+                        ]).draw(); 
 
-
-                        $('#tblConsulta').append(tr);
                     }
 
 
@@ -362,7 +407,7 @@
 
                 }
             );
-
+            GetSuppliers();
         });
     </script>
 }

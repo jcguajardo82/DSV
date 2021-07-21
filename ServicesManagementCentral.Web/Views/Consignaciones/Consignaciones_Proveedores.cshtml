@@ -4,6 +4,35 @@
 }
 <h2>Envio de Pedidos Pendientes</h2>
 <div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group">
+            <label>Fecha Inicio</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker1">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecIni"
+                       type="text" value="@ViewBag.FecIni">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Fecha Fin</label>
+        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+        <div class="input-group date" id="datetimepicker2">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input class="form-control datepicker" id="txtFecFin"
+                   type="text" value="@ViewBag.FecFin">
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetconsignacionesProveedor()">
+            Buscar
+        </button>
+
+    </div>
+</div>
+<div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
@@ -47,7 +76,7 @@
                 <h4 class="modal-title">Almacen - Inventario </h4>
             </div>
             <div class="modal-body">
-                <form id="frmCreateServicios">
+                <form id="frm">
                     <div class="row">
                         <div class="col-xs-12 col-md-12">
                             <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
@@ -116,96 +145,34 @@
 
 @section scripts {
     <script>
-        $(document).ready(function () {
-            GetconsignacionesProveedor();
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+          
         });
 
-        @*function popDesHabilitar(noProveedor, noAlmacen) {
-            $("#hddNoProveedor").val(noProveedor);
-            $("#HddNoAlmacen").val(noAlmacen);
-            $("#dlgDesHabilitar").modal('toggle');
-        }
-
-        function PopInv(noProveedor, noAlmacen){
-
-           $("#dlgInventarios").modal('toggle');
-
-
-            $.ajax({
-                async: false,
-                type: "POST",
-                url: '@Url.Action("GetSuppliersWHStock", "almacenes")',
-                data: {
-                    idSupplierWH: noProveedor,
-                    idSupplierWHCode: noAlmacen
-                },
-
-                datatype: "json",
-                success: function (json) {
-                    if (json.Success) {
-                        $('#tblInventarios tbody').empty();
-                        //var tr;
-                        debugger;
-                        //Append each row to html table
-
-                        for (var i = 0; i < json.resp.length; i++) {
-                            tr = $('<tr/>');
-
-                            tr.append("<td>" + json.resp[i].idOwner + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductSKU + "</td>");
-                            tr.append("<td>" + json.resp[i].barCode + "</td>");
-                            tr.append("<td>" + json.resp[i].productName + "</td>");
-                            tr.append("<td>" + json.resp[i].productCategoryId + "</td>");
-                            tr.append("<td>" + json.resp[i].qtyStockSafety + "</td>");
-                            tr.append("<td>" + json.resp[i].qtyStockForSale + "</td>");
-                            tr.append("<td>" + json.resp[i].qtyStockReserved + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionLarge + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionHeight + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionWeightVol + "</td>");
-                            tr.append("<td>" + json.resp[i].dimmensionWeightReal + "</td>");
-
-                            tr.append("<td>" + json.resp[i].productStatus + "</td>");
-                            tr.append("<td>" + json.resp[i].productMaterialCost + "</td>");
-                            tr.append("<td>" + json.resp[i].productCreationDate + "</td>");
-                            tr.append("<td>" + json.resp[i].idSupplierOrigin + "</td>");
-                            tr.append("<td>" + json.resp[i].idSupplierOriginName + "</td>");
-
-                            /*
-                                        <th>idOwner</th>
-                                        <th>ProductSKU</th>
-                                        <th>barCode</th>
-                                        <th>productName</th>
-                                        <th>productCategoryId</th>
-                                        <th>qtyStockSafety</th>
-                                        <th>qtyStockForSale</th>
-                                        <th>qtyStockReserved</th>
-                                        <th>dimmensionLarge</th>
-                                        <th>dimmensionHeight</th>
-                                        <th>dimmensionWeightVol</th>
-                                        <th>dimmensionWeightReal</th>
-                                        <th>productStatus</th>
-                                        <th>productMaterialCost</th>
-                                        <th>productCreationDate</th>
-                                        <th>idSupplierOrigin</th>
-                                        <th>idSupplierOriginName</th>
-                                        */
-                            $('#tblInventarios').append(tr);
-                        }
-                    }
-                    else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert("errorThrown");
-                }
-
-            });
-        }*@
         function GetconsignacionesProveedor() {
 
-            //var _Id_Num_UN = $("#hddTda").val();
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
 
             debugger;
 
@@ -214,58 +181,41 @@
                 type: "GET",
                 url: '@Url.Action("GetconsignacionesProveedor", "consignaciones")',
                 data: {
-                    //  Id_Num_UN: _Id_Num_UN
+                      FecIni: _FecIni,
+                      FecFin: _FecFin
                 },
 
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
 
-                        $('#tblConsulta tbody').empty();
-                        //var tr;
-                        debugger;
-                        //Append each row to html table
 
+
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
                         for (var i = 0; i < json.resp.length; i++) {
-                            tr = $('<tr/>');
-                            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                           /* tr.append("<td>" + json.resp[i].Consignacion + "</td>");*/
 
-                            tr.append("<td><a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u></td>");
-                            //tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");
-                            //tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
-                            tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
 
-                            tr.append("<td>" + json.resp[i].FechaPago + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaLimite + "</td>");
-
-                            tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
-                            //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusConsignacionAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusConsignacionEntrega + "</td>");
-                            tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");
-
-                            tr.append("<td>" + json.resp[i].GuiaEnvio + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaVig + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaEntrega + "</td>");
-
-                            //tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
-                            //tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
-                            //tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
-                            //tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
-                            //tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
-
-                            //tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
-                            //tr.append("<td>" + json.resp[i].OrdenCompra + "</td>");
-                            //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
-                            //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
-
-                            $('#tblConsulta').append(tr);
+                            myTable.row.add([
+                               "<a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
+                                json.resp[i].FechaCreacion,
+                                json.resp[i].HoraCreacion,
+                                json.resp[i].FechaPago,
+                                json.resp[i].FechaLimite,
+                                json.resp[i].NombreCliente,
+                                json.resp[i].EstatusConsignacionAlmacen,
+                                json.resp[i].EstatusConsignacionEntrega,
+                                json.resp[i].NroOrdenCompra,
+                                json.resp[i].EstatusOrdenCompra,
+                                json.resp[i].GuiaEnvio,
+                                json.resp[i].GuiaVig,
+                                json.resp[i].FechaEntrega,
+                              
+                            ]).draw();
                         }
-
-
                     }
                     else {
                         alert(json.Message);
@@ -279,54 +229,6 @@
             });
 
         }
-
-
-       @* function Inhabilitar() {
-
-            var motCan = $("#txtMotCan").val();
-
-            if (motCan.length == 0) {
-                $("#txtMotCan").focus();
-                return;
-            }
-            UpdateStatus($("#hddNoProveedor").val(), $("#HddNoAlmacen").val(), false, motCan);
-            $("#dlgDesHabilitar").modal('hide');
-        }
-
-        function Habilitar(noProveedor, noAlmacen) {
-            UpdateStatus(noProveedor, noAlmacen, true, '');
-        }
-        function UpdateStatus(noProveedor, noAlmacen, _bitenable, _enableCause) {
-            //string bitenable, string enableCause
-             $.ajax({
-                async: false,
-                type: "POST",
-                url: '@Url.Action("UpdateSuppliersWH", "almacenes")',
-                data: {
-                    idSupplierWH: noProveedor,
-                    idSupplierWHCode: noAlmacen,
-                    bitenable: _bitenable,
-                    enableCause: _enableCause
-                },
-
-                datatype: "json",
-                success: function (json) {
-                    if (json.Success) {
-                        //GetSuppliers();
-                        location.reload();
-
-                    } else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert("errorThrown");
-                }
-
-            })
-
-        }*@
 
     </script>
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
@@ -386,7 +288,7 @@
 
                         }
                     }
-            
+
                     ],
                     orderCellsTop: false,
                     //fixedHeader: {
@@ -436,10 +338,25 @@
 
                 }
             );
+
+            GetconsignacionesProveedor();
         });
 
         function Excel(op) {
-            window.location = window.location.origin + '/Consignaciones/ExcelConsignacionesProveedor?op=' + op;
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+            window.location = window.location.origin + '/Consignaciones/ExcelConsignacionesProveedor?op=' + op+'&FecIni='+_FecIni+'&FecFin='+_FecFin;
         }
     </script>
 }

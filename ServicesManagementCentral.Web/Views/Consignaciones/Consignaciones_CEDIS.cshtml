@@ -6,6 +6,35 @@
 
 <h2>Envio de Pedidos</h2>
 <div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group">
+            <label>Fecha Inicio</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker1">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecIni"
+                       type="text" value="@ViewBag.FecIni">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Fecha Fin</label>
+        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+        <div class="input-group date" id="datetimepicker2">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input class="form-control datepicker" id="txtFecFin"
+                   type="text" value="@ViewBag.FecFin">
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetconsignacionesAdm()">
+            Buscar
+        </button>
+
+    </div>
+</div>
+<div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div style="width:99%;">
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
@@ -110,11 +139,9 @@
 
 @section scripts {
     <script>
-        $(document).ready(function () {
-            GetconsignacionesAdm();
-        });
 
-                function popDesHabilitar(noProveedor, noAlmacen) {
+
+        function popDesHabilitar(noProveedor, noAlmacen) {
             $("#hddNoProveedor").val(noProveedor);
             $("#HddNoAlmacen").val(noAlmacen);
             $("#dlgDesHabilitar").modal('toggle');
@@ -173,62 +200,58 @@
         }
 
         function GetconsignacionesAdm() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
 
-            //var _Id_Num_UN = $("#hddTda").val();
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
 
-            debugger;
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
 
             $.ajax({
                 async: false,
                 type: "GET",
                 url: '@Url.Action("GetconsignacionesCEDIS", "consignaciones")',
                 data: {
-                    //  Id_Num_UN: _Id_Num_UN
+                    FecIni: _FecIni,
+                    FecFin: _FecFin
                 },
 
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
-
-                        $('#tblConsulta tbody').empty();
-                        //var tr;
-                        debugger;
-                        //Append each row to html table
-
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
                         for (var i = 0; i < json.resp.length; i++) {
-                            tr = $('<tr/>');
-                            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-
-                            tr.append("<td>" + json.resp[i].Consignacion + "</td>");
-                            tr.append("<td>" + json.resp[i].TotalConsignacion + "</td>");
-                            tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
-                            tr.append("<td>" + json.resp[i].FechaCreacion + "</td>");
-                            tr.append("<td>" + json.resp[i].HoraCreacion + "</td>");
-                            tr.append("<td>" + json.resp[i].NombreCliente + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
-                            tr.append("<td>" + json.resp[i].EstatusConsignacionAlmacen + "</td>");
-
-                            tr.append("<td>" + json.resp[i].ConsignacionReenvio + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaDevolNro + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaDevolStatus + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaReenvioNro + "</td>");
-                            tr.append("<td>" + json.resp[i].GuiaReenvioStatus + "</td>");
-
-                            //tr.append("<td>" + json.resp[i].EstatusConsignacionEntrega + "</td>");
-                            //tr.append("<td>" + json.resp[i].NroOrdenCompra + "</td>");
-                            //tr.append("<td>" + json.resp[i].EstatusOrdenCompra + "</td>");
-                            //tr.append("<td><a  title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
-                            //tr.append("<td>" + json.resp[i].OrdenCompra + "</td>");
 
 
-                            //tr.append("<td>" + json.resp[i].EstatusEnvio + "</td>");
-                            //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
+                            myTable.row.add([
+                               
+                                json.resp[i].Consignacion,
+                                json.resp[i].TotalConsignacion,
+                                json.resp[i].TipoAlmacen,
+                                json.resp[i].FechaCreacion,
+                                json.resp[i].HoraCreacion,
+                                json.resp[i].NombreCliente,
+                                json.resp[i].EstatusEnvio,
+                                json.resp[i].EstatusConsignacionAlmacen,
+                                json.resp[i].ConsignacionReenvio,
+                                json.resp[i].GuiaDevolNro,
+                                json.resp[i].GuiaDevolStatus,
+                                json.resp[i].GuiaReenvioNro,
+                                json.resp[i].GuiaReenvioStatus
 
-
-
-                            $('#tblConsulta').append(tr);
+                            ]).draw();
                         }
-
+                       
 
                     }
                     else {
@@ -391,6 +414,8 @@
 
                 }
             );
+
+            GetconsignacionesAdm();
         });
     </script>
 }

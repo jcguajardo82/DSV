@@ -12,7 +12,7 @@ namespace ServicesManagement.Web.DAL.EstatusReenvioMcia
     {
 
 
-        public static DataSet upCorpOMS_Cns_UeNoReShipment(string usuario)
+        public static DataSet upCorpOMS_Cns_UeNoReShipment(string usuario,DateTime FecIni,DateTime FecFin)
         {
             DataSet ds = new DataSet();
 

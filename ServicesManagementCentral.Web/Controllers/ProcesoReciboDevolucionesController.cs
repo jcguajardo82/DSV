@@ -98,8 +98,20 @@ namespace ServicesManagement.Web.Controllers
                     idOwner = 4;
                 }
             }
-            
-            Session["ListaConsignaciones"] = DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolProcess(idOwner,User.Identity.Name);
+
+            var FecIni = DateTime.Now.AddDays(-7);
+            var FecFin= DateTime.Now;
+
+            ViewBag.FecIni = FecIni.ToString("yyyy/MM/dd");
+            ViewBag.FecFin = FecFin.ToString("yyyy/MM/dd");
+
+            if (Request.QueryString["FecIni"] != null && Request.QueryString["FecFin"] != null) {
+                FecIni = Convert.ToDateTime(Request.QueryString["FecIni"].ToString());
+                FecFin = Convert.ToDateTime(Request.QueryString["FecFin"].ToString());
+            }
+
+            Session["ListaConsignaciones"] = 
+                DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolProcess(idOwner,User.Identity.Name, FecIni, FecFin);
             return View();
         }
 

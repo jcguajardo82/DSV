@@ -11,7 +11,7 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
     public class DALReenvioMciaCEDIS
     {
 
-               public static DataSet upCorpOMS_Cns_UeNoReshipmentCedis(string usuario)
+               public static DataSet upCorpOMS_Cns_UeNoReshipmentCedis(string usuario,DateTime FecIni,DateTime FecFin)
         {
             DataSet ds = new DataSet();
 
@@ -29,6 +29,8 @@ namespace ServicesManagement.Web.DAL.ReenvioMcia
                 /*parametros.Add("@idOwner", 2);*/ // parametro Proveedor fijo
                 parametros.Add("@idOwner", 3);
                 parametros.Add("@usuario", usuario);
+                parametros.Add("@fechaini", FecIni);
+                parametros.Add("@fechafin", FecFin);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoReshipmentCedis]", false, parametros);
 

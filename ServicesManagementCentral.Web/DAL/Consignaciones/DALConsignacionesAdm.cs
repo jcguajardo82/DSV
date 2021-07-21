@@ -10,7 +10,7 @@ namespace ServicesManagement.Web.DAL.Consignaciones
 {
     public class DALConsignacionesAdm
     {
-        public static DataSet upCorpAlmacen_Cns_Consigments(string usuario)
+        public static DataSet upCorpAlmacen_Cns_Consigments(string usuario, DateTime FecIni, DateTime FecFin)
         {
 
             DataSet ds = new DataSet();
@@ -28,6 +28,8 @@ namespace ServicesManagement.Web.DAL.Consignaciones
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@ViewType", 3); // parametro admin fijo
                 parametros.Add("@usuario", usuario); // parametro admin fijo
+                parametros.Add("@FechaIni", FecIni); // parametro admin fijo
+                parametros.Add("@FechaFin", FecFin); // parametro admin fijo
 
                
 
