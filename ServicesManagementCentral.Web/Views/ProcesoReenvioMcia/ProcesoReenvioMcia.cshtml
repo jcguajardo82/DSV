@@ -8,10 +8,22 @@
     <div class="dataTables_wrapper dt-bootstrap4 no-footer">
         <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center" ">
+                <div class="col-xs-12 col-md-12 col-lg-12 text-center">
                     <h2>Proceso de Reenvio</h2>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-6 col-lg-6">
+                    <div class="input-group">
+                        <input type="text" placeholder="Número de Orden" value="@ViewBag.UeNo" id="OrderSelected" class="form-control form-control-lg">
+                        <div class="input-group-btn">
+                            <button class="btn btn-lg btn-primary" type="submit"  onclick="SearchOrder()">
+                                Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div><br />
             <div class="row">
                 <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
                     @if (ViewBag.Header != null)
@@ -215,6 +227,7 @@
                                                         if (dsOP.Tables[0].Rows[0][0].ToString() != "no hay datos de esa Consignacion")
                                                         {
                                                             var dtOP = dsOP.Tables[0];
+                                                            
                                                             foreach (System.Data.DataRow op in dtOP.Rows)
                                                             {
                                                                 <tr>
@@ -598,6 +611,12 @@
                 , format: "yyy/MM/DD"
             });
 
+        });
+
+     
+        $("#OrderSelected").on("keydown", function (event) {
+            if (event.which == 13)
+                SearchOrder();
         });
         $(document).ready(function () {
             //GetSolicitarGuia();
@@ -1039,100 +1058,111 @@
             }
         }
 
-           function DeletePaquete(idTracking) {
-        var TrackingType = "Normal";
-        var _UeNo = $("#hddUeNo").val();
-        var _OrderNo = $("#hddOrderNo").val();
-        var idTracking = idTracking;
+    function DeletePaquete(idTracking) {
+    var TrackingType = "Normal";
+    var _UeNo = $("#hddUeNo").val();
+    var _OrderNo = $("#hddOrderNo").val();
+    var idTracking = idTracking;
 
-        $.ajax({
-            async: false,
-            type: "GET",
-            url: '@Url.Action("BorrarPaquete", "Ordenes")',
-            data: {
-                UeNo: _UeNo,
-                OrderNo: _OrderNo,
-                IdTracking: idTracking,
-                TrackingType: TrackingType
-            },
-            datatype: "html",
-            success: function (json) {
-                if (json.Success) {
-                    location.reload();
-                }
-                else {
-                    alert(json.Message);
-                }
-            }
-            , error: function (jqXHR, textStatus, errorThrown) {
-                alert(errorThrown);
+    $.ajax({
+    async: false,
+    type: "GET",
+    url: '@Url.Action("BorrarPaquete", "Ordenes")',
+    data: {
+        UeNo: _UeNo,
+        OrderNo: _OrderNo,
+        IdTracking: idTracking,
+        TrackingType: TrackingType
+    },
+    datatype: "html",
+    success: function (json) {
+        if (json.Success) {
+            location.reload();
+        }
+        else {
+            alert(json.Message);
+        }
+    }
+    , error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
 
-            }
-
-        });
     }
 
-                function GuardarVehiculo() {
+    });
+    }
+
+        function GuardarVehiculo() {
 
 
 
-            var _UeNo = document.getElementById("hddUeNo").value;
-            var _OrderNo = document.getElementById("hddOrderNo").value;
-            var _idOwner = document.getElementById("hddIdOwner").value;
-            var _idSupplierWH = document.getElementById("hddIdSupplierWH").value;
-            var _idSupplierWHCode = document.getElementById("hddIdSupplierWHCode").value;
-            var _SerialId = document.getElementById("txtSerie").value;
-            var _BateryId = document.getElementById("txtBateria").value;
-            var _EntryBy = document.getElementById("txtEntradaPor").value;
-            var _EntryDate = document.getElementById("txtFechaEntrada").value;
-            var _PetitionId = document.getElementById("txtNoPedimento").value;
-            var _MotorId = document.getElementById("txtNoMotor").value;
-            var _RepuveId = document.getElementById("txtRepuve").value;
-            var _Year = document.getElementById("txtAnio").value;
-            var _ColorId = document.getElementById("txtColor").value;
-            var _ModelId = document.getElementById("txtModelo").value;
-            var _BrandId = document.getElementById("txtMarca").value;
-            var _CylinderCapacityId = document.getElementById("txtCilindraje").value;
+    var _UeNo = document.getElementById("hddUeNo").value;
+    var _OrderNo = document.getElementById("hddOrderNo").value;
+    var _idOwner = document.getElementById("hddIdOwner").value;
+    var _idSupplierWH = document.getElementById("hddIdSupplierWH").value;
+    var _idSupplierWHCode = document.getElementById("hddIdSupplierWHCode").value;
+    var _SerialId = document.getElementById("txtSerie").value;
+    var _BateryId = document.getElementById("txtBateria").value;
+    var _EntryBy = document.getElementById("txtEntradaPor").value;
+    var _EntryDate = document.getElementById("txtFechaEntrada").value;
+    var _PetitionId = document.getElementById("txtNoPedimento").value;
+    var _MotorId = document.getElementById("txtNoMotor").value;
+    var _RepuveId = document.getElementById("txtRepuve").value;
+    var _Year = document.getElementById("txtAnio").value;
+    var _ColorId = document.getElementById("txtColor").value;
+    var _ModelId = document.getElementById("txtModelo").value;
+    var _BrandId = document.getElementById("txtMarca").value;
+    var _CylinderCapacityId = document.getElementById("txtCilindraje").value;
 
-              $.ajax({
-            async: false,
-            type: "POST",
-            url: '@Url.Action("SaveVehiculo", "ProcesoSurtido")',
-            data: {
-                //num: id
+        $.ajax({
+    async: false,
+    type: "POST",
+    url: '@Url.Action("SaveVehiculo", "ProcesoSurtido")',
+    data: {
+        //num: id
 
-                UeNo: _UeNo,
-                OrderNo: _OrderNo,
-                idOwner: _idOwner,
-                idSupplierWH: _idSupplierWH,
-                idSupplierWHCode: _idSupplierWHCode,
-                SerialId: _SerialId,
-                BateryId: _BateryId,
-                EntryBy: _EntryBy,
-                EntryDate: _EntryDate,
-                PetitionId: _PetitionId,
-                MotorId: _MotorId,
-                RepuveId: _RepuveId,
-                Year: _Year,
-                ColorId: _ColorId,
-                Year: _Year,
-                ModelId: _ModelId,
-                BrandId: _BrandId,
-                CylinderCapacityId: _CylinderCapacityId
+        UeNo: _UeNo,
+        OrderNo: _OrderNo,
+        idOwner: _idOwner,
+        idSupplierWH: _idSupplierWH,
+        idSupplierWHCode: _idSupplierWHCode,
+        SerialId: _SerialId,
+        BateryId: _BateryId,
+        EntryBy: _EntryBy,
+        EntryDate: _EntryDate,
+        PetitionId: _PetitionId,
+        MotorId: _MotorId,
+        RepuveId: _RepuveId,
+        Year: _Year,
+        ColorId: _ColorId,
+        Year: _Year,
+        ModelId: _ModelId,
+        BrandId: _BrandId,
+        CylinderCapacityId: _CylinderCapacityId
 
-            },
-            datatype: "html",
-            success: function (json) {
-                if (json.Success) {
-                    location.reload();
-                    //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
-                }
+    },
+    datatype: "html",
+    success: function (json) {
+        if (json.Success) {
+            location.reload();
+            //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+        }
+    }
+    , error: function (jqXHR, textStatus, errorThrown) {
+        bootbox.alert(errorThrown);
+
+    }
+    });
+        }
+
+        function SearchOrder() {
+            var noOrden = document.getElementById("OrderSelected").value;
+            if (noOrden.length != 0) {
+                window.location.href = "ProcesoReenvioMcia/ProcesoReenvioMcia?UeNo=" + noOrden;
+
+                return false;
+            } else {
+                $("#OrderSelected").focus();
             }
-            , error: function (jqXHR, textStatus, errorThrown) {
-                bootbox.alert(errorThrown);
-
-            }
-        });
         }
     </script>
 

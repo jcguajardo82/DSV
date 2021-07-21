@@ -17,16 +17,19 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult ProcesoReenvioMcia()
         {
 
-            int OrderNo = 0;
+            int? OrderNo = null;
             string UeNo = "0";
 
 
             //ViewBag.OrderNo = OrderNo;
             //ViewBag.UeNo = UeNo;
 
-            if (Request.QueryString["OrderNo"] != null && Request.QueryString["UeNo"] != null)
+            if (Request.QueryString["UeNo"] != null)
             {
-                OrderNo = int.Parse(Request.QueryString["OrderNo"].ToString());
+                if (Request.QueryString["OrderNo"] != null)
+                {
+                    OrderNo = int.Parse(Request.QueryString["OrderNo"].ToString());
+                }
                 UeNo = Request.QueryString["UeNo"].ToString();
             }
             else

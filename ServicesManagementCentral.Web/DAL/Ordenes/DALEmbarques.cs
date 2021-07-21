@@ -88,7 +88,7 @@ namespace ServicesManagement.Web.DAL.Embarques
 
         }
 
-        public static DataSet upCorpOms_Cns_UeNoTracking(string UeNo, int OrderNo)
+        public static DataSet upCorpOms_Cns_UeNoTracking(string UeNo, int? OrderNo)
         {
 
             DataSet ds = new DataSet();
@@ -106,6 +106,7 @@ namespace ServicesManagement.Web.DAL.Embarques
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@UeNo", UeNo);
+                if(OrderNo!=null)
                 parametros.Add("@OrderNo", OrderNo);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoTracking]", false, parametros);
