@@ -378,7 +378,16 @@
                     //serverSide: true,
                     //bServerSide: true,
                     //sServerMethod: "GET",
-                    buttons: ['csv', 'excel'],
+                    buttons: ['csv', 'excel', {
+                        text: 'Excel XLS',
+                        action: function (e, dt, node, config) {
+
+                            Excel('xls');
+
+                        }
+                    }
+            
+                    ],
                     orderCellsTop: false,
                     //fixedHeader: {
                     //    header: true
@@ -428,5 +437,9 @@
                 }
             );
         });
+
+        function Excel(op) {
+            window.location = window.location.origin + '/Consignaciones/ExcelConsignacionesProveedor?op=' + op;
+        }
     </script>
 }
