@@ -147,7 +147,7 @@
                                             <span>
                                                 <strong>
                                                     <a onclick="popActulizaHora(@p["OrderNo"])" class="nav-link">Fecha Entrega:</a>
-                                                </strong> @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:MM tt").ToUpperInvariant()
+                                                </strong> @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
                                             </span>
                                             <input type="hidden" value="@p["isPickingManual"].ToString().ToUpper()" id="hddCheckMovil" />
                                         </p>
