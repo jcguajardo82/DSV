@@ -239,7 +239,8 @@
                 </div>
 
                 @{
-                    string UnPerm_Info = Session["UnPerm_Info"].ToString().Trim();
+                    //string UnPerm_Info = Session["UnPerm_Info"].ToString().Trim();
+                    string UnPerm_Info = Session["UnPerm_Info"] == null ? string.Empty : Session["UnPerm_Info"].ToString().Trim().ToString();
                     if (UnPerm_Info == "1")
                     {
                         @*nueva lista DST*@

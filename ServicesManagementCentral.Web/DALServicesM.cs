@@ -53,7 +53,33 @@ namespace ServicesManagement.Web
             }
         }
 
+        public static DataSet upCorpOms_Cns_UNbyID(int id_num_UN)
+        {
 
+            DataSet ds = new DataSet();
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@id_num_UN", id_num_UN);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "dbo.upCorpOms_Cns_UNbyID", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public static DataSet GetUNTraspaso(int idNumUn)
         {
 

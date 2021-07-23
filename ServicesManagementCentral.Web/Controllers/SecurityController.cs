@@ -215,6 +215,20 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
+                if (!string.IsNullOrEmpty(tienda))
+                {
+                    var dt = DALServicesM.upCorpOms_Cns_UNbyID(int.Parse(tienda)).Tables[0];
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        Session["UnPerm_Info"] = item["UnPerm_Info"].ToString();
+                    }
+
+                }
+                else
+                {
+                    Session["UnPerm_Info"] = "0";
+                }
+
                 return tienda;
             }
             catch (Exception x)
