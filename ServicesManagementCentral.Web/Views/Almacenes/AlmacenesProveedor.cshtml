@@ -123,25 +123,146 @@
                 <form id="frmCreateServicios">
                     <div class="row">
                         <div class="col-xs-12 col-md-12">
-                            <table id="tblContactos" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
-                                <thead class="bg-danger-sor">
-                                    <tr>
-                                        <th>Numero de Proveedor</th>
-                                        <th>Nombre de Proveedor</th>
-                                        <th>Numero de Almacen</th>
-                                        <th>Nombre de Almacen</th>
+                            @*<table id="tblContactos" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
+            <thead class="bg-danger-sor">
+                <tr>
+                    <th>Numero de Proveedor</th>
+                    <th>Nombre de Proveedor</th>
+                    <th>Numero de Almacen</th>
+                    <th>Nombre de Almacen</th>
 
-                                        <th>Contacto Operativo Nombre</th>
-                                        <th>Contacto Operativo Telefono</th>
-                                        <th>Contacto Operativo Correo</th>
+                    <th>Contacto Operativo Nombre</th>
+                    <th>Contacto Operativo Telefono</th>
+                    <th>Contacto Operativo Correo</th>
 
-                                        <th>Contacto Comercial Nombre</th>
-                                        <th>Contacto Comercial Telefono</th>
-                                        <th>Contacto Comercial Correo</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                    <th>Contacto Comercial Nombre</th>
+                    <th>Contacto Comercial Telefono</th>
+                    <th>Contacto Comercial Correo</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>*@
+
+                            @*--------*@
+                            <div class="row">
+
+                                <div class="col col-xs-5 col-md-3">
+
+                                    <div class="form-group">
+                                        <label>Numero de Proveedor</label>
+
+                                        <input type="text" placeholder="" id="in_NumProveedor" name="in_desc" class="form-control" readonly />
+                                    </div>
+
+                                </div>
+                                <div class="col col-xs-5 col-md-3">
+                                    <div class="form-group">
+
+                                        <label>Nombre de Proveedor</label>
+
+                                        <input type="text" placeholder="" id="in_NomPoveedor" name="in_desc" class="form-control" readonly />
+
+                                    </div>
+
+                                </div>
+                                <div class="col col-xs-5 col-md-3">
+
+                                    <div class="form-group">
+
+                                        <label>Numero de Almacen</label>
+
+                                        <input type="text" placeholder="" id="in_NumAlmacen" name="in_placas" class="form-control" readonly />
+
+                                    </div>
+
+                                </div>
+                                <div class="col col-xs-5 col-md-3">
+
+                                    <div class="form-group">
+
+                                        <label>Nombre de Almacen</label>
+
+                                        <input type="text" placeholder="" id="in_NomAlmacen" name="in_placas" class="form-control" readonly />
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col col-xs-5 col-md-3">
+
+                                    <div class="form-group">
+                                        <label>Contacto Operativo Nombre</label>
+
+                                        <input type="text" placeholder="" id="in_COpNombre" name="in_desc" class="form-control" readonly />
+                                    </div>
+
+                                </div>
+                                <div class="col col-xs-5 col-md-3">
+                                    <div class="form-group">
+
+                                        <label>Contacto Operativo Telefono</label>
+
+                                        <input type="text" placeholder="" id="in_COTelefono" name="in_desc" class="form-control" readonly />
+
+                                    </div>
+
+                                </div>
+                                <div class="col col-xs-5 col-md-3">
+
+                                    <div class="form-group">
+
+                                        <label>Contacto Operativo Correo</label>
+
+                                        <input type="text" placeholder="" id="in_COCorreo" name="in_placas" class="form-control" readonly />
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col col-xs-5 col-md-3">
+
+                                    <div class="form-group">
+                                        <label>Contacto Comercial Nombre</label>
+
+                                        <input type="text" placeholder="" id="in_CCNombre" name="in_desc" class="form-control" readonly />
+                                    </div>
+
+                                </div>
+                                <div class="col col-xs-5 col-md-3">
+                                    <div class="form-group">
+
+                                        <label>Contacto Comercial Telefono</label>
+
+                                        <input type="text" placeholder="" id="in_CCTelefono" name="in_desc" class="form-control" readonly />
+
+                                    </div>
+
+                                </div>
+                                <div class="col col-xs-5 col-md-3">
+
+                                    <div class="form-group">
+
+                                        <label>Contacto Comercial Correo</label>
+
+                                        <input type="text" placeholder="" id="in_CCCorreo" name="in_placas" class="form-control" readonly />
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            @*--------*@
+
                         </div>
                     </div>
                 </form>
@@ -341,7 +462,7 @@
 
         }
 
-        function PopContacts(noProveedor, noAlmacen){
+       function PopContacts(noProveedor, noAlmacen){
 
            $("#dlgContactos").modal('toggle');
 
@@ -362,23 +483,36 @@
                         debugger;
                         //Append each row to html table
 
-                        for (var i = 0; i < json.resp.length; i++) {
-                            tr = $('<tr/>');
 
-                            tr.append("<td>" + json.resp[i].IdSupplierWH + "</td>");
-                            tr.append("<td>" + json.resp[i].SupplierName + "</td>");
-                            tr.append("<td>" + json.resp[i].IdSupplierWHCode + "</td>");
-                            tr.append("<td>" + json.resp[i].SupplierWHName + "</td>");
+                        document.getElementById("in_NumProveedor").value = json.resp[0].IdSupplierWH;
+                        document.getElementById("in_NomPoveedor").value = json.resp[0].SupplierName;
+                        document.getElementById("in_NumAlmacen").value = json.resp[0].IdSupplierWHCode;
+                        document.getElementById("in_NomAlmacen").value = json.resp[0].SupplierWHName;
+                        document.getElementById("in_COpNombre").value = json.resp[0].operInfoName;
+                        document.getElementById("in_COTelefono").value = json.resp[0].operInfoPhone;
+                        document.getElementById("in_COCorreo").value = json.resp[0].operInfoEmail;
+                        document.getElementById("in_CCNombre").value = json.resp[0].commInfoName;
+                        document.getElementById("in_CCTelefono").value = json.resp[0].commInfoPhone;
+                        document.getElementById("in_CCCorreo").value = json.resp[0].commInfoEmail;
 
-                            tr.append("<td>" + json.resp[i].operInfoName + "</td>");
-                            tr.append("<td>" + json.resp[i].operInfoPhone + "</td>");
-                            tr.append("<td>" + json.resp[i].operInfoEmail + "</td>");
-                            tr.append("<td>" + json.resp[i].commInfoName + "</td>");
-                            tr.append("<td>" + json.resp[i].commInfoPhone + "</td>");
-                            tr.append("<td>" + json.resp[i].commInfoEmail + "</td>");
 
-                            $('#tblContactos').append(tr);
-                        }
+                        //for (var i = 0; i < json.resp.length; i++) {
+                        //    tr = $('<tr/>');
+
+                        //    tr.append("<td>" + json.resp[i].IdSupplierWH + "</td>");
+                        //    tr.append("<td>" + json.resp[i].SupplierName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].IdSupplierWHCode + "</td>");
+                        //    tr.append("<td>" + json.resp[i].SupplierWHName + "</td>");
+
+                        //    tr.append("<td>" + json.resp[i].operInfoName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].operInfoPhone + "</td>");
+                        //    tr.append("<td>" + json.resp[i].operInfoEmail + "</td>");
+                        //    tr.append("<td>" + json.resp[i].commInfoName + "</td>");
+                        //    tr.append("<td>" + json.resp[i].commInfoPhone + "</td>");
+                        //    tr.append("<td>" + json.resp[i].commInfoEmail + "</td>");
+
+                        //    $('#tblContactos').append(tr);
+                       /* }*/
                     }
                     else {
                         alert(json.Message);
