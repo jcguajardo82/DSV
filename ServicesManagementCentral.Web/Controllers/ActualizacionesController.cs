@@ -43,6 +43,7 @@ namespace ServicesManagement.Web.Controllers
                     string servername = Request.Form["servername"].ToString();
                     string nombre = Request.Form["nombre"].ToString();
                     string extension = Request.Form["extension"].ToString();
+                    //string tipoFolder = Request.Form["tipo"].ToString();
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
                     for (int i = 0; i < files.Count; i++)
@@ -78,7 +79,7 @@ namespace ServicesManagement.Web.Controllers
                         file.SaveAs(path);
 
                         RestClient restClient = new RestClient(System.Configuration.ConfigurationManager.AppSettings["api_Upload_Files"]);
-                        RestRequest restRequest = new RestRequest("/Soriana_Upload_Files");
+                        RestRequest restRequest = new RestRequest("/Soriana_Upload_Files?Folder=dsv");
                         restRequest.RequestFormat = DataFormat.Json;
                         restRequest.Method = Method.POST;
                         restRequest.AddHeader("Authorization", "Authorization");
