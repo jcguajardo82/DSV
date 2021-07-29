@@ -159,6 +159,7 @@
                 var servername = window.location.origin;
                 var fileUpload = $("#docInvout").get(0);
                 var files = fileUpload.files;
+                var _tipo = "dsv";
 
                 // Create FormData object
                 var fileData = new FormData();
@@ -169,8 +170,10 @@
                     var nameext = files[i].name.split(".");
                 }
 
+                fileData.append('nombre', nameext[0]);
                 fileData.append('extension', nameext[1]);
                 fileData.append('servername', servername);
+                fileData.append('tipo', _tipo);
 
                 $.ajax({
                     contentType: false, // Not to set any content header

@@ -215,22 +215,22 @@
                         myTable
                             .clear()
                             .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+                            myTable.row.add([
+                                "<a href='ProcesoReenvioMcia/ProcesoReenvioMcia?OrderNo=" + json.resp[i].OrderNo + "&UeNo=" + json.resp[i].ConsignacionReenvio + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].ConsignacionReenvio + "</u>",
+                                "<a title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a>",
+                                json.resp[i].Cliente,
+                                json.resp[i].EstatusPedidoSurtido,
+                                json.resp[i].EstatusPedidoEnvio,
+                                json.resp[i].OrdenDSV,
+                                json.resp[i].OrdenDSVStatus,
+                                json.resp[i].GuiaReenvioNro,
+                                json.resp[i].GuiaVig,
+                                json.resp[i].MotivoReenvio,
+                                json.resp[i].FechaEntrega,
 
-                        myTable.row.add([
-                            "<a href='ProcesoReenvioMcia/ProcesoReenvioMcia?OrderNo=" + json.resp[i].OrderNo + "&UeNo=" + json.resp[i].ConsignacionReenvio + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].ConsignacionReenvio + "</u>",
-                            "<a title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(" + + json.resp[i].Consignacion + ")'>" + json.resp[i].Consignacion + "</a>",
-                            json.resp[i].Cliente,
-                            json.resp[i].EstatusPedidoSurtido,
-                            json.resp[i].EstatusPedidoEnvio,
-                            json.resp[i].OrdenDSV,
-                            json.resp[i].OrdenDSVStatus,
-                            json.resp[i].GuiaReenvioNro,
-                            json.resp[i].GuiaVig,
-                            json.resp[i].MotivoReenvio,
-                            json.resp[i].FechaEntrega,
-
-                        ]).draw(); 
-
+                            ]).draw();
+                        }
                     }
                     else {
                         alert(json.Message);
