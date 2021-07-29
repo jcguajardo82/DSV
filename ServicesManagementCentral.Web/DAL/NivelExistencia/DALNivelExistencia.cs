@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -6,7 +7,7 @@ namespace ServicesManagement.Web.DAL.NivelExistencia
 {
     public class DALNivelExistencia
     {
-        public static DataSet upCorpOMS_Cns_UeNoStockLevels(int idSupplierWH = 0)
+        public static DataSet upCorpOMS_Cns_UeNoStockLevels(DateTime FecIni,DateTime FecFin, int IdOwner, int IdTienda)
         {
 
             DataSet ds = new DataSet();
@@ -22,7 +23,10 @@ namespace ServicesManagement.Web.DAL.NivelExistencia
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DM"].ConnectionString);
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
-                parametros.Add("@idSupplierWH", idSupplierWH);
+                parametros.Add("@FechaIni", FecIni);
+                parametros.Add("@FechaFin", FecFin);
+                parametros.Add("@IdOwner", IdOwner);
+                parametros.Add("@IdTienda", IdTienda);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoStockLevels]", false,parametros);
 

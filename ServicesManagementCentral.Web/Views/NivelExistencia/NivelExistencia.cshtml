@@ -10,6 +10,51 @@
     </div>
 </div>
 <div class="row">
+    <div class="col-sm-2 col-md-2 col-lg-2">
+        <div class="form-group">
+            <label>Fecha Inicio</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker1">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecIni"
+                       type="text" value="@ViewBag.FecIni">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-3 col-lg-2">
+        <label>Fecha Fin</label>
+        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+        <div class="input-group date" id="datetimepicker2">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input class="form-control datepicker" id="txtFecFin"
+                   type="text" value="@ViewBag.FecFin">
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-3 col-lg-2">
+        <div class="form-group">
+            <label>Almacen </label>
+            <select class="form-control m-b" id="ddlAlmacenes">
+                <option value="0">--SELECCIONE--</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-3 col-lg-2">
+        <div class="form-group">
+            <label>Tienda/Proveedor</label>
+            <select class="form-control m-b" id="ddlTienda">
+                <option value="0">--SELECCIONE--</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="Busqueda()">
+            Buscar
+        </button>
+
+    </div>
+</div>
+<div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <table id="tblConsulta" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
             <thead class="bg-danger-sor">
@@ -86,7 +131,98 @@
 
 @section scripts {
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
-    <script>
+<script>
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+
+
+        function ListAlmacen() {
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("ListAlmacen", "Config")',
+                data: {
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#ddlAlmacenes");
+                        sel.empty();
+
+                        $('#ddlAlmacenes').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].IdOwner + '">' + json.resp[i].OwnerName +'</option>');
+                        }
+
+                        $("#ddlAlmacenes").val("@ViewBag.IdOwner");
+                        GetSupp(@ViewBag.IdOwner);
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        $("#ddlAlmacenes").change(function () {
+
+            GetSupp($("#ddlAlmacenes").val());
+
+        });
+
+            function GetSupp(_idOwner) {
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("ListSuppliersById", "Config")',
+                data: {
+                    idOwner: _idOwner
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#ddlTienda");
+                        sel.empty();
+
+                        $('#ddlTienda').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].IdProveedor + '">' + json.resp[i].NombreProveedor + '</option>');
+                        }
+
+
+
+                        if ($("#ddlTienda option[value='@ViewBag.IdTienda']").length == 0) {
+                            $("#ddlTienda").val("0");
+                        } else {  $("#ddlTienda").val("@ViewBag.IdTienda");}
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
 
         $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
@@ -148,10 +284,28 @@
             );
 
 
-
+            ListAlmacen();
         });
 
+    function Busqueda() {
+        var _FecIni = $("#txtFecIni").val();
+        var _FecFin = $("#txtFecFin").val();
+        var _IdOwner = $("#ddlAlmacenes").val();
+        var _IdTienda = $("#ddlTienda").val();
 
-    </script>
+        if (_FecIni.length == 0) {
+            $("#txtFecIni").focus();
+            return;
+        }
+
+
+        if (_FecFin.length == 0) {
+            $("#txtFecFin").focus();
+            return;
+        }
+
+        window.location.href = "NivelExistencia/NivelExistencia?FecIni=" + _FecIni + "&FecFin="+ _FecFin + "&IdOwner=" + _IdOwner + "&IdTienda=" + _IdTienda;
+    }
+</script>
 }
 
