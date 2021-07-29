@@ -387,7 +387,7 @@
                             var sel = $("#ddlColonias");
                             sel.empty();
 
-                            $('#lstIdAlmacen').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            $('#ddlColonias').get(0).options[0] = new Option("--SELECCIONE--", "0");
                             for (var i = 0; i < json.resp.length; i++) {
                                 sel.append('<option value="' + json.resp[i].SubLocality + '">' + json.resp[i].SubLocality + '</option>');
                             }
