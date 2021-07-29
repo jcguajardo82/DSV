@@ -3696,6 +3696,7 @@
     <Content Include="Files\Formato_Alta_de_Productos_Ropa.xlsx" />
     <Content Include="Files\Formato_Alta_de_Productos_Salchichoneria_y_Congelados.xlsx" />
     <Content Include="Files\DSV Macro v1.41.xlsm" />
+    <Content Include="Files\DSV Macro v1.42.xlsm" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\Inspinia\_Footer.cshtml" />
     <Content Include="Views\Shared\Inspinia\_Navigation.cshtml" />
