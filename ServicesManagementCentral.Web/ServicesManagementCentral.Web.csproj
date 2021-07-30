@@ -213,6 +213,7 @@
     <Compile Include="Controllers\Api\SecurityController.cs" />
     <Compile Include="Controllers\AutorizacionesRMA.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CallCenterController.cs" />
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\CpanelController.cs" />
@@ -3804,6 +3805,11 @@
     <Content Include="Views\Ordenes\EmbarqueSETC.cshtml" />
     <Content Include="Views\TMS\Cat_Vehiculo.cshtml" />
     <Content Include="Views\TMS\Gastosvehiculo.cshtml" />
+    <Content Include="Views\CallCenter\CallCenter.cshtml" />
+    <Content Include="Views\CallCenter\ConsultaDetalle.cshtml" />
+    <Content Include="Views\CallCenter\EstatusRMA.cshtml" />
+    <Content Include="Views\CallCenter\Historial.cshtml" />
+    <Content Include="Views\CallCenter\RMA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
