@@ -180,7 +180,34 @@
                                 <b> Direccion del Almacén </b>
                             </td>
                         </tr>
-
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                CP.
+                            </td>
+                            @*<td style="text-align:left;">
+                                    <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
+                                </td>*@
+                            <td>
+                                @Html.TextBox("txtCodPos", Model.addressPostalCode, new
+                                    {
+                                    @class = "form-control ;",
+                                    @onkeypress= "return validaNumericos2(event)",
+                                    @onchange = "javascript:GetInfo()"
+                                    })
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Ciudad/Delegación/Municipio
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" readonly id="txtCiudad" value="@Model.addressCity" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Estado
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" readonly id="txtEdo" value="@Model.addressState" />
+                            </td>
+                        </tr>
                         <tr>
                             <td style="width:15%;text-align:center;">
                                 Calle
@@ -201,35 +228,6 @@
                             </td>
                             <td>
                                 <input type="text" class="form-control" id="txtNumInt" value="@Model.addressNumberInt" />
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td style="width:15%;text-align:center;">
-                                Ciudad/Delegación/Municipio
-                            </td>
-                            <td style="text-align:left;">
-                                <input type="text" class="form-control" readonly id="txtCiudad" value="@Model.addressCity" />
-                            </td>
-                            <td style="width:15%;text-align:center;">
-                                CP.
-                            </td>
-                            @*<td style="text-align:left;">
-                                    <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
-                                </td>*@
-                            <td>
-                                @Html.TextBox("txtCodPos", Model.addressPostalCode, new
-                                    {
-                                    @class = "form-control ;",
-                                    @onkeypress= "return validaNumericos2(event)",
-                                    @onchange = "javascript:GetInfo()"
-                                    })
-                            </td>
-                            <td style="width:15%;text-align:center;">
-                                Estado
-                            </td>
-                            <td style="text-align:left;">
-                                <input type="text" class="form-control" readonly id="txtEdo" value="@Model.addressState" />
                             </td>
                         </tr>
                         <tr>
@@ -454,6 +452,14 @@
                         if (json.Success) {
                             $("#txtNumAlmacen").val(json.resp[0].idSupplierWHCode);
                             $("#txtNomPro").val(json.resp[0].supplierName);
+                            var noProveedor = $("#txtNumPro").val();
+                            var noAlmacenprev = json.resp[0].idSupplierWHCode - 1;
+                            if (json.resp[0].supplierName == null) {
+
+                            }
+                            else {
+                                window.location.href = "AltaProveedor/AltaProveedor?idSupplierWH=" + noProveedor + "&idSupplierWHCode=" + noAlmacenprev + "&Nuevo=" + 1;
+                            }
                         }
                         else {
                             alert(json.Message);

@@ -35,6 +35,10 @@ namespace ServicesManagement.Web.Controllers
                 idSupplierWHCode = int.Parse(Request.QueryString["idSupplierWHCode"].ToString());
 
                 prov = DataTableToModel.ConvertTo<AltaProveedor>(DALAltaProveedor.SuppliersWHByCode_sUP(idSupplierWH, idSupplierWHCode).Tables[0]).FirstOrDefault();
+                if (Request.QueryString["Nuevo"] != null && prov != null)
+                {
+                    prov.idSupplierWHCode = prov.idSupplierWHCode + 1;
+                }
             }
 
             var usr = DataTableToModel.ConvertTo<Usuario>(DALConfig.Autenticar_sUP(User.Identity.Name).Tables[0]).FirstOrDefault();
