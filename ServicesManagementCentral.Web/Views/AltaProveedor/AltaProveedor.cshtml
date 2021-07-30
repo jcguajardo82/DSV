@@ -28,6 +28,7 @@
                                 @Html.TextBox("txtNumPro", Model.idSupplierWH, new
                                     {
                                     @class = "form-control ;",
+                                    @onkeypress= "return validaNumericos2(event)",
                                     @onkeydown = "javascript:onkeydown_busqueda(event)"
                                     })
                             </td>
@@ -158,9 +159,9 @@
                             <td>
 
                                 @if (Model.idSupplierWHCode.ToString() == "0")
-                                {<input type="text" class="form-control" id="txtNumAlmacen" />}
+                                {<input type="text" class="form-control" onkeypress='return validaNumericos2(event)' id="txtNumAlmacen" />}
                                 else
-                                { <input type="text" class="form-control" value="@Model.idSupplierWHCode" id="txtNumAlmacen" />}
+                                { <input type="text" class="form-control" onkeypress='return validaNumericos2(event)' readonly value="@Model.idSupplierWHCode" id="txtNumAlmacen" />}
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Nombre Almacén
@@ -220,6 +221,7 @@
                                 @Html.TextBox("txtCodPos", Model.addressPostalCode, new
                                     {
                                     @class = "form-control ;",
+                                    @onkeypress= "return validaNumericos2(event)",
                                     @onchange = "javascript:GetInfo()"
                                     })
                             </td>
@@ -402,6 +404,10 @@
                     }
 
                 });
+            }
+            else {
+                $("#txtEdo").val("");
+                $("#txtCiudad").val("");
             }
         }
         function onkeydown_cp(e) {
