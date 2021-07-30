@@ -90,7 +90,7 @@ namespace ServicesManagement.Web.Controllers
 
                         if (response.StatusDescription.Equals("Bad Request")) {
 
-                            return Json("File Uploaded ERROR!");
+                            return Json("¡Ocurrio un ERROR al cargar el Archivo!");
 
                         }
 
@@ -99,7 +99,7 @@ namespace ServicesManagement.Web.Controllers
                         //DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, pathServerName, DateTime.Now, User.Identity.Name);
                     }
                     // Returns message that successfully uploaded  
-                    return Json("File Uploaded Successfully!");
+                    return Json("¡Archivo cargado con Exito!");
                 }
                 catch (Exception ex)
                 {
