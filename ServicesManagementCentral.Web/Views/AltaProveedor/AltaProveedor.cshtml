@@ -46,7 +46,7 @@
                     <table style="width:100%;">
                         <tr>
                             <td style="width:15%;text-align:center;">
-                                Tipo de Operacón
+                                Tipo de Operación
                             </td>
                             <td style="width:35%;text-align:center;">
                                 <select id="ddlOperations" class="form-control">
@@ -285,7 +285,7 @@
                         </tr>
                         <tr>
                             <td style="width:15%;text-align:center;">
-                                Nombre de contacto Operativo
+                                Nombre Completo de contacto Operativo
 
                             </td>
                             <td style="text-align:left;">
@@ -293,7 +293,7 @@
                             </td>
                             <td style="width: 10%;"></td>
                             <td style="width:15%;text-align:center;">
-                                Nombre de contacto Comercial
+                                Nombre Completo de contacto Comercial
                             </td>
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtNomContCom" value="@Model.commInfoName" />
@@ -303,17 +303,35 @@
                         </tr>
                         <tr>
                             <td style="width:15%;text-align:center;">
-                                Teléfono del contacto Operativo
+                                Teléfono del contacto Operativo (10 digitos)
                             </td>
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtTelContOper" value="@Model.operInfoPhone" />
                             </td>
                             <td style="width: 10%;"></td>
                             <td style="width:15%;text-align:center;">
-                                Teléfono del contacto Comercial
+                                Teléfono del contacto Comercial (10 digitos)
                             </td>
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtTelContCom" value="@Model.commInfoPhone" />
+                            </td>
+                            <td style="width: 10%;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Extension
+
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtEmailO" />
+                            </td>
+                            <td style="width: 10%;"></td>
+
+                            <td style="width:15%;text-align:center;">
+                                Extension
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtEmailC" />
                             </td>
                             <td style="width: 10%;"></td>
                         </tr>
@@ -344,8 +362,8 @@
                                 <button type="button" class="btn btn-white" onclick="Save()">GUARDAR</button>
                             </td>
                             @*<td>
-                                    <button type="button" class="btn btn-primary" onclick="TraspasaOrden()">EDITAR</button>
-                                </td>*@
+                <button type="button" class="btn btn-primary" onclick="TraspasaOrden()">EDITAR</button>
+            </td>*@
                         </tr>
                         <tr>
                             <td colspan="6"><br /><br /><br /></td>
