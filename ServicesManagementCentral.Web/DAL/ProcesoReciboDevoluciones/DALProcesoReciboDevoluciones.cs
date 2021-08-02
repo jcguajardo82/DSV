@@ -10,6 +10,41 @@ namespace ServicesManagement.Web.DAL.ProcesoReciboDevoluciones
 {
     public class DALProcesoReciboDevoluciones
     {
+        public static DataSet upCorpOMS_Cns_UeNoDevolEvidencia(string UeNo)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoDevolEvidencia]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         public static DataSet upCorpOms_Ins_UeNoDevolEvidencia(string idUeNo, int idOrderNo, string User, byte[] Evidence)
         {
 
@@ -218,7 +253,6 @@ namespace ServicesManagement.Web.DAL.ProcesoReciboDevoluciones
             }
 
         }
-
         public static DataSet upCorpOMS_Ins_UeNoDevolProcess(string UeNo, int OrderNo, string IdTrackingService, string TrackingType, decimal Barcode, string CreationId,
             string PackageCondition, string ReturnedComment)
         {
@@ -262,7 +296,5 @@ namespace ServicesManagement.Web.DAL.ProcesoReciboDevoluciones
             }
 
         }
-
-
     }
 }
