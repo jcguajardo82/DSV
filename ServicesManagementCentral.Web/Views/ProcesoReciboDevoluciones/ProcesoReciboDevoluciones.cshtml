@@ -179,6 +179,7 @@
             $('#btnUpload').click(function () {
 
                 var _idselUeNo = $("#selUeNo").val();
+                var _idselOrderNo = $("#selOrderNo").val();
 
                 // Checking whether FormData is available in browser
                 if (window.FormData !== undefined) {
@@ -204,6 +205,7 @@
 
                     // Adding one more key to FormData object
                     fileData.append('idUeNo', _idselUeNo);
+                    fileData.append('idOrderNo', _idselOrderNo);
                     fileData.append('servername', servername);
 
 

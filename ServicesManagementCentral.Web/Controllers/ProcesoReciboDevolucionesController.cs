@@ -24,14 +24,31 @@ namespace ServicesManagement.Web.Controllers
             {
                 try
                 {
-
                     var idUeNo = Request.Form["idUeNo"].ToString();
+                    int idOrderNo = int.Parse(Request.Form["idOrderNo"].ToString());
                     string servername = Request.Form["servername"].ToString();
 
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
                     for (int i = 0; i < files.Count; i++)
                     {
+                        System.IO.Stream str; String strmContents;
+                        Int32 counter, strLen, strRead;
+                        // Create a Stream object.
+                        str = Request.InputStream;
+                        // Find number of bytes in stream.
+                        strLen = Convert.ToInt32(str.Length);
+                        // Create a byte array.
+                        byte[] strArr = new byte[strLen];
+                        // Read stream into byte array.
+                        strRead = str.Read(strArr, 0, strLen);
+
+                        // Convert byte array to a text string.
+                        strmContents = "";
+                        for (counter = 0; counter < strLen; counter++)
+                        {
+                            strmContents = strmContents + strArr[counter].ToString();
+                        }
                         //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
                         //string filename = Path.GetFileName(Request.Files[i].FileName);  
 
@@ -39,6 +56,10 @@ namespace ServicesManagement.Web.Controllers
                         string dateTime = dt.ToString("yyyyMMddHHmmssfff");
 
                         HttpPostedFileBase file = files[i];
+
+                        //Grabar a tabla
+                        DALProcesoReciboDevoluciones.upCorpOms_Ins_UeNoDevolEvidencia(idUeNo, idOrderNo, User.Identity.Name, strArr);
+
                         string fname;
 
                         // Checking for Internet Explorer  
