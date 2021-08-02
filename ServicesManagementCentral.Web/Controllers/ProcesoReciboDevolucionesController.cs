@@ -247,6 +247,50 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+        //listar productos de  consignación
+        public ActionResult LstProdImagenes(string UeNo)
+        {
+            try
+            {
+                var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+                int idOwner = 1;
+
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    idOwner = 2;
+                }
+                else
+                {
+                    foreach (DataRow item in ds.Tables[0].Rows)
+                    {
+                        UserRolModel rol = new UserRolModel();
+                        rol.idRol = item["rol"].ToString();
+                        rol.nombreRol = item["nombreRol"].ToString();
+                        Session["UserRol"] = rol;
+                        idOwner = 3;
+                    }
+                }
+
+                var listaImagenes = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoDevolEvidencia>(DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolEvidencia(UeNo).Tables[0]);
+                var lstImagenes = DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolEvidencia(UeNo).Tables[0];
+
+                //foreach (DataRow item in lstImagenes.Rows)
+                //{
+                //    byte[] data = System.Text.Encoding.ASCII.GetBytes(item["Evidence"]);
+                //    var x = 1;
+                //}
+
+                var result = new { Success = true, resp = listaImagenes };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
         //Aceptar Devolución
         public ActionResult AceptarDevolucion(string UeNo, int OrderNo, string IdTrackingService, string TrackingType, decimal Barcode, string CreationId,
             string PackageCondition, string ReturnedComment)

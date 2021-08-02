@@ -40,20 +40,20 @@
                 <thead class="bg-danger-sor">
                     <tr>
                         @*<<<<<<< HEAD
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Numero de Consignación</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Fecha de creación</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 55px;">Hora de creación</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">RMA</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Solicitud RMA</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Motivo RMA</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Paqueteria</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Guia de devolucion</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Estatus Guía</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Fecha de entrega al almacen</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Recibido por</th>
-                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Días Vigentes Guia</th>
-                                <th></th>
-        =======*@
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Numero de Consignación</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Fecha de creación</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 55px;">Hora de creación</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">RMA</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Solicitud RMA</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Motivo RMA</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Paqueteria</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Guia de devolucion</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Estatus Guía</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Fecha de entrega al almacen</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Recibido por</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Días Vigentes Guia</th>
+                                                    <th></th>
+                            =======*@
                         <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">No. de Pedido</th>
                         <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Fecha de creación</th>
                         <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 55px;">Hora de creación</th>
@@ -67,6 +67,7 @@
                         <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Recibido por</th>
                         <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Días Vigentes Guia</th>
                         <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Abrir</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="visibility:hidden"></th>
                         @*>>>>>>> master*@
                     </tr>
                 </thead>
@@ -85,7 +86,7 @@
                                 <tr>
                                     <td style="text-align:center;">
                                         <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["Recibido"])"
-                                            title="Click para ver la lista de productos asociados al pedido" class="link"><u>@p["UeNo"].ToString()</u></a>
+                                           title="Click para ver la lista de productos asociados al pedido" class="link"><u>@p["UeNo"].ToString()</u></a>
                                     </td>
                                     <td style="text-align:right">@p["OrderDate"] </td>
                                     <td style="text-align:right">@p["OrderTime"] </td>
@@ -99,8 +100,8 @@
                                     <td style="text-align:center">@p["TrackingDeliveredTo"]</td>
                                     <td style="text-align:center"> @p["DiasVigencia"]</td>
                                     <td style="text-align:center;">
-                                        <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["Recibido"])"
-                                            title="Click para ver la lista de imagenes de los productos asociados al pedido" class="link"><u>Ver Imagenes</u></a>
+                                        <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstImagenes(this, @p["Recibido"])"
+                                           title="Click para ver la lista de imagenes de los productos asociados al pedido" class="link"><u>Ver Imagenes</u></a>
                                     </td>
                                     <td style="visibility:hidden"> @p["Recibido"]</td>
                                 </tr>
@@ -159,6 +160,37 @@
                         <td></td>
                     </tr>
                 </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="dlgShowImages" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pt-lg-5 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Lista de Imagenes</p>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12 col-md-12">
+                    <form id="frmShowServicios">
+                        <table id="tblShowImagenes" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" style="width:100%">
+                            <thead class="bg-danger-sor">
+                                <tr role="row">
+                                    <th style="width: 50px;">No. de Pedido</th>
+                                    <th style="width: 100px;"># UE</th>
+                                    <th style="width: 80px;">Imagen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
                 </div>
@@ -296,7 +328,7 @@
         });
     }
 
-        function popUpLstEvidencia(el, bitRecibido) {
+        function popUpLstImagenes(el, bitRecibido) {
             var _UeNo = $(el).attr('id');
             $('#selUeNo').val($(el).attr('id'));
             $('#selOrderNo').val($(el).attr('name'));
@@ -305,50 +337,26 @@
             $.ajax({
                 async: false,
                 type: "GET",
-                url: '@Url.Action("LstProdPaquete", "ProcesoReciboDevoluciones")',
+                url: '@Url.Action("LstProdImagenes", "ProcesoReciboDevoluciones")',
                 data: {
                     UeNo: _UeNo
                 },
                 datatype: "html",
                 success: function (json) {
                     if (json.Success) {
-                        $("#tblShowProduct tbody").empty();
-                        //ListDevoluciones();
-                        //ListCondiciones();
-                        var causesSelect = $("<select class='form-control m-b' ></select>");
-                        $.each(json.lstCond, function (index, causes) {
-                            $("<option>").val(causes.IdCause).text(causes.Cause_Desc).appendTo(causesSelect);
-                        });
+                        $("#tblShowImagenes tbody").empty();
+
                         //$("#tblShowProduct tbody").remove();
                         //var tr;
                         //Append each row to html table
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
-                            tr.append("<td>" + json.resp[i].idRMA + "</td>");
-                            tr.append("<td>" + json.resp[i].BarCode + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductId + "</td>");
-                            tr.append("<td>" + json.resp[i].ProductName + "</td>");
-                            tr.append("<td>" + json.resp[i].Quantity + "</td>");
-                            tr.append("<td>" + json.resp[i].IdTrackingService + "</td>");
-                            $('#selTrackingType').val(json.resp[i].TrackingType);
-                            if ($('#selRecibido').val() == 0) {
-                                tr.append("<td>" + causesSelect[0].outerHTML + "</td>");
-                                tr.append("<td>" + json.resp[i].Cause_Desc + "</td>");
-                                tr.append("<td><input type='text' class='form-control' name='txtMotivo' /></td>");
-                                tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' id=chkSel_" + json.resp[i].BarCode + " /></td>");
-                            }
-                            else {
-                                tr.append("<td>" + json.resp[i].PackageCondition + "</td>");
-                                tr.append("<td>" + json.resp[i].Cause_Desc + "</td>");
-                                tr.append("<td>" + json.resp[i].ReturnedComment + "</td>");
-                                tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' disabled='disabled' checked='checked' id='chkSel_" + json.resp[i].BarCode + " /></td>");
-                            }
-                            //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
-                            //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
-                            $('#tblShowProduct').append(tr);
-
+                            tr.append("<td>" + json.resp[i].OrderNo + "</td>");
+                            tr.append("<td>" + json.resp[i].UeNo + "</td>");
+                            tr.append("<td>" + json.resp[i].Evidence + "</td>");
+                            $('#tblShowImagenes').append(tr);
                         }
-                        $('#dlgShowProdcut').modal('show');
+                        $('#dlgShowImages').modal('show');
                     }
                     else {
                         alert(json.Message);
