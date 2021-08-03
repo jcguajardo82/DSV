@@ -273,12 +273,13 @@ namespace ServicesManagement.Web.Controllers
 
                 var listaImagenes = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoDevolEvidencia>(DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolEvidencia(UeNo).Tables[0]);
                 var lstImagenes = DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolEvidencia(UeNo).Tables[0];
-
-                //foreach (DataRow item in lstImagenes.Rows)
-                //{
-                //    byte[] data = System.Text.Encoding.ASCII.GetBytes(item["Evidence"]);
-                //    var x = 1;
-                //}
+                var x = 0;
+                foreach (DataRow item in lstImagenes.Rows)
+                {
+                    byte[] data = (byte[])(item["Evidence"]);
+                    listaImagenes[x].Evidence = data;
+                    x += 1;
+                }
 
                 var result = new { Success = true, resp = listaImagenes };
                 return Json(result, JsonRequestBehavior.AllowGet);
