@@ -353,7 +353,7 @@
                             tr = $('<tr/>');
                             tr.append("<td>" + json.resp[i].OrderNo + "</td>");
                             tr.append("<td>" + json.resp[i].UeNo + "</td>");
-                            tr.append("<td type='image'>" + json.resp[i].Evidence + "</td>");
+                            tr.append("<td><img width='240' height='160' src='data:image/jpeg;base64," + json.resp[i].Evidence + "'></td>");
                             $('#tblShowImagenes').append(tr);
                         }
                         $('#dlgShowImages').modal('show');
