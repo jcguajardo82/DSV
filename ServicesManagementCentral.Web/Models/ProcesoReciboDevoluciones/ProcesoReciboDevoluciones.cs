@@ -14,6 +14,7 @@ namespace ServicesManagement.Web.Models.ProcesoReciboDevoluciones
         public int OrderNo { get; set; }
         public string UeNo { get; set; }
         public byte[] Evidence { get; set; }
+        public string strImg { get; set; }
     }
 
     public class upCorpOMS_Cns_UeNoDevolDetail
