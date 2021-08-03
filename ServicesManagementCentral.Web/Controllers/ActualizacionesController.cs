@@ -13,6 +13,8 @@ using System.Configuration;
 using System.Web.Script.Serialization;
 using Microsoft.ServiceBus.Messaging;
 using RestSharp;
+using NPOI.SS.UserModel;
+using ServicesManagement.Web.Models.Config;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -88,7 +90,8 @@ namespace ServicesManagement.Web.Controllers
                         var response = restClient.Execute(restRequest);
 
 
-                        if (response.StatusDescription.Equals("Bad Request")) {
+                        if (response.StatusDescription.Equals("Bad Request"))
+                        {
 
                             return Json("¡Ocurrio un ERROR al cargar el Archivo!");
 
@@ -120,7 +123,7 @@ namespace ServicesManagement.Web.Controllers
                 string[] fileExcel = readString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 int elemFile = fileExcel.Length;
 
-                var insEnc = DALActualizaciones.SuppliersWHStockHeader_iUP(int.Parse(fileExcel[1]), int.Parse(fileExcel[2]), 
+                var insEnc = DALActualizaciones.SuppliersWHStockHeader_iUP(int.Parse(fileExcel[1]), int.Parse(fileExcel[2]),
                     int.Parse(fileExcel[fileExcel.Length - 1]), int.Parse(fileExcel[fileExcel.Length - 2]), fileExcel[3], fileExcel[4]);
 
                 var delInv = DALActualizaciones.SuppliersWHStockDetail_dUP(int.Parse(fileExcel[1]), int.Parse(fileExcel[2]));
@@ -131,9 +134,9 @@ namespace ServicesManagement.Web.Controllers
                     var insDMInv = DALActualizaciones.up_Corp_Vendor_Ins_Inventario(int.Parse(fileExcel[1]), int.Parse(fileExcel[2]),
                         decimal.Parse(fileExcel[i - 1]), int.Parse(fileExcel[i]), int.Parse(fileExcel[i + 2]), 0, int.Parse(fileExcel[i + 1]),
                         fileExcel[3], fileExcel[4]);
-                    int bitInsertDMOk = insDMInv.Tables[0].Rows[0][0].ToString() == "OK" ? 1 : 0; 
-                    var insInv = DALActualizaciones.SuppliersWHStockDetail_iUP(int.Parse(fileExcel[1]), int.Parse(fileExcel[2]), 
-                        decimal.Parse(fileExcel[i-1]), int.Parse(fileExcel[i]), int.Parse(fileExcel[i + 2]), 0, int.Parse(fileExcel[i + 1]), 
+                    int bitInsertDMOk = insDMInv.Tables[0].Rows[0][0].ToString() == "OK" ? 1 : 0;
+                    var insInv = DALActualizaciones.SuppliersWHStockDetail_iUP(int.Parse(fileExcel[1]), int.Parse(fileExcel[2]),
+                        decimal.Parse(fileExcel[i - 1]), int.Parse(fileExcel[i]), int.Parse(fileExcel[i + 2]), 0, int.Parse(fileExcel[i + 1]),
                         fileExcel[3], fileExcel[4], bitInsertDMOk);
                 }
 
@@ -155,11 +158,11 @@ namespace ServicesManagement.Web.Controllers
 
         private void SendMessage(SupplierStockDto supplierStockDto)
         {
-            var json = new JavaScriptSerializer().Serialize(supplierStockDto); 
+            var json = new JavaScriptSerializer().Serialize(supplierStockDto);
 
             string ServiceBusConnectionString = ConfigurationManager.ConnectionStrings["ServiceBus"].ConnectionString;
             string QueueName = ConfigurationSettings.AppSettings["stockQueueName"];
-            
+
             var queueClient = QueueClient.CreateFromConnectionString(ServiceBusConnectionString, QueueName);
             BrokeredMessage message = new BrokeredMessage(json);
             queueClient.Send(message);
@@ -190,6 +193,71 @@ namespace ServicesManagement.Web.Controllers
                 supplierStockDto.Stock.Add(productStock);
             }
             return supplierStockDto;
+        }
+
+        public FileResult ExcelInventario()
+
+        {
+
+
+            var usr = DataTableToModel.ConvertTo<Usuario>(DALConfig.Autenticar_sUP(User.Identity.Name).Tables[0]).FirstOrDefault();
+
+          
+
+            var d = DALActualizaciones.upCorpOMS_Cns_UeNoStock(usr.IdOwner, usr.IdTienda).Tables[0];
+
+            string nombreArchivo = "Inventario";
+
+            //Excel to create an object file
+
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+
+
+            //Add a sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+            IRow rowHead = sheet1.CreateRow(0);
+
+            //Here you can set a variety of styles seemingly font color backgrounds, but not very convenient, there is not set
+            //Sheet1 head to add the title of the first row
+            for (int i = 0; i < d.Columns.Count; i++)
+            {
+                rowHead.CreateCell(i, CellType.String).SetCellValue(d.Columns[i].ColumnName.ToString());
+            }
+
+
+            //The data is written progressively sheet1 each row
+            for (int i = 0; i < d.Rows.Count; i++)
+            {
+                IRow row = sheet1.CreateRow(i + 1);
+                for (int j = 0; j < d.Columns.Count; j++)
+                {
+                    row.CreateCell(j, CellType.String).SetCellValue(d.Rows[i][j].ToString());
+                }
+            }
+
+
+            for (int i = 0; i < d.Columns.Count; i++)
+            {
+                sheet1.AutoSizeColumn(i);
+            }
+
+
+            //  Write to the client 
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+
+            book.Write(ms);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            DateTime dt = DateTime.Now;
+
+            string dateTime = dt.ToString("yyyyMMddHHmmssfff");
+
+            string fileName = nombreArchivo + "_" + dateTime + ".xls";
+
+            return File(ms, "application/vnd.ms-excel", fileName);
+
         }
     }
 
