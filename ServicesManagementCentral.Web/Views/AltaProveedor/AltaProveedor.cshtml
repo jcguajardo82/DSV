@@ -28,6 +28,7 @@
                                 @Html.TextBox("txtNumPro", Model.idSupplierWH, new
                                     {
                                     @class = "form-control ;",
+                                    @onkeypress= "return validaNumericos2(event)",
                                     @onkeydown = "javascript:onkeydown_busqueda(event)"
                                     })
                             </td>
@@ -45,7 +46,7 @@
                     <table style="width:100%;">
                         <tr>
                             <td style="width:15%;text-align:center;">
-                                Tipo de Operacón
+                                Tipo de Operación
                             </td>
                             <td style="width:35%;text-align:center;">
                                 <select id="ddlOperations" class="form-control">
@@ -158,9 +159,9 @@
                             <td>
 
                                 @if (Model.idSupplierWHCode.ToString() == "0")
-                                {<input type="text" class="form-control" id="txtNumAlmacen" />}
+                                {<input type="text" class="form-control" onkeypress='return validaNumericos2(event)' id="txtNumAlmacen" />}
                                 else
-                                { <input type="text" class="form-control" value="@Model.idSupplierWHCode" id="txtNumAlmacen" />}
+                                { <input type="text" class="form-control" onkeypress='return validaNumericos2(event)' readonly value="@Model.idSupplierWHCode" id="txtNumAlmacen" />}
                             </td>
                             <td style="width:15%;text-align:center;">
                                 Nombre Almacén
@@ -179,7 +180,34 @@
                                 <b> Direccion del Almacén </b>
                             </td>
                         </tr>
-
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                CP.
+                            </td>
+                            @*<td style="text-align:left;">
+                                    <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
+                                </td>*@
+                            <td>
+                                @Html.TextBox("txtCodPos", Model.addressPostalCode, new
+                                    {
+                                    @class = "form-control ;",
+                                    @onkeypress= "return validaNumericos2(event)",
+                                    @onchange = "javascript:GetInfo()"
+                                    })
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Ciudad/Delegación/Municipio
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" readonly id="txtCiudad" value="@Model.addressCity" />
+                            </td>
+                            <td style="width:15%;text-align:center;">
+                                Estado
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" readonly id="txtEdo" value="@Model.addressState" />
+                            </td>
+                        </tr>
                         <tr>
                             <td style="width:15%;text-align:center;">
                                 Calle
@@ -191,7 +219,7 @@
                                 Número Exterior
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="txtNumExt" onkeypress='return validaNumericos2(event)' value="@Model.addressNumberExt" />
+                                <input type="text" class="form-control" id="txtNumExt" value="@Model.addressNumberExt" />
                                 @*onblur="validaNumericos();"*@
 
                             </td>
@@ -200,34 +228,6 @@
                             </td>
                             <td>
                                 <input type="text" class="form-control" id="txtNumInt" value="@Model.addressNumberInt" />
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td style="width:15%;text-align:center;">
-                                Ciudad/Delegación/Municipio
-                            </td>
-                            <td style="text-align:left;">
-                                <input type="text" class="form-control" readonly id="txtCiudad" value="@Model.addressCity" />
-                            </td>
-                            <td style="width:15%;text-align:center;">
-                                CP.
-                            </td>
-                            @*<td style="text-align:left;">
-                                    <input type="number" min="1" max="99999" class="form-control" id="txtCodPos" />
-                                </td>*@
-                            <td>
-                                @Html.TextBox("txtCodPos", Model.addressPostalCode, new
-                                    {
-                                    @class = "form-control ;",
-                                    @onchange = "javascript:GetInfo()"
-                                    })
-                            </td>
-                            <td style="width:15%;text-align:center;">
-                                Estado
-                            </td>
-                            <td style="text-align:left;">
-                                <input type="text" class="form-control" readonly id="txtEdo" value="@Model.addressState" />
                             </td>
                         </tr>
                         <tr>
@@ -285,7 +285,7 @@
                         </tr>
                         <tr>
                             <td style="width:15%;text-align:center;">
-                                Nombre de contacto Operativo
+                                Nombre Completo de contacto Operativo
 
                             </td>
                             <td style="text-align:left;">
@@ -293,7 +293,7 @@
                             </td>
                             <td style="width: 10%;"></td>
                             <td style="width:15%;text-align:center;">
-                                Nombre de contacto Comercial
+                                Nombre Completo de contacto Comercial
                             </td>
                             <td style="text-align:left;">
                                 <input type="text" class="form-control" id="txtNomContCom" value="@Model.commInfoName" />
@@ -303,17 +303,35 @@
                         </tr>
                         <tr>
                             <td style="width:15%;text-align:center;">
-                                Teléfono del contacto Operativo
+                                Teléfono del contacto Operativo (10 digitos)
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtTelContOper" value="@Model.operInfoPhone" />
+                                <input type="text" class="form-control" id="txtTelContOper" maxlength="14" placeholder="(XXX) XXX-XXXX" name="phonenumber" value="@Model.operInfoPhone" />
                             </td>
                             <td style="width: 10%;"></td>
                             <td style="width:15%;text-align:center;">
-                                Teléfono del contacto Comercial
+                                Teléfono del contacto Comercial (10 digitos)
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtTelContCom" value="@Model.commInfoPhone" />
+                                <input type="text" class="form-control" id="txtTelContCom" maxlength="14" placeholder="(XXX) XXX-XXXX" name="phonenumber" value="@Model.commInfoPhone" />
+                            </td>
+                            <td style="width: 10%;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:15%;text-align:center;">
+                                Extension
+
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtEmailO" />
+                            </td>
+                            <td style="width: 10%;"></td>
+
+                            <td style="width:15%;text-align:center;">
+                                Extension
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" class="form-control" id="txtEmailC" />
                             </td>
                             <td style="width: 10%;"></td>
                         </tr>
@@ -344,8 +362,8 @@
                                 <button type="button" class="btn btn-white" onclick="Save()">GUARDAR</button>
                             </td>
                             @*<td>
-                                    <button type="button" class="btn btn-primary" onclick="TraspasaOrden()">EDITAR</button>
-                                </td>*@
+                <button type="button" class="btn btn-primary" onclick="TraspasaOrden()">EDITAR</button>
+            </td>*@
                         </tr>
                         <tr>
                             <td colspan="6"><br /><br /><br /></td>
@@ -362,8 +380,106 @@
 @section scripts {
     <script>
         $(document).ready(function () {
-            //IniciarCombo()
+         
+
+            $('input[name="phonenumber"]')
+                .keydown(function (e) {
+
+                    var key = e.which || e.charCode || e.keyCode || 0;
+
+                    $phone = $(this);
+
+                    // Don't let them remove the starting '('
+
+                    if ($phone.val().length === 1 && (key === 8 || key === 46)) {
+
+                        $phone.val('(');
+
+                        return false;
+
+                    }
+
+                    // Reset if they highlight and type over first char.
+
+                    else if ($phone.val().charAt(0) !== '(') {
+
+                        $phone.val('(' + String.fromCharCode(e.keyCode) + '');
+
+                    }
+
+                    // Auto-format- do not expose the mask as the user begins to type
+
+                    if (key !== 8 && key !== 9) {
+
+                        if ($phone.val().length === 4) {
+
+                            $phone.val($phone.val() + ')');
+
+                        }
+
+                        if ($phone.val().length === 5) {
+
+                            $phone.val($phone.val() + ' ');
+
+                        }
+
+                        if ($phone.val().length === 9) {
+
+                            $phone.val($phone.val() + '-');
+
+                        }
+
+                    }
+
+                    // Allow numeric (and tab, backspace, delete) keys only
+
+                    return (key == 8 ||
+
+                        key == 9 ||
+
+                        key == 46 ||
+
+                        (key >= 48 && key <= 57) ||
+
+                        (key >= 96 && key <= 105));
+
+                })
+
+                .bind('focus click', function () {
+
+                    $phone = $(this);
+
+                    if ($phone.val().length === 0) {
+
+                        $phone.val('(');
+
+                    }
+
+                    else {
+
+                        var val = $phone.val();
+
+                        $phone.val('').val(val); // Ensure cursor remains at the end
+
+                    }
+
+                })
+
+                .blur(function () {
+
+                    $phone = $(this);
+
+                    if ($phone.val() === '(') {
+
+                        $phone.val('');
+
+                    }
+
+                });
+
         });
+
+
 
         function GetInfo() {
             //alert($("#txtCodPos").val());
@@ -387,7 +503,7 @@
                             var sel = $("#ddlColonias");
                             sel.empty();
 
-                            $('#lstIdAlmacen').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            $('#ddlColonias').get(0).options[0] = new Option("--SELECCIONE--", "0");
                             for (var i = 0; i < json.resp.length; i++) {
                                 sel.append('<option value="' + json.resp[i].SubLocality + '">' + json.resp[i].SubLocality + '</option>');
                             }
@@ -402,6 +518,10 @@
                     }
 
                 });
+            }
+            else {
+                $("#txtEdo").val("");
+                $("#txtCiudad").val("");
             }
         }
         function onkeydown_cp(e) {
@@ -448,6 +568,14 @@
                         if (json.Success) {
                             $("#txtNumAlmacen").val(json.resp[0].idSupplierWHCode);
                             $("#txtNomPro").val(json.resp[0].supplierName);
+                            var noProveedor = $("#txtNumPro").val();
+                            var noAlmacenprev = json.resp[0].idSupplierWHCode - 1;
+                            if (json.resp[0].supplierName == null) {
+
+                            }
+                            else {
+                                window.location.href = "AltaProveedor/AltaProveedor?idSupplierWH=" + noProveedor + "&idSupplierWHCode=" + noAlmacenprev + "&Nuevo=" + 1;
+                            }
                         }
                         else {
                             alert(json.Message);

@@ -170,13 +170,13 @@
                                                     @if (@p["Id_Num_OrdenStat"].ToString() == "4")
                                                     {
                                                         <a href="@Url.Action("Embarque", "Ordenes", new { order = @p["UeNo"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
-                                                            @p["UeNo"]
+                                                            @p["NroOrden"]
                                                         </a>
                                                     }
                                                     else
                                                     {
                                                         <a href="@Url.Action("OrdenDetalle", "Ordenes", new { order = @p["UeNo"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
-                                                            @p["UeNo"]
+                                                            @p["NroOrden"]
                                                         </a>
                                                     }
                                                 </td>
@@ -331,7 +331,7 @@
                                                     <td style="text-align:center;">
 
                                                         <a href="@Url.Action("ConsultaDetalle", "Ordenes", new { order = @p["UeNo"] })"
-                                                           title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
+                                                           title="Click para ver el detalle de la orden" class="btn btn-link">@p["NroOrden"]</a>
                                                     </td>
                                                     <td style="text-align:center;">
 

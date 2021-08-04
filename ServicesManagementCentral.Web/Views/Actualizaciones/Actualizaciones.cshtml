@@ -17,6 +17,12 @@
                     <table style="width:100%;padding-top:50px;">
                         <!-- cambio -->
                         <tr>
+                            <td colspan="3"></td>
+                            <td colspan="1">
+                                <button class="btn btn-secondary" onclick="Excel()" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                            </td>
+                        </tr>
+                        <tr>
                             <td></td>
                             <td style="text-align:center;padding-left:50px;">
                                 <h3> Actualizacion de Inventario</h3><br />
@@ -124,6 +130,9 @@
             var url2 = '@Url.Content("~/").ToString()' + "Files/DSV Macro v1.42.xlsm";
             window.open(url2);
         }
-
+        function Excel() {
+           
+            window.location = window.location.origin + '/Actualizaciones/ExcelInventario';
+        }
     </script>
 }

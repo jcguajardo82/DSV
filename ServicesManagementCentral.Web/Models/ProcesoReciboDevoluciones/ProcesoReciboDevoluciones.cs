@@ -9,10 +9,17 @@ namespace ServicesManagement.Web.Models.ProcesoReciboDevoluciones
     {
 
     }
+    public class upCorpOMS_Cns_UeNoDevolEvidencia
+    {
+        public int OrderNo { get; set; }
+        public string UeNo { get; set; }
+        public byte[] Evidence { get; set; }
+        public string strImg { get; set; }
+    }
 
     public class upCorpOMS_Cns_UeNoDevolDetail
     {
-        public int idRMA { get; set; }
+        public string idRMA { get; set; }
         public decimal BarCode { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }

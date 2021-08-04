@@ -52,7 +52,7 @@
                                     }
                                 }
                                 <!-- se comenta pues esta por hacerse -->
-                                @*<li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>*@
+                                <li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div role="tabpanel" id="tab-1" class="tab-pane active">
@@ -205,10 +205,19 @@
                                             <table id="tblEmbalaje" class="table table-stripedtblSolicitutGuia table-bordered table-hover table-responsive-md expand dataTable no-footer">
                                                 <thead class="bg-danger-sor">
                                                     <tr role="row">
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TIPO PAQUETE</b><br /></th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO X PAQUETE</b><br />Peso max. 1000kg</th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>DIMENSIONES X PAQUETE</b><br />L X AN X AL (cm)</th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>GUIA DE EMBARQUE</b><br /></th>
+                                                        @*<th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TIPO PAQUETE</b><br /></th>
+                                                            <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO X PAQUETE</b><br />Peso max. 1000kg</th>
+                                                            <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>DIMENSIONES X PAQUETE</b><br />L X AN X AL (cm)</th>
+                                                            <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>GUIA DE EMBARQUE</b><br /></th>
+                                                            <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>ACCIÓN</b><br /></th>*@
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>NO. GUIA</b><br /></th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>ALTO</b><br /></th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>LARGO</b><br /></th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>ANCHO</b><br /></th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO</b><br /></th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO REAL</b><br /></th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TIPO ENVIO</b><br /></th>
+                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TOTAL ARTICULOS EN GUIA</b><br /></th>
                                                         <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>ACCIÓN</b><br /></th>
                                                     </tr>
                                                 </thead>
@@ -222,13 +231,25 @@
                                                             foreach (System.Data.DataRow op in dtOP.Rows)
                                                             {
                                                                 <tr>
-                                                                    <td>@op["PackageType"]</td>
+                                                                    <td>@op["IdTrackingService"]</td>
+                                                                    <td>@op["PackageHeight"]</td>
+                                                                    <td>@op["PackageLength"]</td>
+                                                                    <td>@op["PackageWidth"]</td>
                                                                     <td>@op["PackageWeight"]</td>
-                                                                    <td>@op["PackageLength"] x @op["PackageWidth"] x @op["PackageHeight"]</td>
+                                                                    <td>--PESO REAL--</td>
+                                                                    <td>--TIPO ENVIO--</td>
                                                                     <td style="text-align:center;">
                                                                         <a onclick="popUpLstProds(@op["IdTracking"])"
                                                                            title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
                                                                     </td>
+                                                                    @*<td>@op["PackageType"]</td>
+
+                                                                        <td>@op["PackageWeight"]</td>
+                                                                        <td>@op["PackageLength"] x @op["PackageWidth"] x @op["PackageHeight"]</td>
+                                                                        <td style="text-align:center;">
+                                                                            <a onclick="popUpLstProds(@op["IdTracking"])"
+                                                                               title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
+                                                                        </td>*@
                                                                     <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op["IdTracking"]")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
                                                                 </tr>
                                                             }
@@ -244,7 +265,7 @@
                                 @if (EsVehiculo)
                                 {
                                     if (ViewBag.Vehiculos != null)
-                                    {                                    
+                                    {
                                         <div role="tabpanel" id="tab-4" class="tab-pane">
                                             <div class="panel-body">
                                                 <div class="row">
@@ -355,8 +376,8 @@
                                                                         <td style="text-align:left;">@item.Year</td>
                                                                         <td style="text-align:left;">@item.ColorId</td>
                                                                         <td style="text-align:left;">@item.ModelId</td>
-                                                                        <td style="text-align:left;">@item.BrandId</td>                                                              
-                                                                        <td style="text-align:left;">@item.CylinderCapacityId</td>                                                              
+                                                                        <td style="text-align:left;">@item.BrandId</td>
+                                                                        <td style="text-align:left;">@item.CylinderCapacityId</td>
                                                                     </tr>
 
 
@@ -370,94 +391,94 @@
                                         </div>
                                     }
                                 }
-                                @*<div role="tabpanel" id="tab-3" class="tab-pane">
-                                        <div class="panel-body">
-                                            <div class="tableFixHead table-responsive m-t">
-                                                <table id="tblDescargaGuia" class="table invoice-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="text-align:center;">No. Guía</th>
-
-                                                            <th style="text-align:center;">ID</th>
-                                                            <th style="text-align:center;">Descripción</th>
-
-                                                            <th style="text-align:center;">Peso Real</th>
-                                                            <th style="text-align:center;">Tipo Envío</th>
-
-                                                            <th> </th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-
-                                                            <td style="text-align:left;">Licon Caballero</td>
-
-                                                            <td style="text-align:left;">Paquetería</td>
-
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td> <a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="row">
-                                                <table>
+                                <div role="tabpanel" id="tab-3" class="tab-pane">
+                                    <div class="panel-body">
+                                        <div class="tableFixHead table-responsive m-t">
+                                            <table id="tblDescargaGuia" class="table invoice-table">
+                                                <thead>
                                                     <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                        </td>
+                                                        <th style="text-align:center;">No. Guía</th>
+
+                                                        <th style="text-align:center;">ID</th>
+                                                        <th style="text-align:center;">Descripción</th>
+
+                                                        <th style="text-align:center;">Peso Real</th>
+                                                        <th style="text-align:center;">Tipo Envío</th>
+
+                                                        <th> </th>
+                                                        <th></th>
                                                     </tr>
-                                                </table>
-                                            </div>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="text-align:center;">4562734567898230000000</td>
+                                                        <td style="text-align:center;">1234567</td>
+
+                                                        <td style="text-align:left;">Licon Caballero</td>
+
+                                                        <td style="text-align:left;">Paquetería</td>
+
+                                                        <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
+                                                        <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center;">4562734567898230000000</td>
+                                                        <td style="text-align:center;">1234567</td>
+                                                        <td style="text-align:left;">Licon Caballero</td>
+
+                                                        <td style="text-align:left;">Paquetería</td>
+                                                        <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
+                                                        <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center;">4562734567898230000000</td>
+                                                        <td style="text-align:center;">1234567</td>
+                                                        <td style="text-align:left;">Licon Caballero</td>
+                                                        <td style="text-align:left;">Paquetería</td>
+                                                        <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
+                                                        <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center;">4562734567898230000000</td>
+                                                        <td style="text-align:center;">1234567</td>
+                                                        <td style="text-align:left;">Licon Caballero</td>
+                                                        <td style="text-align:left;">Paquetería</td>
+                                                        <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
+                                                        <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center;">4562734567898230000000</td>
+                                                        <td style="text-align:center;">1234567</td>
+                                                        <td style="text-align:left;">Licon Caballero</td>
+                                                        <td style="text-align:left;">Paquetería</td>
+                                                        <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
+                                                        <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center;">4562734567898230000000</td>
+                                                        <td style="text-align:center;">1234567</td>
+                                                        <td style="text-align:left;">Licon Caballero</td>
+                                                        <td style="text-align:left;">Paquetería</td>
+                                                        <td> <a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
+                                                        <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    </div>*@
+                                        <div class="row">
+                                            <table>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     }
@@ -610,7 +631,7 @@
                 locale: 'es'
                 , format: "yyy/MM/DD"
             });
-         
+
         });
 
 

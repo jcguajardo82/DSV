@@ -24,14 +24,31 @@ namespace ServicesManagement.Web.Controllers
             {
                 try
                 {
-
                     var idUeNo = Request.Form["idUeNo"].ToString();
+                    int idOrderNo = int.Parse(Request.Form["idOrderNo"].ToString());
                     string servername = Request.Form["servername"].ToString();
 
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
                     for (int i = 0; i < files.Count; i++)
                     {
+                        System.IO.Stream str; String strmContents;
+                        Int32 counter, strLen, strRead;
+                        // Create a Stream object.
+                        str = Request.InputStream;
+                        // Find number of bytes in stream.
+                        strLen = Convert.ToInt32(str.Length);
+                        // Create a byte array.
+                        byte[] strArr = new byte[strLen];
+                        // Read stream into byte array.
+                        strRead = str.Read(strArr, 0, strLen);
+
+                        // Convert byte array to a text string.
+                        strmContents = "";
+                        for (counter = 0; counter < strLen; counter++)
+                        {
+                            strmContents = strmContents + strArr[counter].ToString();
+                        }
                         //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
                         //string filename = Path.GetFileName(Request.Files[i].FileName);  
 
@@ -39,6 +56,10 @@ namespace ServicesManagement.Web.Controllers
                         string dateTime = dt.ToString("yyyyMMddHHmmssfff");
 
                         HttpPostedFileBase file = files[i];
+
+                        //Grabar a tabla
+                        DALProcesoReciboDevoluciones.upCorpOms_Ins_UeNoDevolEvidencia(idUeNo, idOrderNo, User.Identity.Name, strArr);
+
                         string fname;
 
                         // Checking for Internet Explorer  
@@ -216,6 +237,53 @@ namespace ServicesManagement.Web.Controllers
                 var listCond = DataTableToModel.ConvertTo<upCorpOms_Cns_UeCondCauses>(DALProcesoReciboDevoluciones.upCorpOms_Cns_UeCondCauses(idOwner).Tables[0]);
                 var listDev = DataTableToModel.ConvertTo<upCorpOms_Cns_UeDevolCauses>(DALProcesoReciboDevoluciones.upCorpOms_Cns_UeDevolCauses(idOwner).Tables[0]);
                 var result = new { Success = true, resp = listaProd, lstCond = listCond, lstDev = listDev };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        //listar productos de  consignación
+        public ActionResult LstProdImagenes(string UeNo)
+        {
+            try
+            {
+                var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+                int idOwner = 1;
+
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    idOwner = 2;
+                }
+                else
+                {
+                    foreach (DataRow item in ds.Tables[0].Rows)
+                    {
+                        UserRolModel rol = new UserRolModel();
+                        rol.idRol = item["rol"].ToString();
+                        rol.nombreRol = item["nombreRol"].ToString();
+                        Session["UserRol"] = rol;
+                        idOwner = 3;
+                    }
+                }
+
+                var listaImagenes = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoDevolEvidencia>(DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolEvidencia(UeNo).Tables[0]);
+                var lstImagenes = DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolEvidencia(UeNo).Tables[0];
+                var x = 0;
+                foreach (DataRow item in lstImagenes.Rows)
+                {
+                    byte[] data = (byte[])(item["Evidence"]);
+                    string base64String = Convert.ToBase64String(data);
+                    listaImagenes[x].Evidence = data;
+                    listaImagenes[x].strImg = base64String;
+                    x += 1;
+                }
+
+                var result = new { Success = true, resp = listaImagenes };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
