@@ -87,16 +87,24 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-6 col-md-6">
+                        <div class="col-xs-4 col-md-4">
                             <div class="form-group">
                                 <label>Almacen </label>
                                 <select class="form-control m-b" id="ddlAlmacenes"></select>
                             </div>
                         </div>
-                        <div class="col-xs-6 col-md-6">
+                        <div class="col-xs-4 col-md-4">
                             <div class="form-group">
                                 <label>Tienda/Proveedor</label>
                                 <select class="form-control m-b" id="ddlTienda">
+                                    <option value="0">--SELECCIONE--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-md-4">
+                            <div class="form-group">
+                                <label>Tienda/Proveedor</label>
+                                <select class="form-control m-b" id="ddlCarrier">
                                     <option value="0">--SELECCIONE--</option>
                                 </select>
                             </div>
@@ -150,6 +158,11 @@
 
                         GetSupp(json.resp.IdOwner);
                         $("#ddlTienda").val(json.resp.IdTienda);
+
+                        GetCarriers(json.resp.IdCarrier)
+                        $("#ddlCarrier").val($("#ddlTienda").val());
+
+
                         if (json.resp.activo) {
                             $("#ddlHabilitado").val("true");
                         } else { $("#ddlHabilitado").val("false"); }
@@ -217,6 +230,7 @@
             var _Activo = $("#ddlHabilitado").val();
             var _IdOwner = $("#ddlAlmacenes").val();
             var _IdTienda = $("#ddlTienda").val();
+            var _IdCarrier = $("#ddlCarrier").val();
             //int IdOwner,int? IdTienda
             if (_rol == "0") {
                 $("#ddlRoles").focus();
@@ -245,6 +259,7 @@
                     , rol: _rol
                     , IdOwner: _IdOwner
                     , IdTienda: _IdTienda
+                    , IdCarrier: _IdCarrier
                 },
                 datatype: "html",
                 success: function (json) {
@@ -298,11 +313,16 @@
         }
 
         $("#ddlAlmacenes").change(function () {
-       
+
             GetSupp($("#ddlAlmacenes").val());
 
         });
 
+        $("#ddlTienda").change(function () {
+
+            GetCarriers($("#ddlCarrier").val());
+
+        });
 
         function GetSupp(_idOwner) {
             $.ajax({
@@ -334,6 +354,7 @@
                 }
             });
         }
+
         function GetUsuarios() {
 
             //var _Id_Num_UN = $("#hddTda").val();
@@ -376,6 +397,38 @@
             });
 
         }
+
+        function GetCarriers(tda) {
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("ListCarrierById", "Config")',
+                data: {
+                    IdTienda: tda
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#ddlCarrier");
+                        sel.empty();
+
+                        $('#ddlCarrier').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].Id_Carrier + '">' + json.resp[i].Name + '</option>');
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
         $(document).ready(function () {
 
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');

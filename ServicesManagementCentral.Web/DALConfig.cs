@@ -137,7 +137,8 @@ namespace ServicesManagement.Web
 
         }
 
-        public static DataSet Usuarios_iUP(string nombre, bool activo, string autor, string usuario, string rol, int IdOwner, int? IdTienda)
+        public static DataSet Usuarios_iUP(string nombre, bool activo, string autor, string usuario, string rol
+            , int IdOwner, int? IdTienda,int IdCarrier)
         {
 
             DataSet ds = new DataSet();
@@ -165,6 +166,8 @@ namespace ServicesManagement.Web
                     parametros.Add("@IdOwner", IdOwner);
                 if (IdTienda != 0)
                     parametros.Add("@IdTienda", IdTienda);
+                if (IdCarrier != 0)
+                    parametros.Add("@IdCarrier", IdCarrier);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[config].[usuarios_iUP]", false, parametros);
 
@@ -183,7 +186,8 @@ namespace ServicesManagement.Web
 
         }
 
-        public static DataSet Usuarios_uUP(int idUsuario, string nombre, bool activo, string autor, string usuario, string rol, int? IdOwner, int? IdTienda)
+        public static DataSet Usuarios_uUP(int idUsuario, string nombre, bool activo, string autor, string usuario, string rol
+            , int? IdOwner, int? IdTienda,int IdCarrier)
         {
 
             DataSet ds = new DataSet();
@@ -212,7 +216,8 @@ namespace ServicesManagement.Web
                     parametros.Add("@IdOwner", IdOwner);
                 if (IdTienda != 0)
                     parametros.Add("@IdTienda", IdTienda);
-
+                if (IdCarrier != 0)
+                    parametros.Add("@IdCarrier", IdCarrier);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[config].[usuarios_uUP]", false, parametros);
 
