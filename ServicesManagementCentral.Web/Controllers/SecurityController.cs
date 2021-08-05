@@ -146,7 +146,8 @@ namespace ServicesManagement.Web.Controllers
                 // DESA
                 // if (r.message.Contains("1"))
                 // PROD
-                if (r.message.Contains("true"))
+                //if (r.message.Contains("true"))
+                if (r.message.Contains("true") || r.message.Contains("1"))
                 {
                     return true;
                 }
