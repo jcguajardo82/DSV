@@ -103,7 +103,7 @@
                         </div>
                         <div class="col-xs-4 col-md-4">
                             <div class="form-group">
-                                <label>Tienda/Proveedor</label>
+                                <label>Transportista</label>
                                 <select class="form-control m-b" id="ddlCarrier">
                                     <option value="0">--SELECCIONE--</option>
                                 </select>
@@ -320,7 +320,7 @@
 
         $("#ddlTienda").change(function () {
 
-            GetCarriers($("#ddlCarrier").val());
+            GetCarriers($("#ddlTienda").val());
 
         });
 
