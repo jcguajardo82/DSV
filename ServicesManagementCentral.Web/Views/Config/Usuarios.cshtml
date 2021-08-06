@@ -160,7 +160,8 @@
                         $("#ddlTienda").val(json.resp.IdTienda);
 
                         GetCarriers(json.resp.IdCarrier)
-                        $("#ddlCarrier").val($("#ddlTienda").val());
+                        //$("#ddlCarrier").val($("#ddlTienda").val());
+                        $("#ddlCarrier").val(json.resp.IdCarrier);
 
 
                         if (json.resp.activo) {
