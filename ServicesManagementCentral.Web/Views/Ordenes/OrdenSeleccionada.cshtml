@@ -248,7 +248,8 @@
                         <div class="col-xs-2 col-md-2 col-lg-2">
                             <div class="dt-buttons btn-group flex-wrap">
                                 <div class="input-group-prepend">
-                                    <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">Asignar Guia de Embarque DST</button>
+                                    @*"Se solicitó quitar combo de DST" *@
+                                    @*<button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">Asignar Guia de Embarque DST</button>
                                     <ul id="dllTransDTS" class="dropdown-menu" x-placement="top-start" style="position: absolute; top: -2px; left: 0px; will-change: top, left;width:100%;">
                                         @if (Session["listTransDST"] != null)
                                         {
@@ -259,7 +260,7 @@
                                                 <li id="@p["Id_Carrier"]" onclick="onchangeDropTransDST(this)"><a>@p["Name"]</a></li>
                                             }
                                         }
-                                    </ul>
+                                    </ul>*@
                                 </div>
                             </div>
                         </div>
@@ -269,9 +270,10 @@
                             <div class="dt-buttons btn-group flex-wrap">
                                 <div class="input-group-prepend">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-lg btn-primary" type="submit" onclick="onclickDropTransDTS()">
+                                        @*"Se solicitó quitar el botón de DST" *@
+                                        @*<button class="btn btn-lg btn-primary" type="submit" onclick="onclickDropTransDTS()">
                                             DST
-                                        </button>
+                                        </button>*@
                                     </div>
                                 </div>
                             </div>
