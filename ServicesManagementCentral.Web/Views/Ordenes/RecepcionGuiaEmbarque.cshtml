@@ -84,7 +84,7 @@
                                                             @foreach (System.Data.DataRow pr in dt.Rows)
                                                             {
                                                                 <tr>
-                                                                    <td class="text-navy">@pr["UeNo"]</td>
+                                                                    <td class="text-navy">@pr["NroOrden"]</td>
                                                                     <td class="text-navy">@pr["OrderDeliveryDate"].ToString()</td>
                                                                     <td class="text-navy">@pr["CustomerName"]</td>
                                                                     <td>
@@ -145,7 +145,7 @@
                                             @*<span>Orden:</span>*@
                                             <h4>Pedido</h4>
                                             @*<h4 class="text-navy">@p["OrderNo"]</h4>*@
-                                            <h4 class="text-navy">@p["UeNo"]</h4>
+                                            <h4 class="text-navy">@p["NroOrden"]</h4>
                                             <h4>Entrega</h4>
                                             <h4 class="text-navy">@p["OrderDeliveryDate"].ToString()</h4>
                                         </div>
@@ -375,7 +375,7 @@
                                                             <tr>
                                                                 <td>
                                                                     @*<p style="text-align:center" id="txtNoOrden">@p["OrderNo"]</p>*@
-                                                                    <p style="text-align:center" id="txtNoOrden">@p["UeNo"]</p>
+                                                                    <p style="text-align:center" id="txtNoOrden">@p["NroOrden"]</p>
                                                                 </td>
                                                                 <td>
                                                                     <p style="text-align:center" id="txtFecEntrega">@p["OrderDeliveryDate"]</p>

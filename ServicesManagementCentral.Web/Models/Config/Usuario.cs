@@ -15,6 +15,7 @@ namespace ServicesManagement.Web.Models.Config
         public string nombreRol { get; set; }
         public string IdOwner { get; set; }
         public string IdTienda { get; set; }
+        public string IdCarrier { get; set; }
 
 
 
