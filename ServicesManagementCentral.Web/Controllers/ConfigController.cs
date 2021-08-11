@@ -1,4 +1,5 @@
 ﻿using ServicesManagement.Web.Helpers;
+using ServicesManagement.Web.Models;
 using ServicesManagement.Web.Models.Config;
 using System;
 using System.Collections.Generic;
@@ -222,17 +223,17 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult AddUsuario(string idUsuario, string nombre, string activo, string usuario, string rol,int IdOwner,int? IdTienda)
+        public ActionResult AddUsuario(string idUsuario, string nombre, string activo, string usuario, string rol,int IdOwner,int? IdTienda,int IdCarrier)
         {
             try
             {
                 if (int.Parse(idUsuario) == 0)
                 {
-                    DALConfig.Usuarios_iUP(nombre, bool.Parse(activo), "sys", usuario, rol,IdOwner,IdTienda);
+                    DALConfig.Usuarios_iUP(nombre, bool.Parse(activo), User.Identity.Name, usuario, rol,IdOwner,IdTienda, IdCarrier);
                 }
                 else
                 {
-                    DALConfig.Usuarios_uUP(int.Parse(idUsuario), nombre, bool.Parse(activo), "sys", usuario, rol,IdOwner,IdTienda);
+                    DALConfig.Usuarios_uUP(int.Parse(idUsuario), nombre, bool.Parse(activo), User.Identity.Name, usuario, rol,IdOwner,IdTienda, IdCarrier);
                 }
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -267,6 +268,23 @@ namespace ServicesManagement.Web.Controllers
             try
             {
                 var list = DataTableToModel.ConvertTo<SuppliersById>(DALConfig.upCorpTms_Cns_SuppliersById(idOwner).Tables[0]);
+
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public ActionResult ListCarrierById(int IdTienda)
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<CarrierModel>(DALServicesM.GetCarriersUN(IdTienda).Tables[0]);
 
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);

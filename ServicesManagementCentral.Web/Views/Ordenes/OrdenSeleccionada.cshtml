@@ -284,147 +284,147 @@
                     </div>
                 </div>
             </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="tableFixHead table-responsive m-t">
-                            <table id="tblConsulta_Embarcar" class="table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr role="row">
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 130px;">Pedido</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 115px;">TMS/Tienda</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Fin Surtido</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Forma Entrega</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 124px;">Forma de Pago</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Inicio Cobro</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Envio listo para entrega</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Confirmación</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Guias de embarque</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Guias de paqueteria</th>
-                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Estatus de la guía</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="tableFixHead table-responsive m-t">
+                        <table id="tblConsulta_Embarcar" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr role="row">
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 130px;">Pedido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 115px;">TMS/Tienda</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Fin Surtido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Forma Entrega</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 124px;">Forma de Pago</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Inicio Cobro</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Envio listo para entrega</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Confirmación</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Guias de embarque</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Guias de paqueteria</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Estatus de la guía</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                                    @{
-                                        if (Session["listaOrdersEmbarcar"] != null)
+                                @{
+                                    if (Session["listaOrdersEmbarcar"] != null)
+                                    {
+                                        System.Data.DataSet ds = (System.Data.DataSet)Session["listaOrdersEmbarcar"];
+
+                                        var dt = ds.Tables[0];
+                                        var dt1 = ds.Tables[1];
+
+                                        int index = 0;
+                                        string IdGuia = string.Empty;
+                                        string IdGuiaPaq = string.Empty;
+                                        string GuiaPaqEstatusDesc = string.Empty;
+                                        var IdGuias = "";
+                                        var IdGuiasPaq = "";
+                                        var GuiasPaqEstatusDesc = "";
+
+                                        foreach (System.Data.DataRow p in dt.Rows)
                                         {
-                                            System.Data.DataSet ds = (System.Data.DataSet)Session["listaOrdersEmbarcar"];
+                                            IdGuias = "";
+                                            IdGuiasPaq = "";
+                                            GuiasPaqEstatusDesc = "";
+                                            <tr>
 
-                                            var dt = ds.Tables[0];
-                                            var dt1 = ds.Tables[1];
+                                                <td style="text-align:center;">
 
-                                            int index = 0;
-                                            string IdGuia = string.Empty;
-                                            string IdGuiaPaq = string.Empty;
-                                            string GuiaPaqEstatusDesc = string.Empty;
-                                            var IdGuias = "";
-                                            var IdGuiasPaq = "";
-                                            var GuiasPaqEstatusDesc = "";
+                                                    <a href="@Url.Action("ConsultaDetalle", "Ordenes", new { order = @p["UeNo"] })"
+                                                       title="Click para ver el detalle de la orden" class="btn btn-link">@p["NroOrden"]</a>
+                                                </td>
+                                                <td style="text-align:center;">
 
-                                            foreach (System.Data.DataRow p in dt.Rows)
-                                            {
-                                                IdGuias = "";
-                                                IdGuiasPaq = "";
-                                                GuiasPaqEstatusDesc = "";
-                                                <tr>
+                                                    @if (@p["Id_Num_OrdenStat"].ToString() == "12")
+                                                    {
+                                                        <input type="checkbox" class="cbx" value="@p["UeNo"]" id="flexCheckDefault">
+                                                    }
+                                                    else if (@p["Id_Num_OrdenStat"].ToString() == "12" & @p["OrdenStatTda"].ToString() == "11")
+                                                    {
+                                                        <a onclick="popUpCanOrden(@p["UeNo"])"
+                                                           title="Click para cancelar de la orden" class="btn btn-link">Cancelada en POS</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <!----<b>TIENDA</b> -->
+                                                        @p["Nom_Trans"]
+                                                    }
 
-                                                    <td style="text-align:center;">
+                                                </td>
 
-                                                        <a href="@Url.Action("ConsultaDetalle", "Ordenes", new { order = @p["UeNo"] })"
-                                                           title="Click para ver el detalle de la orden" class="btn btn-link">@p["NroOrden"]</a>
-                                                    </td>
-                                                    <td style="text-align:center;">
+                                                @if (string.IsNullOrEmpty(@p["Fec_SrtReal"].ToString()))
+                                                {
+                                                    <td class="@ColoresSemaforo(@p["Color_Srt"].ToString())" style="text-align:center;">@p["Fec_SrtEsp"]</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="@ColoresSemaforo(@p["Color_Srt"].ToString())" style="text-align:center;">@p["Fec_SrtReal"]</td>
+                                                }
 
-                                                        @if (@p["Id_Num_OrdenStat"].ToString() == "12")
+                                                <td>@p["TipoEntrega"]</td>
+
+                                                <td>@p["FormaPago"]</td>
+
+                                                @if (string.IsNullOrEmpty(@p["Fec_PagoReal"].ToString()))
+                                                {
+                                                    <td class="@ColoresSemaforo(@p["Color_Pago"].ToString())" style="text-align:center;">@p["Fec_PagoEsp"]</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="@ColoresSemaforo(@p["Color_Pago"].ToString())" style="text-align:center;">@p["Fec_PagoReal"]</td>
+                                                }
+                                                @if (string.IsNullOrEmpty(@p["Fec_AsigTraspReal"].ToString()))
+                                                {
+                                                    <td class="@ColoresSemaforo(@p["Color_AsigTrasp"].ToString())" style="text-align:center;">@p["Fec_AsigTraspEsp"]</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="@ColoresSemaforo(@p["Color_AsigTrasp"].ToString())" style="text-align:center;">@p["Fec_AsigTraspReal"]</td>
+                                                }
+                                                <td style="text-align:center">
+                                                    @if (@p["Id_Num_OrdenStat"].ToString() == "9")
+                                                    {
+                                                        <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new { guia = @p["Id_Num_GuiaEmb"] })"
+                                                           title="Click para ver el detalle de la orden" class="btn btn-link">@p["Id_Num_GuiaEmb"]</a>
+                                                    }
+                                                </td>
+
+                                                @foreach (System.Data.DataRow p1 in dt1.Rows)
+                                                {
+                                                    IdGuia = p1["IdGuias"].ToString();
+                                                    IdGuiaPaq = p1["IdGuiaPaq"].ToString();
+                                                    GuiaPaqEstatusDesc = p1["GuiaPaqEstatusDesc"].ToString();
+                                                    string ordUeNo = p["UeNo"].ToString();
+                                                    string embUeNo = p1["UeNo"].ToString();
+                                                    if (ordUeNo == embUeNo)
+                                                    {
+                                                        if (@IdGuias == "")
                                                         {
-                                                            <input type="checkbox" class="cbx" value="@p["UeNo"]" id="flexCheckDefault">
-                                                        }
-                                                        else if (@p["Id_Num_OrdenStat"].ToString() == "12" & @p["OrdenStatTda"].ToString() == "11")
-                                                        {
-                                                            <a onclick="popUpCanOrden(@p["UeNo"])"
-                                                               title="Click para cancelar de la orden" class="btn btn-link">Cancelada en POS</a>
+                                                            IdGuias = IdGuia;
+                                                            IdGuiasPaq = IdGuiaPaq;
+                                                            GuiasPaqEstatusDesc = GuiaPaqEstatusDesc;
                                                         }
                                                         else
                                                         {
-                                                            <!----<b>TIENDA</b> -->
-                                                            @p["Nom_Trans"]
-                                                        }
-
-                                                    </td>
-
-                                                    @if (string.IsNullOrEmpty(@p["Fec_SrtReal"].ToString()))
-                                                    {
-                                                        <td class="@ColoresSemaforo(@p["Color_Srt"].ToString())" style="text-align:center;">@p["Fec_SrtEsp"]</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td class="@ColoresSemaforo(@p["Color_Srt"].ToString())" style="text-align:center;">@p["Fec_SrtReal"]</td>
-                                                    }
-
-                                                    <td>@p["TipoEntrega"]</td>
-
-                                                    <td>@p["FormaPago"]</td>
-
-                                                    @if (string.IsNullOrEmpty(@p["Fec_PagoReal"].ToString()))
-                                                    {
-                                                        <td class="@ColoresSemaforo(@p["Color_Pago"].ToString())" style="text-align:center;">@p["Fec_PagoEsp"]</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td class="@ColoresSemaforo(@p["Color_Pago"].ToString())" style="text-align:center;">@p["Fec_PagoReal"]</td>
-                                                    }
-                                                    @if (string.IsNullOrEmpty(@p["Fec_AsigTraspReal"].ToString()))
-                                                    {
-                                                        <td class="@ColoresSemaforo(@p["Color_AsigTrasp"].ToString())" style="text-align:center;">@p["Fec_AsigTraspEsp"]</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td class="@ColoresSemaforo(@p["Color_AsigTrasp"].ToString())" style="text-align:center;">@p["Fec_AsigTraspReal"]</td>
-                                                    }
-                                                    <td style="text-align:center">
-                                                        @if (@p["Id_Num_OrdenStat"].ToString() == "9")
-                                                        {
-                                                            <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new { guia = @p["Id_Num_GuiaEmb"] })"
-                                                               title="Click para ver el detalle de la orden" class="btn btn-link">@p["Id_Num_GuiaEmb"]</a>
-                                                        }
-                                                    </td>
-
-                                                    @foreach (System.Data.DataRow p1 in dt1.Rows)
-                                                    {
-                                                        IdGuia = p1["IdGuias"].ToString();
-                                                        IdGuiaPaq = p1["IdGuiaPaq"].ToString();
-                                                        GuiaPaqEstatusDesc = p1["GuiaPaqEstatusDesc"].ToString();
-                                                        string ordUeNo = p["UeNo"].ToString();
-                                                        string embUeNo = p1["UeNo"].ToString();
-                                                        if (ordUeNo == embUeNo)
-                                                        {
-                                                            if (@IdGuias == "")
-                                                            {
-                                                                IdGuias = IdGuia;
-                                                                IdGuiasPaq = IdGuiaPaq;
-                                                                GuiasPaqEstatusDesc = GuiaPaqEstatusDesc;
-                                                            }
-                                                            else
-                                                            {
-                                                                IdGuias = IdGuias + "," + IdGuia;
-                                                                IdGuiasPaq = IdGuiaPaq + "," + IdGuiaPaq;
-                                                                GuiasPaqEstatusDesc = GuiasPaqEstatusDesc + "," + GuiaPaqEstatusDesc;
-                                                            }
+                                                            IdGuias = IdGuias + "," + IdGuia;
+                                                            IdGuiasPaq = IdGuiaPaq + "," + IdGuiaPaq;
+                                                            GuiasPaqEstatusDesc = GuiasPaqEstatusDesc + "," + GuiaPaqEstatusDesc;
                                                         }
                                                     }
-                                                    <td>@IdGuias</td>
-                                                    <td>@IdGuiasPaq</td>
-                                                    <td>@GuiasPaqEstatusDesc</td>
-                                                </tr>
-                                            }
+                                                }
+                                                <td>@IdGuias</td>
+                                                <td>@IdGuiasPaq</td>
+                                                <td>@GuiasPaqEstatusDesc</td>
+                                            </tr>
                                         }
                                     }
-                                </tbody>
-                            </table>
-                        </div>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>
 <input id="Orders" name="Orders" value="0" style="visibility:hidden" />
