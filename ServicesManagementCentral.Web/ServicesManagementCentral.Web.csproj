@@ -3551,6 +3551,8 @@
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Files\img1.jpeg" />
+    <Content Include="Files\img2.jpeg" />
     <Content Include="Files\qr.PNG" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
