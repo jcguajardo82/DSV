@@ -211,6 +211,7 @@
     <Compile Include="Controllers\ActualizacionesController.cs" />
     <Compile Include="Controllers\Api\ApiBaseController.cs" />
     <Compile Include="Controllers\Api\SecurityController.cs" />
+    <Compile Include="Controllers\AutorizacionController.cs" />
     <Compile Include="Controllers\AutorizacionesRMA.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CallCenterController.cs" />
@@ -3810,6 +3811,7 @@
     <Content Include="Views\CallCenter\EstatusRMA.cshtml" />
     <Content Include="Views\CallCenter\Historial.cshtml" />
     <Content Include="Views\CallCenter\RMA.cshtml" />
+    <Content Include="Views\Autorizacion\Autorizacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

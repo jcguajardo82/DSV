@@ -1,0 +1,176 @@
+﻿
+@{
+    ViewBag.Title = "Autorización RMA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4"><h2>Autorización RMA</h2></div>
+        <div class="col-4"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div style="width:99%;">
+                <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                    <thead class="bg-danger-sor">
+                        <tr>
+
+                            <th>No. de Orden</th>
+                            <th>Tipo de Solicitud</th>
+                            <th>Canal de Solicitud</th>
+                            <th>Fecha de Solicitud</th>
+                            <th>Comentario Cliente</th>
+                            <th>Auatorizacion <br /> Call Center</th>
+                            <th>Auatorizacion <br />Almacen</th>
+                            <th>Auatorizacion <br />Administrador</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>12334522</td>
+                            <td>sdad</td>
+                            <td>asdsadsad</td>
+                            <td>29/01/2021</td>
+                            <td>sadsad</td>
+                            <td style="text-align:center;">
+                                <button title="Click para Autorizar" onclick="Aut()" type="button" class="btn btn-white btn-circle"> <i class="fa fa-check"></i></button>
+                                <button title="Click para Rechazar" onclick="Aut()" type="button" class="btn btn-white btn-circle"> <i class="fa fa-ban"></i></button>
+                            </td>
+                            <td style="text-align:center;">
+                                <button title="Click para Autorizar" onclick="Aut()" type="button" class="btn btn-white btn-circle"> <i class="fa fa-check"></i></button>
+                                <button title="Click para Rechazar" onclick="Aut()" type="button" class="btn btn-white btn-circle"> <i class="fa fa-ban"></i></button>
+                            </td>
+                            <td style="text-align:center;">
+                                <button title="Click para Autorizar" onclick="Aut()" type="button" class="btn btn-white btn-circle"> <i class="fa fa-check"></i></button>
+                                <button title="Click para Rechazar" onclick="Aut()" type="button" class="btn btn-white btn-circle"> <i class="fa fa-ban"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal fade" id="dlgMod" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header pt-3 pb-1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Autorización RMA</h4>
+                    
+
+                </div>
+                <div class="modal-body">
+                    <form id="frmCreateServicios">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group">
+                                    <label>Comentarios </label>
+                                    <textarea class="form-control m-b" id="txtMotCan" rows="6" maxlength="250"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="Inhabilitar()" class="btn btn-primary">Aceptar</button>
+                    @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts {
+
+
+
+    <script>
+        function Aut() {
+            debugger;
+            $("#dlgMod").modal('show');
+        }
+
+        $(document).ready(function () {
+
+            $('#tblConsulta').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' }
+                        //{ extend: 'excel', className: 'btn-primary' },
+                        //{
+                        //    text: 'Cotizacion',
+                        //    action: function (e, dt, node, config) {
+                        //        //var e = document.getElementById("ProveedorLista");
+                        //        //e.disabled = false;
+
+                        //        document.getElementById("TarifaFija").value = "SI";
+                        //        document.getElementById("cp_origen").value = '';
+                        //        document.getElementById("cp_destino").value = '';
+                        //        document.getElementById("in_ancho").value = '';
+                        //        document.getElementById("in_alto").value = '';
+                        //        document.getElementById("in_peso").value = '';
+                        //        document.getElementById("in_largo").value = '';
+
+                        //        $("#frmAltaTrans").modal('show');
+
+                        //    }
+                        //    , className: 'btn-primary'
+                        //}
+                    ]
+                    //,"fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    //    if (aData[1] == "SETC") {
+                    //        $('td', nRow).css('background-color', '#B6BF00');
+                    //    } else if (aData[2] == "4") {
+                    //        $('td', nRow).css('background-color', 'Orange');
+                    //    }
+                    //}
+                }
+            );
+
+        });
+    </script>
+}
