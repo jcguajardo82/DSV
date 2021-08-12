@@ -1,4 +1,7 @@
 ﻿using RestSharp;
+using ServicesManagement.Web.DAL.Autorizacion;
+using ServicesManagement.Web.Helpers;
+using ServicesManagement.Web.Models.Autorizacion;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -367,9 +370,32 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
+
+        #region Estatus Rma
         public ActionResult EstatusRMA()
         {
             return View();
         }
+
+        public ActionResult GetEstatusRMA()
+        {
+            try
+            {
+
+                var result = new
+                {
+                    Success = true,
+                    resp = DataTableToModel.ConvertTo<AutorizacionShow>(DALAutorizacion.up_Corp_cns_tbl_OrdenCancelada("HISTORIA").Tables[0])
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
     }
 }

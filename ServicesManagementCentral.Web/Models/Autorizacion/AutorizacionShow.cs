@@ -24,6 +24,7 @@ namespace ServicesManagement.Web.Models.Autorizacion
         public string Origen { get; set; }
         public string ProcesoAut { get; set; }
         public string WarehouseType { get; set; }
+        public string DescAut { get; set; }
 
 
 
