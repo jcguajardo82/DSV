@@ -8,7 +8,7 @@
 {
     <div class="row">
         <div class="col-4"></div>
-        <div class="col-4"><h2>Autorización de Casos de Cliente</h2></div>
+        <div class="col-4"><h2>Autorización RMA</h2></div>
         <div class="col-4"></div>
     </div>
 
@@ -18,21 +18,18 @@
                 <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                     <thead class="bg-danger-sor">
                         <tr>
-                            <th>Folio de Casos de Cliente</th>
+                            <th>Folio de RMA</th>
                             <th>No. de Orden</th>
                             <th>Tipo de Solicitud</th>
                             <th>Canal de Solicitud</th>
                             <th>Fecha de Solicitud</th>
                             <th>Fecha de Creacion Orden</th>
-                            <th>Auatorizacion <br /> Call Center</th>
+                            <th>Auatorizacion <br /> Almacen</th>
                             @*<th>Auatorizacion <br />Almacen</th>
                                 <th>Auatorizacion <br />Administrador</th>*@
                         </tr>
                     </thead>
-                    <tbody>
-  
 
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -120,7 +117,7 @@
                 type: "get",
                 url: '@Url.Action("GetOrdenes", "Autorizacion")',
                 data: {
-                    accion:"CALLCENTER"
+                    accion:"CEDIS"
                 },
 
                 datatype: "json",
@@ -144,8 +141,8 @@
                                 , json.resp[i].Fec_movto
                                 , json.resp[i].FecOrder
 
-                                , "<button title='Click para Autorizar' onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",4)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
-                                + "<button title='Click para Rechazar'  onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",5)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-ban'></i></button>"
+                                , "<button title='Click para Autorizar' onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",6)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+                                + "<button title='Click para Rechazar'  onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",7)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-ban'></i></button>"
 
 
 

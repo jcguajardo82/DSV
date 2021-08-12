@@ -243,6 +243,7 @@
     <Compile Include="DAL\Actualizaciones\DALActualizaciones.cs" />
     <Compile Include="DAL\Almacenes\DALAlmacenes.cs" />
     <Compile Include="DAL\Almacenes\DALAltaProveedor.cs" />
+    <Compile Include="DAL\Autorizacion\DALAutorizacion.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesAdm.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesCEDIS.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesProveedor.cs" />
@@ -266,6 +267,8 @@
     <Compile Include="Models\Almacenes\SuppliersWHPostalCode.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHShipments.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHStock.cs" />
+    <Compile Include="Models\Autorizacion\AutorizacionShow.cs" />
+    <Compile Include="Models\Autorizacion\upCorpOms_Cns_OrdersByItems.cs" />
     <Compile Include="Models\Config\Menu.cs" />
     <Compile Include="Models\Config\Rol.cs" />
     <Compile Include="Models\Config\Owners.cs" />
@@ -3814,6 +3817,10 @@
     <Content Include="Views\CallCenter\Historial.cshtml" />
     <Content Include="Views\CallCenter\RMA.cshtml" />
     <Content Include="Views\Autorizacion\Autorizacion.cshtml" />
+    <Content Include="Views\Autorizacion\AutorizacionDsv.cshtml" />
+    <Content Include="Views\Autorizacion\AutorizacionCedis.cshtml" />
+    <None Include="Views\Autorizacion\AutorizacionDst.cshtml" />
+    <Content Include="Views\Autorizacion\AutorizacionAdmon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
