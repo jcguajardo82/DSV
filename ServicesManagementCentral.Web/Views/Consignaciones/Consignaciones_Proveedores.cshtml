@@ -38,6 +38,8 @@
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                 <thead class="bg-danger-sor">
                     <tr>
+                        <th>Número Almacen</th>
+                        <th>Nombre Almacen</th>
                         <th>Numero de Pedido</th>
                         @* <th>Total importe del Pedido</th>*@
                         @*<th>Tipo Almacen </th>*@
@@ -200,6 +202,8 @@
 
 
                             myTable.row.add([
+                                json.resp[i].NroAlmacen,
+                                json.resp[i].NombreAlmacen,
                                "<a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
                                 json.resp[i].FechaCreacion,
                                 json.resp[i].HoraCreacion,
