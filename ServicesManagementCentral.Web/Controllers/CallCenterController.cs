@@ -1,5 +1,6 @@
 ﻿using RestSharp;
 using ServicesManagement.Web.DAL.Autorizacion;
+using ServicesManagement.Web.DAL.CallCenter;
 using ServicesManagement.Web.Helpers;
 using ServicesManagement.Web.Models.Autorizacion;
 using System;
@@ -374,10 +375,12 @@ namespace ServicesManagement.Web.Controllers
         #region Estatus Rma
         public ActionResult EstatusRMA()
         {
+            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
             return View();
         }
 
-        public ActionResult GetEstatusRMA()
+        public ActionResult GetEstatusRMA(DateTime FecIni, DateTime FecFin,int? OrderId)
         {
             try
             {
@@ -385,7 +388,7 @@ namespace ServicesManagement.Web.Controllers
                 var result = new
                 {
                     Success = true,
-                    resp = DataTableToModel.ConvertTo<AutorizacionShow>(DALAutorizacion.up_Corp_cns_tbl_OrdenCancelada("HISTORIA").Tables[0])
+                    resp = DataTableToModel.ConvertTo<AutorizacionShow>(DALCallCenter.up_Corp_cns_EstatusRma(FecIni,FecFin,OrderId).Tables[0])
                 };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
