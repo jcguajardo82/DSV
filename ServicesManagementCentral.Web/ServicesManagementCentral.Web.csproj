@@ -244,6 +244,7 @@
     <Compile Include="DAL\Almacenes\DALAlmacenes.cs" />
     <Compile Include="DAL\Almacenes\DALAltaProveedor.cs" />
     <Compile Include="DAL\Autorizacion\DALAutorizacion.cs" />
+    <Compile Include="DAL\CallCenter\DALCallCenter.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesAdm.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesCEDIS.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesProveedor.cs" />

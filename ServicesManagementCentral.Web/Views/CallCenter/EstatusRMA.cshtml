@@ -9,7 +9,39 @@
             <h2>Estatus RMA</h2>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <div class="form-group">
+                <label>Fecha Inicio</label>
+                @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+                <div class="input-group date" id="datetimepicker1">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control datepicker" id="txtFecIni"
+                           type="text" value="@ViewBag.FecIni">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <label>Fecha Fin</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker2">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecFin"
+                       type="text" value="@ViewBag.FecFin">
+            </div>
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <label>Número de Orden</label>
+            <input type="text" placeholder="Número de Orden" id="OrderSelected" class="form-control">
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+            <label>&nbsp;</label>
+            <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetEstatusRMA()">
+                Buscar
+            </button>
 
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-11 col-md-11 col-lg-11">
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
@@ -32,8 +64,19 @@
 
 @section scripts{
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
-<script>
+    <script>
 
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
         $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(0) th').each(function (i) {
@@ -116,25 +159,40 @@
         });
 
     function GetEstatusRMA(){
+        var _FecIni = $("#txtFecIni").val();
+        var _FecFin = $("#txtFecFin").val();
+        var _Order = $("#OrderSelected").val();
 
+        if (_FecIni.length == 0) {
+            $("#txtFecIni").focus();
+            return;
+        }
+
+
+        if (_FecFin.length == 0) {
+            $("#txtFecFin").focus();
+            return;
+        }
             $.ajax({
                 async: false,
                 type: "get",
                 url: '@Url.Action("GetEstatusRMA", "CallCenter")',
                 data: {
-
+                    FecIni: _FecIni,
+                    FecFin: _FecFin,
+                    OrderId:_Order
                 },
 
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
-             
+
                         debugger;
                         var table = $('#tblConsulta').DataTable();
 
                         table.clear().draw();
 
-                 
+
                         for (var i = 0; i < json.resp.length; i++) {
 
 
@@ -144,7 +202,7 @@
                                 , json.resp[i].Fec_movto
                                 , json.resp[i].Desc_Est
                                 , json.resp[i].DescAut
-                               
+
 
 
 
@@ -165,5 +223,5 @@
             });
         }
 
-</script>
- }
+    </script>
+}
