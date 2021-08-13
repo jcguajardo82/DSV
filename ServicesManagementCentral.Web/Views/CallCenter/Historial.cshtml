@@ -1,9 +1,10 @@
 ﻿
-@{
-    ViewBag.Title = "Historial";
-}
+@{ ViewBag.Title = "Historial"; }
 
-<style>
+
+@*Original*@
+
+@*<style>
     /*#table-scroll {
         height: 300px;
         overflow-y: auto;
@@ -81,6 +82,7 @@
         overflow-x: scroll;
         display: block;
     }
+
     th, td {
         padding: 8px 16px;
     }
@@ -91,8 +93,11 @@
         color: #ffffff;
         font-weight: bold;
     }
-</style>
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+</style>*@
+
+<h2>Historial</h2>
+
+<!--<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
 
     <div id="tblConsulta_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
         <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
@@ -122,57 +127,53 @@
                             </thead>
                             <tbody>
 
-                                @{
-                                    if (Session["listaRMAS"] != null)
-                                    {
+                                @{ if (Session["listaRMAS"] != null)
+                                                {
 
-                                        List<ServicesManagement.Web.Controllers.OrderFacts_UEModel> l = Session["listaRMAS"] as List<ServicesManagement.Web.Controllers.OrderFacts_UEModel>;
-                                        foreach (ServicesManagement.Web.Controllers.OrderFacts_UEModel turno in l)
-                                        {
-                                        <tr>
-                                            <td>
-                                                <button type="button" title="Click para generar RMA a la orden" class="btn btn-danger btn btn-xs" data-toggle="modal" onclick="GenerarRma(101168210)">
+                                                    List<ServicesManagement.Web.Controllers.OrderFacts_UEModel> l = Session["listaRMAS"] as List<ServicesManagement.Web.Controllers.OrderFacts_UEModel>;
+                                                    foreach (ServicesManagement.Web.Controllers.OrderFacts_UEModel turno in l)
+                                                    {
+                                    <tr>
+                                        <td>
+                                            <button type="button" title="Click para generar RMA a la orden" class="btn btn-danger btn btn-xs" data-toggle="modal" onclick="GenerarRma(101168210)">
                                                 Casos de Cliente
-                                                </button>
-                                            </td>
-                                            <td style="text-align:center;">
-                                                <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">@turno.OrderNo</a>
-                                            </td>
-                                            <td style="text-align:right">@turno.DeliveryDate</td>
-                                            <td style="text-align:center">@turno.DeliveryType</td>
-                                            <td class="rowRojo" style="text-align:center">@turno.StoreNum</td>
-                                            <td style="text-align:center">@turno.OrderDeliveryDate</td>
-                                            <td class="rowRojo" style="text-align:center">@turno.PickingDateEnd</td>
-                                            <td class="rowRojo" style="text-align:center">@turno.PickingDateEnd</td>
-                                            <td class="rowRojo" style="text-align:center">@turno.PickingDateEnd</td>
-                                            <td class="rowRojo" style="text-align:center">@turno.DeliveryType</td>
-                                            <td style="text-align:center">@turno.SupplierName</td>
-                                        </tr>
-
-                                            }
-                                        }
-                                    }
+                                            </button>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">@turno.OrderNo</a>
+                                        </td>
+                                        <td style="text-align:right">@turno.DeliveryDate</td>
+                                        <td style="text-align:center">@turno.DeliveryType</td>
+                                        <td class="rowRojo" style="text-align:center">@turno.StoreNum</td>
+                                        <td style="text-align:center">@turno.OrderDeliveryDate</td>
+                                        <td class="rowRojo" style="text-align:center">@turno.PickingDateEnd</td>
+                                        <td class="rowRojo" style="text-align:center">@turno.PickingDateEnd</td>
+                                        <td class="rowRojo" style="text-align:center">@turno.PickingDateEnd</td>
+                                        <td class="rowRojo" style="text-align:center">@turno.DeliveryType</td>
+                                        <td style="text-align:center">@turno.SupplierName</td>
+                                    </tr> }
+                                                } }-->
 
                                 @*<tr>
-                                    <td style="text-align:center">
-                                        <button type="button" title="Click para generar RMA a la orden" class="btn btn-danger btn btn-xs" data-toggle="modal" onclick="GenerarRma(101168210)">
-                                            RMA
-                                        </button>
-                                    </td>
-                                    <td style="text-align:center;">
-                                        <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">101168210</a>
-                                    </td>
-                                    <td style="text-align:right">4 - 0 </td>
-                                    <td style="text-align:center">18 Mar 2021 18:00:00</td>
-                                    <td class="rowRojo" style="text-align:center">18 Mar 2021 16:33:00</td>
-                                    <td style="text-align:center"> </td>
-                                    <td class="rowRojo" style="text-align:center">18 Mar 2021 16:38:00</td>
-                                    <td class="rowRojo" style="text-align:center">18 Mar 2021 17:00:00</td>
-                                    <td class="rowRojo" style="text-align:center">18 Mar 2021 16:38:00</td>
-                                    <td class="rowRojo" style="text-align:center">18 Mar 2021 17:00:00</td>
-                                    <td style="text-align:center">UBER</td>
-                                </tr>*@
-                            </tbody>
+                                        <td style="text-align:center">
+                                            <button type="button" title="Click para generar RMA a la orden" class="btn btn-danger btn btn-xs" data-toggle="modal" onclick="GenerarRma(101168210)">
+                                                RMA
+                                            </button>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">101168210</a>
+                                        </td>
+                                        <td style="text-align:right">4 - 0 </td>
+                                        <td style="text-align:center">18 Mar 2021 18:00:00</td>
+                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 16:33:00</td>
+                                        <td style="text-align:center"> </td>
+                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 16:38:00</td>
+                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 17:00:00</td>
+                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 16:38:00</td>
+                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 17:00:00</td>
+                                        <td style="text-align:center">UBER</td>
+                                    </tr>*@
+                            <!--</tbody>
                         </table>
                     </div>
                 </div>
@@ -181,7 +182,103 @@
 
         </div>
     </div>
+</div>-->
+
+@*Original*@
+
+@*NVS*@
+
+<div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group">
+            <label>Fecha Inicio</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker1">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecIni"
+                       type="text" value="@ViewBag.FecIni">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Fecha Fin</label>
+        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+        <div class="input-group date" id="datetimepicker2">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input class="form-control datepicker" id="txtFecFin"
+                   type="text" value="@ViewBag.FecFin">
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+            Buscar
+        </button>
+
+    </div>
 </div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th> </th>
+                        <th>Orden</th>
+                        <th>Fec Entrega</th>
+                        <th>Tipo Entrega</th>
+                        <th>Tienda</th>
+                        <th> Inicia Surtido    </th>
+                        <th>Fin Surtido  </th>
+                        <th>  Inicio Cobro </th>
+                        <th> Finaliza Cobro  </th>
+                        <th>   Forma Entrega  </th>
+                        <th>  Medio Envio   </th>
+                        @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
+                        @*<th>Guia de devolucion</th>*@
+                        @*<th>Estatus de la Guia de Devolucion</th>*@
+                        @*<th>Guia de reenvio</th>*@
+                        @*<th>Estatus de Guía de Reenvio</th>*@
+                        @*<th class="sorting">Motivo de no recolección</th>*@
+                        @*<th name='accion'></th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Session["listaRMAS"] != null)
+                        {
+
+                            List<ServicesManagement.Web.Controllers.OrderFacts_UEModel> l = Session["listaRMAS"] as List<ServicesManagement.Web.Controllers.OrderFacts_UEModel>;
+                            foreach (ServicesManagement.Web.Controllers.OrderFacts_UEModel turno in l)
+                            {
+                <tr>
+                    <td>
+                        <button type="button" title="Click para generar RMA a la orden" class="btn btn-danger btn btn-xs" data-toggle="modal" onclick="GenerarRma(101168210)">
+                            Casos de Cliente
+                        </button>
+                    </td>
+                    <td >
+                        <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">@turno.OrderNo</a>
+                    </td>
+                    <td >@turno.DeliveryDate</td>
+                    <td >@turno.DeliveryType</td>
+                    <td >@turno.StoreNum</td>
+                    <td >@turno.OrderDeliveryDate</td>
+                    <td >@turno.PickingDateEnd</td>
+                    <td >@turno.PickingDateEnd</td>
+                    <td >@turno.PickingDateEnd</td>
+                    <td >@turno.DeliveryType</td>
+                    <td >@turno.SupplierName</td>
+                </tr>
+ }
+        } }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@*NVS*@
+
 @Html.Partial("RMA")
 
 @section scripts {
@@ -190,12 +287,229 @@
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
 
     <script>
-        function GenerarRma(orden) {
 
-            $('#dlgRma').modal('toggle');
+       /* Original*/
+
+        //function GenerarRma(orden) {
+
+        //    $('#dlgRma').modal('toggle');
+        //}
+
+        //$(document).ready(function () {
+        //    $("#wizard").steps({
+        //        labels: {
+        //            current: "current step:",
+        //            pagination: "Pagination",
+        //            finish: "Finalizar",
+        //            next: "Siguiente",
+        //            previous: "Atras"
+
+        //        },
+        //        headerTag: "h3",
+        //        bodyTag: "section",
+        //        transitionEffect: "slideLeft",
+        //        autoFocus: true,
+        //        //stepsOrientation: "vertical"
+        //    });
+        //});
+
+
+        //function ValidaProducto(v) {
+        //    // Get the checkbox
+        //    var checkBox = document.getElementById("myCheck");
+        //    // Get the output text
+        //    var text = document.getElementById("text");
+
+        //    // If the checkbox is checked, display the output text
+        //    if (v == 1) {
+        //        alert("El articulo no cumple con las condiciones");
+        //    }
+        //}
+
+        /*Original*/
+
+       /* NVS*/
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+
+                function GetHistorialRMA() {
+
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GethistorialRMA", "RMA")',
+                data: {
+                      FecIni: _FecIni,
+                      FecFin: _FecFin
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+
+
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+
+                            myTable.row.add([
+                                json.resp[i].NroAlmacen,
+                                json.resp[i].NombreAlmacen,
+                               "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
+                                json.resp[i].FechaCreacion,
+                                json.resp[i].HoraCreacion,
+                                json.resp[i].FechaPago,
+                                json.resp[i].FechaLimite,
+                                json.resp[i].NombreCliente,
+                                json.resp[i].EstatusConsignacionAlmacen,
+                                json.resp[i].EstatusConsignacionEntrega,
+                                json.resp[i].NroOrdenCompra,
+                                json.resp[i].EstatusOrdenCompra,
+                                json.resp[i].GuiaEnvio,
+                                json.resp[i].GuiaVig,
+                                json.resp[i].FechaEntrega,
+
+                            ]).draw();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
         }
 
+                        function GetHistorialRMADommi() {
+
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                @*url: '@Url.Action("GethistorialRMA", "RMA")',*@
+                data: {
+                      FecIni: _FecIni,
+                      FecFin: _FecFin
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    
+
+
+
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
+                        
+
+
+                            myTable.row.add([
+                                json.resp[i].NroAlmacen,
+                                json.resp[i].NombreAlmacen,
+                                "<a href='CallCenter/ConsultaDetalle?order=101168210" + "' title='Click para ir al proveedor' class='link-primary' ><u>"+ 101168210 +"</u>",
+                                json.resp[i].FechaCreacion,
+                                json.resp[i].HoraCreacion,
+                                json.resp[i].FechaPago,
+                                json.resp[i].FechaLimite,
+                                json.resp[i].NombreCliente,
+                                json.resp[i].EstatusConsignacionAlmacen,
+                                json.resp[i].EstatusConsignacionEntrega,
+                                json.resp[i].NroOrdenCompra,
+                                json.resp[i].EstatusOrdenCompra,
+                                json.resp[i].GuiaEnvio,
+                                json.resp[i].GuiaVig,
+                                json.resp[i].FechaEntrega,
+
+                            ]).draw();
+                        
+                    
+
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
+        }
+
+
+
         $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            /*Original*/
             $("#wizard").steps({
                 labels: {
                     current: "current step:",
@@ -211,8 +525,63 @@
                 autoFocus: true,
                 //stepsOrientation: "vertical"
             });
+            /*original*/
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel', {
+                        text: 'Excel XLS',
+                        action: function (e, dt, node, config) {
+
+                            Excel('xls');
+
+                        }
+                    }
+
+                    ],
+                    orderCellsTop: false,
+                    //fixedHeader: {
+                    //    header: true
+                    //},
+                    "scrollX": true
+
+                }
+            );
+
+            //GetHistorialRMA();
         });
 
+
+
+        function GenerarRma(orden) {
+
+            $('#dlgRma').modal('toggle');
+        }
 
         function ValidaProducto(v) {
             // Get the checkbox
@@ -225,6 +594,29 @@
                 alert("El articulo no cumple con las condiciones");
             }
         }
+
+
+
+        function Excel(op) {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+            window.location = window.location.origin + '/Consignaciones/ExcelConsignacionesProveedor?op=' + op + '&FecIni=' + _FecIni + '&FecFin=' + _FecFin;
+        }
+
+
+        /*NVS*/
+
     </script>
 }
 
