@@ -380,7 +380,6 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-
         public ActionResult GetEstatusRMA(DateTime FecIni, DateTime FecFin,int? OrderId)
         {
             try
