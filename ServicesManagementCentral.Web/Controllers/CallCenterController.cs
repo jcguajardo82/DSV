@@ -7,10 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using ServicesManagement.Web.DAL.DALHistorialRMA;
+using ServicesManagement.Web.Helpers;
+using ServicesManagement.Web.Models.Consignaciones;
+using System.IO;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -190,6 +192,16 @@ namespace ServicesManagement.Web.Controllers
         public DateTime ShippingEstDate { get; set; }
         public TimeSpan ShippingEstTime { get; set; }
         public String ConsignmentType { get; set; }
+        //NVS
+        public String SupplyStarted { get; set; }
+        public String SupplyCompleted { get; set; }
+        public String PaymentStart { get; set; }
+        public String PaymentCompleted { get; set; }
+        public String DeliveryMethod { get; set; }
+        public String ShippingType { get; set; }
+        public String StoreDescription { get; set; }
+        //public String OrderDate { get; set; }
+        //public String UeType { get; set; }
     }
     public class CallCenterController : Controller
     {
@@ -343,6 +355,9 @@ namespace ServicesManagement.Web.Controllers
         {
             Session["listaRMAS"] = getRams();
 
+            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
+
             return View();
         }
 
@@ -398,6 +413,30 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+
+        #endregion
+
+        //NVS
+
+
+        #region Historial RMA
+        public ActionResult GethistorialRMA(DateTime FecIni, DateTime FecFin)
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<OrderFacts_UEModel>(
+                    DALHistorialRMA.upCorpOms_Cns_OrdersByDates(FecIni, FecFin).Tables[0]);
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         #endregion
 
     }

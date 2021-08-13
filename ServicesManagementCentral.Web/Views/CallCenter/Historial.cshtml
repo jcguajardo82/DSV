@@ -243,35 +243,7 @@
                         @*<th name='accion'></th>*@
                     </tr>
                 </thead>
-                <tbody>
-                    @{ if (Session["listaRMAS"] != null)
-                        {
-
-                            List<ServicesManagement.Web.Controllers.OrderFacts_UEModel> l = Session["listaRMAS"] as List<ServicesManagement.Web.Controllers.OrderFacts_UEModel>;
-                            foreach (ServicesManagement.Web.Controllers.OrderFacts_UEModel turno in l)
-                            {
-                <tr>
-                    <td>
-                        <button type="button" title="Click para generar RMA a la orden" class="btn btn-danger btn btn-xs" data-toggle="modal" onclick="GenerarRma(101168210)">
-                            Casos de Cliente
-                        </button>
-                    </td>
-                    <td >
-                        <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">@turno.OrderNo</a>
-                    </td>
-                    <td >@turno.DeliveryDate</td>
-                    <td >@turno.DeliveryType</td>
-                    <td >@turno.StoreNum</td>
-                    <td >@turno.OrderDeliveryDate</td>
-                    <td >@turno.PickingDateEnd</td>
-                    <td >@turno.PickingDateEnd</td>
-                    <td >@turno.PickingDateEnd</td>
-                    <td >@turno.DeliveryType</td>
-                    <td >@turno.SupplierName</td>
-                </tr>
- }
-        } }
-                </tbody>
+                
             </table>
         </div>
     </div>
@@ -362,7 +334,7 @@
             $.ajax({
                 async: false,
                 type: "GET",
-                url: '@Url.Action("GethistorialRMA", "RMA")',
+                url: '@Url.Action("GethistorialRMA", "CallCenter")',
                 data: {
                       FecIni: _FecIni,
                       FecFin: _FecFin
@@ -383,21 +355,22 @@
 
 
                             myTable.row.add([
-                                json.resp[i].NroAlmacen,
-                                json.resp[i].NombreAlmacen,
-                               "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
-                                json.resp[i].FechaCreacion,
-                                json.resp[i].HoraCreacion,
-                                json.resp[i].FechaPago,
-                                json.resp[i].FechaLimite,
-                                json.resp[i].NombreCliente,
-                                json.resp[i].EstatusConsignacionAlmacen,
-                                json.resp[i].EstatusConsignacionEntrega,
-                                json.resp[i].NroOrdenCompra,
-                                json.resp[i].EstatusOrdenCompra,
-                                json.resp[i].GuiaEnvio,
-                                json.resp[i].GuiaVig,
-                                json.resp[i].FechaEntrega,
+                                /*json.resp[i].NroAlmacen,*/
+                                "<button onclick=\"GenerarRma(" + json.resp[i].OrderNo + ")\" type=\"button\" class=\"btn btn-danger btn btn-xs\" data-toggle=\"modal\"title='Click para generar RMA a la orden'\"></button>",
+                                "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
+                                json.resp[i].OrderDeliveryDate,
+                                json.resp[i].DeliveryType,
+                                /*json.resp[i].StoreNum,*/
+                                json.resp[i].SupplyStarted,
+                                json.resp[i].SupplyCompleted,
+                                json.resp[i].PaymentStart,
+                                json.resp[i].PaymentCompleted,
+                                json.resp[i].DeliveryMethod,
+                                json.resp[i].ShippingType,
+                                json.resp[i].StoreDescription
+                                //json.resp[i].OrderDate,
+                                //json.resp[i].UeType
+                                /*json.resp[i].FechaEntrega*/
 
                             ]).draw();
                         }
@@ -405,78 +378,6 @@
                     else {
                         alert(json.Message);
                     }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert("errorThrown");
-                }
-
-            });
-
-        }
-
-                        function GetHistorialRMADommi() {
-
-            var _FecIni = $("#txtFecIni").val();
-            var _FecFin = $("#txtFecFin").val();
-
-            if (_FecIni.length == 0) {
-                $("#txtFecIni").focus();
-                return;
-            }
-
-
-            if (_FecFin.length == 0) {
-                $("#txtFecFin").focus();
-                return;
-            }
-
-            debugger;
-
-            $.ajax({
-                async: false,
-                type: "GET",
-                @*url: '@Url.Action("GethistorialRMA", "RMA")',*@
-                data: {
-                      FecIni: _FecIni,
-                      FecFin: _FecFin
-                },
-
-                datatype: "json",
-                success: function (json) {
-                    
-
-
-
-
-                        var myTable = $('#tblConsulta').DataTable();
-                        myTable
-                            .clear()
-                            .draw();
-                        
-
-
-                            myTable.row.add([
-                                json.resp[i].NroAlmacen,
-                                json.resp[i].NombreAlmacen,
-                                "<a href='CallCenter/ConsultaDetalle?order=101168210" + "' title='Click para ir al proveedor' class='link-primary' ><u>"+ 101168210 +"</u>",
-                                json.resp[i].FechaCreacion,
-                                json.resp[i].HoraCreacion,
-                                json.resp[i].FechaPago,
-                                json.resp[i].FechaLimite,
-                                json.resp[i].NombreCliente,
-                                json.resp[i].EstatusConsignacionAlmacen,
-                                json.resp[i].EstatusConsignacionEntrega,
-                                json.resp[i].NroOrdenCompra,
-                                json.resp[i].EstatusOrdenCompra,
-                                json.resp[i].GuiaEnvio,
-                                json.resp[i].GuiaVig,
-                                json.resp[i].FechaEntrega,
-
-                            ]).draw();
-                        
-                    
-
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
                     //bootbox.alert(errorThrown);
@@ -509,23 +410,6 @@
                 }
             });
 
-            /*Original*/
-            $("#wizard").steps({
-                labels: {
-                    current: "current step:",
-                    pagination: "Pagination",
-                    finish: "Finalizar",
-                    next: "Siguiente",
-                    previous: "Atras"
-
-                },
-                headerTag: "h3",
-                bodyTag: "section",
-                transitionEffect: "slideLeft",
-                autoFocus: true,
-                //stepsOrientation: "vertical"
-            });
-            /*original*/
 
             table = $("#tblConsulta").DataTable(
                 {
@@ -573,7 +457,7 @@
                 }
             );
 
-            //GetHistorialRMA();
+            GetHistorialRMA();
         });
 
 
@@ -618,5 +502,7 @@
         /*NVS*/
 
     </script>
+
+
 }
 
