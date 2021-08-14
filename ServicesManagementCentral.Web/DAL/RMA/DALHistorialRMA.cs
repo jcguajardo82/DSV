@@ -12,7 +12,7 @@ namespace ServicesManagement.Web.DAL.DALHistorialRMA
     {
         #region Historial RMA
 
-        public static DataSet upCorpOms_Cns_OrdersByDates(DateTime FecIni,DateTime FecFin)
+        public static DataSet upCorpOms_Cns_OrdersByDates(DateTime FecIni,DateTime FecFin, int? OrderId)
         {
             DataSet ds = new DataSet();
 
@@ -32,7 +32,9 @@ namespace ServicesManagement.Web.DAL.DALHistorialRMA
                /* parametros.Add("@usuario", usuario);*/ // parametro admin fijo
                 parametros.Add("@fechaini", FecIni); // parametro admin fijo
                 parametros.Add("@fechafin", FecFin); // parametro admin fijo
-                
+
+                if (OrderId != null)
+                    parametros.Add("@OrderId", OrderId);
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_OrdersByDates]", false, parametros);

@@ -420,12 +420,12 @@ namespace ServicesManagement.Web.Controllers
 
 
         #region Historial RMA
-        public ActionResult GethistorialRMA(DateTime FecIni, DateTime FecFin)
+        public ActionResult GethistorialRMA(DateTime FecIni, DateTime FecFin, int? OrderId)
         {
             try
             {
                 var list = DataTableToModel.ConvertTo<OrderFacts_UEModel>(
-                    DALHistorialRMA.upCorpOms_Cns_OrdersByDates(FecIni, FecFin).Tables[0]);
+                    DALHistorialRMA.upCorpOms_Cns_OrdersByDates(FecIni, FecFin, OrderId).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
