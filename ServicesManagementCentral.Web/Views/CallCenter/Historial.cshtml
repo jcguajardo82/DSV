@@ -2,189 +2,11 @@
 @{ ViewBag.Title = "Historial"; }
 
 
-@*Original*@
 
-@*<style>
-    /*#table-scroll {
-        height: 300px;
-        overflow-y: auto;
-        margin-top: 20px;
-        width: 1200px;
-    }*/
-
-    .rowVerde {
-        color: white;
-        background-color: #008000;
-        border-color: #c3e6cb;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .rowAmarillo {
-        color: white;
-        background-color: #ffd11a;
-        border-color: #ffeeba;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .rowRojo {
-        color: white;
-        background-color: #ff0000;
-        border-color: #f5c6cb;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .rowInfo {
-        color: #000000;
-        background-color: white;
-        border-color: #bee5eb;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .rowMorado {
-        color: #0c5460;
-        background-color: #bf80ff;
-        border-color: #bee5eb;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .alingCenter {
-        text-align: center;
-    }
-</style>
-<style id="compiled-css" type="text/css">
-    /* Fix table head */
-    .tableFixHead {
-        overflow-y: auto;
-        height: 300px;
-    }
-
-        .tableFixHead th {
-            position: sticky;
-            top: 0;
-        }
-
-    /* Just common table stuff. */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        table-layout: fixed;
-        word-wrap: break-word;
-        overflow-x: scroll;
-        display: block;
-    }
-
-    th, td {
-        padding: 8px 16px;
-    }
-
-
-    th {
-        background: #1AB394;
-        color: #ffffff;
-        font-weight: bold;
-    }
-</style>*@
 
 <h2>Historial</h2>
 
-<!--<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
 
-    <div id="tblConsulta_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
-            <div class="row">
-                <div class="col col-xs-3 col col-md-3 col col-lg-3">
-                    <input id="txtFiltroSurtir" class="form-control" type="search" placeholder="Search Order..">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="tableFixHead table-responsive m-t">
-                        <table id="tblConsulta_Surtido" class="table table-striped table-bordered table-hover">
-                            <thead class="bg-primary">
-                                <tr role="row">
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"></th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;">Orden</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;">Fec Entrega</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">Tipo Entrega</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Tienda</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 120px;">Inicia Surtido</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Fin Surtido</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Inicio Cobro</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Finaliza Cobro</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Forma Entrega</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 115px;">Medio Envio</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @{ if (Session["listaRMAS"] != null)
-                                                {
-
-                                                    List<ServicesManagement.Web.Controllers.OrderFacts_UEModel> l = Session["listaRMAS"] as List<ServicesManagement.Web.Controllers.OrderFacts_UEModel>;
-                                                    foreach (ServicesManagement.Web.Controllers.OrderFacts_UEModel turno in l)
-                                                    {
-                                    <tr>
-                                        <td>
-                                            <button type="button" title="Click para generar RMA a la orden" class="btn btn-danger btn btn-xs" data-toggle="modal" onclick="GenerarRma(101168210)">
-                                                Casos de Cliente
-                                            </button>
-                                        </td>
-                                        <td style="text-align:center;">
-                                            <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">@turno.OrderNo</a>
-                                        </td>
-                                        <td style="text-align:right">@turno.DeliveryDate</td>
-                                        <td style="text-align:center">@turno.DeliveryType</td>
-                                        <td class="rowRojo" style="text-align:center">@turno.StoreNum</td>
-                                        <td style="text-align:center">@turno.OrderDeliveryDate</td>
-                                        <td class="rowRojo" style="text-align:center">@turno.PickingDateEnd</td>
-                                        <td class="rowRojo" style="text-align:center">@turno.PickingDateEnd</td>
-                                        <td class="rowRojo" style="text-align:center">@turno.PickingDateEnd</td>
-                                        <td class="rowRojo" style="text-align:center">@turno.DeliveryType</td>
-                                        <td style="text-align:center">@turno.SupplierName</td>
-                                    </tr> }
-                                                } }-->
-
-                                @*<tr>
-                                        <td style="text-align:center">
-                                            <button type="button" title="Click para generar RMA a la orden" class="btn btn-danger btn btn-xs" data-toggle="modal" onclick="GenerarRma(101168210)">
-                                                RMA
-                                            </button>
-                                        </td>
-                                        <td style="text-align:center;">
-                                            <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">101168210</a>
-                                        </td>
-                                        <td style="text-align:right">4 - 0 </td>
-                                        <td style="text-align:center">18 Mar 2021 18:00:00</td>
-                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 16:33:00</td>
-                                        <td style="text-align:center"> </td>
-                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 16:38:00</td>
-                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 17:00:00</td>
-                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 16:38:00</td>
-                                        <td class="rowRojo" style="text-align:center">18 Mar 2021 17:00:00</td>
-                                        <td style="text-align:center">UBER</td>
-                                    </tr>*@
-                            <!--</tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <hr />
-
-        </div>
-    </div>
-</div>-->
-
-@*Original*@
 
 @*NVScambio*@
 
@@ -208,6 +30,10 @@
             <input class="form-control datepicker" id="txtFecFin"
                    type="text" value="@ViewBag.FecFin">
         </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Número de Orden</label>
+        <input type="text" placeholder="Número de Orden" id="OrderSelected" class="form-control">
     </div>
     <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
         <label>&nbsp;</label>
@@ -243,35 +69,7 @@
                         @*<th name='accion'></th>*@
                     </tr>
                 </thead>
-                <tbody>
-                    @{ if (Session["listaRMAS"] != null)
-                        {
-
-                            List<ServicesManagement.Web.Controllers.OrderFacts_UEModel> l = Session["listaRMAS"] as List<ServicesManagement.Web.Controllers.OrderFacts_UEModel>;
-                            foreach (ServicesManagement.Web.Controllers.OrderFacts_UEModel turno in l)
-                            {
-                <tr>
-                    <td>
-                        <button type="button" title="Click para generar RMA a la orden" class="btn btn-danger btn btn-xs" data-toggle="modal" onclick="GenerarRma(101168210)">
-                            Casos de Cliente
-                        </button>
-                    </td>
-                    <td >
-                        <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">@turno.OrderNo</a>
-                    </td>
-                    <td >@turno.DeliveryDate</td>
-                    <td >@turno.DeliveryType</td>
-                    <td >@turno.StoreNum</td>
-                    <td >@turno.OrderDeliveryDate</td>
-                    <td >@turno.PickingDateEnd</td>
-                    <td >@turno.PickingDateEnd</td>
-                    <td >@turno.PickingDateEnd</td>
-                    <td >@turno.DeliveryType</td>
-                    <td >@turno.SupplierName</td>
-                </tr>
- }
-        } }
-                </tbody>
+                
             </table>
         </div>
     </div>
@@ -288,45 +86,6 @@
 
     <script>
 
-       /* Original*/
-
-        //function GenerarRma(orden) {
-
-        //    $('#dlgRma').modal('toggle');
-        //}
-
-        //$(document).ready(function () {
-        //    $("#wizard").steps({
-        //        labels: {
-        //            current: "current step:",
-        //            pagination: "Pagination",
-        //            finish: "Finalizar",
-        //            next: "Siguiente",
-        //            previous: "Atras"
-
-        //        },
-        //        headerTag: "h3",
-        //        bodyTag: "section",
-        //        transitionEffect: "slideLeft",
-        //        autoFocus: true,
-        //        //stepsOrientation: "vertical"
-        //    });
-        //});
-
-
-        //function ValidaProducto(v) {
-        //    // Get the checkbox
-        //    var checkBox = document.getElementById("myCheck");
-        //    // Get the output text
-        //    var text = document.getElementById("text");
-
-        //    // If the checkbox is checked, display the output text
-        //    if (v == 1) {
-        //        alert("El articulo no cumple con las condiciones");
-        //    }
-        //}
-
-        /*Original*/
 
        /* NVS*/
         $(function () {
@@ -345,6 +104,8 @@
 
             var _FecIni = $("#txtFecIni").val();
             var _FecFin = $("#txtFecFin").val();
+            var _OrderId = $("#OrderSelected").val();
+                    
 
             if (_FecIni.length == 0) {
                 $("#txtFecIni").focus();
@@ -362,10 +123,11 @@
             $.ajax({
                 async: false,
                 type: "GET",
-                url: '@Url.Action("GethistorialRMA", "RMA")',
+                url: '@Url.Action("GethistorialRMA", "CallCenter")',
                 data: {
                       FecIni: _FecIni,
-                      FecFin: _FecFin
+                    FecFin: _FecFin,
+                    OrderId: _OrderId
                 },
 
                 datatype: "json",
@@ -383,21 +145,22 @@
 
 
                             myTable.row.add([
-                                json.resp[i].NroAlmacen,
-                                json.resp[i].NombreAlmacen,
-                               "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
-                                json.resp[i].FechaCreacion,
-                                json.resp[i].HoraCreacion,
-                                json.resp[i].FechaPago,
-                                json.resp[i].FechaLimite,
-                                json.resp[i].NombreCliente,
-                                json.resp[i].EstatusConsignacionAlmacen,
-                                json.resp[i].EstatusConsignacionEntrega,
-                                json.resp[i].NroOrdenCompra,
-                                json.resp[i].EstatusOrdenCompra,
-                                json.resp[i].GuiaEnvio,
-                                json.resp[i].GuiaVig,
-                                json.resp[i].FechaEntrega,
+                                /*json.resp[i].NroAlmacen,*/
+                                "<button onclick=\"GenerarRma(" + json.resp[i].OrderNo + ")\" type=\"button\" class=\"btn btn-danger btn btn-xs\" data-toggle=\"modal\"title='Click para generar RMA a la orden'\"></button>",
+                                "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
+                                json.resp[i].OrderDeliveryDate,
+                                json.resp[i].DeliveryType,
+                                /*json.resp[i].StoreNum,*/
+                                json.resp[i].SupplyStarted,
+                                json.resp[i].SupplyCompleted,
+                                json.resp[i].PaymentStart,
+                                json.resp[i].PaymentCompleted,
+                                json.resp[i].DeliveryMethod,
+                                json.resp[i].ShippingType,
+                                json.resp[i].StoreDescription
+                                //json.resp[i].OrderDate,
+                                //json.resp[i].UeType
+                                /*json.resp[i].FechaEntrega*/
 
                             ]).draw();
                         }
@@ -405,78 +168,6 @@
                     else {
                         alert(json.Message);
                     }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert("errorThrown");
-                }
-
-            });
-
-        }
-
-                        function GetHistorialRMADommi() {
-
-            var _FecIni = $("#txtFecIni").val();
-            var _FecFin = $("#txtFecFin").val();
-
-            if (_FecIni.length == 0) {
-                $("#txtFecIni").focus();
-                return;
-            }
-
-
-            if (_FecFin.length == 0) {
-                $("#txtFecFin").focus();
-                return;
-            }
-
-            debugger;
-
-            $.ajax({
-                async: false,
-                type: "GET",
-                @*url: '@Url.Action("GethistorialRMA", "RMA")',*@
-                data: {
-                      FecIni: _FecIni,
-                      FecFin: _FecFin
-                },
-
-                datatype: "json",
-                success: function (json) {
-                    
-
-
-
-
-                        var myTable = $('#tblConsulta').DataTable();
-                        myTable
-                            .clear()
-                            .draw();
-                        
-
-
-                            myTable.row.add([
-                                json.resp[i].NroAlmacen,
-                                json.resp[i].NombreAlmacen,
-                                "<a href='CallCenter/ConsultaDetalle?order=101168210" + "' title='Click para ir al proveedor' class='link-primary' ><u>"+ 101168210 +"</u>",
-                                json.resp[i].FechaCreacion,
-                                json.resp[i].HoraCreacion,
-                                json.resp[i].FechaPago,
-                                json.resp[i].FechaLimite,
-                                json.resp[i].NombreCliente,
-                                json.resp[i].EstatusConsignacionAlmacen,
-                                json.resp[i].EstatusConsignacionEntrega,
-                                json.resp[i].NroOrdenCompra,
-                                json.resp[i].EstatusOrdenCompra,
-                                json.resp[i].GuiaEnvio,
-                                json.resp[i].GuiaVig,
-                                json.resp[i].FechaEntrega,
-
-                            ]).draw();
-                        
-                    
-
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
                     //bootbox.alert(errorThrown);
@@ -509,23 +200,6 @@
                 }
             });
 
-            /*Original*/
-            $("#wizard").steps({
-                labels: {
-                    current: "current step:",
-                    pagination: "Pagination",
-                    finish: "Finalizar",
-                    next: "Siguiente",
-                    previous: "Atras"
-
-                },
-                headerTag: "h3",
-                bodyTag: "section",
-                transitionEffect: "slideLeft",
-                autoFocus: true,
-                //stepsOrientation: "vertical"
-            });
-            /*original*/
 
             table = $("#tblConsulta").DataTable(
                 {
@@ -573,7 +247,7 @@
                 }
             );
 
-            //GetHistorialRMA();
+            GetHistorialRMA();
         });
 
 
@@ -618,5 +292,7 @@
         /*NVS*/
 
     </script>
+
+
 }
 
