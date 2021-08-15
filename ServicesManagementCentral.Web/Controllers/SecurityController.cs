@@ -147,10 +147,9 @@ namespace ServicesManagement.Web.Controllers
                 if (r.message.Contains("1"))
                 // PROD
                 //if (r.message.Contains("true"))
-<<<<<<< Updated upstream
+
                 if (r.message.Contains("true") || r.message.Contains("1"))
-=======
->>>>>>> Stashed changes
+
                 {
                     return true;
                 }

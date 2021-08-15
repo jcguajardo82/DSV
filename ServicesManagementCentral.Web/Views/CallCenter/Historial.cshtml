@@ -49,17 +49,18 @@
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                 <thead class="bg-danger-sor">
                     <tr>
-                        <th> </th>
+                        <th name="accion" style="width:10%;"> </th>
                         <th>Orden</th>
                         <th>Fec Entrega</th>
                         <th>Tipo Entrega</th>
                         <th>Tienda</th>
-                        <th> Inicia Surtido    </th>
-                        <th>Fin Surtido  </th>
-                        <th>  Inicio Cobro </th>
-                        <th> Finaliza Cobro  </th>
-                        <th>   Forma Entrega  </th>
-                        <th>  Medio Envio   </th>
+                        <th>Descipcion Tienda</th>
+                        <th>Inicia Surtido</th>
+                        <th>Fin Surtido</th>
+                        <th>Inicio Cobro</th>
+                        <th>Finaliza Cobro</th>
+                        <th>Forma Entrega</th>
+                        <th>Medio Envio</th>
                         @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
                         @*<th>Guia de devolucion</th>*@
                         @*<th>Estatus de la Guia de Devolucion</th>*@
@@ -69,7 +70,7 @@
                         @*<th name='accion'></th>*@
                     </tr>
                 </thead>
-                
+
             </table>
         </div>
     </div>
@@ -77,9 +78,194 @@
 
 @*NVScambio*@
 
-@Html.Partial("RMA")
+@*@Html.Partial("RMA")*@
+<div class="modal inmodal fade" id="dlgRma" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">RMA</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <div class="ibox ">
+                        <div class="ibox-content">
+                            <div id="wizard">
+                                <h3>Detalle de Orden</h3>
+                                <section>
+                                    <div class="row">
+                                        <div class="col-xs-4 col-md-4 col-lg-4">
+                                            <select class="form-control" id="cmbServicio" name="cmbServicio">
+                                                <option selected="selected" value="1">Devolución</option>
+                                                <option selected="selected" value="2">Reenvolso</option>
+                                                <option selected="selected" value="3">Cambio Fisico</option>
+                                                <option selected="selected" value="4">Reenvio</option>
+                                                <option selected="selected" value="5">Cancelación</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-5 col-md-5 col-lg-5">
+                                            <select  class="form-control custom-select cancel-reason" name="cancelReason" id="cancelReason" required="" autocomplete="">
+                                                <option value="choose-reason" selected="" disabled="">
+                                                    Por favor, seleccione uno
+                                                </option>
 
+                                                <option value="Cambio de producto">Cambio de producto</option>
+
+                                                <option value="Duplicó orden">Duplicó orden</option>
+
+                                                <option value="Error en descripción o imagen">Error en descripción o imagen</option>
+
+                                                <option value="Gusto del cliente">Gusto del cliente</option>
+
+                                                <option value="Mejor precio en competencia">Mejor precio en competencia</option>
+
+                                                <option value="No aplica cupón">No aplica cupón</option>
+
+                                                <option value="No aplicó la promoción">No aplicó la promoción</option>
+
+                                                <option value="No aplicó MSI">No aplicó MSI</option>
+
+                                                <option value="No está de acuerdo con el tiempo de entrega">No está de acuerdo con el tiempo de entrega</option>
+
+                                                <option value="No estará en domicilio">No estará en domicilio</option>
+
+                                                <option value="Orden no pagada en tienda">Orden no pagada en tienda</option>
+
+                                                <option value="Retraso de entrega">Retraso de entrega</option>
+
+                                                <option value="other">
+                                                    Otros
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <br />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-12 col-lg-12">
+                                            <table id="tblDetalle" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                                                <thead class="bg-danger-sor">
+                                                    <tr role="row">
+                                                        <th class="text-center sorting" style="width:20px"></th>
+                                                        <th class="text-center sorting">Descripción</th>
+                                                        <th class="text-center sorting">Cantidad</th>
+                                                        <th class="text-center sorting">Precio</th>
+                                                        <th class="text-center sorting">Subtotal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @*NVS*@
+
+                                                    @*<tr>
+                                                            <td><input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" /></td>
+                                                            <td>
+                                                                Camisa Roja
+                                                            </td>
+                                                            <td>
+                                                                1
+                                                            </td>
+                                                            <td>
+                                                                $100.00
+                                                            </td>
+                                                            <td>
+                                                                $100.00
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td><input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" /></td>
+                                                            <td>
+                                                                Camisa Blanca
+                                                            </td>
+                                                            <td>
+                                                                1
+                                                            </td>
+                                                            <td>
+                                                                $100.00
+                                                            </td>
+                                                            <td>
+                                                                $100.00
+                                                            </td>
+
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" /></td>
+                                                            <td>
+                                                                Balon Futbol
+                                                            </td>
+                                                            <td>
+                                                                1
+                                                            </td>
+                                                            <td>
+                                                                $199.00
+                                                            </td>
+                                                            <td>
+                                                                $199.00
+                                                            </td>
+
+                                                        </tr>*@
+
+
+                                                    @*NVS*@
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="3"></td>
+                                                        <td><b>Costo total de la orden</b></td>
+                                                        <td><b>$</b><b id="lblTotalDetalle">399.00</b></td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </section>
+                                <h3>Subir Evidencias</h3>
+                                <section>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-12 col-lg-12">
+                                            <b>Url del Cliente:</b>
+
+                                            <div class="alert alert-danger">
+                                                <h2>https://callcentercliente.azurewebsites.net/orden=231256544</h2>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-xs-6 col-md-6 col-lg-6"><input type="text" class="form-control input-sm" placeholder="Comentarios de la Imagen" /> </div>
+                                        <div class="col-xs-6 col-md-6 col-lg-6"><input type="file" /> </div>
+                                    </div>
+
+                                </section>
+                                <h3>Solicitar Autorizacion</h3>
+                                <section>
+                                    <p>
+                                        Se envia a proceso de autorizacion para su seguimiento. Favor de validar en la su status en la pestaña de seguimiento RMA.
+                                    </p>
+                                    <p>Dar click para generar la solicitud en el boton de finalizar</p>
+                                </section>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+
+                </div>*@
+        </div>
+    </div>
+</div>
 @section scripts {
+
 
     <link href="~/Content/Inspinia/Styles/steps/jquery.steps.css" rel="stylesheet" />
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
@@ -100,12 +286,12 @@
 
         });
 
-                function GetHistorialRMA() {
+       function GetHistorialRMA() {
 
             var _FecIni = $("#txtFecIni").val();
             var _FecFin = $("#txtFecFin").val();
             var _OrderId = $("#OrderSelected").val();
-                    
+
 
             if (_FecIni.length == 0) {
                 $("#txtFecIni").focus();
@@ -146,18 +332,19 @@
 
                             myTable.row.add([
                                 /*json.resp[i].NroAlmacen,*/
-                                "<button onclick=\"GenerarRma(" + json.resp[i].OrderNo + ")\" type=\"button\" class=\"btn btn-danger btn btn-xs\" data-toggle=\"modal\"title='Click para generar RMA a la orden'\"></button>",
-                                "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
-                                json.resp[i].OrderDeliveryDate,
+                                "<button onclick='GenerarRma(" + json.resp[i].OrderNo + ")' type='button' class='btn btn-danger btn btn-xs'  title='Click para generar RMA a la orden'> Casos de Cliente</button>",
+                                "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].OrderNo + "</u>",
+                                json.resp[i].DeliveryDate,
                                 json.resp[i].DeliveryType,
-                                /*json.resp[i].StoreNum,*/
+                                json.resp[i].StoreNum,
+                                json.resp[i].StoreDescription,
                                 json.resp[i].SupplyStarted,
                                 json.resp[i].SupplyCompleted,
                                 json.resp[i].PaymentStart,
                                 json.resp[i].PaymentCompleted,
                                 json.resp[i].DeliveryMethod,
-                                json.resp[i].ShippingType,
-                                json.resp[i].StoreDescription
+                                json.resp[i].ShippingType
+
                                 //json.resp[i].OrderDate,
                                 //json.resp[i].UeType
                                 /*json.resp[i].FechaEntrega*/
@@ -181,6 +368,34 @@
 
 
         $(document).ready(function () {
+
+           
+            //$("#cmbServicio").change(function () {
+            //    //if()()
+            //    //$("#cancelReason").css("display", "none");
+            //});
+      /*      $("#cancelReason").css("display", "none");*/
+
+            $("#wizard").steps({
+                labels: {
+                    current: "current step:",
+                    pagination: "Pagination",
+                    finish: "Confirmar Orden",
+                    next: "Siguiente",
+                    previous: "Atras"
+
+                },
+                headerTag: "h3",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                autoFocus: true
+               // stepsOrientation: "vertical"
+                , onFinished: function (event, currentIndex) {
+                    alert('ya acabe');
+                }
+            });
+
+
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(0) th').each(function (i) {
                 if ($(this).attr('name') != "accion") {
@@ -247,14 +462,77 @@
                 }
             );
 
+
+            //var oTable = $('#tblDetalle').DataTable({
+            //    fnFooterCallback: function (row, data, start, end, display) {
+            //        var api = this.api();
+            //        var footer = $(this).append('<tfoot><tr></tr></tfoot>');
+            //        this.api().columns().every(function () {
+            //            var column = this;
+            //            $(footer).append('<th><input type="text" style="width:100%;"></th>');
+            //        });
+            //    }
+            //});
+
             GetHistorialRMA();
         });
 
 
 
-        function GenerarRma(orden) {
+        function GenerarRma(OrderId) {
 
-            $('#dlgRma').modal('toggle');
+                 $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetDetalleRma", "CallCenter")',
+                data: {
+
+                    OrderId: OrderId
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+
+
+
+                        var myTable = $('#tblDetalle').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+
+                            myTable.row.add([
+                                '<input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" />',
+                                json.resp[i].ProductName,
+                                json.resp[i].Quantity,
+                                json.resp[i].Price,
+                                json.resp[i].SubTotal
+
+                            ]).draw();
+                        }
+
+                        //lblTotalDetalle
+
+                        $("#lblTotalDetalle").text(json.total)
+                        $('#dlgRma').modal('toggle');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
+
+
+
         }
 
         function ValidaProducto(v) {
@@ -290,6 +568,7 @@
 
 
         /*NVS*/
+
 
     </script>
 

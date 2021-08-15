@@ -258,6 +258,7 @@
     <Compile Include="DAL\ProcesoSurtido\DALProcesoSurtido.cs" />
     <Compile Include="DAL\ReenvioMcia\DALReenvioMciaCEDIS.cs" />
     <Compile Include="DAL\ReenvioMcia\DALReenvioMciaProveedores.cs" />
+    <Compile Include="DAL\RMA\DALHistorialRMA.cs" />
     <Compile Include="DAL\TotalOrdenes\DALTotalOrdenes.cs" />
     <Compile Include="DAL\Vehiculos\DALVehiculos.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
@@ -270,10 +271,12 @@
     <Compile Include="Models\Almacenes\SuppliersWHStock.cs" />
     <Compile Include="Models\Autorizacion\AutorizacionShow.cs" />
     <Compile Include="Models\Autorizacion\upCorpOms_Cns_OrdersByItems.cs" />
+    <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByHistorical.cs" />
     <Compile Include="Models\Config\Menu.cs" />
     <Compile Include="Models\Config\Rol.cs" />
     <Compile Include="Models\Config\Owners.cs" />
     <Compile Include="Models\Config\SuppliersById.cs" />
+    <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByDates.cs" />
     <Compile Include="Models\Config\Usuario.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesAdm.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesCEDIS.cs" />
