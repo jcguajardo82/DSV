@@ -144,7 +144,7 @@ namespace ServicesManagement.Web.Controllers
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_UserAD"], "", json2);
 
                 // DESA
-                if (r.message.Contains("1"))
+                //if (r.message.Contains("1"))
                 // PROD
                 //if (r.message.Contains("true"))
 
