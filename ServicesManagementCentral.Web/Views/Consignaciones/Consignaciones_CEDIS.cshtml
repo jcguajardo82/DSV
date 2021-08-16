@@ -139,7 +139,17 @@
 
 @section scripts {
     <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
 
+        });
 
         function popDesHabilitar(noProveedor, noAlmacen) {
             $("#hddNoProveedor").val(noProveedor);
