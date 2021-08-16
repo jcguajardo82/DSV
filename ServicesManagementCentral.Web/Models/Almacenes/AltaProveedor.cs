@@ -33,6 +33,8 @@ namespace ServicesManagement.Web.Models.Almacenes
         public string addressCol { get; set; }
         public string ownerName { get; set; }
         public string reference { get; set; }
+        public string operInfoExt { get; set; }
+        public string commInfoExt { get; set; }
 
     }
 
