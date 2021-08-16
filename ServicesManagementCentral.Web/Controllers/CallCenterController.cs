@@ -13,6 +13,7 @@ using ServicesManagement.Web.DAL.DALHistorialRMA;
 using ServicesManagement.Web.Helpers;
 using ServicesManagement.Web.Models.Consignaciones;
 using System.IO;
+using ServicesManagement.Web.Models.CallCenter;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -424,7 +425,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<OrderFacts_UEModel>(
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByDates>(
                     DALHistorialRMA.upCorpOms_Cns_OrdersByDates(FecIni, FecFin, OrderId).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -435,7 +436,21 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
-
+        public ActionResult GetDetalleRma(int OrderId)
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
+                    DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         #endregion
 
