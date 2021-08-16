@@ -158,10 +158,9 @@
     width: 65%;
 }
 
-.wizard > .content > .body
-{
+.wizard > .content > .body {
     float: left;
-    position: absolute;
+    /*position: relative;*/
     width: 95%;
     height: 95%;
     padding: 2.5%;
