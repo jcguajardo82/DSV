@@ -88,6 +88,7 @@
             </div>
             <div class="modal-body">
                 <form id="frmCreateServicios">
+                    <input type="hidden" id="hddOrderId" />
                     <div class="ibox ">
                         <div class="ibox-content">
                             <div id="wizard">
@@ -104,9 +105,9 @@
                                             </select>
                                         </div>
                                         <div class="col-xs-5 col-md-5 col-lg-5">
-                                            <select class="form-control custom-select cancel-reason" name="cancelReason" id="cancelReason" required="" autocomplete="">
-                                                <option value="choose-reason" selected="" disabled="">
-                                                    Por favor, seleccione uno
+                                            <select class="form-control" name="cancelReason" id="cancelReason">
+                                                <option value="0">
+                                                    Por favor, seleccione un motivo
                                                 </option>
 
                                                 <option value="Cambio de producto">Cambio de producto</option>
@@ -147,11 +148,12 @@
                                             <table id="tblDetalle" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                                                 <thead class="bg-danger-sor">
                                                     <tr role="row">
-                                                        <th class="text-center sorting" style="width:20px"></th>
+                                                        <th class="text-center sorting"></th>
                                                         <th class="text-center sorting">Descripción</th>
                                                         <th class="text-center sorting">Cantidad</th>
                                                         <th class="text-center sorting">Precio</th>
                                                         <th class="text-center sorting">Subtotal</th>
+                                                        <th class="text-center sorting">Cantidad Devuelta</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -389,9 +391,75 @@
                 bodyTag: "section",
                 transitionEffect: "slideLeft",
                 autoFocus: true
-               // stepsOrientation: "vertical"
+                // stepsOrientation: "vertical"
+                , onStepChanging: function (event, currentIndex, newIndex) {
+
+
+                    if (currentIndex == 0) {
+
+                        if ($("#cancelReason").val() == '0') {
+                            $("#cancelReason").focus();
+
+                            alert('Por favor, seleccione un motivo');
+                            return false;
+                        }
+
+
+                        if ($("#cmbServicio").val() != '5') {
+                            var table = document.getElementById("tblDetalle");
+                            var checkboxes = table.querySelectorAll('input[type=checkbox]');
+                            //var val = checkboxes[0].checked;
+                            var check = false;
+                            var cantOk = true;
+                            for (var i = 0; i < checkboxes.length; i++) {
+
+                                if (checkboxes[i].checked) {
+                                    check = true;
+                                }
+                            }
+
+                            if (!check) {
+                                alert('Por favor, debe seleccionar un articulo');
+                                return false;
+                            }
+
+                            for (var i = 0; i < checkboxes.length; i++) {
+
+                                var id = checkboxes[i].value;
+
+                                var idnCant = 'nCant-' + id;
+                                var idCant = 'Cant-' + id;
+                                debugger;
+                                if (checkboxes[i].checked) {
+
+
+                                    var can = $("#" + idCant).val();
+                                    var nCan = $("#" + idnCant).val();
+                                    debugger;
+                                    if (parseFloat(nCan) > parseFloat(can) || parseFloat(nCan) < parseFloat(can)) {
+                                        cantOk = false;
+                                        break;
+                                    }
+                                } else {
+                                    $("#" + idnCant).val("0.00");
+                                }
+
+
+                            }
+
+                            if (!cantOk) {
+                                alert("La cantidad a devolver no puede ser mayor ni menor a la del articulo ordenado.");
+                                return false;
+                            }
+                        }
+
+                    }
+
+                     return true;
+                }
                 , onFinished: function (event, currentIndex) {
-                    alert('ya acabe');
+                    Finalizar();
+                    return true;
                 }
             });
 
@@ -463,24 +531,26 @@
             );
 
 
-            //var oTable = $('#tblDetalle').DataTable({
-            //    fnFooterCallback: function (row, data, start, end, display) {
-            //        var api = this.api();
-            //        var footer = $(this).append('<tfoot><tr></tr></tfoot>');
-            //        this.api().columns().every(function () {
-            //            var column = this;
-            //            $(footer).append('<th><input type="text" style="width:100%;"></th>');
-            //        });
-            //    }
-            //});
+
+
+
+            var oTable = $('#tblDetalle').DataTable({
+                columnDefs: [
+                    {
+                        className: 'text-right', targets: [2, 3, 4], "width": "10%"
+                    },
+                    { className: 'text-center', targets: [0], "width": "1%" },
+
+                ]
+            });
 
             GetHistorialRMA();
         });
 
 
-
         function GenerarRma(OrderId) {
 
+            $("#hddOrderId").val(OrderId);
                  $.ajax({
                 async: false,
                 type: "GET",
@@ -505,11 +575,12 @@
 
 
                             myTable.row.add([
-                                '<input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" />',
+                                '<input type="checkbox" onclick="ValidaProducto(1)" value="' + json.resp[i].ProductId+'" class="checkbox" />',
                                 json.resp[i].ProductName,
-                                json.resp[i].Quantity,
-                                json.resp[i].Price,
-                                json.resp[i].SubTotal
+                                json.resp[i].Quantity + "<input type='text' style='display:none;' disabled readonly class='form-control' id='Cant-" + json.resp[i].ProductId + "' disabled value='" + json.resp[i].Quantity + "' />",
+                                '$'+ json.resp[i].Price,
+                                '$'+json.resp[i].SubTotal,
+                                "<input type='number' oninput='input(this)'    id='nCant-" + json.resp[i].ProductId +"' value='0.00' class='form-control input-sm' />"
 
                             ]).draw();
                         }
@@ -535,18 +606,94 @@
 
         }
 
-        function ValidaProducto(v) {
-            // Get the checkbox
-            var checkBox = document.getElementById("myCheck");
-            // Get the output text
-            var text = document.getElementById("text");
-
-            // If the checkbox is checked, display the output text
-            if (v == 1) {
-                alert("El articulo no cumple con las condiciones");
-            }
+        var delayTimer;
+        function input(ele) {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(function () {
+                ele.value = parseFloat(ele.value).toFixed(2).toString();
+            }, 1100);
         }
 
+        function input2(ele) {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(function () {
+                ele.value = parseFloat(ele.value).toFixed(0).toString();
+            }, 1100);
+        }
+
+
+        function ValidaProducto(v) {
+            // Get the checkbox
+            //var checkBox = document.getElementById("myCheck");
+            //// Get the output text
+            //var text = document.getElementById("text");
+
+            //// If the checkbox is checked, display the output text
+            //if (v == 1) {
+            //    alert("El articulo no cumple con las condiciones");
+            //}
+        }
+
+        function Finalizar() {
+            var _OrderId = $("#hddOrderId").val();
+            var _accion = $("#cmbServicio").val();
+            var _desc = $("#cancelReason").val();
+
+
+            var list = new Array();
+            var table = document.getElementById("tblDetalle");
+            var checkboxes = table.querySelectorAll('input[type=checkbox]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                var item = {};
+                var id = checkboxes[i].value;
+
+                var idnCant = 'nCant-' + id;
+                var idCant = 'Cant-' + id;
+                debugger;
+                if (checkboxes[i].checked) {
+
+
+                    item.NewQuantity = $("#" + idnCant).val();
+                    item.ProductId = id;
+                    list.push(item);
+                }
+
+
+            }
+
+            debugger;
+
+
+
+               $.ajax({
+                async: false,
+                type: "POST",
+                   url: '@Url.Action("FinalizarRma", "CallCenter")',
+                   data: JSON.stringify({
+                       
+                        OrderId: _OrderId,
+                        Operacion: _accion,
+                        Desc: _desc,
+                        Products: list
+                   }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        location.reload();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert(errorThrown);
+                }
+
+            });
+        }
 
 
         function Excel(op) {

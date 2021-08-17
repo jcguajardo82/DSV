@@ -14,6 +14,7 @@ using ServicesManagement.Web.Helpers;
 using ServicesManagement.Web.Models.Consignaciones;
 using System.IO;
 using ServicesManagement.Web.Models.CallCenter;
+using System.Linq;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -256,11 +257,11 @@ namespace ServicesManagement.Web.Controllers
                 {
                     using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand("up_CorpCallCenter_sel_UNByCp", cnn))
                     {
-                        
+
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         SqlParameter param;
-                        
+
                         param = cmd.Parameters.Add("@Num_CP", SqlDbType.Int);
                         param.Value = cp;
 
@@ -313,7 +314,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var client = new RestClient("http://localhost:7071/api/Buscador_Producto?productId="+ product.Trim());
+                var client = new RestClient("http://localhost:7071/api/Buscador_Producto?productId=" + product.Trim());
                 //var client = new RestClient("https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?productId=" + product.Trim());
 
                 client.Timeout = -1;
@@ -323,7 +324,7 @@ namespace ServicesManagement.Web.Controllers
 
                 List<ResponseBuscadorModel> response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
 
-                var result = new { Success = false, data= response1 };
+                var result = new { Success = false, data = response1 };
                 return Json(result, JsonRequestBehavior.AllowGet);
                 //return Json("", JsonRequestBehavior.AllowGet);
             }
@@ -336,7 +337,8 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public List<OrderFacts_UEModel> getRams() {
+        public List<OrderFacts_UEModel> getRams()
+        {
 
             //var client = new RestClient("http://localhost:7071/api/GetRAM");
             var client = new RestClient("https://sorianacallcentergetramqa.azurewebsites.net/api/GetRAM");
@@ -396,7 +398,7 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-        public ActionResult GetEstatusRMA(DateTime FecIni, DateTime FecFin,int? OrderId)
+        public ActionResult GetEstatusRMA(DateTime FecIni, DateTime FecFin, int? OrderId)
         {
             try
             {
@@ -404,7 +406,7 @@ namespace ServicesManagement.Web.Controllers
                 var result = new
                 {
                     Success = true,
-                    resp = DataTableToModel.ConvertTo<AutorizacionShow>(DALCallCenter.up_Corp_cns_EstatusRma(FecIni,FecFin,OrderId).Tables[0])
+                    resp = DataTableToModel.ConvertTo<AutorizacionShow>(DALCallCenter.up_Corp_cns_EstatusRma(FecIni, FecFin, OrderId).Tables[0])
                 };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -442,8 +444,65 @@ namespace ServicesManagement.Web.Controllers
             {
                 var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
                     DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
-                var result = new { Success = true, resp = list };
+
+                var tot = list.Sum(x => x.SubTotal);
+
+                var result = new { Success = true, resp = list ,total= tot };
                 return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult FinalizarRma(int OrderId, int Operacion, string Desc,List<OrderDetailCap> Products)
+        {
+            try
+            {
+                //var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
+                //    DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
+                //var result = new { Success = true, resp = list };
+                //return Json(result, JsonRequestBehavior.AllowGet);
+                string accion = Operacion == 5 ? "cancelar" : "retorno";
+
+                var ds = DALCallCenter.up_Corp_cns_OrderInfo(OrderId);
+
+                var orden = DataTableToModel.ConvertTo<Order>(ds.Tables[0]).First();
+                var detalle = DataTableToModel.ConvertTo<OrderDetail>(ds.Tables[1]);
+
+                if (string.IsNullOrEmpty(orden.Clientphone))
+                { orden.Clientphone = string.Empty; }
+
+                var id = DataTableToModel.ConvertTo<AutorizacionShow>(
+                    DALCallCenter.up_Corp_ins_tbl_OrdenCancelada(
+                        orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
+                        ).Tables[0]).FirstOrDefault();
+
+                foreach (var item in detalle)
+                {
+
+                    int quantity = Convert.ToInt32(item.Quantity);
+                    if (Operacion != 5) {
+                        //var i = Products.Select(x => x.ProductId == item.ProductId).ToList().FirstOrDefault();
+                        foreach (var i in Products)
+                        {
+                            if (i.ProductId == item.ProductId)
+                            { quantity = Convert.ToInt32(i.NewQuantity); }
+                        }
+                       
+                    }
+                    
+
+                    DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, OrderId.ToString(), item.ShipmentId
+                        , item.Position, quantity, item.ProductId, Desc);
+                }
+
+                var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+
             }
             catch (Exception x)
             {
@@ -454,5 +513,13 @@ namespace ServicesManagement.Web.Controllers
 
         #endregion
 
+
+        public static int diagonalDifference(List<List<int>> arr)
+        {
+            int resp = 0;
+
+
+            return resp;
+        }
     }
 }
