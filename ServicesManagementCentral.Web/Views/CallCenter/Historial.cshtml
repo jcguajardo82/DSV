@@ -51,6 +51,7 @@
                     <tr>
                         <th name="accion" style="width:10%;"> </th>
                         <th>Orden</th>
+                        <th>Almacen</th>
                         <th>Fec Entrega</th>
                         <th>Tipo Entrega</th>
                         <th>Tienda</th>
@@ -89,6 +90,7 @@
             <div class="modal-body">
                 <form id="frmCreateServicios">
                     <input type="hidden" id="hddOrderId" />
+                    <input type="hidden" id="hddUeType" />
                     <div class="ibox ">
                         <div class="ibox-content">
                             <div id="wizard">
@@ -271,7 +273,7 @@
 
     <link href="~/Content/Inspinia/Styles/steps/jquery.steps.css" rel="stylesheet" />
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
-
+    
     <script>
 
 
@@ -334,8 +336,9 @@
 
                             myTable.row.add([
                                 /*json.resp[i].NroAlmacen,*/
-                                "<button onclick='GenerarRma(" + json.resp[i].OrderNo + ")' type='button' class='btn btn-danger btn btn-xs'  title='Click para generar RMA a la orden'> Casos de Cliente</button>",
+                                "<button onclick='GenerarRma(" + json.resp[i].OrderNo + ",\"" + json.resp[i].UeType+ "\")' type='button' class='btn btn-danger btn btn-xs'  title='Click para generar RMA a la orden'> Casos de Cliente</button>",
                                 "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].OrderNo + "</u>",
+                                json.resp[i].UeType,
                                 json.resp[i].DeliveryDate,
                                 json.resp[i].DeliveryType,
                                 json.resp[i].StoreNum,
@@ -548,9 +551,10 @@
         });
 
 
-        function GenerarRma(OrderId) {
+        function GenerarRma(OrderId, UeType) {
 
             $("#hddOrderId").val(OrderId);
+            $("#hddUeType").val(UeType);
                  $.ajax({
                 async: false,
                 type: "GET",
@@ -636,6 +640,7 @@
 
         function Finalizar() {
             var _OrderId = $("#hddOrderId").val();
+            var _UeType = $("#hddUeType").val();
             var _accion = $("#cmbServicio").val();
             var _desc = $("#cancelReason").val();
 
@@ -670,11 +675,12 @@
                 type: "POST",
                    url: '@Url.Action("FinalizarRma", "CallCenter")',
                    data: JSON.stringify({
-                       
+
                         OrderId: _OrderId,
                         Operacion: _accion,
                         Desc: _desc,
-                        Products: list
+                        Products: list,
+                       UeType: _UeType,
                    }),
 
                 contentType: "application/json; charset=utf-8",

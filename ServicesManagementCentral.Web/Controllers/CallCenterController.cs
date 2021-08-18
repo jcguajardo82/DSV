@@ -15,6 +15,8 @@ using ServicesManagement.Web.Models.Consignaciones;
 using System.IO;
 using ServicesManagement.Web.Models.CallCenter;
 using System.Linq;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -447,7 +449,7 @@ namespace ServicesManagement.Web.Controllers
 
                 var tot = list.Sum(x => x.SubTotal);
 
-                var result = new { Success = true, resp = list ,total= tot };
+                var result = new { Success = true, resp = list, total = tot };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
@@ -457,15 +459,23 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult FinalizarRma(int OrderId, int Operacion, string Desc,List<OrderDetailCap> Products)
+        public ActionResult FinalizarRma(int OrderId, int Operacion, string Desc, List<OrderDetailCap> Products, string UeType)
         {
             try
             {
-                //var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
-                //    DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
-                //var result = new { Success = true, resp = list };
-                //return Json(result, JsonRequestBehavior.AllowGet);
-                string accion = Operacion == 5 ? "cancelar" : "retorno";
+
+                string accion = "retorno";// Operacion == 5 ? "cancelar" : "retorno";
+
+                int? EstatusRma = 1;
+                int? ProcesoAut = 1;
+
+
+                if (Operacion == 5) {
+                    accion = "cancelar";
+                    if (UeType.ToUpper().Equals("SETC"))
+                        EstatusRma = 10;
+                    ProcesoAut = 10;
+                }
 
                 var ds = DALCallCenter.up_Corp_cns_OrderInfo(OrderId);
 
@@ -478,27 +488,34 @@ namespace ServicesManagement.Web.Controllers
                 var id = DataTableToModel.ConvertTo<AutorizacionShow>(
                     DALCallCenter.up_Corp_ins_tbl_OrdenCancelada(
                         orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
-                        ).Tables[0]).FirstOrDefault();
+                        ,EstatusRma, ProcesoAut).Tables[0]).FirstOrDefault();
 
                 foreach (var item in detalle)
                 {
 
                     int quantity = Convert.ToInt32(item.Quantity);
-                    if (Operacion != 5) {
+                    if (Operacion != 5)
+                    {
                         //var i = Products.Select(x => x.ProductId == item.ProductId).ToList().FirstOrDefault();
                         foreach (var i in Products)
                         {
                             if (i.ProductId == item.ProductId)
                             { quantity = Convert.ToInt32(i.NewQuantity); }
                         }
-                       
+                        DALCallCenter.up_Corp_ins_tbl_OrdenRetorno_Detalle(id.Id_cancelacion, orden.Clientid.ToString(), item.ShipmentId, item.Position, quantity, item.ProductId, Desc);
                     }
-                    
+                    else
+                    {
 
-                    DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, OrderId.ToString(), item.ShipmentId
-                        , item.Position, quantity, item.ProductId, Desc);
+                        DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Clientid.ToString(), item.ShipmentId
+                            , item.Position, quantity, item.ProductId, Desc);
+
+                        if(UeType.ToUpper().Equals("SETC"))
+                            Cancelacion(orden.Clientid);
+                    }
                 }
 
+      
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -508,6 +525,52 @@ namespace ServicesManagement.Web.Controllers
             {
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public void Cancelacion(int OrderId)
+        {
+            try
+            {
+
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"];
+
+
+
+                var req = new { OrderID = OrderId.ToString() };
+                //string json2 = string.Empty;
+                //JavaScriptSerializer js = new JavaScriptSerializer();
+                ////json2 = js.Serialize(o);
+                //js = null;
+                
+                var json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
+
+                string PPSRequest = JsonConvert.SerializeObject(req);
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
+
+                if (r.code != "00")
+                {
+                    throw new Exception(r.message);
+                }
+
+
+
+
+
+
+
+            }
+            catch (Exception x)
+            {
+                throw x;
+
             }
         }
 
