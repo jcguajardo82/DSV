@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -32,8 +34,8 @@ namespace ServicesManagement.Web.Controllers
                     HttpFileCollectionBase files = Request.Files;
                     for (int i = 0; i < files.Count; i++)
                     {
-                        System.IO.Stream str; String strmContents;
-                        Int32 counter, strLen, strRead;
+                        System.IO.Stream str, str1; String strmContents;
+                        Int32 counter, strLen, strRead, strRead1;
                         // Create a Stream object.
                         str = Request.InputStream;
                         // Find number of bytes in stream.
@@ -56,9 +58,13 @@ namespace ServicesManagement.Web.Controllers
                         string dateTime = dt.ToString("yyyyMMddHHmmssfff");
 
                         HttpPostedFileBase file = files[i];
+                        str1 = file.InputStream;
+                        byte[] strArr1 = new byte[Convert.ToInt32(file.ContentLength)];
+                        // Read stream into byte array.
+                        strRead1 = str1.Read(strArr1, 0, Convert.ToInt32(file.ContentLength));
 
                         //Grabar a tabla
-                        DALProcesoReciboDevoluciones.upCorpOms_Ins_UeNoDevolEvidencia(idUeNo, idOrderNo, User.Identity.Name, strArr);
+                        DALProcesoReciboDevoluciones.upCorpOms_Ins_UeNoDevolEvidencia(idUeNo, idOrderNo, User.Identity.Name, strArr1);
 
                         string fname;
 

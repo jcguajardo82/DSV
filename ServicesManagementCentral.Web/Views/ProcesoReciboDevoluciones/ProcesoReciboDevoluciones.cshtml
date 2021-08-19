@@ -192,7 +192,6 @@
                                     <th style="width: 50px;">No. de Pedido</th>
                                     <th style="width: 100px;"># UE</th>
                                     <th style="width: 80px;">Imagen</th>
-                                    <th style="width: 80px;">Imagen</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -362,7 +361,6 @@
                             tr = $('<tr/>');
                             tr.append("<td>" + json.resp[i].OrderNo + "</td>");
                             tr.append("<td>" + json.resp[i].UeNo + "</td>");
-                            tr.append("<td><img class = 'image' id = 'image' width='240' height='160' src='data:image/jpeg;base64," + json.resp[i].Evidence + "'></td>");
                             tr.append("<td><img class = 'image' width='240' height='160' src='data:image/jpeg;base64," + json.resp[i].strImg + "'></td>");
                             $('#tblShowImagenes').append(tr);
                         }
