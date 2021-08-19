@@ -120,9 +120,9 @@
     </div>
     <div class="col-lg-3">
         <div id="topRightSection" class="col-xs-12 col-md-12 text-right ">
-            <button type="button" class="btn btn-default btn btn-xs" data-toggle="modal" onclick="GetTdasTrasp()">
+            @*<button type="button" class="btn btn-default btn btn-xs" data-toggle="modal" onclick="GetTdasTrasp()">
                 Traspaso
-            </button>
+            </button>*@
             @*<button type="button" class="btn btn-default btn btn-xs" data-toggle="modal" data-target="#dlgEtiquetas">
                     Etiquetas
                 </button>*@
@@ -245,7 +245,7 @@
                     {
                         @*nueva lista DST*@
                         <div class="col-xs-2 col-md-2 col-lg-2"></div>
-                        <div class="col-xs-2 col-md-2 col-lg-2">
+                        @*<div class="col-xs-2 col-md-2 col-lg-2">
                             <div class="dt-buttons btn-group flex-wrap">
                                 <div class="input-group-prepend">
                                     <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">Asignar Guia de Embarque DST</button>
@@ -262,8 +262,10 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
-                        @*Nueva lista DST*@
+                        </div>*@
+
+
+                        @*boton DST*@
                         @*<div class="col-xs-2 col-md-2 col-lg-2">  </div>*@
                         <div class="col-xs-2 col-md-2 col-lg-2">
                             <div class="dt-buttons btn-group flex-wrap">
@@ -532,7 +534,9 @@
             var tipolistaO = listaO.split("-");
             debugger;
             if (listaO != "0") {
-                if (tipolistaO[1] == "1" || tipolistaO[1] == "2") {
+                if (tipolistaO[1] == "1")
+                    // || tipolistaO[1] == "2") 
+                {
                     if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
                         //$('#ConfirmMessageResponse').val('Yes');
                         debugger;

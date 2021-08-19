@@ -211,6 +211,7 @@
     <Compile Include="Controllers\ActualizacionesController.cs" />
     <Compile Include="Controllers\Api\ApiBaseController.cs" />
     <Compile Include="Controllers\Api\SecurityController.cs" />
+    <Compile Include="Controllers\AutorizacionController.cs" />
     <Compile Include="Controllers\AutorizacionesRMA.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CallCenterController.cs" />
@@ -242,6 +243,8 @@
     <Compile Include="DAL\Actualizaciones\DALActualizaciones.cs" />
     <Compile Include="DAL\Almacenes\DALAlmacenes.cs" />
     <Compile Include="DAL\Almacenes\DALAltaProveedor.cs" />
+    <Compile Include="DAL\Autorizacion\DALAutorizacion.cs" />
+    <Compile Include="DAL\CallCenter\DALCallCenter.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesAdm.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesCEDIS.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesProveedor.cs" />
@@ -255,6 +258,7 @@
     <Compile Include="DAL\ProcesoSurtido\DALProcesoSurtido.cs" />
     <Compile Include="DAL\ReenvioMcia\DALReenvioMciaCEDIS.cs" />
     <Compile Include="DAL\ReenvioMcia\DALReenvioMciaProveedores.cs" />
+    <Compile Include="DAL\RMA\DALHistorialRMA.cs" />
     <Compile Include="DAL\TotalOrdenes\DALTotalOrdenes.cs" />
     <Compile Include="DAL\Vehiculos\DALVehiculos.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
@@ -265,10 +269,15 @@
     <Compile Include="Models\Almacenes\SuppliersWHPostalCode.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHShipments.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHStock.cs" />
+    <Compile Include="Models\Autorizacion\AutorizacionShow.cs" />
+    <Compile Include="Models\Autorizacion\upCorpOms_Cns_OrdersByItems.cs" />
+    <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByHistorical.cs" />
+    <Compile Include="Models\CallCenter\up_Corp_cns_OrderInfo.cs" />
     <Compile Include="Models\Config\Menu.cs" />
     <Compile Include="Models\Config\Rol.cs" />
     <Compile Include="Models\Config\Owners.cs" />
     <Compile Include="Models\Config\SuppliersById.cs" />
+    <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByDates.cs" />
     <Compile Include="Models\Config\Usuario.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesAdm.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesCEDIS.cs" />
@@ -3550,6 +3559,8 @@
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Files\img1.jpeg" />
+    <Content Include="Files\img2.jpeg" />
     <Content Include="Files\qr.PNG" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
@@ -3810,6 +3821,11 @@
     <Content Include="Views\CallCenter\EstatusRMA.cshtml" />
     <Content Include="Views\CallCenter\Historial.cshtml" />
     <Content Include="Views\CallCenter\RMA.cshtml" />
+    <Content Include="Views\Autorizacion\Autorizacion.cshtml" />
+    <Content Include="Views\Autorizacion\AutorizacionDsv.cshtml" />
+    <Content Include="Views\Autorizacion\AutorizacionCedis.cshtml" />
+    <None Include="Views\Autorizacion\AutorizacionDst.cshtml" />
+    <Content Include="Views\Autorizacion\AutorizacionAdmon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

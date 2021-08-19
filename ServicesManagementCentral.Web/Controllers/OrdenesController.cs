@@ -1939,12 +1939,12 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-
+                string servicioPaq = "estafeta";
                 string guia = CreateGuiaEstafeta(UeNo, OrderNo);
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
             PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-            User.Identity.Name, guia).Tables[0].Rows[0][0];
+            User.Identity.Name, servicioPaq, guia).Tables[0].Rows[0][0];
 
 
 
@@ -2017,7 +2017,7 @@ namespace ServicesManagement.Web.Controllers
                 m.DestinationInfo.state = r["StateCode"].ToString();
                 m.DestinationInfo.zipCode = r["PostalCode"].ToString();
 
-
+                
                 //OrderNo
                 //    CnscOrder
                 //    StoreNum

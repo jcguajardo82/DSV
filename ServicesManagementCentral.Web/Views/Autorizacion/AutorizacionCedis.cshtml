@@ -1,0 +1,421 @@
+﻿
+@{
+    ViewBag.Title = "Autorización RMA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4"><h2>Autorización RMA</h2></div>
+        <div class="col-4"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div style="width:99%;">
+                <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                    <thead class="bg-danger-sor">
+                        <tr>
+                            <th>Folio de RMA</th>
+                            <th>No. de Orden</th>
+                            <th>Tipo de Solicitud</th>
+                            <th>Canal de Solicitud</th>
+                            <th>Fecha de Solicitud</th>
+                            <th>Fecha de Creacion Orden</th>
+                            <th>Auatorizacion <br /> Almacen</th>
+                            @*<th>Auatorizacion <br />Almacen</th>
+                                <th>Auatorizacion <br />Administrador</th>*@
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal fade" id="dlgMod" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header pt-3 pb-1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Autorización RMA</h4>
+                    <input type="hidden" id="hddIdOrden" />
+                    <input type="hidden" id="hddIdCancelacion" />
+                    <input type="hidden" id="hddOp" />
+                </div>
+                <div class="modal-body">
+                    <form id="frmCreateServicios">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group">
+                                    <label>Comentarios </label>
+                                    <textarea class="form-control m-b" id="txtMotCan" rows="6" maxlength="250"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="SaveAut()" class="btn btn-primary">Aceptar</button>
+                    @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal fade" id="dlgModOrden" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header pt-3 pb-1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Detalle de la Orden</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmCreateServicios">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 col-lg-12">
+                                <table class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " id="tblDetalle">
+                                    <thead class="bg-danger-sor">
+                                        <tr>
+                                            <th style="width:40%;">Nombre del Articulo</th>
+                                            <th style="width:15%;">Precio</th>
+                                            <th style="width:15%;">EAN</th>
+                                            <th style="width:10%;">Tipo de <br /> Almacen</th>
+                                            <th style="width:10%;">Nombre de <br /> Almacen</th>
+                                            <th style="width:10%;">Cantidad de <br /> Piezas</th>
+                                            <th style="width:10%;">Comentarios</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="Inhabilitar()" class="btn btn-primary">Aceptar</button>
+                    @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts {
+
+
+
+    <script>
+
+        function GetOrdenes(){
+            $.ajax({
+                async: false,
+                type: "get",
+                url: '@Url.Action("GetOrdenes", "Autorizacion")',
+                data: {
+                    accion:"CEDIS"
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        debugger;
+                        var table = $('#tblConsulta').DataTable();
+
+                        table.clear().draw();
+
+                        //iniciarDetalle();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+
+                            table.row.add([
+                                json.resp[i].Id_cancelacion
+                                , "<a onclick='GetDetalle(\"" + json.resp[i].Accion + "\"," + json.resp[i].OrderId +")'><u>" + json.resp[i].OrderId+"</u></a>"
+                                , json.resp[i].Accion
+                                , json.resp[i].Origen
+                                , json.resp[i].Fec_movto
+                                , json.resp[i].FecOrder
+
+                                , "<button title='Click para Autorizar' onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",6)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+                                + "<button title='Click para Rechazar'  onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",7)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-ban'></i></button>"
+
+
+
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }
+
+        function GetDetalle(accion, id) {
+     
+            $.ajax({
+                async: false,
+                type: "get",
+                url: '@Url.Action("GetDetalle", "Autorizacion")',
+                data: {
+                    OrderSF:id,
+                    accion: accion
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        debugger;
+                        var table = $('#tblDetalle').DataTable();
+
+                        table.clear().draw();
+
+                        //iniciarDetalle();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+
+                            table.row.add([
+                                json.resp[i].ProductDescription,
+                                json.resp[i].PriceNormalSale,
+                                json.resp[i].BarCode,
+                                json.resp[i].WarehouseType,
+                                json.resp[i].StoreDescription,
+                                json.resp[i].Quantity,
+                                json.resp[i].Comment
+
+
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                        $("#dlgModOrden").modal('show');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }
+
+        function popAut( orderId,Id_cancelacion,op) {
+                //<input type="hidden" id="hddIdOrden"/>
+                //<input type="hidden" id="hddIdCancelacion"/>
+
+            $("#txtMotCan").val('');
+            $("#hddIdOrden").val(orderId);
+            $("#hddOp").val(op);
+            $("#hddIdCancelacion").val(Id_cancelacion);
+            $("#dlgMod").modal('show');
+        }
+
+
+        function SaveAut() {
+            var _Comentario = $("#txtMotCan").val();
+            var _IdEstatusAut = $("#hddOp").val();
+            var _orderId = $("#hddIdOrden").val();
+            var _Id_cancelacion = $("#hddIdCancelacion").val();
+
+            if (_Comentario.length == 0) {
+                $("#txtMotCan").focus();
+                return;
+            }
+                  $.ajax({
+                async: false,
+                type: "get",
+                url: '@Url.Action("SetAut", "Autorizacion")',
+                data: {
+                    IdEstatusAut: _IdEstatusAut
+                    , Comentario: _Comentario
+                    , orderId: _orderId
+                    , Id_cancelacion: _Id_cancelacion
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        location.reload();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }
+
+
+        $(document).ready(function () {
+
+            $('#tblConsulta').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' }
+                        //{ extend: 'excel', className: 'btn-primary' },
+                        //{
+                        //    text: 'Cotizacion',
+                        //    action: function (e, dt, node, config) {
+                        //        //var e = document.getElementById("ProveedorLista");
+                        //        //e.disabled = false;
+
+                        //        document.getElementById("TarifaFija").value = "SI";
+                        //        document.getElementById("cp_origen").value = '';
+                        //        document.getElementById("cp_destino").value = '';
+                        //        document.getElementById("in_ancho").value = '';
+                        //        document.getElementById("in_alto").value = '';
+                        //        document.getElementById("in_peso").value = '';
+                        //        document.getElementById("in_largo").value = '';
+
+                        //        $("#frmAltaTrans").modal('show');
+
+                        //    }
+                        //    , className: 'btn-primary'
+                        //}
+                    ]
+                    //,"fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    //    if (aData[1] == "SETC") {
+                    //        $('td', nRow).css('background-color', '#B6BF00');
+                    //    } else if (aData[2] == "4") {
+                    //        $('td', nRow).css('background-color', 'Orange');
+                    //    }
+                    //}
+                }
+            );
+
+            $('#tblDetalle').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' }
+                        //{ extend: 'excel', className: 'btn-primary' },
+                        //{
+                        //    text: 'Cotizacion',
+                        //    action: function (e, dt, node, config) {
+                        //        //var e = document.getElementById("ProveedorLista");
+                        //        //e.disabled = false;
+
+                        //        document.getElementById("TarifaFija").value = "SI";
+                        //        document.getElementById("cp_origen").value = '';
+                        //        document.getElementById("cp_destino").value = '';
+                        //        document.getElementById("in_ancho").value = '';
+                        //        document.getElementById("in_alto").value = '';
+                        //        document.getElementById("in_peso").value = '';
+                        //        document.getElementById("in_largo").value = '';
+
+                        //        $("#frmAltaTrans").modal('show');
+
+                        //    }
+                        //    , className: 'btn-primary'
+                        //}
+                    ]
+
+
+                    //,"fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    //    if (aData[1] == "SETC") {
+                    //        $('td', nRow).css('background-color', '#B6BF00');
+                    //    } else if (aData[2] == "4") {
+                    //        $('td', nRow).css('background-color', 'Orange');
+                    //    }
+                    //}
+                }
+            );
+            GetOrdenes();
+        });
+
+    </script>
+}
