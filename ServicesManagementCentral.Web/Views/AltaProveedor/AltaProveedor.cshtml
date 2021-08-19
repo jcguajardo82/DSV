@@ -233,7 +233,7 @@
                         <tr>
                             <td style="width:15%;text-align:center;">Colonia</td>
                             <td style="text-align:left;">
-                                @*<input type="text" class="form-control" id="txtCol" value="@Model.addressCol" />*@
+                                <input type="text" class="form-control" style="display:none" id="txtCol" value="@Model.addressCol" />
                                 <select id="ddlColonias" class="form-control">
                                 </select>
                             </td>
@@ -381,7 +381,11 @@
     <script>
         $(document).ready(function () {
          
-
+            if ($("#txtCodPos").val() != '') {
+                //alert($("#txtCol").val());
+                GetInfo();
+                $("#ddlColonias").val($("#txtCol").val());
+            }
             $('input[name="phonenumber"]')
                 .keydown(function (e) {
 
