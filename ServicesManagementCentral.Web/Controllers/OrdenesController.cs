@@ -1952,7 +1952,11 @@ namespace ServicesManagement.Web.Controllers
                     if (!tarifa.Equals("error"))
                         GuardarTarifas(UeNo, OrderNo, tarifa);
                 }
-                string guia = CreateGuiaEstafeta(UeNo, OrderNo);
+                int type = 1;
+
+                if (PackageType.Equals("Paquete"))
+                    type = 4;
+                string guia = CreateGuiaEstafeta(UeNo, OrderNo,int.Parse(PackageWeight.ToString()),type);
 
                 string servicioPaq = "estafeta";
                 //TarifaModel tarifaSeleccionada = new TarifaModel();
@@ -2054,10 +2058,11 @@ User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[
             return tarifa;
         }
 
-        public string CreateGuiaEstafeta(string UeNo, int OrderNo)
+        public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
         {
 
             DataSet ds = new DataSet();
+            DataSet dsO = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -2076,6 +2081,14 @@ User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Sel_EstafetaInfo]", false, parametros);
 
+
+
+                //System.Collections.Hashtable parametros2 = new System.Collections.Hashtable();
+                //parametros2.Add("@UeNo", UeNo);
+                
+
+                //dsO = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoOriginInfo]", false, parametros2);
+
             }
             catch (SqlException ex)
             {
@@ -2086,62 +2099,82 @@ User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[
                 return "ERR";
             }
 
-
-            foreach (DataRow r in ds.Tables[0].Rows)
-            {
-
-
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-                EstafetaRequestModel m = new EstafetaRequestModel();
-
-                m.serviceTypeId = "1";
-                m.DestinationInfo = new AddressModel();
-
-                m.DestinationInfo.address1 = r["Address1"].ToString();
-                m.DestinationInfo.address2 = r["Address2"].ToString();
-                m.DestinationInfo.cellPhone = r["Phone"].ToString();
-                m.DestinationInfo.city = r["City"].ToString();
-                m.DestinationInfo.contactName = r["CustomerName"].ToString();
-                m.DestinationInfo.corporateName = r["CustomerName"].ToString();
-                m.DestinationInfo.customerNumber = r["CustomerNo"].ToString();
-                m.DestinationInfo.neighborhood = r["NameReceives"].ToString();
-                m.DestinationInfo.phoneNumber = r["Phone"].ToString();
-                m.DestinationInfo.state = r["StateCode"].ToString();
-                m.DestinationInfo.zipCode = r["PostalCode"].ToString();
+            EstafetaRequestModel m = new EstafetaRequestModel();
+            //foreach (DataRow r in dsO.Tables[0].Rows)
+            //{
 
 
-                //OrderNo
-                //    CnscOrder
-                //    StoreNum
-                //    UeNo
-                //    StatusUe
-                //    OrderDate
-                //    OrderTime
-                //    CustomerNo  
-                //    CustomerName 
-                //    Phone   
-                //    Address1 
-                //    Address2    
-                //    City 
-                //    StateCode   
-                //    PostalCode 
-                //    Reference   
-                //    NameReceives 
-                //    Total   
+            //    m.OriginInfo = new AddressModel();
+
+            //    m.OriginInfo.address1 = r["address1"].ToString();
+            //    m.OriginInfo.address2 = r["address2"].ToString();
+            //    m.OriginInfo.cellPhone = r["cellPhone"].ToString();
+            //    m.OriginInfo.city = r["city"].ToString();
+            //    m.OriginInfo.contactName = r["contactName"].ToString();
+            //    m.OriginInfo.corporateName = r["corporateName"].ToString();
+            //    m.OriginInfo.customerNumber = r["customerNumber"].ToString();
+            //    m.OriginInfo.neighborhood = r["neighborhood"].ToString();
+            //    m.OriginInfo.phoneNumber = r["phone"].ToString();
+            //    m.OriginInfo.state = r["state"].ToString();
+            //    m.OriginInfo.zipCode = r["zipCode"].ToString();
+
+            //}
+            
+                foreach (DataRow r in ds.Tables[0].Rows)
+                {
 
 
-                string json2 = JsonConvert.SerializeObject(m);
+                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Estafeta_Guia"], "", json2);
+                    m.serviceTypeId = "1";
+                    m.DestinationInfo = new AddressModel();
 
-                string msg = r2.message;
+                    m.DestinationInfo.address1 = r["Address1"].ToString();
+                    m.DestinationInfo.address2 = r["Address2"].ToString();
+                    m.DestinationInfo.cellPhone = r["Phone"].ToString();
+                    m.DestinationInfo.city = r["City"].ToString();
+                    m.DestinationInfo.contactName = r["CustomerName"].ToString();
+                    m.DestinationInfo.corporateName = r["CustomerName"].ToString();
+                    m.DestinationInfo.customerNumber = r["CustomerNo"].ToString();
+                    m.DestinationInfo.neighborhood = r["NameReceives"].ToString();
+                    m.DestinationInfo.phoneNumber = r["Phone"].ToString();
+                    m.DestinationInfo.state = r["StateCode"].ToString();
+                    m.DestinationInfo.zipCode = r["PostalCode"].ToString();
 
-                ResponseModels re = JsonConvert.DeserializeObject<ResponseModels>(r2.message);
+                    m.weight = weight; // lo capturado en el modal
+                    m.parcelTypeId = typeId; // 1 - sobre, 4 - paquete
 
-                return re.Guia + "," + re.pdf;
+                    //OrderNo
+                    //    CnscOrder
+                    //    StoreNum
+                    //    UeNo
+                    //    StatusUe
+                    //    OrderDate
+                    //    OrderTime
+                    //    CustomerNo  
+                    //    CustomerName 
+                    //    Phone   
+                    //    Address1 
+                    //    Address2    
+                    //    City 
+                    //    StateCode   
+                    //    PostalCode 
+                    //    Reference   
+                    //    NameReceives 
+                    //    Total   
 
-            }
+
+                    string json2 = JsonConvert.SerializeObject(m);
+
+                    Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Estafeta_Guia"], "", json2);
+
+                    string msg = r2.message;
+
+                    ResponseModels re = JsonConvert.DeserializeObject<ResponseModels>(r2.message);
+
+                    return re.Guia + "," + re.pdf;
+
+                }
 
             return string.Empty;
 
@@ -2353,6 +2386,62 @@ User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[
 
         }
 
+        [HttpPost]
+        public ActionResult GetPdfGuia(string guia)
+        {
+            string pdfBase = string.Empty;
+            try
+            {
+                DataSet ds = new DataSet();
+
+                string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+                if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+                {
+                    conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+                }
+
+                try
+                {
+                    Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                    System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                    parametros.Add("@IdTrackingService", guia);
+
+                    ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoTrackingPDF]", false, parametros);
+
+                    if (ds != null)
+                    {
+                        if (ds.Tables.Count > 0)
+                        {
+                            if (ds.Tables[0].Rows.Count > 0)
+                            {
+
+                                pdfBase = ds.Tables[0].Rows[0][0].ToString();
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+
+                    throw ex;
+                }
+                catch (System.Exception ex)
+                {
+
+                    throw ex;
+                }
+
+                var result = new { Success = true, pdf = pdfBase };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
         #endregion
     }
 }

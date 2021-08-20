@@ -121,8 +121,8 @@
     <div class="col-lg-3">
         <div id="topRightSection" class="col-xs-12 col-md-12 text-right ">
             @*<button type="button" class="btn btn-default btn btn-xs" data-toggle="modal" onclick="GetTdasTrasp()">
-                Traspaso
-            </button>*@
+                    Traspaso
+                </button>*@
             @*<button type="button" class="btn btn-default btn btn-xs" data-toggle="modal" data-target="#dlgEtiquetas">
                     Etiquetas
                 </button>*@
@@ -246,23 +246,23 @@
                         @*nueva lista DST*@
                         <div class="col-xs-2 col-md-2 col-lg-2"></div>
                         @*<div class="col-xs-2 col-md-2 col-lg-2">
-                            <div class="dt-buttons btn-group flex-wrap">
-                                <div class="input-group-prepend">
-                                    <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">Asignar Guia de Embarque DST</button>
-                                    <ul id="dllTransDTS" class="dropdown-menu" x-placement="top-start" style="position: absolute; top: -2px; left: 0px; will-change: top, left;width:100%;">
-                                        @if (Session["listTransDST"] != null)
-                                        {
-                                            System.Data.DataSet ds = (System.Data.DataSet)Session["listTransDST"];
-                                            var dt = ds.Tables[0];
-                                            foreach (System.Data.DataRow p in dt.Rows)
+                                <div class="dt-buttons btn-group flex-wrap">
+                                    <div class="input-group-prepend">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">Asignar Guia de Embarque DST</button>
+                                        <ul id="dllTransDTS" class="dropdown-menu" x-placement="top-start" style="position: absolute; top: -2px; left: 0px; will-change: top, left;width:100%;">
+                                            @if (Session["listTransDST"] != null)
                                             {
-                                                <li id="@p["Id_Carrier"]" onclick="onchangeDropTransDST(this)"><a>@p["Name"]</a></li>
+                                                System.Data.DataSet ds = (System.Data.DataSet)Session["listTransDST"];
+                                                var dt = ds.Tables[0];
+                                                foreach (System.Data.DataRow p in dt.Rows)
+                                                {
+                                                    <li id="@p["Id_Carrier"]" onclick="onchangeDropTransDST(this)"><a>@p["Name"]</a></li>
+                                                }
                                             }
-                                        }
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
 
 
                         @*boton DST*@
@@ -301,7 +301,7 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Envio listo para entrega</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Confirmación</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Guias de embarque</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Guias de paqueteria</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">Guias de paqueteria</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Estatus de la guía</th>
                                 </tr>
                             </thead>
@@ -415,7 +415,10 @@
                                                     }
                                                 }
                                                 <td>@IdGuias</td>
-                                                <td>@IdGuiasPaq</td>
+                                                <td>
+                                                    <a onclick="showpdf('@IdGuiasPaq');return false;" style="width: 116px;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">@IdGuiasPaq</a>
+
+                                                </td>
                                                 <td>@GuiasPaqEstatusDesc</td>
                                             </tr>
                                         }
@@ -431,6 +434,31 @@
 </div>
 <input id="Orders" name="Orders" value="0" style="visibility:hidden" />
 
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<h4 class="modal-title">Modal Header</h4>*@
+            </div>
+            <div class="modal-body">
+
+                @*<embed src="~/Content/Article List.pdf"
+                    frameborder="0" width="100%" height="400px">*@
+
+                <iframe id="viewrPDF" width="100%" height="400px" src=''></iframe>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 @Html.Partial("Traspaso")
@@ -439,9 +467,35 @@
 @Html.Partial("CancelacionOrden")
 
 @section scripts {
-
-
     <script type="text/javascript">
+        function showpdf(num_guia) {
+            //debugger;
+
+            $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("GetPdfGuia", "Ordenes")',
+            data: {
+            guia: num_guia
+            },
+            datatype: "html",
+            success: function (json) {
+            if (json.Success) {
+
+            document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+
+            $("#myModal").modal("show");
+
+            }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+
+            }
+            });
+
+        }
+
         $(function () {
             $('#datetimepicker1').datetimepicker({
                 locale: 'es'
@@ -535,7 +589,7 @@
             debugger;
             if (listaO != "0") {
                 if (tipolistaO[1] == "1")
-                    // || tipolistaO[1] == "2") 
+                    // || tipolistaO[1] == "2")
                 {
                     if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
                         //$('#ConfirmMessageResponse').val('Yes');
