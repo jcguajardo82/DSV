@@ -159,7 +159,7 @@
                             <td>
 
                                 @if (Model.idSupplierWHCode.ToString() == "0")
-                                {<input type="text" class="form-control" onkeypress='return validaNumericos2(event)' id="txtNumAlmacen" />}
+                                {<input type="text" class="form-control" onkeypress='return validaNumericos2(event)' readonly id="txtNumAlmacen" />}
                                 else
                                 { <input type="text" class="form-control" onkeypress='return validaNumericos2(event)' readonly value="@Model.idSupplierWHCode" id="txtNumAlmacen" />}
                             </td>
@@ -233,7 +233,7 @@
                         <tr>
                             <td style="width:15%;text-align:center;">Colonia</td>
                             <td style="text-align:left;">
-                                @*<input type="text" class="form-control" id="txtCol" value="@Model.addressCol" />*@
+                                <input type="text" class="form-control" style="display:none" id="txtCol" value="@Model.addressCol" />
                                 <select id="ddlColonias" class="form-control">
                                 </select>
                             </td>
@@ -323,7 +323,7 @@
 
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtEmailO" />
+                                <input type="text" class="form-control" id="txtExtO"  value="@Model.operInfoExt"/>
                             </td>
                             <td style="width: 10%;"></td>
 
@@ -331,7 +331,7 @@
                                 Extension
                             </td>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control" id="txtEmailC" />
+                                <input type="text" class="form-control" id="txtExtC"  value="@Model.commInfoExt"/>
                             </td>
                             <td style="width: 10%;"></td>
                         </tr>
@@ -381,7 +381,11 @@
     <script>
         $(document).ready(function () {
          
-
+            if ($("#txtCodPos").val() != '') {
+                //alert($("#txtCol").val());
+                GetInfo();
+                $("#ddlColonias").val($("#txtCol").val());
+            }
             $('input[name="phonenumber"]')
                 .keydown(function (e) {
 
@@ -647,6 +651,8 @@
             var _addressCol = $("#ddlColonias").val();
             var _addressCol = $("#ddlColonias").val();
             var _reference = $("#txtReferencia").val();
+            var _ExtO = $("#txtExtO").val();
+            var _ExtC = $("#txtExtC").val();
             var _bitVehicles = "false";
                //string idOperType, string idShipType, string bitVehicles
 
@@ -727,7 +733,14 @@
                 $("#txtEmailC").focus();
                 return;
             }
-
+            //if (_txtExtO.length == 0) {
+            //    $("#txtExtO").focus();
+            //    return;
+            //}
+            //if (_txtExtC.length == 0) {
+            //    $("#txtExtC").focus();
+            //    return;
+            //}
                 if ($("#chVehiculo").is(':checked') ) {
                     _bitVehicles = "true";
                 }
@@ -763,6 +776,9 @@
                     , bitVehicles: _bitVehicles
                     , addressCol: _addressCol
                     , reference: _reference
+                    , ExtO: _ExtO
+                    , ExtC: _ExtC
+
                 },
                 datatype: "html",
                 success: function (json) {

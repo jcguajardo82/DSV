@@ -1,12 +1,22 @@
 ﻿using RestSharp;
+using ServicesManagement.Web.DAL.Autorizacion;
+using ServicesManagement.Web.DAL.CallCenter;
+using ServicesManagement.Web.Helpers;
+using ServicesManagement.Web.Models.Autorizacion;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using ServicesManagement.Web.DAL.DALHistorialRMA;
+using ServicesManagement.Web.Helpers;
+using ServicesManagement.Web.Models.Consignaciones;
+using System.IO;
+using ServicesManagement.Web.Models.CallCenter;
+using System.Linq;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -186,6 +196,16 @@ namespace ServicesManagement.Web.Controllers
         public DateTime ShippingEstDate { get; set; }
         public TimeSpan ShippingEstTime { get; set; }
         public String ConsignmentType { get; set; }
+        //NVS
+        public String SupplyStarted { get; set; }
+        public String SupplyCompleted { get; set; }
+        public String PaymentStart { get; set; }
+        public String PaymentCompleted { get; set; }
+        public String DeliveryMethod { get; set; }
+        public String ShippingType { get; set; }
+        public String StoreDescription { get; set; }
+        //public String OrderDate { get; set; }
+        //public String UeType { get; set; }
     }
     public class CallCenterController : Controller
     {
@@ -239,11 +259,11 @@ namespace ServicesManagement.Web.Controllers
                 {
                     using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand("up_CorpCallCenter_sel_UNByCp", cnn))
                     {
-                        
+
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         SqlParameter param;
-                        
+
                         param = cmd.Parameters.Add("@Num_CP", SqlDbType.Int);
                         param.Value = cp;
 
@@ -296,7 +316,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var client = new RestClient("http://localhost:7071/api/Buscador_Producto?productId="+ product.Trim());
+                var client = new RestClient("http://localhost:7071/api/Buscador_Producto?productId=" + product.Trim());
                 //var client = new RestClient("https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?productId=" + product.Trim());
 
                 client.Timeout = -1;
@@ -306,7 +326,7 @@ namespace ServicesManagement.Web.Controllers
 
                 List<ResponseBuscadorModel> response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
 
-                var result = new { Success = false, data= response1 };
+                var result = new { Success = false, data = response1 };
                 return Json(result, JsonRequestBehavior.AllowGet);
                 //return Json("", JsonRequestBehavior.AllowGet);
             }
@@ -319,7 +339,8 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public List<OrderFacts_UEModel> getRams() {
+        public List<OrderFacts_UEModel> getRams()
+        {
 
             //var client = new RestClient("http://localhost:7071/api/GetRAM");
             var client = new RestClient("https://sorianacallcentergetramqa.azurewebsites.net/api/GetRAM");
@@ -337,7 +358,10 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult Historial()
         {
-            Session["listaRMAS"] = getRams();
+            //Session["listaRMAS"] = getRams();
+
+            ViewBag.FecIni = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
 
             return View();
         }
@@ -367,9 +391,199 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
+
+        #region Estatus Rma
         public ActionResult EstatusRMA()
         {
+            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
             return View();
+        }
+
+        public ActionResult GetEstatusRMA(DateTime FecIni, DateTime FecFin, int? OrderId)
+        {
+            try
+            {
+
+                var result = new
+                {
+                    Success = true,
+                    resp = DataTableToModel.ConvertTo<AutorizacionShow>(DALCallCenter.up_Corp_cns_EstatusRma(FecIni, FecFin, OrderId).Tables[0])
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
+
+        //NVS
+
+
+        #region Historial RMA
+        public ActionResult GethistorialRMA(DateTime FecIni, DateTime FecFin, int? OrderId)
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByDates>(
+                    DALHistorialRMA.upCorpOms_Cns_OrdersByDates(FecIni, FecFin, OrderId).Tables[0]);
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult GetDetalleRma(int OrderId)
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
+                    DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
+
+                var tot = list.Sum(x => x.SubTotal);
+
+                var result = new { Success = true, resp = list, total = tot };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult FinalizarRma(int OrderId, int Operacion, string Desc, List<OrderDetailCap> Products, string UeType)
+        {
+            try
+            {
+
+                string accion = "retorno";// Operacion == 5 ? "cancelar" : "retorno";
+
+                int? EstatusRma = 1;
+                int? ProcesoAut = 1;
+
+
+                if (Operacion == 5) {
+                    accion = "cancelar";
+                    if (UeType.ToUpper().Equals("SETC"))
+                        EstatusRma = 10;
+                    ProcesoAut = 10;
+                }
+
+                var ds = DALCallCenter.up_Corp_cns_OrderInfo(OrderId);
+
+                var orden = DataTableToModel.ConvertTo<Order>(ds.Tables[0]).First();
+                var detalle = DataTableToModel.ConvertTo<OrderDetail>(ds.Tables[1]);
+
+                if (string.IsNullOrEmpty(orden.Clientphone))
+                { orden.Clientphone = string.Empty; }
+
+                var id = DataTableToModel.ConvertTo<AutorizacionShow>(
+                    DALCallCenter.up_Corp_ins_tbl_OrdenCancelada(
+                        orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
+                        ,EstatusRma, ProcesoAut).Tables[0]).FirstOrDefault();
+
+                foreach (var item in detalle)
+                {
+
+                    
+                    if (Operacion != 5)
+                    {
+                        int quantity = Convert.ToInt32(item.Quantity);
+                        //var i = Products.Select(x => x.ProductId == item.ProductId).ToList().FirstOrDefault();
+                        foreach (var i in Products)
+                        {
+                            if (i.ProductId == item.ProductId)
+                            { quantity = Convert.ToInt32(i.NewQuantity); }
+                        }
+                        DALCallCenter.up_Corp_ins_tbl_OrdenRetorno_Detalle(id.Id_cancelacion, orden.Clientid.ToString(), item.ShipmentId, item.Position, quantity, item.ProductId, Desc);
+                    }
+                    else
+                    {
+
+                        DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Clientid.ToString(), item.ShipmentId
+                            , item.Position, item.Quantity, item.ProductId, Desc);
+
+                        if(UeType.ToUpper().Equals("SETC"))
+                            Cancelacion(orden.Clientid);
+                    }
+                }
+
+      
+                var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public void Cancelacion(int OrderId)
+        {
+            try
+            {
+
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"];
+
+
+
+                var req = new { OrderID = OrderId.ToString() };
+                //string json2 = string.Empty;
+                //JavaScriptSerializer js = new JavaScriptSerializer();
+                ////json2 = js.Serialize(o);
+                //js = null;
+                
+                var json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
+
+                string PPSRequest = JsonConvert.SerializeObject(req);
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
+
+                if (r.code != "00")
+                {
+                    throw new Exception(r.message);
+                }
+
+
+
+
+
+
+
+            }
+            catch (Exception x)
+            {
+                throw x;
+
+            }
+        }
+
+        #endregion
+
+
+        public static int diagonalDifference(List<List<int>> arr)
+        {
+            int resp = 0;
+
+
+            return resp;
         }
     }
 }

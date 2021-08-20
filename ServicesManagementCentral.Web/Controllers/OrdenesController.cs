@@ -23,6 +23,7 @@ using ServicesManagement.Web.DAL.Embarques;
 using ServicesManagement.Web.Helpers;
 using System.Configuration;
 using System.Data.SqlClient;
+using ServicesManagement.Web.Models.Cotizador;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -1931,25 +1932,48 @@ namespace ServicesManagement.Web.Controllers
             string PackageType, decimal PackageLength, decimal PackageWidth, decimal PackageHeight, decimal PackageWeight,
             string CreationId)
         {
+            string tarifa = string.Empty;
             try
             {
+                string[] carriers = {"redpack", "carssa", "sendex", "noventa9minutos" };
+                List<string> lstCarriers = new List<string>(carriers);
 
 
 
 
 
+                
+                
+                EliminarTarifasAnteriores(UeNo, OrderNo);
+                foreach (var carrier in lstCarriers)
+                {
+                    tarifa = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
 
+                    if (!tarifa.Equals("error"))
+                        GuardarTarifas(UeNo, OrderNo, tarifa);
+                }
+                int type = 1;
 
-                string guia = CreateGuiaEstafeta(UeNo, OrderNo);
+                if (PackageType.Equals("Paquete"))
+                    type = 4;
+                string guia = CreateGuiaEstafeta(UeNo, OrderNo,int.Parse(PackageWeight.ToString()),type);
+
+                string servicioPaq = "estafeta";
+                //TarifaModel tarifaSeleccionada = new TarifaModel();
+                //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
+
+                //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
+                //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
-            PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-            User.Identity.Name, guia).Tables[0].Rows[0][0];
+                PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
 
 
 
-
-                var result = new { Success = true, resp = cabeceraGuia };
+                //var result = new { Success = true, resp = cabeceraGuia };
+                var result = new { Success = false };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
@@ -1959,12 +1983,86 @@ namespace ServicesManagement.Web.Controllers
             }
 
         }
-
-
-        public string CreateGuiaEstafeta(string UeNo, int OrderNo)
+        public string EliminarTarifasAnteriores(string UeNo, int OrderNo)
         {
 
             DataSet ds = new DataSet();
+            string result = string.Empty;
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@OrderNo", OrderNo);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Del_UeNoRates]", false, parametros);
+
+            }
+            catch (SqlException ex)
+            {
+               result = "ERRSQL";
+            }
+            catch (System.Exception ex)
+            {
+                result = "ERR";
+            }
+
+            return result;
+        }
+        public TarifaModel SeleccionarTarifaMasEconomica(string UeNo, int OrderNo)
+        {
+
+            DataSet ds = new DataSet();
+            TarifaModel tarifa = new TarifaModel();
+            string result = string.Empty;
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@OrderNo", OrderNo);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Sel_UeNoRates]", false, parametros);
+
+                tarifa.Carrier = ds.Tables[0].Rows[0]["Carrier"].ToString();
+                tarifa.currency = ds.Tables[0].Rows[0]["currency"].ToString();
+                tarifa.Price = decimal.Parse(ds.Tables[0].Rows[0]["currency"].ToString());
+            }
+            catch (SqlException ex)
+            {
+                result = "ERRSQL";
+            }
+            catch (System.Exception ex)
+            {
+                result = "ERR";
+            }
+
+            return tarifa;
+        }
+
+        public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
+        {
+
+            DataSet ds = new DataSet();
+            DataSet dsO = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -1983,6 +2081,14 @@ namespace ServicesManagement.Web.Controllers
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Sel_EstafetaInfo]", false, parametros);
 
+
+
+                System.Collections.Hashtable parametros2 = new System.Collections.Hashtable();
+                parametros2.Add("@UeNo", UeNo);
+
+
+                dsO = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoOriginInfo]", false, parametros2);
+
             }
             catch (SqlException ex)
             {
@@ -1993,30 +2099,52 @@ namespace ServicesManagement.Web.Controllers
                 return "ERR";
             }
 
-
-            foreach (DataRow r in ds.Tables[0].Rows)
+            EstafetaRequestModel m = new EstafetaRequestModel();
+            foreach (DataRow r in dsO.Tables[0].Rows)
             {
 
 
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                m.OriginInfo = new AddressModel();
 
-                EstafetaRequestModel m = new EstafetaRequestModel();
+                m.OriginInfo.address1 = r["address1"].ToString();
+                m.OriginInfo.address2 = r["address2"].ToString();
+                m.OriginInfo.cellPhone = r["cellPhone"].ToString();
+                m.OriginInfo.city = r["city"].ToString();
+                m.OriginInfo.contactName = r["contactName"].ToString();
+                m.OriginInfo.corporateName = r["corporateName"].ToString();
+                m.OriginInfo.customerNumber = r["customerNumber"].ToString();
+                m.OriginInfo.neighborhood = r["neighborhood"].ToString();
+                m.OriginInfo.phoneNumber = r["phone"].ToString();
+                m.OriginInfo.state = r["state"].ToString();
+                m.OriginInfo.zipCode = r["zipCode"].ToString();
+                
+            }
 
-                m.serviceTypeId = "1";
-                m.DestinationInfo = new AddressModel();
+            foreach (DataRow r in ds.Tables[0].Rows)
+                {
 
-                m.DestinationInfo.address1 = r["Address1"].ToString();
-                m.DestinationInfo.address2 = r["Address2"].ToString();
-                m.DestinationInfo.cellPhone = r["Phone"].ToString();
-                m.DestinationInfo.city = r["City"].ToString();
-                m.DestinationInfo.contactName = r["CustomerName"].ToString();
-                m.DestinationInfo.corporateName = r["CustomerName"].ToString();
-                m.DestinationInfo.customerNumber = r["CustomerNo"].ToString();
-                m.DestinationInfo.neighborhood = r["NameReceives"].ToString();
-                m.DestinationInfo.phoneNumber = r["Phone"].ToString();
-                m.DestinationInfo.state = r["StateCode"].ToString();
-                m.DestinationInfo.zipCode = r["PostalCode"].ToString();
+                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
+                    m.serviceTypeId = "1";
+                    m.DestinationInfo = new AddressModel();
+
+                    m.DestinationInfo.address1 = r["Address1"].ToString();
+                    m.DestinationInfo.address2 = r["Address2"].ToString();
+                    m.DestinationInfo.cellPhone = r["Phone"].ToString();
+                    m.DestinationInfo.city = r["City"].ToString();
+                    m.DestinationInfo.contactName = r["CustomerName"].ToString();
+                    m.DestinationInfo.corporateName = r["CustomerName"].ToString();
+                    m.DestinationInfo.customerNumber = r["CustomerNo"].ToString();
+                    m.DestinationInfo.neighborhood = r["NameReceives"].ToString();
+                    m.DestinationInfo.phoneNumber = r["Phone"].ToString();
+                    m.DestinationInfo.state = r["StateCode"].ToString();
+                    m.DestinationInfo.zipCode = r["PostalCode"].ToString();
+                    
+                    m.reference = r["Reference"].ToString();
+                    m.originZipCodeForRouting = r["PostalCode"].ToString();
+                    m.weight = weight; // lo capturado en el modal
+                    m.parcelTypeId = typeId; // 1 - sobre, 4 - paquete
+                    m.effectiveDate = r["effectiveDate"].ToString();
 
                 //OrderNo
                 //    CnscOrder
@@ -2040,17 +2168,204 @@ namespace ServicesManagement.Web.Controllers
 
                 string json2 = JsonConvert.SerializeObject(m);
 
-                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Estafeta_Guia"], "", json2);
+                    Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Estafeta_Guia"], "", json2);
 
-                string msg = r2.message;
+                    string msg = r2.message;
 
-                ResponseModels re = JsonConvert.DeserializeObject<ResponseModels>(r2.message);
+                    ResponseModels re = JsonConvert.DeserializeObject<ResponseModels>(r2.message);
+                    
+                    string pdfcadena2 = Convert.ToBase64String(re.pdf, Base64FormattingOptions.None);
 
-                return re.Guia;
+                //return re.Guia + "," + re.pdf;
+                return re.Guia + "," + pdfcadena2;
 
             }
 
             return string.Empty;
+
+        }
+        public string GuardarTarifas(string UeNo, int OrderNo, string json)
+        {
+
+            DataSet ds = new DataSet();
+            string result = string.Empty;
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@OrderNo", OrderNo);
+                parametros.Add("@json", json);
+                parametros.Add("@createdUser", "system");
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoRates]", false, parametros);
+
+            }
+            catch (SqlException ex)
+            {
+                return "ERRSQL";
+            }
+            catch (System.Exception ex)
+            {
+                return "ERR";
+            }
+
+            return "ok";
+        }
+            public string CreateGuiaCotizador(string UeNo, int OrderNo, int type, string carrier)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@carrier", carrier);
+                parametros.Add("@type", type);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoCotizeInfo]", false, parametros);
+
+            }
+            catch (SqlException ex)
+            {
+                return "ERRSQL";
+            }
+            catch (System.Exception ex)
+            {
+                return "ERR";
+            }
+
+            CotizadorRequestModel requestCotizador = new CotizadorRequestModel();
+
+            foreach (DataRow r in ds.Tables[0].Rows)
+            {
+                AddressCotzModel origin = new AddressCotzModel();
+
+                origin.city = r["city"].ToString();
+                origin.company = r["company"].ToString();
+                origin.country = r["country"].ToString();
+                origin.district = r["district"].ToString();
+                origin.email = r["email"].ToString();
+                origin.name = r["name"].ToString();
+                origin.number = r["number"].ToString();
+                origin.phone = r["phone"].ToString();
+                origin.postalCode = r["postalCode"].ToString();
+                origin.reference = r["reference"].ToString();
+                origin.state = r["state"].ToString();
+                origin.street = r["street"].ToString();
+
+                CoordinatesModel coordinates = new CoordinatesModel();
+                coordinates.latitudde = r["latitude"].ToString();
+                coordinates.longitude = r["longitude"].ToString();
+
+                origin.coordinates = coordinates;
+
+                requestCotizador.origin = origin;
+                
+            }
+            foreach (DataRow r in ds.Tables[1].Rows)
+            {
+                AddressCotzModel destination = new AddressCotzModel();
+
+                destination.city = r["city"].ToString();
+                destination.company = r["company"].ToString();
+                destination.country = r["country"].ToString();
+                destination.district = r["district"].ToString();
+                destination.email = r["email"].ToString();
+                destination.name = r["name"].ToString();
+                destination.number = r["number"].ToString();
+                destination.phone = r["phone"].ToString();
+                destination.postalCode = r["postalCode"].ToString();
+                destination.reference = r["reference"].ToString();
+                destination.state = r["state"].ToString();
+                destination.street = r["street"].ToString();
+
+                CoordinatesModel coordinates = new CoordinatesModel();
+                coordinates.latitudde = r["latitude"].ToString();
+                coordinates.longitude = r["longitude"].ToString();
+
+                destination.coordinates = coordinates;
+
+                requestCotizador.destination = destination;
+            }
+
+
+            PackageModel packages = new PackageModel();
+            packages.amount = 1;
+            packages.content = "zapatos";
+            packages.declaredValue = 0;
+            packages.insurance = 0;
+            packages.weight = 1;
+            packages.weightUnit = "KG";
+            packages.lenghtUnit = "CM";
+            packages.type = "box";
+            DimensionsModel dimensions = new DimensionsModel();
+            dimensions.height = 20;
+            dimensions.length = 11;
+            dimensions.width = 15;
+            packages.dimensions = dimensions;
+
+            List<PackageModel> lstPackages = new List<PackageModel>();
+            lstPackages.Add(packages);
+
+            requestCotizador.packages = lstPackages;
+
+            foreach (DataRow r in ds.Tables[2].Rows)
+            {
+                ShipmentModel shipment = new ShipmentModel();
+
+                shipment.carrier = r["carrier"].ToString();
+                shipment.type = int.Parse(r["type"].ToString());
+                
+                requestCotizador.shipment = shipment;
+            }
+
+            foreach (DataRow r in ds.Tables[3].Rows)
+            {
+                SettingsModel settings = new SettingsModel();
+
+                settings.cashOnDelivery = r["cashOnDelivery"].ToString();
+                settings.comments = r["comments"].ToString();
+                settings.currency = r["currency"].ToString();
+                settings.printFormat = r["printFormat"].ToString();
+                settings.printSize = r["printSize"].ToString();
+
+                requestCotizador.settings = settings;
+            }
+
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            string json2 = JsonConvert.SerializeObject(requestCotizador);
+
+            Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Cotizador_Guia"], "", json2);
+
+            string msg = r2.message;
+
+            if (msg.Contains("costSummary"))
+            {
+                CotizadorResponseModel re = JsonConvert.DeserializeObject<CotizadorResponseModel>(r2.message);
+                return msg;
+            }
+            else
+                return "error";
 
         }
 
@@ -2076,6 +2391,62 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult GetPdfGuia(string guia)
+        {
+            string pdfBase = string.Empty;
+            try
+            {
+                DataSet ds = new DataSet();
+
+                string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+                if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+                {
+                    conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+                }
+
+                try
+                {
+                    Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                    System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                    parametros.Add("@IdTrackingService", guia);
+
+                    ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoTrackingPDF]", false, parametros);
+
+                    if (ds != null)
+                    {
+                        if (ds.Tables.Count > 0)
+                        {
+                            if (ds.Tables[0].Rows.Count > 0)
+                            {
+
+                                pdfBase = ds.Tables[0].Rows[0][0].ToString();
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+
+                    throw ex;
+                }
+                catch (System.Exception ex)
+                {
+
+                    throw ex;
+                }
+
+                var result = new { Success = true, pdf = pdfBase };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
         #endregion
     }
 }

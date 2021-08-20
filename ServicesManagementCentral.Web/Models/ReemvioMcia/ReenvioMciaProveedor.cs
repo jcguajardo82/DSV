@@ -34,6 +34,10 @@ namespace ServicesManagement.Web.Models.ReemvioMcia
         public string FechaEntrega { get; set; }
         public string HoraEntrega { get; set; }
         public string QuienRecibio { get; set; }
+        public string NroAlmacen { get; set; }
+        public string NombreAlmacen { get; set; }
+        public string NroProveedor { get; set; }
+        public string NombreProveedor { get; set; }
 
     }
 }

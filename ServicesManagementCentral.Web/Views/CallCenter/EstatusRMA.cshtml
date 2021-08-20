@@ -3,152 +3,225 @@
     ViewBag.Title = "Estatus RMA";
 }
 
-<style>
-    /*#table-scroll {
-        height: 300px;
-        overflow-y: auto;
-        margin-top: 20px;
-        width: 1200px;
-    }*/
-
-    .rowVerde {
-        color: white;
-        background-color: #008000;
-        border-color: #c3e6cb;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .rowAmarillo {
-        color: white;
-        background-color: #ffd11a;
-        border-color: #ffeeba;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .rowRojo {
-        color: white;
-        background-color: #ff0000;
-        border-color: #f5c6cb;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .rowInfo {
-        color: #000000;
-        background-color: white;
-        border-color: #bee5eb;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .rowMorado {
-        color: #0c5460;
-        background-color: #bf80ff;
-        border-color: #bee5eb;
-        padding: 10px;
-        border: ridge;
-        /*font-size: 17px;*/
-    }
-
-    .alingCenter {
-        text-align: center;
-    }
-</style>
-<style id="compiled-css" type="text/css">
-    /* Fix table head */
-    .tableFixHead {
-        overflow-y: auto;
-        height: 300px;
-    }
-
-        .tableFixHead th {
-            position: sticky;
-            top: 0;
-        }
-
-    /* Just common table stuff. */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        table-layout: fixed;
-        word-wrap: break-word;
-    }
-
-    th, td {
-        padding: 8px 16px;
-    }
-
-
-    th {
-        background: #1AB394;
-        color: #ffffff;
-        font-weight: bold;
-    }
-</style>
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
-
-    <div id="tblConsulta_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
-            <div class="row">
-                <div class="col col-xs-3 col col-md-3 col col-lg-3">
-                    <input id="txtFiltroSurtir" class="form-control" type="search" placeholder="Search Order..">
+<div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
+    <div class="row">
+        <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
+            <h2>Estatus RMA</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <div class="form-group">
+                <label>Fecha Inicio</label>
+                @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+                <div class="input-group date" id="datetimepicker1">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control datepicker" id="txtFecIni"
+                           type="text" value="@ViewBag.FecIni">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="tableFixHead table-responsive m-t">
-                        <table id="tblConsulta_Surtido" class="table table-striped table-bordered table-hover">
-                            <thead class="bg-primary">
-                                <tr role="row">
-
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;">Orden</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;">Fecha Creación RMA</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;">Estatus</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="text-align:center;">
-                                        <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">101168210</a>
-                                    </td>
-                                    <td style="text-align:center">18 Mar 2021 16:38:00</td>
-                                    <td class="rowRojo" style="text-align:center">En Aprobación</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:center;">
-                                        <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">101168210</a>
-                                    </td>
-                                    <td style="text-align:center">18 Mar 2021 16:38:00</td>
-                                    <td class="rowRojo" style="text-align:center">En Aprobación</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:center;">
-                                        <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">101168210</a>
-                                    </td>
-                                    <td style="text-align:center">18 Mar 2021 16:38:00</td>
-                                    <td class="rowRojo" style="text-align:center">En Aprobación</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:center;">
-                                        <a href="/CallCenter/ConsultaDetalle?order=101168210" title="Click para ver el detalle de la orden" class="btn btn-link">101168210</a>
-                                    </td>
-                                    <td style="text-align:center">18 Mar 2021 16:38:00</td>
-                                    <td class="rowRojo" style="text-align:center">En Aprobación</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <label>Fecha Fin</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker2">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecFin"
+                       type="text" value="@ViewBag.FecFin">
             </div>
-            <hr />
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <label>Número de Orden</label>
+            <input type="text" placeholder="Número de Orden" id="OrderSelected" class="form-control">
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+            <label>&nbsp;</label>
+            <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetEstatusRMA()">
+                Buscar
+            </button>
 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-11 col-md-11 col-lg-11">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th>Folio de Casos de Cliente</th>
+                        <th>Orden</th>
+                        <th>Fecha Creación Casos de Cliente</th>
+                        <th>Estatus</th>
+                        <th>Autorización</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
+
+@section scripts{
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $('#tblConsulta').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' },
+                        { extend: 'excel', className: 'btn-primary' }
+                    ],
+                    fixedHeader: {
+                        header: true,
+                        footer: true
+                    },
+                    "scrollX": true
+                    , "scrollY": "500px"
+                    , "scrollCollapse": true
+
+                }
+            );
+            GetEstatusRMA();
+
+
+
+
+        });
+
+    function GetEstatusRMA(){
+        var _FecIni = $("#txtFecIni").val();
+        var _FecFin = $("#txtFecFin").val();
+        var _Order = $("#OrderSelected").val();
+
+        if (_FecIni.length == 0) {
+            $("#txtFecIni").focus();
+            return;
+        }
+
+
+        if (_FecFin.length == 0) {
+            $("#txtFecFin").focus();
+            return;
+        }
+            $.ajax({
+                async: false,
+                type: "get",
+                url: '@Url.Action("GetEstatusRMA", "CallCenter")',
+                data: {
+                    FecIni: _FecIni,
+                    FecFin: _FecFin,
+                    OrderId:_Order
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        debugger;
+                        var table = $('#tblConsulta').DataTable();
+
+                        table.clear().draw();
+
+
+                        for (var i = 0; i < json.resp.length; i++) {
+
+
+                            table.row.add([
+                                json.resp[i].Id_cancelacion
+                                , json.resp[i].OrderId
+                                , json.resp[i].Fec_movto
+                                , json.resp[i].Desc_Est
+                                , json.resp[i].DescAut
+
+
+
+
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }
+
+    </script>
+}

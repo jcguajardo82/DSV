@@ -41,7 +41,8 @@ namespace ServicesManagement.Web.Models.Consignaciones
         public string HoraEntrega { get; set; }
         public string QuienRecibio { get; set; }
         public string GuiaStatus { get; set; }
-
+        public string NroAlmacen { get; set; }
+        public string NombreAlmacen { get; set; }
         ////[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         //public string FechaStock { get; set; }
         //public int NumCodigos { get; set; }

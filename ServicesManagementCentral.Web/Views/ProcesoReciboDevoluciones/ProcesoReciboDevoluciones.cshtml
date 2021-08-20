@@ -40,20 +40,24 @@
                 <thead class="bg-danger-sor">
                     <tr>
                         @*<<<<<<< HEAD
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Numero de Consignación</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Fecha de creación</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 55px;">Hora de creación</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">RMA</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Solicitud RMA</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Motivo RMA</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Paqueteria</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Guia de devolucion</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Estatus Guía</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Fecha de entrega al almacen</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Recibido por</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Días Vigentes Guia</th>
-                                                    <th></th>
-                            =======*@
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Numero de Consignación</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Fecha de creación</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 55px;">Hora de creación</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">RMA</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Solicitud RMA</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Motivo RMA</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Paqueteria</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 110px;">Guia de devolucion</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 70px;">Estatus Guía</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 100px;">Fecha de entrega al almacen</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">Recibido por</th>
+                                <th class="text-center sorting" tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Días Vigentes Guia</th>
+                                <th></th>
+        =======*@
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Número Proveedor</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Nombre Proveedor</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Número Almacen</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Nombre Almacen</th>
                         <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 90px;">No. de Pedido</th>
                         <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 60px;">Fecha de creación</th>
                         <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="width: 55px;">Hora de creación</th>
@@ -83,28 +87,32 @@
 
                             foreach (System.Data.DataRow p in dt.Rows)
                             {
-                                <tr>
-                                    <td style="text-align:center;">
-                                        <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["Recibido"])"
-                                           title="Click para ver la lista de productos asociados al pedido" class="link"><u>@p["UeNo"].ToString()</u></a>
-                                    </td>
-                                    <td style="text-align:right">@p["OrderDate"] </td>
-                                    <td style="text-align:right">@p["OrderTime"] </td>
-                                    <td style="text-align:center">@p["UeNoRMA"]</td>
-                                    <td style="text-align:center">@p["ConsigmentType"]</td>
-                                    <td style="text-align:center">@p["TrackingType"]</td>
-                                    <td style="text-align:center"> @p["TrackingServiceName"]</td>
-                                    <td style="text-align:center">@p["IdTrackingService"]</td>
-                                    <td style="text-align:center"> @p["TrackingServiceStatus"]</td>
-                                    <td style="text-align:center"> @p["TrackingDeliveryDate"] - @p["TrackingDeliveryTime"] </td>
-                                    <td style="text-align:center">@p["TrackingDeliveredTo"]</td>
-                                    <td style="text-align:center"> @p["DiasVigencia"]</td>
-                                    <td style="text-align:center;">
-                                        <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstImagenes(this, @p["Recibido"])"
-                                           title="Click para ver la lista de imagenes de los productos asociados al pedido" class="link"><u>Ver Imagenes</u></a>
-                                    </td>
-                                    <td style="visibility:hidden"> @p["Recibido"]</td>
-                                </tr>
+                                        <tr>
+                                            <td style="text-align:right">@p["idSupplierWH"] </td>
+                                            <td style="text-align:right">@p["SupplierName"] </td>
+                                            <td style="text-align:center">@p["idSupplierWHCode"]</td>
+                                            <td style="text-align:center">@p["SupplierWHName"]</td>
+                                            <td style="text-align:center;">
+                                                <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["Recibido"])"
+                                                   title="Click para ver la lista de productos asociados al pedido" class="link"><u>@p["UeNo"].ToString()</u></a>
+                                            </td>
+                                            <td style="text-align:right">@p["OrderDate"] </td>
+                                            <td style="text-align:right">@p["OrderTime"] </td>
+                                            <td style="text-align:center">@p["UeNoRMA"]</td>
+                                            <td style="text-align:center">@p["ConsigmentType"]</td>
+                                            <td style="text-align:center">@p["TrackingType"]</td>
+                                            <td style="text-align:center"> @p["TrackingServiceName"]</td>
+                                            <td style="text-align:center">@p["IdTrackingService"]</td>
+                                            <td style="text-align:center"> @p["TrackingServiceStatus"]</td>
+                                            <td style="text-align:center"> @p["TrackingDeliveryDate"] - @p["TrackingDeliveryTime"] </td>
+                                            <td style="text-align:center">@p["TrackingDeliveredTo"]</td>
+                                            <td style="text-align:center"> @p["DiasVigencia"]</td>
+                                            <td style="text-align:center;">
+                                                <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstImagenes(this, @p["Recibido"])"
+                                                   title="Click para ver la lista de imagenes de los productos asociados al pedido" class="link"><u>Ver Imagenes</u></a>
+                                            </td>
+                                            <td style="visibility:hidden"> @p["Recibido"]</td>
+                                        </tr>
                             }
                         }
                     }
@@ -183,7 +191,6 @@
                                 <tr role="row">
                                     <th style="width: 50px;">No. de Pedido</th>
                                     <th style="width: 100px;"># UE</th>
-                                    <th style="width: 80px;">Imagen</th>
                                     <th style="width: 80px;">Imagen</th>
                                 </tr>
                             </thead>
@@ -354,7 +361,6 @@
                             tr = $('<tr/>');
                             tr.append("<td>" + json.resp[i].OrderNo + "</td>");
                             tr.append("<td>" + json.resp[i].UeNo + "</td>");
-                            tr.append("<td><img class = 'image' id = 'image' width='240' height='160' src='data:image/jpeg;base64," + json.resp[i].Evidence + "'></td>");
                             tr.append("<td><img class = 'image' width='240' height='160' src='data:image/jpeg;base64," + json.resp[i].strImg + "'></td>");
                             $('#tblShowImagenes').append(tr);
                         }

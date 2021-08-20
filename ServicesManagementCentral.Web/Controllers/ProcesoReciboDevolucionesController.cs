@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -32,54 +34,58 @@ namespace ServicesManagement.Web.Controllers
                     HttpFileCollectionBase files = Request.Files;
                     for (int i = 0; i < files.Count; i++)
                     {
-                        System.IO.Stream str; String strmContents;
-                        Int32 counter, strLen, strRead;
+                        System.IO.Stream str, str1; String strmContents;
+                        Int32 counter, strLen, strRead, strRead1;
                         // Create a Stream object.
-                        str = Request.InputStream;
-                        // Find number of bytes in stream.
-                        strLen = Convert.ToInt32(str.Length);
-                        // Create a byte array.
-                        byte[] strArr = new byte[strLen];
-                        // Read stream into byte array.
-                        strRead = str.Read(strArr, 0, strLen);
+                        //str = Request.InputStream;
+                        //// Find number of bytes in stream.
+                        //strLen = Convert.ToInt32(str.Length);
+                        //// Create a byte array.
+                        //byte[] strArr = new byte[strLen];
+                        //// Read stream into byte array.
+                        //strRead = str.Read(strArr, 0, strLen);
 
-                        // Convert byte array to a text string.
-                        strmContents = "";
-                        for (counter = 0; counter < strLen; counter++)
-                        {
-                            strmContents = strmContents + strArr[counter].ToString();
-                        }
+                        //// Convert byte array to a text string.
+                        //strmContents = "";
+                        //for (counter = 0; counter < strLen; counter++)
+                        //{
+                        //    strmContents = strmContents + strArr[counter].ToString();
+                        //}
                         //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
                         //string filename = Path.GetFileName(Request.Files[i].FileName);  
 
-                        DateTime dt = DateTime.Now;
-                        string dateTime = dt.ToString("yyyyMMddHHmmssfff");
+                        //DateTime dt = DateTime.Now;
+                        //string dateTime = dt.ToString("yyyyMMddHHmmssfff");
 
                         HttpPostedFileBase file = files[i];
+                        str1 = file.InputStream;
+                        byte[] strArr1 = new byte[Convert.ToInt32(file.ContentLength)];
+                        // Read stream into byte array.
+                        strRead1 = str1.Read(strArr1, 0, Convert.ToInt32(file.ContentLength));
 
                         //Grabar a tabla
-                        DALProcesoReciboDevoluciones.upCorpOms_Ins_UeNoDevolEvidencia(idUeNo, idOrderNo, User.Identity.Name, strArr);
+                        DALProcesoReciboDevoluciones.upCorpOms_Ins_UeNoDevolEvidencia(idUeNo, idOrderNo, User.Identity.Name, strArr1);
 
-                        string fname;
+                        //string fname;
 
-                        // Checking for Internet Explorer  
-                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                        {
-                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                            fname = testfiles[testfiles.Length - 1];
-                        }
-                        else
-                        {
-                            fname = file.FileName;
-                        }
+                        //// Checking for Internet Explorer  
+                        //if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        //{
+                        //    string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                        //    fname = testfiles[testfiles.Length - 1];
+                        //}
+                        //else
+                        //{
+                        //    fname = file.FileName;
+                        //}
 
-                        fname = string.Format("{0}_{1}_{2}", idUeNo, "devolucion", dateTime);
+                        //fname = string.Format("{0}_{1}_{2}", idUeNo, "devolucion", dateTime);
 
-                        // Get the complete folder path and store the file inside it.  
-                        var path = Path.Combine(Server.MapPath("~/Files/"), fname);
-                        var pathServerName = servername + "/Files/" + fname;
+                        //// Get the complete folder path and store the file inside it.  
+                        //var path = Path.Combine(Server.MapPath("~/Files/"), fname);
+                        //var pathServerName = servername + "/Files/" + fname;
 
-                        file.SaveAs(path);
+                        //file.SaveAs(path);
 
                         // DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, fname, DateTime.Now, User.Identity.Name);
 
