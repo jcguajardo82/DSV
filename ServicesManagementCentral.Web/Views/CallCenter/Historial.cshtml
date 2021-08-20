@@ -395,6 +395,10 @@
                 transitionEffect: "slideLeft",
                 autoFocus: true
                 // stepsOrientation: "vertical"
+                //, onInit: function (event, current) {
+                //   // $('.actions > ul > li:first-child').attr('style', 'display:none');
+                //    alert("");
+                //}
                 , onStepChanging: function (event, currentIndex, newIndex) {
 
 
@@ -457,6 +461,13 @@
                         }
 
                     }
+
+                    //if (currentIndex == 1) {
+                    //    alert("");
+                    //    if ($("#hddUeType").val() == "SETC")
+                    //        wizard.steps("setStep", 2);
+                    //}
+
 
                      return true;
                 }
@@ -592,6 +603,17 @@
                         //lblTotalDetalle
 
                         $("#lblTotalDetalle").text(json.total)
+
+                        if (UeType == "SETC") {
+                            $("#cmbServicio").val("5");
+                            $('#cmbServicio').prop('disabled', true);
+
+                            $('.actions > ul > li:first-child').attr('style', 'display:none');
+                        } else {
+                            $("#cmbServicio").val("1");
+                            $('#cmbServicio').prop('disabled', false);
+                        }
+
                         $('#dlgRma').modal('toggle');
                     }
                     else {
