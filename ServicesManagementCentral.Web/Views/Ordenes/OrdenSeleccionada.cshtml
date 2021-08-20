@@ -641,7 +641,8 @@
             var id_categoria = "999"; //$(el).attr('id');
             var listaO = document.getElementById("Orders").value;
             var tipolistaO = listaO.split("-");
-            var digito = listaO.replaceAll("-","");
+            //var digito = listaO.replaceAll("-","");
+            var digito = listaO.replace(/-/g, "");
             debugger;
             if (listaO != "0") {
                 if (tipolistaO[1] == "2") {
