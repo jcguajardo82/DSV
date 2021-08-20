@@ -1967,8 +1967,8 @@ namespace ServicesManagement.Web.Controllers
                 //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
-PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
+                PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
 
 
 
@@ -2083,11 +2083,11 @@ User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[
 
 
 
-                //System.Collections.Hashtable parametros2 = new System.Collections.Hashtable();
-                //parametros2.Add("@UeNo", UeNo);
-                
+                System.Collections.Hashtable parametros2 = new System.Collections.Hashtable();
+                parametros2.Add("@UeNo", UeNo);
 
-                //dsO = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoOriginInfo]", false, parametros2);
+
+                dsO = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoOriginInfo]", false, parametros2);
 
             }
             catch (SqlException ex)
@@ -2100,29 +2100,28 @@ User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[
             }
 
             EstafetaRequestModel m = new EstafetaRequestModel();
-            //foreach (DataRow r in dsO.Tables[0].Rows)
-            //{
+            foreach (DataRow r in dsO.Tables[0].Rows)
+            {
 
 
-            //    m.OriginInfo = new AddressModel();
+                m.OriginInfo = new AddressModel();
 
-            //    m.OriginInfo.address1 = r["address1"].ToString();
-            //    m.OriginInfo.address2 = r["address2"].ToString();
-            //    m.OriginInfo.cellPhone = r["cellPhone"].ToString();
-            //    m.OriginInfo.city = r["city"].ToString();
-            //    m.OriginInfo.contactName = r["contactName"].ToString();
-            //    m.OriginInfo.corporateName = r["corporateName"].ToString();
-            //    m.OriginInfo.customerNumber = r["customerNumber"].ToString();
-            //    m.OriginInfo.neighborhood = r["neighborhood"].ToString();
-            //    m.OriginInfo.phoneNumber = r["phone"].ToString();
-            //    m.OriginInfo.state = r["state"].ToString();
-            //    m.OriginInfo.zipCode = r["zipCode"].ToString();
+                m.OriginInfo.address1 = r["address1"].ToString();
+                m.OriginInfo.address2 = r["address2"].ToString();
+                m.OriginInfo.cellPhone = r["cellPhone"].ToString();
+                m.OriginInfo.city = r["city"].ToString();
+                m.OriginInfo.contactName = r["contactName"].ToString();
+                m.OriginInfo.corporateName = r["corporateName"].ToString();
+                m.OriginInfo.customerNumber = r["customerNumber"].ToString();
+                m.OriginInfo.neighborhood = r["neighborhood"].ToString();
+                m.OriginInfo.phoneNumber = r["phone"].ToString();
+                m.OriginInfo.state = r["state"].ToString();
+                m.OriginInfo.zipCode = r["zipCode"].ToString();
+                
+            }
 
-            //}
-            
-                foreach (DataRow r in ds.Tables[0].Rows)
+            foreach (DataRow r in ds.Tables[0].Rows)
                 {
-
 
                     System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
@@ -2140,41 +2139,47 @@ User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[
                     m.DestinationInfo.phoneNumber = r["Phone"].ToString();
                     m.DestinationInfo.state = r["StateCode"].ToString();
                     m.DestinationInfo.zipCode = r["PostalCode"].ToString();
-
+                    
+                    m.reference = r["Reference"].ToString();
+                    m.originZipCodeForRouting = r["PostalCode"].ToString();
                     m.weight = weight; // lo capturado en el modal
                     m.parcelTypeId = typeId; // 1 - sobre, 4 - paquete
+                    m.effectiveDate = r["effectiveDate"].ToString();
 
-                    //OrderNo
-                    //    CnscOrder
-                    //    StoreNum
-                    //    UeNo
-                    //    StatusUe
-                    //    OrderDate
-                    //    OrderTime
-                    //    CustomerNo  
-                    //    CustomerName 
-                    //    Phone   
-                    //    Address1 
-                    //    Address2    
-                    //    City 
-                    //    StateCode   
-                    //    PostalCode 
-                    //    Reference   
-                    //    NameReceives 
-                    //    Total   
+                //OrderNo
+                //    CnscOrder
+                //    StoreNum
+                //    UeNo
+                //    StatusUe
+                //    OrderDate
+                //    OrderTime
+                //    CustomerNo  
+                //    CustomerName 
+                //    Phone   
+                //    Address1 
+                //    Address2    
+                //    City 
+                //    StateCode   
+                //    PostalCode 
+                //    Reference   
+                //    NameReceives 
+                //    Total   
 
 
-                    string json2 = JsonConvert.SerializeObject(m);
+                string json2 = JsonConvert.SerializeObject(m);
 
                     Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Estafeta_Guia"], "", json2);
 
                     string msg = r2.message;
 
                     ResponseModels re = JsonConvert.DeserializeObject<ResponseModels>(r2.message);
+                    
+                    string pdfcadena2 = Convert.ToBase64String(re.pdf, Base64FormattingOptions.None);
 
-                    return re.Guia + "," + re.pdf;
+                //return re.Guia + "," + re.pdf;
+                return re.Guia + "," + pdfcadena2;
 
-                }
+            }
 
             return string.Empty;
 
