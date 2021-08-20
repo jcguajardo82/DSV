@@ -358,9 +358,9 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult Historial()
         {
-            Session["listaRMAS"] = getRams();
+            //Session["listaRMAS"] = getRams();
 
-            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecIni = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
             ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
 
             return View();
@@ -493,9 +493,10 @@ namespace ServicesManagement.Web.Controllers
                 foreach (var item in detalle)
                 {
 
-                    int quantity = Convert.ToInt32(item.Quantity);
+                    
                     if (Operacion != 5)
                     {
+                        int quantity = Convert.ToInt32(item.Quantity);
                         //var i = Products.Select(x => x.ProductId == item.ProductId).ToList().FirstOrDefault();
                         foreach (var i in Products)
                         {
@@ -508,7 +509,7 @@ namespace ServicesManagement.Web.Controllers
                     {
 
                         DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Clientid.ToString(), item.ShipmentId
-                            , item.Position, quantity, item.ProductId, Desc);
+                            , item.Position, item.Quantity, item.ProductId, Desc);
 
                         if(UeType.ToUpper().Equals("SETC"))
                             Cancelacion(orden.Clientid);
