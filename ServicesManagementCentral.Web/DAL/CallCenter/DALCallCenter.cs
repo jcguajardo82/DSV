@@ -133,7 +133,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
 
         public static DataSet up_Corp_ins_tbl_OrdenCancelada_Detalle(int Id_cancelacion
-            , string orderId, string shipmentId, int position, int newProductQuantity, decimal productId, string cancellationReason = "", string cancellationComment = "")
+            , string orderId, string shipmentId, int position, decimal newProductQuantity, decimal productId, string cancellationReason = "", string cancellationComment = "")
         {
 
             DataSet ds = new DataSet();
