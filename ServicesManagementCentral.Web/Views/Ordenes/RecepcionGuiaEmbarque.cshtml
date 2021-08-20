@@ -51,8 +51,10 @@
                 //if (tipoEntrega == "Entrega a domicilio")
 
                 var tipoEntrega = p["UeType"].ToString();
+                var FlagLocal = p["FlagLocal"].ToString();
+
                 // SECCION DE DROP SHIP TIENDA
-                if (tipoEntrega == "DST")
+                if ((tipoEntrega == "DST") && (FlagLocal == "0"))
                 {
                     if (index == 1)
                     {
@@ -125,7 +127,7 @@
                         </div>
                     }
                 }
-                // SECCION DE SETC
+                // SECCION DE SETC y DST LOCAL
                 else
                 {
                     <div class="row">
