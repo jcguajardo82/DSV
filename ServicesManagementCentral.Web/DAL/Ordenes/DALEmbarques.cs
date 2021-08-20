@@ -165,7 +165,8 @@ namespace ServicesManagement.Web.DAL.Embarques
             string PackageType, decimal PackageLength, decimal PackageWidth, decimal PackageHeight, decimal PackageWeight,
             string CreationId,
             string servicioPaq,
-            string IdTrackingService = "")
+            string IdTrackingService,
+            string pdfstring)
         {
 
             DataSet ds = new DataSet();
@@ -176,7 +177,7 @@ namespace ServicesManagement.Web.DAL.Embarques
                 conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
             }
 
-
+             
             try
             {
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
@@ -194,6 +195,7 @@ namespace ServicesManagement.Web.DAL.Embarques
                 parametros.Add("@CreationId", CreationId);
                 parametros.Add("@IdTrackingService", IdTrackingService);
                 parametros.Add("@TrackingServiceName", servicioPaq);
+                parametros.Add("@pdfstring", pdfstring);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoTracking]", false, parametros);
 
