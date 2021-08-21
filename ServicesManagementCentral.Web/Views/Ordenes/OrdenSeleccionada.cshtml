@@ -293,6 +293,7 @@
                             <thead>
                                 <tr role="row">
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 130px;">Pedido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 115px;">Tipo</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 115px;">TMS/Tienda</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Fin Surtido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Forma Entrega</th>
@@ -335,6 +336,7 @@
                                                     <a href="@Url.Action("ConsultaDetalle", "Ordenes", new { order = @p["UeNo"] })"
                                                        title="Click para ver el detalle de la orden" class="btn btn-link">@p["NroOrden"]</a>
                                                 </td>
+                                                <td>@p["UeType"]</td>
                                                 <td style="text-align:center;">
 
                                                     @if (@p["Id_Num_OrdenStat"].ToString() == "12")
