@@ -74,11 +74,26 @@
                                                             {
                                                                 <p>
                                                                     Siguiente movimiento:
-                                                                    @if (p["StatusDescription"].ToString()!= "Entregando orden")
-                                                                    {
-                                                                        if (p["OrderStatus"].ToString().Trim().Equals("9"))
+                                                                    @*@if (p["StatusDescription"].ToString()!= "Entregando orden")
+                                                                    {*@
+                                                                        @if (p["OrderStatus"].ToString().Trim().Equals("9"))
                                                                         {
-                                                                            <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new {​​​​ guia = @p["TrackingNo"] }​​​​)" title="Click para confirmar" class="btn btn-link"> Confirma entrega (Captura de datos finales de entrega de pedido.)</a>
+                                                                            if (p["UeType"].ToString().Trim().Equals("SETC")) 
+                                                                            {
+                                                                                <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new {​​​​ guia = @p["TrackingNo"] }​​​​)" title="Click para confirmar" class="btn btn-link"> Confirma entrega (Captura de datos finales de entrega de pedido.)</a>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                if (p["FlagLocal"].ToString().Equals("1"))
+                                                                                {
+                                                                                    <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new {​​​​ guia = @p["TrackingNo"] }​​​​)" title="Click para confirmar" class="btn btn-link"> Confirma entrega (Captura de datos finales de entrega de pedido.)</a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <i>En Espera de cierre de embarque (Guia de Paqueteria)</i>
+                                                                                }
+                                                                            }
+
                                                                         }
                                                                         else
                                                                         {
@@ -99,7 +114,7 @@
 
                                                                             }
                                                                         }
-                                                                    }
+@*                                                                    }*@
                                                                 </p>
 
                                                             }

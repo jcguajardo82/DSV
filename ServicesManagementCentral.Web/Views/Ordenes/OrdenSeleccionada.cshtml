@@ -180,7 +180,7 @@
                                                         </a>
                                                     }
                                                 </td>
-                                                <td>@p["UeType"]</td>
+                                                <td style="text-align:center;">@p["UeType"]</td>
                                                 <td style="text-align:right">@p["Cant_Art_Frescos"] - @p["Cant_Art_Secos"] </td>
                                                 <td style="text-align:center">@p["Fec_Entrega"]</td>
                                                 @if (string.IsNullOrEmpty(@p["Fec_AsigReal"].ToString()))
@@ -336,7 +336,7 @@
                                                     <a href="@Url.Action("ConsultaDetalle", "Ordenes", new { order = @p["UeNo"] })"
                                                        title="Click para ver el detalle de la orden" class="btn btn-link">@p["NroOrden"]</a>
                                                 </td>
-                                                <td>@p["UeType"]</td>
+                                                <td style="text-align:center;">@p["UeType"]</td>
                                                 <td style="text-align:center;">
 
                                                     @if (@p["Id_Num_OrdenStat"].ToString() == "12")
@@ -385,14 +385,22 @@
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_AsigTrasp"].ToString())" style="text-align:center;">@p["Fec_AsigTraspReal"]</td>
                                                 }
-                                                <td style="text-align:center">
-                                                    @if (@p["Id_Num_OrdenStat"].ToString() == "9")
+                                            <td style="text-align:center">
+                                                @if (@p["Id_Num_OrdenStat"].ToString() == "9")
+                                                {
+                                                    // validar por tipo de uetype (SETC - Mostrar el LINK, DST - NO incluir el LINK)
+                                                    if (@p["UeType"].ToString() == "SETC")
                                                     {
                                                         <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new { guia = @p["Id_Num_GuiaEmb"] })"
                                                            title="Click para ver el detalle de la orden" class="btn btn-link">@p["Id_Num_GuiaEmb"]</a>
                                                     }
-                                                </td>
-
+                                                    else
+                                                    {
+                                                        @p["Id_Num_GuiaEmb"]  // Solo se muestra el valor de la guia de embarque interna
+                                                    }
+                                                }
+                                            </td>
+                                                
                                                 @foreach (System.Data.DataRow p1 in dt1.Rows)
                                                 {
                                                     IdGuia = p1["IdGuias"].ToString();
