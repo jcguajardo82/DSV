@@ -132,52 +132,55 @@
                                         foreach (System.Data.DataRow p in dt.Rows)
                                         {
                                             index++;
-                                            <tr>
-                                                @*<td style="text-align:right">@p["Barcode"]<br />@p["ProductId"]</td>*@
-                                                <td style="text-align:center">@p["ProductName"]</td>
-                                                <td style="text-align:center">@p["pe_Quantity"]</td>
-                                                <td>
-                                                    @if ((decimal)(@p["pe_price"]) == 0)
-                                                    {
-                                                        @p["e_price"]
-                                                    }
-                                                    else
-                                                    {
-                                                        @p["pe_price"]
-                                                    }
-                                                </td>
-                                                <td>@p["e_Quantity"]</td>
-                                                @if (Session["OrderPackages"] != null)
-                                                {
-                                                    System.Data.DataSet dsOP = (System.Data.DataSet)Session["OrderPackages"];
-                                                    //if (dsOP.Tables[0].Rows[0][0].ToString() != "no hay datos de esa Consignacion")
-                                                    //{
-                                                    var dtPG = dsOP.Tables[1];
-                                                    foreach (System.Data.DataRow pg in dtPG.Rows)
-                                                    {
-                                                        if (@p["Barcode"].ToString() == @pg["Barcode"].ToString())
-                                                        {
-                                                            if (@pg["ConGuia"].ToString() == "1")
-                                                            {
-                                                                    <td style="text-align:center"><input class="form-check-input" type="checkbox" checked="checked" disabled="disabled" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
-                                                            }
-                                                            else
-                                                            {
-                                                                    <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
-                                                        }
-                                                    }
-                                                    //}
-                                                    //else
-                                                    //{
-                                                    //    <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
-                                                    //}
-                                                }
-                                            </tr>
+                                                                <tr>
+                                                                    @*<td style="text-align:right">@p["Barcode"]<br />@p["ProductId"]</td>*@
+                                                                    <td style="text-align:center">@p["ProductName"]</td>
+                                                                    <td style="text-align:center">@p["pe_Quantity"]</td>
+                                                                    <td>
+                                                                        @if ((decimal)(@p["pe_price"]) == 0)
+                                                                        {
+                                                                            @p["e_price"]
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @p["pe_price"]
+                                                                        }
+                                                                    </td>
+                                                                    <td>@p["e_Quantity"]</td>
+                                                                    @if (Session["OrderPackages"] != null)
+                                                                    {
+                                                                        System.Data.DataSet dsOP = (System.Data.DataSet)Session["OrderPackages"];
+                                                                        if (dsOP.Tables[0].Rows[0][0].ToString() != "no hay datos de esa Consignacion")
+                                                                        {
+                                                                            var dtPG = dsOP.Tables[1];
+                                                                            foreach (System.Data.DataRow pg in dtPG.Rows)
+                                                                            {
+                                                                                if (@p["Barcode"].ToString() == @pg["Barcode"].ToString())
+                                                                                {
+                                                                                    if (@pg["ConGuia"].ToString() == "1")
+                                                                                    {
+                                                                                        <td style="text-align:center"><input class="form-check-input" type="checkbox" checked="checked" disabled="disabled" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                                }
+                                                                            }
+                                                                            //}
+                                                                            //
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                        }
+                                                                    }
+
+                                                                </tr>
                                         }
                                     }
                                 }
