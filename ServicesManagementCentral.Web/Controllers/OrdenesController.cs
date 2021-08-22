@@ -1959,6 +1959,7 @@ namespace ServicesManagement.Web.Controllers
                 string guia = CreateGuiaEstafeta(UeNo, OrderNo,int.Parse(PackageWeight.ToString()),type);
 
                 string servicioPaq = "estafeta";
+                string GuiaEstatus = "CREADA";
                 //TarifaModel tarifaSeleccionada = new TarifaModel();
                 //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
 
@@ -1968,12 +1969,12 @@ namespace ServicesManagement.Web.Controllers
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
                 PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
+                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus).Tables[0].Rows[0][0];
 
 
 
                 //var result = new { Success = true, resp = cabeceraGuia };
-                var result = new { Success = false };
+                var result = new { Success = true, Message = "success" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
