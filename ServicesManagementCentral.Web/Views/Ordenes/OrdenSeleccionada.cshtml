@@ -419,15 +419,30 @@
                                                         else
                                                         {
                                                             IdGuias = IdGuias + "," + IdGuia;
-                                                            IdGuiasPaq = IdGuiaPaq + "," + IdGuiaPaq;
+                                                            IdGuiasPaq +=  "," + IdGuiaPaq;
                                                             GuiasPaqEstatusDesc = GuiasPaqEstatusDesc + "," + GuiaPaqEstatusDesc;
                                                         }
                                                     }
                                                 }
                                                 <td>@IdGuias</td>
                                                 <td>
-                                                    <a onclick="showpdf('@IdGuiasPaq');return false;" style="width: 116px;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">@IdGuiasPaq</a>
 
+                                                    @{
+
+                                                        var guiapq = IdGuiasPaq.Split(',');
+
+                                                        if (guiapq.Length == 0)
+                                                        {
+                                                            <a onclick="showpdf('@IdGuiasPaq');return false;" style="width: 116px;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">@IdGuiasPaq</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in guiapq)
+                                                            {
+                                                                <a onclick="showpdf('@item');return false;" style="width: 116px;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">@item</a>
+                                                            }
+                                                        }
+                                                    }
                                                 </td>
                                                 <td>@GuiasPaqEstatusDesc</td>
                                             </tr>
