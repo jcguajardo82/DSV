@@ -512,9 +512,15 @@ namespace ServicesManagement.Web.Controllers
                     }
                     else
                     {
-
+                        decimal quantity = item.Quantity;
+                        //var i = Products.Select(x => x.ProductId == item.ProductId).ToList().FirstOrDefault();
+                        foreach (var i in Products)
+                        {
+                            if (i.ProductId == item.ProductId)
+                            { quantity = i.NewQuantity; }
+                        }
                         DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId
-                            , item.Position, item.Quantity, item.ProductId, Desc);
+                            , item.Position, quantity, item.ProductId, Desc);
 
                         if (UeType.ToUpper().Equals("SETC"))
                             Cancelacion(int.Parse(orden.Orderid));
