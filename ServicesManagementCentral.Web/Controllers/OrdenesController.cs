@@ -2208,11 +2208,17 @@ namespace ServicesManagement.Web.Controllers
             }
 
             foreach (DataRow r in ds.Tables[0].Rows)
-                {
+            {
 
                     System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                     m.serviceTypeId = "70";
+
+                    if (weight >= 70)
+                    {
+                        m.serviceTypeId = "L0";
+                    }
+
                     m.DestinationInfo = new AddressModel();
 
                     m.DestinationInfo.address1 = r["Address1"].ToString();
