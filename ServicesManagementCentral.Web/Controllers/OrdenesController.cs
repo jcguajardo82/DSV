@@ -2147,7 +2147,7 @@ namespace ServicesManagement.Web.Controllers
 
         public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
         {
-
+            var ServiceTypeId = 1;
             DataSet ds = new DataSet();
             DataSet dsO = new DataSet();
 
