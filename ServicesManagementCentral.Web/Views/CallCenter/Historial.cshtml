@@ -234,7 +234,7 @@
                                             <b>Url del Cliente:</b>
 
                                             <div class="alert alert-danger">
-                                                <h2>https://callcentercliente.azurewebsites.net/orden=231256544</h2>
+                                                <h2 id="lblUrlClient"></h2>
                                             </div>
 
                                         </div>
@@ -606,6 +606,8 @@
 
                         $("#lblTotalDetalle").text(json.total)
 
+                        $("#lblUrlClient").text(json.url)
+                        
                         if (UeType == "SETC") {
                             $("#cmbServicio").val("5");
                             $('#cmbServicio').prop('disabled', true);
