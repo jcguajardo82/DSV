@@ -1944,14 +1944,14 @@ namespace ServicesManagement.Web.Controllers
 
                 
                 
-                EliminarTarifasAnteriores(UeNo, OrderNo);
-                foreach (var carrier in lstCarriers)
-                {
-                    tarifa = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
+                //EliminarTarifasAnteriores(UeNo, OrderNo);
+                //foreach (var carrier in lstCarriers)
+                //{
+                //    tarifa = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
 
-                    if (!tarifa.Equals("error"))
-                        GuardarTarifas(UeNo, OrderNo, tarifa);
-                }
+                //    if (!tarifa.Equals("error"))
+                //        GuardarTarifas(UeNo, OrderNo, tarifa);
+                //}
                 int type = 1;
 
                 if (PackageType.Equals("Paquete"))

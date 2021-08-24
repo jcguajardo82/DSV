@@ -42,7 +42,7 @@
 
 
                         <div class="tabs-container">
-                            <ul class="nav nav-tabs" role="tablist">
+                            <ul class="nav nav-tabs" role="tablist" id="myTabs">
                                 <li><a class="nav-link active" data-toggle="tab" href="#tab-1">Aceptar Pedido</a></li>
                                 <li><a class="nav-link" data-toggle="tab" href="#tab-2">Solicitud de Guía</a></li>
                                 @{
@@ -230,28 +230,29 @@
                                                             var dtOP = dsOP.Tables[0];
                                                             foreach (System.Data.DataRow op in dtOP.Rows)
                                                             {
-                                                                <tr>
-                                                                    <td>@op["IdTrackingService"]</td>
-                                                                    <td>@op["PackageHeight"]</td>
-                                                                    <td>@op["PackageLength"]</td>
-                                                                    <td>@op["PackageWidth"]</td>
-                                                                    <td>@op["PackageWeight"]</td>
-                                                                    <td>--PESO REAL--</td>
-                                                                    <td>--TIPO ENVIO--</td>
-                                                                    <td style="text-align:center;">
-                                                                        <a onclick="popUpLstProds(@op["IdTracking"])"
-                                                                           title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
-                                                                    </td>
-                                                                    @*<td>@op["PackageType"]</td>
+                                                    <tr>
+                                                        <td>@op["IdTrackingService"]</td>
+                                                        <td>@op["PackageHeight"]</td>
+                                                        <td>@op["PackageLength"]</td>
+                                                        <td>@op["PackageWidth"]</td>
+                                                        <td>@op["PackageWeight"]</td>
+                                                        <td>@op["declaredValue"]</td>
+                                                        <td>@op["ShippingMethod"]</td>
+                                                        <td>@op["Quantity"]</td>
+                                                        @*<td style="text-align:center;">
+            <a onclick="popUpLstProds(@op["IdTracking"])"
+               title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
+        </td>*@
+                                                        @*<td>@op["PackageType"]</td>
 
-                                                                        <td>@op["PackageWeight"]</td>
-                                                                        <td>@op["PackageLength"] x @op["PackageWidth"] x @op["PackageHeight"]</td>
-                                                                        <td style="text-align:center;">
-                                                                            <a onclick="popUpLstProds(@op["IdTracking"])"
-                                                                               title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
-                                                                        </td>*@
-                                                                    <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op["IdTracking"]")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
-                                                                </tr>
+        <td>@op["PackageWeight"]</td>
+        <td>@op["PackageLength"] x @op["PackageWidth"] x @op["PackageHeight"]</td>
+        <td style="text-align:center;">
+            <a onclick="popUpLstProds(@op["IdTracking"])"
+               title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
+        </td>*@
+                                                        <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op["IdTracking"]")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
+                                                    </tr>
                                                             }
                                                         }
                                                     }
@@ -649,7 +650,7 @@
                     $('#txtAltura').show();
                 }
             }).change()
-
+            
         });
 
             function popUpLstProds(idTracking) {
@@ -699,8 +700,15 @@
             }
 
         });
+                //$('#myTabs a[href="#tab-3"]').tab('show');
+
+                
     }
 
+        function tab2() {
+            //$('[href="#menu3"]').tab('show');
+            $('[href="#tab-2"]').tab('show')
+        }
         function GetSolicitarGuia() {
 
             //var _Id_Num_UN = $("#hddTda").val();
@@ -925,7 +933,8 @@
             }
         });
 
-        location.reload();
+            location.reload();
+
     }
 
         function popEmbalaje() {
