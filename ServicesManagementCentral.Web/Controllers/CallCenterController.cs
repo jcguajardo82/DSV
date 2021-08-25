@@ -465,9 +465,10 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult FinalizarRma(int OrderId, int Operacion, string Desc, List<OrderDetailCap> Products, string UeType)
         {
+            var cliente = string.Empty;
             try
             {
-
+                var urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
                 string accion = "retorno";// Operacion == 5 ? "cancelar" : "retorno";
 
                 int? EstatusRma = 1;
@@ -495,6 +496,7 @@ namespace ServicesManagement.Web.Controllers
                         orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
                         , EstatusRma, ProcesoAut).Tables[0]).FirstOrDefault();
 
+                 cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
                 foreach (var item in detalle)
                 {
 
@@ -527,15 +529,15 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
-
-                var result = new { Success = true };
+                
+                var result = new { Success = true, url = cliente };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
 
             }
             catch (Exception x)
             {
-                var result = new { Success = false, Message = x.Message };
+                var result = new { Success = false, Message = x.Message , url = cliente };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }

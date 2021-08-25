@@ -160,61 +160,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
-                                                    @*NVS*@
-
-                                                    @*<tr>
-                                                            <td><input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" /></td>
-                                                            <td>
-                                                                Camisa Roja
-                                                            </td>
-                                                            <td>
-                                                                1
-                                                            </td>
-                                                            <td>
-                                                                $100.00
-                                                            </td>
-                                                            <td>
-                                                                $100.00
-                                                            </td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td><input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" /></td>
-                                                            <td>
-                                                                Camisa Blanca
-                                                            </td>
-                                                            <td>
-                                                                1
-                                                            </td>
-                                                            <td>
-                                                                $100.00
-                                                            </td>
-                                                            <td>
-                                                                $100.00
-                                                            </td>
-
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td><input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" /></td>
-                                                            <td>
-                                                                Balon Futbol
-                                                            </td>
-                                                            <td>
-                                                                1
-                                                            </td>
-                                                            <td>
-                                                                $199.00
-                                                            </td>
-                                                            <td>
-                                                                $199.00
-                                                            </td>
-
-                                                        </tr>*@
-
-
-                                                    @*NVS*@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
@@ -228,7 +173,18 @@
                                         </div>
                                     </div>
                                 </section>
-                                <h3>Subir Evidencias</h3>
+                                <h3>Generar Caso de Usuario</h3>
+                                <section>
+                                    <p>Para generar el Caso de Usuario, dar click en Siguiente.</p>
+                                    <p>El sistema le generara un folio de caso de usuario.</p>
+                                    @*<p>
+                                        Se envia a proceso de autorizacion para su seguimiento. Favor de validar en la su status en la pestaña de seguimiento RMA.
+                                    </p>
+                                    <p>Dar click para generar la solicitud en el boton de finalizar</p>*@
+                                </section>
+
+
+                                <h3>Finalizar</h3>
                                 <section>
                                     <div class="row">
                                         <div class="col-xs-12 col-md-12 col-lg-12">
@@ -242,17 +198,10 @@
                                     </div>
                                     <hr />
                                     @*<div class="row">
-                                        <div class="col-xs-6 col-md-6 col-lg-6"><input type="text" class="form-control input-sm" placeholder="Comentarios de la Imagen" /> </div>
-                                        <div class="col-xs-6 col-md-6 col-lg-6"><input type="file" /> </div>
-                                    </div>*@
+                <div class="col-xs-6 col-md-6 col-lg-6"><input type="text" class="form-control input-sm" placeholder="Comentarios de la Imagen" /> </div>
+                <div class="col-xs-6 col-md-6 col-lg-6"><input type="file" /> </div>
+            </div>*@
 
-                                </section>
-                                <h3>Solicitar Autorizacion</h3>
-                                <section>
-                                    <p>
-                                        Se envia a proceso de autorizacion para su seguimiento. Favor de validar en la su status en la pestaña de seguimiento RMA.
-                                    </p>
-                                    <p>Dar click para generar la solicitud en el boton de finalizar</p>
                                 </section>
 
                             </div>
@@ -386,7 +335,7 @@
                 labels: {
                     current: "current step:",
                     pagination: "Pagination",
-                    finish: "Confirmar Orden",
+                    finish: "Terminar",
                     next: "Siguiente",
                     previous: "Atras"
 
@@ -400,6 +349,15 @@
                 //   // $('.actions > ul > li:first-child').attr('style', 'display:none');
                 //    alert("");
                 //}
+                , onStepChanged: function (event, currentIndex, newIndex) {
+                    currentStep = currentIndex; //Set current step number in currentStep variable
+
+                    if (currentIndex === 2 ) //If in second step and checkbox not checked then display Finish button and hide Next button
+                    {
+                        $('a[href="#finish"]').parent().attr("style", "display: block;")
+                        $('a[href="#next"]').parent().attr("style", "display: none;");
+                    }
+                }
                 , onStepChanging: function (event, currentIndex, newIndex) {
 
 
@@ -480,12 +438,22 @@
                     //        wizard.steps("setStep", 2);
                     //}
 
+                    if (currentIndex == 1) {
+                        Finalizar();
+                        return true;
+                    }
+
+
+                    if (currentIndex == 2) {
+                        return false;
+                    }
 
                      return true;
                 }
                 , onFinished: function (event, currentIndex) {
-                    Finalizar();
-                    return true;
+                   // Finalizar();
+                   
+                    location.reload();
                 }
             });
 
@@ -622,7 +590,7 @@
 
                         $("#lblTotalDetalle").text(json.total)
 
-                        $("#lblUrlClient").text(json.url)
+                        //$("#lblUrlClient").text(json.url)
 
                         if (UeType == "SETC") {
                             $("#cmbServicio").val("5");
@@ -729,11 +697,13 @@
                 dataType: "json",
                 success: function (json) {
                     if (json.Success) {
-                        location.reload();
+
+                        //location.reload();
                     }
                     else {
                         alert(json.Message);
                     }
+                    $("#lblUrlClient").text(json.url);
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
                     //bootbox.alert(errorThrown);
