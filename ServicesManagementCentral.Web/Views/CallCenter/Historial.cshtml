@@ -151,6 +151,7 @@
                                                 <thead class="bg-danger-sor">
                                                     <tr role="row">
                                                         <th class="text-center sorting"></th>
+                                                        <th class="text-center sorting"></th>
                                                         <th class="text-center sorting">Descripción</th>
                                                         <th class="text-center sorting">Cantidad</th>
                                                         <th class="text-center sorting">Precio</th>
@@ -418,7 +419,7 @@
                             //var val = checkboxes[0].checked;
                             var check = false;
                             var cantOk = true;
-                            
+
                             for (var i = 0; i < checkboxes.length; i++) {
 
                                 if (checkboxes[i].checked) {
@@ -559,7 +560,7 @@
             var oTable = $('#tblDetalle').DataTable({
                 columnDefs: [
                     {
-                        className: 'text-right', targets: [2, 3, 4], "width": "10%"
+                        className: 'text-right', targets: [3, 4, 5], "width": "10%"
                     },
                     { className: 'text-center', targets: [0], "width": "1%" },
 
@@ -604,9 +605,10 @@
                                 disab = "Disabled";
                                 check = "checked";
                             }
-
+                            //<img class="image" src="json.ArticuloFoto" width=90 height=90>
                             myTable.row.add([
                                 '<input type="checkbox" onclick="ValidaProducto(1)" value="' + json.resp[i].ProductId + '" class="checkbox" ' + check + '  '+disab +' />',
+                                '<img class="image" src="' + json.resp[i].ArticuloFoto + '" width=90 height=90>',
                                 json.resp[i].ProductName,
                                 json.resp[i].Quantity + "<input type='text' style='display:none;' disabled readonly class='form-control' id='Cant-" + json.resp[i].ProductId + "' disabled value='" + json.resp[i].Quantity + "' />",
                                 '$'+ json.resp[i].Price,
@@ -621,7 +623,7 @@
                         $("#lblTotalDetalle").text(json.total)
 
                         $("#lblUrlClient").text(json.url)
-                        
+
                         if (UeType == "SETC") {
                             $("#cmbServicio").val("5");
                             $('#cmbServicio').prop('disabled', true);
