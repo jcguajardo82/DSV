@@ -430,6 +430,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
+                Session.Remove("CheckListProd");
                 var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByDates>(
                     DALHistorialRMA.upCorpOms_Cns_OrdersByDates(FecIni, FecFin, OrderId).Tables[0]);
                 var result = new { Success = true, resp = list };
@@ -496,7 +497,7 @@ namespace ServicesManagement.Web.Controllers
                         orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
                         , EstatusRma, ProcesoAut).Tables[0]).FirstOrDefault();
 
-                 cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
+                cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
                 foreach (var item in detalle)
                 {
 
@@ -529,7 +530,7 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
-                
+
                 var result = new { Success = true, url = cliente };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -537,7 +538,7 @@ namespace ServicesManagement.Web.Controllers
             }
             catch (Exception x)
             {
-                var result = new { Success = false, Message = x.Message , url = cliente };
+                var result = new { Success = false, Message = x.Message, url = cliente };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
@@ -585,6 +586,109 @@ namespace ServicesManagement.Web.Controllers
             {
                 throw x;
 
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddCheckList(int[] values, string prodId)
+        {
+            try
+            {
+               
+
+                if (Session["CheckListProd"] == null)
+                {
+                    List<ProdCheckList> lst = new List<ProdCheckList>();
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        lst.Add(new ProdCheckList
+                        {
+                            IdPregunta = i+1,
+                            Resp = values[i],
+                            ProdId = prodId
+                        });
+                    }
+                    Session["CheckListProd"] = lst;
+                }
+                else
+                {
+                    var lst = (List<ProdCheckList>)Session["CheckListProd"];
+
+                    lst.RemoveAll(x => x.ProdId == prodId);
+
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        lst.Add(new ProdCheckList
+                        {
+                            IdPregunta = i,
+                            Resp = values[i],
+                            ProdId = prodId
+                        });
+                    }
+
+
+                    Session["CheckListProd"] = lst;
+                }
+
+
+                var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult DelCheckList(string prodId)
+        {
+            try
+            {
+
+
+                if (Session["CheckListProd"] != null)
+                {                
+                    var lst = (List<ProdCheckList>)Session["CheckListProd"];
+                    lst.RemoveAll(x => x.ProdId == prodId);           
+                    Session["CheckListProd"] = lst;
+                }
+
+
+                var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult CheckList(int articulos)
+        {
+            try
+            {
+                int totListCh=0;
+                bool resp = false;
+
+
+                if (Session["CheckListProd"] != null)
+                {
+                    var lst = (List<ProdCheckList>)Session["CheckListProd"];
+                    totListCh = lst.Count();
+                }
+
+                if (totListCh == articulos) { resp = true; }
+
+
+                var result = new { Success = true, resp = resp };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
 
