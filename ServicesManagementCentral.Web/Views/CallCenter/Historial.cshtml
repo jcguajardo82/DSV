@@ -99,8 +99,8 @@
                                     <div class="row">
                                         <div class="col-xs-4 col-md-4 col-lg-4">
                                             <select class="form-control" id="cmbServicio" name="cmbServicio">
-                                                <option selected="selected" value="1">Devolución</option>
-                                                <option selected="selected" value="2">Reenvolso</option>
+                                                @*<option selected="selected" value="1">Devolución</option>*@
+                                                <option selected="selected" value="2">Reembolso</option>
                                                 <option selected="selected" value="3">Cambio Fisico</option>
                                                 <option selected="selected" value="4">Reenvio</option>
                                                 <option selected="selected" value="5">Cancelación</option>
@@ -234,16 +234,16 @@
                                             <b>Url del Cliente:</b>
 
                                             <div class="alert alert-danger">
-                                                <h2>https://callcentercliente.azurewebsites.net/orden=231256544</h2>
+                                                <h2 id="lblUrlClient"></h2>
                                             </div>
 
                                         </div>
                                     </div>
                                     <hr />
-                                    <div class="row">
+                                    @*<div class="row">
                                         <div class="col-xs-6 col-md-6 col-lg-6"><input type="text" class="form-control input-sm" placeholder="Comentarios de la Imagen" /> </div>
                                         <div class="col-xs-6 col-md-6 col-lg-6"><input type="file" /> </div>
-                                    </div>
+                                    </div>*@
 
                                 </section>
                                 <h3>Solicitar Autorizacion</h3>
@@ -412,12 +412,13 @@
                         }
 
 
-                        if ($("#cmbServicio").val() != '5') {
+                        //if ($("#cmbServicio").val() != '5') {
                             var table = document.getElementById("tblDetalle");
                             var checkboxes = table.querySelectorAll('input[type=checkbox]');
                             //var val = checkboxes[0].checked;
                             var check = false;
                             var cantOk = true;
+                            
                             for (var i = 0; i < checkboxes.length; i++) {
 
                                 if (checkboxes[i].checked) {
@@ -443,10 +444,18 @@
                                     var can = $("#" + idCant).val();
                                     var nCan = $("#" + idnCant).val();
                                     debugger;
-                                    if (parseFloat(nCan) > parseFloat(can) || parseFloat(nCan) < parseFloat(can)) {
+                                    if (parseFloat(nCan) > parseFloat(can) ) {
                                         cantOk = false;
                                         break;
                                     }
+                                    if (parseFloat(nCan) > parseFloat(0)) {
+                                        cantOk = true;
+                                        /* break;*/
+                                    } else {
+                                        cantOk = false;
+                                    }
+
+
                                 } else {
                                     $("#" + idnCant).val("0.00");
                                 }
@@ -455,10 +464,10 @@
                             }
 
                             if (!cantOk) {
-                                alert("La cantidad a devolver no puede ser mayor ni menor a la del articulo ordenado.");
+                                alert("La cantidad a devolver no puede ser menor a 0  ni mayor a la cantidad pedida");
                                 return false;
                             }
-                        }
+                        //}
 
                         //if ($("#hddUeType").val() == "SETC")
                         //    $('#wizard-t-1').click();
@@ -547,9 +556,6 @@
             );
 
 
-
-
-
             var oTable = $('#tblDetalle').DataTable({
                 columnDefs: [
                     {
@@ -589,15 +595,23 @@
                             .clear()
                             .draw();
                         for (var i = 0; i < json.resp.length; i++) {
+                            var nCant = "0.00";
+                            var disab = "";
+                            var check = "";
 
+                            if (UeType == "SETC") {
+                                nCant = json.resp[i].Quantity;
+                                disab = "Disabled";
+                                check = "checked";
+                            }
 
                             myTable.row.add([
-                                '<input type="checkbox" onclick="ValidaProducto(1)" value="' + json.resp[i].ProductId+'" class="checkbox" />',
+                                '<input type="checkbox" onclick="ValidaProducto(1)" value="' + json.resp[i].ProductId + '" class="checkbox" ' + check + '  '+disab +' />',
                                 json.resp[i].ProductName,
                                 json.resp[i].Quantity + "<input type='text' style='display:none;' disabled readonly class='form-control' id='Cant-" + json.resp[i].ProductId + "' disabled value='" + json.resp[i].Quantity + "' />",
                                 '$'+ json.resp[i].Price,
                                 '$'+json.resp[i].SubTotal,
-                                "<input type='number' oninput='input(this)'    id='nCant-" + json.resp[i].ProductId +"' value='0.00' class='form-control input-sm' />"
+                                "<input type='number' oninput='input(this)'    id='nCant-" + json.resp[i].ProductId + "' value='" + nCant + "' class='form-control input-sm' " + disab+" />"
 
                             ]).draw();
                         }
@@ -606,13 +620,15 @@
 
                         $("#lblTotalDetalle").text(json.total)
 
+                        $("#lblUrlClient").text(json.url)
+                        
                         if (UeType == "SETC") {
                             $("#cmbServicio").val("5");
                             $('#cmbServicio').prop('disabled', true);
 
                             $('.actions > ul > li:first-child').attr('style', 'display:none');
                         } else {
-                            $("#cmbServicio").val("1");
+                            $("#cmbServicio").val("2");
                             $('#cmbServicio').prop('disabled', false);
                         }
 

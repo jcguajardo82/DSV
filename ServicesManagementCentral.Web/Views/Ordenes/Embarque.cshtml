@@ -42,22 +42,22 @@
     }
 }
 @*<div class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4" style="text-align:center">Para mostrar los datos completos del pedido hacer click aquí.</div>
-    <div class="col-sm-4"></div>
-</div>
-<div class="row">
-    <div class="col-sm-4"></div>
-    @if (UeType.Equals("SETC"))
-    {
-        <div class="col-sm-4" style="text-align:center;color:red">Número de contenedores mayor que 25.</div>
-    }
-    @if (UeType.Equals("DST"))
-    {
-        <div class="col-sm-4" style="text-align:center;color:red">Número de paquetes mayor que 25.</div>
-    }
-    <div class="col-sm-4"></div>
-</div>*@
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4" style="text-align:center">Para mostrar los datos completos del pedido hacer click aquí.</div>
+        <div class="col-sm-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        @if (UeType.Equals("SETC"))
+        {
+            <div class="col-sm-4" style="text-align:center;color:red">Número de contenedores mayor que 25.</div>
+        }
+        @if (UeType.Equals("DST"))
+        {
+            <div class="col-sm-4" style="text-align:center;color:red">Número de paquetes mayor que 25.</div>
+        }
+        <div class="col-sm-4"></div>
+    </div>*@
 <div class="row">
     <div class="col-sm-4"></div>
     <div class="col-sm-4" style="text-align:center;color:red">Favor de revisar o reportar</div>
@@ -82,15 +82,15 @@
     <br />
     <div id="tblConsulta_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
         @*<div class="row">
-            <div class="col col-xs-6">
-                <div class="dt-buttons btn-group flex-wrap">
-                    <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>
-                    <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
-                    <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                <div class="col col-xs-6">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>
+                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+                    </div>
                 </div>
-            </div>
 
-        </div>*@
+            </div>*@
         <div id="table-scroll">
             <div id="tblConsulta_Surtido" class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer" style="height:300px;">
                 <div class="row">
@@ -127,6 +127,27 @@
                                         System.Data.DataSet ds = (System.Data.DataSet)Session["OrderSelected"];
                                         var dt = ds.Tables[4];
 
+                                        // se debe eliminar del DataSet al producto con el flete EAN=2000020509772, productid=2050977
+                                        // cambio: 2021-08-21
+                                        // Inicio cambio
+                                        List<System.Data.DataRow> rowsToDelete = new List<System.Data.DataRow>();
+
+                                        foreach (System.Data.DataRow row in dt.Rows)
+                                        {
+                                            if (@row["Barcode"].ToString() == "2000020509772")
+                                            {
+                                                rowsToDelete.Add(row);
+                                            }
+                                        }
+
+                                        foreach (System.Data.DataRow row in rowsToDelete)
+                                        {
+                                            dt.Rows.Remove(row);
+                                        }
+
+                                        dt.AcceptChanges();
+
+                                        // Final cambio
 
                                         int index = 0;
                                         foreach (System.Data.DataRow p in dt.Rows)
@@ -149,6 +170,7 @@
                                                 <td>@p["e_Quantity"]</td>
                                                 @if (Session["OrderPackages"] != null)
                                                 {
+                                                    var ProductRev = 0;
                                                     System.Data.DataSet dsOP = (System.Data.DataSet)Session["OrderPackages"];
                                                     if (dsOP.Tables[0].Rows[0][0].ToString() != "no hay datos de esa Consignacion")
                                                     {
@@ -160,19 +182,35 @@
                                                                 if (@pg["ConGuia"].ToString() == "1")
                                                                 {
                                                                     <td style="text-align:center"><input class="form-check-input" type="checkbox" checked="checked" disabled="disabled" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                    ProductRev = 1;
                                                                 }
                                                                 else
                                                                 {
                                                                     <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                    ProductRev = 1;
                                                                 }
                                                             }
+                                                            @*else
+                                                                {
+                                                                    <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                                }*@
                                                         }
+                                                        //}
+                                                        //
                                                     }
                                                     else
                                                     {
                                                         <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                        ProductRev = 1;
                                                     }
+
+                                                    if (ProductRev == 0)
+                                                    {
+                                                        <td style="text-align:center"><input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" /> </td>
+                                                    }
+
                                                 }
+
                                             </tr>
                                         }
                                     }
@@ -242,9 +280,9 @@
                         <div class="ibox">
                             <div class="ibox-title">
                                 @*<h5>Guias disponibles: </h5> <select class="form-control" id="sel1">
-                                    <option>4562734567898230000000</option>
-                                    <option>4536732345621340000000</option>
-                                </select>*@
+                                        <option>4562734567898230000000</option>
+                                        <option>4536732345621340000000</option>
+                                    </select>*@
                                 <h5>Embalaje</h5><br />
                                 Su Embalaje
                                 <div class="ibox-tools">
@@ -270,11 +308,17 @@
                                         <table id="tblEmbalaje" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 1115px;">
                                             <thead class="bg-primary">
                                                 <tr role="row">
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TIPO PAQUETE</b><br /></th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO X PAQUETE</b><br />Peso max. 1000kg</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>DIMENSIONES X PAQUETE</b><br />L X AN X AL (cm)</th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>GUIA DE EMBARQUE</b><br /></th>
-                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>ACCIÓN</b><br /></th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>No. Guía</b><br />Externa</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;"><b>Guía de Embarque</b><br /></th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 80px;"><b>Alto</b><br />(cms)</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 80px;"><b>Largo</b><br />(cms)</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 80px;"><b>Ancho</b><br />(cms)</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 140px;"><b>Peso X Paquete</b><br />Peso max. 1000kg</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>Peso Real</b><br /></th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>Tipo de Envio</b><br /></th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>Tipo Paquete</b><br /></th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 140px;"><b>Total de </b><br />Articulos en Guía</th>
+                                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;"><b>ACCIÓN</b><br /></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -287,13 +331,20 @@
                                                         foreach (System.Data.DataRow op in dtOP.Rows)
                                                         {
                                                             <tr>
-                                                                <td>@op["PackageType"]</td>
-                                                                <td>@op["PackageWeight"]</td>
-                                                                <td>@op["PackageLength"] x @op["PackageWidth"] x @op["PackageHeight"]</td>
+                                                                <td>@op["IdTrackingService"]</td>
                                                                 <td style="text-align:center;">
                                                                     <a onclick="popUpLstProds(@op["IdTracking"])"
                                                                        title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
                                                                 </td>
+                                                                <td style="text-align:center;">@op["PackageHeight"]</td>
+                                                                <td style="text-align:center;">@op["PackageLength"]</td>
+                                                                <td style="text-align:center;">@op["PackageWidth"]</td>
+                                                                <td style="text-align:center;">@op["PackageWeight"]</td>
+                                                                <td style="text-align:center;"> </td>
+                                                                <td style="text-align:center;">@op["ShippingMethod"]</td>
+
+                                                                <td style="text-align:center;">@op["PackageType"]</td>
+                                                                <td style="text-align:center;">@op["Quantity"]</td>
                                                                 <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op["IdTracking"]")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
                                                             </tr>
                                                         }
@@ -308,9 +359,19 @@
                                         <a class="btn btn-danger" onclick="FinalizaEmbarqueDST()">Finalizar Guías</a>
                                     </div>
                                     <div class="col-lg-10">
-                                        <b>Fecha de Envio</b>
+                                        <b>Fecha en que se solicitaron las Guias</b>
                                         <div class="alert alert-warning">
-                                            Vernes, 28 de mayo de 2021
+                                            @*Viernes, 28 de mayo de 2021*@
+
+                                            @if (Session["OrderPackages"] != null)
+                                            {
+                                                System.Data.DataSet dsOP = (System.Data.DataSet)Session["OrderPackages"];
+                                                if (dsOP.Tables[0].Rows[0][0].ToString() != "no hay datos de esa Consignacion")
+                                                {
+                                                    var dtOP = dsOP.Tables[0];
+                                                    <i>@dtOP.Rows[0]["CreationDate"].ToString()</i>
+                                                }
+                                            }
 
                                         </div>
                                     </div>
@@ -320,7 +381,7 @@
                     </div>
                 </div>
                 <div class="modal inmodal fade" id="dlgAddProdcut" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-md">
+                    <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header pt-3 pb-1">
                                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -328,15 +389,42 @@
                             </div>
                             <div class="modal-body">
                                 <form id="frmCreateServicios">
-                                    <table class="table" style="width:100%">
+                                    <table class="table" id="tblGenGuia" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th colspan="2">Tipo</th>
-                                                <th colspan="1" id="colPeso">Peso KG</th>
-                                                <th colspan="6" style="text-align:center;">Dimensiones (cm)</th>
+                                                <th colspan="2" style="text-align:center;"></th>
+                                                <th colspan="1" style="text-align:center;" id="colPeso"></th>
+                                                <th colspan="3" style="text-align:center;">Dimensiones (cm)</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" style="text-align:center;">Tipo</th>
+                                                <th colspan="1" style="text-align:center;" id="colPeso">Peso KG</th>
+                                                <th style="text-align:center;">Largo</th>
+                                                <th style="text-align:center;">Ancho</th>
+                                                <th style="text-align:center;">Alto</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <!--<tr>
+                                                <td><input type="radio" checked="" value="Sobre" class="js-rate-type" id="optionsRadios1" name="optionsRadios"> Sobre</td>
+                                                <td><input type="radio" value="Paquete" id="optionsRadios2" name="optionsRadios"> Paquete</td>
+
+                                                <td><input type="text" class="form-control input-sm" placeholder="KG" id="txtKG" /></td>
+
+                                                <td><input type="text" class="form-control input-sm" placeholder="Largo" id="txtLg" /></td>
+
+                                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" id="txtAn" /></td>-->
+                                            @*<td><input type="text" class="form-control input-sm" placeholder="Largo" style="display:none" id="txtLargo" /></td>
+
+                                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" style="display:none" id="txtAncho" /></td>*@
+
+                                            @*<td><input type="text" class="form-control input-sm" placeholder="Alto" style="display:none" id="txtAltura" /></td>*@
+                                            <!--<td><input type="text" class="form-control input-sm" placeholder="Alto" value="N/A" id="txtAltura" /></td>
+                                            </tr>-->
+                                        </tbody>
+                                        <tfoot>
                                             <tr>
                                                 <td><input type="radio" checked="" value="Sobre" class="js-rate-type" id="optionsRadios1" name="optionsRadios"> Sobre</td>
                                                 <td><input type="radio" value="Paquete" id="optionsRadios2" name="optionsRadios"> Paquete</td>
@@ -347,19 +435,17 @@
 
                                                 <td><input type="text" class="form-control input-sm" placeholder="Ancho" id="txtAn" /></td>
 
-                                                @*<td><input type="text" class="form-control input-sm" placeholder="Largo" style="display:none" id="txtLargo" /></td>
 
-                                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" style="display:none" id="txtAncho" /></td>*@
-
-                                                <td><input type="text" class="form-control input-sm" placeholder="Alto" style="display:none" id="txtAltura" /></td>
+                                                <td><input type="text" class="form-control input-sm" placeholder="Alto" value="N/A" id="txtAltura" /></td>
+                                                <td><input type="button" class="btn btn-primary" id="btnAdd" value="Agregar" /></td>
                                             </tr>
-                                        </tbody>
+                                        </tfoot>
                                     </table>
                                 </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal" id=" btnActualizaMp" onclick="AddEmbalaje()">Asignar Guía</button>
+                                <button type="button" class="btn btn-primary"  id="btnSave" onclick="AddEmbalaje2()">Asignar Guía</button>
                             </div>
                         </div>
                     </div>
@@ -374,7 +460,7 @@
                             </div>
                             <div class="modal-body">
                                 <form id="frmShowServicios">
-                                    <table id ="tblShowProduct" class="table" style="width:100%">
+                                    <table id="tblShowProduct" class="table" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>Código </th>
@@ -409,10 +495,15 @@
             $(".form-control input-sm").toggle(sobreType.checked);
             $(".form-control input-s-lg").toggle(paqueteType.checked);
             if (sobreType.checked) {
-                $('#txtAltura').hide();
+                //$('#txtAltura').hide();
+
+                $('#txtAltura').val('N/A');
+                $("#txtAltura").prop("disabled", true)
             }
             else {
-                $('#txtAltura').show();
+                //$('#txtAltura').show();
+                $('#txtAltura').val('');
+                $("#txtAltura").prop("disabled", false)
             }
         }).change()
     });
@@ -490,7 +581,7 @@
         var TrackingType = "Normal";
         var _UeNo = $("#UeNo").val();
         var _OrderNo = $("#OrderNo").val();
-        var CreationId = 't_joserp';
+        var CreationId = 't_eliseogr';
         $.ajax({
             async: false,
             type: "GET",
@@ -572,13 +663,100 @@
         });
 
         location.reload();
-    }
+        }
+
+        function AddEmbalaje2() {
+            //Loop through the Table rows and build a JSON array.
+            var items = new Array();
+            var products = new Array();
+            var _UeNo = $("#UeNo").val();
+            var _OrderNo = $("#OrderNo").val();
+            debugger;
+            $("#tblGenGuia TBODY TR").each(function () {
+                var row = $(this);
+                var item = {};
+
+                debugger;
+                item.Tipo = row.find("TD").eq(0).html();
+                item.Peso = row.find("TD").eq(1).html();
+                item.Largo = row.find("TD").eq(2).html();
+                item.Ancho = row.find("TD").eq(3).html();
+                var alto= row.find("TD").eq(4).html()
+
+                item.Alto = alto=="N/A" ? 0 : alto;
+
+                items.push(item);
+            });
+            debugger;
+            if (items.length == 0) {
+                $("#txtKG").focus();
+                return;
+            }
+
+            var i = 0;
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                    var product = {};
+                    row = $(this).closest("tr");
+                    var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
+                    product.Barcode = arrBarProd[0];
+                    product.ProductId = arrBarProd[1];
+                    product.ProductName = $(row)[0].cells[1].innerText;
+                    product.product = {};
+                    products.push(product);
+                }
+                i++;
+            });
+            debugger;
+            if (products.length == 0) {
+                alert("Debe de seleccionar un artículo")
+            }
+
+           
+
+            //Send the JSON array to Controller using AJAX.
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddEmbalaje", "Ordenes")',
+                data: JSON.stringify({
+                    Paquetes: items,
+                    UeNo: _UeNo,
+                    OrderNo: _OrderNo,
+                    Products: products
+                    // Paquetes, string UeNo, int OrderNo,
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        //alert(json.resp);
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+
+
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                    this.checked = false;
+                }
+            });
+
+            location.reload();
+        }
+
 
     function popEmbalaje() {
         $('#txtKG').val("");
         $('#txtLg').val("");
         $('#txtAn').val("");
-        $('#txtAltura').val("");
+        $('#txtAltura').val("N/A");
         $('#dlgAddProdcut').modal('show');
     }
 
@@ -744,7 +922,94 @@
 
     function ShowFilter() {
         $("#filter").collapse('toggle');
-    };
+        };
+
+        $("body").on("click", "#btnAdd", function () {
+            //Reference the Name and Country TextBoxes.
+            var txtKG = $("#txtKG");
+            var txtLg = $("#txtLg");
+            var txtAn = $("#txtAn");
+            var txtAltura = $("#txtAltura");
+            var rdOption = $("input[name='optionsRadios']:checked").val();
+            //Get the reference of the Table's TBODY element.
+            //var tBody = $("#tblGenGuia > TBODY")[0];
+
+
+
+
+            var _txtKG = $("#txtKG").val();
+            if (_txtKG.length == 0) {
+                alert("Campo Peso kg vacío!");
+                $("#txtKG").focus();
+                return;
+            }
+            var _txtLg = $("#txtLg").val();
+            if (_txtLg.length == 0) {
+                alert("Campo Largo vacío!");
+                $("#txtLg").focus();
+                return;
+            }
+            var _txtAn = $("#txtAn").val();
+            if (_txtAn.length == 0) {
+                alert("Campo Ancho vacío!");
+                $("#txtAn").focus();
+                return;
+            }
+            var _txtAl = $("#txtAltura").val();
+
+            var PackageType = "Sobre";
+            var paqueteType = $("input[name=optionsRadios]")[1].checked;
+            if (paqueteType) {
+                PackageType = "Paquete";
+                if (_txtAl.length == 0) {
+                    alert("Campo Altura vacío!");
+                    $("#txtAltura").focus();
+                    return;
+                }
+            }
+            else {
+                var _txtAl = "N/A";
+                $("#txtAltura").val("N/A");
+            }
+
+
+
+
+
+
+
+            tr = $('<tr/>');
+            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+
+            tr.append("<td colspan='2' style='text-align:center;'>" + rdOption + "</td>");
+            tr.append("<td style='text-align:right;'>" + txtKG.val() + "</td>");
+            tr.append("<td style='text-align:right;'>" + txtLg.val() + "</td>");
+            tr.append("<td style='text-align:right;'>" + txtAn.val() + "</td>");
+            tr.append("<td style='text-align:right;'>" + txtAltura.val() + "</td>");
+
+
+            tr.append("<td><button onclick='Remove(this)'  type = 'button' class= 'btn btn-primary'>Remover</button></td >");
+            $('#tblGenGuia').append(tr);
+
+            //Clear the TextBoxes.
+            txtKG.val("");
+            txtLg.val("");
+            txtAn.val("");
+            txtAltura.val("");
+        });
+
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(0).html();
+            if (confirm("¿Esta seguro que desea eliminar?: " + name)) {
+                //Get the reference of the Table.
+                var table = $("#tblGenGuia")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+            }
+        };
     </script>
 }
 

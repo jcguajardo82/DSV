@@ -81,6 +81,24 @@ namespace ServicesManagement.Web.Controllers
         public string flagE { get; set; }
         public string idex { get; set; }
     }
+
+
+    public class PackageMeasure
+    {
+        public string Tipo { get; set; }
+        public decimal Peso { get; set; }
+        public decimal Largo { get; set; }
+        public decimal Ancho { get; set; }
+        public decimal Alto { get; set; }
+      
+    }
+
+    public class ProductEmbalaje
+    {
+        public decimal Barcode { get; set; }
+        public decimal ProductId { get; set; }
+        public string ProductName { get; set; }
+    }
     #endregion
     [Authorize]
     public class OrdenesController : Controller
@@ -1859,6 +1877,74 @@ namespace ServicesManagement.Web.Controllers
 
         #region Embarques
 
+
+        public ActionResult AddEmbalaje(List<PackageMeasure> Paquetes, string UeNo, int OrderNo,List<ProductEmbalaje> Products, string TrackingType ="Normal")
+        {
+            string tarifa = string.Empty;
+            try
+            {
+                List<string> folios = new List<string>();
+                foreach (PackageMeasure item in Paquetes)
+                {
+                    #region Guias
+                    var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
+                    folios.Add(FolioDisp);
+                    string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
+                    List<string> lstCarriers = new List<string>(carriers);
+
+                    EliminarTarifasAnteriores(UeNo, OrderNo);
+                    foreach (var carrier in lstCarriers)
+                    {
+                        tarifa = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
+
+                        if (!tarifa.Equals("error"))
+                            GuardarTarifas(UeNo, OrderNo, tarifa);
+                    }
+
+
+                    int type = 1;
+
+                    if (item.Tipo.Equals("Paquete"))
+                        type = 4;
+                    string guia = CreateGuiaEstafeta(UeNo, OrderNo, int.Parse(item.Peso.ToString()), type);
+
+                    string servicioPaq = "estafeta";
+                    string GuiaEstatus = "CREADA";
+                    //TarifaModel tarifaSeleccionada = new TarifaModel();
+                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
+
+                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
+                    //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                    //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
+
+                    var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
+                    item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
+                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus).Tables[0].Rows[0][0];
+
+                    #endregion
+                }
+
+
+                foreach (var folio in folios)
+                {
+                    foreach (var p in Products)
+                    {
+                        DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(UeNo, OrderNo, folio, TrackingType,
+                        p.ProductId, p.Barcode, p.ProductName, User.Identity.Name);
+                    }
+
+                }
+
+                var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         //Cabeceras y productos
         public ActionResult LstCabecerasGuiasProds(string UeNo, int OrderNo)
         {
@@ -1944,14 +2030,14 @@ namespace ServicesManagement.Web.Controllers
 
                 
                 
-                EliminarTarifasAnteriores(UeNo, OrderNo);
-                foreach (var carrier in lstCarriers)
-                {
-                    tarifa = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
+                //EliminarTarifasAnteriores(UeNo, OrderNo);
+                //foreach (var carrier in lstCarriers)
+                //{
+                //    tarifa = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
 
-                    if (!tarifa.Equals("error"))
-                        GuardarTarifas(UeNo, OrderNo, tarifa);
-                }
+                //    if (!tarifa.Equals("error"))
+                //        GuardarTarifas(UeNo, OrderNo, tarifa);
+                //}
                 int type = 1;
 
                 if (PackageType.Equals("Paquete"))
@@ -1959,6 +2045,7 @@ namespace ServicesManagement.Web.Controllers
                 string guia = CreateGuiaEstafeta(UeNo, OrderNo,int.Parse(PackageWeight.ToString()),type);
 
                 string servicioPaq = "estafeta";
+                string GuiaEstatus = "CREADA";
                 //TarifaModel tarifaSeleccionada = new TarifaModel();
                 //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
 
@@ -1968,12 +2055,12 @@ namespace ServicesManagement.Web.Controllers
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
                 PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
+                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus).Tables[0].Rows[0][0];
 
 
 
                 //var result = new { Success = true, resp = cabeceraGuia };
-                var result = new { Success = false };
+                var result = new { Success = true, Message = "success" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
@@ -2060,7 +2147,7 @@ namespace ServicesManagement.Web.Controllers
 
         public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
         {
-
+            var ServiceTypeId = 1;
             DataSet ds = new DataSet();
             DataSet dsO = new DataSet();
 
@@ -2121,11 +2208,17 @@ namespace ServicesManagement.Web.Controllers
             }
 
             foreach (DataRow r in ds.Tables[0].Rows)
-                {
+            {
 
                     System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                    m.serviceTypeId = "1";
+                    m.serviceTypeId = "70";
+
+                    if (weight >= 70)
+                    {
+                        m.serviceTypeId = "L0";
+                    }
+
                     m.DestinationInfo = new AddressModel();
 
                     m.DestinationInfo.address1 = r["Address1"].ToString();

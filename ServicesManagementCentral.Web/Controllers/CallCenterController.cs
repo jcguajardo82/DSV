@@ -17,6 +17,7 @@ using ServicesManagement.Web.Models.CallCenter;
 using System.Linq;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -444,12 +445,15 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
+                var urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
                 var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
                     DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
 
                 var tot = list.Sum(x => x.SubTotal);
 
-                var result = new { Success = true, resp = list, total = tot };
+                var cliente = string.Format("{0}/?order={1}", urlbase, OrderId);
+
+                var result = new { Success = true, resp = list, total = tot, url = cliente };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
@@ -470,7 +474,8 @@ namespace ServicesManagement.Web.Controllers
                 int? ProcesoAut = 1;
 
 
-                if (Operacion == 5) {
+                if (Operacion == 5)
+                {
                     accion = "cancelar";
                     if (UeType.ToUpper().Equals("SETC"))
                         EstatusRma = 10;
@@ -488,12 +493,12 @@ namespace ServicesManagement.Web.Controllers
                 var id = DataTableToModel.ConvertTo<AutorizacionShow>(
                     DALCallCenter.up_Corp_ins_tbl_OrdenCancelada(
                         orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
-                        ,EstatusRma, ProcesoAut).Tables[0]).FirstOrDefault();
+                        , EstatusRma, ProcesoAut).Tables[0]).FirstOrDefault();
 
                 foreach (var item in detalle)
                 {
 
-                    
+
                     if (Operacion != 5)
                     {
                         int quantity = Convert.ToInt32(item.Quantity);
@@ -503,20 +508,26 @@ namespace ServicesManagement.Web.Controllers
                             if (i.ProductId == item.ProductId)
                             { quantity = Convert.ToInt32(i.NewQuantity); }
                         }
-                        DALCallCenter.up_Corp_ins_tbl_OrdenRetorno_Detalle(id.Id_cancelacion, orden.Clientid.ToString(), item.ShipmentId, item.Position, quantity, item.ProductId, Desc);
+                        DALCallCenter.up_Corp_ins_tbl_OrdenRetorno_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId, item.Position, quantity, item.ProductId, Desc);
                     }
                     else
                     {
+                        decimal quantity = item.Quantity;
+                        //var i = Products.Select(x => x.ProductId == item.ProductId).ToList().FirstOrDefault();
+                        foreach (var i in Products)
+                        {
+                            if (i.ProductId == item.ProductId)
+                            { quantity = i.NewQuantity; }
+                        }
+                        DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId
+                            , item.Position, quantity, item.ProductId, Desc);
 
-                        DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Clientid.ToString(), item.ShipmentId
-                            , item.Position, item.Quantity, item.ProductId, Desc);
-
-                        if(UeType.ToUpper().Equals("SETC"))
-                            Cancelacion(orden.Clientid);
+                        if (UeType.ToUpper().Equals("SETC"))
+                            Cancelacion(int.Parse(orden.Orderid));
                     }
                 }
 
-      
+
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -543,7 +554,7 @@ namespace ServicesManagement.Web.Controllers
                 //JavaScriptSerializer js = new JavaScriptSerializer();
                 ////json2 = js.Serialize(o);
                 //js = null;
-                
+
                 var json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
 
                 string PPSRequest = JsonConvert.SerializeObject(req);

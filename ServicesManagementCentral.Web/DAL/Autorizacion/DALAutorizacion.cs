@@ -45,7 +45,7 @@ namespace ServicesManagement.Web.DAL.Autorizacion
 
         }
 
-        public static DataSet upCorpOms_Cns_OrdersByItems(int OrderSF,string accion)
+        public static DataSet upCorpOms_Cns_OrdersByItems(int Id_cancelacion, string accion)
         {
 
             DataSet ds = new DataSet();
@@ -61,7 +61,7 @@ namespace ServicesManagement.Web.DAL.Autorizacion
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 
-                parametros.Add("@OrderSF", OrderSF);
+                parametros.Add("@Id_cancelacion", Id_cancelacion);
                 parametros.Add("@accion", accion);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_OrdersByItems]", false, parametros);
