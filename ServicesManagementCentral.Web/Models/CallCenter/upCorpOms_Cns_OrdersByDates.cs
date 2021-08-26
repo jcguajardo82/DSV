@@ -22,6 +22,6 @@ namespace ServicesManagement.Web.Models.CallCenter
         public string OrderDate { get; set; }
         public string UeType { get; set; }
 
-         
+        public int Id_Cancelacion { get; set; }
     }
 }

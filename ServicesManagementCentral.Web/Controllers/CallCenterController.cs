@@ -464,7 +464,9 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult FinalizarRma(int OrderId, int Operacion, string Desc, List<OrderDetailCap> Products, string UeType)
+        public ActionResult FinalizarRma(int OrderId, int Operacion
+            , string Desc, List<OrderDetailCap> Products, string UeType
+            , int? IdTSolicitud, int? IdTmovimiento)
         {
             var cliente = string.Empty;
             try
@@ -480,8 +482,10 @@ namespace ServicesManagement.Web.Controllers
                 {
                     accion = "cancelar";
                     if (UeType.ToUpper().Equals("SETC"))
+                    {
                         EstatusRma = 10;
-                    ProcesoAut = 10;
+                        ProcesoAut = 10;
+                    }
                 }
 
                 var ds = DALCallCenter.up_Corp_cns_OrderInfo(OrderId);
@@ -495,7 +499,7 @@ namespace ServicesManagement.Web.Controllers
                 var id = DataTableToModel.ConvertTo<AutorizacionShow>(
                     DALCallCenter.up_Corp_ins_tbl_OrdenCancelada(
                         orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
-                        , EstatusRma, ProcesoAut).Tables[0]).FirstOrDefault();
+                        , EstatusRma, ProcesoAut, IdTSolicitud, IdTmovimiento).Tables[0]).FirstOrDefault();
 
                 cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
                 foreach (var item in detalle)
@@ -529,6 +533,20 @@ namespace ServicesManagement.Web.Controllers
                             Cancelacion(int.Parse(orden.Orderid));
                     }
                 }
+
+
+                if (Session["CheckListProd"] != null)
+                {
+                    List<ProdCheckList> lst = (List<ProdCheckList>)Session["CheckListProd"];
+                    foreach (var item in lst)
+                    {
+                        DALCallCenter.Catalogo_Checklist_iUP(id.Id_cancelacion, item.IdPregunta, Convert.ToInt32(item.ProdId), Convert.ToBoolean(item.Resp));
+                    }
+
+                }
+
+
+
 
 
                 var result = new { Success = true, url = cliente };
@@ -594,7 +612,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-               
+
 
                 if (Session["CheckListProd"] == null)
                 {
@@ -603,7 +621,7 @@ namespace ServicesManagement.Web.Controllers
                     {
                         lst.Add(new ProdCheckList
                         {
-                            IdPregunta = i+1,
+                            IdPregunta = i + 1,
                             Resp = values[i],
                             ProdId = prodId
                         });
@@ -648,9 +666,9 @@ namespace ServicesManagement.Web.Controllers
 
 
                 if (Session["CheckListProd"] != null)
-                {                
+                {
                     var lst = (List<ProdCheckList>)Session["CheckListProd"];
-                    lst.RemoveAll(x => x.ProdId == prodId);           
+                    lst.RemoveAll(x => x.ProdId == prodId);
                     Session["CheckListProd"] = lst;
                 }
 
@@ -669,14 +687,14 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                int totListCh=0;
+                int totListCh = 0;
                 bool resp = false;
 
 
                 if (Session["CheckListProd"] != null)
                 {
-                    var lst = (List<ProdCheckList>)Session["CheckListProd"];
-                    totListCh = lst.Count();
+                    List<ProdCheckList> lst = (List<ProdCheckList>)Session["CheckListProd"];
+                    totListCh = lst.Select(x => x.ProdId).Distinct().Count();
                 }
 
                 if (totListCh == articulos) { resp = true; }
@@ -692,9 +710,101 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+
+        public ActionResult GetMotivos(int Id_Padre)
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<MotivosRMAById>(
+                  DALCallCenter.MotivosRMAById_sUp(Id_Padre).Tables[0]);
+
+
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         #endregion
 
+        #region Historial SF
+        public ActionResult HistorialSF()
+        {
+            //Session["listaRMAS"] = getRams();
 
+            ViewBag.FecIni = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
+            ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
+
+            return View();
+        }
+
+        public ActionResult GethistorialSF(DateTime FecIni, DateTime FecFin, int? OrderId)
+        {
+            try
+            {
+
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByDates>(
+                    DALCallCenter.upCorpOms_Cns_OrdersByDatesSF(FecIni, FecFin, OrderId).Tables[0]);
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult GetDetalleSF(int IdCancelacion,int idOrden)
+        {
+            try
+            {
+                
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
+                    DALCallCenter.upCorpOms_Cns_OrdersByHistoricalSF(idOrden,IdCancelacion).Tables[0]);
+
+                var tot = list.Sum(x => x.SubTotal);
+
+              
+                var result = new { Success = true, resp = list, total = tot };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult FinalizarSF(int IdCancelacion         
+           , int IdTSolicitud, int IdTmovimiento)
+        {
+            var cliente = string.Empty;
+            try
+            {
+                var urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
+               
+
+                cliente = string.Format("{0}/?order={1}", urlbase, IdCancelacion);
+                DALCallCenter.tbl_OrdenCancelada_uUp(IdCancelacion, IdTSolicitud, IdTmovimiento);
+
+                var result = new { Success = true, url = cliente };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message, url = cliente };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
         public static int diagonalDifference(List<List<int>> arr)
         {
             int resp = 0;

@@ -98,47 +98,17 @@
                                 <section>
                                     <div class="row">
                                         <div class="col-xs-4 col-md-4 col-lg-4">
-                                            <select class="form-control" id="cmbServicio" name="cmbServicio">
-                                                @*<option selected="selected" value="1">Devolución</option>*@
-                                                <option selected="selected" value="2">Reembolso</option>
-                                                <option selected="selected" value="3">Cambio Fisico</option>
-                                                <option selected="selected" value="4">Reenvio</option>
-                                                <option selected="selected" value="5">Cancelación</option>
+                                            <select class="form-control" id="cmbServicio" onchange="ChangSrv()">
+                                                <option  value="1">Sustituto</option>
+                                                <option  value="2">Reembolso</option>
+                                                <option  value="3">Cambio Fisico</option>
+                                                <option  value="4">Reenvio</option>
+                                                <option  value="5">Cancelación</option>
                                             </select>
                                         </div>
                                         <div class="col-xs-5 col-md-5 col-lg-5">
                                             <select class="form-control" name="cancelReason" id="cancelReason">
-                                                <option value="0">
-                                                    Por favor, seleccione un motivo
-                                                </option>
-
-                                                <option value="Cambio de producto">Cambio de producto</option>
-
-                                                <option value="Duplicó orden">Duplicó orden</option>
-
-                                                <option value="Error en descripción o imagen">Error en descripción o imagen</option>
-
-                                                <option value="Gusto del cliente">Gusto del cliente</option>
-
-                                                <option value="Mejor precio en competencia">Mejor precio en competencia</option>
-
-                                                <option value="No aplica cupón">No aplica cupón</option>
-
-                                                <option value="No aplicó la promoción">No aplicó la promoción</option>
-
-                                                <option value="No aplicó MSI">No aplicó MSI</option>
-
-                                                <option value="No está de acuerdo con el tiempo de entrega">No está de acuerdo con el tiempo de entrega</option>
-
-                                                <option value="No estará en domicilio">No estará en domicilio</option>
-
-                                                <option value="Orden no pagada en tienda">Orden no pagada en tienda</option>
-
-                                                <option value="Retraso de entrega">Retraso de entrega</option>
-
-                                                <option value="other">
-                                                    Otros
-                                                </option>
+                                               
                                             </select>
                                         </div>
                                     </div>
@@ -522,7 +492,8 @@
                             success: function (json) {
                             if (json.Success) {
                                 if (json.resp!=true) {
-                                    alert("No se capturaron todos los checclist para todos los produtos");
+                                    //alert("No se capturaron todos los checclist para todos los produtos");
+                                    //alert("No se capturaron todos los checclist para todos los produtos");
                                     return false;
 
                                 }
@@ -658,9 +629,6 @@
                 success: function (json) {
                     if (json.Success) {
 
-
-
-
                         var myTable = $('#tblDetalle').DataTable();
                         myTable
                             .clear()
@@ -696,12 +664,14 @@
 
                         if (UeType == "SETC") {
                             $("#cmbServicio").val("5");
+                            GetMotivos(5);
                             $('#cmbServicio').prop('disabled', true);
 
                             $('.actions > ul > li:first-child').attr('style', 'display:none');
                         } else {
-                            $("#cmbServicio").val("2");
+                            $("#cmbServicio").val("1");
                             $('#cmbServicio').prop('disabled', false);
+                            GetMotivos(1);
                         }
 
                         $('#dlgRma').modal('toggle');
@@ -787,8 +757,9 @@
             var _OrderId = $("#hddOrderId").val();
             var _UeType = $("#hddUeType").val();
             var _accion = $("#cmbServicio").val();
-            var _desc = $("#cancelReason").val();
-
+            var _desc = $("#cancelReason option:selected").text();
+            var _IdTmovimiento = $("#cancelReason").val();
+            var _IdTSolicitud = $("#cmbServicio").val();
 
             var list = new Array();
             var table = document.getElementById("tblDetalle");
@@ -825,7 +796,9 @@
                         Operacion: _accion,
                         Desc: _desc,
                         Products: list,
-                       UeType: _UeType,
+                        UeType: _UeType,
+                        IdTSolicitud: _IdTSolicitud,
+                        IdTmovimiento: _IdTmovimiento
                    }),
 
                 contentType: "application/json; charset=utf-8",
@@ -890,7 +863,7 @@
                     else {
                         alert(json.Message);
                     }
-                  
+
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
                     //bootbox.alert(errorThrown);
@@ -906,6 +879,43 @@
 
             $("#" + prod).prop("checked", false);
             $('#dlgCheck').modal('hide');
+        }
+
+        function GetMotivos(id) {
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetMotivos", "CallCenter")',
+                data: {
+                    Id_Padre:id
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#cancelReason");
+                        sel.empty();
+
+                        $('#cancelReason').get(0).options[0] = new Option(" Por favor, seleccione un motivo", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].Id_Motivo + '">' + json.resp[i].Descripcion_Motivo +  '</option>');
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+        }
+
+       
+        function ChangSrv() {
+            var _id = $("#cmbServicio").val();
+            GetMotivos(_id);
         }
     </script>
 

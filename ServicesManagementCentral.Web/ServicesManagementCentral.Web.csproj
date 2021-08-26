@@ -271,6 +271,7 @@
     <Compile Include="Models\Almacenes\SuppliersWHStock.cs" />
     <Compile Include="Models\Autorizacion\AutorizacionShow.cs" />
     <Compile Include="Models\Autorizacion\upCorpOms_Cns_OrdersByItems.cs" />
+    <Compile Include="Models\CallCenter\MotivosRMAById.cs" />
     <Compile Include="Models\CallCenter\ProdCheckList.cs" />
     <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByHistorical.cs" />
     <Compile Include="Models\CallCenter\up_Corp_cns_OrderInfo.cs" />
@@ -3837,8 +3838,10 @@
     <Content Include="Views\Autorizacion\Autorizacion.cshtml" />
     <Content Include="Views\Autorizacion\AutorizacionDsv.cshtml" />
     <Content Include="Views\Autorizacion\AutorizacionCedis.cshtml" />
+    <Content Include="Views\Autorizacion\AutorizacionSup.cshtml" />
     <None Include="Views\Autorizacion\AutorizacionDst.cshtml" />
     <Content Include="Views\Autorizacion\AutorizacionAdmon.cshtml" />
+    <Content Include="Views\CallCenter\HistorialSF.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

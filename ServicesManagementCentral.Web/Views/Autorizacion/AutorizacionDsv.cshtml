@@ -142,8 +142,8 @@
                                 , json.resp[i].Fec_movto
                                 , json.resp[i].FecOrder
 
-                                , "<button title='Click para Autorizar' onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",6)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
-                                + "<button title='Click para Rechazar'  onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",7)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-ban'></i></button>"
+                                , "<button title='Click para Autorizar' onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",1)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+                                + "<button title='Click para Rechazar'  onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",2)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-ban'></i></button>"
 
 
 
@@ -242,9 +242,9 @@
                 type: "get",
                 url: '@Url.Action("SetAut", "Autorizacion")',
                 data: {
-                    IdEstatusAut: _IdEstatusAut
+                    IdProceso: 3
                     , Comentario: _Comentario
-                    , orderId: _orderId
+                    , IdAccion: _IdEstatusAut
                     , Id_cancelacion: _Id_cancelacion
                 },
 

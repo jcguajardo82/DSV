@@ -83,8 +83,8 @@ namespace ServicesManagement.Web.DAL.CallCenter
         }
 
         public static DataSet up_Corp_ins_tbl_OrdenCancelada(string orderId
-            , string accion, string origen, int clientId, string clientEmail, string clientPhone,int? EstatusRma,int? ProcesoAut
-            , string jsonRequest = "")
+            , string accion, string origen, int clientId, string clientEmail, string clientPhone, int? EstatusRma, int? ProcesoAut
+            , int? IdTSolicitud, int? IdTmovimiento, string jsonRequest = "")
         {
 
             DataSet ds = new DataSet();
@@ -111,6 +111,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
                     parametros.Add("@EstatusRma", EstatusRma);
                 if (ProcesoAut != null)
                     parametros.Add("@ProcesoAut", ProcesoAut);
+                if (IdTSolicitud != null)
+                    parametros.Add("@IdTSolicitud", IdTSolicitud);
+                if (IdTmovimiento != null)
+                    parametros.Add("@IdTmovimiento", IdTmovimiento);
 
 
 
@@ -179,7 +183,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         public static DataSet up_Corp_ins_tbl_OrdenRetorno_Detalle(int Id_cancelacion
          , string orderId, string shipmentId, int position, int newProductQuantity, decimal productId, string returnReason = ""
-            , string returnComment = "", bool isBonusProduct = false, decimal parentProductID= 0)
+            , string returnComment = "", bool isBonusProduct = false, decimal parentProductID = 0)
         {
 
             DataSet ds = new DataSet();
@@ -269,7 +273,206 @@ namespace ServicesManagement.Web.DAL.CallCenter
             }
 
         }
+
+        public static DataSet MotivosRMAById_sUp(int Id_Padre)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Padre", Id_Padre);
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[MotivosRMAById_sUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+
+        public static DataSet Catalogo_Checklist_iUP(int Id_Cancelacion, int Id_Pregunta, int ProductId, bool Respuesta)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Cancelacion", Id_Cancelacion);
+                parametros.Add("@Id_Pregunta", Id_Pregunta);
+                parametros.Add("@ProductId", ProductId);
+                parametros.Add("@Respuesta", Respuesta);
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[Catalogo_Checklist_iUP]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
         #endregion
 
+
+        #region HistoriaSF
+        public static DataSet upCorpOms_Cns_OrdersByDatesSF(DateTime FecIni, DateTime FecFin, int? OrderId)
+        {
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                /*parametros.Add("@ViewType", 1);*/ // parametro admin fijo
+                /*parametros.Add("@Seccion", 0);*/ // parametro admin fijo
+                /* parametros.Add("@usuario", usuario);*/ // parametro admin fijo
+                parametros.Add("@fechaini", FecIni); // parametro admin fijo
+                parametros.Add("@fechafin", FecFin); // parametro admin fijo
+
+                if (OrderId != null)
+                    parametros.Add("@OrderId", OrderId);
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_OrdersByDatesSF_V2]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public static DataSet upCorpOms_Cns_OrdersByHistoricalSF(int OrderNo, int Id_Cancelacion)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@OrderNo", OrderNo);
+                parametros.Add("@Id_Cancelacion", Id_Cancelacion);
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_OrdersByHistoricalSF]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public static DataSet tbl_OrdenCancelada_uUp(int Id_Cancelacion, int IdTSolicitud,int IdTmovimiento)
+        {
+
+          DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Cancelacion", Id_Cancelacion);
+                parametros.Add("@IdTSolicitud", IdTSolicitud);
+                parametros.Add("@IdTmovimiento", IdTmovimiento);
+               
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[tbl_OrdenCancelada_uUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        #endregion
     }
 }

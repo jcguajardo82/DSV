@@ -39,6 +39,12 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
+        public ActionResult AutorizacionSup()
+        {
+            return View();
+        }
+        
+
         public ActionResult GetOrdenes(string accion="") {
             try
             {
@@ -75,12 +81,15 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult SetAut(int IdEstatusAut, string Comentario
-           , string orderId, int Id_cancelacion)
+        public ActionResult SetAut(int IdProceso, string Comentario
+           , string IdAccion, int Id_cancelacion)
         {
             try
             {
-                DALAutorizacion.BitacoraAutRma_iUp( IdEstatusAut, User.Identity.Name, Comentario, orderId, Id_cancelacion );
+                // DALAutorizacion.BitacoraAutRma_iUp( IdEstatusAut, User.Identity.Name, Comentario, orderId, Id_cancelacion );
+
+                DALAutorizacion.BitacoraAutRma_iUp_v2(IdProceso, IdAccion, Comentario, Id_cancelacion, User.Identity.Name);
+
                 var result = new  { Success = true };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
