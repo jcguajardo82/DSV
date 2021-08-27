@@ -64,13 +64,7 @@
                         <th>Medio Envio</th>
                         <th>Nombre del Cliente</th>
                         <th>Correo del Cliente</th>
-                        @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
-                        @*<th>Guia de devolucion</th>*@
-                        @*<th>Estatus de la Guia de Devolucion</th>*@
-                        @*<th>Guia de reenvio</th>*@
-                        @*<th>Estatus de Guía de Reenvio</th>*@
-                        @*<th class="sorting">Motivo de no recolección</th>*@
-                        @*<th name='accion'></th>*@
+                     
                     </tr>
                 </thead>
 
@@ -336,7 +330,7 @@
 
 
                             myTable.row.add([
-                                /*json.resp[i].NroAlmacen,*/
+                     
                                 "<button onclick='GenerarRma(" + json.resp[i].OrderNo + ",\"" + json.resp[i].UeType+ "\")' type='button' class='btn btn-danger btn btn-xs'  title='Click para generar RMA a la orden'> Casos de Cliente</button>",
                                 "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].OrderNo + "</u>",
                                 json.resp[i].UeType,
@@ -353,9 +347,7 @@
                                 json.resp[i].CustomerName,
                                 json.resp[i].CustomerEmail
 
-                                //json.resp[i].OrderDate,
-                                //json.resp[i].UeType
-                                /*json.resp[i].FechaEntrega*/
+                             
 
                             ]).draw();
                         }
