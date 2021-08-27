@@ -67,10 +67,16 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
+
+                var ds = DALAutorizacion.upCorpOms_Cns_OrdersByItems(OrderSF, accion);
+                var lst = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByItems>(ds.Tables[0]);
+                var item = DataTableToModel.ConvertTo<Header>(ds.Tables[1]).FirstOrDefault();
+
                 var result = new
                 {
                     Success = true,
-                    resp = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByItems>(DALAutorizacion.upCorpOms_Cns_OrdersByItems(OrderSF, accion).Tables[0])
+                    resp = lst,
+                    head=item
                 };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

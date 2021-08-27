@@ -28,12 +28,10 @@
                             <th>Fecha de Creación Orden</th>
                             <th>Autorización <br /> Call Center</th>
                             @*<th>Auatorizacion <br />Almacen</th>
-        <th>Auatorizacion <br />Administrador</th>*@
+                                <th>Auatorizacion <br />Administrador</th>*@
                         </tr>
                     </thead>
                     <tbody>
-  
-
                     </tbody>
                 </table>
             </div>
@@ -79,6 +77,33 @@
                 </div>
                 <div class="modal-body">
                     <form id="frmCreateServicios">
+                        <div class="row">
+                            <div class="col-xs-3 col-md-3 col-lg-3">
+                                <h3>Tipo de Solicitud</h3>
+                                <small>
+                                    <FONT id="lblTipoSolicitud" face=verdana,arial,helvetica size=2>
+
+                                    </FONT>
+                                </small>
+                            </div>
+                            <div class="col-xs-3 col-md-3 col-lg-3">
+                                <h3>Tipo de Movimiento</h3>
+                                <small>
+                                    <FONT id="lblTipoMovimiento" face=verdana,arial,helvetica size=2>
+
+                                    </FONT>
+                                </small>
+                            </div>
+                            <div class="col-xs-3 col-md-3 col-lg-3">
+                                <h3>Tipo de Almacén</h3>
+                                <small>
+                                    <FONT id="lblTipoAlmacen" face=verdana,arial,helvetica size=2>
+
+                                    </FONT>
+                                </small>
+                            </div>
+                        </div>
+                        <hr />
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-lg-12">
                                 <table class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " id="tblDetalle">
@@ -171,7 +196,7 @@
         }
 
         function GetDetalle(accion, id) {
-     
+
             $.ajax({
                 async: false,
                 type: "get",
@@ -207,6 +232,13 @@
                             ]).draw();
                         }
                         table.columns.adjust().draw();
+
+                       
+                        $("#lblTipoSolicitud").text(json.head.Descripcion_Padre);
+                        $("#lblTipoMovimiento").text(json.head.Descripcion_Motivo);
+                        $("#lblTipoAlmacen").text(json.head.WarehouseType);
+
+
                         $("#dlgModOrden").modal('show');
                     }
                     else {

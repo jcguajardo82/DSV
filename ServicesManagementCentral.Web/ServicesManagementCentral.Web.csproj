@@ -3843,6 +3843,7 @@
     <None Include="Views\Autorizacion\AutorizacionDst.cshtml" />
     <Content Include="Views\Autorizacion\AutorizacionAdmon.cshtml" />
     <Content Include="Views\CallCenter\HistorialSF.cshtml" />
+    <Content Include="Views\CallCenter\AltaRMA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
