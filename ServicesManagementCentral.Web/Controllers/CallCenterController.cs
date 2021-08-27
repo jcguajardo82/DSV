@@ -11,13 +11,14 @@ using System.Net;
 using System.Web.Mvc;
 using ServicesManagement.Web.DAL.DALHistorialRMA;
 using ServicesManagement.Web.Helpers;
-using ServicesManagement.Web.Models.Consignaciones;
 using System.IO;
 using ServicesManagement.Web.Models.CallCenter;
 using System.Linq;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.Configuration;
+using static ServicesManagement.Web.Controllers.OrderFacts_UEModel;
+using System.Threading.Tasks;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -207,6 +208,29 @@ namespace ServicesManagement.Web.Controllers
         public String StoreDescription { get; set; }
         //public String OrderDate { get; set; }
         //public String UeType { get; set; }
+
+
+
+        public class AltaRMAModel
+        {
+
+            public int Id_Padre { get; set; }
+            public int Id_Motivo { get; set; }
+            public string Descripcion_Motivo { get; set; }
+            //public string FecGasto { get; set; }
+            //public string Kilometraje { get; set; }
+            //public string CantidadGasto { get; set; }
+            //public bool Estatus { get; set; }
+            //public string CreateDate { get; set; }
+            //public string CreateTime { get; set; }
+            //public string activo { get; set; }
+            //public string FecMovto { get; set; }
+            //public string TimeMovto { get; set; }
+            //public string created_user { get; set; }
+            //public string modified_user { get; set; }
+
+        }
+
     }
     public class CallCenterController : Controller
     {
@@ -812,5 +836,160 @@ namespace ServicesManagement.Web.Controllers
 
             return resp;
         }
+
+        //NVS
+
+        #region Alta RMA
+
+
+
+        public ActionResult AltaRMA()
+        {
+            return View();
+        }
+
+        public ActionResult GetMotivosRMA()
+
+        {
+
+            try
+
+            {
+
+                var list = DataTableToModel.ConvertTo<AltaRMAModel>(DALHistorialRMA.MotivosRMA_sUp().Tables[0]);
+
+
+
+                var result = new { Success = true, resp = list };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+
+
+        }
+
+        public ActionResult AddMotivos(int IdPadre, string descripcionmotivo)
+
+        {
+
+            try
+
+            {
+
+                string UserCreate = User.Identity.Name;
+
+
+
+                DALHistorialRMA.MotivosRMA_iUP(IdPadre, descripcionmotivo, UserCreate);
+
+
+
+                var result = new { Success = true };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+
+
+        }
+
+        public ActionResult EditMotivos(int IdPadre, string descripcionmotivo, int IdMotivo)
+
+        {
+
+            try
+
+            {
+
+                string UserCreate = User.Identity.Name;
+
+
+
+                DALHistorialRMA.MotivosRMA_uUp(IdPadre, descripcionmotivo, IdMotivo, UserCreate);
+
+
+
+                var result = new { Success = true };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+
+
+        }
+
+        public ActionResult DeleteMotivo( int IdMotivo)
+
+        {
+
+            try
+
+            {
+                string modified_user = User.Identity.Name;
+
+                DALHistorialRMA.MotivosRMA_dUP(IdMotivo, modified_user);
+
+
+
+                var result = new { Success = true };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+
+
+        }
+
+
+
+        #endregion
+
+
+        //NVS
     }
 }

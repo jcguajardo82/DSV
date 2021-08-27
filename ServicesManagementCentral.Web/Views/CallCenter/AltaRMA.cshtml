@@ -1,0 +1,1394 @@
+﻿
+@{
+    ViewBag.Title = "AltaRMA";
+
+}
+
+
+@using (Html.BeginForm())
+{
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4"><h2>Catalogo Motivos Casos de Cliente</h2></div>
+    <div class="col-4"></div>
+
+</div>
+
+
+
+<div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
+
+    @*<h1><a href="#" class="btn btn-primary alert-custom">Bootbox Dialog &nbsp;<i class="glyphicon glyphicon-hand-left"></i></a></h1>*@
+
+
+    <br />
+
+    <form id="frmCreateServicios">
+        <input type="hidden" id="hddOrderId" />
+        <input type="hidden" id="hddUeType" />
+        <div class="ibox ">
+            <div class="ibox-content">
+
+                <section>
+                    <div class="row">
+                        <div class="col-xs-4 col-md-4 col-lg-4">
+                            <select class="form-control" id="cmbServicio" name="cmbServicio">
+                                <option value="0">
+                                    Por favor, seleccione una opcion
+                                </option>
+                                <option  value="1">Devolución</option>
+                                <option  value="2">Reenvolso</option>
+                                <option  value="3">Cambio Fisico</option>
+                                <option  value="4">Reenvio</option>
+                                <option  value="5">Cancelación</option>
+                                @*<option selected="selected" value="5">Cancelación</option>*@
+                            </select>
+                        </div>
+                        <div class="col-xs-5 col-md-5 col-lg-5">
+                            <select class="form-control" name="cancelReason" id="cancelReason">
+                                <option value="0">
+                                    Por favor, seleccione un motivo
+                                </option>
+
+                                <option value="Cambio de producto">Cambio de producto</option>
+
+                                <option value="Duplicó orden">Duplicó orden</option>
+
+                                <option value="Error en descripción o imagen">Error en descripción o imagen</option>
+
+                                <option value="Gusto del cliente">Gusto del cliente</option>
+
+                                <option value="Mejor precio en competencia">Mejor precio en competencia</option>
+
+                                <option value="No aplica cupón">No aplica cupón</option>
+
+                                <option value="No aplicó la promoción">No aplicó la promoción</option>
+
+                                <option value="No aplicó MSI">No aplicó MSI</option>
+
+                                <option value="No está de acuerdo con el tiempo de entrega">No está de acuerdo con el tiempo de entrega</option>
+
+                                <option value="No estará en domicilio">No estará en domicilio</option>
+
+                                <option value="Orden no pagada en tienda">Orden no pagada en tienda</option>
+
+                                <option value="Retraso de entrega">Retraso de entrega</option>
+
+                                <option value="other">
+                                    Otros
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <br />
+                    </div>
+
+                    <div class="col-xs-4 col-md-4 col-lg-4">
+                        <button type="button" id="btnguardar" class="btn btn-primary" onclick="validaralta()">
+                            Guardar
+                        </button>
+                    </div>
+
+</section>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+
+        <div class="col-12">
+            <table id="example" class="table table-striped dataTable" style="width:100%">
+
+
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Tipo de solicitud</th>
+                        <th>Descripcion del motivo</th>
+                        @*<th>Placas</th>
+                        <th>Motor</th>
+                        <th>Marca</th>
+                        <th>Año</th>*@
+                        @*<th>Usuario de Actualización</th>
+                        <th>Fecha de Actualización</th>
+                        <th>Hora de Actualización</th>
+                        <th>Estado</th>*@
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</div>
+
+                                <div id="modal-form" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h2 class="modal-title">Modal Title</h2>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+
+                                                <form id="frmCreateServicios1">
+
+                                                    <div class="row">
+
+                                                        <div class="col col-xs-8 col-md-4">
+
+                                                            @*<div class="form-group">
+
+                                                                    <label>Tipo de Vehiculo</label>
+
+                                                                    <select class="form-control" id="Id_TipoFolio" name="Id_TipoFolio">
+                                                                        <option selected="selected" value="1">--Tipo Vehiculo--</option>
+
+                                                                    </select>
+                                                                </div>*@
+                                                            <div class="form-group">
+
+                                                                <label>Descripcion</label>
+
+                                                                <input type="text" placeholder="Descripcion" id="in_desc" name="in_desc" class="form-control" />
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-4"></div>
+                                                        <div class="col col-xs-8 col-md-4">
+
+                                                            <div class="form-group">
+
+                                                                <label>Placas</label>
+
+                                                                <input type="text" placeholder="Placas" id="in_placas" name="in_placas" class="form-control" />
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row">
+
+                                                        <div class="col col-xs-8 col-md-4">
+
+                                                            <div class="form-group">
+
+                                                                <label>Motor</label>
+
+                                                                <input type="text" placeholder="Motor" id="in_motor" name="in_motor" class="form-control" />
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-4"></div>
+
+                                                        <div class="form-group">
+
+                                                            <label>Estatus</label>
+
+                                                            <select class="form-control" id="id_estatus" name="id_estatus">
+                                                                @*<option selected="selected" value="1">--SELECCIONA--</option>*@
+                                                                <option selected="selected" value="1">ACTIVO</option>
+                                                                <option value="2">INACTIVO</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    @*<div class="row">
+                                                            <div class="col-12">
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">Comentarios</span>
+                                                                    </div>
+                                                                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>*@
+                                                    @*<div class="row">
+
+                                                            <div class="col col-xs-8 col-md-4">
+
+                                                                <div class="form-group">
+
+                                                                    <label>Tienda</label>
+
+                                                                    <select class="form-control" id="Id_TipoFolio" name="Id_TipoFolio">
+                                                                        <option selected="selected" value="1">--Tienda--</option>
+                                                                        <option value="1">24-CUMBRES</option>
+
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+
+
+                                                        </div>*@
+
+                                                </form>
+
+                                            </div>
+
+
+                                            <div class="modal-footer">
+
+
+                                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+
+                                                <button type="button" onclick="ActionUpd()" class="btn btn-primary">Guardar</button>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                                <div id="modal-formEdit2" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+
+                                                            <div class="modal-header">
+                                                                <h2 id="asd" class="modal-title"> Edición Motivos Casos de Cliente</h2>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+
+                                                                <form id="frmCreateServicios">
+                                                                    <input type="hidden" id="hddOrderId" />
+                                                                    <input type="hidden" id="hddUeType" />
+                                                                    <div class="ibox ">
+                                                                        <div class="ibox-content">
+
+                                                                            <section>
+                                                                                <div class="row">
+                                                                                    <div class="col-xs-4 col-md-4 col-lg-4">
+                                                                                        <select class="form-control" id="cmbServicioedit" name="cmbServicio">
+                                                                                            <option value="0">
+                                                                                                Por favor, seleccione una opcion
+                                                                                            </option>
+                                                                                            <option value="1">Devolución</option>
+                                                                                            <option value="2">Reenvolso</option>
+                                                                                            <option value="3">Cambio Fisico</option>
+                                                                                            <option value="4">Reenvio</option>
+                                                                                            <option value="5">Cancelación</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="col-xs-5 col-md-5 col-lg-5">
+                                                                                        <select class="form-control" name="cancelReasonedit" id="cancelReasonedit">
+                                                                                            <option value="0">
+                                                                                                Por favor, seleccione un motivo
+                                                                                            </option>
+
+                                                                                            <option value="Cambio de producto">Cambio de producto</option>
+
+                                                                                            <option value="Duplicó orden">Duplicó orden</option>
+
+                                                                                            <option value="Error en descripción o imagen">Error en descripción o imagen</option>
+
+                                                                                            <option value="Gusto del cliente">Gusto del cliente</option>
+
+                                                                                            <option value="Mejor precio en competencia">Mejor precio en competencia</option>
+
+                                                                                            <option value="No aplica cupón">No aplica cupón</option>
+
+                                                                                            <option value="No aplicó la promoción">No aplicó la promoción</option>
+
+                                                                                            <option value="No aplicó MSI">No aplicó MSI</option>
+
+                                                                                            <option value="No está de acuerdo con el tiempo de entrega">No está de acuerdo con el tiempo de entrega</option>
+
+                                                                                            <option value="No estará en domicilio">No estará en domicilio</option>
+
+                                                                                            <option value="Orden no pagada en tienda">Orden no pagada en tienda</option>
+
+                                                                                            <option value="Retraso de entrega">Retraso de entrega</option>
+
+                                                                                            <option value="other">
+                                                                                                Otros
+                                                                                            </option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <input type="hidden" placeholder="Tipo de Vehículo" id="Id_MotivoRMAedit" disabled name="in_desc" class="form-control" />
+                                                                                <div class="row">
+                                                                                    <br />
+                                                                                </div>
+
+                                                                                @*<div class="col-xs-4 col-md-4 col-lg-4">
+            <button type="button" id="btnguardar" class="btn btn-primary" onclick="">
+                Guardar
+            </button>
+        </div>*@
+
+                                                                            </section>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+
+                                                            </div>
+
+
+                                                            <div class="modal-footer">
+
+
+                                                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+
+                                                                <button type="button" onclick="validaredit()" class="btn btn-primary">Guardar</button>
+
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                                <div id="modal-formAlta" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-xl">
+                                                                        <div class="modal-content">
+
+                                                                            <div class="modal-header">
+                                                                                <h2 id="asd" class="modal-title">Registro de gasto distribucion Tienda</h2>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+
+                                                                            <div class="modal-body">
+
+                                                                                <form id="frmCreateServicios3">
+
+                                                                                    <div class="row">
+
+                                                                                        <div class="col col-xs-8 col-md-4">
+
+                                                                                            <div class="form-group">
+                                                                                                <label>Tipo de gasto</label>
+                                                                                                <select class="form-control" id="idtipogastoalta" name="tipogasto">
+                                                                                                    <option selected="selected" value="0">--Gasto--</option>
+                                                                                                </select>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                        <div class="col-4">
+                                                                                            <div class="form-group">
+
+                                                                                                <label>Tipo de Vehículo</label>
+
+                                                                                                <input type="text" placeholder="Tipo de Vehículo" id="in_tipovehiculo3" disabled name="in_desc" class="form-control" />
+                                                                                                <input type="hidden" placeholder="Tipo de Vehículo" id="id_tipovehiculo3" disabled name="in_desc" class="form-control" />
+
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                        <div class="col col-xs-8 col-md-4">
+
+                                                                                            <div class="form-group">
+
+                                                                                                <label>Placas</label>
+
+                                                                                                <input type="text" placeholder="Placas" id="in_placas3" disabled name="in_placas" class="form-control" />
+
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="row">
+
+                                                                                        <div class="col col-xs-8 col-md-4">
+
+                                                                                            <div class="form-group">
+
+                                                                                                <label>Dinero</label>
+
+                                                                                                <input min="1" max="99999999999999" step="0.1" type="number" placeholder="" id="in_dinero3" name="in_desc" class="form-control" />
+
+                                                                                            </div>
+
+                                                                                            @*<div class="form-group">
+
+                                                                                                    <label>Gasolina</label>
+
+                                                                                                    <input type="text" placeholder="" id="idGasolina" name="in_descgasolina" class="form-control" />
+                                                                                                onchange="ValidateKm()"
+                                                                                                                             onchange="ValidateMoney()"
+
+                                                                                                </div>*@
+
+
+                                                                                        </div>
+                                                                                        <div class="col col-xs-8 col-md-4">
+
+                                                                                            <div class="form-group">
+
+                                                                                                <label>Kilometraje</label>
+
+                                                                                                <input min="1" max="99999999999999" step="1" type="number" placeholder="" id="idKilometraje3" name="in_desc" class="form-control" />
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                        <div class="col col-xs-8 col-md-4">
+
+                                                                                            <div class="form-group">
+
+                                                                                                <label>Fecha</label>
+
+                                                                                                @*<input type="date" placeholder="Fecha" id="in_fecha3" name="in_desc" class="form-control" />*@
+                                                                                                <div class="input-group date" id="datetimepicker1">
+                                                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                                                    <input class="form-control-sm datepicker" id="in_fecha3" name="in_fecha3"
+                                                                                                           type="text" value="">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+
+
+                                                                                    <div class="row">
+
+                                                                                        @*aqui va el grid*@
+
+                                                                                        <div class="col-12" style="overflow-x:auto;">
+                                                                                            <table id="example3" class="table table-striped" style="width:100%">
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        @*<th>Id consecutivo</th>*@
+                                                                                                        <th>Id Gasto</th>
+                                                                                                        <th>Id Vehiculo</th>
+                                                                                                        <th>Fecha Gasto</th>
+                                                                                                        <th>Kilometraje</th>
+                                                                                                        <th>Cantidad de Gasto</th>
+                                                                                                        <th>Fecha de Creacion</th>
+                                                                                                        <th>Hora de Creacion</th>
+                                                                                                        <th>Fecha de modificacion</th>
+                                                                                                        <th>Hora de modificacion</th>
+                                                                                                        <th>Estado</th>
+                                                                                                        <th>Accion</th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                                </tbody>
+
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </form>
+
+                                                                            </div>
+
+
+                                                                            <div class="modal-footer">
+
+
+                                                                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+
+                                                                                <button type="button" onclick="validaralta()" class="btn btn-primary">Guardar</button>
+
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                                <input id="Id_Vehiculo" name="Id_Vehiculo" value="0" style="visibility:hidden" />
+                                                                                                <input id="flag_edit" name="flag_edit" value="0" style="visibility:hidden" />}
+
+
+<style>
+    .modal {
+        overflow: auto !important;
+    }
+</style>
+@section scripts {
+
+
+
+
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+        $('#radioBtn a').on('click', function () {
+            var sel = $(this).data('title');
+            var tog = $(this).data('toggle');
+            $('#' + tog).prop('value', sel);
+
+            $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+            $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+        })
+
+        $(document).ready(function () {
+
+            $('#example thead tr').clone(true).appendTo('#example thead');
+            $('#example thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $('#example').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' },
+                        { extend: 'excel', className: 'btn-primary' }
+                        //{
+                        //    /*text: 'Alta',*/
+                        //    action: function (e, dt, node, config) {
+
+                        //        //bootbox.alert("HOLA");
+                        //        /*$("#modal-form").modal('show');*/
+                        //        $("#modal-form2").modal('show');
+
+                        //    }
+                        //    , className: 'btn-primary'
+                        //}
+                    ]
+                }
+
+            );
+
+
+            table2 = $('#example2').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' },
+                        { extend: 'excel', className: 'btn-primary' }
+                        //{
+                        //    /*text: 'Alta',*/
+                        //    action: function (e, dt, node, config) {
+
+                        //        //bootbox.alert("HOLA");
+                        //        /*$("#modal-form").modal('show');*/
+                        //        $("#modal-form2").modal('show');
+
+                        //    }
+                        //    , className: 'btn-primary'
+                        //}
+                    ]
+                });
+
+            table4 = $('#example4').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' },
+                        { extend: 'excel', className: 'btn-primary' }
+                        //{
+                        //    /*text: 'Alta',*/
+                        //    action: function (e, dt, node, config) {
+
+                        //        //bootbox.alert("HOLA");
+                        //        /*$("#modal-form").modal('show');*/
+                        //        $("#modal-form2").modal('show');
+
+                        //    }
+                        //    , className: 'btn-primary'
+                        //}
+                    ]
+                }
+
+            );
+             $('#example3').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' },
+                        { extend: 'excel', className: 'btn-primary' }
+                        //{
+                        //    /*text: 'Alta',*/
+                        //    action: function (e, dt, node, config) {
+
+                        //        //bootbox.alert("HOLA");
+                        //        /*$("#modal-form").modal('show');*/
+                        //        $("#modal-form2").modal('show');
+
+                        //    }
+                        //    , className: 'btn-primary'
+                        //}
+                    ]
+                }
+
+            );
+
+            tableedit = $('#exampleedit').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' },
+                        /*{ extend: 'excel', className: 'btn-primary' }*/
+                        //{
+                        //    /*text: 'Alta',*/
+                        //    action: function (e, dt, node, config) {
+
+                        //        //bootbox.alert("HOLA");
+                        //        /*$("#modal-form").modal('show');*/
+                        //        $("#modal-form2").modal('show');
+
+                        //    }
+                        //    , className: 'btn-primary'
+                        //}
+                    ]
+                }
+
+            );
+
+            GetTmsUNs();
+
+        });
+
+        /* Bootbox Dialog box with custom Value */
+        $('.alert-custom').click(function () {
+            bootbox.dialog({
+                title: "This is a form in a modal.",
+                message: '<div class="row">  ' +
+                    '<div class="col-md-12"> ' +
+                    '<form class="form-horizontal"> ' +
+                    '<div class="form-group"> ' +
+                    '<label class="col-md-4 control-label" for="name">Name</label> ' +
+                    '<div class="col-md-4"> ' +
+                    '<input id="name" name="name" type="text" placeholder="Your name" class="form-control input-md"> ' +
+                    '<span class="help-block">Here goes your name</span> </div> ' +
+                    '</div> ' +
+                    '<div class="form-group"> ' +
+                    '<label class="col-md-4 control-label" for="awesomeness">How awesome is this?</label> ' +
+                    '<div class="col-md-4"> <div class="radio"> <label for="awesomeness-0"> ' +
+                    '<input type="radio" name="awesomeness" id="awesomeness-0" value="Really awesome" checked="checked"> ' +
+                    'Really awesome </label> ' +
+                    '</div><div class="radio"> <label for="awesomeness-1"> ' +
+                    '<input type="radio" name="awesomeness" id="awesomeness-1" value="Super awesome"> Super awesome </label> ' +
+                    '</div> ' +
+                    '</div> </div>' +
+                    '</form> </div>  </div>',
+                buttons: {
+                    success: {
+                        label: "Save",
+                        className: "btn-success",
+                        callback: function () {
+                            var name = $('#name').val();
+                            var answer = $("input[name='awesomeness']:checked").val()
+                            $('.Example').show().html("Hello " + name + ". You've chosen <b>" + answer + "</b").fadeOut(5000);
+                        }
+                    }
+                }
+            }
+            );
+        });
+
+        function GetTmsUNs() {
+            //var _Id_Num_UN = $("#hddTda").val();
+            //debugger;
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetMotivosRMA", "CallCenter")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+                datatype: "html",
+                success: function (json) {
+                    //console.log(json);
+
+                    if (json.Success) {
+                        /*$("#tbUnidadNegocio tbody tr").remove();*/
+                        //var tr;
+                        //debugger;
+                        //Append each row to html table
+
+                        var myTable = $('#example').DataTable();
+
+                        for (var i = 0; i < json.resp.length; i++) {
+
+                            //if (json.json[i].Estatus == true) {
+                            //    var estado = "Activo";
+                            //}
+                            //else {
+                            //    var estado = "Inactivo";
+                            //}
+
+                            myTable.row.add([
+
+                                json.resp[i].Id_Padre,
+                                json.resp[i].Id_Motivo,
+                                json.resp[i].Descripcion_Motivo,
+                                /*json.json[i].created_user,*/
+                                /*"",*/
+                                /*"",*/
+                                //Faltan habilitar estas columnas desde el API
+                                //json.json[i].FechaUltModif,
+                                //json.json[i].TimeUltModif,
+                                //Faltan habilitar estas columnas desde el API
+                               /* estado,*/
+                                /*json.json[i].Estatus,*/
+                               /* "<button title='Alta' type=\"button\" onclick=\"ModalAlta(" + json.json[i].Id_Vehiculo + ")\" class=\"btn btn-primary btn-circle\"> <i class=\"fa fa-plus\"></i></button>"*/
+                                /*"<button title='Editar' type=\"button\" onclick=\"ModalAlta(" + json.json[i].Id_Vehiculo + ")\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button>/< button title = 'Eliminar' type =\"button\" onclick=\"ModalAlta(" + json.json[i].Id_Vehiculo + ")\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-minus\"></i></button>"*/
+                                /*"<button title='Editar' type=\"button\" onclick=\"ModalAlta(" + "'" + json.resp[i].Id_Padre + "'" + "," + json.resp[i].Descripcion_Motivo + ")\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button>"*/
+                                "<button onclick=\"ModalEdit2(" + json.resp[i].Id_Padre + "," + json.resp[i].Id_Motivo + "," + "'" + json.resp[i].Descripcion_Motivo + "'" + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button><button type=\"button\" onclick=\"DeleteMotivos(" + json.resp[i].Id_Padre + "," + json.resp[i].Id_Motivo + ")\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-minus\"></i></button>"
+                            ]).draw();
+
+                        }
+
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function ActionUpd() {
+            if (document.getElementById("flag_edit").value == "1") {
+                EditSurtidores();
+            }
+            else {
+                AddSurtidores();
+            }
+        }
+
+        function AddSurtidores() {
+            //var _Id_Num_UN = $("#hddTda").val();
+            //debugger;
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("InsVehiculo", "TMS")',
+                data: {
+                    descripcion: document.getElementById("in_desc").value,
+                    motor: document.getElementById("in_motor").value,
+                    placas: document.getElementById("in_placas").value
+                },
+                datatype: "html",
+                success: function (json) {
+                    //console.log(json);
+
+                    if (json.Success) {
+
+                        var table = $('#example').DataTable();
+
+                        table.clear().draw();
+                        table.destroy();
+
+                        $("#modal-form").modal('hide');
+
+                        var myTable = $('#example').DataTable();
+
+                        for (var i = 0; i < json.json.length; i++) {
+
+                            myTable.row.add([
+
+                                json.json[i].Id_Vehiculo,
+                                "Camioneta",
+                                json.json[i].Descripcion,
+                                json.json[i].Placas,
+                                json.json[i].Motor,
+                                json.json[i].Estatus,
+                                "<button onclick=\"getVehiculo(" + json.json[i].Id_Vehiculo + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button><button type=\"button\" onclick=\"DeleteSurtidores(" + json.json[i].Id_Vehiculo +")\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-minus\"></i></button>"
+                            ]).draw();
+
+                        }
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function EditSurtidores() {
+
+            var e = document.getElementById("id_estatus");
+            var strUser = e.value;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("EditVehiculo", "TMS")',
+                data: {
+                    Id: document.getElementById("Id_Vehiculo").value,
+                    descripcion: document.getElementById("in_desc").value,
+                    motor: document.getElementById("in_motor").value,
+                    placas: document.getElementById("in_placas").value,
+                    estatus : strUser
+                },
+                datatype: "html",
+                success: function (json) {
+                    //console.log(json);
+
+                    if (json.Success) {
+
+                        var table = $('#example').DataTable();
+
+                        table.clear().draw();
+                        table.destroy();
+
+                        $("#modal-form").modal('hide');
+
+                        var myTable = $('#example').DataTable();
+
+                        for (var i = 0; i < json.json.length; i++) {
+
+                            myTable.row.add([
+
+                                json.json[i].Id_Vehiculo,
+                                "Camioneta",
+                                json.json[i].Descripcion,
+                                json.json[i].Placas,
+                                json.json[i].Motor,
+                                json.json[i].Estatus,
+                                "<button onclick=\"getVehiculo(" + json.json[i].Id_Vehiculo + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button><button type=\"button\" onclick=\"AltaGastosVehiculos(" + json.json[i].Id_Vehiculo + ")\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-minus\"></i></button>"
+                            ]).draw();
+
+                        }
+
+                        document.getElementById("flag_edit").value = 0;
+
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function DeleteSurtidores(id) {
+            if (confirm('Esta seguro que desea eliminar el vehiculo : ' + id))
+            {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("DeleteVehiculo", "TMS")',
+                    data: {
+                        Id: id
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            var table = $('#example').DataTable();
+
+                            table.clear().draw();
+                            table.destroy();
+
+                            $("#modal-form").modal('hide');
+
+                            var myTable = $('#example').DataTable();
+
+                            for (var i = 0; i < json.json.length; i++) {
+
+                                myTable.row.add([
+
+                                    json.json[i].Id_Vehiculo,
+                                    "Camioneta",
+                                    json.json[i].Descripcion,
+                                    json.json[i].Placas,
+                                    json.json[i].Motor,
+                                    json.json[i].Estatus,
+                                    "<button onclick=\"getVehiculo(" + json.json[i].Id_Vehiculo + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button><button type=\"button\" onclick=\"DeleteSurtidores(" + json.json[i].Id_Vehiculo + ")\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-minus\"></i></button>"
+                                ]).draw();
+
+                            }
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(errorThrown);
+                    }
+                });
+            }
+        }
+
+ 
+
+
+        $('#modal-formEdit2').on('hidden.bs.modal', function () {
+            $("body").css({
+                overflow: 'auto',
+                height: 'auto'
+            });
+        })
+        //cancelReasonedit
+        function ModalEdit2(Id_Padre, Id_Motivo, Descripcion_Motivo) {
+            Descripcion_Motivo = Descripcion_Motivo.trim();
+            //var _Id_Num_UN = $("#hddTda").val();
+            var desc = Descripcion_Motivo;
+            /*document.getElementById("id_consecutivoedit").value = IdConsecutivo;*/
+            $("#modal-formAlta").modal('hide');
+            $("#modal-formEdit2").modal('show');
+            $("body").css({
+                overflow: 'hidden',
+                height: '100%'
+            });
+            
+            $("#cmbServicioedit").val(Id_Padre);
+            $("#cancelReasonedit").val(Descripcion_Motivo);
+            //$('#cancelReasonedit').change();
+            /*$("#cancelReasonedit").puidropdown('selectValue', desc);*/
+            $("#Id_MotivoRMAedit").val(Id_Motivo);
+            
+
+
+
+        }
+
+        function getFecha(sFecha) {
+            let fecha = sFecha.substring(0, 10).split('/');
+            return fecha[2] + "-" + fecha[1] + "-" + fecha[0];
+        }
+
+
+        function AddMotivos() {
+
+            /* validaralta();*/
+           /* alert(getElementById("cmbServicio").value);*/
+                //var _Id_Num_UN = $("#hddTda").val();
+                //debugger;
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("AddMotivos", "CallCenter")',
+                    data: {
+
+                        IdPadre: document.getElementById("cmbServicio").value,
+                        descripcionmotivo: document.getElementById("cancelReason").value,
+                        //CantidadGasto: document.getElementById("in_dinero3").value,
+                        //Kilometraje: document.getElementById("idKilometraje3").value,
+                        //FecGasto: document.getElementById("in_fecha3").value
+                        /*created_user: document.getElementById("in_placas").value*/
+                        /*created_user: "T_pedrocg"*/
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //console.log(json);
+
+                        if (json.Success) {
+
+                            var table = $('#example').DataTable();
+
+                            table.clear().draw();
+                            //table.destroy();
+
+
+                            /*Id_Vehiculo = document.getElementById("id_tipovehiculo3").value;*/
+                            //$("#modal-formAlta").modal('hide');
+                            //ModalAlta(Id_Vehiculo);
+
+                            /*limpiarcamposModalAlta();*/
+
+                            GetTmsUNs();
+
+                            
+                        }
+                        else {
+
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(errorThrown);
+                    }
+                });
+
+
+        }
+
+        function EditMotivos() {
+
+            /*validaredit();*/
+
+            //var e = document.getElementById("id_estatus");
+            //var strUser = e.value;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("EditMotivos", "CallCenter")',
+                data: {
+
+                    IdPadre: document.getElementById("cmbServicioedit").value,
+                    descripcionmotivo: document.getElementById("cancelReasonedit").value,
+                    IdMotivo: document.getElementById("Id_MotivoRMAedit").value,
+                    
+                },
+                datatype: "html",
+                success: function (json) {
+                    //console.log(json);
+                    var table = $('#example').DataTable();
+
+                    table.clear().draw();
+
+                    $("#modal-formEdit2").modal('hide');
+
+                    GetTmsUNs();
+
+
+
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function DeleteMotivos( IdPadre, IdMotivo) {
+
+            //var e = document.getElementById("id_estatus");
+            //var strUser = e.value;
+
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("DeleteMotivo", "CallCenter")',
+                data: {
+
+
+                   /* IdPadre: IdPadre,*/
+                    IdMotivo: IdMotivo
+                },
+                datatype: "html",
+                success: function (json) {
+                    //console.log(json);
+
+
+                    if (json.Success) {
+
+                        var table = $('#example').DataTable();
+
+                        table.clear().draw();
+                        //table.destroy();
+
+                        GetTmsUNs();
+                    }
+                    else {
+
+                    }
+
+
+
+                    
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function ValidateMoney() {
+            var amount = document.getElementById("in_dinero3").value;
+            //console.log(amount);
+            //d+ permite caracteres enteros
+            //si hay un caracter que no es dígito entonces evalua lo que está en paréntesis (?) significa opcional
+            var patron = /^(\d+(.{1}\d{2})?)$/;
+            if (!patron.test(amount)) {
+                window.alert('cantidad ingresada incorrectamente');
+                /*document.getElementById("in_dinero3").value = "";*/
+                document.getElementById('in_dinero3').focus();
+                return false;
+            }
+            else
+                return true;
+        }
+
+        function ValidateKm() {
+            var amount = document.getElementById("idKilometraje3").value;
+            //console.log(amount);
+            //d+ permite caracteres enteros
+            //si hay un caracter que no es dígito entonces evalua lo que está en paréntesis (?) significa opcional
+            var patron = /^(\d+(.{1}\d{2})?)$/;
+            if (!patron.test(amount)) {
+                window.alert('cantidad ingresada incorrectamente');
+                /*document.getElementById("idKilometraje3").value = "";*/
+                document.getElementById('idKilometraje3').focus();
+                return false;
+            }
+            else
+                return true;
+        }
+
+        function limpiarcamposModalAlta() {
+            document.getElementById("in_dinero3").value = "";
+            document.getElementById("idKilometraje3").value = "";
+            document.getElementById("in_fecha3").value = "";
+        }
+
+        function validaralta() {
+            //obteniendo el valor que se puso en campo text del formulario
+            IdPadre = document.getElementById("cmbServicio").value;
+            DescripcionMotivo = document.getElementById("cancelReason").value;
+            //FecGasto = document.getElementById("in_fecha3").value;
+            //tipogasto = document.getElementById("idtipogastoalta").value;
+            //la condición
+            debugger
+            if (IdPadre == 0) {
+                document.getElementById("cmbServicio").focus();
+                window.alert('campos sin seleccionar opcion');
+                return false;
+            }
+            if (DescripcionMotivo == 0) {
+                document.getElementById("cancelReason").focus();
+                window.alert('campos sin seleccionar opcion');
+                return false;
+            }
+            //if (Kilometraje.length == 0) {
+            //    document.getElementById("idKilometraje3").focus();
+            //    window.alert('campos vacios');
+            //    return false;
+            //}
+            //if (FecGasto.length == 0) {
+            //    document.getElementById("in_fecha3").focus();
+            //    window.alert('campos vacios');
+            //    document.getElementById("in_fecha3").focus();
+            //    return false;
+            //}
+
+            else {
+                AddMotivos();
+            }
+        }
+
+        function validaredit() {
+            //obteniendo el valor que se puso en campo text del formulario
+            IdPadre = document.getElementById("cmbServicioedit").value;
+            DescripcionMotivo = document.getElementById("cancelReasonedit").value;
+            //FecGasto = document.getElementById("in_fecha3").value;
+            //tipogasto = document.getElementById("idtipogastoalta").value;
+            //la condición
+            debugger
+            if (IdPadre == 0) {
+                document.getElementById("cmbServicioedit").focus();
+                window.alert('campos sin seleccionar opcion');
+                return false;
+            }
+            if (DescripcionMotivo == 0) {
+                document.getElementById("cancelReasonedit").focus();
+                window.alert('campos sin seleccionar opcion');
+                return false;
+            }
+
+            else {
+                EditMotivos();
+            }
+        }
+
+    </script>
+
+}
