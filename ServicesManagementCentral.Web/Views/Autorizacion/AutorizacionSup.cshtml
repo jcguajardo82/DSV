@@ -110,12 +110,12 @@
                                 <table class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " id="tblDetalle">
                                     <thead class="bg-danger-sor">
                                         <tr>
-                                            <th style="width:40%;">Nombre del Articulo</th>
-                                            <th style="width:15%;">Precio</th>
+                                            <th style="width:40%;">Nombre del Articulo</th>                                            
+                                            <th style="width:10%;">Cantidad de <br /> Piezas</th>
+                                            <th style="width:15%;">Monto</th>
                                             <th style="width:15%;">EAN</th>
                                             <th style="width:10%;">Tipo de <br /> Almacen</th>
                                             <th style="width:10%;">Nombre de <br /> Almacen</th>
-                                            <th style="width:10%;">Cantidad de <br /> Piezas</th>
                                             <th style="width:10%;">Comentarios</th>
                                         </tr>
                                     </thead>
@@ -221,11 +221,11 @@
 
                             table.row.add([
                                 json.resp[i].ProductDescription,
+                                json.resp[i].Quantity,
                                 json.resp[i].PriceNormalSale,
                                 json.resp[i].BarCode,
                                 json.resp[i].WarehouseType,
                                 json.resp[i].StoreDescription,
-                                json.resp[i].Quantity,
                                 json.resp[i].Comment
 
 
