@@ -62,6 +62,8 @@
                         <th>Finaliza Cobro</th>
                         <th>Forma Entrega</th>
                         <th>Medio Envio</th>
+                        <th>Nombre del Cliente</th>
+                        <th>Correo del Cliente</th>
                         @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
                         @*<th>Guia de devolucion</th>*@
                         @*<th>Estatus de la Guia de Devolucion</th>*@
@@ -347,7 +349,9 @@
                                 json.resp[i].PaymentStart,
                                 json.resp[i].PaymentCompleted,
                                 json.resp[i].DeliveryMethod,
-                                json.resp[i].ShippingType
+                                json.resp[i].ShippingType,
+                                json.resp[i].CustomerName,
+                                json.resp[i].CustomerEmail
 
                                 //json.resp[i].OrderDate,
                                 //json.resp[i].UeType
