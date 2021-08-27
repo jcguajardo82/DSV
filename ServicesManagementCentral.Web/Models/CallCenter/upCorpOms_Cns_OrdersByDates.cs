@@ -24,5 +24,10 @@ namespace ServicesManagement.Web.Models.CallCenter
         public int Id_Cancelacion { get; set; }
         public string CustomerName { get; set; }
         public string CustomerEmail { get; set; }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> desaDSV
     }
 }
