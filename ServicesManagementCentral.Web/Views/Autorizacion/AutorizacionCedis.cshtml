@@ -22,7 +22,6 @@
                             <th>Tipo de Solicitud</th>
                             <th>Tipo de Movimiento</th>
                             <th>No. de Orden</th>
-                            <th>Tipo de Solicitud</th>
                             <th>Canal de Solicitud</th>
                             <th>Fecha de Solicitud</th>
                             <th>Fecha de Creacion Orden</th>
@@ -167,7 +166,6 @@
                                 , json.resp[i].Descripcion_Padre
                                 , json.resp[i].Descripcion_Motivo
                                 , "<a onclick='GetDetalle(\"" + json.resp[i].Accion + "\"," + json.resp[i].Id_cancelacion +")'><u>" + json.resp[i].OrderId+"</u></a>"
-                                , json.resp[i].Accion
                                 , json.resp[i].Origen
                                 , json.resp[i].Fec_movto
                                 , json.resp[i].FecOrder
