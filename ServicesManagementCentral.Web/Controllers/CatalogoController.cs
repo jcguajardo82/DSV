@@ -37,17 +37,7 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        #region Transportistas
-
-        public ActionResult Transportistas()
-
-        {
-            if (Session["Id_Num_UN"] == null)
-            {
-                return RedirectToAction("Index", "Ordenes");
-            }
-            return View("Transportistas/Index");
-        }
+        #region Empaques
         public ActionResult ShipmentPacking()
 
         {
@@ -110,7 +100,7 @@ namespace ServicesManagement.Web.Controllers
             try
             {
                 DALServicesM.AddShipmentPackingWMS(IdCnscPacking, IdPackingCode, IdPackingType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-                                                    BitActivo, "system");
+                                                    BitActivo, User.Identity.Name);
                 var result = new { Success = true, Message = "Alta exitosa" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -135,6 +125,19 @@ namespace ServicesManagement.Web.Controllers
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        #endregion
+        #region Transportistas
+
+        public ActionResult Transportistas()
+
+        {
+            if (Session["Id_Num_UN"] == null)
+            {
+                return RedirectToAction("Index", "Ordenes");
+            }
+            return View("Transportistas/Index");
         }
         [HttpGet]
         public ActionResult GetTransportistas()
