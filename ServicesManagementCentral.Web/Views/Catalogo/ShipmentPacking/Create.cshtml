@@ -1,0 +1,81 @@
+﻿<div class="modal inmodal fade" id="dlgCreateServicios" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Agregar - Embalaje</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <div class="row">
+                        <div class="col col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label>Codigo</label>
+                                <select onchange="Locks()" class="form-control m-b" id="ddlCodigo">
+                                    <option value="CJA">CJA</option>
+                                    <option value="STC">STC</option>
+                                    <option value="SBR">SBR</option>
+                                    <option value="EMB">EMB</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label>Tipo de Empaque</label>
+                                <input type="text" id="tipoEmpaque" name="tipoEmpaque" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label>Ancho</label>
+                                <input type="text" id="ancho" name="ancho" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label>Largo</label>
+                                <input type="text" id="largo" name="largo" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label>Alto</label>
+                                <input type="text" id="alto" name="alto" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label>Kg</label>
+                                <input type="text" id="peso" name="peso" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-xs-4 col-md-4">
+                            <div class="form-group">
+                                <label>Estatus</label>
+                                <select class="form-control m-b" id="ddlEstatus">
+                                    <option value="1">Activo</option>
+                                    <option value="2">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                @*<button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+                <button type="button" onclick="Add()" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

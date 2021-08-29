@@ -1,0 +1,361 @@
+﻿@model IEnumerable<ServicesManagement.Web.Models.ShipmentPackingModel>
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Title = "Empaques";
+}
+
+<link href="view-source:http://webapplayers.com/inspinia_admin-v2.8/sweetalert.html">
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>@ViewBag.Title </h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="~/CPanel/Index">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>WMS Cedis</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Empaques</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+@*<div class="row mt-2 mb-3">
+    <div class="col-12">
+        <div class="collapse" id="filter">
+            <div class="card card-body">
+                <form id="frmFilter">
+                    <div class="row">
+                        <div class="col col-xs-12 col-md-4">
+                            <div class="form-group">
+                                <label>Unidad de negocio</label>
+                                <input type="text" placeholder="Nombre de la UN" name="txtNomUn" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col col-xs-12 col-md-4">
+                            <div class="form-group">
+                                <label>Nombre del Transportista</label>
+                                <input type="text" placeholder="Nombre del Transportista" name="txtSurtidor" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col col-xs-12 col-md-4 text-right">
+                            <button class="btn btn-success mt-4" type="button" onclick="Servicios.RefreshTable();"><i class="fa fa-search"></i>&nbsp;&nbsp;<span class="bold">Buscar</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>*@
+<div id="tblConsulta_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+    <div class="row">
+        <div class="col col-xs-6">
+            @*<div class="dt-buttons btn-group flex-wrap">
+                <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Copy</span></button>
+                <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>CSV</span></button>
+                <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblConsulta" type="button"><span>Excel</span></button>
+            </div>*@
+        </div>
+
+        <div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
+
+            <button type="button" class="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target="#dlgCreateServicios">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 1115px;">
+                <thead class="bg-primary">
+                    <tr role="row">
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1">Codigo</th>
+                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Tipo de Empaque</th>
+                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Ancho</th>
+                        <th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1">Largo</th>
+                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Alto</th>
+                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Kg</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<input id="idCnscPacking" name="idCnscPacking" value="0" style="visibility:hidden" />
+<input id="Id_Carrier" name="Id_Carrier" value="A" style="visibility:hidden" />
+
+@Html.Partial("ShipmentPacking/Create")
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Get();
+        });
+
+        function ShowFilter() {
+            $("#filter").collapse('toggle');
+        };
+
+        function Get() {
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetShipmentPackingWMS", "Catalogo")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        $("#tblConsulta tbody").remove();
+                        //var tr;
+
+                        //Append each row to html table
+                        for (var i = 0; i < json.json.length; i++) {
+                            tr = $('<tr/>');
+                            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+                            tr.append("<td>" + json.json[i].IdPackingCode + "</td>");
+                            tr.append("<td>" + json.json[i].IdPackingType + "</td>");
+                            tr.append("<td>" + json.json[i].PackageWidth + "</td>");
+                            tr.append("<td>" + json.json[i].PackageLength + "</td>");
+                            tr.append("<td>" + json.json[i].PackageHeight + "</td>");
+                            tr.append("<td>" + json.json[i].PackageWeight + "</td>");
+
+                            //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                            tr.append("<td><button onclick='Edit(" + json.json[i].idCnscPacking + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='Delete(" + json.json[i].idCnscPacking + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                            $('#tblConsulta').append(tr);
+
+                        }
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function Add() {
+            //alert($("#largo").is(":disabled"));
+            var save = true;
+            if ($("#ddlCodigo").val() == '') {
+                save = false;
+                $("#ddlCodigo").focus();
+            }
+            if ($("#tipoEmpaque").val() == '') {
+                save = false;
+                $("#tipoEmpaque").focus();
+            }
+            if (!$("#ancho").is(":disabled")) {
+                if ($("#ancho").val() == '' || $("#ancho").val() == '0') {
+                    $("#ancho").focus();
+                    save = false;
+                }
+            }
+            if (!$("#largo").is(":disabled")) {
+                if ($("#largo").val() == '' || $("#largo").val() == '0')
+                {
+                    $("#largo").focus();
+                    save = false;
+                }
+            }
+            if (!$("#alto").is(":disabled")) {
+                if ($("#alto").val() == '' || $("#alto").val() == '0') {
+                    $("#alto").focus();
+                    save = false;
+                }
+            }
+            if (!$("#peso").is(":disabled")) {
+                if ($("#peso").val() == '' || $("#peso").val() == '0') {
+                    $("#peso").focus();
+                    save = false;
+                }
+            }
+            alert(save);
+            if (save)
+            {
+                        var id = 0;
+                        if ($("#idCnscPacking").val() != "0")
+                            id = $("#idCnscPacking").val();
+
+                        $.ajax({
+                                async: false,
+                                type: "GET",
+                                url: '@Url.Action("AddShipmentPackingWMS", "Catalogo")',
+                                data: {
+                                    idCnscPacking:id,
+                                    IdPackingCode: document.getElementById("ddlCodigo").value,
+                                    IdPackingType: document.getElementById("tipoEmpaque").value,
+                                    PackageLength: document.getElementById("largo").value == '' ? null : document.getElementById("largo").value,
+                                    PackageWidth: document.getElementById("ancho").value == '' ? null : document.getElementById("ancho").value,
+                                    PackageHeight: document.getElementById("alto").value == '' ? null : document.getElementById("alto").value,
+                                    PackageWeight: document.getElementById("peso").value == '' ? null : document.getElementById("peso").value,
+                                    BitActivo: document.getElementById("ddlEstatus").value == '1' ? 'true' : 'false'
+                                },
+                                datatype: "html",
+                                success: function (json) {
+                                    if (json.Success) {
+                                        location.reload();
+                                    }
+                                    else { alert(json.Message) }
+                                }
+                                , error: function (jqXHR, textStatus, errorThrown) {
+
+                                    bootbox.alert(errorThrown);
+
+
+
+                                }
+
+                            });
+
+            }
+
+        }
+        function Locks() {
+            
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetShipmentLocksWMS", "Catalogo")',
+                    data: {
+                        IdPackingCode: document.getElementById("ddlCodigo").value,
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+
+                            Disabled();
+
+                            if (json.json[0].LockLength == false) {
+                                $("#largo").removeAttr('disabled');
+                                alert('entra');
+                            }
+                            if (json.json[0].LockWidth == false)
+                                $("#ancho").removeAttr('disabled');
+                            if (json.json[0].LockHeight == false)
+                                $("#alto").removeAttr('disabled');
+                            if (json.json[0].LockWeight == false)
+                                $("#peso").removeAttr('disabled');
+                            //location.reload();
+                        }
+                        else { alert(json.Message) }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+
+                        bootbox.alert(errorThrown);
+
+
+
+                    }
+
+                });
+
+        }
+        function Disabled() {
+            $("#largo").attr('disabled', 'disabled');
+            $("#ancho").attr('disabled', 'disabled');
+            $("#alto").attr('disabled', 'disabled');
+            $("#peso").attr('disabled', 'disabled');
+        }
+        function Edit(id) {
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetShipmentPackingWMSById", "Catalogo")',
+                data: {
+                    IdCnscPacking: id
+                },
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        //var tr;
+
+                        $('#dlgCreateServicios').modal('show');
+
+                        //document.getElementById("numE").value = json.json.Id_Num_Empleado;
+                        $("#ddlCodigo").val(json.json.IdPackingCode);
+                        $("#tipoEmpaque").val(json.json.IdPackingType);
+                        $("#largo").val(json.json.PackageLength);
+                        $("#ancho").val(json.json.PackageWidth);
+                        $("#alto").val(json.json.PackageHeight);
+                        $("#peso").val(json.json.PackageWeight);
+
+                        if (json.json.Activo == "false") { $("#ddlEstatus").val("2");}
+
+                        $("#idCnscPacking").val(json.json.idCnscPacking);
+                        Locks();
+                    }
+
+                }
+
+                , error: function (jqXHR, textStatus, errorThrown) {
+
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        function Delete(id) {
+            if (confirm('Esta seguro que desea eliminar el Empaque : ' + id)) {
+
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("DeleteShipmentPackingWMS", "Catalogo")',
+                    data: {
+
+                        IdCnscPacking: id
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+
+                        if (json.Success) {
+                            location.reload();
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(errorThrown);
+                    }
+                });
+            }
+        }
+
+        $('#dlgCreateServicios').on('show.bs.modal', function (e) {
+            LimpiaModal();
+            Disabled();
+        });
+
+
+
+        function LimpiaModal() {
+            $("#ddlCodigo").val('');
+            $("#tipoEmpaque").val('');
+            $("#largo").val('');
+            $("#ancho").val('');
+            $("#alto").val('');
+            $("#peso").val('');
+
+            $("#ddlEstatus").val("1");
+            $("#idCnscPacking").val(0);
+        }
+    </script>
+
+}
+
+
+
