@@ -23,8 +23,8 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                DataSet ds = DALServicesM.upCorpOms_Sel_ShipmentRequestsFromWMS();
-                List<ShipmentRequestsFromWMSModel> listC = DataTableToModel.ConvertTo<ShipmentRequestsFromWMSModel>(ds.Tables[0]);
+                DataSet ds = DALServicesM.upCorpOms_Sel_ShipmentProcessedFromWMS();
+                List<upCorpOms_Sel_ShipmentProcessedFromWMSModel> listC = DataTableToModel.ConvertTo<upCorpOms_Sel_ShipmentProcessedFromWMSModel>(ds.Tables[0]);
                 var result = new { Success = true, json = listC };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
