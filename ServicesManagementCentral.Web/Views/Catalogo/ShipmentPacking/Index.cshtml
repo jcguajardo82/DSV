@@ -182,7 +182,6 @@
                     save = false;
                 }
             }
-            alert(save);
             if (save)
             {
                         var id = 0;
@@ -238,10 +237,8 @@
 
                             Disabled();
 
-                            if (json.json[0].LockLength == false) {
+                            if (json.json[0].LockLength == false) 
                                 $("#largo").removeAttr('disabled');
-                                alert('entra');
-                            }
                             if (json.json[0].LockWidth == false)
                                 $("#ancho").removeAttr('disabled');
                             if (json.json[0].LockHeight == false)
