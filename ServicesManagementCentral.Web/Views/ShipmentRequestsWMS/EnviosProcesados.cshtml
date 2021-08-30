@@ -1,11 +1,8 @@
 ﻿@model IEnumerable<ServicesManagement.Web.Models.ShipmentPackingModel>
 
-@{
+@{ Layout = "~/Views/Shared/_Layout.cshtml";
 
-    Layout = "~/Views/Shared/_Layout.cshtml";
-
-    ViewBag.Title = "Ordenes Procesados";
-}
+                ViewBag.Title = "Ordenes Procesados"; }
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
         <h2>@ViewBag.Title </h2>
@@ -35,8 +32,8 @@
         <!--<div id="topRightSection" class="col-xs-12 col-md-6 text-right ">
 
             <button type="button" class="btn btn-primary" onclick="SolicitudGuia()">-->
-                @*data-toggle="modal" data-target="#dlgCreateServicios">*@
-                <!--Solicitar Guia
+        @*data-toggle="modal" data-target="#dlgCreateServicios">*@
+        <!--Solicitar Guia
             </button>
         </div>-->
     </div>
@@ -75,6 +72,32 @@
 
 </div>
 
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<h4 class="modal-title">Modal Header</h4>*@
+            </div>
+            <div class="modal-body">
+
+                @*<embed src="~/Content/Article List.pdf"
+                    frameborder="0" width="100%" height="400px">*@
+
+                <iframe id="viewrPDF" width="100%" height="400px" src=''></iframe>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @Html.Partial("SolicitarGuia")
 
 @section scripts {
@@ -83,6 +106,34 @@
         $(document).ready(function () {
             Get();
         });
+
+        function showpdf(num_guia) {
+            //debugger;
+
+            $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("GetPdfGuia", "Ordenes")',
+            data: {
+            guia: num_guia
+            },
+            datatype: "html",
+            success: function (json) {
+            if (json.Success) {
+
+            document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+
+            $("#myModal").modal("show");
+
+            }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+
+            }
+            });
+
+        }
 
         function ShowFilter() {
             $("#filter").collapse('toggle');
@@ -119,10 +170,11 @@
                             tr.append("<td>" + json.json[i].codigoPostal + "</td>");
                             tr.append("<td>" + json.json[i].telefono + "</td>");
                             tr.append("<td>" + json.json[i].contacto + "</td>");
-                            tr.append("<td>" + json.json[i].IdTrackingService + "</td>");
+                            //tr.append("<td>" + json.json[i].IdTrackingService + "</td>");
+                            tr.append("<td><a onclick='showpdf('" + json.json[i].IdTrackingService + "); return false; ' style='width:116px;' href='#' title='Click para ver el pdf de la guía' class='btn btn-link'>" + json.json[i].IdTrackingService + "' </a></td>");
                             tr.append("<td>" + json.json[i].TrackingServiceName + "</td>");
                             tr.append("<td>" + json.json[i].ucc + "</td>");
-
+                            //<a onclick="showpdf('json.json[i].IdTrackingService');return false;" style="width: 116px;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">" + json.json[i].IdTrackingService + "</a>
                             //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
                             tr.append("<td><input class='form - check - input' type='checkbox' value='" + json.json[i].idShipmentWMS + "' id='chkSel_" + json.json[i].idShipmentWMS + "' /> </td >")
                             @*<input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" />
@@ -227,7 +279,7 @@
                             _obj.cuenta = jsonCopy[x].cuenta;
                             _obj.referencia = jsonCopy[x].referencia;
                             _obj.pk = jsonCopy[x].pk;
-                            
+
                             _obj.porcentaje = 0;
                             if (jsonCopy[x].idShip == idShip && jsonCopy[x].cuenta == cuenta) {
                                 _obj.tipoEmpaque = selectVal;
@@ -295,7 +347,7 @@
                             $("#ddlCodigo_" + i).val(_json[i].tipoEmpaque);
                         }
 
-                        
+
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
