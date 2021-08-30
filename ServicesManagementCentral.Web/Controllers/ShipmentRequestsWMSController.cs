@@ -14,6 +14,26 @@ namespace ServicesManagement.Web.Controllers
         {
             return View();
         }
+        public ActionResult EnviosProcesados()
+        {
+            return View();
+        }
+        [HttpGet]
+        public ActionResult GetShipmentProcessedFromWMS()
+        {
+            try
+            {
+                DataSet ds = DALServicesM.upCorpOms_Sel_ShipmentRequestsFromWMS();
+                List<ShipmentRequestsFromWMSModel> listC = DataTableToModel.ConvertTo<ShipmentRequestsFromWMSModel>(ds.Tables[0]);
+                var result = new { Success = true, json = listC };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpGet]
         public ActionResult GetShipmentRequestsFromWMS()
         {
