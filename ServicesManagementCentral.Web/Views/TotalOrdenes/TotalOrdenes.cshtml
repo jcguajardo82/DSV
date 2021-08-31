@@ -69,7 +69,7 @@
                         <td style="text-align:left;">@item.consignacion</td>
                         <td style="text-align: left;">@Convert.ToDateTime(item.FechaCreacion).ToString("dd-MM-yyyy")</td>
                         <td style="text-align:left;">@item.Cliente</td>
-                        <td style="text-align:left;">@item.EstatusOrdenCompra</td>
+                        <td style="text-align:left;">@item.EstatusPedido</td>
                         <td style="text-align:left;">@item.EstatusConsignacion</td>
                         <td style="text-align:left;">@item.NroGuia</td>
                         <td style="text-align:left;">@item.EstatusGuia</td>
@@ -121,7 +121,7 @@
                     processing: true,
                     searching: true,
                     ordering: true,
-                    order: [[1, 'asc']],
+                    order: [[1, 'desc']],
                     filter: true,
                     info: false,
                     stateSave: false,
