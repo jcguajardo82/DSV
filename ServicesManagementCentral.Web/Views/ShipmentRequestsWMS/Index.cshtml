@@ -119,7 +119,7 @@
                             tr.append("<td>" + json.json[i].ucc + "</td>");
 
                             //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
-                            tr.append("<td><input class='form - check - input' type='checkbox' value='" + json.json[i].idShipmentWMS + "/" + json.json[i].ProductId + "/" + json.json[i].Barcode + "/" + json.json[i].UeNo + "/" + json.json[i].OrderNo + "' id='chkSel_" + json.json[i].idShipmentWMS + "' /> </td >")
+                            tr.append("<td><input class='form - check - input' type='checkbox' value='" + json.json[i].idShipmentWMS + "/" + json.json[i].ProductId + "/" + json.json[i].Barcode + "/" + json.json[i].UeNo + "/" + json.json[i].OrderNo + "/" + json.json[i].ucc + "' id='chkSel_" + json.json[i].idShipmentWMS + "' /> </td >")
                             @*<input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" />
                             tr.append("<td><button onclick='Edit(" + json.json[i].idCnscPacking + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='Delete(" + json.json[i].idCnscPacking + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")*@
                             $('#tblConsulta').append(tr);
@@ -153,14 +153,15 @@
                     _obj.barcode = $(this).val().split('/')[2];
                     _obj.ueNo = $(this).val().split('/')[3];
                     _obj.orderNo = $(this).val().split('/')[4];
-                    let orderSave = _jsonOrdenes.find(x => x.ueNo == $(this).val().split('/')[3] && x.orderNo == $(this).val().split('/')[4])
-                    if (orderSave == undefined) {
-                        let _objO = {};
-                        _objO.ueNo = $(this).val().split('/')[3];
-                        _objO.orderNo = $(this).val().split('/')[4];
-                        _jsonOrdenes.push(_objO);
-                        //alert('save');
-                    }
+                    _obj.ucc = $(this).val().split('/')[5];
+                    //let orderSave = _jsonOrdenes.find(x => x.ueNo == $(this).val().split('/')[3] && x.orderNo == $(this).val().split('/')[4])
+                    //if (orderSave == undefined) {
+                    //    let _objO = {};
+                    //    _objO.ueNo = $(this).val().split('/')[3];
+                    //    _objO.orderNo = $(this).val().split('/')[4];
+                    //    _jsonOrdenes.push(_objO);
+                    //    //alert('save');
+                    //}
                     _obj.cuenta = $(row)[0].cells[0].innerText;
                     _obj.referencia = $(row)[0].cells[2].innerText;
                     _obj.pk = $(row)[0].cells[10].innerText;
@@ -224,6 +225,7 @@
                 _obj.productId = jsonCopy[x].productId;
                 _obj.ueNo = jsonCopy[x].ueNo;
                 _obj.orderNo = jsonCopy[x].orderNo;
+                _obj.ucc = jsonCopy[x].ucc;
                 _obj.barcode = jsonCopy[x].barcode;
                 _obj.cuenta = jsonCopy[x].cuenta;
                 _obj.referencia = jsonCopy[x].referencia;
@@ -242,7 +244,7 @@
             if (jsonCopy.length == count) {
                 //alert('Guardarrr');
 
-
+                console.log(jsonConfirm);
                 for (var i = 0; i < jsonConfirm.length; i++) {
                     var items = new Array();
                     var products = new Array();
@@ -262,10 +264,11 @@
                     var product = {};
                     product.Barcode = jsonConfirm[i].barcode;
                     product.ProductId = jsonConfirm[i].productId;
-                    //product.ProductName = $(row)[0].cells[1].innerText;
+                    product.ProductName = '000000000';
                     product.product = {};
                     products.push(product);
 
+                    var _ucc = jsonConfirm[i].ucc;
                     //Send the JSON array to Controller using AJAX.
                         $.ajax({
                             type: "POST",
@@ -281,6 +284,8 @@
                             dataType: "json",
                             success: function (json) {
                                 if (json.Success) {
+                                    console.log(jsonConfirm);
+                                    UCCProcessed(_ucc);
                                     //alert(json.resp);
                                 }
                                 else {
@@ -294,9 +299,36 @@
                         });
 
                 }
+                location.reload();
             }
             else
                 alert('Los datos estan Incompletos');
+        }
+
+        function UCCProcessed(_ucc) {
+
+                       $.ajax({
+                            type: "GET",
+                            url: '@Url.Action("UCCProcessed", "ShipmentRequestsWMS")',
+                           data: {
+                               ucc: _ucc
+                           },
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (json) {
+                                if (!json.Success) {
+                                    
+                                    alert(json.Message);
+                                    //alert(json.resp);
+                                }
+
+
+                            }
+                            , error: function (jqXHR, textStatus, errorThrown) {
+                                alert(errorThrown);
+
+                            }
+                        });
         }
 
         function Rebind(idShip, cuenta, index, productId) {
@@ -322,6 +354,7 @@
                             _obj.productId = jsonCopy[x].productId;
                             _obj.ueNo = jsonCopy[x].ueNo;
                             _obj.orderNo = jsonCopy[x].orderNo;
+                            _obj.ucc = jsonCopy[x].ucc;
                             _obj.barcode = jsonCopy[x].barcode;
                             _obj.referencia = jsonCopy[x].referencia;
                             _obj.pk = jsonCopy[x].pk;

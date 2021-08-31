@@ -71,5 +71,21 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+        [HttpGet]
+        public ActionResult UCCProcessed(string ucc)
+        {
+            try
+            {
+                DataSet d = DALServicesM.UCCProcesada(ucc);
+
+                var result = new { Success = true, json = "Ok" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
