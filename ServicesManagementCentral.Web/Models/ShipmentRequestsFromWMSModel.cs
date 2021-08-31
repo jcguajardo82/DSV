@@ -12,6 +12,8 @@ namespace ServicesManagement.Web.Models
 		public string UeNo { get; set; }
 		public int OrderNo { get; set; }
 		public long CnscOrder { get; set; }
+        public string ProductId { get; set; }
+		public string Barcode { get; set; }
 		public int idOwner { get; set; }
 		public long idSupplierWH { get; set; }
 		public long idSupplierWHCode { get; set; }

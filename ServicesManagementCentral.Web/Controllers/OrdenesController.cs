@@ -1892,19 +1892,19 @@ namespace ServicesManagement.Web.Controllers
                     string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
                     List<string> lstCarriers = new List<string>(carriers);
 
-                    //EliminarTarifasAnteriores(UeNo, OrderNo);
-                    //foreach (var carrier in lstCarriers)
-                    //{
-                    //    tarifa = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
+                    EliminarTarifasAnteriores(UeNo, OrderNo);
+                    foreach (var carrier in lstCarriers)
+                    {
+                        tarifa = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
 
-                    //    if (!tarifa.Equals("error"))
-                    //        GuardarTarifas(UeNo, OrderNo, tarifa);
-                    //}
+                        if (!tarifa.Equals("error"))
+                            GuardarTarifas(UeNo, OrderNo, tarifa);
+                    }
 
 
                     int type = 1;
 
-                    if (item.Tipo.Equals("Paquete"))
+                    if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
                         type = 4;
                     string guia = CreateGuiaEstafeta(UeNo, OrderNo, int.Parse(item.Peso.ToString()), type);
 

@@ -77,6 +77,7 @@
 @section scripts {
     <script type="text/javascript">
         var _json = undefined;
+        var _jsonOrdenes = [];
         $(document).ready(function () {
             Get();
         });
@@ -118,7 +119,7 @@
                             tr.append("<td>" + json.json[i].ucc + "</td>");
 
                             //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
-                            tr.append("<td><input class='form - check - input' type='checkbox' value='" + json.json[i].idShipmentWMS + "' id='chkSel_" + json.json[i].idShipmentWMS + "' /> </td >")
+                            tr.append("<td><input class='form - check - input' type='checkbox' value='" + json.json[i].idShipmentWMS + "/" + json.json[i].ProductId + "/" + json.json[i].Barcode + "/" + json.json[i].UeNo + "/" + json.json[i].OrderNo + "' id='chkSel_" + json.json[i].idShipmentWMS + "' /> </td >")
                             @*<input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" />
                             tr.append("<td><button onclick='Edit(" + json.json[i].idCnscPacking + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='Delete(" + json.json[i].idCnscPacking + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")*@
                             $('#tblConsulta').append(tr);
@@ -145,8 +146,21 @@
                 if ($(this).is(":checked") && $(this).is(":disabled") == false) {
                     selProd++
                     row = $(this).closest("tr");
+                    //alert($(this).val());
                     let _obj = {};
-                    _obj.idShip = $(this).val();
+                    _obj.idShip = $(this).val().split('/')[0];
+                    _obj.productId = $(this).val().split('/')[1];
+                    _obj.barcode = $(this).val().split('/')[2];
+                    _obj.ueNo = $(this).val().split('/')[3];
+                    _obj.orderNo = $(this).val().split('/')[4];
+                    let orderSave = _jsonOrdenes.find(x => x.ueNo == $(this).val().split('/')[3] && x.orderNo == $(this).val().split('/')[4])
+                    if (orderSave == undefined) {
+                        let _objO = {};
+                        _objO.ueNo = $(this).val().split('/')[3];
+                        _objO.orderNo = $(this).val().split('/')[4];
+                        _jsonOrdenes.push(_objO);
+                        //alert('save');
+                    }
                     _obj.cuenta = $(row)[0].cells[0].innerText;
                     _obj.referencia = $(row)[0].cells[2].innerText;
                     _obj.pk = $(row)[0].cells[10].innerText;
@@ -186,13 +200,13 @@
                     //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
                     tr.append("<td>" + _json[i].referencia + "</td>");
                     tr.append("<td>" + _json[i].pk + "</td>");
-                    tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + ")' id='ddlCodigo_" + i +"'> "
+                    tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i +"'> "
                         + "  <option value = 'CJA'> CJA</option><option value='STC'>STC</option><option value='SBR'>SBR</option><option value='EMB'>EMB</option></select > </td>");
-                    tr.append("<td><input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form - control' style='width: 40px' /></td>");
-                    tr.append("<td><input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form - control' style='width: 60px' /></td>");
-                    tr.append("<td><input type='text' readonly id='largo" + i+ "' value='" + _json[i].largo + "' name='largo' class='form - control' style='width: 60px' /></td>");
-                    tr.append("<td><input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form - control' style='width: 60px'/></td>");
-                    tr.append("<td><input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form - control' style='width: 60px' /></td>");
+                    tr.append("<td><input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' /></td>");
+                    tr.append("<td><input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' /></td>");
+                    tr.append("<td><input type='text' readonly id='largo" + i+ "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' /></td>");
+                    tr.append("<td><input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px'/></td>");
+                    tr.append("<td><input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' /></td>");
                     $('#tblSolicitud').append(tr);
 
                     $("#ddlCodigo_" + i).val('');
@@ -200,9 +214,94 @@
             }
         }
 
-        function Rebind(idShip, cuenta, index) {
+        function Confirmar() {
+            var jsonCopy = _json;
+            var jsonConfirm = [];
+            var count = 0;
+            for (var x = 0; x < jsonCopy.length; x++) {
+                let _obj = {};
+                _obj.idShip = jsonCopy[x].idShip;
+                _obj.productId = jsonCopy[x].productId;
+                _obj.ueNo = jsonCopy[x].ueNo;
+                _obj.orderNo = jsonCopy[x].orderNo;
+                _obj.barcode = jsonCopy[x].barcode;
+                _obj.cuenta = jsonCopy[x].cuenta;
+                _obj.referencia = jsonCopy[x].referencia;
+                _obj.pk = jsonCopy[x].pk;
+                _obj.porcentaje = $("#porcentaje" + x).val();
+                if (jsonCopy[x].tipoEmpaque != '')
+                    count++;
+
+                _obj.tipoEmpaque = jsonCopy[x].tipoEmpaque;
+                _obj.ancho = $("#ancho" + x).val();
+                _obj.largo = $("#largo" + x).val();
+                _obj.alto = $("#alto" + x).val();
+                _obj.peso = $("#peso" + x).val();
+                jsonConfirm.push(_obj);
+            }
+            if (jsonCopy.length == count) {
+                //alert('Guardarrr');
+
+
+                for (var i = 0; i < jsonConfirm.length; i++) {
+                    var items = new Array();
+                    var products = new Array();
+                    var _UeNo = jsonConfirm[i].ueNo;
+                    var _OrderNo = jsonConfirm[i].orderNo;
+
+                    var item = {};
+
+                    item.Tipo = jsonConfirm[i].tipoEmpaque;
+                    item.Peso = jsonConfirm[i].peso;
+                    item.Largo = jsonConfirm[i].largo;
+                    item.Ancho = jsonConfirm[i].ancho;
+                    item.Alto = jsonConfirm[i].alto;
+
+                    items.push(item);
+
+                    var product = {};
+                    product.Barcode = jsonConfirm[i].barcode;
+                    product.ProductId = jsonConfirm[i].productId;
+                    //product.ProductName = $(row)[0].cells[1].innerText;
+                    product.product = {};
+                    products.push(product);
+
+                    //Send the JSON array to Controller using AJAX.
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("AddEmbalaje", "Ordenes")',
+                            data: JSON.stringify({
+                                Paquetes: items,
+                                UeNo: _UeNo,
+                                OrderNo: _OrderNo,
+                                Products: products
+                                // Paquetes, string UeNo, int OrderNo,
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (json) {
+                                if (json.Success) {
+                                    //alert(json.resp);
+                                }
+                                else {
+                                    alert(json.Message);
+                                }
+                            }
+                            , error: function (jqXHR, textStatus, errorThrown) {
+                                alert(errorThrown);
+
+                            }
+                        });
+
+                }
+            }
+            else
+                alert('Los datos estan Incompletos');
+        }
+
+        function Rebind(idShip, cuenta, index, productId) {
             var selectVal = $("#ddlCodigo_" + index).val();
-            //console.log('entra', idShip, cuenta, index, selectVal);
+            console.log('entra', idShip, cuenta, index, selectVal);
             var jsonCopy = _json;
             _json = [];
             $.ajax({
@@ -210,7 +309,8 @@
                 type: "GET",
                 url: '@Url.Action("GetShipmentPackingWMSByCode", "ShipmentRequestsWMS")',
                 data: {
-                    code: selectVal
+                    code: selectVal,
+                    productId: productId
                 },
                 datatype: "html",
                 success: function (json) {
@@ -219,16 +319,20 @@
                             let _obj = {};
                             _obj.idShip = jsonCopy[x].idShip;
                             _obj.cuenta = jsonCopy[x].cuenta;
+                            _obj.productId = jsonCopy[x].productId;
+                            _obj.ueNo = jsonCopy[x].ueNo;
+                            _obj.orderNo = jsonCopy[x].orderNo;
+                            _obj.barcode = jsonCopy[x].barcode;
                             _obj.referencia = jsonCopy[x].referencia;
                             _obj.pk = jsonCopy[x].pk;
-                            
+
                             _obj.porcentaje = 0;
                             if (jsonCopy[x].idShip == idShip && jsonCopy[x].cuenta == cuenta) {
                                 _obj.tipoEmpaque = selectVal;
-                                _obj.ancho = json.json[0].PackageWidth;
-                                _obj.largo = json.json[0].PackageLength;
-                                _obj.alto = json.json[0].PackageHeight;
-                                _obj.peso = json.json[0].PackageWeight;
+                                _obj.ancho = json.json[0].ANCHO;
+                                _obj.largo = json.json[0].LARGO;
+                                _obj.alto = json.json[0].ALTO;
+                                _obj.peso = json.json[0].PESO;
                             }
                             else {
                                 _obj.tipoEmpaque = jsonCopy[x].tipoEmpaque;
@@ -262,26 +366,20 @@
                             //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
                             tr.append("<td>" + _json[i].referencia + "</td>");
                             tr.append("<td>" + _json[i].pk + "</td>");
-                            tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + ")' id='ddlCodigo_" + i + "'> "
+                            tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "'> "
                                 + "  <option value = 'CJA'> CJA</option><option value='STC'>STC</option><option value='SBR'>SBR</option><option value='EMB'>EMB</option></select > </td>");
                             if (_json[i].tipoEmpaque == 'EMB') {
-                                tr.append("<td><input type='text' id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form - control' style='width: 40px' /></td>");
-                                tr.append("<td><input type='text' id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form - control' style='width: 60px' /></td>");
-                                tr.append("<td><input type='text' id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form - control' style='width: 60px' /></td>");
+                                tr.append("<td><input type='text' id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' /></td>");
                             }
                             else {
-                                tr.append("<td><input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form - control' style='width: 40px' /></td>");
-                                tr.append("<td><input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form - control' style='width: 60px' /></td>");
-                                tr.append("<td><input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form - control' style='width: 60px' /></td>");
+                                tr.append("<td><input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' /></td>");
                             }
-                            if (_json[i].tipoEmpaque == 'EMB' || _json[i].tipoEmpaque == 'STC') {
-                                tr.append("<td><input type='text' id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form - control' style='width: 60px'/></td>");
-                                tr.append("<td><input type='text' id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form - control' style='width: 60px' /></td>");
-                            }
-                            else {
-                                tr.append("<td><input readonly type='text' id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form - control' style='width: 60px'/></td>");
-                                tr.append("<td><input readonly type='text' id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form - control' style='width: 60px' /></td>");
-                            }
+
+                                tr.append("<td><input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' /></td>");
+                                tr.append("<td><input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' /></td>");
+                                tr.append("<td><input readonly type='text' id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px'/></td>");
+                                tr.append("<td><input readonly type='text' id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' /></td>");
+
                             $('#tblSolicitud').append(tr);
 
                             //if (i == index)
@@ -289,7 +387,7 @@
                             $("#ddlCodigo_" + i).val(_json[i].tipoEmpaque);
                         }
 
-                        
+
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
