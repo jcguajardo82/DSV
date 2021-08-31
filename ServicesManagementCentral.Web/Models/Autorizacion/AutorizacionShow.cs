@@ -25,6 +25,8 @@ namespace ServicesManagement.Web.Models.Autorizacion
         public string ProcesoAut { get; set; }
         public string WarehouseType { get; set; }
         public string DescAut { get; set; }
+        public string Descripcion_Padre { get; set; }
+        public string Descripcion_Motivo { get; set; }
 
 
 

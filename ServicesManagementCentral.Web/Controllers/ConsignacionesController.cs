@@ -103,9 +103,12 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
+                DataSet ds = DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor(User.Identity.Name, FecIni, FecFin);
                 var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(
-                    DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor(User.Identity.Name,FecIni,FecFin).Tables[0]);
-                var result = new { Success = true, resp = list };
+                    ds.Tables[0]);
+                var listGuias = DataTableToModel.ConvertTo<ConsignacionesGuias>(
+                    ds.Tables[1]);
+                var result = new { Success = true, resp = list, guias =listGuias };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)

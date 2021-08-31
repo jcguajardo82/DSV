@@ -19,14 +19,15 @@
                     <thead class="bg-danger-sor">
                         <tr>
                             <th>Folio de RMA</th>
-                            <th>No. de Orden</th>
                             <th>Tipo de Solicitud</th>
+                            <th>Tipo de Movimiento</th>
+                            <th>No. de Orden</th>
                             <th>Canal de Solicitud</th>
                             <th>Fecha de Solicitud</th>
                             <th>Fecha de Creacion Orden</th>
-                            <th>Auatorizacion <br /> Almacen</th>
+                            <th>Autorizacion <br /> Almacen</th>
                             @*<th>Auatorizacion <br />Almacen</th>
-                                <th>Auatorizacion <br />Administrador</th>*@
+        <th>Auatorizacion <br />Administrador</th>*@
                         </tr>
                     </thead>
 
@@ -70,21 +71,48 @@
             <div class="modal-content">
                 <div class="modal-header pt-3 pb-1">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Detalle de la Orden</h4>
+                    <h4 class="modal-title">Detalle de Solicitud</h4>
                 </div>
                 <div class="modal-body">
                     <form id="frmCreateServicios">
                         <div class="row">
+                            <div class="row">
+                                <div class="col-xs-3 col-md-3 col-lg-3">
+                                    <h3>Tipo de Solicitud</h3>
+                                    <small>
+                                        <FONT id="lblTipoSolicitud" face=verdana,arial,helvetica size=2>
+
+                                        </FONT>
+                                    </small>
+                                </div>
+                                <div class="col-xs-3 col-md-3 col-lg-3">
+                                    <h3>Tipo de Movimiento</h3>
+                                    <small>
+                                        <FONT id="lblTipoMovimiento" face=verdana,arial,helvetica size=2>
+
+                                        </FONT>
+                                    </small>
+                                </div>
+                                @*<div class="col-xs-3 col-md-3 col-lg-3">
+                                    <h3>Tipo de Almacén</h3>
+                                    <small>
+                                        <FONT id="lblTipoAlmacen" face=verdana,arial,helvetica size=2>
+
+                                        </FONT>
+                                    </small>
+                                </div>*@
+                            </div>
+                            <hr />
                             <div class="col-xs-12 col-md-12 col-lg-12">
                                 <table class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " id="tblDetalle">
                                     <thead class="bg-danger-sor">
                                         <tr>
                                             <th style="width:40%;">Nombre del Articulo</th>
-                                            <th style="width:15%;">Precio</th>
+                                            <th style="width:10%;">Cantidad de <br /> Piezas</th>
+                                            <th style="width:15%;">Monto</th>
                                             <th style="width:15%;">EAN</th>
                                             <th style="width:10%;">Tipo de <br /> Almacen</th>
                                             <th style="width:10%;">Nombre de <br /> Almacen</th>
-                                            <th style="width:10%;">Cantidad de <br /> Piezas</th>
                                             <th style="width:10%;">Comentarios</th>
                                         </tr>
                                     </thead>
@@ -135,14 +163,15 @@
 
                             table.row.add([
                                 json.resp[i].Id_cancelacion
-                                , "<a onclick='GetDetalle(\"" + json.resp[i].Accion + "\"," + json.resp[i].OrderId +")'><u>" + json.resp[i].OrderId+"</u></a>"
-                                , json.resp[i].Accion
+                                , json.resp[i].Descripcion_Padre
+                                , json.resp[i].Descripcion_Motivo
+                                , "<a onclick='GetDetalle(\"" + json.resp[i].Accion + "\"," + json.resp[i].Id_cancelacion +")'><u>" + json.resp[i].OrderId+"</u></a>"
                                 , json.resp[i].Origen
                                 , json.resp[i].Fec_movto
                                 , json.resp[i].FecOrder
 
-                                , "<button title='Click para Autorizar' onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",6)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
-                                + "<button title='Click para Rechazar'  onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",7)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-ban'></i></button>"
+                                , "<button title='Click para Autorizar' onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",1)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+                                + "<button title='Click para Rechazar'  onclick='popAut(" + json.resp[i].OrderId + "," + json.resp[i].Id_cancelacion +",2)' type='button' class='btn btn-white btn-circle'> <i class='fa fa-ban'></i></button>"
 
 
 
@@ -189,17 +218,22 @@
 
                             table.row.add([
                                 json.resp[i].ProductDescription,
+                                json.resp[i].Quantity,
                                 json.resp[i].PriceNormalSale,
                                 json.resp[i].BarCode,
                                 json.resp[i].WarehouseType,
                                 json.resp[i].StoreDescription,
-                                json.resp[i].Quantity,
                                 json.resp[i].Comment
 
 
                             ]).draw();
                         }
                         table.columns.adjust().draw();
+
+                        $("#lblTipoSolicitud").text(json.head.Descripcion_Padre);
+                        $("#lblTipoMovimiento").text(json.head.Descripcion_Motivo);
+                        //$("#lblTipoAlmacen").text(json.head.WarehouseType);
+
                         $("#dlgModOrden").modal('show');
                     }
                     else {
@@ -241,9 +275,9 @@
                 type: "get",
                 url: '@Url.Action("SetAut", "Autorizacion")',
                 data: {
-                    IdEstatusAut: _IdEstatusAut
+                    IdProceso: 3
                     , Comentario: _Comentario
-                    , orderId: _orderId
+                    , IdAccion: _IdEstatusAut
                     , Id_cancelacion: _Id_cancelacion
                 },
 

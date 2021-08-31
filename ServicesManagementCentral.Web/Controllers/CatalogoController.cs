@@ -37,6 +37,97 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+        #region Empaques
+        public ActionResult ShipmentPacking()
+
+        {
+            return View("ShipmentPacking/Index");
+        }
+        [HttpGet]
+        public ActionResult GetShipmentPackingWMS()
+
+        {
+            try
+            {
+                DataSet ds = DALServicesM.GetShipmentPackingWMS();
+                List<ShipmentPackingModel> listC = ConvertTo<ShipmentPackingModel>(ds.Tables[0]);
+                Session["lstShipmentPacking"] = listC;
+                var result = new { Success = true, json = listC };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpGet]
+        public ActionResult GetShipmentLocksWMS(string IdPackingCode)
+
+        {
+            try
+            {
+                DataSet ds = DALServicesM.GetShipmentLocksWMS(IdPackingCode);
+                List<ShipmentLocksModel> listC = ConvertTo<ShipmentLocksModel>(ds.Tables[0]);
+                var result = new { Success = true, json = listC };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult GetShipmentPackingWMSById(int IdCnscPacking)
+        {
+            try
+            {
+                List<ShipmentPackingModel> shipmentPackingLst = (List<ShipmentPackingModel>)Session["lstShipmentPacking"];
+                ShipmentPackingModel shipmentPacking = shipmentPackingLst.Where(x => x.idCnscPacking == IdCnscPacking).FirstOrDefault();
+                
+                var result = new { Success = true, json = shipmentPacking };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult AddShipmentPackingWMS(int IdCnscPacking, string IdPackingCode, string IdPackingType, decimal? PackageLength, decimal? PackageWidth,
+                                        decimal? PackageHeight, decimal? PackageWeight, bool BitActivo)
+        {
+            try
+            {
+                DALServicesM.AddShipmentPackingWMS(IdCnscPacking, IdPackingCode, IdPackingType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                                                    BitActivo, User.Identity.Name);
+                var result = new { Success = true, Message = "Alta exitosa" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult DeleteShipmentPackingWMS(int IdCnscPacking)
+
+        {
+            try
+            {
+                DALServicesM.DeleteShipmentPackingWMS(IdCnscPacking);
+
+                var result = new { Success = true, Message = "Eliminacion exitosa" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
         #region Transportistas
 
         public ActionResult Transportistas()
@@ -48,7 +139,6 @@ namespace ServicesManagement.Web.Controllers
             }
             return View("Transportistas/Index");
         }
-
         [HttpGet]
         public ActionResult GetTransportistas()
 

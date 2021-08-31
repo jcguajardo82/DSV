@@ -15,7 +15,9 @@ namespace ServicesManagement.Web.Models.CallCenter
         public decimal Quantity { get; set; }
         public decimal SubTotal { get; set; }
         public decimal Price { get; set; }
+        public string ArticuloFoto { get; set; }
 
-                                                                     
+
+
     }
 }

@@ -235,6 +235,7 @@
     <Compile Include="Controllers\ConsignacionesController.cs" />
     <Compile Include="Controllers\EstatusReenvioMciaController.cs" />
     <Compile Include="Controllers\ReportesPDPController.cs" />
+    <Compile Include="Controllers\ShipmentRequestsWMSController.cs" />
     <Compile Include="Controllers\TMSController.cs" />
     <Compile Include="Controllers\TotalOrdenesController.cs" />
     <Compile Include="Controllers\SolicitudGuiasReenvioController.cs" />
@@ -271,6 +272,8 @@
     <Compile Include="Models\Almacenes\SuppliersWHStock.cs" />
     <Compile Include="Models\Autorizacion\AutorizacionShow.cs" />
     <Compile Include="Models\Autorizacion\upCorpOms_Cns_OrdersByItems.cs" />
+    <Compile Include="Models\CallCenter\MotivosRMAById.cs" />
+    <Compile Include="Models\CallCenter\ProdCheckList.cs" />
     <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByHistorical.cs" />
     <Compile Include="Models\CallCenter\up_Corp_cns_OrderInfo.cs" />
     <Compile Include="Models\Config\Menu.cs" />
@@ -281,6 +284,7 @@
     <Compile Include="Models\Config\Usuario.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesAdm.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesCEDIS.cs" />
+    <Compile Include="Models\Consignaciones\ConsignacionesGuias.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesProveedor.cs" />
     <Compile Include="Models\Consignaciones\DetalleConsignaciones.cs" />
     <Compile Include="Models\Cotizador\AddressCotzModel.cs" />
@@ -362,6 +366,9 @@
     <Compile Include="Models\ReemvioMcia\ReenvioMciaProveedor.cs" />
     <Compile Include="Models\ReportesPDP\ReportesPDP.cs" />
     <Compile Include="Models\RestInterfazMethods.cs" />
+    <Compile Include="Models\ShipmentLocksModel.cs" />
+    <Compile Include="Models\ShipmentPackingModel.cs" />
+    <Compile Include="Models\ShipmentRequestsFromWMSModel.cs" />
     <Compile Include="Models\SubirArchivos\CargaManuales.cs" />
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="Models\TotalOrdenes\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
@@ -3836,8 +3843,15 @@
     <Content Include="Views\Autorizacion\Autorizacion.cshtml" />
     <Content Include="Views\Autorizacion\AutorizacionDsv.cshtml" />
     <Content Include="Views\Autorizacion\AutorizacionCedis.cshtml" />
+    <Content Include="Views\Autorizacion\AutorizacionSup.cshtml" />
     <None Include="Views\Autorizacion\AutorizacionDst.cshtml" />
     <Content Include="Views\Autorizacion\AutorizacionAdmon.cshtml" />
+    <Content Include="Views\CallCenter\HistorialSF.cshtml" />
+    <Content Include="Views\CallCenter\AltaRMA.cshtml" />
+    <Content Include="Views\Catalogo\ShipmentPacking\Index.cshtml" />
+    <Content Include="Views\Catalogo\ShipmentPacking\Create.cshtml" />
+    <Content Include="Views\ShipmentRequestsWMS\Index.cshtml" />
+    <Content Include="Views\ShipmentRequestsWMS\SolicitarGuia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -67,7 +67,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="2" style="text-align: left; padding-left: 16px; padding-top: 16px;"><p>Sucursal: @Session["Desc_Num_UN"]</p></td>
+                                                    <td colspan="2" style="text-align: left; padding-left: 16px; padding-top: 16px;"><p>Sucursal:  @p["NomTienda"]</p></td>
                                                     <td colspan="2" style="text-align: left; padding-left: 16px; padding-top: 16px;">
                                                         @{
                                                             if (p["OrderStatus"].ToString().Trim().Equals("4") || p["OrderStatus"].ToString().Trim().Equals("9"))
@@ -99,7 +99,7 @@
                                                                         {
                                                                             if (p["UeType"].ToString().Trim().Equals("SETC"))
                                                                             {
-                                                                                <a href="@Url.Action("EmbarqueSETC", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de paquetes (Captura numero de paquetes a utilizar.)</a>
+                                                                             <a href="@Url.Action("EmbarqueSETC", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
                                                                             }
                                                                             else
                                                                             {

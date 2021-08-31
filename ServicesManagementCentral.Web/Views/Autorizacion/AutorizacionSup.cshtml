@@ -8,7 +8,7 @@
 {
     <div class="row">
         <div class="col-4"></div>
-        <div class="col-4"><h2>Autorización RMA</h2></div>
+        <div class="col-4"><h2>Autorización de RMA</h2></div>
         <div class="col-4"></div>
     </div>
 
@@ -25,13 +25,13 @@
                             <th>Canal de Solicitud</th>
                             <th>Fecha de Solicitud</th>
                             <th>Fecha de Creacion Orden</th>
-                            <th>Autorizacion <br />Almacen</th>
+                            <th>Autorizacion <br /> Supervisor</th>
                             @*<th>Auatorizacion <br />Almacen</th>
         <th>Auatorizacion <br />Administrador</th>*@
                         </tr>
                     </thead>
                     <tbody>
-    
+  
 
                     </tbody>
                 </table>
@@ -110,7 +110,7 @@
                                 <table class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " id="tblDetalle">
                                     <thead class="bg-danger-sor">
                                         <tr>
-                                            <th style="width:40%;">Nombre del Articulo</th>
+                                            <th style="width:40%;">Nombre del Articulo</th>                                            
                                             <th style="width:10%;">Cantidad de <br /> Piezas</th>
                                             <th style="width:15%;">Monto</th>
                                             <th style="width:15%;">EAN</th>
@@ -148,7 +148,7 @@
                 type: "get",
                 url: '@Url.Action("GetOrdenes", "Autorizacion")',
                 data: {
-                    accion:"DST"
+                    accion:"SUPERVISOR"
                 },
 
                 datatype: "json",
@@ -278,10 +278,14 @@
                 type: "get",
                 url: '@Url.Action("SetAut", "Autorizacion")',
                 data: {
-                    IdProceso: 3
+                    IdProceso: 2
                     , Comentario: _Comentario
                     , IdAccion: _IdEstatusAut
                     , Id_cancelacion: _Id_cancelacion
+
+                            //public ActionResult SetAut(int IdProceso, string Comentario
+                            //    , string IdAccion, int Id_cancelacion)
+
                 },
 
                 datatype: "json",

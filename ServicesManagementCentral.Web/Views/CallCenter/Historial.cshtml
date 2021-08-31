@@ -49,12 +49,12 @@
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                 <thead class="bg-danger-sor">
                     <tr>
-                        <th name="accion" style="width:10%;"> </th>
+                        <th name="accion" > </th>
                         <th>Orden</th>
                         <th>Almacen</th>
                         <th>Fec Entrega</th>
                         <th>Tipo Entrega</th>
-                        <th>Tienda</th>
+                        <th>Almacen de Origen</th>
                         <th>Descipcion Tienda</th>
                         <th>Inicia Surtido</th>
                         <th>Fin Surtido</th>
@@ -62,13 +62,9 @@
                         <th>Finaliza Cobro</th>
                         <th>Forma Entrega</th>
                         <th>Medio Envio</th>
-                        @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
-                        @*<th>Guia de devolucion</th>*@
-                        @*<th>Estatus de la Guia de Devolucion</th>*@
-                        @*<th>Guia de reenvio</th>*@
-                        @*<th>Estatus de Guía de Reenvio</th>*@
-                        @*<th class="sorting">Motivo de no recolección</th>*@
-                        @*<th name='accion'></th>*@
+                        <th>Nombre del Cliente</th>
+                        <th>Correo del Cliente</th>
+                     
                     </tr>
                 </thead>
 
@@ -98,47 +94,17 @@
                                 <section>
                                     <div class="row">
                                         <div class="col-xs-4 col-md-4 col-lg-4">
-                                            <select class="form-control" id="cmbServicio" name="cmbServicio">
-                                                @*<option selected="selected" value="1">Devolución</option>*@
-                                                <option selected="selected" value="2">Reembolso</option>
-                                                <option selected="selected" value="3">Cambio Fisico</option>
-                                                <option selected="selected" value="4">Reenvio</option>
-                                                <option selected="selected" value="5">Cancelación</option>
+                                            <select class="form-control" id="cmbServicio" onchange="ChangSrv()">
+                                                <option  value="1">Sustituto</option>
+                                                <option  value="2">Reembolso</option>
+                                                <option  value="3">Cambio Fisico</option>
+                                                <option  value="4">Reenvio</option>
+                                                <option  value="5">Cancelación</option>
                                             </select>
                                         </div>
                                         <div class="col-xs-5 col-md-5 col-lg-5">
                                             <select class="form-control" name="cancelReason" id="cancelReason">
-                                                <option value="0">
-                                                    Por favor, seleccione un motivo
-                                                </option>
-
-                                                <option value="Cambio de producto">Cambio de producto</option>
-
-                                                <option value="Duplicó orden">Duplicó orden</option>
-
-                                                <option value="Error en descripción o imagen">Error en descripción o imagen</option>
-
-                                                <option value="Gusto del cliente">Gusto del cliente</option>
-
-                                                <option value="Mejor precio en competencia">Mejor precio en competencia</option>
-
-                                                <option value="No aplica cupón">No aplica cupón</option>
-
-                                                <option value="No aplicó la promoción">No aplicó la promoción</option>
-
-                                                <option value="No aplicó MSI">No aplicó MSI</option>
-
-                                                <option value="No está de acuerdo con el tiempo de entrega">No está de acuerdo con el tiempo de entrega</option>
-
-                                                <option value="No estará en domicilio">No estará en domicilio</option>
-
-                                                <option value="Orden no pagada en tienda">Orden no pagada en tienda</option>
-
-                                                <option value="Retraso de entrega">Retraso de entrega</option>
-
-                                                <option value="other">
-                                                    Otros
-                                                </option>
+                                               
                                             </select>
                                         </div>
                                     </div>
@@ -151,6 +117,7 @@
                                                 <thead class="bg-danger-sor">
                                                     <tr role="row">
                                                         <th class="text-center sorting"></th>
+                                                        <th class="text-center sorting"></th>
                                                         <th class="text-center sorting">Descripción</th>
                                                         <th class="text-center sorting">Cantidad</th>
                                                         <th class="text-center sorting">Precio</th>
@@ -159,61 +126,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
-                                                    @*NVS*@
-
-                                                    @*<tr>
-                                                            <td><input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" /></td>
-                                                            <td>
-                                                                Camisa Roja
-                                                            </td>
-                                                            <td>
-                                                                1
-                                                            </td>
-                                                            <td>
-                                                                $100.00
-                                                            </td>
-                                                            <td>
-                                                                $100.00
-                                                            </td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td><input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" /></td>
-                                                            <td>
-                                                                Camisa Blanca
-                                                            </td>
-                                                            <td>
-                                                                1
-                                                            </td>
-                                                            <td>
-                                                                $100.00
-                                                            </td>
-                                                            <td>
-                                                                $100.00
-                                                            </td>
-
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td><input type="checkbox" onclick="ValidaProducto(1)" class="checkbox" /></td>
-                                                            <td>
-                                                                Balon Futbol
-                                                            </td>
-                                                            <td>
-                                                                1
-                                                            </td>
-                                                            <td>
-                                                                $199.00
-                                                            </td>
-                                                            <td>
-                                                                $199.00
-                                                            </td>
-
-                                                        </tr>*@
-
-
-                                                    @*NVS*@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
@@ -227,7 +139,18 @@
                                         </div>
                                     </div>
                                 </section>
-                                <h3>Subir Evidencias</h3>
+                                <h3>Generar Caso de Usuario</h3>
+                                <section>
+                                    <p>Para generar el Caso de Usuario, dar click en Siguiente.</p>
+                                    <p>El sistema le generara un folio de caso de usuario.</p>
+                                    @*<p>
+                                            Se envia a proceso de autorizacion para su seguimiento. Favor de validar en la su status en la pestaña de seguimiento RMA.
+                                        </p>
+                                        <p>Dar click para generar la solicitud en el boton de finalizar</p>*@
+                                </section>
+
+
+                                <h3>Finalizar</h3>
                                 <section>
                                     <div class="row">
                                         <div class="col-xs-12 col-md-12 col-lg-12">
@@ -241,17 +164,10 @@
                                     </div>
                                     <hr />
                                     @*<div class="row">
-                                        <div class="col-xs-6 col-md-6 col-lg-6"><input type="text" class="form-control input-sm" placeholder="Comentarios de la Imagen" /> </div>
-                                        <div class="col-xs-6 col-md-6 col-lg-6"><input type="file" /> </div>
-                                    </div>*@
+                                            <div class="col-xs-6 col-md-6 col-lg-6"><input type="text" class="form-control input-sm" placeholder="Comentarios de la Imagen" /> </div>
+                                            <div class="col-xs-6 col-md-6 col-lg-6"><input type="file" /> </div>
+                                        </div>*@
 
-                                </section>
-                                <h3>Solicitar Autorizacion</h3>
-                                <section>
-                                    <p>
-                                        Se envia a proceso de autorizacion para su seguimiento. Favor de validar en la su status en la pestaña de seguimiento RMA.
-                                    </p>
-                                    <p>Dar click para generar la solicitud en el boton de finalizar</p>
                                 </section>
 
                             </div>
@@ -268,12 +184,91 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal inmodal fade" id="dlgCheck" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                @*<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>*@
+                <h4 class="modal-title">Check List</h4>
+                <input type="hidden" id="hddIdProd" />
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <td>
+                            Cumple con los 15 días naturales de la recepción del producto
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo1" name="p1" value="1">
+                            <label for="html">Si</label><br>
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo2" name="p1" value="0">
+                            <label for="html">No</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            El producto contiene los instructivos, manuales y accesorios originales indicados en el empaque original.
+
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo3" name="p2" value="1">
+                            <label for="html">Si</label><br>
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo4" name="p2" value="0">
+                            <label for="html">No</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            El producto ha sido manipulado por terceros para su evaluación, reparación o modificación.
+
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo5" name="p3" value="1">
+                            <label for="html">Si</label><br>
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo6" name="p3" value="0">
+                            <label for="html">No</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            El producto muestra daños por uso distinto al indicado en el manual o daños ocasionados por instalaciones deficientes o descargas eléctricas.
+
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo7" name="p4" value="1">
+                            <label for="html">Si</label><br>
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo8" name="p4" value="0">
+                            <label for="html">No</label><br>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" onclick="CloseCheck()">Close</button>
+                <button type="button" class="btn btn-default" onclick="GuardarCheck()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section scripts {
 
 
     <link href="~/Content/Inspinia/Styles/steps/jquery.steps.css" rel="stylesheet" />
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
-    
+
     <script>
 
 
@@ -335,7 +330,7 @@
 
 
                             myTable.row.add([
-                                /*json.resp[i].NroAlmacen,*/
+                     
                                 "<button onclick='GenerarRma(" + json.resp[i].OrderNo + ",\"" + json.resp[i].UeType+ "\")' type='button' class='btn btn-danger btn btn-xs'  title='Click para generar RMA a la orden'> Casos de Cliente</button>",
                                 "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].OrderNo + "</u>",
                                 json.resp[i].UeType,
@@ -348,11 +343,11 @@
                                 json.resp[i].PaymentStart,
                                 json.resp[i].PaymentCompleted,
                                 json.resp[i].DeliveryMethod,
-                                json.resp[i].ShippingType
+                                json.resp[i].ShippingType,
+                                json.resp[i].CustomerName,
+                                json.resp[i].CustomerEmail
 
-                                //json.resp[i].OrderDate,
-                                //json.resp[i].UeType
-                                /*json.resp[i].FechaEntrega*/
+                             
 
                             ]).draw();
                         }
@@ -385,7 +380,7 @@
                 labels: {
                     current: "current step:",
                     pagination: "Pagination",
-                    finish: "Confirmar Orden",
+                    finish: "Terminar",
                     next: "Siguiente",
                     previous: "Atras"
 
@@ -399,6 +394,15 @@
                 //   // $('.actions > ul > li:first-child').attr('style', 'display:none');
                 //    alert("");
                 //}
+                , onStepChanged: function (event, currentIndex, newIndex) {
+                    currentStep = currentIndex; //Set current step number in currentStep variable
+
+                    if (currentIndex === 2 ) //If in second step and checkbox not checked then display Finish button and hide Next button
+                    {
+                        $('a[href="#finish"]').parent().attr("style", "display: block;")
+                        $('a[href="#next"]').parent().attr("style", "display: none;");
+                    }
+                }
                 , onStepChanging: function (event, currentIndex, newIndex) {
 
 
@@ -412,13 +416,13 @@
                         }
 
 
-                        //if ($("#cmbServicio").val() != '5') {
+
                             var table = document.getElementById("tblDetalle");
                             var checkboxes = table.querySelectorAll('input[type=checkbox]');
                             //var val = checkboxes[0].checked;
                             var check = false;
                             var cantOk = true;
-                            
+
                             for (var i = 0; i < checkboxes.length; i++) {
 
                                 if (checkboxes[i].checked) {
@@ -466,25 +470,60 @@
                             if (!cantOk) {
                                 alert("La cantidad a devolver no puede ser menor a 0  ni mayor a la cantidad pedida");
                                 return false;
-                            }
-                        //}
+                        }
 
-                        //if ($("#hddUeType").val() == "SETC")
-                        //    $('#wizard-t-1').click();
+
+
+
+                        //Validamos que el numero de articulos seleccionados vs el nuero de checklist guardados sea el mismo
+                            $.ajax({
+                            async: false,
+                            type: "GET",
+                            url: '@Url.Action("CheckList", "CallCenter")',
+                            data: {
+
+                                articulos: checkboxes.length
+                            },
+                            datatype: "json",
+                            success: function (json) {
+                            if (json.Success) {
+                                if (json.resp!=true) {
+                                    //alert("No se capturaron todos los checclist para todos los produtos");
+                                    //alert("No se capturaron todos los checclist para todos los produtos");
+                                    return false;
+
+                                }
+                            }
+                            else {
+                                alert(json.Message);
+                                return false;
+                            }
+                            }
+                            , error: function (jqXHR, textStatus, errorThrown) {
+                            //bootbox.alert(errorThrown);
+                            alert("errorThrown");
+                            }
+
+                            });
+                             }
+
+
+                    if (currentIndex == 1) {
+                        Finalizar();
+                        return true;
                     }
 
-                    //if (currentIndex == 1) {
-                    //    alert("");
-                    //    if ($("#hddUeType").val() == "SETC")
-                    //        wizard.steps("setStep", 2);
-                    //}
 
+                    if (currentIndex == 2) {
+                        return false;
+                    }
 
                      return true;
                 }
                 , onFinished: function (event, currentIndex) {
-                    Finalizar();
-                    return true;
+                   // Finalizar();
+
+                    location.reload();
                 }
             });
 
@@ -550,7 +589,8 @@
                     //fixedHeader: {
                     //    header: true
                     //},
-                    "scrollX": true
+                    "scrollX": true,
+                    "scrollY": true
 
                 }
             );
@@ -559,7 +599,7 @@
             var oTable = $('#tblDetalle').DataTable({
                 columnDefs: [
                     {
-                        className: 'text-right', targets: [2, 3, 4], "width": "10%"
+                        className: 'text-right', targets: [3, 4, 5], "width": "10%"
                     },
                     { className: 'text-center', targets: [0], "width": "1%" },
 
@@ -582,13 +622,9 @@
 
                     OrderId: OrderId
                 },
-
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
-
-
-
 
                         var myTable = $('#tblDetalle').DataTable();
                         myTable
@@ -604,9 +640,10 @@
                                 disab = "Disabled";
                                 check = "checked";
                             }
-
+                            //<img class="image" src="json.ArticuloFoto" width=90 height=90>
                             myTable.row.add([
-                                '<input type="checkbox" onclick="ValidaProducto(1)" value="' + json.resp[i].ProductId + '" class="checkbox" ' + check + '  '+disab +' />',
+                                '<input type="checkbox" id="' + json.resp[i].ProductId +'" onclick="ValidaProducto(this)" value="' + json.resp[i].ProductId + '" class="checkbox" ' + check + '  '+disab +' />',
+                                '<img class="image" src="' + json.resp[i].ArticuloFoto + '" width=90 height=90>',
                                 json.resp[i].ProductName,
                                 json.resp[i].Quantity + "<input type='text' style='display:none;' disabled readonly class='form-control' id='Cant-" + json.resp[i].ProductId + "' disabled value='" + json.resp[i].Quantity + "' />",
                                 '$'+ json.resp[i].Price,
@@ -620,16 +657,18 @@
 
                         $("#lblTotalDetalle").text(json.total)
 
-                        $("#lblUrlClient").text(json.url)
-                        
+                        //$("#lblUrlClient").text(json.url)
+
                         if (UeType == "SETC") {
                             $("#cmbServicio").val("5");
+                            GetMotivos(5);
                             $('#cmbServicio').prop('disabled', true);
 
                             $('.actions > ul > li:first-child').attr('style', 'display:none');
                         } else {
-                            $("#cmbServicio").val("2");
+                            $("#cmbServicio").val("1");
                             $('#cmbServicio').prop('disabled', false);
+                            GetMotivos(1);
                         }
 
                         $('#dlgRma').modal('toggle');
@@ -644,9 +683,6 @@
                 }
 
             });
-
-
-
 
         }
 
@@ -667,6 +703,42 @@
 
 
         function ValidaProducto(v) {
+            debugger;
+            var prod = v.value;
+            if (v.checked) {
+                $("#hddIdProd").val(prod);
+                $("#rdo1").attr('checked', true);
+                $("#rdo3").attr('checked', true);
+                $("#rdo5").attr('checked', true);
+                $("#rdo7").attr('checked', true);
+
+                $('#dlgCheck').modal('toggle');
+            } else {
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("DelCheckList", "CallCenter")',
+                data: {
+
+                    prodId: prod
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+            }
             // Get the checkbox
             //var checkBox = document.getElementById("myCheck");
             //// Get the output text
@@ -682,8 +754,9 @@
             var _OrderId = $("#hddOrderId").val();
             var _UeType = $("#hddUeType").val();
             var _accion = $("#cmbServicio").val();
-            var _desc = $("#cancelReason").val();
-
+            var _desc = $("#cancelReason option:selected").text();
+            var _IdTmovimiento = $("#cancelReason").val();
+            var _IdTSolicitud = $("#cmbServicio").val();
 
             var list = new Array();
             var table = document.getElementById("tblDetalle");
@@ -720,18 +793,22 @@
                         Operacion: _accion,
                         Desc: _desc,
                         Products: list,
-                       UeType: _UeType,
+                        UeType: _UeType,
+                        IdTSolicitud: _IdTSolicitud,
+                        IdTmovimiento: _IdTmovimiento
                    }),
 
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (json) {
                     if (json.Success) {
-                        location.reload();
+
+                        //location.reload();
                     }
                     else {
                         alert(json.Message);
                     }
+                    $("#lblUrlClient").text(json.url);
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
                     //bootbox.alert(errorThrown);
@@ -760,9 +837,83 @@
         }
 
 
-        /*NVS*/
+        function GuardarCheck() {
+            var prod = $("#hddIdProd").val();
 
+            var list = [];
 
+            list.push($("input:radio[name=p1]:checked").val());
+            list.push($("input:radio[name=p2]:checked").val());
+            list.push($("input:radio[name=p3]:checked").val());
+            list.push($("input:radio[name=p4]:checked").val());
+
+            var postData = { values: list, prodId: prod};
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddCheckList", "CallCenter")',
+                data: postData,
+                success: function (json) {
+                    if (json.Success) {
+
+                        $('#dlgCheck').modal('hide');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert(errorThrown);
+                },
+                dataType: "json",
+                traditional: true
+            });
+        }
+
+        function CloseCheck() {
+            var prod = $("#hddIdProd").val();
+
+            $("#" + prod).prop("checked", false);
+            $('#dlgCheck').modal('hide');
+        }
+
+        function GetMotivos(id) {
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetMotivos", "CallCenter")',
+                data: {
+                    Id_Padre:id
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#cancelReason");
+                        sel.empty();
+
+                        $('#cancelReason').get(0).options[0] = new Option(" Por favor, seleccione un motivo", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].Id_Motivo + '">' + json.resp[i].Descripcion_Motivo +  '</option>');
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+        }
+
+       
+        function ChangSrv() {
+            var _id = $("#cmbServicio").val();
+            GetMotivos(_id);
+        }
     </script>
 
 

@@ -1,0 +1,796 @@
+﻿
+@{ ViewBag.Title = "Historial"; }
+
+
+
+
+<h2>Historial</h2>
+
+
+
+@*NVScambio*@
+
+<div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group">
+            <label>Fecha Inicio</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker1">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecIni"
+                       type="text" value="@ViewBag.FecIni">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Fecha Fin</label>
+        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+        <div class="input-group date" id="datetimepicker2">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input class="form-control datepicker" id="txtFecFin"
+                   type="text" value="@ViewBag.FecFin">
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Número de Orden</label>
+        <input type="text" placeholder="Número de Orden" id="OrderSelected" class="form-control">
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+            Buscar
+        </button>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th name="accion"> </th>
+                        <th>Orden</th>
+                        <th>Almacen</th>
+                        <th>Fec Entrega</th>
+                        <th>Tipo Entrega</th>
+                        <th>Almacen de Origen</th>
+                        <th>Descipcion Tienda</th>
+                        <th>Inicia Surtido</th>
+                        <th>Fin Surtido</th>
+                        <th>Inicio Cobro</th>
+                        <th>Finaliza Cobro</th>
+                        <th>Forma Entrega</th>
+                        <th>Medio Envio</th>
+                        <th>Nombre del Cliente</th>
+                        <th>Correo del Cliente</th>
+
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@*NVScambio*@
+
+@*@Html.Partial("RMA")*@
+<div class="modal inmodal fade" id="dlgRma" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">RMA</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <input type="hidden" id="hddOrderId" />
+                    <input type="hidden" id="hddUeType" />
+                    <div class="ibox ">
+                        <div class="ibox-content">
+                            <div id="wizard">
+                                <h3>Detalle de Orden</h3>
+                                <section>
+                                    <div class="row">
+                                        <div class="col-xs-4 col-md-4 col-lg-4">
+                                            <select class="form-control" id="cmbServicio" onchange="ChangSrv()">
+                                                <option value="1">Sustituto</option>
+                                                <option value="2">Reembolso</option>
+                                                <option value="3">Cambio Fisico</option>
+                                                <option value="4">Reenvio</option>
+                                                @*<option value="5">Cancelación</option>*@
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-5 col-md-5 col-lg-5">
+                                            <select class="form-control" name="cancelReason" id="cancelReason">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <br />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-12 col-lg-12">
+                                            <table id="tblDetalle" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                                                <thead class="bg-danger-sor">
+                                                    <tr role="row">
+                                                        <th class="text-center sorting"></th>
+                                                        <th class="text-center sorting"></th>
+                                                        <th class="text-center sorting">Descripción</th>
+                                                        <th class="text-center sorting">Cantidad</th>
+                                                        <th class="text-center sorting">Precio</th>
+                                                        <th class="text-center sorting">Subtotal</th>
+                                                        <th class="text-center sorting">Cantidad Devuelta</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="3"></td>
+                                                        <td><b>Costo total de la orden</b></td>
+                                                        <td><b>$</b><b id="lblTotalDetalle">399.00</b></td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </section>
+                                <h3>Generar Caso de Usuario</h3>
+                                <section>
+                                    <p>Para generar el Caso de Usuario, dar click en Siguiente.</p>
+                                    <p>El sistema le generara un folio de caso de usuario.</p>
+                                    @*<p>
+                                            Se envia a proceso de autorizacion para su seguimiento. Favor de validar en la su status en la pestaña de seguimiento RMA.
+                                        </p>
+                                        <p>Dar click para generar la solicitud en el boton de finalizar</p>*@
+                                </section>
+
+
+                                <h3>Finalizar</h3>
+                                <section>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-12 col-lg-12">
+                                            <b>Url del Cliente:</b>
+
+                                            <div class="alert alert-danger">
+                                                <h2 id="lblUrlClient"></h2>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    @*<div class="row">
+                                            <div class="col-xs-6 col-md-6 col-lg-6"><input type="text" class="form-control input-sm" placeholder="Comentarios de la Imagen" /> </div>
+                                            <div class="col-xs-6 col-md-6 col-lg-6"><input type="file" /> </div>
+                                        </div>*@
+
+                                </section>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+
+                </div>*@
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal fade" id="dlgCheck" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                @*<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>*@
+                <h4 class="modal-title">Check List</h4>
+                <input type="hidden" id="hddIdProd" />
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <td>
+                            Cumple con los 15 días naturales de la recepción del producto
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo1" name="p1" value="1">
+                            <label for="html">Si</label><br>
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo2" name="p1" value="0">
+                            <label for="html">No</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            El producto contiene los instructivos, manuales y accesorios originales indicados en el empaque original.
+
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo3" name="p2" value="1">
+                            <label for="html">Si</label><br>
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo4" name="p2" value="0">
+                            <label for="html">No</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            El producto ha sido manipulado por terceros para su evaluación, reparación o modificación.
+
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo5" name="p3" value="1">
+                            <label for="html">Si</label><br>
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo6" name="p3" value="0">
+                            <label for="html">No</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            El producto muestra daños por uso distinto al indicado en el manual o daños ocasionados por instalaciones deficientes o descargas eléctricas.
+
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo7" name="p4" value="1">
+                            <label for="html">Si</label><br>
+                        </td>
+                        <td>
+                            <input type="radio" id="rdo8" name="p4" value="0">
+                            <label for="html">No</label><br>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" onclick="CloseCheck()">Close</button>
+                <button type="button" class="btn btn-default" onclick="GuardarCheck()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+
+    <link href="~/Content/Inspinia/Styles/steps/jquery.steps.css" rel="stylesheet" />
+    <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
+
+    <script>
+
+
+       /* NVS*/
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+
+       function GetHistorialRMA() {
+
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+            var _OrderId = $("#OrderSelected").val();
+
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GethistorialSF", "CallCenter")',
+                data: {
+                      FecIni: _FecIni,
+                    FecFin: _FecFin,
+                    OrderId: _OrderId
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+
+
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+
+                            myTable.row.add([
+                         
+                                "<button onclick='GenerarRma(" + json.resp[i].Id_Cancelacion+"," + json.resp[i].OrderNo + ",\"" + json.resp[i].UeType+ "\")' type='button' class='btn btn-danger btn btn-xs'  title='Click para generar RMA a la orden'> Casos de Cliente</button>",
+                                "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].OrderNo + "</u>",
+                                json.resp[i].UeType,
+                                json.resp[i].DeliveryDate,
+                                json.resp[i].DeliveryType,
+                                json.resp[i].StoreNum,
+                                json.resp[i].StoreDescription,
+                                json.resp[i].SupplyStarted,
+                                json.resp[i].SupplyCompleted,
+                                json.resp[i].PaymentStart,
+                                json.resp[i].PaymentCompleted,
+                                json.resp[i].DeliveryMethod,
+                                json.resp[i].ShippingType,
+                                json.resp[i].CustomerName,
+                                json.resp[i].CustomerEmail
+
+
+
+                            ]).draw();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
+        }
+
+
+
+        $(document).ready(function () {
+
+
+            //$("#cmbServicio").change(function () {
+            //    //if()()
+            //    //$("#cancelReason").css("display", "none");
+            //});
+      /*      $("#cancelReason").css("display", "none");*/
+
+            $("#wizard").steps({
+                labels: {
+                    current: "current step:",
+                    pagination: "Pagination",
+                    finish: "Terminar",
+                    next: "Siguiente",
+                    previous: "Atras"
+
+                },
+                headerTag: "h3",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                autoFocus: true
+                // stepsOrientation: "vertical"
+                //, onInit: function (event, current) {
+                //   // $('.actions > ul > li:first-child').attr('style', 'display:none');
+                //    alert("");
+                //}
+                , onStepChanged: function (event, currentIndex, newIndex) {
+                    currentStep = currentIndex; //Set current step number in currentStep variable
+
+                    if (currentIndex === 2 ) //If in second step and checkbox not checked then display Finish button and hide Next button
+                    {
+                        $('a[href="#finish"]').parent().attr("style", "display: block;")
+                        $('a[href="#next"]').parent().attr("style", "display: none;");
+                    }
+                }
+                , onStepChanging: function (event, currentIndex, newIndex) {
+
+
+                    if (currentIndex == 0) {
+
+                        if ($("#cancelReason").val() == '0') {
+                            $("#cancelReason").focus();
+
+                            alert('Por favor, seleccione un motivo');
+                            return false;
+                        }
+
+
+                    }
+  
+                  
+
+
+                    if (currentIndex == 1) {
+                        Finalizar();
+                        return true;
+                    }
+
+
+                    if (currentIndex == 2) {
+                        return false;
+                    }
+
+                     return true;
+                }
+                , onFinished: function (event, currentIndex) {
+                   // Finalizar();
+
+                    location.reload();
+                }
+            });
+
+
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel', {
+                        text: 'Excel XLS',
+                        action: function (e, dt, node, config) {
+
+                            Excel('xls');
+
+                        }
+                    }
+
+                    ],
+                    orderCellsTop: false,
+                    //fixedHeader: {
+                    //    header: true
+                    //},
+                    "scrollX": true,
+                    "scroll": true
+
+                }
+            );
+
+
+            var oTable = $('#tblDetalle').DataTable({
+                columnDefs: [
+                    {
+                        className: 'text-right', targets: [3, 4, 5], "width": "10%"
+                    },
+                    { className: 'text-center', targets: [0], "width": "1%" },
+
+                ]
+            });
+
+            GetHistorialRMA();
+        });
+
+
+        function GenerarRma(IdCancelacion,IdOrden, UeType) {
+
+            $("#hddOrderId").val(IdCancelacion);
+            $("#hddUeType").val(UeType);
+
+                 $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetDetalleSF", "CallCenter")',
+                data: {
+
+                    IdCancelacion: IdCancelacion,
+                    idOrden: IdOrden
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        var myTable = $('#tblDetalle').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+                            var nCant = json.resp[i].Quantity;
+                            var disab = "Disabled";
+                            var check = "checked";
+
+
+                            //<img class="image" src="json.ArticuloFoto" width=90 height=90>
+                            myTable.row.add([
+                                '<input type="checkbox" id="' + json.resp[i].ProductId +'" onclick="ValidaProducto(this)" value="' + json.resp[i].ProductId + '" class="checkbox" ' + check + '  '+disab +' />',
+                                '<img class="image" src="' + json.resp[i].ArticuloFoto + '" width=90 height=90>',
+                                json.resp[i].ProductName,
+                                json.resp[i].Quantity + "<input type='text' style='display:none;' disabled readonly class='form-control' id='Cant-" + json.resp[i].ProductId + "' disabled value='" + json.resp[i].Quantity + "' />",
+                                '$'+ json.resp[i].Price,
+                                '$'+json.resp[i].SubTotal,
+                                "<input type='number' oninput='input(this)'    id='nCant-" + json.resp[i].ProductId + "' value='" + nCant + "' class='form-control input-sm' " + disab+" />"
+
+                            ]).draw();
+                        }
+
+                        //lblTotalDetalle
+
+                        $("#lblTotalDetalle").text(json.total)
+
+                        //$("#lblUrlClient").text(json.url)
+
+
+                            $("#cmbServicio").val("1");
+                            $('#cmbServicio').prop('disabled', false);
+                            GetMotivos(1);
+
+
+                        $('#dlgRma').modal('toggle');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
+        }
+
+        var delayTimer;
+        function input(ele) {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(function () {
+                ele.value = parseFloat(ele.value).toFixed(2).toString();
+            }, 1100);
+        }
+
+        function input2(ele) {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(function () {
+                ele.value = parseFloat(ele.value).toFixed(0).toString();
+            }, 1100);
+        }
+
+
+        function ValidaProducto(v) {
+            debugger;
+            var prod = v.value;
+            if (v.checked) {
+                $("#hddIdProd").val(prod);
+                $("#rdo1").attr('checked', true);
+                $("#rdo3").attr('checked', true);
+                $("#rdo5").attr('checked', true);
+                $("#rdo7").attr('checked', true);
+
+                $('#dlgCheck').modal('toggle');
+            } else {
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("DelCheckList", "CallCenter")',
+                data: {
+
+                    prodId: prod
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+            }
+            // Get the checkbox
+            //var checkBox = document.getElementById("myCheck");
+            //// Get the output text
+            //var text = document.getElementById("text");
+
+            //// If the checkbox is checked, display the output text
+            //if (v == 1) {
+            //    alert("El articulo no cumple con las condiciones");
+            //}
+        }
+
+        function Finalizar() {
+            var _OrderId = $("#hddOrderId").val();           
+            var _IdTmovimiento = $("#cancelReason").val();
+            var _IdTSolicitud = $("#cmbServicio").val();
+
+               $.ajax({
+                async: false,
+                type: "POST",
+                   url: '@Url.Action("FinalizarSF", "CallCenter")',
+                   data: JSON.stringify({
+
+                       IdCancelacion: _OrderId,
+                      
+                        IdTSolicitud: _IdTSolicitud,
+                       IdTmovimiento: _IdTmovimiento
+
+                   
+                   }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        //location.reload();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                    $("#lblUrlClient").text(json.url);
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert(errorThrown);
+                }
+
+            });
+        }
+
+
+        function Excel(op) {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+            window.location = window.location.origin + '/Consignaciones/ExcelConsignacionesProveedor?op=' + op + '&FecIni=' + _FecIni + '&FecFin=' + _FecFin;
+        }
+
+
+        function GuardarCheck() {
+            var prod = $("#hddIdProd").val();
+
+            var list = [];
+
+            list.push($("input:radio[name=p1]:checked").val());
+            list.push($("input:radio[name=p2]:checked").val());
+            list.push($("input:radio[name=p3]:checked").val());
+            list.push($("input:radio[name=p4]:checked").val());
+
+            var postData = { values: list, prodId: prod};
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddCheckList", "CallCenter")',
+                data: postData,
+                success: function (json) {
+                    if (json.Success) {
+
+                        $('#dlgCheck').modal('hide');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert(errorThrown);
+                },
+                dataType: "json",
+                traditional: true
+            });
+        }
+
+        function CloseCheck() {
+            var prod = $("#hddIdProd").val();
+
+            $("#" + prod).prop("checked", false);
+            $('#dlgCheck').modal('hide');
+        }
+
+        function GetMotivos(id) {
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetMotivos", "CallCenter")',
+                data: {
+                    Id_Padre:id
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#cancelReason");
+                        sel.empty();
+
+                        $('#cancelReason').get(0).options[0] = new Option(" Por favor, seleccione un motivo", "0");
+                        for (var i = 0; i < json.resp.length; i++) {
+                            sel.append('<option value="' + json.resp[i].Id_Motivo + '">' + json.resp[i].Descripcion_Motivo +  '</option>');
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+        }
+
+
+        function ChangSrv() {
+            var _id = $("#cmbServicio").val();
+            GetMotivos(_id);
+        }
+    </script>
+
+
+}
+

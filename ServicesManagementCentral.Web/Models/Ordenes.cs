@@ -10,6 +10,31 @@ namespace ServicesManagement.Web.Models
 
     }
 
+    public class OrderFacts_UE_ShipmentPackingWMS
+    {
+        public int idCnscPacking { get; set; }
+        public string IdPackingCode { get; set; }
+        public string IdPackingType { get; set; }
+        public decimal PackageLength { get; set; }
+        public decimal PackageWidth { get; set; }
+        public decimal PackageWeight { get; set; }
+        public string createdDate { get; set; }
+        public string createdUser { get; set; }
+    }
+
+    public class OrderFacts_UE_ShipmentLocksWMS
+    {
+        public int idCnscLock { get; set; }
+        public string IdPackingCode { get; set; }
+        public string IdPackingType { get; set; }
+        public bool LockLength { get; set; }
+        public bool LockWidth { get; set; }
+        public bool LockHeight { get; set; }
+        public bool LockWeight { get; set; }
+        public string createdDate { get; set; }
+        public string createdUser { get; set; }
+    }
+
     public class UeNoTrackingDetail
     {
         public string UeNo { get; set; }

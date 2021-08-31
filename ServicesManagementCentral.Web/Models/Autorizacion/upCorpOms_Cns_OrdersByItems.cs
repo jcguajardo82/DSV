@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -21,5 +22,12 @@ namespace ServicesManagement.Web.Models.Autorizacion
         public string Comment { get; set; }
         public string Reason { get; set; }
 
+    }
+
+    public class Header {
+        public string Descripcion_Padre { get; set; }
+        public string Descripcion_Motivo { get; set; }
+        public string WarehouseType { get; set; }
+        public string NombreAlmacen { get; set; }
     }
 }

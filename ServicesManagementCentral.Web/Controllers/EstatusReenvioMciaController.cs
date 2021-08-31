@@ -1,10 +1,12 @@
 ﻿using ServicesManagement.Web.DAL.EstatusReenvioMcia;
 using ServicesManagement.Web.DAL.ReenvioMcia;
 using ServicesManagement.Web.Helpers;
+using ServicesManagement.Web.Models.Consignaciones;
 using ServicesManagement.Web.Models.EstatusReenvioMcia;
 using ServicesManagement.Web.Models.ReemvioMcia;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -58,9 +60,12 @@ namespace ServicesManagement.Web.Controllers
 
             try
             {
+                DataSet ds = DALReenvioMciaProveedores.upCorpOMS_Cns_UeNoReShipment(User.Identity.Name, FecIni, FecFin);
                 var list = DataTableToModel.ConvertTo<ReenvioMciaProveedor>(
-                    DALReenvioMciaProveedores.upCorpOMS_Cns_UeNoReShipment( User.Identity.Name,FecIni,FecFin).Tables[0]);
-                var result = new { Success = true, resp = list };
+                    ds.Tables[0]);
+                var listGuias = DataTableToModel.ConvertTo<ConsignacionesGuias>(
+                    ds.Tables[1]);
+                var result = new { Success = true, resp = list, guias = listGuias };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
