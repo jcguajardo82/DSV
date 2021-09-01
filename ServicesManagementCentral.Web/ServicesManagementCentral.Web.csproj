@@ -361,6 +361,7 @@
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoConsigmentsVehicles.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcess.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcessSel.cs" />
+    <Compile Include="Models\ProductDimensionsModel.cs" />
     <Compile Include="Models\ReemvioMcia\DetalleReenvioMciaCEDIS.cs" />
     <Compile Include="Models\ReemvioMcia\ReenvioMciaCEDIS.cs" />
     <Compile Include="Models\ReemvioMcia\ReenvioMciaProveedor.cs" />
