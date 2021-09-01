@@ -132,6 +132,7 @@
             });
 
         });
+
         $(document).ready(function () {
 
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
@@ -257,7 +258,7 @@
                                 json.resp[i].ModifDate,
                                 json.resp[i].BitActivo,
 
-                                "<button title='Editar' onclick=\"GetById(" + json.resp[i].IdImagen + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button>"
+                                "<button title='Editar' onclick=\"GetById(" + json.resp[i].IdImagen + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button> <button title='Borrar' onclick=\"Borrar(" + json.resp[i].IdImagen + ")\" type=\"button\" class=\"btn btn-warning btn-circle\"> <i class=\"fa fa-edit\"></i></button>"
                             ]).draw();
                         }
                     }
@@ -281,8 +282,7 @@
                 return;
             }
 
-
-                            // Checking whether FormData is available in browser
+                // Checking whether FormData is available in browser
                 if (window.FormData !== undefined) {
 
                     var servername = window.location.origin;
@@ -362,6 +362,33 @@
                     bootbox.alert(errorThrown);
                 }
             });
+        }
+
+        function Borrar(id) {
+            if (confirm('Esta seguro que desea eliminar la Notificación : ' + id)) {
+
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("DeleteNotificacion", "NotificacionesSis")',
+                    data: {
+
+                        num: id
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+
+                        if (json.Success) {
+                            alert(json.Message);
+                            location.reload();
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(errorThrown);
+                    }
+                });
+            }
         }
     </script>
 }

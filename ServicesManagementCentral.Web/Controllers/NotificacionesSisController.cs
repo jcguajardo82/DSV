@@ -36,6 +36,7 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+
         public ActionResult GetNotificacionesSisId(int IdImagen)
         {
             try
@@ -55,7 +56,6 @@ namespace ServicesManagement.Web.Controllers
             }
         }
         
-
         public List<ImagenNotificacion> lstImagenNotificacion(DataTable dt)
         {
 
@@ -101,6 +101,7 @@ namespace ServicesManagement.Web.Controllers
 
             return lst;
         }
+
         public ActionResult AddNotificacionesSis()
         {
             string Titulo = Request.Form["Titulo"].ToString();
@@ -150,13 +151,26 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+        public ActionResult DeleteNotificacion(int num)
+
+        {
+            try
+            {
+                DALNotificacionesSis.ImagenNotificacion_Del(num, User.Identity.Name);
+
+                var result = new { Success = true, Message = "Eliminacion exitosa" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         public ActionResult NotificacionSis() {
 
             var lst = lstImagenNotificacion(DALNotificacionesSis.ImagenNotificacion_CnsbyDates().Tables[0]);
-
-           
-
 
             return View(lst);
         }
