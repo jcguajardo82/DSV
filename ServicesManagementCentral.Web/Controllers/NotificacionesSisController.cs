@@ -36,14 +36,14 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
-        public ActionResult GetNotificacionesSisId()
+        public ActionResult GetNotificacionesSisId(int IdImagen)
         {
             try
             {
 
 
                 //var lst = DataTableToModel.ConvertTo<ImagenNotificacion>(DALNotificacionesSis.ImagenNotificacion_Cns().Tables[0]);
-                var lst = lstImagenNotificacion(DALNotificacionesSis.ImagenNotificacion_Cns().Tables[0]).FirstOrDefault();
+                var lst = lstImagenNotificacion(DALNotificacionesSis.ImagenNotificacion_CnsbyId(IdImagen).Tables[0]).FirstOrDefault();
 
                 var result = new { Success = true, resp = lst };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -103,43 +103,22 @@ namespace ServicesManagement.Web.Controllers
         }
         public ActionResult AddNotificacionesSis()
         {
+            string Titulo = Request.Form["Titulo"].ToString();
+            string FechaIni = Request.Form["FechaIni"].ToString();
+            string FechaFin = Request.Form["FechaFin"].ToString();
+            int IdImagen = int.Parse(Request.Form["IdImagen"].ToString());
+            bool bitActivo = Convert.ToBoolean(Request.Form["Activo"].ToString());
             // Checking no of files injected in Request object 
             if (Request.Files.Count > 0)
             {
                 try
                 {
-                    string Titulo = Request.Form["Titulo"].ToString();
-                    string FechaIni = Request.Form["FechaIni"].ToString();
-                    string FechaFin = Request.Form["FechaFin"].ToString();
-                    int IdImagen = int.Parse(Request.Form["IdImagen"].ToString());
-                    bool bitActivo = Convert.ToBoolean(Request.Form["Activo"].ToString());
-
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
                     for (int i = 0; i < files.Count; i++)
                     {
                         System.IO.Stream str, str1; String strmContents;
                         Int32 counter, strLen, strRead, strRead1;
-                        // Create a Stream object.
-                        //str = Request.InputStream;
-                        //// Find number of bytes in stream.
-                        //strLen = Convert.ToInt32(str.Length);
-                        //// Create a byte array.
-                        //byte[] strArr = new byte[strLen];
-                        //// Read stream into byte array.
-                        //strRead = str.Read(strArr, 0, strLen);
-
-                        //// Convert byte array to a text string.
-                        //strmContents = "";
-                        //for (counter = 0; counter < strLen; counter++)
-                        //{
-                        //    strmContents = strmContents + strArr[counter].ToString();
-                        //}
-                        //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
-                        //string filename = Path.GetFileName(Request.Files[i].FileName);  
-
-                        //DateTime dt = DateTime.Now;
-                        //string dateTime = dt.ToString("yyyyMMddHHmmssfff");
 
                         HttpPostedFileBase file = files[i];
                         str1 = file.InputStream;
@@ -155,30 +134,6 @@ namespace ServicesManagement.Web.Controllers
                         else {
                             DALNotificacionesSis.ImagenNotificacion_Up(IdImagen,Titulo, strArr1, FechaIni, FechaFin, User.Identity.Name);
                         }
-                        //string fname;
-
-                        //// Checking for Internet Explorer  
-                        //if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                        //{
-                        //    string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                        //    fname = testfiles[testfiles.Length - 1];
-                        //}
-                        //else
-                        //{
-                        //    fname = file.FileName;
-                        //}
-
-                        //fname = string.Format("{0}_{1}_{2}", idUeNo, "devolucion", dateTime);
-
-                        //// Get the complete folder path and store the file inside it.  
-                        //var path = Path.Combine(Server.MapPath("~/Files/"), fname);
-                        //var pathServerName = servername + "/Files/" + fname;
-
-                        //file.SaveAs(path);
-
-                        // DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, fname, DateTime.Now, User.Identity.Name);
-
-                        //DALManualesOperativos.spManualTitles_iUP(int.Parse(idManual), int.Parse(idOwner), ManualDesc, string.Empty, string.Empty, true, pathServerName, DateTime.Now, User.Identity.Name);
                     }
                     // Returns message that successfully uploaded  
                     return Json("File Uploaded Successfully!");
@@ -190,6 +145,7 @@ namespace ServicesManagement.Web.Controllers
             }
             else
             {
+                DALNotificacionesSis.ImagenNotificacion_Up(IdImagen, Titulo, null, FechaIni, FechaFin, User.Identity.Name);
                 return Json("No files selected.");
             }
         }
