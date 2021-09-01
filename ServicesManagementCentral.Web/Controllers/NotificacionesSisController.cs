@@ -193,5 +193,43 @@ namespace ServicesManagement.Web.Controllers
                 return Json("No files selected.");
             }
         }
+
+
+        public ActionResult NotificacionSis() {
+
+            var lst = lstImagenNotificacion(DALNotificacionesSis.ImagenNotificacion_CnsbyDates().Tables[0]);
+
+           
+
+
+            return View(lst);
+        }
+
+        public ActionResult Finaliza()
+        {
+            if (Session["loginTienda"] != null)
+            {
+                Session["Id_Num_UN"] = Session["loginTienda"].ToString();
+                Session["Desc_Num_UN"] = "";
+
+                System.Data.DataSet ds = DALServicesM.GetUN();
+
+                foreach (System.Data.DataRow r in ds.Tables[0].Rows)
+                {
+                    if (Session["loginTienda"].ToString().Trim().Equals(r[0].ToString().Trim()))
+                    {
+                        Session["Desc_Num_UN"] = r[1].ToString();
+                    }
+                }
+
+                return RedirectToAction("OrdenSeleccionada", "Ordenes");
+                //return RedirectToAction("Index", "Ordenes");
+            }
+            else
+            {
+                return RedirectToAction("Index", "CPanel");
+            }
+
+        }
     }
 }

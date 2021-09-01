@@ -1,8 +1,74 @@
-﻿
+﻿@model IEnumerable<ServicesManagement.Web.Models.NotificacionesSis.ImagenNotificacion>
 @{
     ViewBag.Title = "NotificacionSis";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4"><h2>Notificaciones de Sistema</h2></div>
+    <div class="col-4"></div>
+</div>
+<div class="row" style="padding-bottom:50px;">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-content">
+                <div id="wizard">
+                    @foreach (var item in Model)
+                    {
+                        <h3>@item.Titulo</h3>
+                        <section>
+                            <img class='image' style="width:100%" src='data:image/jpeg;base64,@item.strImagen'>
+                            @*<img class='image' width='240' height='160' src='data:image/jpeg;base64," + json.resp[i].strImg + "'>*@
+                        </section>
+                    }
 
-<h2>NotificacionSis</h2>
 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <link href="~/Content/Inspinia/Styles/steps/jquery.steps.css" rel="stylesheet" />
+    <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            quitaMenu();
+
+            $("#wizard").steps({
+                labels: {
+                    current: "current step:",
+                    pagination: "Pagination",
+                    finish: "Finalizar",
+                    next: "Continuar",
+                    previous: "Atras"
+
+                },
+                headerTag: "h3",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                autoFocus: true
+                //,stepsOrientation: "vertical"
+                , onFinished: function (event, currentIndex) {
+                    window.location.href = "NotificacionesSis/Finaliza";
+                }
+            });
+
+
+
+        });
+
+        function quitaMenu() {
+            //var objects = $(".liMenu");
+            //for (var obj of objects) {
+
+            //    obj.hide();
+            //    console.log(obj);
+            //}
+            $('.liMenu').remove();
+        }
+    </script>
+    }

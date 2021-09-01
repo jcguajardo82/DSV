@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using ServicesManagement.Web.DAL.NotificacionesSis;
+using System.Web.Mvc;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -51,29 +52,36 @@ namespace ServicesManagement.Web.Controllers
                 else
                 {
 
-                    if (Session["loginTienda"] != null)
+                    var notificaciones = DALNotificacionesSis.ImagenNotificacion_CnsbyDates().Tables[0].Rows.Count;
+
+                    if (notificaciones == 0)
                     {
-                        Session["Id_Num_UN"] = Session["loginTienda"].ToString();
-                        Session["Desc_Num_UN"] = "";
-
-                        System.Data.DataSet ds = DALServicesM.GetUN();
-
-                        foreach (System.Data.DataRow r in ds.Tables[0].Rows)
+                        if (Session["loginTienda"] != null)
                         {
-                            if (Session["loginTienda"].ToString().Trim().Equals(r[0].ToString().Trim()))
+                            Session["Id_Num_UN"] = Session["loginTienda"].ToString();
+                            Session["Desc_Num_UN"] = "";
+
+                            System.Data.DataSet ds = DALServicesM.GetUN();
+
+                            foreach (System.Data.DataRow r in ds.Tables[0].Rows)
                             {
-                                Session["Desc_Num_UN"] = r[1].ToString();
+                                if (Session["loginTienda"].ToString().Trim().Equals(r[0].ToString().Trim()))
+                                {
+                                    Session["Desc_Num_UN"] = r[1].ToString();
+                                }
                             }
+
+                            return RedirectToAction("OrdenSeleccionada", "Ordenes");
+                            //return RedirectToAction("Index", "Ordenes");
                         }
-
-                        return RedirectToAction("OrdenSeleccionada", "Ordenes");
-                        //return RedirectToAction("Index", "Ordenes");
+                        else
+                        {
+                            return RedirectToAction("Index", "CPanel");
+                        }
                     }
-                    else
-                    {
-                        return RedirectToAction("Index", "CPanel");
+                    else {
+                        return RedirectToAction("NotificacionSis", "NotificacionesSis");
                     }
-
                     //Session["userFail"] = "Usuario o Password incorrecto";
                     //return RedirectToAction("Login", "Security");
                 }

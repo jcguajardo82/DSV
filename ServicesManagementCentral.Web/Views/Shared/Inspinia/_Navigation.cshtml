@@ -34,7 +34,7 @@
                     foreach (System.Data.DataRow row in result)
                     {
 
-                        <li>
+                        <li class="liMenu" name="liMenu">
                             @if (row["controller"].ToString().Length != 0 || row["action"].ToString().Length != 0)
                             {
                                 <a href="@Url.Action(row["action"].ToString(), row["controller"].ToString())"><i class="@row["icono"]"></i> <span class="nav-label">@row["descripcionCorta"]</span><span class="fa arrow"></span></a>
