@@ -1901,12 +1901,13 @@ namespace ServicesManagement.Web.Controllers
                             GuardarTarifas(UeNo, OrderNo, tarifa);
                     }
 
-
+                    int peso = decimal.ToInt32(item.Peso);
                     int type = 1;
 
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
                         type = 4;
-                    string guia = CreateGuiaEstafeta(UeNo, OrderNo, int.Parse(item.Peso.ToString()), type);
+
+                    string guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
 
                     string servicioPaq = "estafeta";
                     string GuiaEstatus = "CREADA";
