@@ -1878,7 +1878,7 @@ namespace ServicesManagement.Web.Controllers
         #region Embarques
 
 
-        public ActionResult AddEmbalaje(List<PackageMeasure> Paquetes, string UeNo, int OrderNo,List<ProductEmbalaje> Products, string TrackingType ="Normal")
+        public ActionResult AddEmbalaje(List<PackageMeasure> Paquetes, string UeNo, int OrderNo,List<ProductEmbalaje> Products, string contentType, string TrackingType ="Normal")
         {
             string tarifa = string.Empty;
             try
@@ -1920,7 +1920,7 @@ namespace ServicesManagement.Web.Controllers
 
                     var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
                     item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
-                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus).Tables[0].Rows[0][0];
+                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, contentType).Tables[0].Rows[0][0];
 
                     #endregion
                 }
@@ -2056,7 +2056,7 @@ namespace ServicesManagement.Web.Controllers
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
                 PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus).Tables[0].Rows[0][0];
+                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null).Tables[0].Rows[0][0];
 
 
 
