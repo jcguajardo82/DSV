@@ -1,0 +1,367 @@
+﻿
+@{
+    ViewBag.Title = "Notificaciones de Sistema";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4"><h2>Notificaciones de Sistema</h2></div>
+        <div class="col-4"></div>
+
+    </div>
+
+    <div class="ibox-content p-xl" style="padding-top: 0px;padding-bottom: 0px;">
+
+        <br />
+        <div class="row scroll_horizontal">
+            <div class="col-12">
+                <table id="tblConsulta" class="table table-striped dataTable">
+                    <thead class="bg-danger-sor">
+                        <tr>
+                            <th>Id</th>
+                            <th>Titulo</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+
+                            <th>Usuario Creacion</th>
+                            <th>Fecha Creacion</th>
+                            <th>Fecha Modificación</th>
+                            <th>Activo</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-form" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="width:1700px">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h2 class="modal-title">Catalogo de Notificaciones</h2>
+                    <input type="hidden" id="hddId" />
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="frmCreateServicios">
+
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Título de la Notificación </label>
+                                    <input type="text" id="txtTitulo" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Imagen </label>
+                                    <div class="custom-file">
+                                        <input id="FileUpload1" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                        <label for="FileUpload1" class="custom-file-label">Seleccionar Archivo...</label>
+                                    </div>
+                                    @*<input type="button" class="btn btn-success btn-file" id="btnUpload" value="Subir Archivo" />*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label>Fecha Inicio</label>
+                                    @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+                                    <div class="input-group date" id="datetimepicker1">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input class="form-control datepicker" id="txtFecIni"
+                                               type="text" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <label>Fecha Fin</label>
+                                @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+                                <div class="input-group date" id="datetimepicker2">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input class="form-control datepicker" id="txtFecFin"
+                                           type="text" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Activo</label>
+                                    <select class="form-control m-b" id="ddlHabilitado">
+                                        <option value="False">NO</option>
+                                        <option value="True">SI</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="Guardar()" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section scripts {
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+        $(document).ready(function () {
+
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $('#tblConsulta').DataTable(
+                {
+
+                    language:
+                    {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                        },
+                        "buttons": {
+                            "print": "Imprimir",
+                            "pageLength": 'Mostrar %d Registros'
+
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
+                    ],
+                    buttons: [
+                        { extend: 'pageLength', className: 'btn-primary' },
+                        { extend: 'excel', className: 'btn-primary' },
+                        {
+                            text: 'Alta',
+                            action: function (e, dt, node, config) {
+
+                                $("#hddId").val("0");
+                                $("#txtTitulo").val("");
+                                $("#ddlHabilitado").val("true");
+                                $("#modal-form").modal('show');
+
+                            }
+                            , className: 'btn-primary'
+                        }
+                    ]
+                    //,"fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    //    if (aData[1] == "SETC") {
+                    //        $('td', nRow).css('background-color', '#B6BF00');
+                    //    } else if (aData[2] == "4") {
+                    //        $('td', nRow).css('background-color', 'Orange');
+                    //    }
+                    //}
+                }
+            );
+
+            GetConsulta();
+
+        });
+
+        function GetConsulta() {
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetNotificacionesSis", "NotificacionesSis")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+                datatype: "html",
+                success: function (json) {
+                    console.log(json);
+
+                    debugger;
+                    if (json.Success) {
+
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+
+                            myTable.row.add([
+                                json.resp[i].IdImagen,
+                                json.resp[i].Titulo,
+                                json.resp[i].FechaIni,
+                                json.resp[i].FechaFin,
+                                json.resp[i].CreationUser,
+                                json.resp[i].CreatedDate,
+                                json.resp[i].ModifDate,
+                                json.resp[i].BitActivo,
+
+                                "<button title='Editar' onclick=\"GetById(" + json.resp[i].IdImagen + ")\" type=\"button\" class=\"btn btn-white btn-circle\"> <i class=\"fa fa-edit\"></i></button>"
+                            ]).draw();
+                        }
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function Guardar() {
+
+            var _id= $("#hddId").val();
+            var _titulo = $("#txtTitulo").val();
+            var _activo = $("#ddlHabilitado").val();
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_id.length == 0) {
+                $("#txtTitulo").focus();
+                return;
+            }
+
+
+                            // Checking whether FormData is available in browser
+                if (window.FormData !== undefined) {
+
+                    var servername = window.location.origin;
+                    var fileUpload = $("#FileUpload1").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                        var nameext = files[i].name.split(".");
+                        debugger;
+                        if (nameext[1] != "png" & nameext[1] != "jpg" & nameext[1]!="jpeg" )
+                        {
+                            alert("Extensión no válida");
+                            return;
+                        }
+
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('IdImagen', _id);
+                    fileData.append('Titulo', _titulo);
+                    fileData.append('Activo', _activo);
+                    fileData.append('FechaIni', _FecIni);
+                    fileData.append('FechaFin', _FecFin);
+
+
+
+                    $.ajax({
+                        // url: '/ManualesOperativos/UploadFiles',
+                        url: '@Url.Action("AddNotificacionesSis", "NotificacionesSis")',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (result) {
+                            alert("Óperación realizada con éxito");
+                            location.reload();
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+                } else {
+                    alert("FormData is not supported.");
+                }
+        }
+
+        function GetById(id) {
+
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetNotificacionesSisId", "NotificacionesSis")',
+                data: {
+                     IdImagen: id
+                },
+                datatype: "html",
+                success: function (json) {
+                    console.log(json);
+
+                    debugger;
+                    if (json.Success) {
+                        $("#hddId").val(json.resp.IdImagen);
+                        $("#txtTitulo").val(json.resp.Titulo);
+                        $("#ddlHabilitado").val(json.resp.BitActivo);
+                        $("#txtFecIni").val(json.resp.FechaIni);
+                        $("#txtFecFin").val(json.resp.FechaFin);
+
+                        $("#modal-form").modal('show');
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+    </script>
+}
