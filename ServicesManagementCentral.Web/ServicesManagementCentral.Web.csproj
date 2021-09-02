@@ -3858,6 +3858,7 @@
     <Content Include="Views\ShipmentRequestsWMS\SolicitarGuia.cshtml" />
     <Content Include="Views\NotificacionesSis\NotificacionesCat.cshtml" />
     <Content Include="Views\NotificacionesSis\NotificacionSis.cshtml" />
+    <Content Include="Views\ShipmentRequestsWMS\EnviosProcesados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
