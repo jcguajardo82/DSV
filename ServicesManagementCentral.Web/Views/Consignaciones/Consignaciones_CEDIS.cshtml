@@ -46,9 +46,14 @@
                         <th>Fecha creacion de orden</th>
                         <th>Hora creacion de orden</th>
                         <th>Nombre del cliente</th>
-                        <th>Estatus de la orden</th>
-                        <th>Motivo de no recoliección</th>
-                        <th>Estatus del pedido reenviar</th>
+                        <th>Estatus del Pedido Surtido</th>
+                        <th>Estatus del Pedido Envio</th>
+
+                        <th>Servicio</th>
+                        <th>Guia</th>
+                        <th>Estatus del pedido</th>
+
+                        <th>Motivo de no recolección</th>
                         <th>Guia de devolucion</th>
                         <th>Estatus de la Guia de Devolucion</th>
                         <th>Guia de reenvio</th>
@@ -133,6 +138,31 @@
                 <button type="button" onclick="Inhabilitar()" class="btn btn-primary">Inhabilitar</button>
                 @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
             </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<h4 class="modal-title">Modal Header</h4>*@
+            </div>
+            <div class="modal-body">
+
+                @*<embed src="~/Content/Article List.pdf"
+                    frameborder="0" width="100%" height="400px">*@
+
+                <iframe id="viewrPDF" width="100%" height="400px" src=''></iframe>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -241,10 +271,22 @@
                             .clear()
                             .draw();
                         for (var i = 0; i < json.resp.length; i++) {
+                            // obtencion de la URLs para las guias del pedido
+                            var urlGuia = '';
+                            for (var x = 0; x < json.guias.length; x++) {
+                                if (json.resp[i].OrdenCompra == json.guias[x].Id_Num_Orden && json.resp[i].Consignacion == json.guias[x].UeNo) {
+                                    if (urlGuia == '') {
+                                        urlGuia = '<a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '</a>'
+                                    }
+                                    else {
+                                        urlGuia += '<br/> <a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '</a>'
+                                    }
+                                }
+                            }
 
-
+                            // asignacion de valores a la fila que se mostrara en pantalla
                             myTable.row.add([
-                               
+
                                 json.resp[i].Consignacion,
                                 json.resp[i].TotalConsignacion,
                                 json.resp[i].TipoAlmacen,
@@ -253,7 +295,12 @@
                                 json.resp[i].NombreCliente,
                                 json.resp[i].EstatusEnvio,
                                 json.resp[i].EstatusConsignacionAlmacen,
-                                json.resp[i].ConsignacionReenvio,
+
+                                json.resp[i].GuiaServicio,
+                                urlGuia, // json.resp[i].GuiaEnvio,
+                                json.resp[i].GuiaStatus,
+
+                                json.resp[i].MotivoNoRecoleccion,
                                 json.resp[i].GuiaDevolNro,
                                 json.resp[i].GuiaDevolStatus,
                                 json.resp[i].GuiaReenvioNro,
@@ -261,7 +308,7 @@
 
                             ]).draw();
                         }
-                       
+
 
                     }
                     else {
@@ -276,7 +323,6 @@
             });
 
         }
-
 
        @* function Inhabilitar() {
 
@@ -428,6 +474,39 @@
             GetconsignacionesAdm();
         });
     </script>
+
+    <script type="text/javascript">
+        function showpdf(num_guia) {
+            //debugger;
+
+            $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("GetPdfGuia", "Ordenes")',
+            data: {
+            guia: num_guia
+            },
+            datatype: "html",
+            success: function (json) {
+            if (json.Success) {
+
+            document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+
+            $("#myModal").modal("show");
+
+            }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+
+            }
+            });
+
+        }
+
+    </script>
+
+
 }
 
 

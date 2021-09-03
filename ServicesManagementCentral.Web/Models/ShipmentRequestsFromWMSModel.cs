@@ -12,6 +12,8 @@ namespace ServicesManagement.Web.Models
 		public string UeNo { get; set; }
 		public int OrderNo { get; set; }
 		public long CnscOrder { get; set; }
+        public string ProductId { get; set; }
+		public string Barcode { get; set; }
 		public int idOwner { get; set; }
 		public long idSupplierWH { get; set; }
 		public long idSupplierWHCode { get; set; }
@@ -73,7 +75,7 @@ namespace ServicesManagement.Web.Models
 		public DateTime createdDate { get; set; }
 		public string createdUser { get; set; }
 		public bool bitProcesado { get; set; }
-		public int IdTrackingService { get; set; }
+		public string IdTrackingService { get; set; }
 		public string TrackingServiceName { get; set; }
 		public string ucc { get; set; }
 

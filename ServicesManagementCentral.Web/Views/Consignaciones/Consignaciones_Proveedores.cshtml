@@ -230,9 +230,9 @@
                                 if (json.resp[i].OrdenCompra == json.guias[x].Id_Num_Orden && json.resp[i].Consignacion == json.guias[x].UeNo)
                                 {
                                     if (urlGuia == '')
-                                        urlGuia = "<a onclick='showpdf(" + json.guias[x].IdGuiasPaq + ");return false;' href='#' title='Click para ver el pdf de la guia' class='btn btn-link'>" + json.guias[x].IdGuiasPaq + "</a>"
+                                        urlGuia = '<a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '</a>'
                                     else
-                                        urlGuia += "<br/> <a onclick='showpdf(" + json.guias[x].IdGuiasPaq + ");return false;' href='#' title='Click para ver el pdf de la guia' class='btn btn-link'>" + json.guias[x].IdGuiasPaq + "</a>"
+                                        urlGuia += '<br/> <a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '</a>'
                                 }
                             }
                             //console.log('guia', urlGuia);

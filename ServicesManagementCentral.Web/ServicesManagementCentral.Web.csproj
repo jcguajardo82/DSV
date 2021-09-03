@@ -223,6 +223,7 @@
     <Compile Include="Controllers\AltaProveedorController.cs" />
     <Compile Include="Controllers\ManualesOperativosController.cs" />
     <Compile Include="Controllers\NivelExistenciaController.cs" />
+    <Compile Include="Controllers\NotificacionesSisController.cs" />
     <Compile Include="Controllers\OperacionesController.cs" />
     <Compile Include="Controllers\OrdenesCompraController.cs" />
     <Compile Include="Controllers\OrdenesDSTController.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="DAL\EstatusReenvioMcia\DALEstatusReenvioMcia.cs" />
     <Compile Include="DAL\ManualesOperativos\DALManualesOperativos.cs" />
     <Compile Include="DAL\NivelExistencia\DALNivelExistencia.cs" />
+    <Compile Include="DAL\NotificacionesSis\DALNotificacionesSis.cs" />
     <Compile Include="DAL\OrdenesCompra\DALOrdenesCompra.cs" />
     <Compile Include="DAL\Ordenes\DALEmbarques.cs" />
     <Compile Include="DAL\ProcesoReciboDevoluciones\DALProcesoReciboDevoluciones.cs" />
@@ -311,6 +313,7 @@
     <Compile Include="Models\ManualesOperativosModels.cs" />
     <Compile Include="Models\ManualesOp\ManualTypesModel.cs" />
     <Compile Include="Models\NivelExistencia\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
+    <Compile Include="Models\NotificacionesSis\ImagenNotificacion.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrdersDetail.cs" />
     <Compile Include="Models\ProcesoReciboDevoluciones\ProcesoReciboDevoluciones.cs" />
@@ -361,6 +364,7 @@
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoConsigmentsVehicles.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcess.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcessSel.cs" />
+    <Compile Include="Models\ProductDimensionsModel.cs" />
     <Compile Include="Models\ReemvioMcia\DetalleReenvioMciaCEDIS.cs" />
     <Compile Include="Models\ReemvioMcia\ReenvioMciaCEDIS.cs" />
     <Compile Include="Models\ReemvioMcia\ReenvioMciaProveedor.cs" />
@@ -3852,6 +3856,9 @@
     <Content Include="Views\Catalogo\ShipmentPacking\Create.cshtml" />
     <Content Include="Views\ShipmentRequestsWMS\Index.cshtml" />
     <Content Include="Views\ShipmentRequestsWMS\SolicitarGuia.cshtml" />
+    <Content Include="Views\NotificacionesSis\NotificacionesCat.cshtml" />
+    <Content Include="Views\NotificacionesSis\NotificacionSis.cshtml" />
+    <Content Include="Views\ShipmentRequestsWMS\EnviosProcesados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

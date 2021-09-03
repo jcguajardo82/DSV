@@ -29,8 +29,10 @@ namespace ServicesManagement.Web.Models.Consignaciones
             public string GuiaDevolStatus { get; set; }
             public string GuiaReenvioNro { get; set; }
             public string GuiaReenvioStatus { get; set; }
-
+        
+        public string GuiaServicio { get; set; }
         public string GuiaEnvio { get; set; }
+        public string GuiaStatus { get; set; }
         public string GuiaVig { get; set; }
         public string FechaPago { get; set; }
         public string FechaLimite { get; set; }

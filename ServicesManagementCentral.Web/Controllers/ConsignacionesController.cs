@@ -71,15 +71,20 @@ namespace ServicesManagement.Web.Controllers
             return View();
 
         }
-
-
         public ActionResult GetconsignacionesCEDIS(DateTime FecIni, DateTime FecFin)
         {
             try
             {
+                //var list = DataTableToModel.ConvertTo<ConsignacionesCEDIS>(
+                //    DALConsignacionesCEDIS.upCorpAlmacen_Cns_ConsigmentsCEDIS(User.Identity.Name,FecIni,FecFin).Tables[0]);
+                //var result = new { Success = true, resp = list };
+
+                DataSet ds = DALConsignacionesCEDIS.upCorpAlmacen_Cns_ConsigmentsCEDIS(User.Identity.Name, FecIni, FecFin);
                 var list = DataTableToModel.ConvertTo<ConsignacionesCEDIS>(
-                    DALConsignacionesCEDIS.upCorpAlmacen_Cns_ConsigmentsCEDIS(User.Identity.Name,FecIni,FecFin).Tables[0]);
-                var result = new { Success = true, resp = list };
+                    ds.Tables[0]);
+                var listGuias = DataTableToModel.ConvertTo<ConsignacionesGuias>(
+                    ds.Tables[1]);
+                var result = new { Success = true, resp = list, guias = listGuias };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)

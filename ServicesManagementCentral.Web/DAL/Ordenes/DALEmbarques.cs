@@ -167,7 +167,8 @@ namespace ServicesManagement.Web.DAL.Embarques
             string servicioPaq,
             string IdTrackingService,
             string pdfstring,
-            string GuiaEstatus)
+            string GuiaEstatus,
+            string contentType)
         {
 
             DataSet ds = new DataSet();
@@ -198,7 +199,7 @@ namespace ServicesManagement.Web.DAL.Embarques
                 parametros.Add("@TrackingServiceName", servicioPaq);
                 parametros.Add("@pdfstring", pdfstring);
                 parametros.Add("@TrackingServiceStatus", GuiaEstatus); // GuiaEstatus
-
+                parametros.Add("@contentType", contentType == null ? "": contentType);
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoTracking]", false, parametros);
 
                 return ds;
