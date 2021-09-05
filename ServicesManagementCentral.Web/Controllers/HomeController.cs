@@ -52,10 +52,10 @@ namespace ServicesManagement.Web.Controllers
                 else
                 {
 
-                    var notificaciones = DALNotificacionesSis.ImagenNotificacion_CnsbyDates().Tables[0].Rows.Count;
+//                    var notificaciones = DALNotificacionesSis.ImagenNotificacion_CnsbyDates().Tables[0].Rows.Count;
 
-                    if (notificaciones == 0)
-                    {
+//                    if (notificaciones == 0)
+//                    {
                         if (Session["loginTienda"] != null)
                         {
                             Session["Id_Num_UN"] = Session["loginTienda"].ToString();
@@ -78,10 +78,10 @@ namespace ServicesManagement.Web.Controllers
                         {
                             return RedirectToAction("Index", "CPanel");
                         }
-                    }
-                    else {
-                        return RedirectToAction("NotificacionSis", "NotificacionesSis");
-                    }
+//                    }
+//                    else {
+//                        return RedirectToAction("NotificacionSis", "NotificacionesSis");
+//                    }
                     //Session["userFail"] = "Usuario o Password incorrecto";
                     //return RedirectToAction("Login", "Security");
                 }
