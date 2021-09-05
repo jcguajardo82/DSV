@@ -1901,7 +1901,11 @@ namespace ServicesManagement.Web.Controllers
                             GuardarTarifas(UeNo, OrderNo, tarifa);
                     }
 
-                    int peso = decimal.ToInt32(item.Peso);
+                    decimal decimalRound = decimal.Round(item.Peso);
+                    if (decimalRound == 0)
+                        decimalRound = 1;
+
+                    int peso = decimal.ToInt32(decimalRound);
                     int type = 1;
 
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))

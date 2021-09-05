@@ -98,7 +98,7 @@
                         console.log(json);
                         for (var i = 0; i < json.json.length; i++) {
                             let _obj = {};
-                            _obj.id = json.json[i].IdCnscPacking + '-' + json.json[i].IdPackingCode;
+                            _obj.id = json.json[i].idCnscPacking + '-' + json.json[i].IdPackingCode;
                             _obj.text = json.json[i].IdPackingType;
                             _obj.ancho = json.json[i].PackageWidth;
                             _obj.largo = json.json[i].PackageLength;
@@ -123,7 +123,9 @@
                 , error: function (jqXHR, textStatus, errorThrown) {
                     bootbox.alert(errorThrown);
                 }
-            });
+             });
+
+            console.log(_jsonPackings, _optionsPackings);
         }
         function ShowFilter() {
             $("#filter").collapse('toggle');
@@ -381,7 +383,7 @@
             var _alto;
             var _peso;
             _json = [];
-            if (_code == 'EMB' || _code == 'STC') {
+            //if (_code == 'EMB' || _code == 'STC') {
                 $.ajax({
                     async: false,
                     type: "GET",
@@ -393,23 +395,32 @@
                     datatype: "html",
                     success: function (json) {
                         if (json.Success) {
-                            _ancho = json.json[0].ANCHO;
-                            _largo = json.json[0].LARGO;
-                            _alto = json.json[0].ALTO;
-                            _peso = json.json[0].PESO;
+                            if(_code == 'EMB' || _code == 'STC') {
+                                _ancho = json.json[0].ANCHO;
+                                _largo = json.json[0].LARGO;
+                                _alto = json.json[0].ALTO;
+                                _peso = json.json[0].PESO;
+                            }
+                            else {
+                                var valores = _jsonPackings.find(x => x.id == selectVal);
+                                _ancho = valores.ancho;
+                                _largo = valores.largo;
+                                _alto = valores.alto;
+                                _peso = json.json[0].PESO;
+                            }
                         }
                     }
                     , error: function (jqXHR, textStatus, errorThrown) {
                         bootbox.alert(errorThrown);
                     }
                 });
-            } else {
-                var valores = _jsonPackings.find(x => x.id == selectVal);
-                _ancho = valores.ancho;
-                _largo = valores.largo;
-                _alto = valores.alto;
-                _peso = valores.peso;
-            }
+            //} else {
+            //    var valores = _jsonPackings.find(x => x.id == selectVal);
+            //    _ancho = valores.ancho;
+            //    _largo = valores.largo;
+            //    _alto = valores.alto;
+            //    _peso = valores.peso;
+            //}
 
             for (var x = 0; x < jsonCopy.length; x++) {
                 let _obj = {};
