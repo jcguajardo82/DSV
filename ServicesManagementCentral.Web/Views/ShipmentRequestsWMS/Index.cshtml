@@ -80,6 +80,7 @@
         var _jsonOrdenes = [];
         var _jsonPackings = [];
         var _optionsPackings = undefined;
+        var _uccWithPDF = [];
         $(document).ready(function () {
             Get();
             GetPackings();
@@ -285,63 +286,28 @@
                 //alert('Guardarrr');
 
                 console.log(jsonConfirm);
-                for (var i = 0; i < jsonConfirm.length; i++) {
-                    var items = new Array();
-                    var products = new Array();
-                    var _UeNo = jsonConfirm[i].ueNo;
-                    var _OrderNo = jsonConfirm[i].orderNo;
-
-                    var item = {};
-
-                    item.Tipo = jsonConfirm[i].tipoEmpaque;
-                    item.Peso = jsonConfirm[i].peso;
-                    item.Largo = jsonConfirm[i].largo;
-                    item.Ancho = jsonConfirm[i].ancho;
-                    item.Alto = jsonConfirm[i].alto;
-
-                    items.push(item);
-
-                    var product = {};
-                    product.Barcode = jsonConfirm[i].barcode;
-                    product.ProductId = jsonConfirm[i].productId;
-                    product.ProductName = '000000000';
-                    product.product = {};
-                    products.push(product);
-
-                    var _ucc = jsonConfirm[i].ucc;
                     //Send the JSON array to Controller using AJAX.
                         $.ajax({
                             type: "POST",
-                            url: '@Url.Action("AddEmbalaje", "Ordenes")',
+                            url: '@Url.Action("AddEmbalajePendiente", "Ordenes")',
                             data: JSON.stringify({
-                                Paquetes: items,
-                                UeNo: _UeNo,
-                                OrderNo: _OrderNo,
-                                Products: products,
-                                contentType: _ucc
+                                Paquetes: jsonConfirm
 
-                                // Paquetes, string UeNo, int OrderNo,
                             }),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (json) {
-                                if (json.Success) {
-                                    console.log(jsonConfirm);
-                                    UCCProcessed(_ucc);
-                                    //alert(json.resp);
-                                }
-                                else {
+                                if (json.Success)
+                                    location.reload();
+                                else
                                     alert(json.Message);
-                                }
                             }
                             , error: function (jqXHR, textStatus, errorThrown) {
                                 alert(errorThrown);
 
                             }
                         });
-
-                }
-                location.reload();
+                
             }
             else
                 alert('Los datos estan Incompletos');

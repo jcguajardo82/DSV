@@ -2002,6 +2002,11 @@ namespace ServicesManagement.Web.Controllers
 
                 }
 
+                if (contentType != null)
+                {
+                    DALServicesM.UCCProcesada(contentType);
+                }
+
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -2011,7 +2016,72 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+        public ActionResult AddEmbalajePendiente(List<ShipmentToTrackingModel> Paquetes)
+        {
+            string tarifa = string.Empty;
+            try
+            {
+                
+                foreach (ShipmentToTrackingModel item in Paquetes)
+                {
+                    #region Guias
+                    //List<string> folios = new List<string>();
+                    var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
+                    //folios.Add(FolioDisp);
+                    string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
+                    List<string> lstCarriers = new List<string>(carriers);
 
+                    EliminarTarifasAnteriores(item.ueNo, item.orderNo);
+                    foreach (var carrier in lstCarriers)
+                    {
+                        tarifa = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, carrier);
+
+                        if (!tarifa.Equals("error"))
+                            GuardarTarifas(item.ueNo, item.orderNo, tarifa);
+                    }
+
+                    decimal decimalRound = decimal.Round(item.peso);
+                    if (decimalRound == 0)
+                        decimalRound = 1;
+
+                    int peso = decimal.ToInt32(decimalRound);
+                    int type = 1;
+
+                    if (item.tipoEmpaque.Equals("CJA") || item.tipoEmpaque.Equals("EMB") || item.tipoEmpaque.Equals("STC"))
+                        type = 4;
+
+                    string guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+
+                    string servicioPaq = "estafeta";
+                    string GuiaEstatus = "CREADA";
+                    //TarifaModel tarifaSeleccionada = new TarifaModel();
+                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
+
+                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
+                    //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                    //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
+
+                    var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                    item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
+                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc).Tables[0].Rows[0][0];
+
+
+                    DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                     item.productId, item.barcode, "000000000", User.Identity.Name);
+
+                    DALServicesM.UCCProcesada(item.ucc);
+                    #endregion
+                }
+
+                var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
         //Cabeceras y productos
         public ActionResult LstCabecerasGuiasProds(string UeNo, int OrderNo)
         {

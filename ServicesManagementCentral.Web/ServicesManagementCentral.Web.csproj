@@ -373,6 +373,7 @@
     <Compile Include="Models\ShipmentLocksModel.cs" />
     <Compile Include="Models\ShipmentPackingModel.cs" />
     <Compile Include="Models\ShipmentRequestsFromWMSModel.cs" />
+    <Compile Include="Models\ShipmentToTrackingModel.cs" />
     <Compile Include="Models\SubirArchivos\CargaManuales.cs" />
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="Models\TotalOrdenes\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
