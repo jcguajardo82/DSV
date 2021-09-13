@@ -40,6 +40,10 @@ namespace ServicesManagement.Web.Models.Consignaciones
         public string FechaEntrega { get; set; }
         public string HoraEntrega { get; set; }
         public string QuienRecibio { get; set; }
+
+        public string FechaProg { get; set; }
+        public string HoraProg { get; set; }
+
         public string GuiaStatus { get; set; }
         public string NroAlmacen { get; set; }
         public string NombreAlmacen { get; set; }
