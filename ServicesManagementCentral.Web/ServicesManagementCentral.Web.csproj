@@ -3590,6 +3590,8 @@
     <Content Include="Content\Scripts\utils\utils.js" />
     <Content Include="Content\site.css" />
     <Content Include="Content\site.scss" />
+    <Content Include="Content\video-js.css" />
+    <Content Include="Content\video.js" />
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
