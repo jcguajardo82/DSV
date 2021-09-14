@@ -34,7 +34,7 @@ namespace ServicesManagement.Web.DAL.DALHistorialRMA
                 parametros.Add("@fechafin", FecFin); // parametro admin fijo
 
                 if (OrderId != null)
-                    parametros.Add("@OrderId", OrderId);
+                    parametros.Add("@OrderNo", OrderId);
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_OrdersByDates]", false, parametros);

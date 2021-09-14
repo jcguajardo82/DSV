@@ -454,6 +454,68 @@ namespace ServicesManagement.Web.Controllers
         }
 
         [HttpPost]
+        public JsonResult FinalizarEmbarqueDSV(string OrderNo, string tId, string trans, string ue, string store, string status
+    , string bolsas, string contenedores, string hieleras, string checkPinPad)
+        {
+
+            try
+            {
+
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_FinalizarEmbarqueDSV"];
+
+                //metodo mio
+                InformacionOrden o = new InformacionOrden();
+
+                o.Orden = new InformacionDetalleOrden();
+                o.Orden.NumeroOrden = OrderNo;
+
+                o.Orden.EstatusUnidadEjecucion = "3";   //status;
+                o.Orden.NumeroUnidadEjecucion = ue;
+                o.Orden.NumeroTienda = Convert.ToInt32(store);
+                o.Expedidor.NombreExpedidor = "";
+
+                o.Expedidor.NumeroBolsas = Convert.ToInt32(bolsas);
+                o.Expedidor.NumeroContenedores = Convert.ToInt32(contenedores);
+                o.Expedidor.NumeroEnfriadores = Convert.ToInt32(hieleras);
+
+                if (!string.IsNullOrEmpty(checkPinPad)) { o.Expedidor.Terminal = checkPinPad; }
+                else { o.Expedidor.Terminal = "0"; }
+
+
+                string json2 = string.Empty;
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                //json2 = js.Serialize(o);
+                js = null;
+                json2 = JsonConvert.SerializeObject(o);
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarEmbarqueDSV"], "", json2);
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
+
+                var result = new { Success = true, Message = "Alta exitosa" };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception x)
+            {
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.ERROR, "", false, x);
+
+                var result = new { Success = false, Message = x.Message };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+
+        [HttpPost]
         public JsonResult FinalizarTransportista(string OrderNo, string tId, string trans, string ue, string store, string status)
         {
 
@@ -1901,7 +1963,11 @@ namespace ServicesManagement.Web.Controllers
                             GuardarTarifas(UeNo, OrderNo, tarifa);
                     }
 
-                    int peso = decimal.ToInt32(item.Peso);
+                    decimal decimalRound = decimal.Round(item.Peso);
+                    if (decimalRound == 0)
+                        decimalRound = 1;
+
+                    int peso = decimal.ToInt32(decimalRound);
                     int type = 1;
 
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
@@ -1936,6 +2002,11 @@ namespace ServicesManagement.Web.Controllers
 
                 }
 
+                if (contentType != null)
+                {
+                    DALServicesM.UCCProcesada(contentType);
+                }
+
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -1945,7 +2016,72 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+        public ActionResult AddEmbalajePendiente(List<ShipmentToTrackingModel> Paquetes)
+        {
+            string tarifa = string.Empty;
+            try
+            {
+                
+                foreach (ShipmentToTrackingModel item in Paquetes)
+                {
+                    #region Guias
+                    //List<string> folios = new List<string>();
+                    var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
+                    //folios.Add(FolioDisp);
+                    string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
+                    List<string> lstCarriers = new List<string>(carriers);
 
+                    EliminarTarifasAnteriores(item.ueNo, item.orderNo);
+                    foreach (var carrier in lstCarriers)
+                    {
+                        tarifa = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, carrier);
+
+                        if (!tarifa.Equals("error"))
+                            GuardarTarifas(item.ueNo, item.orderNo, tarifa);
+                    }
+
+                    decimal decimalRound = decimal.Round(item.peso);
+                    if (decimalRound == 0)
+                        decimalRound = 1;
+
+                    int peso = decimal.ToInt32(decimalRound);
+                    int type = 1;
+
+                    if (item.tipoEmpaque.Equals("CJA") || item.tipoEmpaque.Equals("EMB") || item.tipoEmpaque.Equals("STC"))
+                        type = 4;
+
+                    string guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+
+                    string servicioPaq = "estafeta";
+                    string GuiaEstatus = "CREADA";
+                    //TarifaModel tarifaSeleccionada = new TarifaModel();
+                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
+
+                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
+                    //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                    //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
+
+                    var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                    item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
+                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc).Tables[0].Rows[0][0];
+
+
+                    DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                     item.productId, item.barcode, "000000000", User.Identity.Name);
+
+                    DALServicesM.UCCProcesada(item.ucc);
+                    #endregion
+                }
+
+                var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
         //Cabeceras y productos
         public ActionResult LstCabecerasGuiasProds(string UeNo, int OrderNo)
         {
@@ -2227,7 +2363,8 @@ namespace ServicesManagement.Web.Controllers
                     m.DestinationInfo.cellPhone = r["Phone"].ToString();
                     m.DestinationInfo.city = r["City"].ToString();
                     m.DestinationInfo.contactName = r["CustomerName"].ToString();
-                    m.DestinationInfo.corporateName = r["CustomerName"].ToString();
+                    //m.DestinationInfo.corporateName = r["CustomerName"].ToString();
+                    m.DestinationInfo.corporateName = r["UeNo"].ToString();
                     m.DestinationInfo.customerNumber = r["CustomerNo"].ToString();
                     m.DestinationInfo.neighborhood = r["NameReceives"].ToString();
                     m.DestinationInfo.phoneNumber = r["Phone"].ToString();

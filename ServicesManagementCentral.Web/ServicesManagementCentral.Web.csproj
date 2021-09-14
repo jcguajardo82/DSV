@@ -54,6 +54,12 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.6\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.6.0\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
     <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net45\Gma.QrCodeNet.Encoding.dll</HintPath>
     </Reference>
@@ -110,6 +116,7 @@
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.40306.1554, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.4.403061554\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -265,6 +272,7 @@
     <Compile Include="DAL\TotalOrdenes\DALTotalOrdenes.cs" />
     <Compile Include="DAL\Vehiculos\DALVehiculos.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Models\ActualizacionesInventario.cs" />
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHForAproval.cs" />
@@ -373,6 +381,9 @@
     <Compile Include="Models\ShipmentLocksModel.cs" />
     <Compile Include="Models\ShipmentPackingModel.cs" />
     <Compile Include="Models\ShipmentRequestsFromWMSModel.cs" />
+    <Compile Include="Models\ShipmentRequests\ShipmentRequests.cs" />
+    <Compile Include="Models\ShipmentRequests\ShipmentUCC.cs" />
+    <Compile Include="Models\ShipmentToTrackingModel.cs" />
     <Compile Include="Models\SubirArchivos\CargaManuales.cs" />
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="Models\TotalOrdenes\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
@@ -3579,6 +3590,8 @@
     <Content Include="Content\Scripts\utils\utils.js" />
     <Content Include="Content\site.css" />
     <Content Include="Content\site.scss" />
+    <Content Include="Content\video-js.css" />
+    <Content Include="Content\video.js" />
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
