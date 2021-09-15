@@ -284,6 +284,7 @@
     <Compile Include="Models\Autorizacion\upCorpOms_Cns_OrdersByItems.cs" />
     <Compile Include="Models\CallCenter\MotivosRMAById.cs" />
     <Compile Include="Models\CallCenter\ProdCheckList.cs" />
+    <Compile Include="Models\CallCenter\tbl_OrdenFotosRMA_sUp.cs" />
     <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByHistorical.cs" />
     <Compile Include="Models\CallCenter\up_Corp_cns_OrderInfo.cs" />
     <Compile Include="Models\Config\Menu.cs" />
@@ -851,6 +852,8 @@
     <Content Include="Content\Inspinia\Styles\textSpinners\spinners.css" />
     <Content Include="Content\Inspinia\Styles\toastr\toastr.min.css" />
     <Content Include="Content\Inspinia\Styles\touchspin\jquery.bootstrap-touchspin.min.css" />
+    <Content Include="Content\plugins\blueimp\blueimp-gallery.min.css" />
+    <Content Include="Content\plugins\blueimp\jquery.blueimp-gallery.min.js" />
     <Content Include="Content\plugins\bootstrap-datetime\css\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\plugins\bootstrap-datetime\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\plugins\bootstrap-notify\bootstrap-notify.js" />
