@@ -75,7 +75,7 @@ namespace ServicesManagement.Web.Controllers
                 var ds = DALAutorizacion.upCorpOms_Cns_OrdersByItems(OrderSF, accion);
                 var lst = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByItems>(ds.Tables[0]);
                 var item = DataTableToModel.ConvertTo<Header>(ds.Tables[1]).FirstOrDefault();
-                var images = DataTableToModel.ConvertTo<Tbl_OrdenFotosRMA_sUp>(DALCallCenter.tbl_OrdenFotosRMA_sUp(95).Tables[0]);
+                var images = DataTableToModel.ConvertTo<Tbl_OrdenFotosRMA_sUp>(DALCallCenter.tbl_OrdenFotosRMA_sUp(OrderSF).Tables[0]);
 
                 var result = new
                 {
