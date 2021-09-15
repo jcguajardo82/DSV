@@ -3571,6 +3571,8 @@
     <Content Include="Content\plugins\slick\slick.js" />
     <Content Include="Content\plugins\slick\slick.min.js" />
     <Content Include="Content\plugins\topojson\topojson.min.js" />
+    <Content Include="Content\plugins\zoomy\zoomy.css" />
+    <Content Include="Content\plugins\zoomy\zoomy.js" />
     <Content Include="Content\PrintModal.css" />
     <Content Include="Content\Scripts\cpanelLocal.js" />
     <Content Include="Content\Scripts\cpanel.js" />

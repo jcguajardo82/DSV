@@ -27,12 +27,10 @@
                             <th>Fecha de Creacion Orden</th>
                             <th>Autorizacion <br />Almacen</th>
                             @*<th>Auatorizacion <br />Almacen</th>
-        <th>Auatorizacion <br />Administrador</th>*@
+                                <th>Auatorizacion <br />Administrador</th>*@
                         </tr>
                     </thead>
                     <tbody>
-    
-
                     </tbody>
                 </table>
             </div>
@@ -96,13 +94,13 @@
                                 </small>
                             </div>
                             @*<div class="col-xs-3 col-md-3 col-lg-3">
-                                <h3>Tipo de Almacén</h3>
-                                <small>
-                                    <FONT id="lblTipoAlmacen" face=verdana,arial,helvetica size=2>
+                <h3>Tipo de Almacén</h3>
+                <small>
+                    <FONT id="lblTipoAlmacen" face=verdana,arial,helvetica size=2>
 
-                                    </FONT>
-                                </small>
-                            </div>*@
+                    </FONT>
+                </small>
+            </div>*@
                         </div>
                         <hr />
                         <div class="row">
@@ -124,7 +122,12 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="container">
+                                <div id='el'></div>
+                            </div>
 
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -138,7 +141,8 @@
 }
 @section scripts {
 
-
+    <script src="~/Content/plugins/zoomy/zoomy.js"></script>
+    <link href="~/Content/plugins/zoomy/zoomy.css" rel="stylesheet" />
 
     <script>
 
@@ -196,7 +200,7 @@
         }
 
         function GetDetalle(accion, id) {
-     
+
             $.ajax({
                 async: false,
                 type: "get",
@@ -232,6 +236,26 @@
                             ]).draw();
                         }
                         table.columns.adjust().draw();
+
+
+                        $('#el').empty();
+                        var urls = [];
+                        for (var i = 0; i < json.imgs.length; i++) {
+
+                            urls.push(json.imgs[i].FotoURL);
+                        }
+
+
+                        if (urls.length > 0) {
+                            var options = {
+                                //thumbLeft:true,
+                                //thumbRight:true,
+                                //thumbHide:true,
+                                //   width:600,
+                                //height:350,
+                            };
+                            $('#el').zoomy(urls, options);
+                        }
 
                         $("#lblTipoSolicitud").text(json.head.Descripcion_Padre);
                         $("#lblTipoMovimiento").text(json.head.Descripcion_Motivo);

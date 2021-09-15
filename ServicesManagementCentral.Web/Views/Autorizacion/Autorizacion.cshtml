@@ -123,20 +123,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div id="divImg" class="lightBoxGallery">
-
-
+                            <div class="container">
+                                <div id='el'></div>
                             </div>
-                            <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
-                            <div id="blueimp-gallery" class="blueimp-gallery">
-                                <div class="slides"></div>
-                                <h3 class="title"></h3>
-                                <a class="prev">‹</a>
-                                <a class="next">›</a>
-                                <a class="close">×</a>
-                                <a class="play-pause"></a>
-                                <ol class="indicator"></ol>
-                            </div>
+
                         </div>
                     </form>
                 </div>
@@ -150,10 +140,23 @@
     </div>
 }
 @section scripts {
-
-    <link href="~/Content/plugins/blueimp/blueimp-gallery.min.css" rel="stylesheet" />
-    <script src="~/Content/plugins/blueimp/jquery.blueimp-gallery.min.js"></script>
+    <script src="~/Content/plugins/zoomy/zoomy.js"></script>
+    <link href="~/Content/plugins/zoomy/zoomy.css" rel="stylesheet" />
     <script>
+        //var urls = [
+        //    'https://source.unsplash.com/h0s58n-8R6w/600x350',
+        //    'https://source.unsplash.com/jQ2_DWnIX7Y/600x350',
+        //    'https://source.unsplash.com/u4gwRbr2_j0/600x350'
+        //];
+        //var options = {
+        //    //thumbLeft:true,
+        //    //thumbRight:true,
+        //    //thumbHide:true,
+        //    //width:600,
+        //    //height:350
+        //};
+        //$('#el').zoomy(urls, options);
+
 
         function GetOrdenes(){
             $.ajax({
@@ -247,14 +250,24 @@
                         table.columns.adjust().draw();
                         //FotoURL
 
-                        $('.lightBoxGallery').empty();
+                        $('#el').empty();
+                        var urls = [];
                         for (var i = 0; i < json.imgs.length; i++) {
-                            var apnd = "<a href='" + json.imgs[i].FotoURL + "'  data-gallery=''><img src='" + json.imgs[i].FotoURL +"'></a>";
-                            $('.lightBoxGallery').append(apnd);
+                         
+                            urls.push(json.imgs[i].FotoURL);
                         }
 
 
-
+                        if (urls.length > 0) {
+                            var options = {
+                                //thumbLeft:true,
+                                //thumbRight:true,
+                                //thumbHide:true,
+                                //   width:600,
+                                //height:350,
+                            };
+                            $('#el').zoomy(urls, options);
+                        }
 
 
 
