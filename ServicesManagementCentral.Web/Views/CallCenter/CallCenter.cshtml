@@ -572,14 +572,15 @@
                         <table id="tblBusquedaArt2" class="table table-striped table-bordered table-hover">
                             <thead class="bg-danger-sor">
                                 <tr role="row">
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 118px;">Código</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1">Descripción</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 116px;">Marca</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 126px;">Precio</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 124px;">Normal</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 120px;">Dscto</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 120px;"></th>
-
+                                    <th>Código</th>
+                                    <th>Descripción</th>
+                                    <th>Marca</th>
+                                    <th>Precio</th>
+                                    <th>Normal</th>
+                                    <th>Dscto</th>
+                                    <th></th>
+                                    <th>Cantidad</th>
+                                    <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody id="feedback"></tbody>
@@ -594,7 +595,6 @@
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">Cantidad</span>
                             <input type="text" id="Addcantidad" name="Addcantidad" class="form-control" placeholder="Cantidad de producto" aria-describedby="basic-addon2">
-
                         </div>
                     </div>
 
@@ -779,8 +779,7 @@
     <script>
             $(document).ready(function () {
 
-
-                $('#tblConsultaCte thead tr').clone(true).appendTo('#tblConsulta thead');
+                $('#tblConsultaCte thead tr').clone(true).appendTo('#tblConsultaCte thead');
                 $('#tblConsultaCte thead tr:eq(0) th').each(function (i) {
                     var title = $(this).text();
                     $(this).html('<input type="text" placeholder="Search ' + title + '" />');
@@ -828,7 +827,54 @@
                     }
                 );
 
+                $('#tblBusquedaArt2 thead tr').clone(true).appendTo('#tblBusquedaArt2 thead');
+                $('#tblBusquedaArt2 thead tr:eq(0) th').each(function (i) {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
 
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+
+                var table1 = $("#tblBusquedaArt2").DataTable(
+                    {
+                        dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                        processing: true,
+                        searching: true,
+                        ordering: true,
+                        order: [[1, 'asc']],
+                        filter: false,
+                        info: false,
+                        stateSave: false,
+                        select: true,
+                        select: {
+                            style: 'single'
+                        },
+                        //Paggin
+                        paging: true,
+                        pageLength: 10,
+                        lengthMenu: [10, 25, 50, 100, 500],
+
+                        // destroy: true, //destruye automaticamente la referencia a la tabla
+                        //Ajax
+                        //serverSide: true,
+                        //bServerSide: true,
+                        //sServerMethod: "GET",
+                        buttons: ['csv', 'excel'],
+                        orderCellsTop: false,
+                        fixedHeader: true
+
+                    }
+                );
+                table1.buttons().remove();
 
             $("#wizard").steps({
                 labels: {
@@ -1025,8 +1071,10 @@
                                     + "<div class=\"col-xs-2 col-md-2 col-lg-2\">"
                                     + "<img width='100' height='100' id=\"imgProduct2\" src=\" " + value.UrlImage + " \" class=\"img - lg\">"
                                     + "</div>"
-
-                                    + "</td></tr>");
+                                    + "</td>"
+                                    + "<td>" + value.Price + "</td>"
+                                    + "<td>" + value.Price + "</td>"
+                                    + "</tr>");
 
                                 document.getElementById("imgProduct2").src = value.UrlImage;
 
