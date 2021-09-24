@@ -590,15 +590,14 @@
                         <img id="imgProduct2" src="~/Content/images/theme/default_image_01.png" class="img-lg">
                     </div>*@
                 </div>
-                <div class="row">
+                @*<div class="row">
                     <div class="col-4">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">Cantidad</span>
                             <input type="text" id="Addcantidad" name="Addcantidad" class="form-control" placeholder="Cantidad de producto" aria-describedby="basic-addon2">
                         </div>
                     </div>
-
-                </div>
+                </div>*@
 
             </div>
             <div class="modal-footer">
@@ -1032,14 +1031,12 @@
                 $('#txtProdArt').focus();
                 return;
             }
-            $("#exampleModal").modal("show");
-
-
+            //$("#exampleModal").modal("show");
             //imgProduct
             //document.getElementById("imgProduct").src = "https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/BGBD_STG/on/demandware.static/-/Sites-soriana-grocery-master-catalog/default/dw4f7cd627/images/product/7501022133286-A.jpg";
 
-            $('#tblBusquedaArt2 > tbody').empty();
-            document.getElementById("Addcantidad").value = "";
+            //$('#tblBusquedaArt2 > tbody').empty();
+            //document.getElementById("Addcantidad").value = "";
             //tblBusquedaArt
             $.ajax({
                         "url": "@Url.Action("GetProduct", "CallCenter")",
@@ -1048,41 +1045,45 @@
 
                         "dataType": "json",
                         "success": function (data) {
-                            //var options = "";
-                            //$.each(data, function (index, value) {
-                            //    options += '<option value="' + value.id + '">' + value.nombre + '</option>';
+                            var myTable = $('#tblBusquedaArt2').DataTable();
+                            myTable
+                                .clear()
+                                .draw();
+                            for (var i = 0; i < data.data.length; i++) {
+
+
+                                myTable.row.add([
+
+                                    data.data[i].Barcode,
+                                    data.data[i].Description,
+                                    data.data[i].Company,
+                                    data.data[i].Price,
+                                    data.data[i].Price,
+                                    data.data[i].PromotionalPrice,
+                                    "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
+                                    data.data[i].Price,
+                                    "<button title='Agregar Producto' onclick='SelCte(\"" + data.data[i].Price + "\")' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+                                ]).draw();
+                            }
+
+                            $("#exampleModal").modal("show");
+
+                            //$.each(data.data, function (index, value) {
+                            //    $('#feedback').append("<tr><td>" + value.Barcode + "</td>"
+                            //        + "<td>" + value.Description + "</td>"
+                            //        + "<td>" + value.Company + "</td>"
+                            //        + "<td>" + value.Price + "</td>"
+                            //        + "<td>" + value.Price + "</td>"
+                            //        + "<td>" + value.PromotionalPrice + "</td><td>"
+                            //        + "<div class=\"col-xs-2 col-md-2 col-lg-2\">"
+                            //        + "<img width='100' height='100' id=\"imgProduct2\" src=\" " + value.UrlImage + " \" class=\"img - lg\">"
+                            //        + "</div>"
+                            //        + "</td>"
+                            //        + "<td>" + value.Price + "</td>"
+                            //        + "<td>" + value.Price + "</td>"
+                            //        + "</tr>");
+                            //    document.getElementById("imgProduct2").src = value.UrlImage;
                             //});
-                            //$("#cmbTda").html(options);
-
-                            //$("#cmbTda option[value=" + 0 + "]").attr("selected", true);
-                            //$('#csdc_tipoequipo option:not(:selected)').attr('disabled', true);
-
-                            debugger;
-
-                            $.each(data.data, function (index, value) {
-
-
-                                $('#feedback').append("<tr><td>" + value.Barcode + "</td>"
-                                    + "<td>" + value.Description + "</td>"
-                                    + "<td>" + value.Company + "</td>"
-                                    + "<td>" + value.Price + "</td>"
-                                    + "<td>" + value.Price + "</td>"
-                                    + "<td>" + value.PromotionalPrice + "</td><td>"
-                                    + "<div class=\"col-xs-2 col-md-2 col-lg-2\">"
-                                    + "<img width='100' height='100' id=\"imgProduct2\" src=\" " + value.UrlImage + " \" class=\"img - lg\">"
-                                    + "</div>"
-                                    + "</td>"
-                                    + "<td>" + value.Price + "</td>"
-                                    + "<td>" + value.Price + "</td>"
-                                    + "</tr>");
-
-                                document.getElementById("imgProduct2").src = value.UrlImage;
-
-                            });
-
-
-
-
 
                             //document.getElementById("add_product").value = data.data.Barcode;
                             //document.getElementById("add_description").value = data.data.Description;
