@@ -342,8 +342,8 @@ namespace ServicesManagement.Web.Controllers
             {
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var client = new RestClient("http://localhost:7071/api/Buscador_Producto?productId=" + product.Trim());
-                //var client = new RestClient("https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?productId=" + product.Trim());
+                //var client = new RestClient("http://localhost:7071/api/Buscador_Producto?productId=" + product.Trim());
+                var client = new RestClient("https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?productId=" + product.Trim());
 
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
@@ -1248,6 +1248,42 @@ namespace ServicesManagement.Web.Controllers
             result = string.Format("{0} {1}", fecha.Day, mes);
             return result;
         }
+
+        public ActionResult GetDirCte(int Id_Num_Cte )
+        {
+            try
+
+            {
+
+               
+
+                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirDirCteIdNumCte(Id_Num_Cte).Tables[0]);
+
+               
+              
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+                   
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
         #endregion
     }
 }
