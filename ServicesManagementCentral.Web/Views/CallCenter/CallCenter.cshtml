@@ -243,7 +243,9 @@
                             <div class="col col-xs-12 col-md-12">
                                 <div class="form-group">
                                     <label>Día</label>
-                                    <select class="form-control m-b" id="ddlDias"><option value="2021/04/16">HOY - 16 Abril</option><option value="2021/04/17">SÁBADO - 17 Abril</option><option value="2021/04/18">DOMINGO - 18 Abril</option><option value="2021/04/19">LUNES - 19 Abril</option><option value="2021/04/20">MARTES - 20 Abril</option><option value="2021/04/21">MIÉRCOLES - 21 Abril</option><option value="2021/04/22">JUEVES - 22 Abril</option></select>
+                                    <select class="form-control m-b" id="ddlDias" onchange="onchangeDias()">
+
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -251,7 +253,8 @@
                             <div class="col col-xs-12 col-md-12">
                                 <div class="form-group">
                                     <label>Entre</label>
-                                    <select class="form-control m-b" id="ddlHoras"><option value="15:01:00">15:01:00 - 16:00:00</option><option value="16:01:00">16:01:00 - 17:00:00</option><option value="17:01:00">17:01:00 - 18:00:00</option><option value="18:01:00">18:01:00 - 19:00:00</option><option value="19:01:00">19:01:00 - 20:00:00</option><option value="20:01:00">20:01:00 - 21:00:00</option><option value="21:01:00">21:01:00 - 22:00:00</option></select>
+                                    <select class="form-control m-b" id="ddlHoras">
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -555,7 +558,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -607,8 +609,6 @@
         </div>
     </div>
 </div>
-
-
 <div class="modal fade bd-example-modal-lg" id="dlgAddClients" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -845,6 +845,55 @@
                 transitionEffect: "slideLeft",
                 autoFocus: true,
                 stepsOrientation: "vertical"
+                , onStepChanging: function (event, currentIndex, newIndex)
+                {
+                    var ok = false;
+                    if (currentIndex == 0)
+                        {
+                        var t = Date.now();
+                       
+                         $.ajax({
+                            async: false,
+                            type: "GET",
+                            url: '@Url.Action("GetDias", "CallCenter")',
+                            data: {
+                                fechaOriginal: t
+                            },
+                            datatype: "html",
+                            success: function (json) {
+                            debugger;
+                                if (json.Success)
+                                {
+                                    var sel = $("#ddlDias");
+                                    sel.empty();
+
+                                    for (var i = 0; i < json.json.length; i++) {
+                                        sel.append('<option value="' + json.json[i].fecha + '">' + json.json[i].NombeDia + '</option>');
+                                    }
+
+                                    var sel2 = $("#ddlHoras");
+                                    sel2.empty();
+
+                                    for (var i = 0; i < json.horas.length; i++) {
+                                        sel2.append('<option value="' + json.horas[i].fecha + '">' + json.horas[i].NombeDia + '</option>');
+                                    }
+
+                                    ok = true;
+                            }
+                        }
+                        , error: function (jqXHR, textStatus, errorThrown) {
+                             bootbox.alert(errorThrown);
+
+                        }
+                         });
+
+                        return ok;
+                    }
+                    if (currentIndex == 1) {
+                        return true;
+                    }
+
+                    }
                 ,onFinished: function (event, currentIndex) {
                     alert('ya acabe');
                 }
@@ -1252,6 +1301,40 @@
             $('#lblTelefonoCte').text(resp.Telefono);
 
 
+        }
+
+
+
+        function onchangeDias() {
+
+            var _fechaOriginal = Date.now();
+            var _fecha = $("[id='ddlDias'] option:selected").text();
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetHorasEntrega", "CallCenter")',
+                data: {
+                    fechaOriginal: _fechaOriginal
+                    , fechaSelec:_fecha
+                },
+                datatype: "html",
+                success: function (json) {
+                debugger;
+                    if (json.Success)
+                    {
+                        var sel = $("#ddlHoras");
+                        sel.empty();
+
+                        for (var i = 0; i < json.json.length; i++) {
+                            sel.append('<option value="' + json.json[i].fecha + '">' + json.json[i].NombeDia + '</option>');
+                        }
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            bootbox.alert(errorThrown);
+
+            }
+            });
         }
     </script>
 

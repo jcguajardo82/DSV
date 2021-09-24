@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using System.Configuration;
 using static ServicesManagement.Web.Controllers.OrderFacts_UEModel;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -1114,6 +1115,138 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             }
+        }
+
+        public ActionResult GetDias(string fechaOriginal)
+        {
+            try
+            {
+
+                    List<Dias> dias = new List<Dias>();
+                    CultureInfo ci = new CultureInfo("Es-Es");
+                    for (int i = 0; i < 7; i++)
+                    {
+                        Dias dia = new Dias();
+                        if (i == 0)
+                        {
+                            dia.fecha = DateTime.Now.AddHours(-5).ToString("yyyy/MM/dd");
+                            dia.NombeDia = string.Format("HOY - {0}", NombreMesDia(DateTime.Now.AddHours(-5)));//ci.DateTimeFormat.DayNames[DateTime.Now.Date.Day];
+                        }
+                        else
+                        {
+                            dia.fecha = DateTime.Now.AddHours(-5).AddDays(i).ToString("yyyy/MM/dd");
+
+                            dia.NombeDia = string.Format("{0} - {1}", ci.DateTimeFormat.DayNames[(int)DateTime.Now.AddHours(-5).Date.AddDays(i).DayOfWeek].ToUpper()
+                                , NombreMesDia(DateTime.Now.AddHours(-5).AddDays(i)));
+                        }
+                        dias.Add(dia);
+                    }
+
+                    var horas = HoraEntrga(fechaOriginal, "HOY");
+                    var result = new { Success = true, json = dias, horas = horas };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+              
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public List<Dias> HoraEntrga(string fechaOriginal, string fechaSelec)
+        {
+            List<Dias> dias = new List<Dias>();
+            int hora = 9;
+            if (fechaSelec.ToUpper().Equals("HOY"))
+            {
+                //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
+                var fec = DateTime.Now.AddHours(-5).ToString();
+                hora = Convert.ToDateTime(fec).AddHours(3).Hour;
+            }
+
+            if (hora > 8 & hora < 21)
+            {
+                for (int i = hora; i < 22; i++)
+                {
+                    Dias dia = new Dias();
+
+                    dia.fecha = string.Format("{0}:01:00", i);
+                    dia.NombeDia = string.Format("{0}:01:00 - {1}:00:00", i, i + 1);
+
+                    dias.Add(dia);
+                }
+            }
+            return dias;
+        }
+
+        public ActionResult GetHorasEntrega(string fechaOriginal, string fechaSelec)
+        {
+
+            try
+            {
+               
+
+                    var dias = HoraEntrga(fechaOriginal, fechaSelec);
+                    var result = new { Success = true, json = dias };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+
+              
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public string NombreMesDia(DateTime fecha)
+        {
+            string result = string.Empty;
+            string mes = string.Empty;
+            switch (fecha.Month)
+            {
+                case 1:
+                    mes = "Enero";
+                    break;
+                case 2:
+                    mes = "Febrero";
+                    break;
+                case 3:
+                    mes = "Marzo";
+                    break;
+                case 4:
+                    mes = "Abril";
+                    break;
+                case 5:
+                    mes = "Mayo";
+                    break;
+                case 6:
+                    mes = "Junio";
+                    break;
+                case 7:
+                    mes = "Julio";
+                    break;
+                case 8:
+                    mes = "Agosto";
+                    break;
+                case 9:
+                    mes = "Septiembre";
+                    break;
+                case 10:
+                    mes = "Octubre";
+                    break;
+                case 11:
+                    mes = "Noviembre";
+                    break;
+                case 12:
+                    mes = "Diciembre";
+                    break;
+            }
+
+            result = string.Format("{0} {1}", fecha.Day, mes);
+            return result;
         }
         #endregion
     }
