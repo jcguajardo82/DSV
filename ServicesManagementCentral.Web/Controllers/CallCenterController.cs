@@ -783,17 +783,17 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult GetDetalleSF(int IdCancelacion,int idOrden)
+        public ActionResult GetDetalleSF(int IdCancelacion, int idOrden)
         {
             try
             {
-                
+
                 var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
-                    DALCallCenter.upCorpOms_Cns_OrdersByHistoricalSF(idOrden,IdCancelacion).Tables[0]);
+                    DALCallCenter.upCorpOms_Cns_OrdersByHistoricalSF(idOrden, IdCancelacion).Tables[0]);
 
                 var tot = list.Sum(x => x.SubTotal);
 
-              
+
                 var result = new { Success = true, resp = list, total = tot };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -804,14 +804,14 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult FinalizarSF(int IdCancelacion         
+        public ActionResult FinalizarSF(int IdCancelacion
            , int IdTSolicitud, int IdTmovimiento)
         {
             var cliente = string.Empty;
             try
             {
                 var urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
-               
+
 
                 cliente = string.Format("{0}/?order={1}", urlbase, IdCancelacion);
                 DALCallCenter.tbl_OrdenCancelada_uUp(IdCancelacion, IdTSolicitud, IdTmovimiento);
@@ -952,7 +952,7 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult DeleteMotivo( int IdMotivo)
+        public ActionResult DeleteMotivo(int IdMotivo)
 
         {
 
@@ -990,6 +990,131 @@ namespace ServicesManagement.Web.Controllers
         #endregion
 
 
-        //NVS
+        #region Alta PEdido
+
+        public ActionResult BuscarCliente(string Criterio = "")
+        {
+            try
+
+            {
+
+                bool exist = false;
+
+                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByName(Criterio).Tables[0]);
+
+                if (list != null)
+                {
+                    exist = true;
+                }
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+                    ,
+                    existe = exist
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public ActionResult VerificaCliente(string Criterio = "")
+        {
+            try
+
+            {
+
+                bool exist = false;
+
+                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]).FirstOrDefault();
+
+                if (list != null)
+                {
+                    exist = true;
+                }
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+                    ,
+                    existe = exist
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public ActionResult AddClient(
+            string Nom_Cte, string Ap_Materno, string Ap_Paterno, string Calle, string Nom_DirCTe,
+            string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
+            string Telefono,string Id_Email,int Ids_Num_Edo
+            )
+        {
+            try
+
+            {
+
+                GetClient list = new GetClient();
+
+                list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Id_Email).Tables[0]).FirstOrDefault();
+
+                if (list == null)
+                {
+                    int Id_Num_Cte = int.Parse(DALCallCenter.Cte_iUp(Nom_Cte, Ap_Paterno, Ap_Materno).Tables[0].Rows[0]["Id_Num_Cte"].ToString());
+
+                    DALCallCenter.Email_iUp(Id_Num_Cte, Id_Email);
+                    DALCallCenter.DirCte_iUp(Id_Num_Cte, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int, Ciudad, Cod_Postal, Colonia, Telefono);
+
+                    list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Id_Email).Tables[0]).FirstOrDefault();
+                }
+             
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list               
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+        #endregion
     }
 }

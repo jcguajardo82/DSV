@@ -155,6 +155,9 @@
                     <section>
                         <div class="row" id="divVerificaCliente">
                             <div class="col-xs-12 col-md-12 col-lg-12">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-primary" onclick="popAddClient();">Nuevo Cliente</button>
+                                </div>
                                 <p>
                                     <b>Identificación del Cliente<br />Solicite al cliente cualquiera de los siguientes datos:</b>
                                     <ul>
@@ -164,7 +167,7 @@
                                     </ul>
                                 </p>
                                 <div class="input-group">
-                                    <input type="text" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                                    <input type="text" id="txtVerificaC" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
                                         <button type="button" class="btn btn-primary" onclick="VerificaCliente()">
                                             Verificar
                                         </button>
@@ -180,8 +183,8 @@
                                     <b>Calle #,Colonia y Ciudad</b> usando comas como separador
                                 </p>
                                 <div class="input-group">
-                                    <input type="text" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
-                                        <button type="button" class="btn btn-primary" onclick="BuscarClinete()">
+                                    <input type="text" id="txtBuscarCte" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                                        <button type="button" class="btn btn-primary" onclick="BuscarCliente()">
                                             Buscar
                                         </button>
                                     </span>
@@ -191,32 +194,38 @@
                         <div class="row" id="divResultClient" style="display:none;">
                             <div class="col-xs-4 col-md-4 col-lg-4"></div>
                             <div class="col-xs-4 col-md-4 col-lg-4">
+                                <input type="hidden" id="hddIdCliente" />
                                 <table style="width:100%" class="table table-warning">
                                     <tr>
                                         <td>Nombre:</td>
-                                        <td><b>Juan Perex</b></td>
+                                        <td><b id="lblNombreCte"></b></td>
                                     </tr>
                                     <tr>
                                         <td>Folio del Cliente:</td>
-                                        <td>Juan Perex</td>
+                                        <td>
+                                            <p id="lblFolioCte"></p>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Clave:</td>
-                                        <td>juan@gmial.com</td>
+                                        <td>
+                                            <p id="lblClaveCte"></p>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Dirección:</td>
                                         <td>
-                                            <p>
-                                                Villas de Belgica 277<br />
-                                                Colonia Roble Nuevo<br />
-                                                General Escobedo, N.L.
-                                            </p>
+                                            <p id="lblCalleCte"></p>
+                                            <p id="lblColoniaCte"></p>
+                                            <p id="lblEdoCte"></p>
+                                            <p id="lblCpCte"></p>
+
+
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Teléfono:</td>
-                                        <td>8119652099</td>
+                                        <td><p id="lblTelefonoCte"></p></td>
                                     </tr>
                                 </table>
                             </div>
@@ -599,6 +608,164 @@
     </div>
 </div>
 
+
+<div class="modal fade bd-example-modal-lg" id="dlgAddClients" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Alta de Ciiente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <div class="alert alert-warning" id="divMsjAddClient">
+                            No se encontro ningun resultado para la busqueda. <b>Para dar de alta un nuevo cliente, llenar el siguiente formulario.</b>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label>E-Mail </label>
+                            <input type="text" id="txtCteEamil" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label>Nombre </label>
+                            <input type="text" id="txtCteNombre" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Apellido Paterno </label>
+                            <input type="text" id="txtCteApPaterno" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Apellido Materno </label>
+                            <input type="text" id="txtCteApMaterno" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Alias de la Dirección </label>
+                            <input type="text" id="txtCteNomDir" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Calle </label>
+                            <input type="text" id="txtCteCalle" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Número Exterior </label>
+                            <input type="text" id="txtCteNumExt" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Número Interior </label>
+                            <input type="text" id="txtCteNumInt" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Colónia </label>
+                            <input type="text" id="txtCteColonia" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Estado </label>
+                            <input type="text" id="ddlCteEstado" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Ciudad </label>
+                            <input type="text" id="txtCteCiudad" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Código Postal </label>
+                            <input type="text" id="txtCteCp" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Teléfono </label>
+                            <input type="text" id="txtCteTelefono" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl" id="dlgListClients" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>  Busqueda de Ciiente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table id="tblConsultaCte" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                            <thead class="bg-danger-sor">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Apellido Paterno</th>
+                                    <th>Apellido Materno</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Dirección</th>
+                                    <th name="Accion"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
 <input id="add_product" name="add_product" value="1" style="visibility:hidden" />
 
 <input id="add_description" name="add_description" value="1" style="visibility:hidden" />
@@ -611,7 +778,59 @@
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
 
     <script>
-        $(document).ready(function () {
+            $(document).ready(function () {
+
+
+                $('#tblConsultaCte thead tr').clone(true).appendTo('#tblConsulta thead');
+                $('#tblConsultaCte thead tr:eq(0) th').each(function (i) {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+
+                var table = $("#tblConsultaCte").DataTable(
+                    {
+                        dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                        processing: true,
+                        searching: true,
+                        ordering: true,
+                        order: [[1, 'asc']],
+                        filter: false,
+                        info: false,
+                        stateSave: false,
+                        select: true,
+                        select: {
+                            style: 'single'
+                        },
+                        //Paggin
+                        paging: true,
+                        pageLength: 10,
+                        lengthMenu: [10, 25, 50, 100, 500],
+
+                        // destroy: true, //destruye automaticamente la referencia a la tabla
+                        //Ajax
+                        //serverSide: true,
+                        //bServerSide: true,
+                        //sServerMethod: "GET",
+                        buttons: ['csv', 'excel'],
+                        orderCellsTop: false,
+                        fixedHeader: true
+
+                    }
+                );
+
+
+
             $("#wizard").steps({
                 labels: {
                     current: "current step:",
@@ -694,7 +913,7 @@
                             debugger;
 
                             $.each(data.data, function (index, value) {
-                                
+
 
                                 $('#feedback').append("<tr><td>" + value.Barcode + "</td>"
                                     + "<td>" + value.Description + "</td>"
@@ -713,7 +932,7 @@
                             });
 
 
-                            
+
 
 
                             //document.getElementById("add_product").value = data.data.Barcode;
@@ -757,23 +976,283 @@
         }
 
 
-        function buscarCliente() {
-            $('#divVerificaCliente').hide();
-            $('#divBuscaCliente').hide();
-            $('#divResultClient').show();
+        function BuscarCliente() {
+            //$('#divVerificaCliente').hide();
+            //$('#divBuscaCliente').hide();
+            //$('#divResultClient').show();
+            var parm = $('#txtBuscarCte').val();
+            if (parm.length == 0) {
+                $('#txtBuscarCte').focus();
+                return;
+            }
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("BuscarCliente", "CallCenter")',
+                data: {
+                    Criterio: parm
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        if (json.existe) {
+
+                            var myTable = $('#tblConsultaCte').DataTable();
+                            myTable
+                                .clear()
+                                .draw();
+                            for (var i = 0; i < json.resp.length; i++) {
+
+
+                                myTable.row.add([
+
+                                    json.resp[i].Nom_Cte,
+                                    json.resp[i].Ap_Paterno,
+                                    json.resp[i].Ap_Materno,
+                                    json.resp[i].Id_Email,
+                                    json.resp[i].Telefono,
+                                    json.resp[i].Direccion,
+                                    "<button title='Click para Seleccionar el cliente' onclick='SelCte(\"" + json.resp[i].Id_Email + "\")' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+
+                                ]).draw();
+                            }
+
+                            $("#divMsjAddClient").hide();
+                            $("#dlgListClients").modal("show");
+                        }
+                        else {
+                            popAddClient();
+                            $("#divMsjAddClient").show();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+
+        function SelCte(mail) {
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("VerificaCliente", "CallCenter")',
+                data: {
+                    Criterio: mail
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        if (json.existe) {
+                            LlenaDatosCte(json.resp);
+                            $('#divVerificaCliente').hide();
+                            $('#divBuscaCliente').hide();
+                            $('#divResultClient').show();
+                            $("#dlgListClients").modal("hide");
+                        }
+                        else {
+                            popAddClient();
+                            $("#divMsjAddClient").show();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
         }
 
         function VerificaCliente() {
-            $('#divVerificaCliente').hide();
-            $('#divBuscaCliente').hide();
-            $('#divResultClient').show();
+            //$('#divVerificaCliente').hide();
+            //$('#divBuscaCliente').hide();
+            //$('#divResultClient').show();
+
+
+
+            var parm = $('#txtVerificaC').val();
+            if (parm.length == 0) {
+                $('#txtVerificaC').focus();
+                return;
+            }
+        $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("VerificaCliente", "CallCenter")',
+                data: {
+                    Criterio: parm
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        if (json.existe) {
+                            LlenaDatosCte(json.resp);
+                            $('#divVerificaCliente').hide();
+                            $('#divBuscaCliente').hide();
+                            $('#divResultClient').show();
+                        }
+                        else {
+                            popAddClient();
+                            $("#divMsjAddClient").show();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
         }
         function NuevaBusqueda() {
+
+            $('#txtVerificaC').val('');
             $('#divVerificaCliente').show();
             $('#divBuscaCliente').show();
             $('#divResultClient').hide();
+            $('#txtVerificaC').focus();
         }
 
+        function popAddClient() {
+            $("#divMsjAddClient").hide();
+            $("#txtCteEamil").focus();
+            $("#dlgAddClients").modal("show");
+            $("#txtCteEamil").focus();
+        }
+        function AddClient() {
+            var Nom_Cte = $("#txtCteNombre").val();
+            var Ap_Paterno = $("#txtCteApPaterno").val();
+            var Ap_Materno = $("#txtCteApMaterno").val();
+            var Calle = $("#txtCteCalle").val();
+            var Nom_DirCTe = $("#txtCteNomDir").val();
+            var Num_Ext = $("#txtCteNumExt").val();
+            var Num_Int = $("#txtCteNumInt").val();
+            var Ciudad = $("#txtCteCiudad").val();
+            var Cod_Postal = $("#txtCteCp").val();
+            var Colonia = $("#txtCteColonia").val();
+            var Telefono = $("#txtCteTelefono").val();
+            var Id_Email = $("#txtCteEamil").val();
+            var Ids_Num_Edo = $("#ddlCteEstado").val();
+
+            if (Nom_Cte.length == 0) {
+                $("#txtCteNombre").focus();
+                return;
+            }
+            if (Ap_Paterno.length == 0) {
+                $("#Ap_Paterno").focus();
+                return;
+            }
+            if (Ap_Materno.length == 0) {
+                $("#txtCteApMaterno").focus();
+                return;
+            }
+            if (Calle.length == 0) {
+                $("#txtCteCalle").focus();
+                return;
+            }
+            if (Nom_DirCTe.length == 0) {
+                $("#txtCteNomDir").focus();
+                return;
+            }
+            if (Num_Ext.length == 0) {
+                $("#txtCteNumExt").focus();
+                return;
+            }
+            if (Ciudad.length == 0) {
+                $("#txtCteCiudad").focus();
+                return;
+            }
+            if (Cod_Postal.length == 0) {
+                $("#txtCteCp").focus();
+                return;
+            }
+            if (Colonia.length == 0) {
+                $("#txtCteColonia").focus();
+                return;
+            }
+            if (Telefono.length == 0) {
+                $("#txtCteTelefono").focus();
+                return;
+            }
+            if (Id_Email.length == 0) {
+                $("#txtCteEamil").focus();
+                return;
+            }
+            if (Ids_Num_Edo.length == 0) {
+                $("#ddlCteEstado").focus();
+                return;
+            }
+
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("AddClient", "CallCenter")',
+                data: {
+                    Nom_Cte: Nom_Cte,
+                    Ap_Materno: Ap_Materno,
+                    Ap_Paterno: Ap_Paterno,
+                    Calle: Calle,
+                    Nom_DirCTe: Nom_DirCTe,
+                    Num_Ext: Num_Ext,
+                    Num_Int: Num_Int,
+                    Ciudad: Ciudad,
+                    Cod_Postal: Cod_Postal,
+                    Colonia: Colonia,
+                    Telefono: Telefono,
+                    Id_Email: Id_Email,
+                    Ids_Num_Edo: Ids_Num_Edo
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        LlenaDatosCte(json.resp);
+                        $('#divVerificaCliente').hide();
+                        $('#divBuscaCliente').hide();
+                        $('#divResultClient').show();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        function LlenaDatosCte(resp) {
+
+            $("#hddIdCliente").val(resp.Id_Num_Cte);
+            $('#lblNombreCte').text(resp.Nom_Cte + ' ' + resp.Ap_Paterno + ' ' + resp.Ap_Materno);
+            $('#lblFolioCte').text(resp.Id_Num_Cte);
+            $('#lblClaveCte').text(resp.Id_Email);
+            $('#lblCalleCte').text(resp.Calle + ' ' + resp.Num_Ext );
+            $('#lblColoniaCte').text(resp.Colonia);
+            $('#lblEdoCte').text(resp.Ciudad + ', ' + resp.Nom_Estado);
+            $('#lblCpCte').text('C.P. '+ resp.Cod_Postal);
+            $('#lblTelefonoCte').text(resp.Telefono);
+
+
+        }
     </script>
 
 }
