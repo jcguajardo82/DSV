@@ -21,6 +21,10 @@ namespace ServicesManagement.Web.Models.CallCenter
         public string Cod_Postal { get; set; }
         public string Telefono { get; set; }
         public string Direccion { get; set; }
+        public string Nom_DirCTe { get; set; }
+        public string Id_Cnsc_DirCTe { get; set; }
+
+
 
 	}
 }

@@ -1249,7 +1249,7 @@ namespace ServicesManagement.Web.Controllers
             return result;
         }
 
-        public ActionResult GetDirCte(int Id_Num_Cte )
+        public ActionResult GetDirCteIdNumCte(int Id_Num_Cte )
         {
             try
 
@@ -1257,7 +1257,7 @@ namespace ServicesManagement.Web.Controllers
 
                
 
-                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirDirCteIdNumCte(Id_Num_Cte).Tables[0]);
+                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(Id_Num_Cte).Tables[0]);
 
                
               
@@ -1284,6 +1284,41 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+        //Id_Cnsc_DirCTe
+        public ActionResult GetDirDirCteIdDirCTe(int Id_Cnsc_DirCTe)
+        {
+            try
+
+            {
+
+
+
+                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirDirCteIdDirCTe(Id_Cnsc_DirCTe).Tables[0]).FirstOrDefault();
+
+
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
         #endregion
     }
 }

@@ -28,7 +28,7 @@
                         </td>
                         <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
                         <td>
-                            <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas()">
+                            <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
                                 Tienda
                             </button>
                         </td>
@@ -353,11 +353,12 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-6 col-md-6 col-lg-6">
+                                <input type="hidden" id="hddIdDir"/>
                                 <table>
                                     <tr>
                                         <td>
                                             <b>Nombre de la persona que recibira el pedido</b>
-                                            <input type="text" id="rec_name" class="form-control input-sm" />
+                                            <input type="text" id="rec_name" class="form-control input-sm"  required/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -405,7 +406,12 @@
                                 </table>
                             </div>
                             <div class="col-xs-6 col-md-6 col-lg-6">
-                                <p>
+                               <table class="table" id="tblDirecciones">
+                                   <tbody>
+
+                                   </tbody>
+                               </table>
+                                @*<p>
                                     Juan Perex<br />
                                     Villas de Belgica 277<br />
                                     Colonia Roble nuevo<br />
@@ -415,8 +421,8 @@
                                     <button type="button" class="btn btn-default btn btn-xs" onclick="GetTdasTrasp()">
                                         Utilizar esta direccón
                                     </button>
-                                </p>
-                                <br />
+                                </p>*@
+                              
 
                             </div>
                         </div>
@@ -436,7 +442,7 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="efectivo" checked>
+                                                    <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoEfevo" value="efectivo" checked>
                                                     <label class="form-check-label" for="flexRadioDefault2">
                                                         Efectivo y/o vales de papel de despensa
                                                     </label>
@@ -450,7 +456,7 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="debito" checked>
+                                                    <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoCdto" value="credito" checked>
                                                     <label class="form-check-label" for="flexRadioDefault2">
                                                         Tarjeta de Credito Terminal Portatil
                                                     </label>
@@ -461,7 +467,7 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="credito" checked>
+                                                    <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoDebito" value="debito" checked>
                                                     <label class="form-check-label" for="flexRadioDefault2">
                                                         Tarjeta de Debito Terminal Portatil
                                                     </label>
@@ -580,7 +586,7 @@
                                     <th>Dscto</th>
                                     <th></th>
                                     <th>Cantidad</th>
-                                    <th>Acción</th>
+                                    <th name="accion">Acción</th>
                                 </tr>
                             </thead>
                             <tbody id="feedback"></tbody>
@@ -745,7 +751,7 @@
                                     <th>Email</th>
                                     <th>Teléfono</th>
                                     <th>Dirección</th>
-                                    <th name="Accion"></th>
+                                    <th name="accion"></th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -772,6 +778,14 @@
 
 @section scripts {
 
+    <style>
+        .required {
+            position: absolute;
+            margin-left: -10px;
+            color: #FB0000;
+            font-size: 15px;
+        }
+    </style>
     <link href="~/Content/Inspinia/Styles/steps/jquery.steps.css" rel="stylesheet" />
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
 
@@ -828,12 +842,25 @@
 
                 $('#tblBusquedaArt2 thead tr').clone(true).appendTo('#tblBusquedaArt2 thead');
                 $('#tblBusquedaArt2 thead tr:eq(0) th').each(function (i) {
-                    var title = $(this).text();
-                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                    if ($(this).attr('name') != "accion") {
+                        var title = $(this).text();
+                        $(this).html('<input type="text"  placeholder="' + title + '" />');
+
+                        $('input', this).on('keyup change', function () {
+                            if (table1.column(i).search() !== this.value) {
+                                table1
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    } else {
+                        $(this).empty();
+                    }
 
                     $('input', this).on('keyup change', function () {
-                        if (table.column(i).search() !== this.value) {
-                            table
+                        if (table1.column(i).search() !== this.value) {
+                            table1
                                 .column(i)
                                 .search(this.value)
                                 .draw();
@@ -867,15 +894,23 @@
                         //serverSide: true,
                         //bServerSide: true,
                         //sServerMethod: "GET",
-                        buttons: ['csv', 'excel'],
+                        buttons: [],
                         orderCellsTop: false,
-                        fixedHeader: true
+                        fixedHeader: true,
+                        "scrollX": true,
+                        "scrollY": true
+
 
                     }
                 );
-                table1.buttons().remove();
 
-            $("#wizard").steps({
+
+
+
+
+
+                $("#wizard").steps({
+                    supressPaginationOnFocus: false,
                 labels: {
                     current: "current step:",
                     pagination: "Pagination",
@@ -939,7 +974,7 @@
 
                         return ok;
                     }
-                    //FECHA DE ENTREGAS
+                    //AVANZA / REGRESA FECHA DE ENTREGAS
                     if (currentIndex == 1) {
                         return true;
                     }
@@ -950,14 +985,15 @@
                     }
                     //AVANZA METODO DE ENTREGA
                     if (currentIndex == 2 && newIndex == 3) {
+                        GetDirCteIdNumCte();
                         return true;
                     }
 
-                    //REGRESA AVANZA METODO DE ENTREGA
+                    //REGRESA  CARRITO DE COMPRAS
                     if (currentIndex == 3 && newIndex == 2) {
                         return true;
                     }
-                    //AVANZA A FORMA DE PAGO
+                    //AVANZA A REGRESA A Metodo de entrega
                     if (currentIndex == 3 && newIndex == 4) {
 
                         var op = $("input:radio[name=rdoMetodoEntrega]:checked").val();
@@ -969,18 +1005,83 @@
 
                         //EN TIENDA
                         if (op == "1") {
-                            alert("Tienda");
+                           //limpiamos todos los valores de direccion de entrega
+                            $("#hddIdDir").val('');
+                            $("#rec_name").val('');
+                            $("#rec_ciudad").val('');
+                            $("#rec_estado").val('');
+                            $("#rec_calle").val('');
+                            $("#rec_num").val('');
+                            $("#rec_nunInt").val('');
+                            $("#rec_col").val('');
+                            $("#rec_CP").val('');
                             return true;
                         }
                         //DOMICILIO
                         if (op == "2") {
-                            alert("CASA");
+
+                            //$("#hddIdDir").val('');
+                            if ($("#rec_name").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                $("#rec_name").focus();
+                                return false;
+                            }
+
+                            if ($("#rec_ciudad").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                $("#rec_ciudad").focus();
+                                return false;
+                            }
+                            if ($("#rec_estado").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                $("#rec_estado").focus();
+                                return false;
+                            } if ($("#rec_calle").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                $("#rec_calle").focus();
+                                return false;
+                            } if ($("#rec_num").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                $("#rec_num").focus();
+                                return false;
+                            } if ($("#rec_col").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                $("#rec_col").focus();
+                                return false;
+                            }
+                            if ($("#rec_CP").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                $("#rec_CP").focus();
+                                return false;
+                            }
+
+
+
                             return true;
                         }
 
                         return true;
                     }
 
+                    //REGRESA A FORMA DE PAGO
+                    if (currentIndex == 4 && newIndex == 3) {
+                        return true;
+                    }
+
+                    //AVANZO A RESUMEN
+                    if (currentIndex == 4 && newIndex == 5) {
+                        var op = $("input:radio[name=rdoMetodoPago]:checked").val();
+                        if (op == "efectivo") {
+                            if ($("#in_pago").val().length == 0 && $("#in_vales").val()) {
+                                alert("Debe ingresar una canitdad en Efecivo o Vales");
+                                return false;
+                            }
+                                       
+                        }
+
+                        return true;
+                    }
+                   
 
 
                     }
@@ -1277,6 +1378,7 @@
                 }
             });
         }
+
         function NuevaBusqueda() {
 
             $('#txtVerificaC').val('');
@@ -1292,6 +1394,7 @@
             $("#dlgAddClients").modal("show");
             $("#txtCteEamil").focus();
         }
+
         function AddClient() {
             var Nom_Cte = $("#txtCteNombre").val();
             var Ap_Paterno = $("#txtCteApPaterno").val();
@@ -1395,8 +1498,10 @@
             });
         }
 
+
         function LlenaDatosCte(resp) {
 
+            debugger;
             $("#hddIdCliente").val(resp.Id_Num_Cte);
             $('#lblNombreCte').text(resp.Nom_Cte + ' ' + resp.Ap_Paterno + ' ' + resp.Ap_Materno);
             $('#lblFolioCte').text(resp.Id_Num_Cte);
@@ -1409,8 +1514,6 @@
 
 
         }
-
-
 
         function onchangeDias() {
 
@@ -1443,6 +1546,98 @@
             }
             });
         }
+
+        function GetDirCteIdNumCte() {
+            debugger;
+              var _Id_Num_Cte = $("#hddIdCliente").val();
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetDirCteIdNumCte", "CallCenter")',
+                data: {
+                    Id_Num_Cte: _Id_Num_Cte
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        $('#tblDirecciones tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+
+
+                            tr.append("<td>  <b> " + json.resp[i].Nom_DirCTe + "</b > <br>" + json.resp[i].Direccion + "</td>");
+                            //<button type="button" class="btn btn-default btn btn-xs" onclick="GetTdasTrasp()">
+                            tr.append("<td><button onclick='SelDirCte(" + json.resp[i].Id_Cnsc_DirCTe + ")' type = 'button' class= 'btn btn-default btn btn-xs'>Utilizar esta direccón</button></td >")
+                            $('#tblDirecciones').append(tr);
+                        }
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+
+                }
+            });
+        }
+
+        function SelDirCte(id) {
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetDirDirCteIdDirCTe", "CallCenter")',
+                data: {
+                    Id_Cnsc_DirCTe: id
+
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                      
+                        $("#hddIdDir").val(json.resp.Id_Cnsc_DirCTe);
+                       //$("#rec_name").val(json.resp.Id_Cnsc_DirCTe);
+                        $("#rec_ciudad").val(json.resp.Ciudad);
+                        $("#rec_estado").val(json.resp.Nom_Estado);
+                        $("#rec_calle").val(json.resp.Calle);
+                        $("#rec_num").val(json.resp.Num_Ext);
+                        $("#rec_nunInt").val(json.resp.Num_Int);
+                        $("#rec_col").val(json.resp.Colonia);
+                        $("#rec_CP").val(json.resp.Cod_Postal);
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+
+                }
+            });
+        }
+
+        //$(function () {
+        //    $('input:radio[name="rdoMetodoPago"]').change(function () {
+        //        if ($(this).val() == 'efectivo') {
+        //            $("#in_pago").val('');
+        //            $("#in_vales").val('');
+        //            $("#in_pago").prop("disabled", false);
+        //            $("#in_vales").prop("disabled", false);
+
+        //        } else {
+        //            $("#in_pago").prop("disabled", true);
+        //            $("#in_pago").prop("disabled", true);
+        //        }
+        //    });
+        //});
     </script>
 
 }
