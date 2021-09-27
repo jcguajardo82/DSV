@@ -283,6 +283,7 @@
     <Compile Include="Models\Almacenes\SuppliersWHStock.cs" />
     <Compile Include="Models\Autorizacion\AutorizacionShow.cs" />
     <Compile Include="Models\Autorizacion\upCorpOms_Cns_OrdersByItems.cs" />
+    <Compile Include="Models\CallCenter\Edos.cs" />
     <Compile Include="Models\CallCenter\GetClient.cs" />
     <Compile Include="Models\CallCenter\MotivosRMAById.cs" />
     <Compile Include="Models\CallCenter\ProdCheckList.cs" />

@@ -928,6 +928,37 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-xs-2 col-md-2 col-lg-2">
+                        <div class="form-group">
+                            <label>Código Postal </label>
+                            <input type="number" id="txtCteCp" class="form-control" maxlength="5" />
+                        </div>
+                    </div>
+                    <div class="col-xs-5 col-md-3 col-lg-4">
+                        <div class="form-group">
+                            <label>Estado </label>
+                            <select id="ddlCteEstado" class="form-control" disabled></select>
+                                @*<input type="text" id="ddlCteEstado" class="form-control" disabled maxlength="100" />*@
+                        </div>
+                    </div>
+                    <div class="col-xs-5 col-md-3 col-lg-4">
+                        <div class="form-group">
+                            <label>Ciudad </label>
+                            <input type="text" id="txtCteCiudad" class="form-control" disabled maxlength="100" />
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Colónia </label>
+                            @*<input type="text" id="txtCteColonia" class="form-control" maxlength="100" />*@
+                            <select id="ddlCteColonia" class="form-control">
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-xs-3 col-md-3 col-lg-3">
                         <div class="form-group">
                             <label>Calle </label>
@@ -946,34 +977,9 @@
                             <input type="text" id="txtCteNumInt" class="form-control" maxlength="100" />
                         </div>
                     </div>
-                    <div class="col-xs-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                            <label>Colónia </label>
-                            <input type="text" id="txtCteColonia" class="form-control" maxlength="100" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                            <label>Estado </label>
-                            <input type="text" id="ddlCteEstado" class="form-control" maxlength="100" />
-                        </div>
-                    </div>
-                    <div class="col-xs-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                            <label>Ciudad </label>
-                            <input type="text" id="txtCteCiudad" class="form-control" maxlength="100" />
-                        </div>
-                    </div>
-                    <div class="col-xs-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                            <label>Código Postal </label>
-                            <input type="number" min="1" max="99999" id="txtCteCp" class="form-control" maxlength="100" />
-                        </div>
-                    </div>
 
                 </div>
+
                 <div class="row">
                     <div class="col-xs-3 col-md-3 col-lg-3">
                         <div class="form-group">
@@ -1051,7 +1057,54 @@
 
     <script>
         var _jsonProductsSelected = [];
-            $(document).ready(function () {
+        $(document).ready(function () {
+
+
+            GetEstados();
+
+            $("#txtCteCp").keydown(function (event) {	// Allow backspace and delete
+                if (event.keyCode == 46 || event.keyCode == 8) { } else {	   // Ensure that it is a number
+                    if (event.keyCode < 48 || event.keyCode > 57) { event.preventDefault(); }
+                }
+            });
+            $('#txtCteCp').keypress(function () {
+                var maxLength = $(this).val().length;
+                if (maxLength >= 5) {
+                    //alert('You cannot enter more than ' + maxLength + ' chars');
+                    return false;
+                }
+            });
+
+            $("#txtCteCp").on("input", function (e) {
+                var input = $(this);
+                var val = input.val();
+
+                if (input.data("lastval") != val) {
+                    input.data("lastval", val);
+
+                    if (val.length == 5) {
+                        GetCp($("#txtCteCp").val());
+                    }
+                    //your change action goes here
+                    console.log(val);
+                }
+
+            });
+
+            $('#txtCteCp').keyup(function (e) {
+                if (e.keyCode === 13) {
+                    if ($("#txtCteCp").val().length == 5) {
+                        GetCp($("#txtCteCp").val());
+
+                    } else {
+                        alert("La longitud del C.P. debe de ser de 5 caracteres");
+                        $("#txtCteCp").focus();
+                        return false;
+
+                    }
+                }
+            });
+
 
                 $('#tblConsultaCte thead tr').clone(true).appendTo('#tblConsultaCte thead');
                 $('#tblConsultaCte thead tr:eq(0) th').each(function (i) {
@@ -1553,12 +1606,12 @@
                 _obj.price = precio;
                 _obj.quantity = cantidad;
                 _obj.total = cantidad * precio;
-                
+
                 _jsonProductsSelected.push(_obj);
 
 
                 $("#tblPoductosSeleccionados tbody").remove();
-                
+
                 $("#tblPoductosSeleccionados tr").remove();
                 trTh = $('<tr/>');
                 trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1'>Descripción</th>");
@@ -1783,8 +1836,26 @@
         }
 
         function popAddClient() {
+
+
+            $("#txtCteNombre").val();
+            $("#txtCteApPaterno").val();
+            $("#txtCteApMaterno").val();
+            $("#txtCteCalle").val();
+            $("#txtCteNomDir").val();
+            $("#txtCteNumExt").val();
+            $("#txtCteNumInt").val();
+            $("#txtCteCiudad").val();
+            $("#txtCteCp").val();
+            $("#ddlCteColonia").val("0");
+            $("#txtCteTelefono").val();
+            $("#txtCteEamil").val();
+            $("#ddlCteEstado").val("0");
+
+
             $("#divMsjAddClient").hide();
             $("#txtCteEamil").focus();
+            $('#ddlCteEstado').val('0');
             $("#dlgAddClients").modal("show");
             $("#txtCteEamil").focus();
         }
@@ -1808,7 +1879,7 @@
             var Num_Int = $("#txtCteNumInt").val();
             var Ciudad = $("#txtCteCiudad").val();
             var Cod_Postal = $("#txtCteCp").val();
-            var Colonia = $("#txtCteColonia").val();
+            var Colonia = $("#ddlCteColonia").val();
             var Telefono = $("#txtCteTelefono").val();
             var Id_Email = $("#txtCteEamil").val();
             var Ids_Num_Edo = $("#ddlCteEstado").val();
@@ -1845,8 +1916,8 @@
                 $("#txtCteCp").focus();
                 return;
             }
-            if (Colonia.length == 0) {
-                $("#txtCteColonia").focus();
+            if (Colonia == 0) {
+                $("#ddlCteColonia").focus();
                 return;
             }
             if (Telefono.length == 0) {
@@ -1857,12 +1928,12 @@
                 $("#txtCteEamil").focus();
                 return;
             }
-            if (Ids_Num_Edo.length == 0) {
+            if (Ids_Num_Edo == "0") {
                 $("#ddlCteEstado").focus();
                 return;
             }
 
-            alert("va a guardar");
+            //alert("va a guardar");
               $.ajax({
                 async: false,
                 type: "GET",
@@ -2028,20 +2099,102 @@
             });
         }
 
-        //$(function () {
-        //    $('input:radio[name="rdoMetodoPago"]').change(function () {
-        //        if ($(this).val() == 'efectivo') {
-        //            $("#in_pago").val('');
-        //            $("#in_vales").val('');
-        //            $("#in_pago").prop("disabled", false);
-        //            $("#in_vales").prop("disabled", false);
 
-        //        } else {
-        //            $("#in_pago").prop("disabled", true);
-        //            $("#in_pago").prop("disabled", true);
-        //        }
-        //    });
-        //});
+
+        function GetCp(_postalCode) {
+            //alert($("#txtCodPos").val());
+            //var _postalCode = $("#txtCodPos").val();
+
+            if (_postalCode.length == 5) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetInfoByCP", "AltaProveedor")',
+                    data: {
+                        postalCode: _postalCode
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //debugger;
+                        if (json.Success) {
+
+
+                            var sel = $("#ddlCteColonia");
+                            sel.empty();
+
+                            $('#ddlCteColonia').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            for (var i = 0; i < json.resp.length; i++) {
+                                sel.append('<option value="' + json.resp[i].SubLocality + '">' + json.resp[i].SubLocality + '</option>');
+                            }
+
+                            if (json.resp.length > 0) {
+                                $("#txtCteCiudad").val(json.resp[0].Locality);
+                                debugger;
+                                //$("#ddlCteEstado").find("option[text=" + json.resp[0].Region1Name + "]").attr("selected", true);
+                              
+                                $('#ddlCteEstado option:contains('+ json.resp[0].Region1Name +')').attr('selected', 'selected');
+                            }
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            }
+
+        }
+
+
+
+
+
+
+        function GetEstados() {
+           
+           
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetEstados", "CallCenter")',
+                    data: {
+                      
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //debugger;
+                        if (json.Success) {
+
+
+                            var sel = $("#ddlCteEstado");
+                            sel.empty();
+
+                            $('#ddlCteEstado').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            for (var i = 0; i < json.resp.length; i++) {
+                                sel.append('<option value="' + json.resp[i].Id_Num_Estado + '">' + json.resp[i].Nom_Estado + '</option>');
+                            }
+
+                            
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            
+
+        }
+
+
     </script>
 
 }

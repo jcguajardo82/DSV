@@ -1319,6 +1319,43 @@ namespace ServicesManagement.Web.Controllers
 
             }
         }
+
+        public ActionResult GetEstados()
+        {
+            try
+
+            {
+
+
+
+                var list = DataTableToModel.ConvertTo<Edos>(DALCallCenter.Estado_d_sUp(1).Tables[0]);
+
+
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        
         #endregion
     }
 }
