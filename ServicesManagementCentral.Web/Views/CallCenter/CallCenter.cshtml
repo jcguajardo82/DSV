@@ -245,10 +245,10 @@
                                 </table>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12">
-                                <label id="lblCantidad"></label>
+                                <strong>  <label style="font-size:17px" id="lblCantidad"></label></strong>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12">
-                                <label id="lblTotal"></label>
+                               <strong> <label style="font-size:17px" id="lblTotal"></label> </strong>
                             </div>
                         </div>
                         <div class="row">
@@ -693,14 +693,14 @@
                             <div class="ibox-content">
                                 <table style="width:100%;">
                                     <tr>
-                                        <td>
+                                        @*<td>
                                             <select class="form-control" id="cmbServicio" name="cmbServicio">
                                                 <option selected="selected" value="0">--Elegir Servicio--</option>
                                                 <option value="1">Cancelacion</option>
                                                 <option value="2">Retorno</option>
 
                                             </select>
-                                        </td>
+                                        </td>*@
                                         <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
                                         <td>
                                             <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
@@ -806,14 +806,14 @@
                     <div class="ibox-content">
                         <table style="width:100%;">
                             <tr>
-                                <td>
+                                @*<td>
                                     <select class="form-control" id="cmbServicio" name="cmbServicio">
                                         <option selected="selected" value="0">--Elegir Servicio--</option>
                                         <option value="1">Cancelacion</option>
                                         <option value="2">Retorno</option>
 
                                     </select>
-                                </td>
+                                </td>*@
                                 <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
                                 <td>
                                     <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
@@ -1479,7 +1479,7 @@
                                     data.data[i].PromotionalPrice,
                                     "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
                                     "<input type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
-                                    "<button title='Agregar Producto' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", " + + data.data[i].Price + ")' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+                                    "<button title='Agregar Producto' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price + "\")' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
                                     //"<button title='Agregar Producto' onclick='addProduct3(" + '$("nCant-' + data.data[i].Barcode + "\"))' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
                                 ]).draw();
                             }
@@ -1591,10 +1591,43 @@
             document.getElementById("txtProdArt").focus();
             document.getElementById('btnBuscar').disabled = false;
         }
+        function DeleteProduct(barcode) {
+            var cantidad = $("#productCant-" + barcode).val();
+            var item = _jsonProductsSelected.find(x => x.barcode === barcode);
 
+            let _index = _jsonProductsSelected.indexOf(item);
+            if (_index > -1) {
+                _jsonProductsSelected.splice(_index, 1);
+            }
+
+            llenarCarrito();
+
+        }
+        function Change(barcode) {
+            var cantidad = $("#productCant-" + barcode).val();
+            var item = _jsonProductsSelected.find(x => x.barcode === barcode);
+
+            let _obj = {};
+            _obj.barcode = item.barcode;
+            _obj.description = item.description;
+            _obj.price = item.price;
+            _obj.quantity = cantidad;
+            _obj.total = cantidad * item.price;
+
+
+            let _index = _jsonProductsSelected.indexOf(item);
+            if (_index > -1) {
+                _jsonProductsSelected.splice(_index, 1);
+            }
+            
+                _jsonProductsSelected.push(_obj);
+
+                llenarCarrito();
+
+        }
         function addProduct3(descripcion, barcode, precio) {
             //alert('Producto Añadido ' + descripcion + "----" + barcode + "----" + precio);
-            var cant = 0, tot = 0;
+            
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
                 alert("La Cantidad debe ser Mayor a 0.")
@@ -1609,39 +1642,44 @@
 
                 _jsonProductsSelected.push(_obj);
 
-
-                $("#tblPoductosSeleccionados tbody").remove();
-
-                $("#tblPoductosSeleccionados tr").remove();
-                trTh = $('<tr/>');
-                trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1'>Descripción</th>");
-                trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Normal</th>");
-                trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Oferta</th>");
-                trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 20 %;'>Cantidad</th>");
-                trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 15 %;'>Total</th>");
-                trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Borrar</th>");
-                $('#tblPoductosSeleccionados').append(trTh);
-                for (var i = 0; i < _jsonProductsSelected.length; i++) {
-                    tr = $('<tr/>');
-                    //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                    tr.append("<td>" + _jsonProductsSelected[i].description + "</td>");
-                    tr.append("<td>" + _jsonProductsSelected[i].price + "</td>");
-                    tr.append("<td>" + _jsonProductsSelected[i].price + "</td>");
-                    tr.append("<td>" +
-                        "<input type='number' id='productCant-" + _jsonProductsSelected[i].Barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' " + "" + " /> "
-                        + "</td>");
-                    tr.append("<td>" + "$" + _jsonProductsSelected[i].total + "</td>");
-                    tr.append("<td></td>");
-                    $('#tblPoductosSeleccionados').append(tr);
-
-                    cant = cant + parseInt(_jsonProductsSelected[i].quantity);
-                    tot = tot + parseInt(_jsonProductsSelected[i].total);
-                }
-                $("#lblCantidad").empty();
-                $("#lblCantidad").append("Articulos Totales: " + cant);
-                $("#lblTotal").empty();
-                $("#lblTotal").append("Total a Pagar: $" + tot);
+                llenarCarrito();
+                
             }
+        }
+
+        function llenarCarrito() {
+            var cant = 0, tot = 0.0;
+            $("#tblPoductosSeleccionados tbody").remove();
+
+            $("#tblPoductosSeleccionados tr").remove();
+            trTh = $('<tr/>');
+            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1'>Descripción</th>");
+            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Normal</th>");
+            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Oferta</th>");
+            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 20 %;'>Cantidad</th>");
+            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 15 %;'>Total</th>");
+            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Borrar</th>");
+            $('#tblPoductosSeleccionados').append(trTh);
+            for (var i = 0; i < _jsonProductsSelected.length; i++) {
+                tr = $('<tr/>');
+                //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+                tr.append("<td>" + _jsonProductsSelected[i].description + "</td>");
+                tr.append("<td>" + "$" + _jsonProductsSelected[i].price + "</td>");
+                tr.append("<td>" + "$" + _jsonProductsSelected[i].price + "</td>");
+                tr.append("<td>" +
+                    "<input type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' " + "" + " /> "
+                    + "</td>");
+                tr.append("<td>" + "$" + _jsonProductsSelected[i].total + "</td>");
+                tr.append("<td><button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>");
+                $('#tblPoductosSeleccionados').append(tr);
+
+                cant = cant + parseInt(_jsonProductsSelected[i].quantity);
+                tot = tot + parseFloat(_jsonProductsSelected[i].total);
+            }
+            $("#lblCantidad").empty();
+            $("#lblCantidad").append("Articulos Totales: " + cant);
+            $("#lblTotal").empty();
+            $("#lblTotal").append("Total a Pagar: $" + tot);
         }
 
         function seleccionarProducto() {
