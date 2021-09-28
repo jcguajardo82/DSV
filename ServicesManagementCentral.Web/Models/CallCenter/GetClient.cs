@@ -23,6 +23,7 @@ namespace ServicesManagement.Web.Models.CallCenter
         public string Direccion { get; set; }
         public string Nom_DirCTe { get; set; }
         public string Id_Cnsc_DirCTe { get; set; }
+        public string Ids_Num_Edo { get; set; }
 
 
 

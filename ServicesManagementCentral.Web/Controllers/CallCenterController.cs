@@ -1359,7 +1359,10 @@ namespace ServicesManagement.Web.Controllers
 
         [HttpPost]
         public ActionResult FinalizarOrden(List<ArtCar_d> arts, List<CarObs> carObs, int idCliente, string diaEnt, string horaEnt
-            , int metodoEnt, string metodoPago, string efectivo, string vales, int tda)
+            , int metodoEnt, string metodoPago, string efectivo, string vales, int tda
+            , string Calle, string Nom_DirCTe,
+            string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
+            string Telefono, int Ids_Num_Edo)
         {
             try
 
@@ -1376,7 +1379,8 @@ namespace ServicesManagement.Web.Controllers
                     //ARTICULOS
                     DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal, item.Precio_VtaOferta, item.Dcto);
                     //COMENTARIOS POR ARTICULO
-                    DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs);
+                    string obs = item.obs == null ? string.Empty:item.obs;
+                    DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, obs);
                 }
 
                 //OBSERVACIONES NIVEL CARRITO
@@ -1399,15 +1403,22 @@ namespace ServicesManagement.Web.Controllers
 
                 var Id_Num_Orden = int.Parse(DALCallCenter.Orden_iUp(Id_Num_Car, idCliente, id_Num_SrvEntrega).Tables[0].Rows[0][0].ToString());
 
-                DateTime Fec_Entrega = Convert.ToDateTime(string.Format("{0} {1}",diaEnt,horaEnt));
+                DateTime Fec_Entrega = Convert.ToDateTime(string.Format("{0} {1}", diaEnt, horaEnt));
 
                 DALCallCenter.CalEntrega_iUp(id_Num_SrvEntrega, tda, Id_Num_Orden, Fec_Entrega);
 
 
+                var Id_Cnsc_DirCTe =int.Parse( DALCallCenter.DirCteEnt_iUp(idCliente, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int
+                    , Ciudad, Cod_Postal, Colonia, Telefono, "").Tables[0].Rows[0][0].ToString());
+
+
+                DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, Id_Cnsc_DirCTe);
+
                 var result = new
                 {
                     Success = true
-
+                    ,
+                    Message = string.Format("La Orden No. {0} fue generada con éxito",Id_Num_Orden)
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);

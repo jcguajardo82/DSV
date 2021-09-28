@@ -238,6 +238,12 @@
                                     </tr>
                                     <tr>
                                         <td>
+                                            <b>Código Postal</b>
+                                            <input type="number" maxlength="5" id="rec_CP" class="form-control" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             <b>Ciudad</b>
                                             <input type="text" id="rec_ciudad" class="form-control input-sm" />
                                         </td>
@@ -245,7 +251,8 @@
                                     <tr>
                                         <td>
                                             <b>Estado</b>
-                                            <input type="text" id="rec_estado" class="form-control input-sm" />
+                                            @*<input type="text" id="rec_estado" class="form-control input-sm" />*@
+                                            <select id="ddlRec_Estado" class="form-control"></select>
                                         </td>
                                     </tr>
                                     <tr>
@@ -274,8 +281,8 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Código Postal</b>
-                                            <input type="number" min="1" max="99999" id="rec_CP" class="form-control input-sm" />
+                                            <b>Teléfono</b>
+                                            <input type="text" id="rec_tel" class="form-control input-sm" />
                                         </td>
                                     </tr>
                                 </table>
@@ -991,6 +998,7 @@
             });
 
 
+
             $('#tblConsultaCte thead tr').clone(true).appendTo('#tblConsultaCte thead');
             $('#tblConsultaCte thead tr:eq(0) th').each(function (i) {
                 var title = $(this).text();
@@ -1182,7 +1190,7 @@
                             },
                             datatype: "html",
                             success: function (json) {
-                            debugger;
+
                                 if (json.Success)
                                 {
                                     var sel = $("#ddlDias");
@@ -1222,7 +1230,7 @@
                     //AVANZA METODO DE ENTREGA
                      if (currentIndex == 2 && newIndex == 3) {
                          var rowCount = $('#tblPoductosSeleccionados >tbody >tr').length;
-
+                         rowCount = 1;
                          if (rowCount == 0) {
                              return false;
                          }
@@ -1251,7 +1259,7 @@
                             $("#hddIdDir").val('');
                             $("#rec_name").val('');
                             $("#rec_ciudad").val('');
-                            $("#rec_estado").val('');
+                            $("#ddlRec_Estado").val('0');
                             $("#rec_calle").val('');
                             $("#rec_num").val('');
                             $("#rec_nunInt").val('');
@@ -1274,9 +1282,9 @@
                                 $("#rec_ciudad").focus();
                                 return false;
                             }
-                            if ($("#rec_estado").val().length == 0) {
+                            if ($("#ddlRec_Estado").val().length == 0) {
                                 //$("[required]").after("<span class='required'>*</span>");
-                                $("#rec_estado").focus();
+                                $("#ddlRec_Estado").focus();
                                 return false;
                             } if ($("#rec_calle").val().length == 0) {
                                 //$("[required]").after("<span class='required'>*</span>");
@@ -1454,7 +1462,16 @@
             var _vales = $("#in_vales").val();
             var _tda = $("#ddlTdas").val();
 
+            var Calle = $("#rec_calle").val();
+            var Nom_DirCTe = $("#rec_name").val();
+            var Num_Ext = $("#rec_num").val();
+            var Num_Int = $("#rec_nunInt").val();
+            var Ciudad = $("#rec_ciudad").val();
+            var Cod_Postal = $("#rec_CP").val();
+            var Colonia = $("#rec_col").val();
+            var Telefono = $("#rec_tel").val();
 
+            var Ids_Num_Edo = $("#ddlRec_Estado").val();
 
 
             //Send the JSON array to Controller using AJAX.
@@ -1473,13 +1490,32 @@
                         metodoPago: _metodoPago,
                         efectivo: _efectivo,
                         vales: _vales,
-                        tda: _tda
+                        tda: _tda,
+                       
+                        Calle: Calle,
+                        Nom_DirCTe: Nom_DirCTe,
+                        Num_Ext: Num_Ext,
+                        Num_Int: Num_Int,
+                        Ciudad: Ciudad,
+                        Cod_Postal: Cod_Postal,
+                        Colonia: Colonia,
+                        Telefono: Telefono,                       
+                        Ids_Num_Edo: Ids_Num_Edo
                     }
                 ),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (r) {
-                    alert(r + " record(s) inserted.");
+                    if (r.Success) {
+                        alert(r.Message);
+                        location.reload();
+                    } else {
+                        alert(r.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
                 }
             });
         }
@@ -1857,7 +1893,7 @@
                 },
                 datatype: "html",
                 success: function (json) {
-                    debugger;
+
                     if (json.Success) {
                         if (json.existe) {
                             LlenaDatosCte(json.resp);
@@ -1904,7 +1940,7 @@
                 },
                 datatype: "html",
                 success: function (json) {
-                    debugger;
+
                     if (json.Success) {
                         if (json.existe) {
                             LlenaDatosCte(json.resp);
@@ -2057,7 +2093,7 @@
                 },
                 datatype: "html",
                 success: function (json) {
-                    debugger;
+
                     if (json.Success) {
                         LlenaDatosCte(json.resp);
                         $('#divVerificaCliente').hide();
@@ -2077,7 +2113,7 @@
 
         function LlenaDatosCte(resp) {
 
-            debugger;
+
             $("#hddIdCliente").val(resp.Id_Num_Cte);
             $('#lblNombreCte').text(resp.Nom_Cte + ' ' + resp.Ap_Paterno + ' ' + resp.Ap_Materno);
             $('#lblFolioCte').text(resp.Id_Num_Cte);
@@ -2105,7 +2141,7 @@
                 },
                 datatype: "html",
                 success: function (json) {
-                debugger;
+
                     if (json.Success)
                     {
                         var sel = $("#ddlHoras");
@@ -2124,7 +2160,7 @@
         }
 
         function GetDirCteIdNumCte() {
-            debugger;
+
               var _Id_Num_Cte = $("#hddIdCliente").val();
             $.ajax({
                 async: false,
@@ -2136,11 +2172,11 @@
                 },
                 datatype: "html",
                 success: function (json) {
-                    debugger;
+
                     if (json.Success) {
                         $('#tblDirecciones tbody').empty();
                         //var tr;
-                        debugger;
+
                         //Append each row to html table
 
                         for (var i = 0; i < json.resp.length; i++) {
@@ -2176,18 +2212,20 @@
                 },
                 datatype: "html",
                 success: function (json) {
-                    debugger;
+
                     if (json.Success) {
 
                         $("#hddIdDir").val(json.resp.Id_Cnsc_DirCTe);
                        //$("#rec_name").val(json.resp.Id_Cnsc_DirCTe);
                         $("#rec_ciudad").val(json.resp.Ciudad);
-                        $("#rec_estado").val(json.resp.Nom_Estado);
+                        $("#ddlRec_Estado").val(json.resp.Ids_Num_Edo);
                         $("#rec_calle").val(json.resp.Calle);
                         $("#rec_num").val(json.resp.Num_Ext);
                         $("#rec_nunInt").val(json.resp.Num_Int);
                         $("#rec_col").val(json.resp.Colonia);
                         $("#rec_CP").val(json.resp.Cod_Postal);
+
+
                     }
                     else {
                         alert(json.Message);
@@ -2214,10 +2252,10 @@
                     },
                     datatype: "html",
                     success: function (json) {
-                        //debugger;
+                        //
                         if (json.Success) {
 
-
+                            debugger;
                             var sel = $("#ddlCteColonia");
                             sel.empty();
 
@@ -2228,11 +2266,62 @@
 
                             if (json.resp.length > 0) {
                                 $("#txtCteCiudad").val(json.resp[0].Locality);
-                                debugger;
+
                                 //$("#ddlCteEstado").find("option[text=" + json.resp[0].Region1Name + "]").attr("selected", true);
 
                                 $('#ddlCteEstado option:contains('+ json.resp[0].Region1Name +')').attr('selected', 'selected');
                             }
+
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            }
+
+        }
+
+
+        function GetCpDirEnt(_postalCode) {
+            //alert($("#txtCodPos").val());
+            //var _postalCode = $("#txtCodPos").val();
+
+            if (_postalCode.length == 5) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetInfoByCP", "AltaProveedor")',
+                    data: {
+                        postalCode: _postalCode
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //
+                        if (json.Success) {
+
+                            //debugger;
+                            //var sel = $("#ddlCteColonia");
+                            //sel.empty();
+
+                            //$('#ddlCteColonia').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            //for (var i = 0; i < json.resp.length; i++) {
+                            //    sel.append('<option value="' + json.resp[i].SubLocality + '">' + json.resp[i].SubLocality + '</option>');
+                            //}
+
+                            if (json.resp.length > 0) {
+                                $("#rec_ciudad").val(json.resp[0].Locality);
+
+                                //$("#ddlCteEstado").find("option[text=" + json.resp[0].Region1Name + "]").attr("selected", true);
+
+                                $('#ddlRec_Estado option:contains(' + json.resp[0].Region1Name + ')').attr('selected', 'selected');
+                            }
+
                         }
                         else {
                             alert(json.Message);
@@ -2260,7 +2349,7 @@
                     },
                     datatype: "html",
                     success: function (json) {
-                        //debugger;
+                        //
                         if (json.Success) {
 
 
@@ -2272,7 +2361,14 @@
                                 sel.append('<option value="' + json.resp[i].Id_Num_Estado + '">' + json.resp[i].Nom_Estado + '</option>');
                             }
 
+                            debugger;
+                            var sel2 = $("#ddlRec_Estado");
+                            sel2.empty();
 
+                            $('#ddlRec_Estado').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            for (var i = 0; i < json.resp.length; i++) {
+                                sel2.append('<option value="' + json.resp[i].Id_Num_Estado + '">' + json.resp[i].Nom_Estado + '</option>');
+                            }
                         }
                         else {
                             alert(json.Message);

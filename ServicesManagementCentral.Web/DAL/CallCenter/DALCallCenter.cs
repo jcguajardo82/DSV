@@ -1071,7 +1071,144 @@ namespace ServicesManagement.Web.DAL.CallCenter
             }
 
         }
-        
+
+        public static DataSet sp_OMSGetOrderDetails(int Id_Num_Orden)
+        {
+
+
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Num_Orden", Id_Num_Orden);
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[sp_OMSGetOrderDetails]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+     
+        public static DataSet DirCteEnt_iUp(int Id_Num_Cte,int Id_Num_DirTipo,int Ids_Num_Edo,
+            string Calle, string Nom_DirCTe, string Num_Ext, string Num_Int, string Ciudad,
+            string Cod_Postal, string Colonia, string Telefono,string Referencia ="", string Latitud = "", string Longitud = ""
+            )
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Num_Cte", Id_Num_Cte);
+                parametros.Add("@Id_Num_DirTipo", Id_Num_DirTipo);
+                parametros.Add("@Ids_Num_Edo", Ids_Num_Edo);
+                parametros.Add("@Calle", Calle);
+                parametros.Add("@Nom_DirCTe", Nom_DirCTe);
+                parametros.Add("@Num_Ext", Num_Ext);
+                parametros.Add("@Num_Int", Num_Int);
+                //parametros.Add("@Num_Int", Num_Int);
+
+                parametros.Add("@Ciudad", Ciudad);
+                parametros.Add("@Cod_Postal", Cod_Postal);
+                parametros.Add("@Colonia", Colonia);
+                parametros.Add("@Telefono", Telefono);
+                parametros.Add("@Referencia", Referencia);
+                parametros.Add("@Latitud", Latitud);
+                parametros.Add("@Longitud", Longitud);
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[DirCteEnt_iUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public static DataSet DirEnt_iUp(int Id_Num_Orden,int Id_Num_Cte,int Id_Cnsc_DirCTe)
+        {
+
+//            @Id_Num_Orden int,
+//@Id_Num_Cte int
+
+        DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Num_Orden", Id_Num_Orden);
+                parametros.Add("@Id_Num_Cte", Id_Num_Cte);
+                parametros.Add("@Id_Cnsc_DirCTe", Id_Cnsc_DirCTe);
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[DirEnt_iUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         #endregion
     }
 }
