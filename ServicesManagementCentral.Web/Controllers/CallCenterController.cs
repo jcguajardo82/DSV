@@ -238,7 +238,7 @@ namespace ServicesManagement.Web.Controllers
         // GET: CallCenter
         public ActionResult CallCenter()
         {
-            GetServicios();
+            //GetServicios();
 
             ViewBag.tdas = DALServicesM.GetUN();
 

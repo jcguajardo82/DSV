@@ -6,98 +6,10 @@
 }
 
 
-@*<div class="row">
-        <div class="col-xs-5 col-md-5 col-lg-5">
-            <div class="ibox">
-                <div class="ibox-title">
-                    Sucursales
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <table style="width:100%;">
-                        <tr>
-                            <td>
-                                <select class="form-control" id="cmbServicio" name="cmbServicio">
-                                    <option selected="selected" value="0">--Elegir Servicio--</option>
-                                    <option value="1">Cancelacion</option>
-                                    <option value="2">Retorno</option>
 
-                                </select>
-                            </td>
-                            <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
-                            <td>
-                                <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
-                                    Tienda
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <td colspan="3">
-                                <select class="form-control" id="cmbTda" name="cmbTda">
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-7 col-md-7 col-lg-7">
-            <div class="ibox">
-                <div class="ibox-title">
-                    Buscador  <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <table style="width:100%;">
-                        <tr>
-                            <td>
-                                <input class="form-control" type="text" placeholder="Producto" value="" id="txtProdArt">
-                            </td>
-                            <td style="text-align:center;">
-                                <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaProducto()">
-                                    Buscar
-                                </button>
-                            </td>
-                            <td>
-                                <button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
-                                    Historia
-                                </button>
-                            </td>
-                        </tr>
-
-                    </table>
-                </div>
-            </div>
-
-        </div>
-    </div>*@
 <div class="row">
-    @*<div class="col-xs-10 col-md-10 col-lg-10">
-            <table id="tblBusquedaArt" class="table table-striped table-bordered table-hover">
-                <thead class="bg-primary">
-                    <tr role="row">
-                        <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 118px;">Código</th>
-                        <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1">Descripción</th>
-                        <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 116px;">Marca</th>
-                        <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 126px;">Precio</th>
-                        <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 124px;">Normal</th>
-                        <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 120px;">Dscto</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>*@
-    @*<div class="col-xs-2 col-md-2 col-lg-2">
-            <img id="imgProduct" src="~/Content/images/theme/default_image_01.png" class="img-lg">
-        </div>*@
-    <div class="col-xs-2 col-md-2 col-lg-2">
+   
+    <div class="col-xs-6 col-md-6 col-lg-6">
 
         <div class="form-group">
 
@@ -114,13 +26,13 @@
                         {
                             if (@item["id_num_un"].ToString() == Session["Id_Num_UN"].ToString())
                             {
-                                <option value="@item["id_num_un"]" selected disabled>@item["Centros"]"</option>
+                                <option value="@item["id_num_un"]" selected disabled>@item["Centros"]</option>
                             }
 
                         }
                         else
                         {
-                            <option value="@item["id_num_un"]">@item["Centros"]"</option>
+                            <option value="@item["id_num_un"]">@item["Centros"]</option>
                         }
                     }
                 }
@@ -128,7 +40,7 @@
             </select>
         </div>
     </div>
-    <div class="col-xs-8 col-md-8 col-lg-8">
+    <div class="col-xs-4 col-md-4 col-lg-4">
 
     </div>
     <div class="col-xs-2 col-md-2 col-lg-2">
@@ -248,7 +160,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-lg-12">
-                                <table id="tblPoductosSeleccionados" class="table table-striped table-bordered table-hover" style="width:100%;">
+                                <table id="tblPoductosSeleccionados" class="table table-striped table-bordered table-hover">
                                     <thead class="bg-warning">
                                         <tr role="row">
 
@@ -262,6 +174,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="feedback2">
+                                      
                                     </tbody>
                                 </table>
                             </div>
@@ -404,15 +317,15 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoEfevo" value="efectivo" checked>
+                                                    <input class="form-check-input" type="radio"  name="rdoMetodoPago" id="rdoEfevo" value="efectivo" checked>
                                                     <label class="form-check-label" for="flexRadioDefault2">
                                                         Efectivo y/o vales de papel de despensa
                                                     </label>
                                                 </div>
                                             </td>
                                             <td style="text-align:right;">
-                                                Efectivo: <input type="text" id="in_pago" width="100px;" /><br />
-                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="in_vales" width="100px;" />
+                                                Efectivo: <input type="text" id="in_pago" disabled  width="100px;" oninput="input(this)" /><br />
+                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled oninput="input(this)" id="in_vales" width="100px;" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -454,45 +367,13 @@
                                             <th class="text-center sorting">Cantidad</th>
                                             <th class="text-center sorting">Precio</th>
                                             <th class="text-center sorting">Subtotal</th>
+                                            <th class="text-center sorting">Comentarios</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                coca cola 500 ml
-                                            </td>
-                                            <td>
-                                                1
-                                            </td>
-                                            <td>
-                                                $10.00
-                                            </td>
-                                            <td>
-                                                $10.00
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                coca cola 500 ml
-                                            </td>
-                                            <td>
-                                                1
-                                            </td>
-                                            <td>
-                                                $10.00
-                                            </td>
-                                            <td>
-                                                $10.00
-                                            </td>
-                                        </tr>
+
                                     </tbody>
-                                    @*<tfoot>
-                <tr>
-                    <td></td>
-                    <td colspan="2"><b>Costo total de la orden</b></td>
-                    <td><b>$20.00</b></td>
-                </tr>
-            </tfoot>*@
+                                 
                                 </table>
                                 <strong> <label style="font-size:17px" id="lblTotalR"></label> </strong>
                                 
@@ -500,22 +381,19 @@
                                     <tr>
                                         <td><b>Sera en tregada en:</b></td>
                                         <td>
-                                            <p>
-                                                Juan Perex<br />
-                                                Villas de Belgica 277<br />
-                                                Colonia Roble nuevo<br />
-                                                Escobedo<br />
-                                                CP: 092890
+                                            <p id="lblMetodoEntrega">                                              
                                             </p>
+                                            <p><b id="lblNomDir"></b></p>
+                                            <p id="lblDirEnt"> </p>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><b>Fecha de entrega:</b></td>
-                                        <td>2021-07-01 21:00 HRS </td>
+                                        <td><p id="lblFecEnt"></p> </td>
                                     </tr>
                                     <tr>
                                         <td><b>Forma de Pago:</b></td>
-                                        <td>Tarjeta de Credito / Terminal Portatil </td>
+                                        <td><p id="lblFormaPago"></p> </td>
                                     </tr>
                                 </table>
                             </div>
@@ -721,46 +599,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-5 col-md-5 col-lg-5">
-                        <div class="ibox">
-                            <div class="ibox-title">
-                                Sucursales
-                                <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="ibox-content">
-                                <table style="width:100%;">
-                                    <tr>
-                                        @*<td>
-                                                <select class="form-control" id="cmbServicio" name="cmbServicio">
-                                                    <option selected="selected" value="0">--Elegir Servicio--</option>
-                                                    <option value="1">Cancelacion</option>
-                                                    <option value="2">Retorno</option>
-
-                                                </select>
-                                            </td>*@
-                                        <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
-                                        <td>
-                                            <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
-                                                Tienda
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-
-                                        <td colspan="3">
-                                            <select class="form-control" id="cmbTda" name="cmbTda">
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row">                 
                     <div class="col-xs-7 col-md-7 col-lg-7">
                         <div class="ibox">
                             <div class="ibox-title">
@@ -1103,6 +942,7 @@
         var _barcode = undefined;
         var _precio = undefined;
         var _cantidad = undefined;
+        var _Sku = undefined;
 
         $(document).ready(function () {
 
@@ -1153,71 +993,59 @@
             });
 
 
-                $('#tblConsultaCte thead tr').clone(true).appendTo('#tblConsultaCte thead');
-                $('#tblConsultaCte thead tr:eq(0) th').each(function (i) {
-                    var title = $(this).text();
-                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+            $('#tblConsultaCte thead tr').clone(true).appendTo('#tblConsultaCte thead');
+            $('#tblConsultaCte thead tr:eq(0) th').each(function (i) {
+                var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
 
-                    $('input', this).on('keyup change', function () {
-                        if (table.column(i).search() !== this.value) {
-                            table
-                                .column(i)
-                                .search(this.value)
-                                .draw();
-                        }
-                    });
+                $('input', this).on('keyup change', function () {
+                    if (table.column(i).search() !== this.value) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
                 });
+            });
 
-                var table = $("#tblConsultaCte").DataTable(
-                    {
-                        dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
-                            "<'row'<'col-sm-12'tr>>" +
-                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
-                        processing: true,
-                        searching: true,
-                        ordering: true,
-                        order: [[1, 'asc']],
-                        filter: false,
-                        info: false,
-                        stateSave: false,
-                        select: true,
-                        select: {
-                            style: 'single'
-                        },
-                        //Paggin
-                        paging: true,
-                        pageLength: 10,
-                        lengthMenu: [10, 25, 50, 100, 500],
+            var table = $("#tblConsultaCte").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: false,
+                    info: false,
+                    stateSave: false,
+                    select: true,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
 
-                        // destroy: true, //destruye automaticamente la referencia a la tabla
-                        //Ajax
-                        //serverSide: true,
-                        //bServerSide: true,
-                        //sServerMethod: "GET",
-                        buttons: ['csv', 'excel'],
-                        orderCellsTop: false,
-                        fixedHeader: true
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: true
 
-                    }
-                );
+                }
+            );
 
-                $('#tblBusquedaArt2 thead tr').clone(true).appendTo('#tblBusquedaArt2 thead');
-                $('#tblBusquedaArt2 thead tr:eq(0) th').each(function (i) {
-                    if ($(this).attr('name') != "accion") {
-                        var title = $(this).text();
-                        $(this).html('<input type="text"  placeholder="' + title + '" />');
-
-                        $('input', this).on('keyup change', function () {
-                            if (table1.column(i).search() !== this.value) {
-                                table1
-                                    .column(i)
-                                    .search(this.value)
-                                    .draw();
-                            }
-                        });
-                    } else {
-                        $(this).empty();
-                    }
+            $('#tblBusquedaArt2 thead tr').clone(true).appendTo('#tblBusquedaArt2 thead');
+            $('#tblBusquedaArt2 thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text"  placeholder="' + title + '" />');
 
                     $('input', this).on('keyup change', function () {
                         if (table1.column(i).search() !== this.value) {
@@ -1227,45 +1055,88 @@
                                 .draw();
                         }
                     });
-                });
+                } else {
+                    $(this).empty();
+                }
 
-                var table1 = $("#tblBusquedaArt2").DataTable(
-                    {
-                        dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
-                            "<'row'<'col-sm-12'tr>>" +
-                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
-                        processing: true,
-                        ordering: true,
-                        order: [[1, 'asc']],
-                        filter: false,
-                        info: false,
-                        stateSave: false,
-                        select: true,
-                        select: {
-                            style: 'single'
-                        },
-                        //Paggin
-                        paging: true,
-                        pageLength: 10,
-                        lengthMenu: [10, 25, 50, 100, 500],
-
-                        // destroy: true, //destruye automaticamente la referencia a la tabla
-                        //Ajax
-                        //serverSide: true,
-                        //bServerSide: true,
-                        //sServerMethod: "GET",
-                        buttons: [],
-                        orderCellsTop: false,
-                        fixedHeader: true,
-                        "scrollX": true,
-                        "scrollY": true
-
-
+                $('input', this).on('keyup change', function () {
+                    if (table1.column(i).search() !== this.value) {
+                        table1
+                            .column(i)
+                            .search(this.value)
+                            .draw();
                     }
-                );
+                });
+            });
+
+            var table1 = $("#tblBusquedaArt2").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: false,
+                    info: false,
+                    stateSave: false,
+                    select: true,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: [],
+                    orderCellsTop: false,
+                    fixedHeader: true,
+                    "scrollX": true,
+                    "scrollY": true
 
 
+                }
+            );
 
+            $("#tblBusquedaSeleccionar").DataTable(
+                {
+                   
+                    processing: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: true,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: [],
+                    orderCellsTop: false,
+                    "scrollY": "400px",
+                    "scrollCollapse": true,
+                    "paging": false
+
+
+                }
+            );
+            
 
 
 
@@ -1286,7 +1157,12 @@
                // stepsOrientation: "vertical",
                  onStepChanging: function (event, currentIndex, newIndex)
                 {
-                    var ok = false;
+                     var ok = false;
+
+
+                     alert(currentIndex);
+
+
                     //busqueda de cliente
                     if (currentIndex == 0 )
                     {
@@ -1346,13 +1222,19 @@
                         return true;
                     }
                     //AVANZA METODO DE ENTREGA
-                    if (currentIndex == 2 && newIndex == 3) {
+                     if (currentIndex == 2 && newIndex == 3) {
+                         var rowCount = $('#tblPoductosSeleccionados >tbody >tr').length;
+
+                         if (rowCount == 0) {
+                             return false;
+                         }
                         GetDirCteIdNumCte();
                         return true;
                     }
 
                     //REGRESA  CARRITO DE COMPRAS
-                    if (currentIndex == 3 && newIndex == 2) {
+                     if (currentIndex == 3 && newIndex == 2) {
+       
                         return true;
                     }
                     //AVANZA A REGRESA A Metodo de entrega
@@ -1432,7 +1314,33 @@
 
                     //AVANZO A RESUMEN
                     if (currentIndex == 4 && newIndex == 5) {
+
+                        if ($("input:radio[name=rdoMetodoEntrega]:checked").val() == "1") {
+                            $("#lblMetodoEntrega").text("Entrega en Tienda: " + $("[id='ddlTdas'] option:selected").text());
+                        } else {
+                        //<p><b id="lblNomDir"></b></p>
+                        //<p id="lblDirEnt"> </p>
+                            $("#lblNomDir").text($("#rec_name").val());
+                            var dir = $("#rec_calle").val() + ' ' + $("#rec_num").val();
+                            if ($("#rec_nunInt").val().length>0) {
+                                dir += ',No. Interior ' + $("#rec_nunInt").val();
+                            }
+
+                            dir += ',' + $("#rec_col").val() + ',' + $("#rec_ciudad").val() + ',' + $("#rec_estado").val() + ' C.P.' + $("#rec_CP").val();
+
+                            $("#lblDirEnt").text(dir);
+                        }
+
+                       
+                        //fecha entrega
+                        var diaEnt = $("[id='ddlDias'] option:selected").text();
+                        var horaEnt = $("[id='ddlHoras'] option:selected").text(); 
+                        $("#lblFecEnt").text(diaEnt + ' en horario de ' + horaEnt);
+
+                        //metodo de pago
+
                         var op = $("input:radio[name=rdoMetodoPago]:checked").val();
+
                         if (op == "efectivo") {
                             if ($("#in_pago").val().length == 0 && $("#in_vales").val()) {
                                 alert("Debe ingresar una canitdad en Efecivo o Vales");
@@ -1441,14 +1349,29 @@
 
                         }
 
+                        if (op == "efectivo") {
+                            var text = " Efectivo: $" + $("#in_pago").val() + "- Vales: $" + $("#in_vales").val() ;
+                            $("#lblFormaPago").text("Efectivo y / o vales de papel de despensa " + text);
+                        }
+                        if (op == "credito") {
+                            $("#lblFormaPago").text("Tarjeta de Credito Terminal Portatil")
+                        }
+                        if (op == "debito") {
+                            $("#lblFormaPago").text("Tarjeta de Debito Terminal Portatil")
+                        }
+                 
+
                         return true;
                     }
-
+                     
+                     if (currentIndex == 5 && newIndex == 4) {
+                         return true;
+                     }
 
 
                     }
                 ,onFinished: function (event, currentIndex) {
-                    alert('ya acabe');
+                    Finalizar();
                 }
             });
 
@@ -1462,20 +1385,48 @@
         });
 
 
+        $(function () {
+            $('input:radio[name="rdoMetodoPago"]').change(function () {
+                if ($(this).val() == 'efectivo') { 
+                    $("#in_pago").val('0.00');
+                    $("#in_vales").val('0.00');
+                    $("#in_pago").prop('disabled', false);
+                    $("#in_vales").prop('disabled', false);
+
+                } else {
+                    $("#in_pago").val('0.00');
+                    $("#in_vales").val('0.00');
+                    $("#in_pago").prop('disabled', true);
+                    $("#in_vales").prop('disabled', true);
+                }
+            });
+        });
+
+
+        var delayTimer;
+        function input(ele) {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(function () {
+                ele.value = parseFloat(ele.value).toFixed(2).toString();
+            }, 1100);
+        }
+
         function Finalizar() {
             var products = new Array();
             $("#tblResumen TBODY TR").each(function () {
                 var row = $(this);
                 var product = {};
-                customer.Id_Num_Sku = row.find("TD").eq(0).html();
-                customer.Cant_Unidades = row.find("TD").eq(1).html();
-                customer.Precio_VtaNormal = row.find("TD").eq(1).html();
-                customer.Precio_VtaOferta = row.find("TD").eq(1).html();
-                customer.Dcto = row.find("TD").eq(1).html();
-                customer.obs = row.find("TD").eq(1).html();
-                products.push(customer);
+                //product.Id_Num_Sku = row.find("TD").eq(0).html();
+                product.Id_Num_Sku = row.find("td:eq(0) input[type='hidden']").val();
+                product.Cant_Unidades = row.find("TD").eq(1).html();
+                product.Precio_VtaNormal = row.find("TD").eq(2).html();
+                product.Precio_VtaOferta = row.find("TD").eq(2).html();
+                product.Dcto = 0;//row.find("TD").eq(1).html();
+                product.obs = row.find("TD").eq(4).html();
+                products.push(product);
             });
 
+            debugger;
             alert(products.length());
         }
 
@@ -1507,11 +1458,11 @@
         }
 
         function CargaSeleccionaProducto() {
-            $("#dlgBuscador").modal("hide");
-            if ($('#txtProdArt2').val() == "") {
-                $('#txtProdArt2').focus();
-                return;
-            }
+            //$("#dlgBuscador").modal("hide");
+            //if ($('#txtProdArt2').val() == "") {
+            //    $('#txtProdArt2').focus();
+            //    return;
+            //}
             //$("#exampleModal").modal("show");
             //imgProduct
             //document.getElementById("imgProduct").src = "https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/BGBD_STG/on/demandware.static/-/Sites-soriana-grocery-master-catalog/default/dw4f7cd627/images/product/7501022133286-A.jpg";
@@ -1545,7 +1496,7 @@
                                     "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
                                     "<input type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
                                     //"<button title='Agregar Producto' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price + "\")' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
-                                    "<a title='Click para ver el inventario' class='link-primary' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price + "\")'>Agregar Prodcuto</a>"
+                                    "<a title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price + "\",\"" + data.data[i].Sku + "\")'>Agregar Prodcuto</a>"
                                 ]).draw();
                             }
 
@@ -1695,7 +1646,7 @@
                 llenarCarrito();
 
         }
-        function addProduct3(descripcion, barcode, precio) {
+        function addProduct3(descripcion, barcode, precio,sku) {
 
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
@@ -1706,7 +1657,7 @@
                 _barcode = barcode;
                 _precio = precio;
                 _cantidad = cantidad;
-
+                _Sku = sku;
                 $("#dlgAgregarProductoComentario").modal("show");
                 $("#dlgSeleccionar").modal("hide");
             }
@@ -1729,7 +1680,7 @@
             _obj.quantity = _cantidad;
             _obj.total = _cantidad * _precio;
             _obj.comment = $("#txtComentario").val();
-
+            _obj.sku = _Sku;
             _jsonProductsSelected.push(_obj);
 
             llenarCarrito();
@@ -1738,80 +1689,11 @@
             $("#dlgAgregarProductoComentario").modal("hide");
             $("#dlgSeleccionar").modal("show");
         }
-        //function addProduct3(descripcion, barcode, precio) {
-        //    //alert('Producto Añadido ' + descripcion + "----" + barcode + "----" + precio);
-        //    var item = _jsonProductsSelected.find(x => x.barcode === barcode);
-
-        //    if (item != undefined) {
-        //        let _index = _jsonProductsSelected.indexOf(item);
-        //        if (_index > -1) {
-        //            _jsonProductsSelected.splice(_index, 1);
-        //        }
-        //    }
-
-        //    var cantidad = $("#nCant-" + barcode).val();
-        //    if (cantidad == 0) {
-        //        alert("La Cantidad debe ser Mayor a 0.")
-        //    }
-        //    else {
-        //        let _obj = {};
-        //        _obj.barcode = barcode;
-        //        _obj.description = descripcion;
-        //        _obj.price = precio;
-        //        _obj.quantity = cantidad;
-        //        _obj.total = cantidad * precio;
-
-        //        _jsonProductsSelected.push(_obj);
-
-        //        llenarCarrito();
-
-        //    }
-        //}
-
-        function agregarObs() {
-            var sum_Obs = $('#add_Obs').val();
-/*            var myTable = $('#tblBusquedaArt').DataTable();*/
-            $('#Obs').append("<tr>"
-                + "<td>" + document.getElementById("ObservacionesGrles").value + "</td>"
-                + "<td>" + "<button type=\"button\" id=\"btn\" name=\"btn\" class=\"btn btn-primary\" onclick=\"eliminar(" + document.getElementById("add_Obs").value + ") \">Eliminar</button>" + "</td></tr>");
-
-            sum_Obs += 1;
-            $('#add_Obs').val(sum_Obs);
-            $('#ObservacionesGrles').empty();
-            $("#ObservacionesGrles").focus();
-        }
+     
 
         function llenarCarrito() {
             var cant = 0, tot = 0.0;
-            //$("#tblPoductosSeleccionados tbody").remove();
-
-            //$("#tblPoductosSeleccionados tr").remove();
-            //trTh = $('<tr/>');
-            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1'>Descripción</th>");
-            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Normal</th>");
-            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Oferta</th>");
-            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 20 %;'>Cantidad</th>");
-            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 15 %;'>Total</th>");
-            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 30 %;'>Comentario</th>");
-            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Borrar</th>");
-            //$('#tblPoductosSeleccionados').append(trTh);
-            //for (var i = 0; i < _jsonProductsSelected.length; i++) {
-            //    tr = $('<tr/>');
-            //    //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-            //    tr.append("<td>" + _jsonProductsSelected[i].description + "</td>");
-            //    tr.append("<td>" + "$" + _jsonProductsSelected[i].price + "</td>");
-            //    tr.append("<td>" + "$" + _jsonProductsSelected[i].price + "</td>");
-            //    tr.append("<td>" +
-            //        "<input type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' " + "" + " /> "
-            //        + "</td>");
-            //    tr.append("<td>" + "$" + _jsonProductsSelected[i].total + "</td>");
-            //    tr.append("<td>" + _jsonProductsSelected[i].comment + "</td>");
-            //    tr.append("<td><button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>");
-            //    $('#tblPoductosSeleccionados').append(tr);
-
-            //    cant = cant + parseInt(_jsonProductsSelected[i].quantity);
-            //    tot = tot + parseFloat(_jsonProductsSelected[i].total);
-            //}
+           
             var myTable = $('#tblPoductosSeleccionados').DataTable();
             myTable
                 .clear()
@@ -1847,10 +1729,11 @@
             for (var x = 0; x < _jsonProductsSelected.length; x++) {
 
                     myTableR.row.add([
-                        _jsonProductsSelected[x].description,
+                        "<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>" + _jsonProductsSelected[x].description,//"<input type='text' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "/>" + _jsonProductsSelected[x].description,
                         _jsonProductsSelected[x].quantity,
                         "$" + _jsonProductsSelected[x].price,
-                        "$" + _jsonProductsSelected[x].total
+                        "$" + _jsonProductsSelected[x].total,
+                        _jsonProductsSelected[x].comment,
                     ]).draw();
             }
 
@@ -1865,6 +1748,8 @@
         }
 
         function seleccionarProducto() {
+            $("#txtProdArt2").val("");
+            CargaSeleccionaProducto();
             $("#dlgSeleccionar").modal("show");
         }
         function addProduct2() {
@@ -1904,63 +1789,6 @@
                 $('#divgridClientes').show();
             else
                 $('#divbuttonAddClient').show();
-
-            @*if (parm.length == 0) {
-                $('#txtBuscarCte').focus();
-                return;
-            }
-
-            $.ajax({
-                async: false,
-                type: "GET",
-                url: '@Url.Action("BuscarCliente", "CallCenter")',
-                data: {
-                    Criterio: parm
-
-                },
-                datatype: "html",
-                success: function (json) {
-                    debugger;
-                    if (json.Success) {
-                        if (json.existe) {
-
-                            var myTable = $('#tblConsultaCte').DataTable();
-                            myTable
-                                .clear()
-                                .draw();
-                            for (var i = 0; i < json.resp.length; i++) {
-
-
-                                myTable.row.add([
-
-                                    json.resp[i].Nom_Cte,
-                                    json.resp[i].Ap_Paterno,
-                                    json.resp[i].Ap_Materno,
-                                    json.resp[i].Id_Email,
-                                    json.resp[i].Telefono,
-                                    json.resp[i].Direccion,
-                                    "<button title='Click para Seleccionar el cliente' onclick='SelCte(\"" + json.resp[i].Id_Email + "\")' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
-
-                                ]).draw();
-                            }
-
-                            $("#divMsjAddClient").hide();
-                            $("#dlgListClients").modal("show");
-                        }
-                        else {
-                            popAddClient();
-                            $("#divMsjAddClient").show();
-                        }
-                    }
-                    else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(errorThrown);
-
-                }
-            });*@
         }
 
 
@@ -2193,7 +2021,6 @@
             });
         }
 
-
         function LlenaDatosCte(resp) {
 
             debugger;
@@ -2213,7 +2040,7 @@
         function onchangeDias() {
 
             var _fechaOriginal = Date.now();
-            var _fecha = $("[id='ddlDias'] option:selected").text();
+            var _fecha = $("#ddlDias").val(); //$("[id='ddlDias'] option:selected").text();
             $.ajax({
                 async: false,
                 type: "GET",
@@ -2319,8 +2146,6 @@
             });
         }
 
-
-
         function GetCp(_postalCode) {
             //alert($("#txtCodPos").val());
             //var _postalCode = $("#txtCodPos").val();
@@ -2368,11 +2193,6 @@
             }
 
         }
-
-
-
-
-
 
         function GetEstados() {
 
