@@ -1,6 +1,8 @@
-﻿
+﻿@using System.Data;
 @{
     ViewBag.Title = "Call Center";
+
+
 }
 
 
@@ -95,7 +97,41 @@
     @*<div class="col-xs-2 col-md-2 col-lg-2">
             <img id="imgProduct" src="~/Content/images/theme/default_image_01.png" class="img-lg">
         </div>*@
-    <div class="col-xs-12 col-md-12 col-lg-12">
+    <div class="col-xs-2 col-md-2 col-lg-2">
+      
+        <div class="form-group">
+
+            @*<label>Tiena</label>*@
+            <select class="form-control m-b" id="ddlTdas">
+                @{
+                    DataSet ds = (DataSet)ViewBag.tdas;
+
+
+                    foreach (DataRow item in ds.Tables[0].Rows)
+                    {
+
+                        if (Session["Id_Num_UN"] != null)
+                        {
+                            if (@item["id_num_un"].ToString() == Session["Id_Num_UN"].ToString())
+                            {
+                                <option value="@item["id_num_un"]" selected>@item["Centros"]"</option>
+                            }
+                            else
+                            {
+                                <option value="@item["id_num_un"]">@item["Centros"]"</option>
+}
+                        }
+
+                    }
+                }
+
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-8 col-md-8 col-lg-8">
+
+    </div>
+    <div class="col-xs-2 col-md-2 col-lg-2">
         <div class="text-right">
             <button type="button" class="btn btn-primary" onclick="popBuscador();">Buscador de Productos</button>
         </div>
@@ -132,7 +168,7 @@
                                 <hr />
                             </div>
                         </div>
-                        
+
                         <div class="row" id="divResultClient" style="display:none;">
                             <div class="col-xs-4 col-md-4 col-lg-4"></div>
                             <div class="col-xs-4 col-md-4 col-lg-4">
@@ -226,21 +262,21 @@
                                     </thead>
                                     <tbody id="feedback2">
                                         @*<tr>
-                        <td>123124<br /><input type="text" placeholder="Indicaciones y Observaciones" class="form-control input-sm" /></td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                        <td><input type="text" style="width:50px;" /> pza</td>
-                        <td>2</td>
-                        <td><input type="checkbox" class="checkbox" /></td>
-                    </tr>
-                    <tr>
-                        <td>123124<br /><input type="text" placeholder="Indicaciones y Observaciones" class="form-control input-sm" /></td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                        <td><input type="text" style="width:50px;" /> pza</td>
-                        <td>2</td>
-                        <td><input type="checkbox" class="checkbox" /></td>
-                    </tr>*@
+                                                <td>123124<br /><input type="text" placeholder="Indicaciones y Observaciones" class="form-control input-sm" /></td>
+                                                <td>$12.22</td>
+                                                <td>$12.22</td>
+                                                <td><input type="text" style="width:50px;" /> pza</td>
+                                                <td>2</td>
+                                                <td><input type="checkbox" class="checkbox" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>123124<br /><input type="text" placeholder="Indicaciones y Observaciones" class="form-control input-sm" /></td>
+                                                <td>$12.22</td>
+                                                <td>$12.22</td>
+                                                <td><input type="text" style="width:50px;" /> pza</td>
+                                                <td>2</td>
+                                                <td><input type="checkbox" class="checkbox" /></td>
+                                            </tr>*@
                                     </tbody>
                                 </table>
                             </div>
@@ -248,7 +284,7 @@
                                 <strong>  <label style="font-size:17px" id="lblCantidad"></label></strong>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12">
-                               <strong> <label style="font-size:17px" id="lblTotal"></label> </strong>
+                                <strong> <label style="font-size:17px" id="lblTotal"></label> </strong>
                             </div>
                         </div>
                         <div class="row">
@@ -522,26 +558,26 @@
             </div>
             <div class="modal-body">
                 @*<div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <table id="tblBusquedaSeleccionar" class="table table-striped table-bordered table-hover">
-                            <thead class="bg-danger-sor">
-                                <tr role="row">
-                                    <th>Código</th>
-                                    <th>Descripción</th>
-                                    <th>Marca</th>
-                                    <th>Precio</th>
-                                    <th>Normal</th>
-                                    <th>Dscto</th>
-                                    <th></th>
-                                    <th>Cantidad</th>
-                                        <th name="accion">Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody id="feedback"></tbody>
-                        </table>
-                    </div>
-                 
-                </div>*@
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <table id="tblBusquedaSeleccionar" class="table table-striped table-bordered table-hover">
+                                <thead class="bg-danger-sor">
+                                    <tr role="row">
+                                        <th>Código</th>
+                                        <th>Descripción</th>
+                                        <th>Marca</th>
+                                        <th>Precio</th>
+                                        <th>Normal</th>
+                                        <th>Dscto</th>
+                                        <th></th>
+                                        <th>Cantidad</th>
+                                            <th name="accion">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="feedback"></tbody>
+                            </table>
+                        </div>
+
+                    </div>*@
 
             </div>
             <div class="modal-footer">
@@ -574,7 +610,7 @@
                                     <th>Dscto</th>
                                     <th></th>
                                     @*<th>Cantidad</th>
-                                    <th name="accion">Acción</th>*@
+                                        <th name="accion">Acción</th>*@
                                 </tr>
                             </thead>
                             <tbody id="feedback"></tbody>
@@ -638,7 +674,7 @@
                                 <th>Telefono</th>
 
                                 @*<th>Cantidad</th>
-                        <th name="accion">Acción</th>*@
+                                    <th name="accion">Acción</th>*@
                             </tr>
                         </thead>
                         <tbody>
@@ -669,7 +705,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade bd-example-modal-lg"  id="dlgSeleccionar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="dlgSeleccionar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="width:900px">
             <div class="modal-header">
@@ -694,13 +730,13 @@
                                 <table style="width:100%;">
                                     <tr>
                                         @*<td>
-                                            <select class="form-control" id="cmbServicio" name="cmbServicio">
-                                                <option selected="selected" value="0">--Elegir Servicio--</option>
-                                                <option value="1">Cancelacion</option>
-                                                <option value="2">Retorno</option>
+                                                <select class="form-control" id="cmbServicio" name="cmbServicio">
+                                                    <option selected="selected" value="0">--Elegir Servicio--</option>
+                                                    <option value="1">Cancelacion</option>
+                                                    <option value="2">Retorno</option>
 
-                                            </select>
-                                        </td>*@
+                                                </select>
+                                            </td>*@
                                         <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
                                         <td>
                                             <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
@@ -771,7 +807,7 @@
                             <tbody id="feedback"></tbody>
                         </table>
                     </div>
-                  
+
                 </div>
 
             </div>
@@ -792,83 +828,83 @@
                 </button>
             </div>
             <div class="modal-body">
-            <div class="row">
-                <div class="col-xs-5 col-md-5 col-lg-5">
-                <div class="ibox">
-                    <div class="ibox-title">
-                        Sucursales
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                <div class="row">
+                    <div class="col-xs-5 col-md-5 col-lg-5">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                Sucursales
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <table style="width:100%;">
+                                    <tr>
+                                        @*<td>
+                                                <select class="form-control" id="cmbServicio" name="cmbServicio">
+                                                    <option selected="selected" value="0">--Elegir Servicio--</option>
+                                                    <option value="1">Cancelacion</option>
+                                                    <option value="2">Retorno</option>
+
+                                                </select>
+                                            </td>*@
+                                        <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
+                                        <td>
+                                            <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
+                                                Tienda
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td colspan="3">
+                                            <select class="form-control" id="cmbTda" name="cmbTda">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    <div class="ibox-content">
-                        <table style="width:100%;">
-                            <tr>
-                                @*<td>
-                                    <select class="form-control" id="cmbServicio" name="cmbServicio">
-                                        <option selected="selected" value="0">--Elegir Servicio--</option>
-                                        <option value="1">Cancelacion</option>
-                                        <option value="2">Retorno</option>
+                    <div class="col-xs-7 col-md-7 col-lg-7">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                Buscador  <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td>
+                                            <input class="form-control" type="text" placeholder="Producto" value="" id="txtProdArt">
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaProducto()">
+                                                Buscar
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
+                                                Historia
+                                            </button>
+                                        </td>
+                                    </tr>
 
-                                    </select>
-                                </td>*@
-                                <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
-                                <td>
-                                    <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
-                                        Tienda
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
+                                </table>
+                            </div>
+                        </div>
 
-                                <td colspan="3">
-                                    <select class="form-control" id="cmbTda" name="cmbTda">
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-7 col-md-7 col-lg-7">
-                <div class="ibox">
-                    <div class="ibox-title">
-                        Buscador  <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <table style="width:100%;">
-                            <tr>
-                                <td>
-                                    <input class="form-control" type="text" placeholder="Producto" value="" id="txtProdArt">
-                                </td>
-                                <td style="text-align:center;">
-                                    <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaProducto()">
-                                        Buscar
-                                    </button>
-                                </td>
-                                <td>
-                                    <button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
-                                        Historia
-                                    </button>
-                                </td>
-                            </tr>
-
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            @*<button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>*@
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                @*<button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>*@
             </div>
         </div>
     </div>
@@ -938,7 +974,7 @@
                         <div class="form-group">
                             <label>Estado </label>
                             <select id="ddlCteEstado" class="form-control" disabled></select>
-                                @*<input type="text" id="ddlCteEstado" class="form-control" disabled maxlength="100" />*@
+                            @*<input type="text" id="ddlCteEstado" class="form-control" disabled maxlength="100" />*@
                         </div>
                     </div>
                     <div class="col-xs-5 col-md-3 col-lg-4">
@@ -1236,16 +1272,16 @@
                 bodyTag: "section",
                 transitionEffect: "slideLeft",
                 autoFocus: true,
-                stepsOrientation: "vertical"
-                , onStepChanging: function (event, currentIndex, newIndex)
+               // stepsOrientation: "vertical",
+                 onStepChanging: function (event, currentIndex, newIndex)
                 {
                     var ok = false;
                     //busqueda de cliente
                     if (currentIndex == 0 )
                     {
                         //alert('Index ' + currentIndex);
-                        //var id = $("#hddIdCliente").val();
-                        var id = 1;
+                        var id = $("#hddIdCliente").val();
+                        //var id = 1;
                         if (id.length == 0) {
                             return false;
                         }
@@ -1619,7 +1655,7 @@
             if (_index > -1) {
                 _jsonProductsSelected.splice(_index, 1);
             }
-            
+
                 _jsonProductsSelected.push(_obj);
 
                 llenarCarrito();
@@ -1627,7 +1663,7 @@
         }
         function addProduct3(descripcion, barcode, precio) {
             //alert('Producto Añadido ' + descripcion + "----" + barcode + "----" + precio);
-            
+
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
                 alert("La Cantidad debe ser Mayor a 0.")
@@ -1643,7 +1679,7 @@
                 _jsonProductsSelected.push(_obj);
 
                 llenarCarrito();
-                
+
             }
         }
 
@@ -2169,7 +2205,7 @@
                                 $("#txtCteCiudad").val(json.resp[0].Locality);
                                 debugger;
                                 //$("#ddlCteEstado").find("option[text=" + json.resp[0].Region1Name + "]").attr("selected", true);
-                              
+
                                 $('#ddlCteEstado option:contains('+ json.resp[0].Region1Name +')').attr('selected', 'selected');
                             }
                         }
@@ -2193,14 +2229,14 @@
 
 
         function GetEstados() {
-           
-           
+
+
                 $.ajax({
                     async: false,
                     type: "GET",
                     url: '@Url.Action("GetEstados", "CallCenter")',
                     data: {
-                      
+
                     },
                     datatype: "html",
                     success: function (json) {
@@ -2216,7 +2252,7 @@
                                 sel.append('<option value="' + json.resp[i].Id_Num_Estado + '">' + json.resp[i].Nom_Estado + '</option>');
                             }
 
-                            
+
                         }
                         else {
                             alert(json.Message);
@@ -2228,7 +2264,7 @@
                     }
 
                 });
-            
+
 
         }
 
