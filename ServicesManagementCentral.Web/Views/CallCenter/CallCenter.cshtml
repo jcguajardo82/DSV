@@ -262,22 +262,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="feedback2">
-                                        @*<tr>
-                                                <td>123124<br /><input type="text" placeholder="Indicaciones y Observaciones" class="form-control input-sm" /></td>
-                                                <td>$12.22</td>
-                                                <td>$12.22</td>
-                                                <td><input type="text" style="width:50px;" /> pza</td>
-                                                <td>2</td>
-                                                <td><input type="checkbox" class="checkbox" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>123124<br /><input type="text" placeholder="Indicaciones y Observaciones" class="form-control input-sm" /></td>
-                                                <td>$12.22</td>
-                                                <td>$12.22</td>
-                                                <td><input type="text" style="width:50px;" /> pza</td>
-                                                <td>2</td>
-                                                <td><input type="checkbox" class="checkbox" /></td>
-                                            </tr>*@
                                     </tbody>
                                 </table>
                             </div>
@@ -294,22 +278,15 @@
                                     <thead class="bg-warning">
                                         <tr role="row">
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="2">Observaciones e instrucciones generales</th>
-
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1 . Favor de llamar por telefono antes de entregar</td>
-                                            <td>
-                                                <button type="button" style="visibility:visible;" class="btn btn-xs btn-danger btn-circle"><i class="fa fa-close"></i></button>
-                                            </td>
-                                        </tr>
+                                    <tbody id="Obs">
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td><input type="text" class="form-control input-sm" /></td>
+                                            <td><input type="text" id="ObservacionesGrles" class="form-control input-sm" /></td>
                                             <td>
-                                                <button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
+                                                <button type="button" id="btnHistoria" class="btn btn-primary" onclick="agregarObs()">
                                                     Agregar Observaciones
                                                 </button>
                                             </td>
@@ -1102,7 +1079,7 @@
 
 
 <input id="add_product" name="add_product" value="1" style="visibility:hidden" />
-
+<input id="add_Obs" name="add_product" value="0" style="visibility:hidden" />
 <input id="add_description" name="add_description" value="1" style="visibility:hidden" />
 <input id="add_price" name="add_price" value="1" style="visibility:hidden" />
 <input id="add_price_dsco" name="add_price_dsco" value="1" style="visibility:hidden" />
@@ -1790,6 +1767,19 @@
 
         //    }
         //}
+
+        function agregarObs() {
+            var sum_Obs = $('#add_Obs').val();
+/*            var myTable = $('#tblBusquedaArt').DataTable();*/
+            $('#Obs').append("<tr>"
+                + "<td>" + document.getElementById("ObservacionesGrles").value + "</td>"
+                + "<td>" + "<button type=\"button\" id=\"btn\" name=\"btn\" class=\"btn btn-primary\" onclick=\"eliminar(" + document.getElementById("add_Obs").value + ") \">Eliminar</button>" + "</td></tr>");
+
+            sum_Obs += 1;
+            $('#add_Obs').val(sum_Obs);
+            $('#ObservacionesGrles').empty();
+            $("#ObservacionesGrles").focus();
+        }
 
         function llenarCarrito() {
             var cant = 0, tot = 0.0;
