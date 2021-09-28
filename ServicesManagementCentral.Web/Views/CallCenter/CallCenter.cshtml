@@ -98,7 +98,7 @@
             <img id="imgProduct" src="~/Content/images/theme/default_image_01.png" class="img-lg">
         </div>*@
     <div class="col-xs-2 col-md-2 col-lg-2">
-      
+
         <div class="form-group">
 
             @*<label>Tiena</label>*@
@@ -114,14 +114,14 @@
                         {
                             if (@item["id_num_un"].ToString() == Session["Id_Num_UN"].ToString())
                             {
-                                <option value="@item["id_num_un"]" selected>@item["Centros"]"</option>
+                                <option value="@item["id_num_un"]" selected disabled>@item["Centros"]"</option>
                             }
-                            else
-                            {
-                                <option value="@item["id_num_un"]">@item["Centros"]"</option>
-}
-                        }
 
+                        }
+                        else
+                        {
+                            <option value="@item["id_num_un"]">@item["Centros"]"</option>
+                        }
                     }
                 }
 
@@ -469,7 +469,7 @@
                     <section>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-lg-12">
-                                <table id="tblFormaPago" class="table table-striped table-bordered table-hover" style="width:100%;">
+                                <table id="tblResumen" class="table table-striped table-bordered table-hover" style="width:100%;">
                                     <thead class="bg-warning">
                                         <tr role="row">
                                             <th class="text-center sorting">Descripción</th>
@@ -1258,7 +1258,7 @@
 
 
 
-                $("#wizard").steps({
+            $("#wizard").steps({
                     supressPaginationOnFocus: false,
                 labels: {
                     current: "current step:",
@@ -1449,6 +1449,24 @@
 
 
         });
+
+
+        function Finalizar() {
+            var products = new Array();
+            $("#tblResumen TBODY TR").each(function () {
+                var row = $(this);
+                var product = {};
+                customer.Id_Num_Sku = row.find("TD").eq(0).html();
+                customer.Cant_Unidades = row.find("TD").eq(1).html();
+                customer.Precio_VtaNormal = row.find("TD").eq(1).html();
+                customer.Precio_VtaOferta = row.find("TD").eq(1).html();
+                customer.Dcto = row.find("TD").eq(1).html();
+                customer.obs = row.find("TD").eq(1).html();
+                products.push(customer);
+            });
+
+            alert(products.length());
+        }
 
         function cargaTdas() {
 
