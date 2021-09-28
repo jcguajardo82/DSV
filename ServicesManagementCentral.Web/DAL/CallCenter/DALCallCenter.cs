@@ -1036,9 +1036,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
 
 
-
-
-           DataSet ds = new DataSet();
+        DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -1054,9 +1052,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 parametros.Add("@id_Num_SrvEntrega", id_Num_SrvEntrega);
                 parametros.Add("@Id_Num_Un", Id_Num_Un);
                 parametros.Add("@Fec_Entrega", Fec_Entrega);
+                parametros.Add("@Id_Num_Orden", Id_Num_Orden);
 
 
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[Orden_iUp]", false, parametros);
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[CalEntrega_iUp]", false, parametros);
 
                 return ds;
             }
