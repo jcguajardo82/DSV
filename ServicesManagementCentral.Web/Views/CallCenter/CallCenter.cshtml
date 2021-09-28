@@ -8,7 +8,7 @@
 
 
 <div class="row">
-   
+
     <div class="col-xs-6 col-md-6 col-lg-6">
 
         <div class="form-group">
@@ -174,7 +174,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="feedback2">
-                                      
                                     </tbody>
                                 </table>
                             </div>
@@ -317,15 +316,15 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio"  name="rdoMetodoPago" id="rdoEfevo" value="efectivo" checked>
+                                                    <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoEfevo" value="efectivo" checked>
                                                     <label class="form-check-label" for="flexRadioDefault2">
                                                         Efectivo y/o vales de papel de despensa
                                                     </label>
                                                 </div>
                                             </td>
-                                            <td style="text-align:right;">
-                                                Efectivo: <input type="text" id="in_pago" disabled  width="100px;" oninput="input(this)" /><br />
-                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled oninput="input(this)" id="in_vales" width="100px;" />
+                                            <td style="text-align:left;">
+                                                Efectivo: <input type="text" id="in_pago" disabled value="0.00" width="100px;" oninput="input(this)" /><br />
+                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled value="0.00" oninput="input(this)" id="in_vales" width="100px;" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -371,17 +370,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                     </tbody>
-                                 
+
                                 </table>
                                 <strong> <label style="font-size:17px" id="lblTotalR"></label> </strong>
-                                
+
                                 <table class="table">
                                     <tr>
                                         <td><b>Sera en tregada en:</b></td>
                                         <td>
-                                            <p id="lblMetodoEntrega">                                              
+                                            <p id="lblMetodoEntrega">
                                             </p>
                                             <p><b id="lblNomDir"></b></p>
                                             <p id="lblDirEnt"> </p>
@@ -599,7 +597,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row">                 
+                <div class="row">
                     <div class="col-xs-7 col-md-7 col-lg-7">
                         <div class="ibox">
                             <div class="ibox-title">
@@ -1106,7 +1104,7 @@
 
             $("#tblBusquedaSeleccionar").DataTable(
                 {
-                   
+
                     processing: true,
                     ordering: true,
                     order: [[1, 'asc']],
@@ -1136,7 +1134,7 @@
 
                 }
             );
-            
+
 
 
 
@@ -1160,7 +1158,7 @@
                      var ok = false;
 
 
-                     alert(currentIndex);
+                   /*  alert(currentIndex);*/
 
 
                     //busqueda de cliente
@@ -1234,7 +1232,7 @@
 
                     //REGRESA  CARRITO DE COMPRAS
                      if (currentIndex == 3 && newIndex == 2) {
-       
+
                         return true;
                     }
                     //AVANZA A REGRESA A Metodo de entrega
@@ -1331,10 +1329,10 @@
                             $("#lblDirEnt").text(dir);
                         }
 
-                       
+
                         //fecha entrega
                         var diaEnt = $("[id='ddlDias'] option:selected").text();
-                        var horaEnt = $("[id='ddlHoras'] option:selected").text(); 
+                        var horaEnt = $("[id='ddlHoras'] option:selected").text();
                         $("#lblFecEnt").text(diaEnt + ' en horario de ' + horaEnt);
 
                         //metodo de pago
@@ -1359,11 +1357,11 @@
                         if (op == "debito") {
                             $("#lblFormaPago").text("Tarjeta de Debito Terminal Portatil")
                         }
-                 
+
 
                         return true;
                     }
-                     
+
                      if (currentIndex == 5 && newIndex == 4) {
                          return true;
                      }
@@ -1387,7 +1385,7 @@
 
         $(function () {
             $('input:radio[name="rdoMetodoPago"]').change(function () {
-                if ($(this).val() == 'efectivo') { 
+                if ($(this).val() == 'efectivo') {
                     $("#in_pago").val('0.00');
                     $("#in_vales").val('0.00');
                     $("#in_pago").prop('disabled', false);
@@ -1402,7 +1400,18 @@
             });
         });
 
+        function agregarObs() {
+            var sum_Obs = $('#add_Obs').val();
+            /*            var myTable = $('#tblBusquedaArt').DataTable();*/
+            $('#Obs').append("<tr>"
+                + "<td>" + document.getElementById("ObservacionesGrles").value + "</td>"
+                + "<td>" + "<button type=\"button\" id=\"btn\" name=\"btn\" class=\"btn btn-primary\" onclick=\"eliminar(" + document.getElementById("add_Obs").value + ") \">Eliminar</button>" + "</td></tr>");
 
+            sum_Obs += 1;
+            $('#add_Obs').val(sum_Obs);
+            $('#ObservacionesGrles').empty();
+            $("#ObservacionesGrles").focus();
+        }
         var delayTimer;
         function input(ele) {
             clearTimeout(delayTimer);
@@ -1413,6 +1422,7 @@
 
         function Finalizar() {
             var products = new Array();
+            var observaciones = new Array();
             $("#tblResumen TBODY TR").each(function () {
                 var row = $(this);
                 var product = {};
@@ -1426,8 +1436,52 @@
                 products.push(product);
             });
 
-            debugger;
-            alert(products.length());
+            $("#tblBusquedaArt TBODY TR").each(function () {
+                var row1 = $(this);
+                var observacion = {};
+
+
+                observacion.Desc_CarObs = row1.find("TD").eq(0).html();
+                observaciones.push(observacion);
+            });
+
+            var _idCliente = $("#hddIdCliente").val();
+            var _diaEnt = $("#ddlDias").val();
+            var _horaEnt = $("#ddlHoras").val();
+            var _metodoEnt = $("input:radio[name=rdoMetodoEntrega]:checked").val()
+            var _metodoPago = $("input:radio[name=rdoMetodoPago]:checked").val()
+            var _efectivo = $("#in_pago").val();
+            var _vales = $("#in_vales").val();
+            var _tda = $("#ddlTdas").val();
+
+
+
+
+            //Send the JSON array to Controller using AJAX.
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("FinalizarOrden", "CallCenter")',
+
+                data: JSON.stringify(
+                    {
+                        arts: products,
+                        carObs:observaciones,
+                        idCliente: _idCliente,
+                        diaEnt: _diaEnt,
+                        horaEnt: _horaEnt,
+                        metodoEnt: _metodoEnt,
+                        metodoPago: _metodoPago,
+                        efectivo: _efectivo,
+                        vales: _vales,
+                        tda: _tda
+                    }
+                ),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    alert(r + " record(s) inserted.");
+                }
+            });
         }
 
         function cargaTdas() {
@@ -1689,11 +1743,11 @@
             $("#dlgAgregarProductoComentario").modal("hide");
             $("#dlgSeleccionar").modal("show");
         }
-     
+
 
         function llenarCarrito() {
             var cant = 0, tot = 0.0;
-           
+
             var myTable = $('#tblPoductosSeleccionados').DataTable();
             myTable
                 .clear()
@@ -1725,7 +1779,7 @@
             myTableR
                 .clear()
                 .draw();
-            
+
             for (var x = 0; x < _jsonProductsSelected.length; x++) {
 
                     myTableR.row.add([

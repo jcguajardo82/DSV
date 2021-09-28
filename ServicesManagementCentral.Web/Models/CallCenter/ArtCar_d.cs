@@ -9,14 +9,14 @@ namespace ServicesManagement.Web.Models.CallCenter
     {
 
         //public string Id_Num_Car { get; set; }
-        public string Id_Num_Sku { get; set; }
+        public int Id_Num_Sku { get; set; }
         //public string Id_Num_ArtCar_Tipo { get; set; }
         //public string Num_SkuRef { get; set; }
-        public string Cant_Unidades { get; set; }
+        public decimal Cant_Unidades { get; set; }
         //public string Cant_Surtida { get; set; }
-        public string Precio_VtaNormal { get; set; }
-        public string Precio_VtaOferta { get; set; }
-        public string Dcto { get; set; }
+        public decimal Precio_VtaNormal { get; set; }
+        public decimal Precio_VtaOferta { get; set; }
+        public decimal Dcto { get; set; }
         public string obs { get; set; }
         //public string Impto { get; set; }
         //public string Bit_SkuObligadoComp { get; set; }
@@ -24,4 +24,6 @@ namespace ServicesManagement.Web.Models.CallCenter
         //public string Fec_Movto { get; set; }
                                                                  
     }
+
+
 }

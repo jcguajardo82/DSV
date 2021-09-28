@@ -993,7 +993,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet Orden_iUp(int Id_Num_Car, int Id_Num_Cte, string id_Num_SrvEntrega)
+        public static DataSet Orden_iUp(int Id_Num_Car, int Id_Num_Cte, int id_Num_SrvEntrega)
         {
 
          DataSet ds = new DataSet();

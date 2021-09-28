@@ -1076,7 +1076,7 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult AddClient(
             string Nom_Cte, string Ap_Materno, string Ap_Paterno, string Calle, string Nom_DirCTe,
             string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
-            string Telefono,string Id_Email,int Ids_Num_Edo
+            string Telefono, string Id_Email, int Ids_Num_Edo
             )
         {
             try
@@ -1096,13 +1096,13 @@ namespace ServicesManagement.Web.Controllers
 
                     list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Id_Email).Tables[0]).FirstOrDefault();
                 }
-             
+
 
                 var result = new
                 {
                     Success = true
                     ,
-                    resp = list               
+                    resp = list
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -1124,30 +1124,30 @@ namespace ServicesManagement.Web.Controllers
             try
             {
 
-                    List<Dias> dias = new List<Dias>();
-                    CultureInfo ci = new CultureInfo("Es-Es");
-                    for (int i = 0; i < 7; i++)
+                List<Dias> dias = new List<Dias>();
+                CultureInfo ci = new CultureInfo("Es-Es");
+                for (int i = 0; i < 7; i++)
+                {
+                    Dias dia = new Dias();
+                    if (i == 0)
                     {
-                        Dias dia = new Dias();
-                        if (i == 0)
-                        {
-                            dia.fecha = DateTime.Now.AddHours(-5).ToString("yyyy/MM/dd");
-                            dia.NombeDia = string.Format("HOY - {0}", NombreMesDia(DateTime.Now.AddHours(-5)));//ci.DateTimeFormat.DayNames[DateTime.Now.Date.Day];
-                        }
-                        else
-                        {
-                            dia.fecha = DateTime.Now.AddHours(-5).AddDays(i).ToString("yyyy/MM/dd");
-
-                            dia.NombeDia = string.Format("{0} - {1}", ci.DateTimeFormat.DayNames[(int)DateTime.Now.AddHours(-5).Date.AddDays(i).DayOfWeek].ToUpper()
-                                , NombreMesDia(DateTime.Now.AddHours(-5).AddDays(i)));
-                        }
-                        dias.Add(dia);
+                        dia.fecha = DateTime.Now.AddHours(-5).ToString("yyyy/MM/dd");
+                        dia.NombeDia = string.Format("HOY - {0}", NombreMesDia(DateTime.Now.AddHours(-5)));//ci.DateTimeFormat.DayNames[DateTime.Now.Date.Day];
                     }
+                    else
+                    {
+                        dia.fecha = DateTime.Now.AddHours(-5).AddDays(i).ToString("yyyy/MM/dd");
 
-                    var horas = HoraEntrga(fechaOriginal, "HOY");
-                    var result = new { Success = true, json = dias, horas = horas };
-                    return Json(result, JsonRequestBehavior.AllowGet);
-              
+                        dia.NombeDia = string.Format("{0} - {1}", ci.DateTimeFormat.DayNames[(int)DateTime.Now.AddHours(-5).Date.AddDays(i).DayOfWeek].ToUpper()
+                            , NombreMesDia(DateTime.Now.AddHours(-5).AddDays(i)));
+                    }
+                    dias.Add(dia);
+                }
+
+                var horas = HoraEntrga(fechaOriginal, "HOY");
+                var result = new { Success = true, json = dias, horas = horas };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
             }
             catch (Exception ex)
             {
@@ -1187,13 +1187,13 @@ namespace ServicesManagement.Web.Controllers
 
             try
             {
-               
 
-                    var dias = HoraEntrga(fechaOriginal, fechaSelec);
-                    var result = new { Success = true, json = dias };
-                    return Json(result, JsonRequestBehavior.AllowGet);
 
-              
+                var dias = HoraEntrga(fechaOriginal, fechaSelec);
+                var result = new { Success = true, json = dias };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+
             }
             catch (Exception ex)
             {
@@ -1251,24 +1251,24 @@ namespace ServicesManagement.Web.Controllers
             return result;
         }
 
-        public ActionResult GetDirCteIdNumCte(int Id_Num_Cte )
+        public ActionResult GetDirCteIdNumCte(int Id_Num_Cte)
         {
             try
 
             {
 
-               
+
 
                 var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(Id_Num_Cte).Tables[0]);
 
-               
-              
+
+
                 var result = new
                 {
                     Success = true
                     ,
                     resp = list
-                   
+
 
                 };
 
@@ -1357,7 +1357,72 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        
+        [HttpPost]
+        public ActionResult FinalizarOrden(List<ArtCar_d> arts, List<CarObs> carObs, int idCliente, string diaEnt, string horaEnt
+            , int metodoEnt, string metodoPago, string efectivo, string vales, int tda)
+        {
+            try
+
+            {
+
+                int id_Num_SrvEntrega = 0;
+                //CREACION DEL CARRITO
+                var Id_Num_Car = int.Parse(DALCallCenter.Car_iUp(tda).Tables[0].Rows[0][0].ToString());
+
+
+                //DETALLE DEL CARRITO
+                foreach (var item in arts)
+                {
+                    //ARTICULOS
+                    DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal, item.Precio_VtaOferta, item.Dcto);
+                    //COMENTARIOS POR ARTICULO
+                    DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs);
+                }
+
+                //OBSERVACIONES NIVEL CARRITO
+                foreach (var item in carObs)
+                {
+                    DALCallCenter.CarObs_iUp(Id_Num_Car, item.Desc_CarObs);
+                }
+
+                switch (metodoEnt)
+                {
+                    //entrega en tienda
+                    case 1:
+                        id_Num_SrvEntrega = 3;
+                        break;
+                    //Domicilio
+                    case 2:
+                        id_Num_SrvEntrega = 2;
+                        break;
+                }
+
+                var Id_Num_Orden = int.Parse(DALCallCenter.Orden_iUp(Id_Num_Car, idCliente, id_Num_SrvEntrega).Tables[0].Rows[0][0].ToString());
+
+                DateTime Fec_Entrega = Convert.ToDateTime(string.Format("{0} {1}",diaEnt,horaEnt));
+
+                DALCallCenter.CalEntrega_iUp(id_Num_SrvEntrega, tda, Id_Num_Orden, Fec_Entrega);
+
+
+                var result = new
+                {
+                    Success = true
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
         #endregion
     }
 }
