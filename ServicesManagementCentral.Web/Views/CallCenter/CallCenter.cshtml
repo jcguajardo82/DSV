@@ -257,6 +257,7 @@
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Precio Oferta</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:20%;">Cantidad</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:15%;">Total</th>
+                                            <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:30%;">Comentario</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Borrar</th>
                                         </tr>
                                     </thead>
@@ -508,14 +509,16 @@
                                             </td>
                                         </tr>
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td></td>
-                                            <td colspan="2"><b>Costo total de la orden</b></td>
-                                            <td><b>$20.00</b></td>
-                                        </tr>
-                                    </tfoot>
+                                    @*<tfoot>
+                <tr>
+                    <td></td>
+                    <td colspan="2"><b>Costo total de la orden</b></td>
+                    <td><b>$20.00</b></td>
+                </tr>
+            </tfoot>*@
                                 </table>
+                                <strong> <label style="font-size:17px" id="lblTotalR"></label> </strong>
+                                
                                 <table class="table">
                                     <tr>
                                         <td><b>Sera en tregada en:</b></td>
@@ -705,16 +708,42 @@
         </div>
     </div>
 </div>
-<div class="modal fade bd-example-modal-lg" id="dlgSeleccionar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="dlgAgregarProductoComentario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="width:900px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Agregar Comentario al Producto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        @*<input type="text" id="txtComentario" multiple />*@
+                        <textarea id="txtComentario" cols="40" rows="5"></textarea>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="ConfirmarProduct()" data-dismiss="modal">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl" id="dlgSeleccionar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5>Agregar Articulo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="width:900px">
+            <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-5 col-md-5 col-lg-5">
                         <div class="ibox">
@@ -1093,6 +1122,11 @@
 
     <script>
         var _jsonProductsSelected = [];
+        var _descripcion = undefined;
+        var _barcode = undefined;
+        var _precio = undefined;
+        var _cantidad = undefined;
+
         $(document).ready(function () {
 
 
@@ -1533,8 +1567,8 @@
                                     data.data[i].PromotionalPrice,
                                     "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
                                     "<input type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
-                                    "<button title='Agregar Producto' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price + "\")' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
-                                    //"<button title='Agregar Producto' onclick='addProduct3(" + '$("nCant-' + data.data[i].Barcode + "\"))' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+                                    //"<button title='Agregar Producto' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price + "\")' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+                                    "<a title='Click para ver el inventario' class='link-primary' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price + "\")'>Agregar Prodcuto</a>"
                                 ]).draw();
                             }
 
@@ -1661,79 +1695,183 @@
             var cantidad = $("#productCant-" + barcode).val();
             var item = _jsonProductsSelected.find(x => x.barcode === barcode);
 
-            let _obj = {};
-            _obj.barcode = item.barcode;
-            _obj.description = item.description;
-            _obj.price = item.price;
-            _obj.quantity = cantidad;
-            _obj.total = cantidad * item.price;
+            item.quantity = cantidad;
+            item.total = cantidad * item.price;
+            //let _obj = {};
+            //_obj.barcode = item.barcode;
+            //_obj.description = item.description;
+            //_obj.price = item.price;
+            //_obj.quantity = cantidad;
+            //_obj.total = cantidad * item.price;
+            //_obj.comment = item.comment;
 
 
-            let _index = _jsonProductsSelected.indexOf(item);
-            if (_index > -1) {
-                _jsonProductsSelected.splice(_index, 1);
-            }
+            //let _index = _jsonProductsSelected.indexOf(item);
+            //if (_index > -1) {
+            //    _jsonProductsSelected.splice(_index, 1);
+            //}
 
-                _jsonProductsSelected.push(_obj);
+                //_jsonProductsSelected.push(_obj);
+
+            console.log(_jsonProductsSelected);
 
                 llenarCarrito();
 
         }
         function addProduct3(descripcion, barcode, precio) {
-            //alert('Producto Añadido ' + descripcion + "----" + barcode + "----" + precio);
 
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
                 alert("La Cantidad debe ser Mayor a 0.")
             }
             else {
-                let _obj = {};
-                _obj.barcode = barcode;
-                _obj.description = descripcion;
-                _obj.price = precio;
-                _obj.quantity = cantidad;
-                _obj.total = cantidad * precio;
+                _descripcion = descripcion;
+                _barcode = barcode;
+                _precio = precio;
+                _cantidad = cantidad;
 
-                _jsonProductsSelected.push(_obj);
-
-                llenarCarrito();
-
+                $("#dlgAgregarProductoComentario").modal("show");
+                $("#dlgSeleccionar").modal("hide");
             }
         }
+        function ConfirmarProduct() {
+
+            var item = _jsonProductsSelected.find(x => x.barcode === _barcode);
+
+            if (item != undefined) {
+                let _index = _jsonProductsSelected.indexOf(item);
+                if (_index > -1) {
+                    _jsonProductsSelected.splice(_index, 1);
+                }
+            }
+
+            let _obj = {};
+            _obj.barcode = _barcode;
+            _obj.description = _descripcion;
+            _obj.price = _precio;
+            _obj.quantity = _cantidad;
+            _obj.total = _cantidad * _precio;
+            _obj.comment = $("#txtComentario").val();
+
+            _jsonProductsSelected.push(_obj);
+
+            llenarCarrito();
+
+            $("#txtComentario").val("");
+            $("#dlgAgregarProductoComentario").modal("hide");
+            $("#dlgSeleccionar").modal("show");
+        }
+        //function addProduct3(descripcion, barcode, precio) {
+        //    //alert('Producto Añadido ' + descripcion + "----" + barcode + "----" + precio);
+        //    var item = _jsonProductsSelected.find(x => x.barcode === barcode);
+
+        //    if (item != undefined) {
+        //        let _index = _jsonProductsSelected.indexOf(item);
+        //        if (_index > -1) {
+        //            _jsonProductsSelected.splice(_index, 1);
+        //        }
+        //    }
+
+        //    var cantidad = $("#nCant-" + barcode).val();
+        //    if (cantidad == 0) {
+        //        alert("La Cantidad debe ser Mayor a 0.")
+        //    }
+        //    else {
+        //        let _obj = {};
+        //        _obj.barcode = barcode;
+        //        _obj.description = descripcion;
+        //        _obj.price = precio;
+        //        _obj.quantity = cantidad;
+        //        _obj.total = cantidad * precio;
+
+        //        _jsonProductsSelected.push(_obj);
+
+        //        llenarCarrito();
+
+        //    }
+        //}
 
         function llenarCarrito() {
             var cant = 0, tot = 0.0;
-            $("#tblPoductosSeleccionados tbody").remove();
+            //$("#tblPoductosSeleccionados tbody").remove();
 
-            $("#tblPoductosSeleccionados tr").remove();
-            trTh = $('<tr/>');
-            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1'>Descripción</th>");
-            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Normal</th>");
-            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Oferta</th>");
-            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 20 %;'>Cantidad</th>");
-            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 15 %;'>Total</th>");
-            trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Borrar</th>");
-            $('#tblPoductosSeleccionados').append(trTh);
+            //$("#tblPoductosSeleccionados tr").remove();
+            //trTh = $('<tr/>');
+            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1'>Descripción</th>");
+            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Normal</th>");
+            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Precio Oferta</th>");
+            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 20 %;'>Cantidad</th>");
+            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 15 %;'>Total</th>");
+            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 30 %;'>Comentario</th>");
+            //trTh.append("<th class='text-center sorting' tabindex='0' rowspan='1' colspan='1' style='width: 10 %;'>Borrar</th>");
+            //$('#tblPoductosSeleccionados').append(trTh);
+            //for (var i = 0; i < _jsonProductsSelected.length; i++) {
+            //    tr = $('<tr/>');
+            //    //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+            //    tr.append("<td>" + _jsonProductsSelected[i].description + "</td>");
+            //    tr.append("<td>" + "$" + _jsonProductsSelected[i].price + "</td>");
+            //    tr.append("<td>" + "$" + _jsonProductsSelected[i].price + "</td>");
+            //    tr.append("<td>" +
+            //        "<input type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' " + "" + " /> "
+            //        + "</td>");
+            //    tr.append("<td>" + "$" + _jsonProductsSelected[i].total + "</td>");
+            //    tr.append("<td>" + _jsonProductsSelected[i].comment + "</td>");
+            //    tr.append("<td><button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>");
+            //    $('#tblPoductosSeleccionados').append(tr);
+
+            //    cant = cant + parseInt(_jsonProductsSelected[i].quantity);
+            //    tot = tot + parseFloat(_jsonProductsSelected[i].total);
+            //}
+            var myTable = $('#tblPoductosSeleccionados').DataTable();
+            myTable
+                .clear()
+                .draw();
             for (var i = 0; i < _jsonProductsSelected.length; i++) {
-                tr = $('<tr/>');
-                //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                tr.append("<td>" + _jsonProductsSelected[i].description + "</td>");
-                tr.append("<td>" + "$" + _jsonProductsSelected[i].price + "</td>");
-                tr.append("<td>" + "$" + _jsonProductsSelected[i].price + "</td>");
-                tr.append("<td>" +
-                    "<input type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' " + "" + " /> "
-                    + "</td>");
-                tr.append("<td>" + "$" + _jsonProductsSelected[i].total + "</td>");
-                tr.append("<td><button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>");
-                $('#tblPoductosSeleccionados').append(tr);
+
+
+                myTable.row.add([
+
+                    _jsonProductsSelected[i].description,
+                    "$" + _jsonProductsSelected[i].price,
+                    "$" + _jsonProductsSelected[i].price,
+                    "<input type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' " + "" + " /> ",
+                    "$" + _jsonProductsSelected[i].total,
+                    _jsonProductsSelected[i].comment,
+                    "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
+                ]).draw();
 
                 cant = cant + parseInt(_jsonProductsSelected[i].quantity);
                 tot = tot + parseFloat(_jsonProductsSelected[i].total);
             }
+
             $("#lblCantidad").empty();
             $("#lblCantidad").append("Articulos Totales: " + cant);
             $("#lblTotal").empty();
             $("#lblTotal").append("Total a Pagar: $" + tot);
+
+            var myTableR = $('#tblResumen').DataTable();
+            myTableR
+                .clear()
+                .draw();
+            
+            for (var x = 0; x < _jsonProductsSelected.length; x++) {
+
+                    myTableR.row.add([
+                        _jsonProductsSelected[x].description,
+                        _jsonProductsSelected[x].quantity,
+                        "$" + _jsonProductsSelected[x].price,
+                        "$" + _jsonProductsSelected[x].total
+                    ]).draw();
+            }
+
+            $("#lblTotalR").append("Costo Total de la Orden: $" + tot);
+            //myTableR.row.add([
+
+            //    "",
+            //    "<b>Costo Total De la Orden</b>",
+            //    "",
+            //    "<b>$" + tot + "</b>"
+            //]).draw();
         }
 
         function seleccionarProducto() {
