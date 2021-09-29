@@ -1209,6 +1209,110 @@ namespace ServicesManagement.Web.DAL.CallCenter
             }
 
         }
+
+        public static DataSet FormaPagoCte_d_iUp(
+            int Id_Num_Cte, int Id_Num_FormaPago, DateTime Fec_Movto, string Cuenta="",
+            string Vec ="", string Nip ="", decimal Bit_FormaEliminada=0,
+            string Banco="", string Num_Cheque="",string Cuenta_enc="",string Vec_enc="",
+            string Nip_enc ="",string IdKey=""
+            
+            )
+        {
+
+
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+               
+                parametros.Add("@Id_Num_Cte", Id_Num_Cte);
+                parametros.Add("@Id_Num_FormaPago", Id_Num_FormaPago);
+                parametros.Add("@Fec_Movto", Fec_Movto);
+                parametros.Add("@Cuenta", Cuenta);
+                parametros.Add("@Vec", Vec);
+                parametros.Add("@Nip", Nip);
+                parametros.Add("@Bit_FormaEliminada", Bit_FormaEliminada);
+                parametros.Add("@Banco", Banco);
+                parametros.Add("@Num_Cheque", Num_Cheque);
+                parametros.Add("@Cuenta_enc", Cuenta_enc);
+                parametros.Add("@Vec_enc", Vec_enc);
+                parametros.Add("@Nip_enc", Nip_enc);
+                parametros.Add("@IdKey", IdKey);
+
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[FormaPagoCte_d_iUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public static DataSet OrdenPago_iUp(int Id_Num_Cte, int Id_Cnsc_FormaPagoCte_d, int Id_Num_Orden
+            ,DateTime Fecx_Movto,decimal Imp_Pago,int Num_Status =0,bool Bit_Eliminado=false)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Num_Orden", Id_Num_Orden);
+                parametros.Add("@Id_Num_Cte", Id_Num_Cte);
+                parametros.Add("@Id_Cnsc_FormaPagoCte_d", Id_Cnsc_FormaPagoCte_d);
+                parametros.Add("@Fecx_Movto", Fecx_Movto);
+                parametros.Add("@Imp_Pago", Imp_Pago);
+                parametros.Add("@Num_Status", Num_Status);
+                parametros.Add("@Bit_Eliminado", Bit_Eliminado);
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[OrdenPago_iUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
         #endregion
     }
 }

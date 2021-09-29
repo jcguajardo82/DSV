@@ -1359,7 +1359,7 @@ namespace ServicesManagement.Web.Controllers
 
         [HttpPost]
         public ActionResult FinalizarOrden(List<ArtCar_d> arts, List<CarObs> carObs, int idCliente, string diaEnt, string horaEnt
-            , int metodoEnt, string metodoPago, string efectivo, string vales, int tda
+            , int metodoEnt, string metodoPago, decimal efectivo, decimal vales, int tda
             , string Calle, string Nom_DirCTe,
             string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
             string Telefono, int Ids_Num_Edo)
@@ -1367,6 +1367,23 @@ namespace ServicesManagement.Web.Controllers
             try
 
             {
+
+                decimal TotOrden = 0;
+
+                foreach (var item in arts)
+                {
+                    TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
+                }
+
+                if (metodoPago == "efectivo")
+                {
+                    if ((efectivo + vales) == 0)
+                    {
+                        throw new Exception("La cantidad de efectivo y vales no pude ser 0");
+
+                    }
+                }
+
 
                 int id_Num_SrvEntrega = 0;
                 //CREACION DEL CARRITO
@@ -1379,8 +1396,8 @@ namespace ServicesManagement.Web.Controllers
                     //ARTICULOS
                     DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal, item.Precio_VtaOferta, item.Dcto);
                     //COMENTARIOS POR ARTICULO
-                    string obs = item.obs == null ? string.Empty:item.obs;
-                    DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, obs);
+                    if (item.obs != null)
+                    { DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs); }
                 }
 
                 //OBSERVACIONES NIVEL CARRITO
@@ -1401,24 +1418,99 @@ namespace ServicesManagement.Web.Controllers
                         break;
                 }
 
+                //SE CREA LA ORDEN
                 var Id_Num_Orden = int.Parse(DALCallCenter.Orden_iUp(Id_Num_Car, idCliente, id_Num_SrvEntrega).Tables[0].Rows[0][0].ToString());
 
+                //SE REGRISTRA LA FECJA DE ENTREGA
                 DateTime Fec_Entrega = Convert.ToDateTime(string.Format("{0} {1}", diaEnt, horaEnt));
 
+                //SE GUARDA LA FECCHA DE ENTREGA
                 DALCallCenter.CalEntrega_iUp(id_Num_SrvEntrega, tda, Id_Num_Orden, Fec_Entrega);
 
-
-                var Id_Cnsc_DirCTe =int.Parse( DALCallCenter.DirCteEnt_iUp(idCliente, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int
+                //REGISTRAMOS/CONSULTAMOS LA DIRECCION DE ENTREGA EN LA TABLA DIRCTE
+                var Id_Cnsc_DirCTe = int.Parse(DALCallCenter.DirCteEnt_iUp(idCliente, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int
                     , Ciudad, Cod_Postal, Colonia, Telefono, "").Tables[0].Rows[0][0].ToString());
 
-
+                //REGISTRAMOS LA DIRECCION ENTREGA
                 DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, Id_Cnsc_DirCTe);
+
+
+                int Id_Cnsc_FormaPagoCte_d = 0;
+                switch (metodoPago.ToLower())
+                {
+                    case "efectivo":
+                        //5 Efectivo
+                        //6 Vales de despensa
+
+                        if (efectivo > 0)
+                        {
+                            Id_Cnsc_FormaPagoCte_d = int.Parse(DALCallCenter.FormaPagoCte_d_iUp(idCliente, 5, DateTime.Now).Tables[0].Rows[0][0].ToString());
+                            DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, efectivo);
+                        }
+                        if (vales > 0)
+                        {
+                            Id_Cnsc_FormaPagoCte_d = int.Parse(DALCallCenter.FormaPagoCte_d_iUp(idCliente, 6, DateTime.Now).Tables[0].Rows[0][0].ToString());
+                            DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, vales);
+                        }
+
+                        
+
+                        break;
+
+                    case "debito": //22  Tarjeta de débito contra entrega
+                        Id_Cnsc_FormaPagoCte_d = int.Parse(DALCallCenter.FormaPagoCte_d_iUp(idCliente, 22, DateTime.Now).Tables[0].Rows[0][0].ToString());
+                        DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, TotOrden);
+                        break;
+                    case "credito":  //21  Tarjeta de crédito contra entrega
+
+
+                        Id_Cnsc_FormaPagoCte_d = int.Parse(DALCallCenter.FormaPagoCte_d_iUp(idCliente, 21, DateTime.Now).Tables[0].Rows[0][0].ToString());
+                        DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, TotOrden);
+                        break;
+                }
+
 
                 var result = new
                 {
                     Success = true
                     ,
-                    Message = string.Format("La Orden No. {0} fue generada con éxito",Id_Num_Orden)
+                    Message = string.Format("La Orden No. {0} fue generada con éxito", Id_Num_Orden)
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+
+        public ActionResult XML()
+        {
+            try
+
+            {
+                var ds = DALCallCenter.sp_OMSGetOrderDetails(3000015);
+
+
+                OrdersToXML obj = new OrdersToXML();
+
+                obj.CreateXMLDocument(ds, "3000015");
+
+
+                var result = new
+                {
+                    Success = true
+
+
+
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);

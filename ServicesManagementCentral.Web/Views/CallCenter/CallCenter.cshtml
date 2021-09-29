@@ -6,7 +6,7 @@
 }
 
 
-
+<input type="button" name="answer" onclick="xml()" value="XML" class="btn btn-success"  />
 <div class="row">
 
     <div class="col-xs-6 col-md-6 col-lg-6">
@@ -942,6 +942,33 @@
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
 
     <script>
+        function xml() {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("XMl", "CallCenter")',
+                    data: {
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //
+                        if (json.Success) {
+
+
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+        }
+
         var _jsonProductsSelected = [];
         var _descripcion = undefined;
         var _barcode = undefined;
@@ -1351,6 +1378,12 @@
                             if ($("#in_pago").val().length == 0 && $("#in_vales").val()) {
                                 alert("Debe ingresar una canitdad en Efecivo o Vales");
                                 return false;
+                            } else {
+                                var totEfevo = parseFloat($("#in_pago").val()) + parseFloat($("#in_vales").val());
+                                if ( ! totEfevo > 0) {
+                                    alert("La cantidad de efectivo y vales no pude ser 0");
+                                    return false;
+                                }
                             }
 
                         }
@@ -1491,7 +1524,7 @@
                         efectivo: _efectivo,
                         vales: _vales,
                         tda: _tda,
-                       
+
                         Calle: Calle,
                         Nom_DirCTe: Nom_DirCTe,
                         Num_Ext: Num_Ext,
@@ -1499,7 +1532,7 @@
                         Ciudad: Ciudad,
                         Cod_Postal: Cod_Postal,
                         Colonia: Colonia,
-                        Telefono: Telefono,                       
+                        Telefono: Telefono,
                         Ids_Num_Edo: Ids_Num_Edo
                     }
                 ),
@@ -2216,7 +2249,7 @@
                     if (json.Success) {
 
                         $("#hddIdDir").val(json.resp.Id_Cnsc_DirCTe);
-                       //$("#rec_name").val(json.resp.Id_Cnsc_DirCTe);
+                        $("#rec_tel").val(json.resp.Telefono);
                         $("#rec_ciudad").val(json.resp.Ciudad);
                         $("#ddlRec_Estado").val(json.resp.Ids_Num_Edo);
                         $("#rec_calle").val(json.resp.Calle);
