@@ -1479,7 +1479,7 @@ namespace ServicesManagement.Web.Controllers
 
 
                 OrdersToXML obj = new OrdersToXML();
-                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString();
+                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'"); ;
                 var OrderToMicroService = new OrderJson
                 {
                     xmlOrden = x
@@ -1531,12 +1531,12 @@ namespace ServicesManagement.Web.Controllers
 
             {
 
-                int Id_Num_Orden = 3000026;
+                int Id_Num_Orden = 3000040;
                 var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
 
                 
                 OrdersToXML obj = new OrdersToXML();
-               string x= obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString();
+               string x= obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
                 var OrderToMicroService = new OrderJson
                 {
                     xmlOrden = x
