@@ -18,6 +18,9 @@ namespace ServicesManagement.Web.Models.CallCenter
         public decimal Precio_VtaOferta { get; set; }
         public decimal Dcto { get; set; }
         public string obs { get; set; }
+        public string Desc_art { get; set; }
+        public string Cve_UnVta { get; set; }
+        public decimal Num_CodBarra { get; set; }
         //public string Impto { get; set; }
         //public string Bit_SkuObligadoComp { get; set; }
         //public string Bit_SkuObligadoSurt { get; set; }

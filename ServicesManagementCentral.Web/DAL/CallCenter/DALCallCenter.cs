@@ -870,11 +870,12 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         public static DataSet ArtCar_d_iUp(
             int Id_Num_Car, int id_Num_Sku ,  decimal Cant_Unidades, 
-            decimal Precio_VtaNormal, decimal Precio_VtaOferta, decimal Dcto,
+            decimal Precio_VtaNormal, decimal Precio_VtaOferta, decimal Dcto,string Desc_art,string Cve_UnVta,decimal Num_CodBarra,
             int Id_Num_ArtCar_Tipo = 8
             )
 
         {
+
 
 
             DataSet ds = new DataSet();
@@ -897,7 +898,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 parametros.Add("@Precio_VtaOferta", Precio_VtaOferta);
                 parametros.Add("@Dcto", Dcto);
                 parametros.Add("@Id_Num_ArtCar_Tipo", Id_Num_ArtCar_Tipo);
-
+                parametros.Add("@Desc_art", Desc_art);
+                parametros.Add("@Cve_UnVta", Cve_UnVta);
+                parametros.Add("@Num_CodBarra", Num_CodBarra);
+   
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[ArtCar_d_iUp]", false, parametros);
 

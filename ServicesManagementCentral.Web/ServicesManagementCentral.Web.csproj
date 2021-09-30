@@ -292,6 +292,7 @@
     <Compile Include="Models\CallCenter\tbl_OrdenFotosRMA_sUp.cs" />
     <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByHistorical.cs" />
     <Compile Include="Models\CallCenter\up_Corp_cns_OrderInfo.cs" />
+    <Compile Include="Models\CallCenter\OrderJson.cs" />
     <Compile Include="Models\Config\Menu.cs" />
     <Compile Include="Models\Config\Rol.cs" />
     <Compile Include="Models\Config\Owners.cs" />

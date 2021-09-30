@@ -341,19 +341,19 @@ namespace ServicesManagement.Web.Controllers
         public JsonResult GetProduct(string product)
         {
             try
-            {
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            {            
+                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                //var client = new RestClient("http://localhost:7071/api/Buscador_Producto?productId=" + product.Trim());
-                var client = new RestClient("https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?productId=" + product.Trim());
+                    var urlApi= System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
+                    var client = new RestClient(urlApi + product.Trim());
 
-                client.Timeout = -1;
-                var request = new RestRequest(Method.POST);
-                IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                    client.Timeout = -1;
+                    var request = new RestRequest(Method.POST);
+                    IRestResponse response = client.Execute(request);
+                    Console.WriteLine(response.Content);
 
-                List<ResponseBuscadorModel> response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
-
+                 var   response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+               
                 var result = new { Success = false, data = response1 };
                 return Json(result, JsonRequestBehavior.AllowGet);
                 //return Json("", JsonRequestBehavior.AllowGet);
@@ -1394,7 +1394,9 @@ namespace ServicesManagement.Web.Controllers
                 foreach (var item in arts)
                 {
                     //ARTICULOS
-                    DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal, item.Precio_VtaOferta, item.Dcto);
+                    string[] desc = item.Desc_art.Split('<');
+                    DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
+                        , item.Precio_VtaOferta, item.Dcto, desc[0], item.Cve_UnVta, item.Num_CodBarra);
                     //COMENTARIOS POR ARTICULO
                     if (item.obs != null)
                     { DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs); }
@@ -1428,12 +1430,14 @@ namespace ServicesManagement.Web.Controllers
                 DALCallCenter.CalEntrega_iUp(id_Num_SrvEntrega, tda, Id_Num_Orden, Fec_Entrega);
 
                 //REGISTRAMOS/CONSULTAMOS LA DIRECCION DE ENTREGA EN LA TABLA DIRCTE
-                var Id_Cnsc_DirCTe = int.Parse(DALCallCenter.DirCteEnt_iUp(idCliente, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int
-                    , Ciudad, Cod_Postal, Colonia, Telefono, "").Tables[0].Rows[0][0].ToString());
+                if (metodoEnt == 2)
+                {
+                    var Id_Cnsc_DirCTe = int.Parse(DALCallCenter.DirCteEnt_iUp(idCliente, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int
+                        , Ciudad, Cod_Postal, Colonia, Telefono, "").Tables[0].Rows[0][0].ToString());
 
-                //REGISTRAMOS LA DIRECCION ENTREGA
-                DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, Id_Cnsc_DirCTe);
-
+                    //REGISTRAMOS LA DIRECCION ENTREGA
+                    DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, Id_Cnsc_DirCTe);
+                }
 
                 int Id_Cnsc_FormaPagoCte_d = 0;
                 switch (metodoPago.ToLower())
@@ -1453,7 +1457,7 @@ namespace ServicesManagement.Web.Controllers
                             DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, vales);
                         }
 
-                        
+
 
                         break;
 
@@ -1468,6 +1472,35 @@ namespace ServicesManagement.Web.Controllers
                         DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, TotOrden);
                         break;
                 }
+
+                #region Llamado al APi
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_AltaCarrito"];
+                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
+
+
+                OrdersToXML obj = new OrdersToXML();
+                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString();
+                var OrderToMicroService = new OrderJson
+                {
+                    xmlOrden = x
+                };
+
+                // Serializar el mensaje en formato Json
+                string jsonString = JsonConvert.SerializeObject(OrderToMicroService);
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", jsonString);
+
+                if (r.code != "00")
+                {
+                    throw new Exception(r.message);
+                }
+
+                #endregion
+
+
 
 
                 var result = new
@@ -1497,12 +1530,20 @@ namespace ServicesManagement.Web.Controllers
             try
 
             {
-                var ds = DALCallCenter.sp_OMSGetOrderDetails(3000015);
 
+                int Id_Num_Orden = 3000026;
+                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
 
+                
                 OrdersToXML obj = new OrdersToXML();
+               string x= obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString();
+                var OrderToMicroService = new OrderJson
+                {
+                    xmlOrden = x
+                 };
 
-                obj.CreateXMLDocument(ds, "3000015");
+                // Serializar el mensaje en formato Json
+                string jsonString = JsonConvert.SerializeObject(OrderToMicroService);
 
 
                 var result = new

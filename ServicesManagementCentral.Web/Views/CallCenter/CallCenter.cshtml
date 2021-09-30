@@ -168,6 +168,7 @@
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Precio Normal</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Precio Oferta</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:20%;">Cantidad</th>
+                                            <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:20%;">Unidad de Venta</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:15%;">Total</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:30%;">Comentario</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Borrar</th>
@@ -371,6 +372,7 @@
                                         <tr role="row">
                                             <th class="text-center sorting">Descripción</th>
                                             <th class="text-center sorting">Cantidad</th>
+                                            <th class="text-center sorting">Unidad de Venta</th>
                                             <th class="text-center sorting">Precio</th>
                                             <th class="text-center sorting">Subtotal</th>
                                             <th class="text-center sorting">Comentarios</th>
@@ -651,6 +653,7 @@
                                     <th>Dscto</th>
                                     <th></th>
                                     <th>Cantidad</th>
+                                    <th>Unidad de Venta</th>
                                     <th name="accion">Acción</th>
                                 </tr>
                             </thead>
@@ -975,6 +978,7 @@
         var _precio = undefined;
         var _cantidad = undefined;
         var _Sku = undefined;
+        var _SalesUnit = "";
 
         $(document).ready(function () {
 
@@ -1464,19 +1468,34 @@
         function Finalizar() {
             var products = new Array();
             var observaciones = new Array();
+            debugger;
+           
             $("#tblResumen TBODY TR").each(function () {
                 var row = $(this);
                 var product = {};
                 //product.Id_Num_Sku = row.find("TD").eq(0).html();
-                product.Id_Num_Sku = row.find("td:eq(0) input[type='hidden']").val();
+                //"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
+                //    + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>"
+
+               // product.Id_Num_Sku = row.find("td:eq(0) input[type='hidden']").val();
+                row.find("td:eq(0) input[type='hidden']").each(function () {
+                    var id=   $(this).attr('id');
+                    if (id.includes("sku")) {
+                        product.Id_Num_Sku = $(this).val();
+                    } else {
+                        product.Num_CodBarra = $(this).val();
+                    }
+                })
+                product.Desc_art = row.find("TD").eq(0).html();
                 product.Cant_Unidades = row.find("TD").eq(1).html();
-                product.Precio_VtaNormal = row.find("TD").eq(2).html();
-                product.Precio_VtaOferta = row.find("TD").eq(2).html();
+                product.Cve_UnVta = row.find("TD").eq(2).html();
+                product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
+                product.Precio_VtaOferta = row.find("TD").eq(3).html().replace('$', '');
                 product.Dcto = 0;//row.find("TD").eq(1).html();
-                product.obs = row.find("TD").eq(4).html();
+                product.obs = row.find("TD").eq(5).html();
                 products.push(product);
             });
-
+            debugger;
             $("#tblBusquedaArt TBODY TR").each(function () {
                 var row1 = $(this);
                 var observacion = {};
@@ -1541,7 +1560,7 @@
                 success: function (r) {
                     if (r.Success) {
                         alert(r.Message);
-                        location.reload();
+                        //location.reload();
                     } else {
                         alert(r.Message);
                     }
@@ -1618,36 +1637,14 @@
                                     data.data[i].PromotionalPrice,
                                     "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
                                     "<input type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
-                                    //"<button title='Agregar Producto' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price + "\")' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
-                                    "<a title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\"" + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price + "\",\"" + data.data[i].Sku + "\")'>Agregar Prodcuto</a>"
+                                    data.data[i].SalesUnit,
+                                    "<a title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\""
+                                    + data.data[i].Description + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price
+                                    + "\",\"" + data.data[i].Sku
+                                    + "\",\"" + data.data[i].SalesUnit
+                                    + "\")'>Agregar Prodcuto</a>"
                                 ]).draw();
                             }
-
-                            //$("#popUpSeleccionarProductos").modal("show");
-
-                            //$.each(data.data, function (index, value) {
-                            //    $('#feedback').append("<tr><td>" + value.Barcode + "</td>"
-                            //        + "<td>" + value.Description + "</td>"
-                            //        + "<td>" + value.Company + "</td>"
-                            //        + "<td>" + value.Price + "</td>"
-                            //        + "<td>" + value.Price + "</td>"
-                            //        + "<td>" + value.PromotionalPrice + "</td><td>"
-                            //        + "<div class=\"col-xs-2 col-md-2 col-lg-2\">"
-                            //        + "<img width='100' height='100' id=\"imgProduct2\" src=\" " + value.UrlImage + " \" class=\"img - lg\">"
-                            //        + "</div>"
-                            //        + "</td>"
-                            //        + "<td>" + value.Price + "</td>"
-                            //        + "<td>" + value.Price + "</td>"
-                            //        + "</tr>");
-                            //    document.getElementById("imgProduct2").src = value.UrlImage;
-                            //});
-
-                            //document.getElementById("add_product").value = data.data.Barcode;
-                            //document.getElementById("add_description").value = data.data.Description;
-                            //document.getElementById("add_price").value = data.data.Price;
-                            //document.getElementById("add_price_dsco").value = data.data.PromotionalPrice;
-
-
                         }
                     });
         }
@@ -1748,28 +1745,13 @@
 
             item.quantity = cantidad;
             item.total = cantidad * item.price;
-            //let _obj = {};
-            //_obj.barcode = item.barcode;
-            //_obj.description = item.description;
-            //_obj.price = item.price;
-            //_obj.quantity = cantidad;
-            //_obj.total = cantidad * item.price;
-            //_obj.comment = item.comment;
-
-
-            //let _index = _jsonProductsSelected.indexOf(item);
-            //if (_index > -1) {
-            //    _jsonProductsSelected.splice(_index, 1);
-            //}
-
-                //_jsonProductsSelected.push(_obj);
-
+          
             console.log(_jsonProductsSelected);
 
                 llenarCarrito();
 
         }
-        function addProduct3(descripcion, barcode, precio,sku) {
+        function addProduct3(descripcion, barcode, precio, sku, SalesUnit) {
 
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
@@ -1781,6 +1763,9 @@
                 _precio = precio;
                 _cantidad = cantidad;
                 _Sku = sku;
+                _SalesUnit = SalesUnit;
+                debugger;
+
                 $("#dlgAgregarProductoComentario").modal("show");
                 $("#dlgSeleccionar").modal("hide");
             }
@@ -1804,7 +1789,9 @@
             _obj.total = _cantidad * _precio;
             _obj.comment = $("#txtComentario").val();
             _obj.sku = _Sku;
+            _obj.SalesUnit = _SalesUnit;
             _jsonProductsSelected.push(_obj);
+            debugger;
 
             llenarCarrito();
 
@@ -1816,7 +1803,7 @@
 
         function llenarCarrito() {
             var cant = 0, tot = 0.0;
-
+            debugger;
             var myTable = $('#tblPoductosSeleccionados').DataTable();
             myTable
                 .clear()
@@ -1829,7 +1816,8 @@
                     _jsonProductsSelected[i].description,
                     "$" + _jsonProductsSelected[i].price,
                     "$" + _jsonProductsSelected[i].price,
-                    "<input type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' " + "" + " /> ",
+                    "<input type='number' onchange='Change(" + _jsonProductsSelected[i].barcode + ")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
+                     +"pza",// _jsonProductsSelected[i].SalesUnit,
                     "$" + _jsonProductsSelected[i].total,
                     _jsonProductsSelected[i].comment,
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
@@ -1851,9 +1839,13 @@
 
             for (var x = 0; x < _jsonProductsSelected.length; x++) {
 
-                    myTableR.row.add([
-                        "<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>" + _jsonProductsSelected[x].description,//"<input type='text' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "/>" + _jsonProductsSelected[x].description,
+                myTableR.row.add([
+                         _jsonProductsSelected[x].description
+                        +"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
+                        + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>",
+                        
                         _jsonProductsSelected[x].quantity,
+                        _jsonProductsSelected[x].SalesUnit,
                         "$" + _jsonProductsSelected[x].price,
                         "$" + _jsonProductsSelected[x].total,
                         _jsonProductsSelected[x].comment,
@@ -1861,13 +1853,7 @@
             }
 
             $("#lblTotalR").append("Costo Total de la Orden: $" + tot);
-            //myTableR.row.add([
 
-            //    "",
-            //    "<b>Costo Total De la Orden</b>",
-            //    "",
-            //    "<b>$" + tot + "</b>"
-            //]).draw();
         }
 
         function seleccionarProducto() {
