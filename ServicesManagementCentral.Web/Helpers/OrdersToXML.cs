@@ -346,7 +346,8 @@ namespace ServicesManagement.Web.Helpers
                 XElement XmlSETCCustom = new XElement(nm + "custom-attributes",
                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
-                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString())
+                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), dt2.Rows[0][85].ToString())
                     );
 
 
