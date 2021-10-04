@@ -1531,7 +1531,7 @@ namespace ServicesManagement.Web.Controllers
 
             {
 
-                int Id_Num_Orden = 3000040;
+                int Id_Num_Orden = 3000067;
                 var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
 
                 
