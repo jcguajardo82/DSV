@@ -1650,7 +1650,7 @@
                                     "<input type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
                                     data.data[i].SalesUnit,
                                     "<a title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\""
-                                    + data.data[i].Description.replaceAll("'", '"') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price
+                                    + data.data[i].Description.replaceAll("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price
                                     + "\",\"" + data.data[i].Sku
                                     + "\",\"" + data.data[i].SalesUnit
                                     + "\")'>Agregar Prodcuto</a>"
@@ -1754,6 +1754,8 @@
             var cantidad = $("#productCant-" + barcode).val();
             var item = _jsonProductsSelected.find(x => x.barcode === barcode);
 
+            //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
+
             item.quantity = cantidad;
             item.total = cantidad * item.price;
           
@@ -1769,7 +1771,7 @@
                 alert("La Cantidad debe ser Mayor a 0.")
             }
             else {
-                _descripcion = descripcion;
+                _descripcion = descripcion.replaceAll("|", "'");
                 _barcode = barcode;
                 _precio = precio;
                 _cantidad = cantidad;
@@ -1827,7 +1829,7 @@
                     _jsonProductsSelected[i].description,
                     "$" + _jsonProductsSelected[i].price,
                     "$" + _jsonProductsSelected[i].price,
-                    "<input type='number' onchange='Change(" + _jsonProductsSelected[i].barcode + ")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
+                    "<input type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + _jsonProductsSelected[i].total,
                     _jsonProductsSelected[i].comment,
