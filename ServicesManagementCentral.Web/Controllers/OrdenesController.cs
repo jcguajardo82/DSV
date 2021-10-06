@@ -173,6 +173,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 Session["OrderSelected"] = DALServicesM.upCorpOms_Cns_OrdersByOrderNoInit(order);
                 Session["listS"] = DALServicesM.GetSurtidores(Session["Id_Num_UN"].ToString());
+                Session["StatusDescription"] = DALServicesM.upCorpOms_Cns_OrdersByOrderNoInit(order).Tables[0].Rows[0]["StatusDescription"];
             }
             else
             {

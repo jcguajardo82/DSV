@@ -555,12 +555,18 @@ namespace ServicesManagement.Web.Controllers
                         }
                         DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId
                             , item.Position, quantity, item.ProductId, Desc);
-
-                        if (UeType.ToUpper().Equals("SETC"))
-                            Cancelacion(int.Parse(orden.Orderid));
+                        //if (UeType.ToUpper().Equals("SETC"))
+                        //    Cancelacion(int.Parse(orden.Orderid));
                     }
                 }
 
+                if (Operacion == 5)
+                {
+                    var ShipmentId = detalle[0].ShipmentId;
+                    DALAutorizacion.upCorpOms_Del_UeNoSupplyProcess(OrderId, Desc, 1, ShipmentId);
+                    if (UeType.ToUpper().Equals("SETC"))
+                        Cancelacion(int.Parse(orden.Orderid));
+                }
 
                 if (Session["CheckListProd"] != null)
                 {
