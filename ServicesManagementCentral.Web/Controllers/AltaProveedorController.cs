@@ -24,6 +24,8 @@ namespace ServicesManagement.Web.Controllers
 
             var prov = new AltaProveedor();
 
+            var usr = DataTableToModel.ConvertTo<Usuario>(DALConfig.Autenticar_sUP(User.Identity.Name).Tables[0]).FirstOrDefault();
+
             if (Request.QueryString["idSupplierWH"] != null && Request.QueryString["idSupplierWHCode"] != null)
             {
                 int idSupplierWH = 0, idSupplierWHCode = 0;
@@ -40,8 +42,12 @@ namespace ServicesManagement.Web.Controllers
                     prov.idSupplierWHCode = prov.idSupplierWHCode + 1;
                 }
             }
+            else
+            {
+                if (usr.IdTienda != null)
+                    prov.idSupplierWH = int.Parse(usr.IdTienda);
+            }
 
-            var usr = DataTableToModel.ConvertTo<Usuario>(DALConfig.Autenticar_sUP(User.Identity.Name).Tables[0]).FirstOrDefault();
 
             if (usr.rol.Equals("4")) { ViewBag.Dsv = true; }
             else

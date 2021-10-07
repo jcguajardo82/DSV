@@ -380,7 +380,14 @@
 @section scripts {
     <script>
         $(document).ready(function () {
-         
+
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const _processed = urlParams.get('PROCESSED');
+
+            if ($("#txtNumPro").val() != '0' && _processed == null) {
+                ObtenerDatos();
+            }
             if ($("#txtCodPos").val() != '') {
                 //alert($("#txtCol").val());
                 GetInfo();
@@ -578,7 +585,7 @@
 
                             }
                             else {
-                                window.location.href = "AltaProveedor/AltaProveedor?idSupplierWH=" + noProveedor + "&idSupplierWHCode=" + noAlmacenprev + "&Nuevo=" + 1;
+                                window.location.href = "AltaProveedor/AltaProveedor?idSupplierWH=" + noProveedor + "&idSupplierWHCode=" + noAlmacenprev + "&Nuevo=" + 1 + "&PROCESSED=true";
                             }
                         }
                         else {
