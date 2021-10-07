@@ -6,7 +6,7 @@
 }
 
 
-<input type="button" name="answer" onclick="xml()" value="XML" class="btn btn-success"  />
+@*<input type="button" name="answer" onclick="xml()" value="XML" class="btn btn-success"  />*@
 <div class="row">
 
     <div class="col-xs-6 col-md-6 col-lg-6">
@@ -1388,7 +1388,7 @@
                                 dir += ',No. Interior ' + $("#rec_nunInt").val();
                             }
 
-                            dir += ',' + $("#rec_col").val() + ',' + $("#rec_ciudad").val() + ',' + $("#rec_estado").val() + ' C.P.' + $("#rec_CP").val();
+                            dir += ',' + $("#rec_col").val() + ',' + $("#rec_ciudad").val() + ',' + $("#ddlRec_Estado option:selected").text(); + ' C.P.' + $("#rec_CP").val();
 
                             $("#lblDirEnt").text(dir);
                         }
@@ -2210,7 +2210,7 @@
             $('#lblClaveCte').text(resp.Id_Email);
             $('#lblCalleCte').text(resp.Calle + ' ' + resp.Num_Ext );
             $('#lblColoniaCte').text(resp.Colonia);
-            $('#lblEdoCte').text(resp.Ciudad + ', ' + resp.Nom_Estado);
+            $('#lblEdoCte').text(resp.Ciudad + ', ' + resp.Nom_Edo);
             $('#lblCpCte').text('C.P. '+ resp.Cod_Postal);
             $('#lblTelefonoCte').text(resp.Telefono);
 

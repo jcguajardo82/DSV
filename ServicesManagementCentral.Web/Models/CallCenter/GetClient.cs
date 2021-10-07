@@ -16,7 +16,7 @@ namespace ServicesManagement.Web.Models.CallCenter
         public string Num_Int { get; set; }
         public string Colonia { get; set; }
         public string Ciudad { get; set; }
-        public string Nom_Estado { get; set; }
+        public string Nom_Edo { get; set; }
         public string Id_Email { get; set; }
         public string Cod_Postal { get; set; }
         public string Telefono { get; set; }
