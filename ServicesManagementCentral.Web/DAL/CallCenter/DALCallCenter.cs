@@ -1035,7 +1035,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet CalEntrega_iUp(int id_Num_SrvEntrega, int Id_Num_Un, int Id_Num_Orden,DateTime Fec_Entrega)
+        public static DataSet CalEntrega_iUp(int id_Num_SrvEntrega, int Id_Num_Un, int Id_Num_Orden,string Fec_Entrega)
         {
 
 

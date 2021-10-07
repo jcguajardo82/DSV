@@ -1433,7 +1433,7 @@ namespace ServicesManagement.Web.Controllers
                 DateTime Fec_Entrega = Convert.ToDateTime(string.Format("{0} {1}", diaEnt, horaEnt));
 
                 //SE GUARDA LA FECCHA DE ENTREGA
-                DALCallCenter.CalEntrega_iUp(id_Num_SrvEntrega, tda, Id_Num_Orden, Fec_Entrega);
+                DALCallCenter.CalEntrega_iUp(id_Num_SrvEntrega, tda, Id_Num_Orden, Fec_Entrega.ToString("yyyy-MM-dd HH:mm"));
 
                 //REGISTRAMOS/CONSULTAMOS LA DIRECCION DE ENTREGA EN LA TABLA DIRCTE
                 if (metodoEnt == 2)
@@ -1537,7 +1537,7 @@ namespace ServicesManagement.Web.Controllers
 
             {
 
-                int Id_Num_Orden = 3000067;
+                int Id_Num_Orden = 3000099;
                 var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
 
                 
