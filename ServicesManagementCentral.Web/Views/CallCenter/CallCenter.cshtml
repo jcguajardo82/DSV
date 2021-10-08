@@ -1452,7 +1452,9 @@
 
                     }
                 ,onFinished: function (event, currentIndex) {
+                    $('#finish').prop("disabled", true);
                     Finalizar();
+                    $('#finish').prop("disabled", false);
                 }
             });
 
