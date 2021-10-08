@@ -383,18 +383,18 @@
                                     </tbody>
 
                                 </table>
-                                    @*<div class="col-xs-12 col-md-12 col-lg-12">*@
-                                        <table id="tblObervacionesResumen" class="table table-striped table-bordered table-hover" style="width:100%;">
-                                            <thead class="bg-warning">
-                                                <tr role="row">
-                                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="2">Observaciones e instrucciones generales</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="ObsResumen">
-                                            </tbody>
-                                            
-                                        </table>
-                                  @*</div>*@
+                                @*<div class="col-xs-12 col-md-12 col-lg-12">*@
+                                <table id="tblObervacionesResumen" class="table table-striped table-bordered table-hover" style="width:100%;">
+                                    <thead class="bg-warning">
+                                        <tr role="row">
+                                            <th class="text-center sorting" tabindex="0" rowspan="1" colspan="2">Observaciones e instrucciones generales</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ObsResumen">
+                                    </tbody>
+
+                                </table>
+                                @*</div>*@
 
                                 <strong> <label style="font-size:17px" id="lblTotalR"></label> </strong>
 
@@ -944,6 +944,7 @@
 <input id="add_description" name="add_description" value="1" style="visibility:hidden" />
 <input id="add_price" name="add_price" value="1" style="visibility:hidden" />
 <input id="add_price_dsco" name="add_price_dsco" value="1" style="visibility:hidden" />
+<input id="TotalOrden" name="TotalOrden" value="0" style="visibility:hidden" />
 
 @section scripts {
 
@@ -1001,7 +1002,7 @@
         var _SalesUnit = "";
 
 
-      
+
 
 
         $(document).ready(function () {
@@ -1328,34 +1329,41 @@
                             //$("#hddIdDir").val('');
                             if ($("#rec_name").val().length == 0) {
                                 //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Nombre de la persona que recibira el pedido');
                                 $("#rec_name").focus();
                                 return false;
                             }
 
                             if ($("#rec_ciudad").val().length == 0) {
                                 //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Ciudad');
                                 $("#rec_ciudad").focus();
                                 return false;
                             }
                             if ($("#ddlRec_Estado").val().length == 0) {
                                 //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Estado');
                                 $("#ddlRec_Estado").focus();
                                 return false;
                             } if ($("#rec_calle").val().length == 0) {
                                 //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Calle');
                                 $("#rec_calle").focus();
                                 return false;
                             } if ($("#rec_num").val().length == 0) {
                                 //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Número');
                                 $("#rec_num").focus();
                                 return false;
                             } if ($("#rec_col").val().length == 0) {
                                 //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Colonia');
                                 $("#rec_col").focus();
                                 return false;
                             }
                             if ($("#rec_CP").val().length == 0) {
                                 //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Código Postal');
                                 $("#rec_CP").focus();
                                 return false;
                             }
@@ -1365,7 +1373,7 @@
                             return true;
                         }
 
-                      
+
                         return true;
                     }
 
@@ -1405,12 +1413,17 @@
 
                         if (op == "efectivo") {
                             if ($("#in_pago").val().length == 0 && $("#in_vales").val()) {
-                                alert("Debe ingresar una canitdad en Efecivo o Vales");
+                                alert("Debe ingresar una canitdad en Efectivo o Vales");
                                 return false;
                             } else {
                                 var totEfevo = parseFloat($("#in_pago").val()) + parseFloat($("#in_vales").val());
                                 if ( ! totEfevo > 0) {
                                     alert("La cantidad de efectivo y vales no pude ser 0");
+                                    return false;
+                                }
+                                var TotalOrden = parseFloat(document.getElementById("TotalOrden").value);
+                                if (totEfevo < TotalOrden) {
+                                    alert("El total de la orden no puede ser menor a la suma de Efectivo y Vales");
                                     return false;
                                 }
                             }
@@ -1482,7 +1495,7 @@
             var products = new Array();
             var observaciones = new Array();
             debugger;
-           
+
             $("#tblResumen TBODY TR").each(function () {
                 var row = $(this);
                 var product = {};
@@ -1538,6 +1551,7 @@
 
             var Ids_Num_Edo = $("#ddlRec_Estado").val();
 
+            //document.getElementById('btnBuscar').disabled = false;
 
             //Send the JSON array to Controller using AJAX.
             $.ajax({
@@ -1760,7 +1774,7 @@
 
             item.quantity = cantidad;
             item.total = cantidad * item.price;
-          
+
             console.log(_jsonProductsSelected);
 
                 llenarCarrito();
@@ -1842,13 +1856,13 @@
                 tot = tot + parseFloat(_jsonProductsSelected[i].total);
             }
 
-          
+
 
             $("#lblCantidad").empty();
             $("#lblCantidad").append("Articulos Totales: " + cant);
             $("#lblTotal").empty();
             $("#lblTotal").append("Total a Pagar: $" + tot);
-
+            $("#TotalOrden").val(tot);
             $("#lblTotalFormaP").empty();
             $("#lblTotalFormaP").append("Total a Pagar: $" + tot);
 
@@ -1863,7 +1877,7 @@
                          _jsonProductsSelected[x].description
                         +"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
                         + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>",
-                        
+
                         _jsonProductsSelected[x].quantity,
                         _jsonProductsSelected[x].SalesUnit,
                         "$" + _jsonProductsSelected[x].price,
@@ -1888,7 +1902,7 @@
         function agregarObs() {
             var sum_Obs = $('#add_Obs').val();
         /*            var myTable = $('#tblBusquedaArt').DataTable();*/
-            if (document.getElementById("ObservacionesGrles").value != '') {
+            //if (document.getElementById("ObservacionesGrles").value != '') {
                 let _obj = {};
                 _obj.id = _countObservaciones;
                 _obj.observacion = document.getElementById("ObservacionesGrles").value;
@@ -1906,7 +1920,7 @@
                 $('#ObservacionesGrles').val("");
                 $("#ObservacionesGrles").focus();
                 llenarObservacionesResumen();
-            }
+            //}
         }
 
         function eliminarObservacion(id) {

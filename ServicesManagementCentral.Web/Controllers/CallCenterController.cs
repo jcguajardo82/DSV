@@ -1420,11 +1420,17 @@ namespace ServicesManagement.Web.Controllers
                 }
 
                 //OBSERVACIONES NIVEL CARRITO
-                foreach (var item in carObs)
+                if (carObs != null)
                 {
-                    DALCallCenter.CarObs_iUp(Id_Num_Car, item.Desc_CarObs);
+                    foreach (var item in carObs)
+                    {
+                        DALCallCenter.CarObs_iUp(Id_Num_Car, item.Desc_CarObs);
+                    }
                 }
-
+                else
+                {
+                    DALCallCenter.CarObs_iUp(Id_Num_Car, "");
+                }
                 switch (metodoEnt)
                 {
                     //entrega en tienda
