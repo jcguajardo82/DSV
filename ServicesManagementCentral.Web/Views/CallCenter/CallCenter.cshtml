@@ -1452,9 +1452,7 @@
 
                     }
                 ,onFinished: function (event, currentIndex) {
-                    $('#finish').prop("disabled", true);
                     Finalizar();
-                    $('#finish').prop("disabled", false);
                 }
             });
 
@@ -1467,6 +1465,20 @@
 
         });
 
+        function toggleButton(buttonId, enable) {
+            if (enable) {
+                // Enable disabled button
+                var button = $("#wizard").find('a[href="#' + buttonId + '-disabled"]');
+                button.attr("href", '#' + buttonId);
+                button.parent().removeClass();
+            }
+            else {
+                // Disable enabled button
+                var button = $("#wizard").find('a[href="#' + buttonId + '"]');
+                button.attr("href", '#' + buttonId + '-disabled');
+                button.parent().addClass("disabled");
+            }
+        }
 
         $(function () {
             $('input:radio[name="rdoMetodoPago"]').change(function () {
@@ -1494,6 +1506,8 @@
         }
 
         function Finalizar() {
+
+            toggleButton("finish", false);
             var products = new Array();
             var observaciones = new Array();
             debugger;
@@ -1553,8 +1567,6 @@
 
             var Ids_Num_Edo = $("#ddlRec_Estado").val();
 
-            //document.getElementById('btnBuscar').disabled = false;
-
             //Send the JSON array to Controller using AJAX.
             $.ajax({
                 type: "POST",
@@ -1593,6 +1605,11 @@
                     } else {
                         alert(r.Message);
                     }
+                }
+                , complete: function () {
+                    //Ajax request is finished, so we can enable
+                    //the button again.
+                    toggleButton("finish", true);
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
                     alert(errorThrown);
