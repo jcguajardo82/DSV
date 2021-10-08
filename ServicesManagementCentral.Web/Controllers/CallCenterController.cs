@@ -341,19 +341,19 @@ namespace ServicesManagement.Web.Controllers
         public JsonResult GetProduct(string product)
         {
             try
-            {            
-                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            {
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                    var urlApi= System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
-                    var client = new RestClient(urlApi + product.Trim());
+                var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
+                var client = new RestClient(urlApi + product.Trim());
 
-                    client.Timeout = -1;
-                    var request = new RestRequest(Method.POST);
-                    IRestResponse response = client.Execute(request);
-                    Console.WriteLine(response.Content);
+                client.Timeout = -1;
+                var request = new RestRequest(Method.POST);
+                IRestResponse response = client.Execute(request);
+                Console.WriteLine(response.Content);
 
-                 var   response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
-               
+                var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+
                 var result = new { Success = false, data = response1 };
                 return Json(result, JsonRequestBehavior.AllowGet);
                 //return Json("", JsonRequestBehavior.AllowGet);
@@ -540,9 +540,14 @@ namespace ServicesManagement.Web.Controllers
                         foreach (var i in Products)
                         {
                             if (i.ProductId == item.ProductId)
-                            { quantity = Convert.ToInt32(i.NewQuantity); }
+                            {
+                                quantity = Convert.ToInt32(i.NewQuantity);
+                                DALCallCenter.up_Corp_ins_tbl_OrdenRetorno_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId, item.Position, quantity, item.ProductId, Desc);
+                            }
+
+
                         }
-                        DALCallCenter.up_Corp_ins_tbl_OrdenRetorno_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId, item.Position, quantity, item.ProductId, Desc);
+
                     }
                     else
                     {
@@ -551,10 +556,16 @@ namespace ServicesManagement.Web.Controllers
                         foreach (var i in Products)
                         {
                             if (i.ProductId == item.ProductId)
-                            { quantity = i.NewQuantity; }
+                            {
+                                quantity = i.NewQuantity;
+                                DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId
+                                , item.Position, quantity, item.ProductId, Desc);
+                            }
+
+
                         }
-                        DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId
-                            , item.Position, quantity, item.ProductId, Desc);
+
+
                         //if (UeType.ToUpper().Equals("SETC"))
                         //    Cancelacion(int.Parse(orden.Orderid));
                     }
@@ -1540,13 +1551,13 @@ namespace ServicesManagement.Web.Controllers
                 int Id_Num_Orden = 3000099;
                 var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
 
-                
+
                 OrdersToXML obj = new OrdersToXML();
-               string x= obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
+                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
                 var OrderToMicroService = new OrderJson
                 {
                     xmlOrden = x
-                 };
+                };
 
                 // Serializar el mensaje en formato Json
                 string jsonString = JsonConvert.SerializeObject(OrderToMicroService);
