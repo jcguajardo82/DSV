@@ -1304,7 +1304,7 @@ namespace ServicesManagement.Web.Controllers
         }
 
         //Id_Cnsc_DirCTe
-        public ActionResult GetDirDirCteIdDirCTe(int Id_Cnsc_DirCTe)
+        public ActionResult GetDirDirCteIdDirCTe(int Id_Cnsc_DirCTe, int Id_Num_Cte)
         {
             try
 
@@ -1312,7 +1312,7 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirDirCteIdDirCTe(Id_Cnsc_DirCTe).Tables[0]).FirstOrDefault();
+                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirDirCteIdDirCTe(Id_Cnsc_DirCTe, Id_Num_Cte).Tables[0]).FirstOrDefault();
 
 
 

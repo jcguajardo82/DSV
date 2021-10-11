@@ -758,7 +758,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet GetDirDirCteIdDirCTe(int Id_Cnsc_DirCTe)
+        public static DataSet GetDirDirCteIdDirCTe(int Id_Cnsc_DirCTe, int Id_Num_Cte)
         {
 
             DataSet ds = new DataSet();
@@ -775,6 +775,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
                 parametros.Add("@Id_Cnsc_DirCTe", Id_Cnsc_DirCTe);
+                parametros.Add("@Id_Num_Cte", Id_Num_Cte);
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[GetDirDirCteIdDirCTe]", false, parametros);

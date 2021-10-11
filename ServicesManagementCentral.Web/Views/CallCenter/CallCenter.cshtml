@@ -2325,12 +2325,14 @@
         }
 
         function SelDirCte(id) {
+            var _Id_Num_Cte = $("#hddIdCliente").val();
               $.ajax({
                 async: false,
                 type: "GET",
                 url: '@Url.Action("GetDirDirCteIdDirCTe", "CallCenter")',
                 data: {
-                    Id_Cnsc_DirCTe: id
+                    Id_Cnsc_DirCTe: id,
+                    Id_Num_Cte: _Id_Num_Cte
 
                 },
                 datatype: "html",
