@@ -209,7 +209,7 @@
                             </div>
                         </div>
                     </section>
-                    <h3>Metodo de  Entrega</h3>
+                    <h3>Metodo de Entrega</h3>
                     <section>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-lg-12">
@@ -352,7 +352,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoDebito" value="debito" checked>
                                                     <label class="form-check-label" for="flexRadioDefault2">
-                                                        Tarjeta de Debito Terminal Portatil
+                                                        Tarjeta de Débito Terminal Portatil
                                                     </label>
                                                 </div>
                                             </td>
@@ -400,7 +400,7 @@
 
                                 <table class="table">
                                     <tr>
-                                        <td><b>Sera en tregada en:</b></td>
+                                        <td><b>Será entregada en:</b></td>
                                         <td>
                                             <p id="lblMetodoEntrega">
                                             </p>
@@ -1410,7 +1410,7 @@
                                 }
                                 var TotalOrden = parseFloat(document.getElementById("TotalOrden").value);
                                 if (totEfevo < TotalOrden) {
-                                    alert("El total de la orden no puede ser menor a la suma de Efectivo y Vales");
+                                    alert("El total de Efectivo y Vales no puede ser menor a la suma del total de la orden  ");
                                     return false;
                                 }
                             }
@@ -1488,6 +1488,9 @@
         function input(ele) {
             clearTimeout(delayTimer);
             delayTimer = setTimeout(function () {
+                if (ele.value == "") {
+                    ele.value = 0;
+                }
                 ele.value = parseFloat(ele.value).toFixed(2).toString();
             }, 1100);
         }
