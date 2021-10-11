@@ -1022,7 +1022,7 @@ namespace ServicesManagement.Web.Controllers
 
                 var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByName(Criterio).Tables[0]);
 
-                if (list != null)
+                if (list != null && list.Count > 0)
                 {
                     exist = true;
                 }
