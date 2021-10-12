@@ -394,7 +394,7 @@ namespace ServicesManagement.Web.Helpers
                     );
                 }
 
-                      XmlSETC1.Add(XmlSETCProducts);
+                XmlSETC1.Add(XmlSETCProducts);
                 XmlSETC1.Add(XmlSETCShipping);
                 XmlSETC1.Add(XmlSETCShipments);
                 XmlSETC1.Add(XmlSETTotals);
