@@ -117,11 +117,20 @@ namespace ServicesManagement.Web.Controllers
         }
 
         public ActionResult SetAut(int IdProceso, string Comentario
-           , string IdAccion, int Id_cancelacion)
+           , string IdAccion, int Id_cancelacion, int OrderId)
         {
             try
             {
                 // DALAutorizacion.BitacoraAutRma_iUp( IdEstatusAut, User.Identity.Name, Comentario, orderId, Id_cancelacion );
+                //Cancelación de Orden por Supervisor
+                if (IdProceso == 2)
+                {
+                    //var ds = DALCallCenter.up_Corp_cns_OrderInfo(OrderId);
+                    //var detalle = DataTableToModel.ConvertTo<ServicesManagement.Web.Models.CallCenter.OrderDetail>(ds.Tables[1]);
+
+                    //var ShipmentId = detalle[0].ShipmentId;
+                    //DALAutorizacion.upCorpOms_Del_UeNoSupplyProcess(OrderId, Comentario, 1, ShipmentId);
+                }
 
                 DALAutorizacion.BitacoraAutRma_iUp_v2(IdProceso, IdAccion, Comentario, Id_cancelacion, User.Identity.Name);
 
