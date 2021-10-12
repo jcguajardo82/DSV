@@ -360,15 +360,41 @@ namespace ServicesManagement.Web.Helpers
                 XElement XmlSETCRemoteHost = new XElement(nm + "remoteHost", dt2.Rows[0][81].ToString());
 
                 // custom atributes - al final de la orden
-                XElement XmlSETCCustom = new XElement(nm + "custom-attributes",
-                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
-                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
-                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
-                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), dt2.Rows[0][85].ToString())
+                XElement XmlSETCCustom = new XElement(nm + "custom-attributes", "");
+
+                if (dt2.Rows[0][86].ToString() == "21" || dt2.Rows[0][86].ToString() == "22")
+                {
+                    XmlSETCCustom = new XElement(nm + "custom-attributes",
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), dt2.Rows[0][85].ToString())
                     );
+                }
 
+                if (dt2.Rows[0][86].ToString() == "5")
+                {
+                    XmlSETCCustom = new XElement(nm + "custom-attributes",
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "expectedCashAmount"), dt2.Rows[0][88].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), dt2.Rows[0][85].ToString())
+                    );
+                }
 
-                XmlSETC1.Add(XmlSETCProducts);
+                if (dt2.Rows[0][86].ToString() == "6")
+                {
+                    XmlSETCCustom = new XElement(nm + "custom-attributes",
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "expectedVoucherAmount"), dt2.Rows[0][88].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), dt2.Rows[0][85].ToString())
+                    );
+                }
+
+                      XmlSETC1.Add(XmlSETCProducts);
                 XmlSETC1.Add(XmlSETCShipping);
                 XmlSETC1.Add(XmlSETCShipments);
                 XmlSETC1.Add(XmlSETTotals);
