@@ -342,12 +342,27 @@ namespace ServicesManagement.Web.Helpers
                                 )
                             );
                     }
-                if (dt2.Rows[0][86].ToString() == "5" || dt2.Rows[0][86].ToString() == "6")
+
+                if ((dt2.Rows[0][86].ToString() == "5" || dt2.Rows[0][86].ToString() == "6") && dt2.Rows.Count == 1)
                 {
                     XmlSETCPayments = new XElement(nm + "payments",
                             new XElement(nm + "payment",
                                 new XElement(nm + "custom-method",
                                     new XElement(nm + "method-name", dt2.Rows[0][87].ToString())
+                                ),
+                                    new XElement(nm + "amount", dt2.Rows[0][78].ToString()),
+                                    new XElement(nm + "processor-id", dt2.Rows[0][87].ToString()),
+                                    new XElement(nm + "transaction-id", dt2.Rows[0][80].ToString())
+                            )
+                        );
+                }
+
+                if ((dt2.Rows[0][86].ToString() == "5" || dt2.Rows[0][86].ToString() == "6") && dt2.Rows.Count == 2)
+                {
+                    XmlSETCPayments = new XElement(nm + "payments",
+                            new XElement(nm + "payment",
+                                new XElement(nm + "custom-method",
+                                    new XElement(nm + "method-name", dt2.Rows[0][87].ToString() + "/" + dt2.Rows[1][87].ToString())
                                 ),
                                     new XElement(nm + "amount", dt2.Rows[0][78].ToString()),
                                     new XElement(nm + "processor-id", dt2.Rows[0][87].ToString()),
@@ -372,7 +387,8 @@ namespace ServicesManagement.Web.Helpers
                     );
                 }
 
-                if (dt2.Rows[0][86].ToString() == "5")
+                //dt2.Rows.Count
+                if (dt2.Rows[0][86].ToString() == "5" && dt2.Rows.Count == 1)
                 {
                     XmlSETCCustom = new XElement(nm + "custom-attributes",
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "expectedCashAmount"), dt2.Rows[0][88].ToString()),
@@ -383,9 +399,22 @@ namespace ServicesManagement.Web.Helpers
                     );
                 }
 
-                if (dt2.Rows[0][86].ToString() == "6")
+                if (dt2.Rows[0][86].ToString() == "6" && dt2.Rows.Count == 1)
                 {
                     XmlSETCCustom = new XElement(nm + "custom-attributes",
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "expectedVoucherAmount"), dt2.Rows[0][88].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), dt2.Rows[0][85].ToString())
+                    );
+                }
+
+                //dt2.Rows.Count
+                if ((dt2.Rows[0][86].ToString() == "5" || dt2.Rows[0][86].ToString() == "6") && dt2.Rows.Count == 2)
+                {
+                    XmlSETCCustom = new XElement(nm + "custom-attributes",
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "expectedCashAmount"), dt2.Rows[0][88].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "expectedVoucherAmount"), dt2.Rows[0][88].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
