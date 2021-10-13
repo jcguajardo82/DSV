@@ -1461,6 +1461,13 @@ namespace ServicesManagement.Web.Controllers
                     //REGISTRAMOS LA DIRECCION ENTREGA
                     DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, Id_Cnsc_DirCTe);
                 }
+                else {
+                    //entrega en tienda
+                    var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(idCliente).Tables[0]).Min(y => y.Id_Cnsc_DirCTe);
+                    //REGISTRAMOS LA DIRECCION ENTREGA
+                    DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente,int.Parse( list));
+
+                }
 
                 int Id_Cnsc_FormaPagoCte_d = 0;
                 switch (metodoPago.ToLower())
