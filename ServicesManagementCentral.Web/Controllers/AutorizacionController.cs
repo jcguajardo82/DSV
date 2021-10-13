@@ -72,6 +72,12 @@ namespace ServicesManagement.Web.Controllers
             try
             {
 
+
+
+
+
+
+
                 var ds = DALAutorizacion.upCorpOms_Cns_OrdersByItems(OrderSF, accion);
                 var lst = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByItems>(ds.Tables[0]);
                 var item = DataTableToModel.ConvertTo<Header>(ds.Tables[1]).FirstOrDefault();
@@ -121,16 +127,15 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                // DALAutorizacion.BitacoraAutRma_iUp( IdEstatusAut, User.Identity.Name, Comentario, orderId, Id_cancelacion );
-                //Cancelación de Orden por Supervisor
-                if (IdProceso == 2)
+                //Valida si la Solicitud Rma Requiere fotogrifias por parte del usuario,y que este ya las haya subido
+              
+                if ( IdAccion =="1")
                 {
-                    //var ds = DALCallCenter.up_Corp_cns_OrderInfo(OrderId);
-                    //var detalle = DataTableToModel.ConvertTo<ServicesManagement.Web.Models.CallCenter.OrderDetail>(ds.Tables[1]);
-
-                    //var ShipmentId = detalle[0].ShipmentId;
-                    //DALAutorizacion.upCorpOms_Del_UeNoSupplyProcess(OrderId, Comentario, 1, ShipmentId);
+                    var val = Convert.ToBoolean(DALAutorizacion.valida_foto_sUP(Id_cancelacion).Tables[0].Rows[0][0].ToString());
+                    if (!val)
+                    { throw new Exception(string.Format("El folio RMA {0} no puede ser autorizado ya que el cliente no a subido evidencias fotografias", Id_cancelacion)); }
                 }
+
 
                 DALAutorizacion.BitacoraAutRma_iUp_v2(IdProceso, IdAccion, Comentario, Id_cancelacion, User.Identity.Name);
 
