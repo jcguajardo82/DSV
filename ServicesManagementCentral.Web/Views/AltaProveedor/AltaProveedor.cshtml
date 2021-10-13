@@ -384,6 +384,12 @@
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             const _processed = urlParams.get('PROCESSED');
+            const _from = urlParams.get('from');
+
+            if (_from == 'DSV') {
+                $('#txtNumPro').attr('readonly', true);
+                $('#txtNomPro').attr('readonly', true);
+            }
 
             if ($("#txtNumPro").val() != '0' && _processed == null) {
                 ObtenerDatos();
@@ -585,7 +591,11 @@
 
                             }
                             else {
-                                window.location.href = "AltaProveedor/AltaProveedor?idSupplierWH=" + noProveedor + "&idSupplierWHCode=" + noAlmacenprev + "&Nuevo=" + 1 + "&PROCESSED=true";
+                                const queryString = window.location.search;
+                                const urlParams = new URLSearchParams(queryString);
+                                const _from = urlParams.get('from');
+
+                                window.location.href = "AltaProveedor/AltaProveedor?from=" + _from + "&idSupplierWH=" + noProveedor + "&idSupplierWHCode=" + noAlmacenprev + "&Nuevo=" + 1 + "&PROCESSED=true";
                             }
                         }
                         else {
