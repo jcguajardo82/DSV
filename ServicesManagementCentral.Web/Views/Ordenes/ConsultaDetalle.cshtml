@@ -179,6 +179,17 @@
                                                                             <h5>Forma de pago:</h5>
                                                                             <small>
                                                                                 <FONT face=verdana,arial,helvetica size=2>@p["MethodPayment"] </FONT>
+                                                                                @switch (@p["MethodPaymentID"].ToString())
+                                                                                {
+
+                                                                                    case "2":
+                                                                                    case "5":
+                                                                                    case "6":
+                                                                                        <p>Efectivo: $@p["CashPay"].ToString() -- Vales:  $@p["VouchersPay"].ToString() </p>
+                                                                                        break;
+
+                                                                                }
+
                                                                             </small>
                                                                         </td>
                                                                     </tr>
