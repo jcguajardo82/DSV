@@ -516,8 +516,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade bd-example-modal-lg" id="dlgBuscadorCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade bd-example-modal-xl" id="dlgBuscadorCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5>Buscador de Clientes</h5>
@@ -1186,8 +1186,40 @@
                 }
             );
 
+            //tblBusquedaCliente
+            $("#tblBusquedaCliente").DataTable(
+                {
+
+                    processing: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: true,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: [],
+                    orderCellsTop: false,
+                    "scrollY": "250px",
+                    "scrollCollapse": true,
+                   
 
 
+                }
+            );
+     
 
             $("#wizard").steps({
                     supressPaginationOnFocus: false,
