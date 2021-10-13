@@ -576,7 +576,10 @@ namespace ServicesManagement.Web.Controllers
                     var ShipmentId = detalle[0].ShipmentId;
                     DALAutorizacion.upCorpOms_Del_UeNoSupplyProcess(OrderId, Desc, 1, ShipmentId);
                     if (UeType.ToUpper().Equals("SETC"))
-                        Cancelacion(int.Parse(orden.Orderid));
+                    {
+                        if (DALCallCenter.up_PPS_Sel_PaymenTransactionOrderCancellation(orden.Orderid).Tables[0].Rows.Count > 0)
+                        { Cancelacion(int.Parse(orden.Orderid)); }
+                    }
                 }
 
                 if (Session["CheckListProd"] != null)
@@ -1461,11 +1464,12 @@ namespace ServicesManagement.Web.Controllers
                     //REGISTRAMOS LA DIRECCION ENTREGA
                     DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, Id_Cnsc_DirCTe);
                 }
-                else {
+                else
+                {
                     //entrega en tienda
                     var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(idCliente).Tables[0]).Min(y => y.Id_Cnsc_DirCTe);
                     //REGISTRAMOS LA DIRECCION ENTREGA
-                    DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente,int.Parse( list));
+                    DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, int.Parse(list));
 
                 }
 
