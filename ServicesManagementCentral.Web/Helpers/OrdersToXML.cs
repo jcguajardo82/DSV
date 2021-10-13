@@ -53,13 +53,13 @@ namespace ServicesManagement.Web.Helpers
                             new XElement(nm + "first-name", dt2.Rows[0][11].ToString()),
                             new XElement(nm + "last-name", dt2.Rows[0][12].ToString()),
                             // new XElement(nm + "company-name", dt2.Rows[0][20].ToString()),
-                            new XElement(nm + "address1", dt2.Rows[0][32].ToString()),
-                            new XElement(nm + "address2", dt2.Rows[0][33].ToString()),
-                            new XElement(nm + "city", dt2.Rows[0][36].ToString()),
-                            new XElement(nm + "postal-code", dt2.Rows[0][37].ToString()),
-                            new XElement(nm + "state-code", dt2.Rows[0][38].ToString()),
-                            new XElement(nm + "country-code", dt2.Rows[0][39].ToString()),
-                            new XElement(nm + "phone", dt2.Rows[0][40].ToString()),
+                            new XElement(nm + "address1", dt2.Rows[0][13].ToString()),
+                            new XElement(nm + "address2", dt2.Rows[0][14].ToString()),
+                            new XElement(nm + "city", dt2.Rows[0][15].ToString()),
+                            new XElement(nm + "postal-code", dt2.Rows[0][16].ToString()),
+                            new XElement(nm + "state-code", dt2.Rows[0][17].ToString()),
+                            new XElement(nm + "country-code", dt2.Rows[0][18].ToString()),
+                            new XElement(nm + "phone", dt2.Rows[0][19].ToString()),
                             // new XElement(nm + "rfc", dt2.Rows[0][21].ToString())
 
                             // Company Name - custom atribute
