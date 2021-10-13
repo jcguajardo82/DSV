@@ -209,7 +209,8 @@
                                                                         </td>
                                                                         <td style="text-align: left;">
                                                                             <small>
-                                                                                <b>@p["OrderDeliveryDate"]</b>
+                                                                                <b>@p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()</b>
+
                                                                             </small>
                                                                         </td>
                                                                     </tr>

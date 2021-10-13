@@ -337,8 +337,8 @@ namespace ServicesManagement.Web.Helpers
                                         new XElement(nm + "expiration-year", dt2.Rows[0][77].ToString())
                                     ),
                                     new XElement(nm + "amount", dt2.Rows[0][78].ToString()),
-                                    new XElement(nm + "processor-id", dt2.Rows[0][79].ToString()),
-                                    new XElement(nm + "transaction-id", dt2.Rows[0][80].ToString())
+                                    new XElement(nm + "processor-id", dt2.Rows[0][87].ToString()),
+                                    new XElement(nm + "transaction-id", dt2.Rows[0][86].ToString())
                                 )
                             );
                     }
@@ -352,7 +352,7 @@ namespace ServicesManagement.Web.Helpers
                                 ),
                                     new XElement(nm + "amount", dt2.Rows[0][78].ToString()),
                                     new XElement(nm + "processor-id", dt2.Rows[0][87].ToString()),
-                                    new XElement(nm + "transaction-id", dt2.Rows[0][80].ToString())
+                                    new XElement(nm + "transaction-id", dt2.Rows[0][86].ToString())
                             )
                         );
                 }
@@ -366,7 +366,7 @@ namespace ServicesManagement.Web.Helpers
                                 ),
                                     new XElement(nm + "amount", dt2.Rows[0][78].ToString()),
                                     new XElement(nm + "processor-id", dt2.Rows[0][87].ToString()),
-                                    new XElement(nm + "transaction-id", dt2.Rows[0][80].ToString())
+                                    new XElement(nm + "transaction-id", dt2.Rows[0][86].ToString())
                             )
                         );
                 }
