@@ -1848,16 +1848,33 @@
         }
         function Change(barcode) {
             var cantidad = $("#productCant-" + barcode).val();
+            var comentario = $("#comment-" + barcode).val();
             var item = _jsonProductsSelected.find(x => x.barcode === barcode);
 
             //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
 
             item.quantity = cantidad;
             item.total = cantidad * item.price;
+            item.comment = comentario;
 
             console.log(_jsonProductsSelected);
 
                 llenarCarrito();
+
+        }
+        function Change_2(barcode) {
+            var comentario = $("#comment-" + barcode).val();
+            var item = _jsonProductsSelected.find(x => x.barcode === barcode);
+
+            //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
+
+            item.quantity = cantidad;
+            item.total = cantidad * item.price;
+            item.comment = comentario;
+
+            console.log(_jsonProductsSelected);
+
+            llenarCarrito();
 
         }
         function addProduct3(descripcion, barcode, precio, sku, SalesUnit) {
@@ -1930,7 +1947,7 @@
                     "<input onkeypress='return event.charCode >= 48 min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + totaArt,
-                    "<input type='text'  value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
+                    "<input type='text' onchange='Change_2(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
