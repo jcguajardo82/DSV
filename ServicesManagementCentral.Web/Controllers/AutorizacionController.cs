@@ -135,10 +135,10 @@ namespace ServicesManagement.Web.Controllers
                 {
                     if (IdAccion.Equals("1"))
                     {
-                        throw new Exception(string.Format("El folio RMA {0} no puede ser autorizado ya que el cliente no a subido evidencias fotografias", Id_cancelacion));
+                        throw new Exception(string.Format("El folio RMA {0} no puede ser autorizado ya que el cliente no a subido evidencias fotográficas", Id_cancelacion));
                     }
                     else {
-                        throw new Exception(string.Format("El folio RMA {0} no puede ser cancelado ya que el cliente no a subido evidencias fotografias", Id_cancelacion));
+                        throw new Exception(string.Format("El folio RMA {0} no puede ser cancelado ya que el cliente no ha subido evidencias fotográficas", Id_cancelacion));
                     }
                 }
 
