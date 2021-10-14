@@ -527,8 +527,13 @@ namespace ServicesManagement.Web.Controllers
                     DALCallCenter.up_Corp_ins_tbl_OrdenCancelada(
                         orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
                         , EstatusRma, ProcesoAut, IdTSolicitud, IdTmovimiento).Tables[0]).FirstOrDefault();
-
-                cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
+                if (id.foto)
+                {
+                    cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
+                }
+                else { 
+                    cliente= string.Format("Se ha generado con éxito el folio RMA numero : {0}", id.Id_cancelacion);
+                }
                 foreach (var item in detalle)
                 {
 
@@ -1054,7 +1059,7 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult VerificaCliente(string Criterio = "")
+        public ActionResult VerificaCliente(string Criterio = "", string Id_Cnsc_DirCTe = "")
         {
             try
 
@@ -1062,8 +1067,28 @@ namespace ServicesManagement.Web.Controllers
 
                 bool exist = false;
 
-                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]).FirstOrDefault();
+                var list = new GetClient();
 
+                if (string.IsNullOrEmpty(Id_Cnsc_DirCTe))
+                {
+
+                    list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]).FirstOrDefault();
+                }
+                else
+                {
+                    list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0])
+                            .Where(x => x.Id_Cnsc_DirCTe == Id_Cnsc_DirCTe).FirstOrDefault();
+
+                    //foreach (var item in DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]))
+                    //{
+                    //    if (item.Id_Cnsc_DirCTe == Id_Cnsc_DirCTe)
+                    //    {
+                    //        list = item;
+                    //        break;
+                    //    }
+                    //}
+
+                }
                 if (list != null)
                 {
                     exist = true;
