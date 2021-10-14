@@ -345,6 +345,8 @@ namespace ServicesManagement.Web.Controllers
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
+                var urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
+                var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
                 var client = new RestClient(urlApi + product.Trim());
 
                 client.Timeout = -1;
@@ -353,6 +355,8 @@ namespace ServicesManagement.Web.Controllers
                 Console.WriteLine(response.Content);
 
                 var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+
+                response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}",urlImg,x.Barcode,exteImg); return true; });
 
                 var result = new { Success = false, data = response1 };
                 return Json(result, JsonRequestBehavior.AllowGet);
