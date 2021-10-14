@@ -532,7 +532,7 @@ namespace ServicesManagement.Web.Controllers
                     cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
                 }
                 else { 
-                    cliente= string.Format("Se ha generado con éxito el folio RMA numero : {0}", id.Id_cancelacion);
+                    cliente= string.Format("Se ha generado con éxito el folio RMA número: {0}", id.Id_cancelacion);
                 }
                 foreach (var item in detalle)
                 {
