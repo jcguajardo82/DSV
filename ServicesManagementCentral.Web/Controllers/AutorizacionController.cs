@@ -128,13 +128,20 @@ namespace ServicesManagement.Web.Controllers
             try
             {
                 //Valida si la Solicitud Rma Requiere fotogrifias por parte del usuario,y que este ya las haya subido
-              
-                if ( IdAccion =="1")
+                
+
+                var val = Convert.ToBoolean(DALAutorizacion.valida_foto_sUP(Id_cancelacion).Tables[0].Rows[0][0].ToString());
+                if (!val)
                 {
-                    var val = Convert.ToBoolean(DALAutorizacion.valida_foto_sUP(Id_cancelacion).Tables[0].Rows[0][0].ToString());
-                    if (!val)
-                    { throw new Exception(string.Format("El folio RMA {0} no puede ser autorizado ya que el cliente no a subido evidencias fotografias", Id_cancelacion)); }
+                    if (IdAccion.Equals("1"))
+                    {
+                        throw new Exception(string.Format("El folio RMA {0} no puede ser autorizado ya que el cliente no a subido evidencias fotografias", Id_cancelacion));
+                    }
+                    else {
+                        throw new Exception(string.Format("El folio RMA {0} no puede ser cancelado ya que el cliente no a subido evidencias fotografias", Id_cancelacion));
+                    }
                 }
+
 
 
                 DALAutorizacion.BitacoraAutRma_iUp_v2(IdProceso, IdAccion, Comentario, Id_cancelacion, User.Identity.Name);
