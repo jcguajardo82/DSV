@@ -1133,7 +1133,7 @@ namespace ServicesManagement.Web.Controllers
 
                 list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Id_Email).Tables[0]).FirstOrDefault();
 
-                if (list == null)
+                if (list == null && Id_Cnsc_DirCTe == 0 && Id_Num_Cte == 0)
                 {
 
 
