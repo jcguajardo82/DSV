@@ -338,7 +338,7 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public JsonResult GetProduct(string product)
+        public JsonResult GetProduct(string product, string tienda)
         {
             try
             {
@@ -347,7 +347,10 @@ namespace ServicesManagement.Web.Controllers
                 var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
                 var urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
                 var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
-                var client = new RestClient(urlApi + product.Trim());
+                var client = new RestClient(string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda));
+
+
+                //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
 
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
@@ -356,9 +359,12 @@ namespace ServicesManagement.Web.Controllers
 
                 var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
 
-                response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}",urlImg,x.Barcode,exteImg); return true; });
+                if (response1 != null)
+                {
+                    response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
+                }
 
-                var result = new { Success = false, data = response1 };
+                var result = new { Success = true, data = response1 };
                 return Json(result, JsonRequestBehavior.AllowGet);
                 //return Json("", JsonRequestBehavior.AllowGet);
             }

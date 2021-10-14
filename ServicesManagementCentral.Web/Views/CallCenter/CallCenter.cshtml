@@ -623,7 +623,7 @@
                                 Buscador  <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
-                                    @*</a>*@
+                                        @*</a>*@
                                 </div>
                             </div>
                             <div class="ibox-content">
@@ -639,8 +639,8 @@
                                         </td>
                                         <td>
                                             @*<button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
-                                                Historia
-                                            </button>*@
+                                                    Historia
+                                                </button>*@
                                         </td>
                                     </tr>
 
@@ -1689,21 +1689,33 @@
             //$('#tblBusquedaArt2 > tbody').empty();
             //document.getElementById("Addcantidad").value = "";
             //tblBusquedaArt
+
+            var tda = $("#ddlTdas").val()
+
             $.ajax({
                         "url": "@Url.Action("GetProduct", "CallCenter")",
                         "type": "get",
-                        "data": { "product": document.getElementById("txtProdArt2").value },
+                "data": {
+                    "product": document.getElementById("txtProdArt2").value,
+                    "tienda":tda
+                },
 
                         "dataType": "json",
-                        "success": function (data) {
-                            var myTable = $('#tblBusquedaSeleccionar').DataTable();
-                            var nCant = 0;
-                            myTable
-                                .clear()
-                                .draw();
+                "success": function (data) {
+                    if (data.Success) {
+
+
+
+                        var myTable = $('#tblBusquedaSeleccionar').DataTable();
+                        var nCant = 0;
+                        myTable
+                            .clear()
+                            .draw();
+
+                        if (data.data != null) {
                             for (var i = 0; i < data.data.length; i++) {
 
-        //onkeypress="return event.charCode >= 48" min="1"
+                                //onkeypress="return event.charCode >= 48" min="1"
                                 myTable.row.add([
 
                                     data.data[i].Barcode,
@@ -1721,6 +1733,24 @@
                                     + "\",\"" + data.data[i].SalesUnit
                                     + "\")'>Agregar Prodcuto</a>"
                                 ]).draw();
+                            }
+                        } else {
+
+                            if (document.getElementById("txtProdArt2").value.length != 0) {
+                                alert("No se encontraron productos para la busqueda realizada.");
+                            }
+                                //$('#tblBusquedaSeleccionar').dataTable({
+                                //    "language": {
+                                //        "infoEmpty": "No entries to showssssssss"
+                                //    }
+                                //});
+
+                        }
+
+
+
+                    } else {
+                        alert(data.Message);
                             }
                         }
                     });
@@ -1900,7 +1930,7 @@
                     "<input onkeypress='return event.charCode >= 48 min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + totaArt,
-                    "<input type='text' ' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
+                    "<input type='text'  value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
