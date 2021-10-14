@@ -85,6 +85,7 @@
                             <div class="col-xs-4 col-md-4 col-lg-4"></div>
                             <div class="col-xs-4 col-md-4 col-lg-4">
                                 <input type="hidden" id="hddIdCliente" />
+                                <input type="hidden" id="hddIdDirCteUpd" />
                                 <table style="width:100%" class="table table-warning">
                                     <tr>
                                         <td>Nombre:</td>
@@ -119,12 +120,20 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-xs-4 col-md-4 col-lg-4">
+
+                            <div class="col-xs-2 col-md-2 col-lg-2">
                                 <button type="button" class="btn btn-default btn btn-xs" onclick="NuevaBusqueda()">
                                     Nueva Busqueda
                                 </button>
+                                <button type="button" class="btn btn-default btn btn-xs" onclick="popEditarCte()">
+                                    Editar Cliente
+                                </button>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-lg-2">
+
                             </div>
                         </div>
+
                     </section>
                     <h3>Fecha de Entrega</h3>
                     <section>
@@ -881,7 +890,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>
+                <button type="button" class="btn btn-primary" onclick="AddClient()">Agregar</button>
             </div>
         </div>
     </div>
@@ -1214,12 +1223,12 @@
                     orderCellsTop: false,
                     "scrollY": "250px",
                     "scrollCollapse": true,
-                   
+
 
 
                 }
             );
-     
+
 
             $("#wizard").steps({
                     supressPaginationOnFocus: false,
@@ -1532,7 +1541,7 @@
             toggleButton("finish", false);
             var products = new Array();
             var observaciones = new Array();
-            debugger;
+            
 
             $("#tblResumen TBODY TR").each(function () {
                 var row = $(this);
@@ -1559,7 +1568,7 @@
                 product.obs = row.find("TD").eq(5).html();
                 products.push(product);
             });
-            debugger;
+            
             $("#tblBusquedaArt TBODY TR").each(function () {
                 var row1 = $(this);
                 var observacion = {};
@@ -1834,7 +1843,7 @@
                 _cantidad = cantidad;
                 _Sku = sku;
                 _SalesUnit = SalesUnit;
-                debugger;
+                
 
                 $("#dlgAgregarProductoComentario").modal("show");
                 $("#dlgSeleccionar").modal("hide");
@@ -1861,7 +1870,7 @@
             _obj.sku = _Sku;
             _obj.SalesUnit = _SalesUnit;
             _jsonProductsSelected.push(_obj);
-            debugger;
+            
 
             llenarCarrito();
 
@@ -1873,7 +1882,7 @@
 
         function llenarCarrito() {
             var cant = 0, tot = 0.0;
-            debugger;
+            
             var myTable = $('#tblPoductosSeleccionados').DataTable();
             myTable
                 .clear()
@@ -2054,7 +2063,7 @@
                                     json.resp[i].Direccion,
                                     json.resp[i].Telefono,
                                     "<a title='Click para Seleccionar el Cliente' class='link-primary' onclick='SelCte(\""
-                                    + json.resp[i].Id_Email + "\")'>Seleccionar Cliente</a>"
+                                    + json.resp[i].Id_Email + "\"," + json.resp[i].Id_Cnsc_DirCTe+")'>Seleccionar Cliente</a>"
                                 ]).draw();
                             }
                         }
@@ -2074,21 +2083,21 @@
         }
 
 
-        function SelCte(mail) {
+        function SelCte(mail,idcte) {
             $.ajax({
                 async: false,
                 type: "GET",
                 url: '@Url.Action("VerificaCliente", "CallCenter")',
                 data: {
-                    Criterio: mail
-
+                    Criterio: mail,
+                    Id_Cnsc_DirCTe: idcte
                 },
                 datatype: "html",
                 success: function (json) {
 
                     if (json.Success) {
                         if (json.existe) {
-                            LlenaDatosCte(json.resp);
+                            LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
                             $('#divVerificaCliente').hide();
                             $('#divBuscaCliente').hide();
                             $('#divResultClient').show();
@@ -2124,7 +2133,7 @@
                 $('#txtVerificaC').focus();
                 return;
             }
-        $.ajax({
+            $.ajax({
                 async: false,
                 type: "GET",
                 url: '@Url.Action("VerificaCliente", "CallCenter")',
@@ -2137,7 +2146,7 @@
 
                     if (json.Success) {
                         if (json.existe) {
-                            LlenaDatosCte(json.resp);
+                            LlenaDatosCte(json.resp,'0');
                             $('#divVerificaCliente').hide();
                             $('#divBuscaCliente').hide();
                             $('#divResultClient').show();
@@ -2169,7 +2178,7 @@
 
         function popAddClient() {
 
-
+            $("txtCteEamil").prop('disabled', false);
             $("#txtCteNombre").val();
             $("#txtCteApPaterno").val();
             $("#txtCteApMaterno").val();
@@ -2184,7 +2193,8 @@
             $("#txtCteEamil").val();
             $("#ddlCteEstado").val("0");
 
-
+            $("#hddIdCliente").val('0');
+            $("#hddIdDirCteUpd").val('0');
             $("#divMsjAddClient").hide();
             $("#txtCteEamil").focus();
             $('#ddlCteEstado').val('0');
@@ -2215,6 +2225,10 @@
             var Telefono = $("#txtCteTelefono").val();
             var Id_Email = $("#txtCteEamil").val();
             var Ids_Num_Edo = $("#ddlCteEstado").val();
+
+            var Id_Cnsc_DirCTe = $("#hddIdDirCteUpd").val();
+            var Id_Num_Cte = $("#hddIdCliente").val();
+
 
             if (Nom_Cte.length == 0) {
                 $("#txtCteNombre").focus();
@@ -2283,7 +2297,11 @@
                     Colonia: Colonia,
                     Telefono: Telefono,
                     Id_Email: Id_Email,
-                    Ids_Num_Edo: Ids_Num_Edo
+                    Ids_Num_Edo: Ids_Num_Edo,
+                    Id_Cnsc_DirCTe: Id_Cnsc_DirCTe,
+                    Id_Num_Cte: Id_Num_Cte
+
+                   
                 },
                 datatype: "html",
                 success: function (json) {
@@ -2299,16 +2317,17 @@
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(errorThrown);
+                    alert(errorThrown);
 
                 }
             });
         }
 
-        function LlenaDatosCte(resp) {
+        function LlenaDatosCte(resp,idDirCte) {
 
 
             $("#hddIdCliente").val(resp.Id_Num_Cte);
+            $("#hddIdDirCteUpd").val(idDirCte);
             $('#lblNombreCte').text(resp.Nom_Cte + ' ' + resp.Ap_Paterno + ' ' + resp.Ap_Materno);
             $('#lblFolioCte').text(resp.Id_Num_Cte);
             $('#lblClaveCte').text(resp.Id_Email);
@@ -2450,8 +2469,8 @@
                     success: function (json) {
                         //
                         if (json.Success) {
-
                             debugger;
+                            
                             var sel = $("#ddlCteColonia");
                             sel.empty();
 
@@ -2501,7 +2520,7 @@
                         //
                         if (json.Success) {
 
-                            //debugger;
+                            //
                             //var sel = $("#ddlCteColonia");
                             //sel.empty();
 
@@ -2557,7 +2576,7 @@
                                 sel.append('<option value="' + json.resp[i].Id_Num_Estado + '">' + json.resp[i].Nom_Estado + '</option>');
                             }
 
-                            debugger;
+                            
                             var sel2 = $("#ddlRec_Estado");
                             sel2.empty();
 
@@ -2579,6 +2598,62 @@
 
 
         }
+
+        function popEditarCte() {
+
+            $("txtCteEamil").prop('disabled', true);
+            var idDirCte = $("#hddIdDirCteUpd").val();
+            var email = $('#lblClaveCte').text();
+                    $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("VerificaCliente", "CallCenter")',
+                data: {
+                    Criterio: email,
+                    Id_Cnsc_DirCTe: idDirCte
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+                        debugger;
+
+                        
+                        $("#hddIdDirCteUpd").val(json.resp.Id_Cnsc_DirCTe);
+                        $("#txtCteNombre").val(json.resp.Nom_Cte);
+                        $("#txtCteApPaterno").val(json.resp.Ap_Paterno);
+                        $("#txtCteApMaterno").val(json.resp.Ap_Materno);
+                        $("#txtCteCalle").val(json.resp.Calle);
+                        $("#txtCteNomDir").val(json.resp.Nom_DirCTe);
+                        $("#txtCteNumExt").val(json.resp.Num_Ext);
+                        $("#txtCteNumInt").val(json.resp.Num_Int);
+                        $("#txtCteCiudad").val(json.resp.Ciudad);
+                        $("#txtCteCp").val(json.resp.Cod_Postal);
+                        //$("#ddlCteColonia").val("0");
+                        $("#txtCteTelefono").val(json.resp.Telefono);
+                        $("#txtCteEamil").val(json.resp.Id_Email);
+                        $("#ddlCteEstado").val(json.resp.Ids_Num_Edo);
+                        GetCp(json.resp.Cod_Postal);
+                        $('#ddlCteColonia option:contains(' + json.resp.Colonia + ')').attr('selected', 'selected');
+                        $("#divMsjAddClient").hide();
+                        $("#txtCteEamil").focus();
+                      
+                        $("#dlgAddClients").modal("show");
+                        $("#txtCteEamil").focus();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+
+           
+        }
+
 
 
     </script>
