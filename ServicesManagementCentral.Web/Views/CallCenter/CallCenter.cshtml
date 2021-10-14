@@ -1900,7 +1900,7 @@
                     "<input onkeypress='return event.charCode >= 48 min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + totaArt,
-                    _jsonProductsSelected[i].comment,
+                    "<input type='text' ' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
