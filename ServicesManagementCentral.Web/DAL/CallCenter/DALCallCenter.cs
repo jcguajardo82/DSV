@@ -45,7 +45,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet tbl_OrdenFotosRMA_sUp( int ordenRMA)
+        public static DataSet tbl_OrdenFotosRMA_sUp(int ordenRMA)
         {
 
             DataSet ds = new DataSet();
@@ -62,7 +62,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
                 parametros.Add("@ordenRMA", ordenRMA);
-               
+
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[tbl_OrdenFotosRMA_sUp]", false, parametros);
 
@@ -472,10 +472,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
         }
 
 
-        public static DataSet tbl_OrdenCancelada_uUp(int Id_Cancelacion, int IdTSolicitud,int IdTmovimiento)
+        public static DataSet tbl_OrdenCancelada_uUp(int Id_Cancelacion, int IdTSolicitud, int IdTmovimiento)
         {
 
-          DataSet ds = new DataSet();
+            DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -491,7 +491,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 parametros.Add("@Id_Cancelacion", Id_Cancelacion);
                 parametros.Add("@IdTSolicitud", IdTSolicitud);
                 parametros.Add("@IdTmovimiento", IdTmovimiento);
-               
+
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[tbl_OrdenCancelada_uUp]", false, parametros);
 
@@ -514,10 +514,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
         #region Alta Pedido
 
         public static DataSet DirCte_iUp(
-            int Id_Num_Cte, int Id_Num_DirTipo,int Ids_Num_Edo,
+            int Id_Num_Cte, int Id_Num_DirTipo, int Ids_Num_Edo,
             string Calle, string Nom_DirCTe, string Num_Ext, string Num_Int,
             string Ciudad, string Cod_Postal, string Colonia, string Telefono,
-            string Latitud="", string Longitud=""
+            string Latitud = "", string Longitud = ""
             )
         {
 
@@ -568,7 +568,64 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet Email_iUp(int Id_Num_Cte,string Id_Email,string Cve_Acceso = "")
+
+        public static DataSet DirCte_uUp(int Id_Cnsc_DirCTe,
+                                            int Id_Num_Cte, int Id_Num_DirTipo, int Ids_Num_Edo, string Calle, string Nom_DirCTe, string Num_Ext, string Num_Int,
+                                            string Ciudad, string Cod_Postal, string Colonia, string Telefono, string Latitud = "", string Longitud = "", string Referencia = ""
+    )
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Num_Cte", Id_Num_Cte);
+                parametros.Add("@Id_Cnsc_DirCTe", Id_Cnsc_DirCTe);
+
+                parametros.Add("@Id_Num_DirTipo", Id_Num_DirTipo);
+                parametros.Add("@Ids_Num_Edo", Ids_Num_Edo);
+                parametros.Add("@Calle", Calle);
+                parametros.Add("@Nom_DirCTe", Nom_DirCTe);
+                parametros.Add("@Num_Ext", Num_Ext);
+                parametros.Add("@Num_Int", Num_Int);
+                parametros.Add("@Ciudad", Ciudad);
+                parametros.Add("@Cod_Postal", Cod_Postal);
+                parametros.Add("@Colonia", Colonia);
+                parametros.Add("@Telefono", Telefono);
+                parametros.Add("@Latitud", Latitud);
+                parametros.Add("@Longitud", Longitud);
+                parametros.Add("@Referencia", Referencia);
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[DirCte_uUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public static DataSet Email_iUp(int Id_Num_Cte, string Id_Email, string Cve_Acceso = "")
         {
 
             DataSet ds = new DataSet();
@@ -605,7 +662,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet Cte_iUp( string Nom_Cte,string Ap_Paterno,string Ap_Materno, string Pregunta = "",string Cve_Respuesta = "")
+        public static DataSet Cte_iUp(string Nom_Cte, string Ap_Paterno, string Ap_Materno, string Pregunta = "", string Cve_Respuesta = "")
         {
 
             DataSet ds = new DataSet();
@@ -650,9 +707,55 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
+        public static DataSet Cte_uUp(int Id_Num_Cte, string Nom_Cte, string Ap_Paterno, string Ap_Materno, string Pregunta = "", string Cve_Respuesta = "")
+        {
+
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Num_Cte", Id_Num_Cte);
+                parametros.Add("@Nom_Cte", Nom_Cte);
+                parametros.Add("@Ap_Materno", Ap_Materno);
+                parametros.Add("@Ap_Paterno", Ap_Paterno);
+                parametros.Add("@Pregunta", Pregunta);
+                parametros.Add("@Cve_Respuesta", Cve_Respuesta);
+
+
+
+
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[Cte_uUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         public static DataSet GetClientByPhoneEmail(string Criterio)
         {
-        
+
             DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
@@ -831,10 +934,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet Car_iUp(int Id_Num_UN,int Id_Num_Apl= 27, int Id_Num_Visita=0)
+        public static DataSet Car_iUp(int Id_Num_UN, int Id_Num_Apl = 27, int Id_Num_Visita = 0)
         {
 
-         DataSet ds = new DataSet();
+            DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -870,8 +973,8 @@ namespace ServicesManagement.Web.DAL.CallCenter
         }
 
         public static DataSet ArtCar_d_iUp(
-            int Id_Num_Car, int id_Num_Sku ,  decimal Cant_Unidades, 
-            decimal Precio_VtaNormal, decimal Precio_VtaOferta, decimal Dcto,string Desc_art,string Cve_UnVta,decimal Num_CodBarra,
+            int Id_Num_Car, int id_Num_Sku, decimal Cant_Unidades,
+            decimal Precio_VtaNormal, decimal Precio_VtaOferta, decimal Dcto, string Desc_art, string Cve_UnVta, decimal Num_CodBarra,
             int Id_Num_ArtCar_Tipo = 8
             )
 
@@ -902,7 +1005,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 parametros.Add("@Desc_art", Desc_art);
                 parametros.Add("@Cve_UnVta", Cve_UnVta);
                 parametros.Add("@Num_CodBarra", Num_CodBarra);
-   
+
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[ArtCar_d_iUp]", false, parametros);
 
@@ -922,7 +1025,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
         }
 
 
-        public static DataSet ArtCar_Obser_iUp(int Id_Num_Car, int id_Num_Sku , string Desc_ArtCarObser )
+        public static DataSet ArtCar_Obser_iUp(int Id_Num_Car, int id_Num_Sku, string Desc_ArtCarObser)
         {
 
             DataSet ds = new DataSet();
@@ -964,7 +1067,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
         {
 
 
-           DataSet ds = new DataSet();
+            DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -1001,7 +1104,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
         public static DataSet Orden_iUp(int Id_Num_Car, int Id_Num_Cte, int id_Num_SrvEntrega)
         {
 
-         DataSet ds = new DataSet();
+            DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -1036,12 +1139,12 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet CalEntrega_iUp(int id_Num_SrvEntrega, int Id_Num_Un, int Id_Num_Orden,string Fec_Entrega)
+        public static DataSet CalEntrega_iUp(int id_Num_SrvEntrega, int Id_Num_Un, int Id_Num_Orden, string Fec_Entrega)
         {
 
 
 
-        DataSet ds = new DataSet();
+            DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -1116,10 +1219,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-     
-        public static DataSet DirCteEnt_iUp(int Id_Num_Cte,int Id_Num_DirTipo,int Ids_Num_Edo,
+
+        public static DataSet DirCteEnt_iUp(int Id_Num_Cte, int Id_Num_DirTipo, int Ids_Num_Edo,
             string Calle, string Nom_DirCTe, string Num_Ext, string Num_Int, string Ciudad,
-            string Cod_Postal, string Colonia, string Telefono,string Referencia ="", string Latitud = "", string Longitud = ""
+            string Cod_Postal, string Colonia, string Telefono, string Referencia = "", string Latitud = "", string Longitud = ""
             )
         {
 
@@ -1173,13 +1276,13 @@ namespace ServicesManagement.Web.DAL.CallCenter
         }
 
 
-        public static DataSet DirEnt_iUp(int Id_Num_Orden,int Id_Num_Cte,int Id_Cnsc_DirCTe)
+        public static DataSet DirEnt_iUp(int Id_Num_Orden, int Id_Num_Cte, int Id_Cnsc_DirCTe)
         {
 
-//            @Id_Num_Orden int,
-//@Id_Num_Cte int
+            //            @Id_Num_Orden int,
+            //@Id_Num_Cte int
 
-        DataSet ds = new DataSet();
+            DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -1216,11 +1319,11 @@ namespace ServicesManagement.Web.DAL.CallCenter
         }
 
         public static DataSet FormaPagoCte_d_iUp(
-            int Id_Num_Cte, int Id_Num_FormaPago, DateTime Fec_Movto, string Cuenta="",
-            string Vec ="", string Nip ="", decimal Bit_FormaEliminada=0,
-            string Banco="", string Num_Cheque="",string Cuenta_enc="",string Vec_enc="",
-            string Nip_enc ="",string IdKey=""
-            
+            int Id_Num_Cte, int Id_Num_FormaPago, DateTime Fec_Movto, string Cuenta = "",
+            string Vec = "", string Nip = "", decimal Bit_FormaEliminada = 0,
+            string Banco = "", string Num_Cheque = "", string Cuenta_enc = "", string Vec_enc = "",
+            string Nip_enc = "", string IdKey = ""
+
             )
         {
 
@@ -1239,7 +1342,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
-               
+
                 parametros.Add("@Id_Num_Cte", Id_Num_Cte);
                 parametros.Add("@Id_Num_FormaPago", Id_Num_FormaPago);
                 parametros.Add("@Fec_Movto", Fec_Movto);
@@ -1275,7 +1378,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
         }
 
         public static DataSet OrdenPago_iUp(int Id_Num_Cte, int Id_Cnsc_FormaPagoCte_d, int Id_Num_Orden
-            ,DateTime Fecx_Movto,decimal Imp_Pago,int Num_Status =0,bool Bit_Eliminado=false)
+            , DateTime Fecx_Movto, decimal Imp_Pago, int Num_Status = 0, bool Bit_Eliminado = false)
         {
 
             DataSet ds = new DataSet();
