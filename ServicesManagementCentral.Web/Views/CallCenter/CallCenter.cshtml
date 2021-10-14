@@ -2146,10 +2146,11 @@
 
                     if (json.Success) {
                         if (json.existe) {
-                            LlenaDatosCte(json.resp,'0');
+                            LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
                             $('#divVerificaCliente').hide();
                             $('#divBuscaCliente').hide();
                             $('#divResultClient').show();
+                           
                         }
                         else {
                             popAddClient();
@@ -2311,6 +2312,8 @@
                         $('#divVerificaCliente').hide();
                         $('#divBuscaCliente').hide();
                         $('#divResultClient').show();
+                       
+                        $("#dlgAddClients").modal('hide');
                     }
                     else {
                         alert(json.Message);
