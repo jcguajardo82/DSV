@@ -1728,7 +1728,7 @@
                                     "<input onkeypress='return event.charCode >= 48' min='1' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
                                     data.data[i].SalesUnit,
                                     "<a  title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\""
-                                    + data.data[i].Description.replaceAll("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price
+                                    + data.data[i].Description.replace("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price //replaceall
                                     + "\",\"" + data.data[i].Sku
                                     + "\",\"" + data.data[i].SalesUnit
                                     + "\")'>Agregar Prodcuto</a>"
@@ -1863,6 +1863,7 @@
 
         }
         function Change_2(barcode) {
+            var cantidad = $("#productCant-" + barcode).val();
             var comentario = $("#comment-" + barcode).val();
             var item = _jsonProductsSelected.find(x => x.barcode === barcode);
 
@@ -1886,7 +1887,7 @@
             else {
 
                 //parseFloat(document.getElementById(amtid4).innerHTML, 10).toFixed(2);
-                _descripcion = descripcion.replaceAll("|", "'");
+                _descripcion = descripcion.replace("|", "'"); //replaceall
                 _barcode = barcode;
                 _precio = parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _cantidad = cantidad;
