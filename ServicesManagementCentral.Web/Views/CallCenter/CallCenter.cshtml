@@ -1541,7 +1541,7 @@
             toggleButton("finish", false);
             var products = new Array();
             var observaciones = new Array();
-            
+
 
             $("#tblResumen TBODY TR").each(function () {
                 var row = $(this);
@@ -1568,7 +1568,7 @@
                 product.obs = row.find("TD").eq(5).html();
                 products.push(product);
             });
-            
+
             $("#tblBusquedaArt TBODY TR").each(function () {
                 var row1 = $(this);
                 var observacion = {};
@@ -1703,7 +1703,7 @@
                                 .draw();
                             for (var i = 0; i < data.data.length; i++) {
 
-
+//onkeypress="return event.charCode >= 48" min="1"
                                 myTable.row.add([
 
                                     data.data[i].Barcode,
@@ -1713,9 +1713,9 @@
                                     data.data[i].Price,
                                     data.data[i].PromotionalPrice,
                                     "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
-                                    "<input type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
+                                    "<input onkeypress='return event.charCode >= 48' min='1' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
                                     data.data[i].SalesUnit,
-                                    "<a title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\""
+                                    "<a  title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\""
                                     + data.data[i].Description.replaceAll("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price
                                     + "\",\"" + data.data[i].Sku
                                     + "\",\"" + data.data[i].SalesUnit
@@ -1837,13 +1837,15 @@
                 alert("La Cantidad debe ser Mayor a 0.")
             }
             else {
+
+                //parseFloat(document.getElementById(amtid4).innerHTML, 10).toFixed(2);
                 _descripcion = descripcion.replaceAll("|", "'");
                 _barcode = barcode;
-                _precio = precio;
+                _precio = parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _cantidad = cantidad;
                 _Sku = sku;
                 _SalesUnit = SalesUnit;
-                
+
 
                 $("#dlgAgregarProductoComentario").modal("show");
                 $("#dlgSeleccionar").modal("hide");
@@ -1870,7 +1872,7 @@
             _obj.sku = _Sku;
             _obj.SalesUnit = _SalesUnit;
             _jsonProductsSelected.push(_obj);
-            
+
 
             llenarCarrito();
 
@@ -1882,32 +1884,35 @@
 
         function llenarCarrito() {
             var cant = 0, tot = 0.0;
-            
+
             var myTable = $('#tblPoductosSeleccionados').DataTable();
             myTable
                 .clear()
                 .draw();
             for (var i = 0; i < _jsonProductsSelected.length; i++) {
-
+                var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 
                 myTable.row.add([
 
                     _jsonProductsSelected[i].description,
                     "$" + _jsonProductsSelected[i].price,
                     "$" + _jsonProductsSelected[i].price,
-                    "<input type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
+                    "<input onkeypress='return event.charCode >= 48 min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                       _jsonProductsSelected[i].SalesUnit,
-                    "$" + _jsonProductsSelected[i].total,
+                    "$" + totaArt,
                     _jsonProductsSelected[i].comment,
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
                 cant = cant + parseInt(_jsonProductsSelected[i].quantity);
-                tot = tot + parseFloat(_jsonProductsSelected[i].total);
+                tot = tot + parseFloat(_jsonProductsSelected[i].total)
+
+                //parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             }
 
 
-
+            tot = parseFloat(tot).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            cant = parseFloat(cant).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             $("#lblCantidad").empty();
             $("#lblCantidad").append("Articulos Totales: " + cant);
             $("#lblTotal").empty();
@@ -1922,6 +1927,7 @@
                 .draw();
 
             for (var x = 0; x < _jsonProductsSelected.length; x++) {
+                var totaArt = parseFloat(_jsonProductsSelected[x].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 
                 myTableR.row.add([
                          _jsonProductsSelected[x].description
@@ -1931,7 +1937,7 @@
                         _jsonProductsSelected[x].quantity,
                         _jsonProductsSelected[x].SalesUnit,
                         "$" + _jsonProductsSelected[x].price,
-                        "$" + _jsonProductsSelected[x].total,
+                        "$" + totaArt,
                         _jsonProductsSelected[x].comment,
                     ]).draw();
             }
@@ -2150,7 +2156,7 @@
                             $('#divVerificaCliente').hide();
                             $('#divBuscaCliente').hide();
                             $('#divResultClient').show();
-                           
+
                         }
                         else {
                             popAddClient();
@@ -2302,7 +2308,7 @@
                     Id_Cnsc_DirCTe: Id_Cnsc_DirCTe,
                     Id_Num_Cte: Id_Num_Cte
 
-                   
+
                 },
                 datatype: "html",
                 success: function (json) {
@@ -2312,7 +2318,7 @@
                         $('#divVerificaCliente').hide();
                         $('#divBuscaCliente').hide();
                         $('#divResultClient').show();
-                       
+
                         $("#dlgAddClients").modal('hide');
                     }
                     else {
@@ -2473,7 +2479,7 @@
                         //
                         if (json.Success) {
                             debugger;
-                            
+
                             var sel = $("#ddlCteColonia");
                             sel.empty();
 
@@ -2579,7 +2585,7 @@
                                 sel.append('<option value="' + json.resp[i].Id_Num_Estado + '">' + json.resp[i].Nom_Estado + '</option>');
                             }
 
-                            
+
                             var sel2 = $("#ddlRec_Estado");
                             sel2.empty();
 
@@ -2621,7 +2627,7 @@
                     if (json.Success) {
                         debugger;
 
-                        
+
                         $("#hddIdDirCteUpd").val(json.resp.Id_Cnsc_DirCTe);
                         $("#txtCteNombre").val(json.resp.Nom_Cte);
                         $("#txtCteApPaterno").val(json.resp.Ap_Paterno);
@@ -2640,7 +2646,7 @@
                         $('#ddlCteColonia option:contains(' + json.resp.Colonia + ')').attr('selected', 'selected');
                         $("#divMsjAddClient").hide();
                         $("#txtCteEamil").focus();
-                      
+
                         $("#dlgAddClients").modal("show");
                         $("#txtCteEamil").focus();
                     }
@@ -2654,7 +2660,7 @@
                 }
             });
 
-           
+
         }
 
 
