@@ -1895,7 +1895,8 @@
                 _SalesUnit = SalesUnit;
 
 
-                $("#dlgAgregarProductoComentario").modal("show");
+                //$("#dlgAgregarProductoComentario").modal("show");
+                ConfirmarProduct();
                 $("#dlgSeleccionar").modal("hide");
             }
         }
@@ -1945,7 +1946,7 @@
                     _jsonProductsSelected[i].description,
                     "$" + _jsonProductsSelected[i].price,
                     "$" + _jsonProductsSelected[i].price,
-                    "<input onkeypress='return event.charCode >= 48 min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
+                    "<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + totaArt,
                     "<input type='text' onchange='Change_2(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
