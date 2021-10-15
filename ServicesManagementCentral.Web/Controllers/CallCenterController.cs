@@ -1451,10 +1451,11 @@ namespace ServicesManagement.Web.Controllers
 
                 decimal TotOrden = 0;
 
-                foreach (var item in arts)
-                {
-                    TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
-                }
+                //foreach (var item in arts)
+                //{
+                 
+                //    TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
+                //}
 
                 if (metodoPago == "efectivo")
                 {
@@ -1477,10 +1478,19 @@ namespace ServicesManagement.Web.Controllers
                     //ARTICULOS
                     string[] descripcion = item.Desc_art.Split('<');
 
-                    //decimal descuento = item.Precio_VtaNormal - item.Precio_VtaOferta;
+                    decimal descuento = item.Precio_VtaNormal - item.Precio_VtaOferta;
+
+
+                    if (item.Precio_VtaOferta < item.Precio_VtaNormal)
+                    {
+                        TotOrden += item.Cant_Unidades * item.Precio_VtaOferta;
+                    }
+                    else {
+                        TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
+                    }
                     
                     DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
-                        , item.Precio_VtaOferta, item.Precio_VtaNormal - item.Precio_VtaOferta, descripcion[0], item.Cve_UnVta, item.Num_CodBarra);
+                        , item.Precio_VtaOferta, descuento, descripcion[0], item.Cve_UnVta, item.Num_CodBarra);
                     //COMENTARIOS POR ARTICULO
                     if (item.obs != null)
                     { DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs); }
