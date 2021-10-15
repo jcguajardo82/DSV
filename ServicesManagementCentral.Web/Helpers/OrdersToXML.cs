@@ -376,7 +376,7 @@ namespace ServicesManagement.Web.Helpers
                         );
                 }
 
-                if ((dt2.Rows[0][86].ToString() == "5" || dt2.Rows[0][86].ToString() == "6") && dt2.Rows.Count == 2)
+                if ((dt2.Rows[0][86].ToString() == "5" || dt2.Rows[0][86].ToString() == "6") && dt2.Rows.Count > 1)
                 {
                     XmlSETCPayments = new XElement(nm + "payments",
                             new XElement(nm + "payment",
