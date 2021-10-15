@@ -273,6 +273,7 @@
     <Compile Include="DAL\Vehiculos\DALVehiculos.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
     <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\OrdersToXML.cs" />
     <Compile Include="Models\ActualizacionesInventario.cs" />
     <Compile Include="Models\Almacenes\AltaProveedor.cs" />
     <Compile Include="Models\Almacenes\SuppliersWHForAproval.cs" />
@@ -282,10 +283,17 @@
     <Compile Include="Models\Almacenes\SuppliersWHStock.cs" />
     <Compile Include="Models\Autorizacion\AutorizacionShow.cs" />
     <Compile Include="Models\Autorizacion\upCorpOms_Cns_OrdersByItems.cs" />
+    <Compile Include="Models\CallCenter\ArtCar_d.cs" />
+    <Compile Include="Models\CallCenter\CarObs.cs" />
+    <Compile Include="Models\CallCenter\CategoriasModels.cs" />
+    <Compile Include="Models\CallCenter\Edos.cs" />
+    <Compile Include="Models\CallCenter\GetClient.cs" />
     <Compile Include="Models\CallCenter\MotivosRMAById.cs" />
     <Compile Include="Models\CallCenter\ProdCheckList.cs" />
+    <Compile Include="Models\CallCenter\tbl_OrdenFotosRMA_sUp.cs" />
     <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByHistorical.cs" />
     <Compile Include="Models\CallCenter\up_Corp_cns_OrderInfo.cs" />
+    <Compile Include="Models\CallCenter\OrderJson.cs" />
     <Compile Include="Models\Config\Menu.cs" />
     <Compile Include="Models\Config\Rol.cs" />
     <Compile Include="Models\Config\Owners.cs" />
@@ -851,6 +859,8 @@
     <Content Include="Content\Inspinia\Styles\textSpinners\spinners.css" />
     <Content Include="Content\Inspinia\Styles\toastr\toastr.min.css" />
     <Content Include="Content\Inspinia\Styles\touchspin\jquery.bootstrap-touchspin.min.css" />
+    <Content Include="Content\plugins\blueimp\blueimp-gallery.min.css" />
+    <Content Include="Content\plugins\blueimp\jquery.blueimp-gallery.min.js" />
     <Content Include="Content\plugins\bootstrap-datetime\css\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\plugins\bootstrap-datetime\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\plugins\bootstrap-notify\bootstrap-notify.js" />
@@ -3568,6 +3578,8 @@
     <Content Include="Content\plugins\slick\slick.js" />
     <Content Include="Content\plugins\slick\slick.min.js" />
     <Content Include="Content\plugins\topojson\topojson.min.js" />
+    <Content Include="Content\plugins\zoomy\zoomy.css" />
+    <Content Include="Content\plugins\zoomy\zoomy.js" />
     <Content Include="Content\PrintModal.css" />
     <Content Include="Content\Scripts\cpanelLocal.js" />
     <Content Include="Content\Scripts\cpanel.js" />

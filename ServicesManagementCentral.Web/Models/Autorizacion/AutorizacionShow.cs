@@ -27,6 +27,7 @@ namespace ServicesManagement.Web.Models.Autorizacion
         public string DescAut { get; set; }
         public string Descripcion_Padre { get; set; }
         public string Descripcion_Motivo { get; set; }
+        public bool foto { get; set; }
 
 
 

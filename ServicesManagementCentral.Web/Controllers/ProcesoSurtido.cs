@@ -153,7 +153,7 @@ namespace ServicesManagement.Web.Controllers
             try
             {
 
-                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_FinalizarSurtido"];
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_FinalizarSurtidoDSV"];
                 System.Data.DataSet d = DALServicesM.GetOrdersByOrderNo(UeNo);
                 string status = string.Empty, store = string.Empty;
                 foreach (System.Data.DataRow r1 in d.Tables[0].Rows)

@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using System.Configuration;
 using static ServicesManagement.Web.Controllers.OrderFacts_UEModel;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -237,7 +238,9 @@ namespace ServicesManagement.Web.Controllers
         // GET: CallCenter
         public ActionResult CallCenter()
         {
-            GetServicios();
+            //GetServicios();
+
+            ViewBag.tdas = DALServicesM.GetUN();
 
             return View();
         }
@@ -335,23 +338,41 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public JsonResult GetProduct(string product)
+        public JsonResult GetProduct(string product, string tienda,string categoria)
         {
             try
             {
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var client = new RestClient("http://localhost:7071/api/Buscador_Producto?productId=" + product.Trim());
-                //var client = new RestClient("https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?productId=" + product.Trim());
+                var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
+                var urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
+                var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
+
+                string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
+                if (categoria != "0")
+                {
+                    url = string.Format("{0}{1}&tienda={2}&filtro={3}", urlApi, product.Trim(), tienda,categoria);
+                }
+
+
+                var client = new RestClient(url);
+
+                
+                //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
 
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);
 
-                List<ResponseBuscadorModel> response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+                var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
 
-                var result = new { Success = false, data = response1 };
+                if (response1 != null)
+                {
+                    response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
+                }
+
+                var result = new { Success = true, data = response1 };
                 return Json(result, JsonRequestBehavior.AllowGet);
                 //return Json("", JsonRequestBehavior.AllowGet);
             }
@@ -524,8 +545,14 @@ namespace ServicesManagement.Web.Controllers
                     DALCallCenter.up_Corp_ins_tbl_OrdenCancelada(
                         orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
                         , EstatusRma, ProcesoAut, IdTSolicitud, IdTmovimiento).Tables[0]).FirstOrDefault();
-
-                cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
+                if (id.foto)
+                {
+                    cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
+                }
+                else
+                {
+                    cliente = string.Format("Se ha generado con éxito el folio RMA numero : {0}", id.Id_cancelacion);
+                }
                 foreach (var item in detalle)
                 {
 
@@ -537,9 +564,14 @@ namespace ServicesManagement.Web.Controllers
                         foreach (var i in Products)
                         {
                             if (i.ProductId == item.ProductId)
-                            { quantity = Convert.ToInt32(i.NewQuantity); }
+                            {
+                                quantity = Convert.ToInt32(i.NewQuantity);
+                                DALCallCenter.up_Corp_ins_tbl_OrdenRetorno_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId, item.Position, quantity, item.ProductId, Desc);
+                            }
+
+
                         }
-                        DALCallCenter.up_Corp_ins_tbl_OrdenRetorno_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId, item.Position, quantity, item.ProductId, Desc);
+
                     }
                     else
                     {
@@ -548,16 +580,31 @@ namespace ServicesManagement.Web.Controllers
                         foreach (var i in Products)
                         {
                             if (i.ProductId == item.ProductId)
-                            { quantity = i.NewQuantity; }
-                        }
-                        DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId
-                            , item.Position, quantity, item.ProductId, Desc);
+                            {
+                                quantity = i.NewQuantity;
+                                DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId
+                                , item.Position, quantity, item.ProductId, Desc);
+                            }
 
-                        if (UeType.ToUpper().Equals("SETC"))
-                            Cancelacion(int.Parse(orden.Orderid));
+
+                        }
+
+
+                        //if (UeType.ToUpper().Equals("SETC"))
+                        //    Cancelacion(int.Parse(orden.Orderid));
                     }
                 }
 
+                if (Operacion == 5)
+                {
+                    var ShipmentId = detalle[0].ShipmentId;
+                    DALAutorizacion.upCorpOms_Del_UeNoSupplyProcess(OrderId, Desc, 1, ShipmentId);
+                    if (UeType.ToUpper().Equals("SETC"))
+                    {
+                        if (DALCallCenter.up_PPS_Sel_PaymenTransactionOrderCancellation(orden.Orderid).Tables[0].Rows.Count > 0)
+                        { Cancelacion(int.Parse(orden.Orderid)); }
+                    }
+                }
 
                 if (Session["CheckListProd"] != null)
                 {
@@ -783,17 +830,17 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult GetDetalleSF(int IdCancelacion,int idOrden)
+        public ActionResult GetDetalleSF(int IdCancelacion, int idOrden)
         {
             try
             {
-                
+
                 var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
-                    DALCallCenter.upCorpOms_Cns_OrdersByHistoricalSF(idOrden,IdCancelacion).Tables[0]);
+                    DALCallCenter.upCorpOms_Cns_OrdersByHistoricalSF(idOrden, IdCancelacion).Tables[0]);
 
                 var tot = list.Sum(x => x.SubTotal);
 
-              
+
                 var result = new { Success = true, resp = list, total = tot };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -804,14 +851,14 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult FinalizarSF(int IdCancelacion         
+        public ActionResult FinalizarSF(int IdCancelacion
            , int IdTSolicitud, int IdTmovimiento)
         {
             var cliente = string.Empty;
             try
             {
                 var urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
-               
+
 
                 cliente = string.Format("{0}/?order={1}", urlbase, IdCancelacion);
                 DALCallCenter.tbl_OrdenCancelada_uUp(IdCancelacion, IdTSolicitud, IdTmovimiento);
@@ -952,7 +999,7 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult DeleteMotivo( int IdMotivo)
+        public ActionResult DeleteMotivo(int IdMotivo)
 
         {
 
@@ -990,6 +1037,671 @@ namespace ServicesManagement.Web.Controllers
         #endregion
 
 
-        //NVS
+        #region Alta PEdido
+
+        public ActionResult BuscarCliente(string Criterio = "")
+        {
+            try
+
+            {
+
+                bool exist = false;
+
+                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByName(Criterio).Tables[0]);
+
+                if (list != null && list.Count > 0)
+                {
+                    exist = true;
+                }
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+                    ,
+                    existe = exist
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public ActionResult VerificaCliente(string Criterio = "", string Id_Cnsc_DirCTe = "")
+        {
+            try
+
+            {
+
+                bool exist = false;
+
+                var list = new GetClient();
+
+                if (string.IsNullOrEmpty(Id_Cnsc_DirCTe))
+                {
+
+                    list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]).FirstOrDefault();
+                }
+                else
+                {
+                    list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0])
+                            .Where(x => x.Id_Cnsc_DirCTe == Id_Cnsc_DirCTe).FirstOrDefault();
+
+                    //foreach (var item in DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]))
+                    //{
+                    //    if (item.Id_Cnsc_DirCTe == Id_Cnsc_DirCTe)
+                    //    {
+                    //        list = item;
+                    //        break;
+                    //    }
+                    //}
+
+                }
+                if (list != null)
+                {
+                    exist = true;
+                }
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+                    ,
+                    existe = exist
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public ActionResult AddClient(
+            string Nom_Cte, string Ap_Materno, string Ap_Paterno, string Calle, string Nom_DirCTe,
+            string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
+            string Telefono, string Id_Email, int Ids_Num_Edo, int Id_Cnsc_DirCTe, int Id_Num_Cte = 0
+            )
+        {
+            try
+
+            {
+
+                GetClient list = new GetClient();
+
+                list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Id_Email).Tables[0]).FirstOrDefault();
+
+                if (list == null && Id_Cnsc_DirCTe == 0 && Id_Num_Cte == 0)
+                {
+
+
+                    Id_Num_Cte = int.Parse(DALCallCenter.Cte_iUp(Nom_Cte, Ap_Paterno, Ap_Materno).Tables[0].Rows[0]["Id_Num_Cte"].ToString());
+
+                    DALCallCenter.Email_iUp(Id_Num_Cte, Id_Email);
+                    DALCallCenter.DirCte_iUp(Id_Num_Cte, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int, Ciudad, Cod_Postal, Colonia, Telefono);
+                    list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Id_Email).Tables[0]).FirstOrDefault();
+
+
+
+
+                }
+                else
+                {
+                    if (Id_Cnsc_DirCTe != 0 && Id_Num_Cte != 0)
+                    {
+
+                        DALCallCenter.Cte_uUp(Id_Num_Cte, Nom_Cte, Ap_Paterno, Ap_Materno);
+                        DALCallCenter.Email_uUp(Id_Num_Cte, Id_Email);
+                        DALCallCenter.DirCte_uUp(Id_Cnsc_DirCTe, Id_Num_Cte, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int, Ciudad, Cod_Postal, Colonia, Telefono);
+                        list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Id_Email).Tables[0])
+                            .Where(x => x.Id_Cnsc_DirCTe == Id_Cnsc_DirCTe.ToString()).FirstOrDefault();
+
+                    }
+                }
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public ActionResult GetDias(string fechaOriginal)
+        {
+            try
+            {
+
+                List<Dias> dias = new List<Dias>();
+                CultureInfo ci = new CultureInfo("Es-Es");
+                for (int i = 0; i < 7; i++)
+                {
+                    Dias dia = new Dias();
+                    if (i == 0)
+                    {
+                        dia.fecha = DateTime.Now.AddHours(-5).ToString("yyyy/MM/dd");
+                        dia.NombeDia = string.Format("HOY - {0}", NombreMesDia(DateTime.Now.AddHours(-5)));//ci.DateTimeFormat.DayNames[DateTime.Now.Date.Day];
+                    }
+                    else
+                    {
+                        dia.fecha = DateTime.Now.AddHours(-5).AddDays(i).ToString("yyyy/MM/dd");
+
+                        dia.NombeDia = string.Format("{0} - {1}", ci.DateTimeFormat.DayNames[(int)DateTime.Now.AddHours(-5).Date.AddDays(i).DayOfWeek].ToUpper()
+                            , NombreMesDia(DateTime.Now.AddHours(-5).AddDays(i)));
+                    }
+                    dias.Add(dia);
+                }
+
+                var horas = HoraEntrga(fechaOriginal, "HOY");
+                var result = new { Success = true, json = dias, horas = horas };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public List<Dias> HoraEntrga(string fechaOriginal, string fechaSelec)
+        {
+            List<Dias> dias = new List<Dias>();
+            int hora = 9;
+            if (fechaSelec.ToUpper().Equals("HOY"))
+            {
+                //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
+                var fec = DateTime.Now.AddHours(-5).ToString();
+                hora = Convert.ToDateTime(fec).AddHours(3).Hour;
+            }
+
+            if (hora > 8 & hora < 21)
+            {
+                for (int i = hora; i < 22; i++)
+                {
+                    Dias dia = new Dias();
+
+                    dia.fecha = string.Format("{0}:01:00", i);
+                    dia.NombeDia = string.Format("{0}:01:00 - {1}:00:00", i, i + 1);
+
+                    dias.Add(dia);
+                }
+            }
+            return dias;
+        }
+
+        public ActionResult GetHorasEntrega(string fechaOriginal, string fechaSelec)
+        {
+
+            try
+            {
+
+
+                var dias = HoraEntrga(fechaOriginal, fechaSelec);
+                var result = new { Success = true, json = dias };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public string NombreMesDia(DateTime fecha)
+        {
+            string result = string.Empty;
+            string mes = string.Empty;
+            switch (fecha.Month)
+            {
+                case 1:
+                    mes = "Enero";
+                    break;
+                case 2:
+                    mes = "Febrero";
+                    break;
+                case 3:
+                    mes = "Marzo";
+                    break;
+                case 4:
+                    mes = "Abril";
+                    break;
+                case 5:
+                    mes = "Mayo";
+                    break;
+                case 6:
+                    mes = "Junio";
+                    break;
+                case 7:
+                    mes = "Julio";
+                    break;
+                case 8:
+                    mes = "Agosto";
+                    break;
+                case 9:
+                    mes = "Septiembre";
+                    break;
+                case 10:
+                    mes = "Octubre";
+                    break;
+                case 11:
+                    mes = "Noviembre";
+                    break;
+                case 12:
+                    mes = "Diciembre";
+                    break;
+            }
+
+            result = string.Format("{0} {1}", fecha.Day, mes);
+            return result;
+        }
+
+        public ActionResult GetDirCteIdNumCte(int Id_Num_Cte)
+        {
+            try
+
+            {
+
+
+
+                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(Id_Num_Cte).Tables[0]);
+
+
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        //Id_Cnsc_DirCTe
+        public ActionResult GetDirDirCteIdDirCTe(int Id_Cnsc_DirCTe, int Id_Num_Cte)
+        {
+            try
+
+            {
+
+
+
+                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirDirCteIdDirCTe(Id_Cnsc_DirCTe, Id_Num_Cte).Tables[0]).FirstOrDefault();
+
+
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public ActionResult GetEstados()
+        {
+            try
+
+            {
+
+
+
+                var list = DataTableToModel.ConvertTo<Edos>(DALCallCenter.Estado_d_sUp(1).Tables[0]);
+
+
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    resp = list
+
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        [HttpPost]
+        public ActionResult FinalizarOrden(List<ArtCar_d> arts, List<CarObs> carObs, int idCliente, string diaEnt, string horaEnt
+            , int metodoEnt, string metodoPago, decimal efectivo, decimal vales, int tda
+            , string Calle, string Nom_DirCTe,
+            string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
+            string Telefono, int Ids_Num_Edo)
+        {
+            try
+
+            {
+
+                decimal TotOrden = 0;
+
+                foreach (var item in arts)
+                {
+                    TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
+                }
+
+                if (metodoPago == "efectivo")
+                {
+                    if ((efectivo + vales) == 0)
+                    {
+                        throw new Exception("La cantidad de efectivo y vales no pude ser 0");
+
+                    }
+                }
+
+
+                int id_Num_SrvEntrega = 0;
+                //CREACION DEL CARRITO
+                var Id_Num_Car = int.Parse(DALCallCenter.Car_iUp(tda).Tables[0].Rows[0][0].ToString());
+
+
+                //DETALLE DEL CARRITO
+                foreach (var item in arts)
+                {
+                    //ARTICULOS
+                    string[] desc = item.Desc_art.Split('<');
+                    DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
+                        , item.Precio_VtaOferta, item.Dcto, desc[0], item.Cve_UnVta, item.Num_CodBarra);
+                    //COMENTARIOS POR ARTICULO
+                    if (item.obs != null)
+                    { DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs); }
+                }
+
+                //OBSERVACIONES NIVEL CARRITO
+                if (carObs != null)
+                {
+                    foreach (var item in carObs)
+                    {
+                        DALCallCenter.CarObs_iUp(Id_Num_Car, item.Desc_CarObs);
+                    }
+                }
+                else
+                {
+                    DALCallCenter.CarObs_iUp(Id_Num_Car, "");
+                }
+                switch (metodoEnt)
+                {
+                    //entrega en tienda
+                    case 1:
+                        id_Num_SrvEntrega = 3;
+                        break;
+                    //Domicilio
+                    case 2:
+                        id_Num_SrvEntrega = 2;
+                        break;
+                }
+
+                //SE CREA LA ORDEN
+                var Id_Num_Orden = int.Parse(DALCallCenter.Orden_iUp(Id_Num_Car, idCliente, id_Num_SrvEntrega).Tables[0].Rows[0][0].ToString());
+
+                //SE REGRISTRA LA FECJA DE ENTREGA
+                DateTime Fec_Entrega = Convert.ToDateTime(string.Format("{0} {1}", diaEnt, horaEnt));
+
+                //SE GUARDA LA FECCHA DE ENTREGA
+                DALCallCenter.CalEntrega_iUp(id_Num_SrvEntrega, tda, Id_Num_Orden, Fec_Entrega.ToString("yyyy-MM-dd HH:mm"));
+
+                //REGISTRAMOS/CONSULTAMOS LA DIRECCION DE ENTREGA EN LA TABLA DIRCTE
+                if (metodoEnt == 2)
+                {
+                    var Id_Cnsc_DirCTe = int.Parse(DALCallCenter.DirCteEnt_iUp(idCliente, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int
+                        , Ciudad, Cod_Postal, Colonia, Telefono, "").Tables[0].Rows[0][0].ToString());
+
+                    //REGISTRAMOS LA DIRECCION ENTREGA
+                    DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, Id_Cnsc_DirCTe);
+                }
+                else
+                {
+                    //entrega en tienda
+                    var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(idCliente).Tables[0]).Min(y => y.Id_Cnsc_DirCTe);
+                    //REGISTRAMOS LA DIRECCION ENTREGA
+                    DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, int.Parse(list));
+
+                }
+
+                int Id_Cnsc_FormaPagoCte_d = 0;
+                switch (metodoPago.ToLower())
+                {
+                    case "efectivo":
+                        //5 Efectivo
+                        //6 Vales de despensa
+
+                        if (efectivo > 0)
+                        {
+                            Id_Cnsc_FormaPagoCte_d = int.Parse(DALCallCenter.FormaPagoCte_d_iUp(idCliente, 5, DateTime.Now).Tables[0].Rows[0][0].ToString());
+                            DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, efectivo);
+                        }
+                        if (vales > 0)
+                        {
+                            Id_Cnsc_FormaPagoCte_d = int.Parse(DALCallCenter.FormaPagoCte_d_iUp(idCliente, 6, DateTime.Now).Tables[0].Rows[0][0].ToString());
+                            DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, vales);
+                        }
+
+
+
+                        break;
+
+                    case "debito": //22  Tarjeta de débito contra entrega
+                        Id_Cnsc_FormaPagoCte_d = int.Parse(DALCallCenter.FormaPagoCte_d_iUp(idCliente, 22, DateTime.Now).Tables[0].Rows[0][0].ToString());
+                        DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, TotOrden);
+                        break;
+                    case "credito":  //21  Tarjeta de crédito contra entrega
+
+
+                        Id_Cnsc_FormaPagoCte_d = int.Parse(DALCallCenter.FormaPagoCte_d_iUp(idCliente, 21, DateTime.Now).Tables[0].Rows[0][0].ToString());
+                        DALCallCenter.OrdenPago_iUp(idCliente, Id_Cnsc_FormaPagoCte_d, Id_Num_Orden, DateTime.Now, TotOrden);
+                        break;
+                }
+
+                #region Llamado al APi
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_AltaCarrito"];
+                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
+
+
+                OrdersToXML obj = new OrdersToXML();
+                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'"); ;
+                var OrderToMicroService = new OrderJson
+                {
+                    xmlOrden = x
+                };
+
+                // Serializar el mensaje en formato Json
+                string jsonString = JsonConvert.SerializeObject(OrderToMicroService);
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", jsonString);
+
+                if (r.code != "00")
+                {
+                    throw new Exception(r.message);
+                }
+
+                #endregion
+
+
+
+
+                var result = new
+                {
+                    Success = true
+                    ,
+                    Message = string.Format("La Orden No. {0} fue generada con éxito", Id_Num_Orden)
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+
+        public ActionResult XML()
+        {
+            try
+
+            {
+
+                int Id_Num_Orden = 3000168;
+                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
+
+
+                OrdersToXML obj = new OrdersToXML();
+                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
+                var OrderToMicroService = new OrderJson
+                {
+                    xmlOrden = x
+                };
+
+                // Serializar el mensaje en formato Json
+                string jsonString = JsonConvert.SerializeObject(OrderToMicroService);
+
+
+                var result = new
+                {
+                    Success = true
+
+
+
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+
+
+        public ActionResult GetCategorias()
+        {
+            try
+            {
+                var urlApi = System.Configuration.ConfigurationManager.AppSettings["call_center_busqueda_categorias"];
+                //"https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Categorias"
+                var client = new RestClient(urlApi);
+                client.Timeout = -1;
+                var request = new RestRequest(Method.POST);
+                IRestResponse response = client.Execute(request);
+                Console.WriteLine(response.Content);
+
+
+                List<CategoriasModels> ListP = JsonConvert.DeserializeObject<List<CategoriasModels>>(response.Content);
+
+
+                var result = new
+                {
+                    Success = true
+                      ,
+                    resp = ListP
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+          
+        }
+        #endregion
     }
 }

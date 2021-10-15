@@ -49,12 +49,26 @@
                                 //dt.AsEnumerable().Where( dr => dr.Field<int>( "ID" ) == 1 );
                             }
 
-                            <ul class="nav nav-second-level collapse" aria-expanded="false">
-                                @foreach (System.Data.DataRow r in result2)
+                        <ul class="nav nav-second-level collapse" aria-expanded="false">
+                            @foreach (System.Data.DataRow r in result2)
+                            {
+                                if (r["descripcionCorta"].ToString() == "Alta de Almacenes" && (row["descripcionCorta"].ToString() == "Administrador" || row["descripcionCorta"].ToString() == "Drop Ship Vendor"))
+                                {
+                                    if (row["descripcionCorta"].ToString() == "Administrador")
+                                    {
+                                        <li><a href="@Url.Action(r["action"].ToString(), r["controller"].ToString(), new { from = "Admin" })">@r["descripcionCorta"]</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action(r["action"].ToString(), r["controller"].ToString(), new { from = "DSV" })">@r["descripcionCorta"]</a></li>
+                                    }
+                                }
+                                else
                                 {
                                     <li><a href="@Url.Action(r["action"].ToString(), r["controller"].ToString())">@r["descripcionCorta"]</a></li>
                                 }
-                            </ul>
+                            }
+                        </ul>
                         </li>
                     }
 

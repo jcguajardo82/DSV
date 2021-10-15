@@ -13,10 +13,10 @@ namespace ServicesManagement.Web.Controllers
     [Authorize]
     public class NivelExistenciaController : Controller
     {
-        // GET: NivelExistencia
+        // GET: NivelExistencia - 2021-09-23
         public ActionResult NivelExistencia()
         {
-            ViewBag.FecIni = DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd");
+            ViewBag.FecIni = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
             ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
             ViewBag.IdOwner = 0;
             ViewBag.IdTienda = 0;

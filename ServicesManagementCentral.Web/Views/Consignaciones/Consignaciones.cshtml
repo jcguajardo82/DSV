@@ -184,7 +184,7 @@
                 success: function (json) {
                     if (json.Success) {
 
-
+                        $("h4.modal-title").text("Detalle del Pedido - " + Consignacion);
                         var table = $('#tblInventarios').DataTable();
 
                         table.clear().draw();

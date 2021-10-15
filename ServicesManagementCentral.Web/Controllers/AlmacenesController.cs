@@ -40,11 +40,11 @@ namespace ServicesManagement.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetSuppliersWHStock(string idSupplierWH, string idSupplierWHCode)
+        public ActionResult GetSuppliersWHStock(string idSupplierWH, string idSupplierWHCode, bool aprobado)
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<SuppliersWHStock>(DALAlmacenes.SuppliersWHStock_sUP(int.Parse(idSupplierWH), int.Parse(idSupplierWHCode)).Tables[0]);
+                var list = DataTableToModel.ConvertTo<SuppliersWHStock>(DALAlmacenes.SuppliersWHStock_sUP(int.Parse(idSupplierWH), int.Parse(idSupplierWHCode), aprobado).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
