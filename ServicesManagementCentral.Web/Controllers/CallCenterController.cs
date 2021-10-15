@@ -1669,7 +1669,9 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var client = new RestClient("https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Categorias");
+                var urlApi = System.Configuration.ConfigurationManager.AppSettings["call_center_busqueda_categorias"];
+                //"https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Categorias"
+                var client = new RestClient(urlApi);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
                 IRestResponse response = client.Execute(request);
