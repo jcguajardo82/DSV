@@ -68,11 +68,12 @@ namespace ServicesManagement.Web.DAL.Consignaciones
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@Consignacion", consignacion);
-               
 
 
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpAlmacen_Cns_ConsigmentsDetail]", false, parametros);
 
+                //ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpAlmacen_Cns_ConsigmentsDetail]", false, parametros);
+                  ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpAlmacen_Cns_ConsigmentsDetail]", false, parametros);
+                                                                                                   
                 return ds;
             }
             catch (SqlException ex)
