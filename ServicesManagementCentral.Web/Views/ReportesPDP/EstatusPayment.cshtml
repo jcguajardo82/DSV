@@ -1,0 +1,1301 @@
+﻿
+@{
+    ViewBag.Title = "EstatusPayment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Historial Pago</h2>
+
+<style>
+    .body-main {
+        background: #ffffff;
+        border-bottom: 15px solid #1E1F23;
+        border-top: 15px solid #1E1F23;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        padding: 40px 30px !important;
+        position: relative;
+        box-shadow: 0 1px 21px #808080;
+        font-size: 10px
+    }
+
+    .main thead {
+        background: #1E1F23;
+        color: #fff
+    }
+
+    .img {
+        height: 100px
+    }
+
+    h1 {
+        text-align: center
+    }
+</style>
+
+<style>
+    /*process-box*/
+    body {
+        background: #eee;
+    }
+
+    .process-box {
+        background: #fff;
+        padding: 10px;
+        border-radius: 15px;
+        position: relative;
+        box-shadow: 2px 2px 7px 0 #00000057;
+    }
+
+    .process-left:after {
+        content: "";
+        border-top: 15px solid #ffffff;
+        border-bottom: 15px solid #ffffff;
+        border-left: 15px solid #ffffff;
+        border-right: 15px solid #ffffff;
+        display: inline-grid;
+        position: absolute;
+        right: -15px;
+        top: 42%;
+        transform: rotate(45deg);
+        box-shadow: 3px -2px 3px 0px #00000036;
+        z-index: 1;
+    }
+
+    .process-right:after {
+        content: "";
+        border-top: 15px solid #ffffff00;
+        border-bottom: 15px solid #ffffff;
+        border-left: 15px solid #ffffff;
+        border-right: 15px solid #ffffff00;
+        display: inline-grid;
+        position: absolute;
+        left: -15px;
+        top: 42%;
+        transform: rotate(45deg);
+        box-shadow: -1px 1px 3px 0px #0000001a;
+        z-index: 1;
+    }
+
+    .process-step {
+        background: #00BCD4;
+        text-align: center;
+        width: 80%;
+        margin: 0 auto;
+        color: #fff;
+        height: 100%;
+        padding-top: 8px;
+        position: relative;
+        top: -26px;
+        border-radius: 0px 0px 10px 10px;
+        box-shadow: -6px 8px 0px 0px #00000014;
+    }
+
+    .process-point-right {
+        background: #ffffff;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 8px solid #00bcd4;
+        box-shadow: 0 0 0px 4px #5c5c5c;
+        margin: auto 0;
+        position: absolute;
+        bottom: 40px;
+        left: -63px;
+    }
+
+        .process-point-right:before {
+            content: "";
+            height: 144px;
+            width: 11px;
+            background: #5c5c5c;
+            display: inline-grid;
+            transform: rotate(36deg);
+            position: relative;
+            left: -50px;
+            top: -0px;
+        }
+
+    .process-point-left {
+        background: #ffffff;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 8px solid #00bcd4;
+        box-shadow: 0 0 0px 4px #5c5c5c;
+        margin: auto 0;
+        position: absolute;
+        bottom: 40px;
+        right: -63px;
+    }
+
+        .process-point-left:before {
+            content: "";
+            height: 144px;
+            width: 11px;
+            background: #5c5c5c;
+            display: inline-grid;
+            transform: rotate(-38deg);
+            position: relative;
+            left: 50px;
+            top: 0px;
+        }
+
+    .process-last:before {
+        display: none;
+    }
+
+    .process-box p {
+        z-index: 9;
+    }
+
+    .process-step p {
+        font-size: 20px;
+    }
+
+    .process-step h2 {
+        font-size: 39px;
+    }
+
+    .process-step:after {
+        content: "";
+        border-top: 8px solid #04889800;
+        border-bottom: 8px solid #048898;
+        border-left: 8px solid #04889800;
+        border-right: 8px solid #048898;
+        display: inline-grid;
+        position: absolute;
+        left: -16px;
+        top: 0;
+    }
+
+    .process-step:before {
+        content: "";
+        border-top: 8px solid #ff000000;
+        border-bottom: 8px solid #048898;
+        border-left: 8px solid #048898;
+        border-right: 8px solid #ff000000;
+        display: inline-grid;
+        position: absolute;
+        right: -16px;
+        top: 0;
+    }
+
+    .process-line-l {
+        background: white;
+        height: 4px;
+        position: absolute;
+        width: 136px;
+        right: -153px;
+        top: 64px;
+        z-index: 9;
+    }
+
+    .process-line-r {
+        background: white;
+        height: 4px;
+        position: absolute;
+        width: 136px;
+        left: -153px;
+        top: 63px;
+        z-index: 9;
+    }
+</style>
+
+
+<style>
+    .plan-price h3 {
+        text-align: center;
+        font-size: 20px;
+        padding: 10px 0;
+        margin-bottom: 25px;
+        color: #606060;
+        font-weight: 600;
+        text-align: center;
+        background-color: rgba(0, 0, 0, .02)
+    }
+
+    .plan-price {
+        font-size: 36px;
+        font-weight: 300;
+        color: #606060;
+        text-align: center;
+        padding: 0 0 22px;
+        position: relative
+    }
+
+    .plan.color-1 .plan-price,
+    .plan.color-1 a.button {
+        background-color: #f6f6f6
+    }
+
+    .plan.color-2 .plan-price,
+    .plan.color-2 a.button {
+        background-color: #3acf87
+    }
+
+    .plan.color-3 .plan-price,
+    .plan.color-3 a.button {
+        background-color: #514e9f
+    }
+
+    .plan.color-4 .plan-price,
+    .plan.color-4 a.button {
+        background-color: #e54b81
+    }
+
+    .plan.color-5 .plan-price,
+    .plan.color-5 a.button {
+        background-color: #a558a6
+    }
+
+    .plan-price .value {
+        font-weight: 600;
+        letter-spacing: -1px
+    }
+
+    .plan-currency {
+        font-size: 22px;
+        opacity: .7;
+        position: relative;
+        margin: 0 -5px 0 0;
+        top: -4px;
+        font-weight: 300
+    }
+
+    .period {
+        display: block;
+        font-size: 16px;
+        margin: 2px 0 0;
+        opacity: .7
+    }
+
+    .plan-features {
+        background: #fff;
+        border-top: none;
+        padding: 12px 0 0
+    }
+
+        .plan-features ul li {
+            padding: 8px 0;
+            text-align: center
+        }
+
+        .plan-features a.button {
+            position: relative;
+            display: block;
+            margin: 0 auto;
+            margin: 12px 0;
+            text-align: center;
+            color: #666;
+            padding: 10px 0;
+            font-size: 14px;
+            -webkit-transition: all .2s ease-in-out;
+            -moz-transition: all .2s ease-in-out;
+            -o-transition: all .2s ease-in-out;
+            -ms-transition: all .2s ease-in-out;
+            transition: all .2s ease-in-out
+        }
+
+    .color-2 .plan-price,
+    .color-3 .plan-price,
+    .color-4 .plan-price,
+    .color-5 .plan-price,
+    .color-2 .plan-price h3,
+    .color-3 .plan-price h3,
+    .color-4 .plan-price h3,
+    .color-5 .plan-price h3,
+    .color-2 .plan-price .plan-currency,
+    .color-3 .plan-price .plan-currency,
+    .color-4 .plan-price .plan-currency,
+    .color-5 .plan-price .plan-currency,
+    .color-2 .plan-features a.button,
+    .color-3 .plan-features a.button,
+    .color-4 .plan-features a.button,
+    .color-5 .plan-features a.button {
+        color: #fff
+    }
+
+        .color-2 .plan-price h3,
+        .color-3 .plan-price h3,
+        .color-4 .plan-price h3,
+        .color-5 .plan-price h3 {
+            background-color: rgba(0, 0, 0, .05)
+        }
+
+    .columns {
+        margin-right: 15px
+    }
+
+    .plan {
+        border: 1px solid #f6f6f6
+    }
+
+    .button {
+        margin-bottom: 100px
+    }
+</style>
+
+<link href="~/Content/StepOrder.css" rel="stylesheet" />
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+@*<div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Numero de Orden:</label>
+                <div class="col-sm-4"><input type="text" id="in_bolsas" placeholder="" class="form-control"></div>
+                <a class="btn btn-danger" onclick="GetReporte()">Consultar Orden</a>
+            </div>
+        </div>
+        <div class="col-sm-2">
+
+        </div>
+    </div>*@
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th>Ordem</th>
+                        <th>Lealtad</th>
+                        <th>Omonel</th>
+                        <th>Tarjet Debito / Credito</th>
+                        <th>Total</th>
+                        <th>Estatus</th>
+                        <th>Fecha Operacion</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Session["listaGrid"] != null)
+                        {
+                            var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Controllers.OrderPagoModels>>(Session["listaGrid"].ToString());
+
+                            foreach (ServicesManagement.Web.Controllers.OrderPagoModels o in lista)
+                            {
+
+                                string e = string.IsNullOrEmpty(@o.response) ? "RECHAZADA" : @o.response.ToString().Contains("\"responseCode\":\"200\"") ? "APROBADA" : "RECHAZADA";
+                                <tr>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" onclick="GetReporte('@o.orden')" data-toggle="modal" data-target=".bd-example-modal-lg">@o.orden</button>
+                                    </td>
+                                    <td>@o.dineroElectronico</td>
+                                    <td>@o.puntos</td>
+                                    <td>@o.tarjeta</td>
+                                    <td>@o.total</td>
+                                    @*<td>@o.estatus</td>*@
+                                    <td>@e</td>
+                                    <td>@o.fecha</td>
+
+                                </tr>
+
+                            }
+                            // public string orden { get; set; }
+                            //public string request { get; set; }
+                            //public string response { get; set; }
+                            //public string fecha { get; set; }
+
+                            //public string total { get; set; } = "$0.0";
+                            //public string dineroElectronico { get; set; } = "$0.0";
+                            //public string dineroEfectivo { get; set; } = "$0.0";
+                            //public string puntos { get; set; } = "$0.0";
+                            //public string tarjeta { get; set; } = "$0.0";
+                            //public string estatus { get; set; } = "$0.0";
+
+                        }
+
+
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Numero de Orden:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <!--<div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div style="width:99%;">
+                            <table id="tblConsulta2" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">-->
+                @*<thead class="bg-danger-sor">
+                        <tr>
+                            <th>Metodo</th>
+                            <th>Request</th>
+                            <th>Reponse</th>
+                            <th>Fecha Creación</th>
+
+                        </tr>
+                    </thead>*@
+                <!--<tbody>
+                                    <tr><td>Orden:</td><td>0299100292</td></tr>
+                                    <tr><td>Cliente:</td><td>Juan de </td></tr>
+                                    <tr><td>Direccion:</td><td>Lomas de Palmeiera</td></tr>
+                                    <tr><td>Total de Orden:</td><td>$200.20</td></tr>
+                                    <tr><td>Tipo de Pago:</td><td>Tarjeta Credito</td></tr>
+                                    <tr><td>Dinero Electronico:</td><td>$10.0</td></tr>
+                                    <tr><td>Dinero Efectivo:</td><td>$0.0</td></tr>
+                                    <tr><td>Puntos:</td><td>15</td></tr>
+                                    <tr><td>Estatus :</td><td>Aprobada</td></tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>-->
+
+
+                <div class="ibox-content">
+                    <div class="panel-body">
+                        <div class="panel-group" id="accordion">
+
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading collapsed" data-parent="#accordion" data-toggle="collapse" data-target="#op01" aria-expanded="false">
+                                    <h4 class="panel-title accordion-toggle">
+                                        SALES FORCES
+                                    </h4>
+                                </div>
+                                <div id="op01" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                    <div class="panel-body">
+                                        <div class="row">
+
+                                            <div class="container">
+                                                @*<div class="page-header">
+                                                        <h1>CYBERSORCE HISTORIAL </h1>
+                                                    </div>*@
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-md-offset-12 body-main">
+                                                            <div class="col-md-12">
+                                                                <div class="row">
+                                                                    <div class="col-md-4"> <img class="img" alt="Invoce Template" src="http://pngimg.com/uploads/shopping_cart/shopping_cart_PNG59.png" /> </div>
+                                                                    <div class="col-md-8 text-right">
+                                                                        <h4 style="color: #F81D2D;"><strong>SETC</strong></h4>
+                                                                        <p id="adress">221 ,Baker Street</p>
+                                                                        <p id="telefono">1800-234-124</p>
+                                                                        <p id="email">example@gmail.com</p>
+                                                                    </div>
+                                                                </div> <br />
+                                                                <div class="row">
+                                                                    <div class="col-md-12 text-center">
+                                                                        <h2>ORDEN</h2>
+                                                                        <h5 id="titleOrden"></h5>
+                                                                    </div>
+                                                                </div>
+                                                                <br />
+                                                                <div>
+                                                                    <h2>OPERACIONES</h2>
+
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>
+                                                                                    <h5>Descripcion</h5>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <h5>Monto</h5>
+                                                                                </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="col-md-9">Dinero Electronico</td>
+                                                                                <td id="DE_orden" class="col-md-3">$ 50.00 </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="col-md-9">Dinero Efectivo</td>
+                                                                                <td id="Efe_orden" class="col-md-3">$ 5.20 </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="col-md-9">Puntos</td>
+                                                                                <td id="Ptos_orden" class="col-md-3">$ 25.00 </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="col-md-9">Omonel</td>
+                                                                                <td id="Om_orden" class="col-md-3">$ 2.20 </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="col-md-9">Tarjeta Credito / Debito</td>
+                                                                                <td id="Ta_orden" class="col-md-3">$ 2.20 </td>
+                                                                            </tr>
+                                                                            @*<tr>
+                                                                                    <td class="text-right">
+                                                                                        <p> <strong>Shipment and Taxes:</strong> </p>
+                                                                                        <p> <strong>Total Amount: </strong> </p>
+                                                                                        <p> <strong>Discount: </strong> </p>
+                                                                                        <p> <strong>Payable Amount: </strong> </p>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <p> <strong><i class="fas fa-dollar-sign" area-hidden="true"></i> 500 </strong> </p>
+                                                                                        <p> <strong><i class="fas fa-dollar-sign" area-hidden="true"></i> 82,900</strong> </p>
+                                                                                        <p> <strong><i class="fas fa-dollar-sign" area-hidden="true"></i> 3,000 </strong> </p>
+                                                                                        <p> <strong><i class="fas fa-dollar-sign" area-hidden="true"></i> 79,900</strong> </p>
+                                                                                    </td>
+                                                                                </tr>*@
+                                                                            <tr style="color: #F81D2D;">
+                                                                                <td class="text-right">
+                                                                                    <h4><strong>Total:</strong></h4>
+                                                                                </td>
+                                                                                <td class="text-left">
+                                                                                    <h4 id="tot_transacciones"><strong>$ 79.90 </strong></h4>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <h2>DETALLE DE ORDEN</h2>
+
+                                                                    <table class="table" id="tblDetalle">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>
+                                                                                    <h5>Descripcion</h5>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <h5>Precio</h5>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <h5>Cant.</h5>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <h5>Ajuste</h5>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <h5>Monto</h5>
+                                                                                </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="col-md-4">Samsung Galaxy 8 64 GB <br> ***Descuento por puntos : 380</td>
+                                                                                <td class="col-md-2">$50.00 </td>
+                                                                                <td class="col-md-2">$50.00 </td>
+                                                                                <td class="col-md-2">$50.00 </td>
+                                                                                <td class="col-md-2">$50.00 </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="col-md-4">JBL Bluetooth Speaker</td>
+                                                                                <td class="col-md-2">$5.20 </td>
+                                                                                <td class="col-md-2">$5.20 </td>
+                                                                                <td class="col-md-2">$5.20 </td>
+                                                                                <td class="col-md-2">$5.20 </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="col-md-4">Apple Iphone 6s 16GB</td>
+                                                                                <td class="col-md-2">$25.00 </td>
+                                                                                <td class="col-md-2">$25.00 </td>
+                                                                                <td class="col-md-2">$25.00 </td>
+                                                                                <td class="col-md-2">$25.00 </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="col-md-4">MI Smartwatch 2</td>
+                                                                                <td class="col-md-2">$2.20 </td>
+                                                                                <td class="col-md-2">$2.20 </td>
+                                                                                <td class="col-md-2">$2.20 </td>
+                                                                                <td class="col-md-2">$2.20 </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="text-right">
+                                                                                    <p> <strong>Impuestos:</strong> </p>
+                                                                                    <p> <strong>Monto Total: </strong> </p>
+                                                                                    <p> <strong>Descuento: </strong> </p>
+                                                                                    <p> <strong>Monto a Pagar: </strong> </p>
+                                                                                </td>
+                                                                                <td colspan="1"></td>
+                                                                                <td>
+                                                                                    <p> <strong>$500.00 </strong> </p>
+                                                                                    <p> <strong>$82.90</strong> </p>
+                                                                                    <p> <strong>$3.00 </strong> </p>
+                                                                                    <p> <strong>$79.90</strong> </p>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr style="color: #F81D2D;">
+                                                                                <td class="text-right">
+                                                                                    <h4><strong>Total:</strong></h4>
+                                                                                </td>
+                                                                                <td class="text-left">
+                                                                                    <h4><strong>$79.90 </strong></h4>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                                <div>
+                                                                    <div class="col-md-12">
+                                                                        <p id="fechaOrden"><b>Date :</b> 6 June 2019</p> <br />
+                                                                        @*<p><b>Signature</b></p>*@
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="lealtadTag" class="panel panel-default">
+
+                                <div class="panel-heading collapsed" data-parent="#accordion" data-toggle="collapse" data-target="#op02" aria-expanded="false">
+                                    <h4 class="panel-title accordion-toggle">
+                                        LEALTAD
+                                    </h4>
+                                </div>
+                                <div id="op02" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="container">
+                                                @*<div>
+                                                        <h3 class="headline">Pricing Tables</h3><span class="line margin-bottom-45"></span>
+                                                        <div class="clearfix"></div> <br> <br>
+                                                    </div>*@
+                                                <div class="row">
+                                                    <div class="plan color-1 four columns" style="padding-left: 80px;">
+                                                        <div class="plan-price">
+                                                            <h3>Operacion</h3> <span class="plan-currency">$</span> <span class="value" id="totalLealtad">0.00</span><span class="period">Total</span>
+                                                        </div>
+                                                        <div class="plan-features">
+                                                            <ul>
+                                                                <li id="ptos">Cantidad Puntos: 90</li>
+                                                                <li id="DE">Dinero Electronico: $20.00</li>
+                                                                <li id="Efect">Dinero Efetivo: $30.00</li>
+                                                                <li id="cliente">Cliente: 01254555</li>
+                                                                <li id="tarjetaLealtad">Tarjeta Lealtad: 55224555224552</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="plan color-1 four columns">
+                                                        <div class="plan-price">
+                                                            <h3></h3> <span class="plan-currency"></span> <span class="value">=></span> <span class="period"></span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    @*<div class="plan color-1 four columns">
+                                                            <div class="plan-price">
+                                                                <h3>Respuesta</h3> <span class="plan-currency">$</span> <span class="value">29.90</span> <span class="period">Total</span>
+                                                            </div>
+                                                            <div class="plan-features">
+                                                                <ul>
+                                                                    <li>Status: Autorizada</li>
+                                                                    <li>Mensaje:</li>
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>*@
+
+                                                    <div class="plan color-2 four columns">
+                                                        <div class="plan-price">
+                                                            <h3>Respuesta</h3> <span class="plan-currency">$</span> <span class="value" id="totalLealtad2">0.00</span> <span class="period">Total</span>
+                                                        </div>
+                                                        <div class="plan-features">
+                                                            <ul>
+                                                                <li>Status: Autorizada</li>
+                                                                <li>Mensaje:Operacion autorizada <br> por el programa de lealtad</li>
+
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="omonelTag" class="panel panel-default">
+
+                                <div class="panel-heading collapsed" data-parent="#accordion" data-toggle="collapse" data-target="#op03" aria-expanded="false">
+                                    <h4 class="panel-title accordion-toggle">
+                                        OMONEL
+                                    </h4>
+                                </div>
+                                <div id="op03" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                    <div class="panel-body">
+                                        <div class="row">
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading collapsed" data-parent="#accordion" data-toggle="collapse" data-target="#op04" aria-expanded="false">
+                                    <h4 class="panel-title accordion-toggle">
+                                        CYBERSORCE
+                                    </h4>
+                                </div>
+                                <div id="op04" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                    <div class="panel-body">
+
+                                        <div id="createDecisionDiv">
+
+                                            <div class="row">
+                                                <button type="button" class="btn btn-primary position-relative">
+                                                    CREATE DECISION
+                                                    @*<span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                                            <span class="visually-hidden"></span>
+                                                        </span>*@
+                                                </button>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Operacion Id:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="id_create" value="6280024706406704004002">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Estatus:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="estatus_create" value="PENDING_REVIEW">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Decision:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="decision_create" value="DECISION_PROFILE_REVIEW">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Mensaje:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="mensaje_create" value="The order is marked for review by Decision Manager">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div id="enrollmentDiv">
+
+                                            <div class="row">
+
+                                                <button type="button" class="btn btn-primary position-relative">
+                                                    ENROLLMENT
+                                                    @*<span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                                            <span class="visually-hidden"></span>
+                                                        </span>*@
+                                                </button>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Operacion Id:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="id_enrollment" value="6280024706406704004002">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Estatus:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="estatus_enrollment" value="PENDING_REVIEW">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Decision:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="decision_enrollment" value="DECISION_PROFILE_REVIEW">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Mensaje:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="mensaje_enrollment" value="The order is marked for review by Decision Manager">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+
+                                        <div id="validateDiv">
+                                            <div class="row">
+
+                                                <button type="button" class="btn btn-primary position-relative">
+                                                    VALIDATE DECISION
+                                                    @*<span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                                            <span class="visually-hidden"></span>
+                                                        </span>*@
+                                                </button>
+
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Operacion Id:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="id_validate" value="6280024706406704004002">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Estatus:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="estatus_validate" value="AUTHENTICATION_SUCCESSFUL">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Decision:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="decision_validate" value="DECISION_PROFILE_REVIEW">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Mensaje:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="mensaje_validate" value="The order is marked for review by Decision Manager">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div id="processDiv">
+                                            <div class="row">
+                                                <button type="button" class="btn btn-primary position-relative">
+                                                    PROCESS PAYMENT
+                                                    @*<span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                                            <span class="visually-hidden"></span>
+                                                        </span>*@
+                                                </button>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Operacion Id:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="id_process" value="6280024706406704004002">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Estatus:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="estatus_process" value="AUTHORIZED">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Decision:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="decision_process" value="DECISION_PROFILE_REVIEW">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="staticEmail" class="col-sm-6 col-form-label">Mensaje:</label>
+                                                    <input type="text" readonly class="form-control-plaintext" id="mensaje_process" value="The order is marked for review by Decision Manager">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="errorMessage">
+                                            <div class="row">
+                                                <button type="button" class="btn btn-primary position-relative">
+                                                    ERROR AL PROCESAR EL PAGO
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            //GetReporte();
+
+            AOS.init();
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
+                var href = $(e.target).attr('href');
+                var $curr = $(".process-model  a[href='" + href + "']").parent();
+
+                $('.process-model li').removeClass();
+
+                $curr.addClass("active");
+                $curr.prevAll().addClass("visited");
+            });
+
+
+        });
+
+        function GetReporte(orden) {
+
+            //var _Id_Num_UN = $("#hddTda").val();
+
+            debugger;
+
+           /* location.reload();*/
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetEstatusPayment", "ReportesPDP")',
+                data: {
+                    order: orden
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if(json.Success) {
+
+                        /*$('#tblConsulta tbody').empty();*/
+                        ////var tr;
+                        //debugger;
+                        ////Append each row to html table
+
+                        debugger;
+
+                        //for (var i = 0; i < json.grid.length; i++) {
+                        //    tr = $('<tr>');
+
+                        //    //json.resp[i].NoOrden
+                        //    /*tr.append("<td><a class=\"btn btn-danger\" onclick=\"GetReporte()\">" + json.grid[i].metodo+"</a>" + "</td>");*/
+                        //    tr.append("<td><button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\".bd-example-modal-lg\">" + json.grid[i].metodo +"</button></td>");
+
+                        //    tr.append("<td>" + json.grid[i].request + "</td>");
+                        //    tr.append("<td>" + json.grid[i].response + "</td>");
+                        //    tr.append("<td>" + json.grid[i].fecha + "</td>");
+
+                        //    tr.append("</tr>");
+
+                        //    $('#tblConsulta').append(tr);
+                        //}
+
+                        //lealtadTag
+
+                        //p.total = "$" + orde1["orderAmount"].ToString();
+                        //p.dineroElectronico = "$" + (orde1["customerLoyaltyRedeemElectronicMoney"] == null ? "" : orde1["customerLoyaltyRedeemElectronicMoney"].ToString());
+                        //p.dineroEfectivo = "$" + orde1["customerLoyaltyRedeemMoney"].ToString();
+                        //p.tarjeta = "$" + orde1["orderAmount"].ToString();
+
+                        document.getElementById("DE_orden").innerText = json.order.dineroElectronico;
+                        document.getElementById("Efe_orden").innerText = json.order.dineroEfectivo;
+                        document.getElementById("Ptos_orden").innerText = json.order.puntos;
+                        document.getElementById("Om_orden").innerText = json.order.dineroElectronico;
+                        document.getElementById("Ta_orden").innerText = json.order.tarjeta;
+
+                        document.getElementById("titleOrden").innerText = json.order.orden;
+                        document.getElementById("adress").innerText = json.order.direccion;
+                        document.getElementById("email").innerText = json.order.email;
+                        document.getElementById("fechaOrden").innerText = "Fecha:" + json.order.fecha;
+                        document.getElementById("telefono").innerText = json.order.telefono;
+                        document.getElementById("tot_transacciones").innerText =  json.order.total;
+
+                        if (json.order.LealtadSpecified) {
+
+                            //$(".lealtadTag").show();
+                            document.getElementById('lealtadTag').style.display = 'inline';
+                            document.getElementById('omonelTag').style.display = 'none';
+
+                            document.getElementById("totalLealtad").innerText = json.order.jsonLealtadRequest.Imp_Vta;
+                            document.getElementById("totalLealtad2").innerText = json.order.jsonLealtadRequest.Imp_Vta;
+
+                            document.getElementById("ptos").innerText = "Cantidad Puntos: " + json.order.jsonLealtadRequest.Cant_Puntos;
+                            document.getElementById("DE").innerText = "Dinero Electronico: $" + json.order.jsonLealtadRequest.Imp_DE;
+                            document.getElementById("Efect").innerText = "Dinero Efetivo: $" + json.order.jsonLealtadRequest.Imp_Efvo;
+                            document.getElementById("tarjetaLealtad").innerText = "Tarjeta Lealtad: " + json.order.jsonLealtadRequest.Id_Cve_TokenCta;
+
+                            //p.jsonLealtadRequest.Cve_Operacion = od["Id_Cve_Orden"].ToString();
+                            //p.jsonLealtadRequest.Imp_Comp = Convert.ToDecimal(od["Imp_Comp"].ToString());
+                            //p.jsonLealtadRequest.Imp_Cred = Convert.ToDecimal(od["Imp_Cred"].ToString());
+                            //p.jsonLealtadRequest.Imp_DE = Convert.ToDecimal(od["Imp_DE"].ToString());
+                            //p.jsonLealtadRequest.Imp_Efvo = Convert.ToDecimal(od["Imp_Efvo"].ToString());
+                            //p.jsonLealtadRequest.Imp_Vta = Convert.ToDecimal(od["Imp_Vta"].ToString());
+                            //p.jsonLealtadRequest.Cant_Puntos = Convert.ToInt32(od["Cant_Puntos"].ToString());
+                            //p.jsonLealtadRequest.Id_Cve_TokenCta = od["Id_Cve_TokenCta"].ToString();
+
+                            //<li id="DE">Dinero Electronico: $20.00</li>
+                            //<li id="Efect">Dinero Efetivo: $30.00</li>
+                            //<li id="cliente">Cliente: 01254555</li>
+                            //<li id="tarjetaLealtad">Tarjeta Lealtad: 55224555224552</li>
+
+                        }
+                        else {
+                            //$(".lealtadTag").hide();
+                            document.getElementById('lealtadTag').style.display = 'none';
+                            document.getElementById('omonelTag').style.display = 'none';
+                        }
+
+                        //if (json.order.OmonelSpecified) {
+
+                        //    //$(".lealtadTag").show();
+                        //    document.getElementById('omonelTag').style.display = 'inline';
+
+                        //} else {
+                        //    //$(".lealtadTag").hide();
+                        //    document.getElementById('omonelTag').style.display = 'none';
+                        //}
+
+
+                        //create decision
+                        if (json.order.CreateDecisionSpecified) {
+
+                            document.getElementById('createDecisionDiv').style.display = 'inline';
+
+                            document.getElementById("id_create").value = json.order.CreatejsonResponse.id;
+                            document.getElementById("estatus_create").value = json.order.CreatejsonResponse.estatus;
+                            document.getElementById("decision_create").value = json.order.CreatejsonResponse.razon;
+                            document.getElementById("mensaje_create").value = json.order.CreatejsonResponse.decision;
+                        }
+                        else {
+
+                            document.getElementById('createDecisionDiv').style.display = 'none';
+                            document.getElementById("id_create").value = "";
+                            document.getElementById("estatus_create").value = "";
+                            document.getElementById("decision_create").value = "";
+                            document.getElementById("mensaje_create").value = "";
+                        }
+
+                        ///capture payment
+                        if (json.order.ProcessOrderSpecified) {
+
+                            document.getElementById('processDiv').style.display = 'inline';
+
+                            document.getElementById("id_process").value = json.order.ProcessOrderjsonResponse.id;
+                            document.getElementById("estatus_process").value = json.order.ProcessOrderjsonResponse.estatus;
+                            document.getElementById("decision_process").value = json.order.ProcessOrderjsonResponse.razon;
+                            document.getElementById("mensaje_process").value = json.order.ProcessOrderjsonResponse.decision;
+                        }
+                        else {
+
+                            document.getElementById('processDiv').style.display = 'none';
+                            document.getElementById("id_process").value = "";
+                            document.getElementById("estatus_process").value = "";
+                            document.getElementById("decision_process").value = "";
+                            document.getElementById("mensaje_process").value = "";
+                        }
+
+                        //enrollment
+                        if (json.order.EnrollmentSpecified) {
+
+                            document.getElementById('enrollmentDiv').style.display = 'inline';
+
+                            document.getElementById("id_enrollment").value = json.order.EnrollmentjsonResponse.id;
+                            document.getElementById("estatus_enrollment").value = json.order.EnrollmentjsonResponse.estatus;
+                            document.getElementById("decision_enrollment").value = json.order.EnrollmentjsonResponse.razon;
+                            document.getElementById("mensaje_enrollment").value = json.order.EnrollmentjsonResponse.decision;
+                        }
+                        else {
+
+                            document.getElementById('enrollmentDiv').style.display = 'none';
+                            document.getElementById("id_enrollment").value = "";
+                            document.getElementById("estatus_enrollment").value = "";
+                            document.getElementById("decision_enrollment").value = "";
+                            document.getElementById("mensaje_enrollment").value = "";
+                        }
+
+                        ///validate
+                        if (json.order.ValidateSpecified) {
+
+                            document.getElementById('validateDiv').style.display = 'inline';
+
+                            document.getElementById("id_validate").value = json.order.ValidatejsonResponse.id;
+                            document.getElementById("estatus_validate").value = json.order.ValidatejsonResponse.estatus;
+                            document.getElementById("decision_validate").value = json.order.ValidatejsonResponse.razon;
+                            document.getElementById("mensaje_validate").value = json.order.ValidatejsonResponse.decision;
+                        }
+                        else {
+
+                            document.getElementById('validateDiv').style.display = 'none';
+                            document.getElementById("id_validate").value = "";
+                            document.getElementById("estatus_validate").value = "";
+                            document.getElementById("decision_validate").value = "";
+                            document.getElementById("mensaje_validate").value = "";
+                        }
+
+                        //notify
+                        if (json.order.ProcessOrderSpecified) {
+
+                            document.getElementById('processDiv').style.display = 'inline';
+
+                            document.getElementById("id_process").value = json.order.ProcessOrderjsonResponse.id;
+                            document.getElementById("estatus_process").value = json.order.ProcessOrderjsonResponse.estatus;
+                            document.getElementById("decision_process").value = json.order.ProcessOrderjsonResponse.razon;
+                            document.getElementById("mensaje_process").value = json.order.ProcessOrderjsonResponse.decision;
+                        }
+                        else {
+
+                            document.getElementById('processDiv').style.display = 'none';
+                            document.getElementById("id_process").value = "";
+                            document.getElementById("estatus_process").value = "";
+                            document.getElementById("decision_process").value = "";
+                            document.getElementById("mensaje_process").value = "";
+                        }
+
+                        /////process
+                        if (json.order.ProcessOrderSpecified) {
+
+                            document.getElementById('processDiv').style.display = 'inline';
+
+                            document.getElementById("id_process").value = json.order.ProcessOrderjsonResponse.id;
+                            document.getElementById("estatus_process").value = json.order.ProcessOrderjsonResponse.estatus;
+                            document.getElementById("decision_process").value = json.order.ProcessOrderjsonResponse.razon;
+                            document.getElementById("mensaje_process").value = json.order.ProcessOrderjsonResponse.decision;
+                        }
+                        else {
+
+                            document.getElementById('processDiv').style.display = 'none';
+                            document.getElementById("id_process").value = "";
+                            document.getElementById("estatus_process").value = "";
+                            document.getElementById("decision_process").value = "";
+                            document.getElementById("mensaje_process").value = "";
+                        }
+
+                        //hubo algun erro en el procesador
+                        if (json.order.ErrorSpecified) {
+                            document.getElementById('errorMessage').style.display = 'inline';
+                            return true;
+                        }
+                        else {
+                            document.getElementById('errorMessage').style.display = 'none';
+                        }
+
+                        $('#tblDetalle tbody').empty();
+                        for (var i = 0; i < json.order.shipments.length; i++) {
+
+
+                            for (var j = 0; j < json.order.shipments[i].items.length; j++) {
+
+                                //alert(json.order.shipments[i].items[j].shippingItemName);
+                                tr = $('<tr>');
+                                tr.append("<td>" + json.order.shipments[i].items[j].shippingItemName + "</td>");
+                                tr.append("<td>" + json.order.shipments[i].items[j].shippingItemPrice + "</td>");
+                                tr.append("<td>" + json.order.shipments[i].items[j].shippingItemQuantity + "</td>");
+                                tr.append("<td>" + json.order.shipments[i].items[j].shippingItemPrice + "</td>");
+                                tr.append("<td>" + json.order.shipments[i].items[j].shippingItemTotal + "</td>");
+
+                                tr.append("</tr>");
+
+                                //tr.append("<tr style=\"color: #F81D2D;\">"+
+                                //    "<td class=\"text-right\">"+
+                                //    "<h4><strong>Total:</strong></h4>" +
+                                //    "</td>" +
+                                //    "<td class=\"text-left\">" +
+                                //    "<h4><strong>$" + json.order.total+"</strong></h4>" +
+                                //    "</td>" +
+                                //"</tr>");
+
+
+                                $('#tblDetalle').append(tr);
+                            }
+
+                            tr.append("<tr style=\"color: #F81D2D;\">" +
+                                "<td class=\"text-right\">" +
+                                "<h4><strong>Total:</strong></h4>" +
+                                "</td>" +
+                                "<td class=\"text-left\">" +
+                                "<h4><strong>" + json.order.total + "</strong></h4>" +
+                                "</td>" +
+                                "</tr>");
+
+
+                            $('#tblDetalle').append(tr);
+
+                            //json.resp[i].NoOrden
+                            /*tr.append("<td><a class=\"btn btn-danger\" onclick=\"GetReporte()\">" + json.grid[i].metodo+"</a>" + "</td>");*/
+                            //tr.append("<td><button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\".bd-example-modal-lg\">" + json.grid[i].metodo +"</button></td>");
+
+                            //tr.append("<td>" + json.grid[i].request + "</td>");
+                            //tr.append("<td>" + json.grid[i].response + "</td>");
+                            //tr.append("<td>" + json.grid[i].fecha + "</td>");
+
+                            //tr.append("</tr>");
+
+                            //$('#tblConsulta').append(tr);
+                        }
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
+        }
+
+    </script>
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(1) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+        });
+    </script>
+}
