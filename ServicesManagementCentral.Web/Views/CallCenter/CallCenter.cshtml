@@ -1677,18 +1677,13 @@
         }
 
         function CargaSeleccionaProducto() {
-            //$("#dlgBuscador").modal("hide");
-            //if ($('#txtProdArt2').val() == "") {
-            //    $('#txtProdArt2').focus();
-            //    return;
-            //}
-            //$("#exampleModal").modal("show");
-            //imgProduct
-            //document.getElementById("imgProduct").src = "https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/BGBD_STG/on/demandware.static/-/Sites-soriana-grocery-master-catalog/default/dw4f7cd627/images/product/7501022133286-A.jpg";
 
-            //$('#tblBusquedaArt2 > tbody').empty();
-            //document.getElementById("Addcantidad").value = "";
-            //tblBusquedaArt
+
+
+            if ($("#txtProdArt2").val().length == 0) {
+                $("#txtProdArt2").focus();
+                return;
+            }
 
             var tda = $("#ddlTdas").val()
 
@@ -1714,7 +1709,12 @@
 
                         if (data.data != null) {
                             for (var i = 0; i < data.data.length; i++) {
-
+                                var inp;
+                                if (data.data[i].SalesUnit == 'pza') {
+                                    inp = "<input  onkeypress='return event.charCode >= 48'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
+                                } else {
+                                    inp = "<input  oninput='input(this)'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
+                                }
                                 //onkeypress="return event.charCode >= 48" min="1"
                                 myTable.row.add([
 
@@ -1725,7 +1725,7 @@
                                     data.data[i].Price,
                                     data.data[i].PromotionalPrice,
                                     "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
-                                    "<input onkeypress='return event.charCode >= 48' min='1' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
+                                    inp,//"<input  onkeypress='return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
                                     data.data[i].SalesUnit,
                                     "<a  title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\""
                                     + data.data[i].Description.replace("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price //replaceall
@@ -1897,7 +1897,7 @@
 
                 //$("#dlgAgregarProductoComentario").modal("show");
                 ConfirmarProduct();
-                $("#dlgSeleccionar").modal("hide");
+                //$("#dlgSeleccionar").modal("hide");
             }
         }
         function ConfirmarProduct() {
@@ -1940,13 +1940,18 @@
                 .draw();
             for (var i = 0; i < _jsonProductsSelected.length; i++) {
                 var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-
+                var inp;
+                if (_jsonProductsSelected[i].SalesUnit == 'pza') {
+                    inp = "<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                } else {
+                    inp = "<input  oninput='input(this)' onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                }
                 myTable.row.add([
 
                     _jsonProductsSelected[i].description,
                     "$" + _jsonProductsSelected[i].price,
                     "$" + _jsonProductsSelected[i].price,
-                    "<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
+                    inp,//"<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + totaArt,
                     "<input type='text' onchange='Change_2(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
@@ -2711,8 +2716,6 @@
 
 
         }
-
-
 
     </script>
 
