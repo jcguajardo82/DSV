@@ -998,6 +998,8 @@
         var _precio = undefined;
         var _cantidad = undefined;
         var _Sku = undefined;
+        var _descuento = 0;
+        var _precioO = 0;
         var _SalesUnit = "";
 
 
@@ -1550,23 +1552,24 @@
             $("#tblResumen TBODY TR").each(function () {
                 var row = $(this);
                 var product = {};
-                //product.Id_Num_Sku = row.find("TD").eq(0).html();
-                //"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
-                //    + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>"
-
-               // product.Id_Num_Sku = row.find("td:eq(0) input[type='hidden']").val();
+              
                 row.find("td:eq(0) input[type='hidden']").each(function () {
                     var id=   $(this).attr('id');
-                    if (id.includes("sku")) {
+                    if (id.includes("sku"))
+                    {
                         product.Id_Num_Sku = $(this).val();
-                    } else {
+                    }else if (id.includes("code") )
+                    {
                         product.Num_CodBarra = $(this).val();
+                    } else
+                    {
+                        product.Precio_VtaNormal = $(this).val();
                     }
                 })
                 product.Desc_art = row.find("TD").eq(0).html().replace("'", '');
                 product.Cant_Unidades = row.find("TD").eq(1).html();
                 product.Cve_UnVta = row.find("TD").eq(2).html();
-                product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
+                //product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
                 product.Precio_VtaOferta = row.find("TD").eq(3).html().replace('$', '');
                 product.Dcto = 0;//row.find("TD").eq(1).html();
                 product.obs = row.find("TD").eq(5).html();
@@ -1690,7 +1693,8 @@
             }
 
             var tda = $("#ddlTdas").val()
-            var categoria = $("#ddlCategorias").val()
+            var categoria = $("#ddlCategorias").val();
+            debugger;
             $.ajax({
                 "url": "@Url.Action("GetProduct", "CallCenter")",
                 "type": "get",
@@ -1702,8 +1706,9 @@
 
                 "dataType": "json",
                 "success": function (data) {
+                    debugger;
                     if (data.Success) {
-
+                        debugger;
                         var myTable = $('#tblBusquedaSeleccionar').DataTable();
                         var nCant = 0;
                         myTable
@@ -1718,15 +1723,21 @@
                                 } else {
                                     inp = "<input  oninput='input(this)'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
                                 }
+
+                                var precio = parseFloat(data.data[i].Price).toFixed(2);
+                                var precioO = parseFloat(data.data[i].PromotionalPrice).toFixed(2);
+                                
+                                if (precioO == 0) { precioO = precio; }
+                                var desc = parseFloat(precio - precioO).toFixed(2);
                                 //onkeypress="return event.charCode >= 48" min="1"
                                 myTable.row.add([
 
                                     data.data[i].Barcode,
                                     data.data[i].Description,
                                     data.data[i].Brand.BrandDescription,
-                                    data.data[i].Price,
-                                    data.data[i].Price,
-                                    data.data[i].PromotionalPrice,
+                                    precioO,
+                                    precio,
+                                    desc,
                                     "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
                                     inp,//"<input  onkeypress='return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
                                     data.data[i].SalesUnit,
@@ -1734,7 +1745,8 @@
                                     + data.data[i].Description.replace("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price //replaceall
                                     + "\",\"" + data.data[i].Sku
                                     + "\",\"" + data.data[i].SalesUnit
-                                    + "\")'>Agregar Prodcuto</a>"
+                                    + "\",\"" + precioO
+                                    + "\",\"" + data.data[i].desc       + "\")'>Agregar Prodcuto</a>"
                                 ]).draw();
                             }
                         } else {
@@ -1766,13 +1778,7 @@
                 $('#txtProdArt').focus();
                 return;
             }
-            //$("#exampleModal").modal("show");
-            //imgProduct
-            //document.getElementById("imgProduct").src = "https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/BGBD_STG/on/demandware.static/-/Sites-soriana-grocery-master-catalog/default/dw4f7cd627/images/product/7501022133286-A.jpg";
-
-            //$('#tblBusquedaArt2 > tbody').empty();
-            //document.getElementById("Addcantidad").value = "";
-            //tblBusquedaArt
+          
             $.ajax({
                         "url": "@Url.Action("GetProduct", "CallCenter")",
                         "type": "get",
@@ -1857,7 +1863,7 @@
             //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
 
             item.quantity = cantidad;
-            item.total = cantidad * item.price;
+            item.total = cantidad * item.precioO;
             item.comment = comentario;
 
             console.log(_jsonProductsSelected);
@@ -1873,7 +1879,7 @@
             //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
 
             item.quantity = cantidad;
-            item.total = cantidad * item.price;
+            item.total = cantidad * item.precioO;
             item.comment = comentario;
 
             console.log(_jsonProductsSelected);
@@ -1881,8 +1887,8 @@
             llenarCarrito();
 
         }
-        function addProduct3(descripcion, barcode, precio, sku, SalesUnit) {
-
+        function addProduct3(descripcion, barcode, precio, sku, SalesUnit,precioO) {
+            debugger;
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
                 alert("La Cantidad debe ser Mayor a 0.")
@@ -1895,6 +1901,7 @@
                 _precio = parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _cantidad = cantidad;
                 _Sku = sku;
+                _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _SalesUnit = SalesUnit;
 
 
@@ -1913,16 +1920,17 @@
                     _jsonProductsSelected.splice(_index, 1);
                 }
             }
-
+            debugger;
             let _obj = {};
             _obj.barcode = _barcode;
             _obj.description = _descripcion;
             _obj.price = _precio;
             _obj.quantity = _cantidad;
-            _obj.total = _cantidad * _precio;
+            _obj.total = _cantidad * _precioO;
             _obj.comment = $("#txtComentario").val();
             _obj.sku = _Sku;
             _obj.SalesUnit = _SalesUnit;
+            _obj.precioO = _precioO;
             _jsonProductsSelected.push(_obj);
 
 
@@ -1953,7 +1961,7 @@
 
                     _jsonProductsSelected[i].description,
                     "$" + _jsonProductsSelected[i].price,
-                    "$" + _jsonProductsSelected[i].price,
+                    "$" + _jsonProductsSelected[i].precioO,
                     inp,//"<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + totaArt,
@@ -1989,11 +1997,12 @@
                 myTableR.row.add([
                          _jsonProductsSelected[x].description
                         +"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
-                        + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>",
+                        + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>"
+                        + "<input type='hidden' id='precioN-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].price + "'/>",
 
                         _jsonProductsSelected[x].quantity,
                         _jsonProductsSelected[x].SalesUnit,
-                        "$" + _jsonProductsSelected[x].price,
+                        "$" + _jsonProductsSelected[x].precioO,
                         "$" + totaArt,
                         _jsonProductsSelected[x].comment,
                     ]).draw();

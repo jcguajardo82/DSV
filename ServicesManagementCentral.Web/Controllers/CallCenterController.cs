@@ -1475,9 +1475,12 @@ namespace ServicesManagement.Web.Controllers
                 foreach (var item in arts)
                 {
                     //ARTICULOS
-                    string[] desc = item.Desc_art.Split('<');
+                    string[] descripcion = item.Desc_art.Split('<');
+
+                    //decimal descuento = item.Precio_VtaNormal - item.Precio_VtaOferta;
+                    
                     DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
-                        , item.Precio_VtaOferta, item.Dcto, desc[0], item.Cve_UnVta, item.Num_CodBarra);
+                        , item.Precio_VtaOferta, item.Precio_VtaNormal - item.Precio_VtaOferta, descripcion[0], item.Cve_UnVta, item.Num_CodBarra);
                     //COMENTARIOS POR ARTICULO
                     if (item.obs != null)
                     { DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs); }
