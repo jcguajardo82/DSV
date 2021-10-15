@@ -355,7 +355,7 @@ namespace ServicesManagement.Web.Controllers
                 }
 
 
-                var client = new RestClient();
+                var client = new RestClient(url);
 
                 
                 //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
