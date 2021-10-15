@@ -1455,7 +1455,8 @@
                                     alert("La cantidad de efectivo y vales no pude ser 0");
                                     return false;
                                 }
-                                var TotalOrden = parseFloat(document.getElementById("TotalOrden").value);
+                                var TotalOrden = $("#TotalOrden").val();
+                                TotalOrden = parseFloat(TotalOrden).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                                 if (totEfevo < TotalOrden) {
                                     alert("El total de Efectivo y Vales no puede ser menor al total de la orden  ");
                                     return false;
@@ -1719,7 +1720,7 @@
                             for (var i = 0; i < data.data.length; i++) {
                                 var inp;
                                 if (data.data[i].SalesUnit == 'pza') {
-                                    inp = "<input  onkeypress='return event.charCode >= 48'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
+                                    inp = "<input  onkeypress='return event.charCode >= 48'  min='1' step='1' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
                                 } else {
                                     inp = "<input  oninput='input(this)'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
                                 }
@@ -1953,9 +1954,9 @@
                 var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 var inp;
                 if (_jsonProductsSelected[i].SalesUnit == 'pza') {
-                    inp = "<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                    inp = "<input onkeypress='return event.charCode >= 48' min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 } else {
-                    inp = "<input  oninput='input(this)' onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                    inp = "<input  oninput='input(this)' onkeypress='return event.charCode >= 48' min='1' step='0.01' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 }
                 myTable.row.add([
 
