@@ -338,7 +338,7 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public JsonResult GetProduct(string product, string tienda)
+        public JsonResult GetProduct(string product, string tienda,string categoria)
         {
             try
             {
@@ -347,9 +347,17 @@ namespace ServicesManagement.Web.Controllers
                 var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
                 var urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
                 var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
-                var client = new RestClient(string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda));
+
+                string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
+                if (categoria != "0")
+                {
+                    url = string.Format("{0}{1}&tienda={2}&filtro={3}", urlApi, product.Trim(), tienda,categoria);
+                }
 
 
+                var client = new RestClient();
+
+                
                 //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
 
                 client.Timeout = -1;
@@ -1653,6 +1661,44 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             }
+        }
+
+
+
+        public ActionResult GetCategorias()
+        {
+            try
+            {
+                var client = new RestClient("https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Categorias");
+                client.Timeout = -1;
+                var request = new RestRequest(Method.POST);
+                IRestResponse response = client.Execute(request);
+                Console.WriteLine(response.Content);
+
+
+                List<CategoriasModels> ListP = JsonConvert.DeserializeObject<List<CategoriasModels>>(response.Content);
+
+
+                var result = new
+                {
+                    Success = true
+                      ,
+                    resp = ListP
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+          
         }
         #endregion
     }

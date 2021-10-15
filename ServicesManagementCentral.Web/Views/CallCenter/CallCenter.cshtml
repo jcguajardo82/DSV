@@ -638,9 +638,12 @@
                                             </button>
                                         </td>
                                         <td>
+                                            <select id="ddlCategorias" class="form-control m-b">
+                                            </select>
                                             @*<button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
-                                                    Historia
-                                                </button>*@
+            Historia
+        </button>*@
+                                            @*<input id="tags" class="ui-autocomplete-input" autocomplete="off">*@
                                         </td>
                                     </tr>
 
@@ -1003,6 +1006,7 @@
 
         $(document).ready(function () {
 
+            GetCategorias();
 
             GetEstados();
 
@@ -1686,20 +1690,19 @@
             }
 
             var tda = $("#ddlTdas").val()
-
+            var categoria = $("#ddlCategorias").val()
             $.ajax({
-                        "url": "@Url.Action("GetProduct", "CallCenter")",
-                        "type": "get",
+                "url": "@Url.Action("GetProduct", "CallCenter")",
+                "type": "get",
                 "data": {
-                    "product": document.getElementById("txtProdArt2").value,
-                    "tienda":tda
+                    product: document.getElementById("txtProdArt2").value,
+                    tienda: tda,
+                    categoria: categoria
                 },
 
-                        "dataType": "json",
+                "dataType": "json",
                 "success": function (data) {
                     if (data.Success) {
-
-
 
                         var myTable = $('#tblBusquedaSeleccionar').DataTable();
                         var nCant = 0;
@@ -2717,6 +2720,52 @@
 
         }
 
+        function GetCategorias() {
+                    $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetCategorias", "CallCenter")',
+                    data: {
+                       
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //
+                        if (json.Success) {
+                            debugger;
+                            //var availableTags = [];
+                            //for (var i = 0; i < json.resp.length; i++) {
+
+                            //    availableTags.push(json.resp[i].NombreCategoria );
+                            //}
+
+                            
+                            //$("#tags").autocomplete({
+                            //    source: availableTags
+                            //});
+
+
+
+                            var sel = $("#ddlCategorias");
+                            sel.empty();
+
+                            $('#ddlCategorias').get(0).options[0] = new Option("--Todas las Categorias--", "0");
+                            for (var i = 0; i < json.resp.length; i++) {
+                                sel.append('<option value="' + json.resp[i].NombreCategoria + '">' + json.resp[i].NombreCategoria  + '</option>');
+                            }                  
+
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+        }
     </script>
 
 }
