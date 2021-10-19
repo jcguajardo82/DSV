@@ -74,12 +74,36 @@ namespace ServicesManagement.Web.Controllers
                 }
 
                 ViewBag.UeNoSupplyProcess = list;
-                ViewBag.Encabezado = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[1]);
+                ViewBag.Encabezado = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[2]);
+
+                if (ds.Tables.Count == 3)
+                    ViewBag.Guias = DataTableToModel.ConvertTo<Guias_por_OrderFact>(ds.Tables[1]);
             }
 
             return View();
         }
+        [HttpPost]
+        public ActionResult GetDetails(string UeNo, string idTrackingService)
+        {
+            try
+            {
+                var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoTrackingDetails(UeNo, idTrackingService);
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[0]);
 
+                var result = new
+                {
+                    Success = true
+                    ,
+                    data = list
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpPost]
         public ActionResult GetSolicitarGuia()
         {

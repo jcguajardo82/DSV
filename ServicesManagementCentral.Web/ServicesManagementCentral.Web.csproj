@@ -333,6 +333,7 @@
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrdersDetail.cs" />
     <Compile Include="Models\ProcesoReciboDevoluciones\ProcesoReciboDevoluciones.cs" />
+    <Compile Include="Models\ProcesoSurtido\Guias_por_OrderFact.cs" />
     <Compile Include="Models\ProcesoSurtido\OrderFacts_UE_CancelCauses.cs" />
     <Compile Include="Models\MotivosCancel.cs" />
     <Compile Include="Controllers\OrdenesController.cs" />
