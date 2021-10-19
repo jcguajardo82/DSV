@@ -1633,13 +1633,13 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public ActionResult XML()
+        public ActionResult XML(int orderid)
         {
             try
 
             {
 
-                int Id_Num_Orden = 3000256;
+                int Id_Num_Orden = orderid;
                 var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
 
 
