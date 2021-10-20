@@ -24,6 +24,8 @@ using ServicesManagement.Web.Helpers;
 using System.Configuration;
 using System.Data.SqlClient;
 using ServicesManagement.Web.Models.Cotizador;
+using ServicesManagement.Web.Models.ProcesoSurtido;
+using ServicesManagement.Web.DAL.ProcesoSurtido;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -975,7 +977,26 @@ namespace ServicesManagement.Web.Controllers
             else
 
             {
-                Session["OrderSelected"] = DALServicesM.GetOrdersByOrderNo(order);
+                DataSet ds;
+
+                ds = DALServicesM.GetOrdersByOrderNo(order);
+
+                var ueType = ds.Tables[0].Rows[0]["UeType"].ToString();
+
+                int IdOwner = 0;
+
+                if (ueType.Equals("SETC"))
+                    IdOwner = 1;
+                if (ueType.Equals("DST"))
+                    IdOwner = 2;
+                if (ueType.Equals("CEDIS"))
+                    IdOwner = 3;
+                if (ueType.Equals("DSV"))
+                    IdOwner = 4;
+                
+                ViewBag.MotCanCD = DataTableToModel.ConvertTo<OrderFacts_UE_CancelCauses>(DALProcesoSurtido.upCorpOms_Cns_UeCancelCauses(IdOwner).Tables[0]);
+                Session["OrderSelected"] = ds;
+
             }
             return View();
 
