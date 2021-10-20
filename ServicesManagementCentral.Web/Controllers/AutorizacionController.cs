@@ -123,7 +123,7 @@ namespace ServicesManagement.Web.Controllers
         }
 
         public ActionResult SetAut(int IdProceso, string Comentario
-           , string IdAccion, int Id_cancelacion, int OrderId)
+           , string IdAccion, int Id_cancelacion)
         {
             try
             {
