@@ -338,7 +338,7 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public JsonResult GetProduct(string product, string tienda,string categoria)
+        public JsonResult GetProduct(string product, string tienda, string categoria)
         {
             try
             {
@@ -351,13 +351,13 @@ namespace ServicesManagement.Web.Controllers
                 string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
                 if (categoria != "0")
                 {
-                    url = string.Format("{0}{1}&tienda={2}&filtro={3}", urlApi, product.Trim(), tienda,categoria);
+                    url = string.Format("{0}{1}&tienda={2}&filtro={3}", urlApi, product.Trim(), tienda, categoria);
                 }
 
 
                 var client = new RestClient(url);
 
-                
+
                 //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
 
                 client.Timeout = -1;
@@ -1443,7 +1443,7 @@ namespace ServicesManagement.Web.Controllers
             , int metodoEnt, string metodoPago, decimal efectivo, decimal vales, int tda
             , string Calle, string Nom_DirCTe,
             string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
-            string Telefono, int Ids_Num_Edo,int  idDirPrinCte)
+            string Telefono, int Ids_Num_Edo, int idDirPrinCte)
         {
             try
 
@@ -1453,7 +1453,7 @@ namespace ServicesManagement.Web.Controllers
 
                 //foreach (var item in arts)
                 //{
-                 
+
                 //    TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
                 //}
 
@@ -1485,10 +1485,11 @@ namespace ServicesManagement.Web.Controllers
                     {
                         TotOrden += item.Cant_Unidades * item.Precio_VtaOferta;
                     }
-                    else {
+                    else
+                    {
                         TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
                     }
-                    
+
                     DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
                         , item.Precio_VtaOferta, descuento, descripcion[0], item.Cve_UnVta, item.Num_CodBarra);
                     //COMENTARIOS POR ARTICULO
@@ -1583,7 +1584,7 @@ namespace ServicesManagement.Web.Controllers
 
                 #region Llamado al APi
                 string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_AltaCarrito"];
-                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden,Nom_DirCTe,idDirPrinCte);
+                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden, Nom_DirCTe, idDirPrinCte);
 
 
                 OrdersToXML obj = new OrdersToXML();
@@ -1713,7 +1714,37 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             }
-          
+
+        }
+
+        public ActionResult GetFlete(int StoreNum)
+        {
+            try
+            {
+
+                var ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
+
+
+                var result = new
+                {
+                    Success = true
+                      ,
+                    resp = ListP
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
         }
         #endregion
     }
