@@ -328,33 +328,28 @@ namespace ServicesManagement.Web.Helpers
                     {
                         XmlSETCPayments = new XElement(nm + "payments",
                                 new XElement(nm + "payment",
-                                    new XElement(nm + "credit-card",
-                                        new XElement(nm + "card-type", dt2.Rows[0][72].ToString()),
-                                        new XElement(nm + "card-number", dt2.Rows[0][73].ToString()),
-                                        new XElement(nm + "card-holder", dt2.Rows[0][74].ToString()),
-                                        new XElement(nm + "card-token", dt2.Rows[0][75].ToString()),
-                                        new XElement(nm + "expiration-month", dt2.Rows[0][76].ToString()),
-                                        new XElement(nm + "expiration-year", dt2.Rows[0][77].ToString())
+                                    new XElement(nm + "custom-method",
+                                        new XElement(nm + "method-name", dt2.Rows[0][87].ToString())
                                     ),
                                     new XElement(nm + "amount", dt2.Rows[0][78].ToString()),
-                                    new XElement(nm + "processor-id", dt2.Rows[0][87].ToString()),
+                                    new XElement(nm + "processor-id", "POD"), //dt2.Rows[0][87].ToString()),
                                     new XElement(nm + "transaction-id", dt2.Rows[0][86].ToString())
                                 )
                             );
                 }
 
                 if (dt2.Rows[0][86].ToString() == "22")
-                {
-                    XmlSETCPayments = new XElement(nm + "payments",
-                            new XElement(nm + "payment",
-                                new XElement(nm + "custom-method",
-                                    new XElement(nm + "method-name", dt2.Rows[0][87].ToString())
-                                ),
-                                new XElement(nm + "amount", dt2.Rows[0][78].ToString()),
-                                new XElement(nm + "processor-id", "POD"), //dt2.Rows[0][87].ToString()),
-                                new XElement(nm + "transaction-id", dt2.Rows[0][86].ToString())
-                            )
-                        );
+                    {
+                        XmlSETCPayments = new XElement(nm + "payments",
+                                new XElement(nm + "payment",
+                                    new XElement(nm + "custom-method",
+                                        new XElement(nm + "method-name", dt2.Rows[0][87].ToString())
+                                    ),
+                                    new XElement(nm + "amount", dt2.Rows[0][78].ToString()),
+                                    new XElement(nm + "processor-id", "POD"), //dt2.Rows[0][87].ToString()),
+                                    new XElement(nm + "transaction-id", dt2.Rows[0][86].ToString())
+                                )
+                            );
                 }
 
                 if ((dt2.Rows[0][86].ToString() == "5" || dt2.Rows[0][86].ToString() == "6") && dt2.Rows.Count == 1)
@@ -433,6 +428,7 @@ namespace ServicesManagement.Web.Helpers
                 if (dt2.Rows[0][86].ToString() == "22")
                 {
                     XmlSETCCustom = new XElement(nm + "custom-attributes",
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "expectedMethod"), "voucher_card"),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
