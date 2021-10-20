@@ -290,7 +290,6 @@
         function SaveAut() {
             var _Comentario = $("#txtMotCan").val();
             var _IdEstatusAut = $("#hddOp").val();
-            var _orderId = $("#hddIdOrden").val();
             var _Id_cancelacion = $("#hddIdCancelacion").val();
 
             if (_Comentario.length == 0) {
@@ -306,7 +305,6 @@
                     , Comentario: _Comentario
                     , IdAccion: _IdEstatusAut
                     , Id_cancelacion: _Id_cancelacion
-                    , OrderId: _orderId
                 },
 
                 datatype: "json",
