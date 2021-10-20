@@ -1623,6 +1623,7 @@
             var Telefono = $("#rec_tel").val();
 
             var Ids_Num_Edo = $("#ddlRec_Estado").val();
+            var _idDirPrinCte = $("#hddIdDirCteUpd").val();
 
             //Send the JSON array to Controller using AJAX.
             $.ajax({
@@ -1650,7 +1651,8 @@
                         Cod_Postal: Cod_Postal,
                         Colonia: Colonia,
                         Telefono: Telefono,
-                        Ids_Num_Edo: Ids_Num_Edo
+                        Ids_Num_Edo: Ids_Num_Edo,
+                        idDirPrinCte:_idDirPrinCte
                     }
                 ),
                 contentType: "application/json; charset=utf-8",
