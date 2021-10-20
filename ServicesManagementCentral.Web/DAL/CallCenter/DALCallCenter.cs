@@ -1218,10 +1218,11 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet sp_OMSGetOrderDetails(int Id_Num_Orden)
+        public static DataSet sp_OMSGetOrderDetails(int Id_Num_Orden,string NombreRecibe,int DirPrincipalCte)
         {
 
-
+        //@NombreRecibe varchar(100) = null,
+        //@DirPrincipalCte int = null
 
             DataSet ds = new DataSet();
 
@@ -1237,6 +1238,8 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
                 parametros.Add("@Id_Num_Orden", Id_Num_Orden);
+                parametros.Add("@NombreRecibe", NombreRecibe);
+                parametros.Add("@DirPrincipalCte", DirPrincipalCte);
 
 
 

@@ -1443,7 +1443,7 @@ namespace ServicesManagement.Web.Controllers
             , int metodoEnt, string metodoPago, decimal efectivo, decimal vales, int tda
             , string Calle, string Nom_DirCTe,
             string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
-            string Telefono, int Ids_Num_Edo)
+            string Telefono, int Ids_Num_Edo,int  idDirPrinCte)
         {
             try
 
@@ -1583,7 +1583,7 @@ namespace ServicesManagement.Web.Controllers
 
                 #region Llamado al APi
                 string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_AltaCarrito"];
-                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
+                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden,Nom_DirCTe,idDirPrinCte);
 
 
                 OrdersToXML obj = new OrdersToXML();
@@ -1633,48 +1633,48 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public ActionResult XML(int orderid)
-        {
-            try
+        //public ActionResult XML(int orderid)
+        //{
+        //    try
 
-            {
+        //    {
 
-                int Id_Num_Orden = orderid;
-                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
-
-
-                OrdersToXML obj = new OrdersToXML();
-                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
-                var OrderToMicroService = new OrderJson
-                {
-                    xmlOrden = x
-                };
-
-                // Serializar el mensaje en formato Json
-                string jsonString = JsonConvert.SerializeObject(OrderToMicroService);
+        //        int Id_Num_Orden = orderid;
+        //        var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden,"",0);
 
 
-                var result = new
-                {
-                    Success = true
+        //        OrdersToXML obj = new OrdersToXML();
+        //        string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
+        //        var OrderToMicroService = new OrderJson
+        //        {
+        //            xmlOrden = x
+        //        };
+
+        //        // Serializar el mensaje en formato Json
+        //        string jsonString = JsonConvert.SerializeObject(OrderToMicroService);
+
+
+        //        var result = new
+        //        {
+        //            Success = true
 
 
 
-                };
+        //        };
 
-                return Json(result, JsonRequestBehavior.AllowGet);
+        //        return Json(result, JsonRequestBehavior.AllowGet);
 
-            }
+        //    }
 
-            catch (Exception x)
+        //    catch (Exception x)
 
-            {
+        //    {
 
-                var result = new { Success = false, Message = x.Message };
-                return Json(result, JsonRequestBehavior.AllowGet);
+        //        var result = new { Success = false, Message = x.Message };
+        //        return Json(result, JsonRequestBehavior.AllowGet);
 
-            }
-        }
+        //    }
+        //}
 
 
 
