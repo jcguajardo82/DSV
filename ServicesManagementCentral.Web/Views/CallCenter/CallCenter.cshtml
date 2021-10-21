@@ -798,8 +798,8 @@
                     <div class="col-xs-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             <label>E-Mail </label>
-                            <input type="email" id="txtCteEamil" class="form-control" maxlength="100" />
-                            <span class="error" id="invalid_email">Email-id is invalid</span>
+                            <input type="email" id="txtCteEamil"  class="form-control" maxlength="100" />
+                   
                         </div>
                     </div>
                 </div>
@@ -2383,7 +2383,7 @@
             $("#ddlCteColonia").val("0");
             $("#txtCteTelefono").val('');
             $("#txtCteEamil").val('');
-            $("#ddlCteEstado").val("0");
+           
 
             $("#hddIdCliente").val('0');
             $("#hddIdDirCteUpd").val('0');
@@ -2674,9 +2674,11 @@
                         //
                         if (json.Success) {
                             debugger;
-
+                            GetEstados();
                             var sel = $("#ddlCteColonia");
                             sel.empty();
+
+
 
                             $('#ddlCteColonia').get(0).options[0] = new Option("--SELECCIONE--", "0");
                             for (var i = 0; i < json.resp.length; i++) {
@@ -2687,7 +2689,7 @@
                                 $("#txtCteCiudad").val(json.resp[0].Locality);
 
                                 //$("#ddlCteEstado").find("option[text=" + json.resp[0].Region1Name + "]").attr("selected", true);
-
+                               /// alert(json.resp[0].Region1Name);
                                 $('#ddlCteEstado option:contains('+ json.resp[0].Region1Name +')').attr('selected', 'selected');
                             }
 
