@@ -277,7 +277,18 @@
                                             }
                                                 </td>
                                                 <td style="text-align:right;">@p["pe_Quantity"] @p["UnitMeasure"]</td>
-                                                <td style="text-align:right;">$@p["pe_price"]</td>
+                                                <td style="text-align:right;">
+                                                    @if ((decimal)@p["pe_price"] > (decimal)@p["e_price"])
+                                                    {
+                                                        <strike>$@p["pe_price"]</strike>
+                                                        <label>$@p["e_price"].ToString()</label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label>$@p["pe_price"].ToString()</label>
+                                                    }
+
+                                                </td>
                                                 <td style="text-align:right;">@p["e_Quantity"]  @p["UnitMeasure"]</td>
                                             </tr>
                                             index++;
@@ -320,7 +331,7 @@
                                                             {
                                                                 if (@obs[i].Length > 0)
                                                                 {
-                                                                    <label> @string.Format("{0}.- {1}", i+1, @obs[i].ToString())</label> <br />
+                                                                    <label> @string.Format("{0}.- {1}", i + 1, @obs[i].ToString())</label> <br />
 
 
                                                                 }
