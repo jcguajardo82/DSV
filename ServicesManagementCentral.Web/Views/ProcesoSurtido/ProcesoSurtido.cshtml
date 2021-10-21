@@ -223,39 +223,26 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @if (Session["OrderPackages"] != null)
+                                                    @if (Session["OrderTrackings"] != null)
                                                     {
-                                                        System.Data.DataSet dsOP = (System.Data.DataSet)Session["OrderPackages"];
-                                                        if (dsOP.Tables[0].Rows[0][0].ToString() != "no hay datos de esa Consignacion")
-                                                        {
-                                                            var dtOP = dsOP.Tables[0];
-                                                            foreach (System.Data.DataRow op in dtOP.Rows)
+                                                        var lst = (List<UenoTracking>)Session["OrderTrackings"];
+                                                        
+                                                            foreach (var op in lst)
                                                             {
                                                                 <tr>
-                                                                    <td>@op["IdTrackingService"]</td>
-                                                                    <td>@op["PackageHeight"]</td>
-                                                                    <td>@op["PackageLength"]</td>
-                                                                    <td>@op["PackageWidth"]</td>
-                                                                    <td>@op["PackageWeight"]</td>
-                                                                    <td>@op["declaredValue"]</td>
-                                                                    <td>@op["ShippingMethod"]</td>
-                                                                    <td>@op["Quantity"]</td>
-                                                                    @*<td style="text-align:center;">
-                                                                            <a onclick="popUpLstProds(@op["IdTracking"])"
-                                                                               title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
-                                                                        </td>*@
-                                                                    @*<td>@op["PackageType"]</td>
-
-                                                                        <td>@op["PackageWeight"]</td>
-                                                                        <td>@op["PackageLength"] x @op["PackageWidth"] x @op["PackageHeight"]</td>
-                                                                        <td style="text-align:center;">
-                                                                            <a onclick="popUpLstProds(@op["IdTracking"])"
-                                                                               title="Click para ver la lista de productos asociados a la orden" class="btn btn-link">@op["IdTracking"]</a>
-                                                                        </td>*@
-                                                                    <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op["IdTracking"]")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
+                                                                    <td>@op.IdTrackingService</td>
+                                                                    <td>@op.PackageHeight</td>
+                                                                    <td>@op.PackageLength</td>
+                                                                    <td>@op.PackageWidth</td>
+                                                                    <td>@op.PackageWeight</td>
+                                                                    <td>@op.PesoReal</td>
+                                                                    <td>@op.ShippingMethod</td>
+                                                                    <td>@op.Quantity</td>
+                                                                    
+                                                                    <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op.IdTracking")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
                                                                 </tr>
                                                             }
-                                                        }
+                                                        
                                                     }
                                                 </tbody>
                                             </table>
@@ -1693,7 +1680,6 @@
             type: "POST",
             url: '@Url.Action("GetDetails", "ProcesoSurtido")',
                 data: {
-                    UeNo: $("#hddUeNo").val(),
                     idTrackingService: num_guia
             },
             datatype: "html",
@@ -1711,7 +1697,7 @@
                         json.data[i].SKU,
                         json.data[i].Descripcion,
                         json.data[i].Piezas,
-                        json.data[i].PesoAsignado
+                        json.data[i].PesoReal
                     ]).draw();
                 }
 
@@ -1725,6 +1711,6 @@
             }
             });
 
-        }
+    }
 </script>
 }
