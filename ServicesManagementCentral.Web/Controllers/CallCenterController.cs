@@ -1245,7 +1245,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
                 var fec = DateTime.Now.AddHours(-5).ToString();
-                hora = Convert.ToDateTime(fec).AddHours(3).Hour;
+                hora = Convert.ToDateTime(fec).AddHours(4).Hour;
             }
 
             if (hora > 8 & hora < 21)
