@@ -173,9 +173,17 @@ namespace ServicesManagement.Web.Controllers
 
             if (!string.IsNullOrEmpty(order) & Session["Id_Num_UN"] != null)
             {
-                Session["OrderSelected"] = DALServicesM.upCorpOms_Cns_OrdersByOrderNoInit(order);
+                DataSet ds;
+                ds = DALServicesM.upCorpOms_Cns_OrdersByOrderNoInit(order);
+                var ueType = ds.Tables[0].Rows[0]["UeType"].ToString();
+
+                if (ueType.Equals("CEDIS") || ueType.Equals("DSV"))
+                    return RedirectToAction("OrdenSeleccionada", "Ordenes", new { Ueno = order });
+
+                Session["OrderSelected"] = ds;
                 Session["listS"] = DALServicesM.GetSurtidores(Session["Id_Num_UN"].ToString());
-                Session["StatusDescription"] = DALServicesM.upCorpOms_Cns_OrdersByOrderNoInit(order).Tables[0].Rows[0]["StatusDescription"];
+                Session["StatusDescription"] = ds.Tables[0].Rows[0]["StatusDescription"];
+
             }
             else
             {
@@ -989,11 +997,9 @@ namespace ServicesManagement.Web.Controllers
                     IdOwner = 1;
                 if (ueType.Equals("DST"))
                     IdOwner = 2;
-                if (ueType.Equals("CEDIS"))
-                    IdOwner = 3;
-                if (ueType.Equals("DSV"))
-                    IdOwner = 4;
-                
+                if (ueType.Equals("CEDIS") || ueType.Equals("DSV"))
+                    return RedirectToAction("OrdenSeleccionada", "Ordenes", new { Ueno= order });
+
                 ViewBag.MotCanCD = DataTableToModel.ConvertTo<OrderFacts_UE_CancelCauses>(DALProcesoSurtido.upCorpOms_Cns_UeCancelCauses(IdOwner).Tables[0]);
                 Session["OrderSelected"] = ds;
 
@@ -1997,7 +2003,7 @@ namespace ServicesManagement.Web.Controllers
 
                     string guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
 
-                    string servicioPaq = "estafeta";
+                    string servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
                     string GuiaEstatus = "CREADA";
                     //TarifaModel tarifaSeleccionada = new TarifaModel();
                     //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
