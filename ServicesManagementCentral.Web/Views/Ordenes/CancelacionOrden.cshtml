@@ -20,9 +20,15 @@
                     <div class="row">
                         <div class="col col-xs-12 col-md-12">
                             <div class="form-group">
-                                @*<label>Clave de Cancelación:</label>
-                                    <input type="password" id="txtPassCan" class="form-control" />*@
-                                <label>Motivo de Cancelación</label>
+                                <label>Clave de Cancelación:</label>
+                                    <input type="password" id="txtPassCan" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="divDdlMotCan">
+                        <div class="col col-xs-12 col-md-12">
+                            <div class="form-group">
+                                <label>Motivo de Cancelación:</label>
                                 <select id="ddlMotCan" class="form-control">
                                     @{
                                         if (ViewBag.MotCanCD != null)
@@ -39,15 +45,6 @@
 
                                     }
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" id="divDdlMotCan">
-                        <div class="col col-xs-12 col-md-12">
-                            <div class="form-group">
-                                <label>Motivo de Cancelación:</label>
-                                <select class="form-control m-b" id="ddlMotivoCan"></select>
-                                <textarea class="form-control m-b" id="txtMotCan" rows="6" maxlength="50"></textarea>
                             </div>
                         </div>
                     </div>
