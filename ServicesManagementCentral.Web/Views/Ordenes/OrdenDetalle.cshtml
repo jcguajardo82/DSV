@@ -158,10 +158,10 @@
                                                 @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
                                             </span><br>
                                             @*<span>
-                                                <strong>
-                                                    <a onclick="popActulizaHora(@p["OrderNo"])" class="nav-link">Fecha Entrega:</a>
-                                                </strong> @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
-                                            </span>*@
+                                                    <strong>
+                                                        <a onclick="popActulizaHora(@p["OrderNo"])" class="nav-link">Fecha Entrega:</a>
+                                                    </strong> @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
+                                                </span>*@
                                             <input type="hidden" value="@p["isPickingManual"].ToString().ToUpper()" id="hddCheckMovil" />
                                         </p>
                                         <span>Surtidor:</span>
@@ -306,8 +306,32 @@
                                             }
                                             @foreach (System.Data.DataRow p in dtObserv.Rows)
                                             {
+
+
                                                 <tr>
-                                                    <td>@string.Format("{0}.- {1}", index, @p["OrderComments"])</td>
+
+                                                    @if (@p["OrderComments"].ToString().Contains("<br />"))
+                                                    {
+                                                        var obs = @p["OrderComments"].ToString().Replace("<br />", "|").Split('|');
+                                                        <td>
+
+
+                                                            @for (int i = 0; i < obs.Length; i++)
+                                                            {
+                                                                if (@obs[i].Length > 0)
+                                                                {
+                                                                    <label> @string.Format("{0}.- {1}", i+1, @obs[i].ToString())</label> <br />
+
+
+                                                                }
+                                                            }
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@string.Format("{0}.- {1}", index, @p["OrderComments"].ToString())</td>
+                                                    }
+
                                                     @if (UeType.Equals("SETC"))
                                                     {
                                                         <td>  <a class="text-muted" onclick="DelObserv(@p["Id_Cnsc_CarObs"],@p["CnscOrder"])"><i class="fa fa-close"></i> Eliminar</a></td>
