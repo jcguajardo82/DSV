@@ -286,6 +286,7 @@
     <Compile Include="Models\CallCenter\ArtCar_d.cs" />
     <Compile Include="Models\CallCenter\CarObs.cs" />
     <Compile Include="Models\CallCenter\CategoriasModels.cs" />
+    <Compile Include="Models\CallCenter\CostoFlete.cs" />
     <Compile Include="Models\CallCenter\Edos.cs" />
     <Compile Include="Models\CallCenter\GetClient.cs" />
     <Compile Include="Models\CallCenter\MotivosRMAById.cs" />

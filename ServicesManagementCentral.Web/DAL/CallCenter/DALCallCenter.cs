@@ -899,6 +899,43 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
+        public static DataSet Selecciona_CostoFlete_sUp(int StoreNum)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@StoreNum", StoreNum);
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[Selecciona_CostoFlete_sUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        //[Carrito].[Selecciona_CostoFlete_sUp]
+
         public static DataSet GetDirDirCteIdDirCTe(int Id_Cnsc_DirCTe, int Id_Num_Cte)
         {
 
@@ -1218,10 +1255,11 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet sp_OMSGetOrderDetails(int Id_Num_Orden)
+        public static DataSet sp_OMSGetOrderDetails(int Id_Num_Orden,string NombreRecibe,int DirPrincipalCte)
         {
 
-
+        //@NombreRecibe varchar(100) = null,
+        //@DirPrincipalCte int = null
 
             DataSet ds = new DataSet();
 
@@ -1237,6 +1275,8 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
                 parametros.Add("@Id_Num_Orden", Id_Num_Orden);
+                parametros.Add("@NombreRecibe", NombreRecibe);
+                parametros.Add("@DirPrincipalCte", DirPrincipalCte);
 
 
 

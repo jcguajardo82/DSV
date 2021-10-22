@@ -71,7 +71,7 @@
                                     </ul>
                                 </p>
                                 <div class="input-group">
-                                    <input type="text" id="txtVerificaC" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                                    <input type="text"  id="txtVerificaC" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
                                         <button type="button" class="btn btn-primary" onclick="VerificaCliente()">
                                             Verificar
                                         </button>
@@ -86,6 +86,7 @@
                             <div class="col-xs-4 col-md-4 col-lg-4">
                                 <input type="hidden" id="hddIdCliente" />
                                 <input type="hidden" id="hddIdDirCteUpd" />
+                                <input type="hidden" id="hddCodBarFlete" />
                                 <table style="width:100%" class="table table-warning">
                                     <tr>
                                         <td>Nombre:</td>
@@ -797,7 +798,8 @@
                     <div class="col-xs-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             <label>E-Mail </label>
-                            <input type="text" id="txtCteEamil" class="form-control" maxlength="100" />
+                            <input type="email" id="txtCteEamil"  class="form-control" maxlength="100" />
+                   
                         </div>
                     </div>
                 </div>
@@ -833,7 +835,7 @@
                     <div class="col-xs-2 col-md-2 col-lg-2">
                         <div class="form-group">
                             <label>Código Postal </label>
-                            <input type="number" id="txtCteCp" class="form-control" maxlength="5" />
+                            <input type="text" id="txtCteCp" class="form-control" maxlength="5" min="0" />
                         </div>
                     </div>
                     <div class="col-xs-5 col-md-3 col-lg-4">
@@ -998,6 +1000,8 @@
         var _precio = undefined;
         var _cantidad = undefined;
         var _Sku = undefined;
+        var _descuento = 0;
+        var _precioO = 0;
         var _SalesUnit = "";
 
 
@@ -1328,7 +1332,9 @@
 
                     //REGRESA  CARRITO DE COMPRAS
                      if (currentIndex == 3 && newIndex == 2) {
-
+                         if ($("#hddCodBarFlete").val() != "0") {
+                             DeleteProduct($("#hddCodBarFlete").val());
+                         }
                         return true;
                     }
                     //AVANZA A REGRESA A Metodo de entrega
@@ -1353,6 +1359,13 @@
                             $("#rec_nunInt").val('');
                             $("#rec_col").val('');
                             $("#rec_CP").val('');
+                            if ($("#hddCodBarFlete").val() != "0") {
+                                DeleteProduct($("#hddCodBarFlete").val());
+                            }
+                            $("#hddCodBarFlete").val('0');
+
+
+
                             return true;
                         }
                         //DOMICILIO
@@ -1402,9 +1415,50 @@
 
 
 
+                            //alert("Aqui nos traemos el valor del flete");
+                            //Obtenemos el Flete
+                            var _StoreNum = $("#ddlTdas").val();
+                              $.ajax({
+                                    async: false,
+                                    type: "GET",
+                                    url: '@Url.Action("GetFlete", "CallCenter")',
+                                    data: {
+                                        StoreNum: _StoreNum
+                                    },
+                                    datatype: "html",
+                                    success: function (json) {
+                                        //
+                                        if (json.Success) {
+                                            debugger;
+                                            $("#hddCodBarFlete").val(json.resp.Num_CodBarra);
+                                            //addProduct3(descripcion, barcode, precio, sku, SalesUnit, precioO)
+                                            AddFlete(json.resp.Desc_art, json.resp.Num_CodBarra
+                                                , json.resp.CostoEnvio
+                                                , json.resp.id_Num_Sku
+                                                , json.resp.Cve_UnVta
+                                                , json.resp.CostoEnvio
+                                            )
+
+                                            return true;
+                                        }
+                                        else {
+                                            alert(json.Message);
+                                            return false;
+                                        }
+                                    }
+                                    , error: function (jqXHR, textStatus, errorThrown) {
+                                        alert(errorThrown);
+                                        return false;
+                                    }
+
+                                });
+
+
+
+
+
                             return true;
                         }
-
 
                         return true;
                     }
@@ -1453,7 +1507,8 @@
                                     alert("La cantidad de efectivo y vales no pude ser 0");
                                     return false;
                                 }
-                                var TotalOrden = parseFloat(document.getElementById("TotalOrden").value);
+                                var TotalOrden = $("#TotalOrden").val();
+                                TotalOrden = parseFloat(TotalOrden).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                                 if (totEfevo < TotalOrden) {
                                     alert("El total de Efectivo y Vales no puede ser menor al total de la orden  ");
                                     return false;
@@ -1540,6 +1595,24 @@
             }, 1100);
         }
 
+        function inputCar(ele) {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(function () {
+                if (ele.value == "") {
+                    ele.value = 0;
+                } else {
+                    //alert(ele.value);
+                    //alert(parseFloat(ele.value).toFixed(2).toString().length);
+                    if (parseFloat(ele.value).toFixed(2).toString().length > 8 ) {
+                        ele.value = 1;
+                    }
+                }
+
+
+                ele.value = parseFloat(ele.value).toFixed(2).toString();
+            }, 1100);
+        }
+
         function Finalizar() {
 
             toggleButton("finish", false);
@@ -1550,23 +1623,24 @@
             $("#tblResumen TBODY TR").each(function () {
                 var row = $(this);
                 var product = {};
-                //product.Id_Num_Sku = row.find("TD").eq(0).html();
-                //"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
-                //    + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>"
 
-               // product.Id_Num_Sku = row.find("td:eq(0) input[type='hidden']").val();
                 row.find("td:eq(0) input[type='hidden']").each(function () {
                     var id=   $(this).attr('id');
-                    if (id.includes("sku")) {
+                    if (id.includes("sku"))
+                    {
                         product.Id_Num_Sku = $(this).val();
-                    } else {
+                    } else if (id.includes("codBar") )
+                    {
                         product.Num_CodBarra = $(this).val();
+                    } else
+                    {
+                        product.Precio_VtaNormal = $(this).val();
                     }
                 })
                 product.Desc_art = row.find("TD").eq(0).html().replace("'", '');
                 product.Cant_Unidades = row.find("TD").eq(1).html();
                 product.Cve_UnVta = row.find("TD").eq(2).html();
-                product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
+                //product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
                 product.Precio_VtaOferta = row.find("TD").eq(3).html().replace('$', '');
                 product.Dcto = 0;//row.find("TD").eq(1).html();
                 product.obs = row.find("TD").eq(5).html();
@@ -1601,6 +1675,7 @@
             var Telefono = $("#rec_tel").val();
 
             var Ids_Num_Edo = $("#ddlRec_Estado").val();
+            var _idDirPrinCte = $("#hddIdDirCteUpd").val();
 
             //Send the JSON array to Controller using AJAX.
             $.ajax({
@@ -1628,7 +1703,8 @@
                         Cod_Postal: Cod_Postal,
                         Colonia: Colonia,
                         Telefono: Telefono,
-                        Ids_Num_Edo: Ids_Num_Edo
+                        Ids_Num_Edo: Ids_Num_Edo,
+                        idDirPrinCte:_idDirPrinCte
                     }
                 ),
                 contentType: "application/json; charset=utf-8",
@@ -1690,7 +1766,8 @@
             }
 
             var tda = $("#ddlTdas").val()
-            var categoria = $("#ddlCategorias").val()
+            var categoria = $("#ddlCategorias").val();
+            debugger;
             $.ajax({
                 "url": "@Url.Action("GetProduct", "CallCenter")",
                 "type": "get",
@@ -1702,8 +1779,9 @@
 
                 "dataType": "json",
                 "success": function (data) {
+                    debugger;
                     if (data.Success) {
-
+                        debugger;
                         var myTable = $('#tblBusquedaSeleccionar').DataTable();
                         var nCant = 0;
                         myTable
@@ -1714,19 +1792,25 @@
                             for (var i = 0; i < data.data.length; i++) {
                                 var inp;
                                 if (data.data[i].SalesUnit == 'pza') {
-                                    inp = "<input  onkeypress='return event.charCode >= 48'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
+                                    inp = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48'  min='1' step='1' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
                                 } else {
-                                    inp = "<input  oninput='input(this)'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
+                                    inp = "<input  oninput='inputCar(this)'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
                                 }
+
+                                var precio = parseFloat(data.data[i].Price).toFixed(2);
+                                var precioO = parseFloat(data.data[i].PromotionalPrice).toFixed(2);
+
+                                if (precioO == 0) { precioO = precio; }
+                                var desc = parseFloat(precio - precioO).toFixed(2);
                                 //onkeypress="return event.charCode >= 48" min="1"
                                 myTable.row.add([
 
                                     data.data[i].Barcode,
                                     data.data[i].Description,
                                     data.data[i].Brand.BrandDescription,
-                                    data.data[i].Price,
-                                    data.data[i].Price,
-                                    data.data[i].PromotionalPrice,
+                                    precioO,
+                                    precio,
+                                    desc,
                                     "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
                                     inp,//"<input  onkeypress='return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
                                     data.data[i].SalesUnit,
@@ -1734,7 +1818,8 @@
                                     + data.data[i].Description.replace("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price //replaceall
                                     + "\",\"" + data.data[i].Sku
                                     + "\",\"" + data.data[i].SalesUnit
-                                    + "\")'>Agregar Prodcuto</a>"
+                                    + "\",\"" + precioO
+                                    + "\",\"" + data.data[i].desc       + "\")'>Agregar Prodcuto</a>"
                                 ]).draw();
                             }
                         } else {
@@ -1766,13 +1851,7 @@
                 $('#txtProdArt').focus();
                 return;
             }
-            //$("#exampleModal").modal("show");
-            //imgProduct
-            //document.getElementById("imgProduct").src = "https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/BGBD_STG/on/demandware.static/-/Sites-soriana-grocery-master-catalog/default/dw4f7cd627/images/product/7501022133286-A.jpg";
 
-            //$('#tblBusquedaArt2 > tbody').empty();
-            //document.getElementById("Addcantidad").value = "";
-            //tblBusquedaArt
             $.ajax({
                         "url": "@Url.Action("GetProduct", "CallCenter")",
                         "type": "get",
@@ -1857,7 +1936,7 @@
             //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
 
             item.quantity = cantidad;
-            item.total = cantidad * item.price;
+            item.total = cantidad * item.precioO;
             item.comment = comentario;
 
             console.log(_jsonProductsSelected);
@@ -1873,7 +1952,7 @@
             //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
 
             item.quantity = cantidad;
-            item.total = cantidad * item.price;
+            item.total = cantidad * item.precioO;
             item.comment = comentario;
 
             console.log(_jsonProductsSelected);
@@ -1881,8 +1960,8 @@
             llenarCarrito();
 
         }
-        function addProduct3(descripcion, barcode, precio, sku, SalesUnit) {
-
+        function addProduct3(descripcion, barcode, precio, sku, SalesUnit,precioO) {
+            debugger;
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
                 alert("La Cantidad debe ser Mayor a 0.")
@@ -1895,6 +1974,7 @@
                 _precio = parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _cantidad = cantidad;
                 _Sku = sku;
+                _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _SalesUnit = SalesUnit;
 
 
@@ -1903,6 +1983,52 @@
                 //$("#dlgSeleccionar").modal("hide");
             }
         }
+        function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO) {
+            debugger;
+
+
+
+                _descripcion = descripcion.replace("|", "'"); //replaceall
+                _barcode = barcode;
+                _precio = parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                _cantidad = 1;
+                _Sku = sku;
+                _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                _SalesUnit = SalesUnit;
+
+
+
+                var item = _jsonProductsSelected.find(x => x.barcode === _barcode);
+
+                if (item != undefined) {
+                    let _index = _jsonProductsSelected.indexOf(item);
+                    if (_index > -1) {
+                        _jsonProductsSelected.splice(_index, 1);
+                    }
+                }
+                debugger;
+                let _obj = {};
+                _obj.barcode = _barcode;
+                _obj.description = _descripcion;
+                _obj.price = _precio;
+                _obj.quantity = _cantidad;
+                _obj.total = _cantidad * _precioO;
+                _obj.comment = $("#txtComentario").val();
+                _obj.sku = _Sku;
+                _obj.SalesUnit = _SalesUnit;
+                _obj.precioO = _precioO;
+                _jsonProductsSelected.push(_obj);
+
+
+                llenarCarrito();
+
+
+        }
+
+
+
+
+
         function ConfirmarProduct() {
 
             var item = _jsonProductsSelected.find(x => x.barcode === _barcode);
@@ -1913,16 +2039,17 @@
                     _jsonProductsSelected.splice(_index, 1);
                 }
             }
-
+            debugger;
             let _obj = {};
             _obj.barcode = _barcode;
             _obj.description = _descripcion;
             _obj.price = _precio;
             _obj.quantity = _cantidad;
-            _obj.total = _cantidad * _precio;
+            _obj.total = _cantidad * _precioO;
             _obj.comment = $("#txtComentario").val();
             _obj.sku = _Sku;
             _obj.SalesUnit = _SalesUnit;
+            _obj.precioO = _precioO;
             _jsonProductsSelected.push(_obj);
 
 
@@ -1945,15 +2072,15 @@
                 var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 var inp;
                 if (_jsonProductsSelected[i].SalesUnit == 'pza') {
-                    inp = "<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                    inp = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48' min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 } else {
-                    inp = "<input  oninput='input(this)' onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                    inp = "<input  oninput='inputCar(this)'  min='1' step='0.01' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 }
                 myTable.row.add([
 
                     _jsonProductsSelected[i].description,
                     "$" + _jsonProductsSelected[i].price,
-                    "$" + _jsonProductsSelected[i].price,
+                    "$" + _jsonProductsSelected[i].precioO,
                     inp,//"<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + totaArt,
@@ -1989,11 +2116,12 @@
                 myTableR.row.add([
                          _jsonProductsSelected[x].description
                         +"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
-                        + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>",
+                        + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>"
+                        + "<input type='hidden' id='precioN-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].price + "'/>",
 
                         _jsonProductsSelected[x].quantity,
                         _jsonProductsSelected[x].SalesUnit,
-                        "$" + _jsonProductsSelected[x].price,
+                        "$" + _jsonProductsSelected[x].precioO,
                         "$" + totaArt,
                         _jsonProductsSelected[x].comment,
                     ]).draw();
@@ -2241,21 +2369,21 @@
         }
 
         function popAddClient() {
-
+          
             $("txtCteEamil").prop('disabled', false);
-            $("#txtCteNombre").val();
-            $("#txtCteApPaterno").val();
-            $("#txtCteApMaterno").val();
-            $("#txtCteCalle").val();
-            $("#txtCteNomDir").val();
-            $("#txtCteNumExt").val();
-            $("#txtCteNumInt").val();
-            $("#txtCteCiudad").val();
-            $("#txtCteCp").val();
+            $("#txtCteNombre").val('');
+            $("#txtCteApPaterno").val('');
+            $("#txtCteApMaterno").val('');
+            $("#txtCteCalle").val('');
+            $("#txtCteNomDir").val('');
+            $("#txtCteNumExt").val('');
+            $("#txtCteNumInt").val('');
+            $("#txtCteCiudad").val('');
+            $("#txtCteCp").val('');
             $("#ddlCteColonia").val("0");
-            $("#txtCteTelefono").val();
-            $("#txtCteEamil").val();
-            $("#ddlCteEstado").val("0");
+            $("#txtCteTelefono").val('');
+            $("#txtCteEamil").val('');
+           
 
             $("#hddIdCliente").val('0');
             $("#hddIdDirCteUpd").val('0');
@@ -2292,6 +2420,19 @@
 
             var Id_Cnsc_DirCTe = $("#hddIdDirCteUpd").val();
             var Id_Num_Cte = $("#hddIdCliente").val();
+
+
+
+
+            if (Id_Email.length == 0) {
+                $("#txtCteEamil").focus();
+                return;
+            }
+            if ($("#txtCteEamil").val().indexOf('@@', 0) == -1 || $("#txtCteEamil").val().indexOf('.', 0) == -1) {
+                    $("#txtCteEamil").focus();
+                    alert('El correo electrónico introducido no es correcto.');
+                    return false;
+                }
 
 
             if (Nom_Cte.length == 0) {
@@ -2334,10 +2475,7 @@
                 $("#txtCteTelefono").focus();
                 return;
             }
-            if (Id_Email.length == 0) {
-                $("#txtCteEamil").focus();
-                return;
-            }
+
             if (Ids_Num_Edo == "0") {
                 $("#ddlCteEstado").focus();
                 return;
@@ -2536,9 +2674,11 @@
                         //
                         if (json.Success) {
                             debugger;
-
+                            GetEstados();
                             var sel = $("#ddlCteColonia");
                             sel.empty();
+
+
 
                             $('#ddlCteColonia').get(0).options[0] = new Option("--SELECCIONE--", "0");
                             for (var i = 0; i < json.resp.length; i++) {
@@ -2549,10 +2689,13 @@
                                 $("#txtCteCiudad").val(json.resp[0].Locality);
 
                                 //$("#ddlCteEstado").find("option[text=" + json.resp[0].Region1Name + "]").attr("selected", true);
-
-                                $('#ddlCteEstado option:contains('+ json.resp[0].Region1Name +')').attr('selected', 'selected');
+                                /// alert(json.resp[0].Region1Name);
+                                $('#ddlCteEstado option:contains(' + json.resp[0].Region1Name + ')').attr('selected', 'selected');
                             }
-
+                            else {
+                                $("#txtCteCiudad").val('');
+                                alert("No hay resultados para el Código Postal Ingresado.")
+                            }
                         }
                         else {
                             alert(json.Message);
@@ -2726,7 +2869,7 @@
                     type: "GET",
                     url: '@Url.Action("GetCategorias", "CallCenter")',
                     data: {
-                       
+
                     },
                     datatype: "html",
                     success: function (json) {
@@ -2739,7 +2882,7 @@
                             //    availableTags.push(json.resp[i].NombreCategoria );
                             //}
 
-                            
+
                             //$("#tags").autocomplete({
                             //    source: availableTags
                             //});
@@ -2752,7 +2895,7 @@
                             $('#ddlCategorias').get(0).options[0] = new Option("--Todas las Categorias--", "0");
                             for (var i = 0; i < json.resp.length; i++) {
                                 sel.append('<option value="' + json.resp[i].NombreCategoria + '">' + json.resp[i].NombreCategoria  + '</option>');
-                            }                  
+                            }
 
                         }
                         else {
@@ -2766,6 +2909,8 @@
 
                 });
         }
+
+      
     </script>
 
 }

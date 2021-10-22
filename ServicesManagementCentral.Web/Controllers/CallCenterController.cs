@@ -338,7 +338,7 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public JsonResult GetProduct(string product, string tienda,string categoria)
+        public JsonResult GetProduct(string product, string tienda, string categoria)
         {
             try
             {
@@ -351,13 +351,13 @@ namespace ServicesManagement.Web.Controllers
                 string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
                 if (categoria != "0")
                 {
-                    url = string.Format("{0}{1}&tienda={2}&filtro={3}", urlApi, product.Trim(), tienda,categoria);
+                    url = string.Format("{0}{1}&tienda={2}&filtro={3}", urlApi, product.Trim(), tienda, categoria);
                 }
 
 
                 var client = new RestClient(url);
 
-                
+
                 //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
 
                 client.Timeout = -1;
@@ -1245,7 +1245,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
                 var fec = DateTime.Now.AddHours(-5).ToString();
-                hora = Convert.ToDateTime(fec).AddHours(3).Hour;
+                hora = Convert.ToDateTime(fec).AddHours(4).Hour;
             }
 
             if (hora > 8 & hora < 21)
@@ -1443,7 +1443,7 @@ namespace ServicesManagement.Web.Controllers
             , int metodoEnt, string metodoPago, decimal efectivo, decimal vales, int tda
             , string Calle, string Nom_DirCTe,
             string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
-            string Telefono, int Ids_Num_Edo)
+            string Telefono, int Ids_Num_Edo, int idDirPrinCte)
         {
             try
 
@@ -1451,10 +1451,11 @@ namespace ServicesManagement.Web.Controllers
 
                 decimal TotOrden = 0;
 
-                foreach (var item in arts)
-                {
-                    TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
-                }
+                //foreach (var item in arts)
+                //{
+
+                //    TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
+                //}
 
                 if (metodoPago == "efectivo")
                 {
@@ -1475,9 +1476,22 @@ namespace ServicesManagement.Web.Controllers
                 foreach (var item in arts)
                 {
                     //ARTICULOS
-                    string[] desc = item.Desc_art.Split('<');
+                    string[] descripcion = item.Desc_art.Split('<');
+
+                    decimal descuento = item.Precio_VtaNormal - item.Precio_VtaOferta;
+
+
+                    if (item.Precio_VtaOferta < item.Precio_VtaNormal)
+                    {
+                        TotOrden += item.Cant_Unidades * item.Precio_VtaOferta;
+                    }
+                    else
+                    {
+                        TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
+                    }
+
                     DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
-                        , item.Precio_VtaOferta, item.Dcto, desc[0], item.Cve_UnVta, item.Num_CodBarra);
+                        , item.Precio_VtaOferta, descuento, descripcion[0], item.Cve_UnVta, item.Num_CodBarra);
                     //COMENTARIOS POR ARTICULO
                     if (item.obs != null)
                     { DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs); }
@@ -1570,7 +1584,7 @@ namespace ServicesManagement.Web.Controllers
 
                 #region Llamado al APi
                 string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_AltaCarrito"];
-                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
+                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden, Nom_DirCTe, idDirPrinCte);
 
 
                 OrdersToXML obj = new OrdersToXML();
@@ -1620,48 +1634,48 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public ActionResult XML()
-        {
-            try
+        //public ActionResult XML(int orderid)
+        //{
+        //    try
 
-            {
+        //    {
 
-                int Id_Num_Orden = 3000168;
-                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden);
-
-
-                OrdersToXML obj = new OrdersToXML();
-                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
-                var OrderToMicroService = new OrderJson
-                {
-                    xmlOrden = x
-                };
-
-                // Serializar el mensaje en formato Json
-                string jsonString = JsonConvert.SerializeObject(OrderToMicroService);
+        //        int Id_Num_Orden = orderid;
+        //        var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden,"",0);
 
 
-                var result = new
-                {
-                    Success = true
+        //        OrdersToXML obj = new OrdersToXML();
+        //        string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
+        //        var OrderToMicroService = new OrderJson
+        //        {
+        //            xmlOrden = x
+        //        };
+
+        //        // Serializar el mensaje en formato Json
+        //        string jsonString = JsonConvert.SerializeObject(OrderToMicroService);
+
+
+        //        var result = new
+        //        {
+        //            Success = true
 
 
 
-                };
+        //        };
 
-                return Json(result, JsonRequestBehavior.AllowGet);
+        //        return Json(result, JsonRequestBehavior.AllowGet);
 
-            }
+        //    }
 
-            catch (Exception x)
+        //    catch (Exception x)
 
-            {
+        //    {
 
-                var result = new { Success = false, Message = x.Message };
-                return Json(result, JsonRequestBehavior.AllowGet);
+        //        var result = new { Success = false, Message = x.Message };
+        //        return Json(result, JsonRequestBehavior.AllowGet);
 
-            }
-        }
+        //    }
+        //}
 
 
 
@@ -1700,7 +1714,37 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             }
-          
+
+        }
+
+        public ActionResult GetFlete(int StoreNum)
+        {
+            try
+            {
+
+                var ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
+
+
+                var result = new
+                {
+                    Success = true
+                      ,
+                    resp = ListP
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
         }
         #endregion
     }
