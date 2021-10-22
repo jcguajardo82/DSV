@@ -278,22 +278,23 @@
                                                 </td>
                                                 <td style="text-align:right;">@p["pe_Quantity"] @p["UnitMeasure"]</td>
                                                 <td style="text-align:right;">
-                                                    @if ((decimal)@p["e_price"] != 0)
-                                                    {
-                                                        if ((decimal)@p["pe_price"] > (decimal)@p["e_price"])
-                                                        {
-                                                            <strike>$@p["pe_price"]</strike>
-                                                            <label>$@p["e_price"].ToString()</label>
-                                                        }
-                                                        else
-                                                        {
-                                                            <label>$@p["pe_price"].ToString()</label>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <label>$@p["pe_price"].ToString()</label>
-                                                    }
+                                                    @*@if ((decimal)@p["e_price"] != 0)
+        {
+            if ((decimal)@p["pe_price"] > (decimal)@p["e_price"])
+            {
+                <strike>$@p["pe_price"]</strike>
+                <label>$@p["e_price"].ToString()</label>
+            }
+            else
+            {
+                <label>$@p["pe_price"].ToString()</label>
+            }
+        }
+        else
+        {
+            <label>$@p["pe_price"].ToString()</label>
+        }*@
+                                                    <label>$@p["pe_price"].ToString()</label>
 
                                                 </td>
                                                 <td style="text-align:right;">@p["e_Quantity"]  @p["UnitMeasure"]</td>
