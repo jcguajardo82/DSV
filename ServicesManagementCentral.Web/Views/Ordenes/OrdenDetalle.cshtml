@@ -277,25 +277,7 @@
                                             }
                                                 </td>
                                                 <td style="text-align:right;">@p["pe_Quantity"] @p["UnitMeasure"]</td>
-                                                <td style="text-align:right;">
-                                                    @if ((decimal)@p["e_price"] != 0)
-                                                    {
-                                                        if ((decimal)@p["pe_price"] > (decimal)@p["e_price"])
-                                                        {
-                                                            <strike>$@p["pe_price"]</strike>
-                                                            <label>$@p["e_price"].ToString()</label>
-                                                        }
-                                                        else
-                                                        {
-                                                            <label>$@p["pe_price"].ToString()</label>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <label>$@p["pe_price"].ToString()</label>
-                                                    }
-
-                                                </td>
+                                                <td style="text-align:right;">$@p["pe_price"]</td>
                                                 <td style="text-align:right;">@p["e_Quantity"]  @p["UnitMeasure"]</td>
                                             </tr>
                                             index++;
@@ -324,32 +306,8 @@
                                             }
                                             @foreach (System.Data.DataRow p in dtObserv.Rows)
                                             {
-
-
                                                 <tr>
-
-                                                    @if (@p["OrderComments"].ToString().Contains("<br />"))
-                                                    {
-                                                        var obs = @p["OrderComments"].ToString().Replace("<br />", "|").Split('|');
-                                                        <td>
-
-
-                                                            @for (int i = 0; i < obs.Length; i++)
-                                                            {
-                                                                if (@obs[i].Length > 0)
-                                                                {
-                                                                    <label> @string.Format("{0}.- {1}", i + 1, @obs[i].ToString())</label> <br />
-
-
-                                                                }
-                                                            }
-                                                        </td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>@string.Format("{0}.- {1}", index, @p["OrderComments"].ToString())</td>
-                                                    }
-
+                                                    <td>@string.Format("{0}.- {1}", index, @p["OrderComments"])</td>
                                                     @if (UeType.Equals("SETC"))
                                                     {
                                                         <td>  <a class="text-muted" onclick="DelObserv(@p["Id_Cnsc_CarObs"],@p["CnscOrder"])"><i class="fa fa-close"></i> Eliminar</a></td>
@@ -1025,4 +983,3 @@
         }
     </script>
 }
-
