@@ -1,6 +1,4 @@
-﻿@using ServicesManagement.Web.Models.ProcesoSurtido;
-
-<div class="modal inmodal fade" id="dlgCancelacionOr" tabindex="-1" role="dialog" aria-hidden="true">
+﻿<div class="modal inmodal fade" id="dlgCancelacionOr" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header pt-3 pb-1">
@@ -21,7 +19,7 @@
                         <div class="col col-xs-12 col-md-12">
                             <div class="form-group">
                                 <label>Clave de Cancelación:</label>
-                                    <input type="password" id="txtPassCan" class="form-control" />
+                                <input type="password" id="txtPassCan" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -29,22 +27,8 @@
                         <div class="col col-xs-12 col-md-12">
                             <div class="form-group">
                                 <label>Motivo de Cancelación:</label>
-                                <select id="ddlMotCan" class="form-control">
-                                    @{
-                                        if (ViewBag.MotCanCD != null)
-                                        {
-                                            IEnumerable<OrderFacts_UE_CancelCauses> listCan = ViewBag.MotCanCD as IEnumerable<OrderFacts_UE_CancelCauses>;
-                                            foreach (OrderFacts_UE_CancelCauses item in listCan)
-                                            {
-                                                <option value="@item.IdCause">@item.Cause_Desc</option>
-
-                                            }
-                                            <option value="99">Otro</option>
-
-                                        }
-
-                                    }
-                                </select>
+                                <select class="form-control m-b" id="ddlMotivoCan"></select>
+                                <textarea class="form-control m-b" id="txtMotCan" rows="6" maxlength="50"></textarea>
                             </div>
                         </div>
                     </div>
