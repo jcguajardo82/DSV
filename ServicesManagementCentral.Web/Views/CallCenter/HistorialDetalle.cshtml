@@ -1,0 +1,313 @@
+﻿@model  ServicesManagement.Web.Models.CallCenter.HistorialOrden
+@if (Model.UeNo != null)
+{
+    <div class="row">
+        <div class="col-xs-4 col-md-4 col-lg-4">
+            <h2 class="text-navy">Orden número @Model.UeNo</h2>
+        </div>
+        <div class="col-xs-4 col-md-4 col-lg-4">
+            <button class="btn btn-primary float-right" type="button" onclick="EcharCarrito('@Model.UeNo')"><i class="fa fa-shopping-cart"></i>&nbsp;Echar al Carrito</button>
+      
+        </div>
+        <div class="col-xs-4 col-md-4 col-lg-4">
+           
+            <button class="btn btn-warning float-left" type="button" onclick="regresarHist();"><i class="fa fa-arrow-circle-o-left"></i>&nbsp;Regresar</button>
+        </div></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 class="text-navy">Datos Generales</h4>
+            <table width="100%" class="table" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td style="width:25%;">
+                            Nombre:
+                        </td>
+                        <td style="text-align:left;"><small>@Model.CustomerName</small></td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%;">
+                            Entrega:
+
+                        </td>
+                        <td style="text-align:left;"><small>@Model.DeliveryAddress</small></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">
+                            Forma de pago:
+
+                        </td>
+                        <td style="text-align:left;">
+                            <small>
+                                @Model.MethodPayment
+                            </small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%;">
+                            Tipo de servicio:
+
+                        </td>
+                        <td style="text-align:left;">
+                            <small>
+                                @Model.DeliveryType
+                            </small>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align:left;">
+                            Status:
+
+                        </td>
+                        <td><small></small>
+                            <span class="label label-warning-light float-left">@Model.StatusDescription</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">
+                            Fecha de la Orden:
+                        </td>
+                        <td><small>@Model.OrderDate</small></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">
+                            Compromiso de Entrega:
+                        </td>
+                        <td><small>@Model.OrderDeliveryDate.ToUpperInvariant() a @Convert.ToDateTime(Model.OrderDeliveryDate).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant() </small></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">
+                            Fecha de Entrega:
+                        </td>
+                        <td><small>@Model.DeliveryDate</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--Artículos NO surtidos-->
+    if (Model.ArtNoSurtidos.Count != 0)
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox ">
+                    <div class="ibox-title-grid">
+                        <h4 style="padding: 5px;" class="bg-danger p-xs b-r-sm">Artículos NO surtidos</h4>
+                        <hr style="margin-top: 0; margin-bottom: 0;" />
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Num</small></th>
+                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">SKU/Código</small></th>
+                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Descripción</small></th>
+                                    <th style="padding: 0; text-space-collapse: collapse">
+                                        <small style="font-weight: bold">
+                                            Cantidad
+                                        </small>
+                                        <br />
+                                        <small>Pedida</small>
+                                        <br />
+                                        <small>Surtida</small>
+                                        <br />
+                                        <small>Cobrada</small>
+                                    </th>
+                                    <th style="padding: 0; text-space-collapse: collapse">
+                                        <small style="font-weight: bold">
+                                            Precio
+                                        </small>
+                                        <br />
+                                        <small>Normal</small><br />
+                                        <small>Oferta</small><br />
+                                        <small>Cobrado</small>
+                                    </th>
+                                    <th style="padding: 0; text-space-collapse: collapse">
+                                        <small style="font-weight: bold">
+                                            Total
+                                        </small>
+                                        <br />
+                                        <small>Pedido</small><br />
+                                        <small>Surtido</small><br />
+                                        <small>Cobrado</small>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.ArtNoSurtidos)
+                                {
+                                    <tr>
+                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@item.CnscOrder</small></th>
+                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@item.ProductId <br />@item.Barcode</small></th>
+                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@item.ProductName</small></th>
+                                        <th style="padding: 0; text-space-collapse: collapse">
+
+
+                                            <small>@item.pe_Quantity @item.UnitMeasure</small>
+                                            <br />
+                                            <small>@item.e_Quantity @item.UnitMeasure</small>
+                                            <br />
+                                            <small>@item.c_Quantity @item.UnitMeasure</small>
+                                        </th>
+                                        <th style="padding: 0; text-space-collapse: collapse">
+                                            <small>@item.pe_price</small>
+                                            <br />
+                                            <small>@item.e_price</small>
+                                            <br />
+                                            <small>@item.c_price</small>
+                                        </th>
+                                        <th style="padding: 0; text-space-collapse: collapse">
+                                            <small>@item.pe_tot</small>
+                                            <br />
+                                            <small>@item.e_tot</small>
+                                            <br />
+                                            <small>@item.c_tot</small>
+                                        </th>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title-grid">
+                    <h4 style="padding: 5px;" class="bg-primary p-xs b-r-sm">Contenido de la orden</h4>
+                    <hr style="margin-top: 0; margin-bottom: 0;" />
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Num</small></th>
+                                <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">SKU/Código</small></th>
+                                <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Descripción</small></th>
+                                <th style="padding: 0; text-space-collapse: collapse">
+                                    <small style="font-weight: bold">
+                                        Cantidad
+                                    </small>
+                                    <br />
+                                    <small>Pedida</small>
+                                    <br />
+                                    <small>Surtida</small>
+                                    <br />
+                                    <small>Cobrada</small>
+                                </th>
+                                <th style="padding: 0; text-space-collapse: collapse">
+                                    <small style="font-weight: bold">
+                                        Precio
+                                    </small>
+                                    <br />
+                                    <small>Normal</small><br />
+                                    <small>Oferta</small><br />
+                                    <small>Cobrado</small>
+                                </th>
+                                <th style="padding: 0; text-space-collapse: collapse">
+                                    <small style="font-weight: bold">
+                                        Total
+                                    </small>
+                                    <br />
+                                    <small>Pedido</small><br />
+                                    <small>Surtido</small><br />
+                                    <small>Cobrado</small>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ArtSurtidos)
+                            {
+                                <tr>
+                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@item.CnscOrder</small></th>
+                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@item.ProductId <br />@item.Barcode</small></th>
+                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@item.ProductName</small></th>
+                                    <th style="padding: 0; text-space-collapse: collapse">
+
+
+                                        <small>@item.pe_Quantity @item.UnitMeasure</small>
+                                        <br />
+                                        <small>@item.e_Quantity @item.UnitMeasure</small>
+                                        <br />
+                                        <small>@item.c_Quantity @item.UnitMeasure</small>
+                                    </th>
+                                    <th style="padding: 0; text-space-collapse: collapse">
+                                        <small>@item.pe_price</small>
+                                        <br />
+                                        <small>@item.e_price</small>
+                                        <br />
+                                        <small>@item.c_price</small>
+                                    </th>
+                                    <th style="padding: 0; text-space-collapse: collapse">
+                                        <small>@item.pe_tot</small>
+                                        <br />
+                                        <small>@item.e_tot</small>
+                                        <br />
+                                        <small>@item.c_tot</small>
+                                    </th>
+                                </tr>
+                            }
+
+
+
+
+                        </tbody>
+                        <tfoot>
+                            <tr style="padding: 0; text-space-collapse: collapse">
+                                <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio normal en soriana.com</small></td>
+                                <td style="padding: 0; text-space-collapse: collapse">$@Model.Totales.TotNormal</td>
+                            </tr>
+                            <tr style="padding: 0; text-space-collapse: collapse">
+                                <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio oferta en soriana.com</small></td>
+                                <td style="padding: 0; text-space-collapse: collapse">$@Model.Totales.TotOferta</td>
+                            </tr>
+                            <tr style="padding: 0; text-space-collapse: collapse">
+                                <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio normal al surtir</small></td>
+                                <td style="padding: 0; text-space-collapse: collapse">$@Model.Totales.TotNormalSurtido</td>
+                            </tr>
+                            <tr style="padding: 0; text-space-collapse: collapse">
+                                <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio oferta al surtir</small></td>
+                                <td style="padding: 0; text-space-collapse: collapse">$@Model.Totales.TotOfertaSurtido</td>
+                            </tr>
+                            <tr style="padding: 0; text-space-collapse: collapse">
+                                <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total en POS</small></td>
+                                <td style="padding: 0; text-space-collapse: collapse">$@Model.Totales.TotPOS</td>
+                            </tr>
+                            <tr style="padding: 0; text-space-collapse: collapse">
+                                <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total pagado</small></td>
+                                <td style="padding: 0; text-space-collapse: collapse">$@Model.Totales.TotPagado</td>
+                            </tr>
+                            <tr style="padding: 0; text-space-collapse: collapse">
+                                <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Ahorro</small></td>
+                                <td style="padding: 0; text-space-collapse: collapse">$@Model.Totales.Ahorro</td>
+                            </tr>
+                            <tr style="padding: 0; text-space-collapse: collapse">
+                                <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Puntos ganados</small></td>
+                                <td style="padding: 0; text-space-collapse: collapse">$@Model.Totales.PuntosGanados</td>
+                            </tr>
+                            <tr style="padding: 0; text-space-collapse: collapse">
+                                <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Puntos acumulados</small></td>
+                                <td style="padding: 0; text-space-collapse: collapse">$@Model.Totales.PuntosAcumulados</td>
+                            </tr>
+
+
+
+
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}

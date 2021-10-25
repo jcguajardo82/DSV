@@ -71,7 +71,7 @@
                                     </ul>
                                 </p>
                                 <div class="input-group">
-                                    <input type="text" id="txtVerificaC" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                                    <input type="text" id="txtVerificaC" value="jreyes@itech.com.mx" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
                                         <button type="button" class="btn btn-primary" onclick="VerificaCliente()">
                                             Verificar
                                         </button>
@@ -162,10 +162,13 @@
                     <section>
                         @*<input id="flagCarrito" name="flagCarrito" value="1" style="visibility:hidden" />*@
                         <div class="row">
-                            <div class="col-10"></div>
-                            <div class="col-2">
+                            <div class="col-8"></div>
+                            <div class="col-4">
                                 @*<button type="button" onclick="seleccionarProducto()" class="btn btn-xs btn-danger btn-circle"><i class="fa fa-plus"></i></button>*@
                                 <button type="button" class="btn btn-primary" onclick="seleccionarProducto();">Agregar Articulo</button>
+                                <button type="button" id="btnHistoria" class="btn btn-primary" onclick="popHistorial()">
+                                    Historial
+                                </button>
                             </div>
                         </div>
                         <div class="row">
@@ -347,16 +350,16 @@
                                             </td>
                                         </tr>
                                         @*<tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoCdto" value="credito" checked>
-                                                    <label class="form-check-label" for="flexRadioDefault2">
-                                                        Tarjeta de Credito Terminal Portatil
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td></td>
-                                        </tr>*@
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoCdto" value="credito" checked>
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            Tarjeta de Credito Terminal Portatil
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td></td>
+                                            </tr>*@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
@@ -620,15 +623,19 @@
                 <div class="row">
                     <div class="col-xs-7 col-md-7 col-lg-7">
 
+
+
                         <div class="ibox">
                             <div class="ibox-title">
-                                Buscador  <div class="ibox-tools">
+                                Buscador <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
                                         @*</a>*@
                                 </div>
                             </div>
                             <div class="ibox-content">
+
+
 
                                 <table style="width:100%;">
                                     <tr>
@@ -644,15 +651,19 @@
                                             <select id="ddlCategorias" class="form-control m-b">
                                             </select>
                                             @*<button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
-                                                    Historia
+                                                Historia
                                                 </button>*@
                                             @*<input id="tags" class="ui-autocomplete-input" autocomplete="off">*@
                                         </td>
                                     </tr>
 
+
+
                                 </table>
                             </div>
                         </div>
+
+
 
                     </div>
                 </div>
@@ -685,7 +696,11 @@
                         </table>
                     </div>
 
+
+
                 </div>
+
+
 
             </div>
             <div class="modal-footer">
@@ -808,8 +823,8 @@
                     <div class="col-xs-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             <label>E-Mail </label>
-                            <input type="email" id="txtCteEamil" placeholder="miemail@soriana.com"  class="form-control" maxlength="100" />
-                   
+                            <input type="email" id="txtCteEamil" placeholder="miemail@soriana.com" class="form-control" maxlength="100" />
+
                         </div>
                     </div>
                 </div>
@@ -948,6 +963,47 @@
 
 </div>
 
+
+
+
+
+<div class="modal fade bd-example-modal-xl" id="dlgHistorial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Historial del Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="divHistorialOrd">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <table class="table table-striped table-bordered table-hover" id="tblHistorial">
+                            <thead class="bg-danger-sor center-block">
+                                <tr>
+                                    <th>Orden</th>
+                                    <th>Fecha</th>
+                                    <th>Importe</th>
+                                    <th>Puntos Obtenidos</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div id="divHistorialDetalle">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    @*<button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <input id="add_product" name="add_product" value="1" style="visibility:hidden" />
@@ -1210,7 +1266,7 @@
                     "scrollY": "400px",
                     "scrollCollapse": true,
                     "paging": false
-
+                    , "order": [[2, "asc"]]
 
                 }
             );
@@ -1249,6 +1305,14 @@
                 }
             );
 
+
+            $('#tblHistorial').DataTable({
+                "order": [[1, "desc"]]
+                //, columnDefs: [
+                //    { className: 'text-right', targets: [2, 3] },
+                //    { className: 'text-center', targets: [0] }
+                //]
+            });
 
             $("#wizard").steps({
                     supressPaginationOnFocus: false,
@@ -1449,6 +1513,7 @@
                                                 , json.resp.id_Num_Sku
                                                 , json.resp.Cve_UnVta
                                                 , json.resp.CostoEnvio
+                                                ,1
                                             )
 
                                             return true;
@@ -2007,7 +2072,7 @@
 
 
         }
-        function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO) {
+        function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO, cant) {
             debugger;
 
 
@@ -2015,7 +2080,7 @@
                 _descripcion = descripcion.replace("|", "'"); //replaceall
                 _barcode = barcode;
                 _precio = parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                _cantidad = 1;
+                _cantidad = cant;
                 _Sku = sku;
                 _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _SalesUnit = SalesUnit;
@@ -2424,6 +2489,89 @@
 
         function popBuscarClient() {
             $("#dlgBuscadorCliente").modal("show");
+        }
+
+        function popHistorial() {
+
+                        var _Id_Num_Cte = $("#hddIdCliente").val();
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetHistorial", "CallCenter")',
+                data: {
+
+                    Id_Num_Cte: _Id_Num_Cte
+
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+
+
+                        var myTable = $('#tblHistorial').DataTable();
+
+
+
+
+                        myTable
+                            .clear()
+                            .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+                            myTable.row.add([
+
+                                "<td stryle='text-align: center;'><a title='Click para Seleccionar la Orden' class='link-primary' onclick='SelOrdHist(\""
+                                + json.resp[i].UeNo + "\")'>"+ json.resp[i].UeNo +"</a></td>",
+                                json.resp[i].OrderDate,
+                                json.resp[i].Imp_Pago,
+                                "0"
+                            ]).draw();
+                        }
+
+
+                        $('#divHistorialDetalle').hide();
+                        $('#divHistorialOrd').show();
+                        $("#dlgHistorial").modal("show");
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+
+                }
+            });
+        }
+
+        function regresarHist(){
+            $('#divHistorialDetalle').hide();
+            $('#divHistorialOrd').show();
+        }
+
+        function SelOrdHist(UeNo) {
+                          $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("HistorialDetalle", "CallCenter")',
+                data: {
+
+                    UeNo: UeNo
+
+                },
+                datatype: "html",
+                              success: function (data) {
+                            $('#divHistorialOrd').hide();
+                            $("#divHistorialDetalle").html(data);
+                            $("#divHistorialDetalle").show();
+
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+
+                }
+            });
         }
 
         function AddClient() {
@@ -2934,7 +3082,37 @@
                 });
         }
 
+        function EcharCarrito(UeNo) {
+            var _tda = $("#ddlTdas").val();
+            $.ajax({
+                "url": "@Url.Action("EcharCarrito", "CallCenter")",
+                async:false,
+                "type": "get",
+                "data": {
+                 UeNo: UeNo,
+                 tienda: _tda
+             },
+                "dataType": "json",
+                "success": function (data)
+                {
+                    if (data.resp != null) {
+                        for (var i = 0; i < data.resp.length; i++) {
+                            var precio = parseFloat(data.resp[i].Price).toFixed(2);
+                            var precioO = parseFloat(data.resp[i].PromotionalPrice).toFixed(2);
+                            if (precioO == 0) {
+                                precioO = precio;
+                            }
 
+                            AddFlete(data.resp[i].Description, data.resp[i].Barcode, precio, data.resp[i].Sku, data.resp[i].SalesUnit, precioO, 1)
+
+                        }
+                        $("#dlgHistorial").modal("hide");
+                    } else {
+                        alert("No se encontraron productos para la tienda seleccionada.");
+                    }
+                }
+            });
+        }
     </script>
 
 }

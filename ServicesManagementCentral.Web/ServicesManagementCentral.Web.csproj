@@ -289,6 +289,8 @@
     <Compile Include="Models\CallCenter\CostoFlete.cs" />
     <Compile Include="Models\CallCenter\Edos.cs" />
     <Compile Include="Models\CallCenter\GetClient.cs" />
+    <Compile Include="Models\CallCenter\Historial.cs" />
+    <Compile Include="Models\CallCenter\HistorialOrden.cs" />
     <Compile Include="Models\CallCenter\MotivosRMAById.cs" />
     <Compile Include="Models\CallCenter\ProdCheckList.cs" />
     <Compile Include="Models\CallCenter\tbl_OrdenFotosRMA_sUp.cs" />
@@ -3886,6 +3888,7 @@
     <Content Include="Views\NotificacionesSis\NotificacionSis.cshtml" />
     <Content Include="Views\ShipmentRequestsWMS\EnviosProcesados.cshtml" />
     <Content Include="Views\ReportesPDP\EstatusPayment.cshtml" />
+    <Content Include="Views\CallCenter\HistorialDetalle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
