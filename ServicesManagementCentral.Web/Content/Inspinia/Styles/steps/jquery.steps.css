@@ -98,14 +98,16 @@
     border-radius: 5px;
 }
 
-.wizard > .steps .disabled a,
-.wizard > .steps .disabled a:hover,
-.wizard > .steps .disabled a:active
-{
-    background: #eee;
+    .wizard > .steps .disabled a,
+    .wizard > .steps .disabled a:hover,
+    .wizard > .steps .disabled a:active {
+        /*    background: #eee;
     color: #aaa;
-    cursor: default;
-}
+    cursor: default;*/
+        background: #aaa;
+        color: #fff;
+        cursor: default;
+    }
 
 .wizard > .steps .current a,
 .wizard > .steps .current a:hover,
