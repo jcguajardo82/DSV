@@ -123,7 +123,7 @@ namespace ServicesManagement.Web.Controllers
         private decimal? GetGuiasDetails(string UeNo, string idTrackingService)
         {
             List<upCorpOms_Cns_UeNoSupplyProcess> lst = new List<upCorpOms_Cns_UeNoSupplyProcess>();
-            var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoTrackingDetails(UeNo, idTrackingService);
+            var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoTrackingProducts(UeNo, idTrackingService);
             var listDetails = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[0]);
             decimal pesoVol=0;
             foreach(var itemD in listDetails)
