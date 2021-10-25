@@ -2161,8 +2161,10 @@
                 var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 var inp;
                 if (_jsonProductsSelected[i].SalesUnit == 'pza') {
+                    cant = cant + parseInt(_jsonProductsSelected[i].quantity);
                     inp = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48' min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 } else {
+                    cant = cant + 1;
                     inp = "<input  oninput='inputCar(this)'  min='1' step='0.01' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 }
                 myTable.row.add([
@@ -2177,7 +2179,9 @@
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
-                cant = cant + parseInt(_jsonProductsSelected[i].quantity);
+
+              
+                //cant = cant + parseInt(_jsonProductsSelected[i].quantity);
                 tot = tot + parseFloat(_jsonProductsSelected[i].total)
 
                 //parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
