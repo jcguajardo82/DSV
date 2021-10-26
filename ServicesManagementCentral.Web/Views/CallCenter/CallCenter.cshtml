@@ -195,6 +195,9 @@
                                 <strong>  <label style="font-size:17px" id="lblCantidad"></label></strong>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12">
+                                <strong>  <label style="font-size:17px" id="lblDescuento"></label></strong>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12">
                                 <strong> <label style="font-size:17px" id="lblTotal"></label> </strong>
                             </div>
                         </div>
@@ -408,8 +411,8 @@
 
                                 </table>
                                 @*</div>*@
-
-                                <strong> <label style="font-size:17px" id="lblTotalR"></label> </strong>
+                               <p> <strong> <label style="font-size:17px" id="lblDescuentoR"></label> </strong></p>
+                               <p></p> <strong> <label style="font-size:17px" id="lblTotalR"></label> </strong></p>
 
                                 <table class="table">
                                     <tr>
@@ -2029,6 +2032,7 @@
             item.quantity = cantidad;
             item.total = cantidad * item.precioO;
             item.comment = comentario;
+            
 
             console.log(_jsonProductsSelected);
 
@@ -2160,7 +2164,7 @@
 
 
         function llenarCarrito() {
-            var cant = 0, tot = 0.0;
+            var cant = 0, tot = 0.0,descuento=0;
 
             var myTable = $('#tblPoductosSeleccionados').DataTable();
             myTable
@@ -2192,6 +2196,7 @@
               
                 //cant = cant + parseInt(_jsonProductsSelected[i].quantity);
                 tot = tot + parseFloat(_jsonProductsSelected[i].total)
+                descuento = descuento + (_jsonProductsSelected[i].quantity *(parseFloat(_jsonProductsSelected[i].price) - parseFloat(_jsonProductsSelected[i].precioO)));
 
                 //parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             }
@@ -2199,8 +2204,11 @@
 
             tot = parseFloat(tot).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             cant = parseFloat(cant).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            descuento = parseFloat(descuento).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             $("#lblCantidad").empty();
             $("#lblCantidad").append("Articulos Totales: " + cant);
+            $("#lblDescuento").empty();
+            $("#lblDescuento").append("Ahorro: $" + descuento);
             $("#lblTotal").empty();
             $("#lblTotal").append("Total a Pagar: $" + tot);
             $("#TotalOrden").val(tot);
@@ -2231,6 +2239,11 @@
 
             $("#lblTotalR").empty();
             $("#lblTotalR").append("Costo Total de la Orden: $" + tot);
+
+            $("#lblDescuentoR").empty();
+            $("#lblDescuentoR").append("Ahorro Total de la Orden: $" + descuento);
+
+            
 
         }
 
