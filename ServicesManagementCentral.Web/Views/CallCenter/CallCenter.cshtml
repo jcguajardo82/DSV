@@ -105,6 +105,12 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td>TarjetaLealtad:</td>
+                                        <td>
+                                            <p id="lblTarjetaLealtad"></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td>Dirección:</td>
                                         <td>
                                             <p id="lblCalleCte"></p>
@@ -2735,7 +2741,8 @@
             $("#hddIdDirCteUpd").val(idDirCte);
             $('#lblNombreCte').text(resp.Nom_Cte + ' ' + resp.Ap_Paterno + ' ' + resp.Ap_Materno);
             $('#lblFolioCte').text(resp.Id_Num_Cte);
-            $('#lblClaveCte').text(resp.Id_Email); 
+            $('#lblClaveCte').text(resp.Id_Email);
+            $('#lblTarjetaLealtad').text(resp.TarjetaLealtad);
             $('#lblCalleCte').text(resp.Calle + ' ' + resp.Num_Ext );
             $('#lblColoniaCte').text(resp.Colonia);
             $('#lblEdoCte').text(resp.Ciudad + ', ' + resp.Nom_Edo);
