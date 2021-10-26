@@ -829,6 +829,15 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-xs-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label>TarjetaLealtad </label>
+                            <input type="text" id="txtCteTarjetaLealtad" class="form-control" maxlength="100" />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-xs-4 col-md-4 col-lg-4">
                         <div class="form-group">
                             <label>Nombre </label>
@@ -2476,6 +2485,7 @@
             $("#ddlCteColonia").val("0");
             $("#txtCteTelefono").val('');
             $("#txtCteEamil").val('');
+            $("#txtCteTarjetaLealtad").val('');
 
 
             $("#hddIdCliente").val('0');
@@ -2592,6 +2602,7 @@
             var Colonia = $("#ddlCteColonia").val();
             var Telefono = $("#txtCteTelefono").val();
             var Id_Email = $("#txtCteEamil").val();
+            var TarjetaLealtad = $("#txtCteTarjetaLealtad").val();
             var Ids_Num_Edo = $("#ddlCteEstado").val();
 
             var Id_Cnsc_DirCTe = $("#hddIdDirCteUpd").val();
@@ -2675,6 +2686,7 @@
                     Colonia: Colonia,
                     Telefono: Telefono,
                     Id_Email: Id_Email,
+                    TarjetaLealtad: TarjetaLealtad,
                     Ids_Num_Edo: Ids_Num_Edo,
                     Id_Cnsc_DirCTe: Id_Cnsc_DirCTe,
                     Id_Num_Cte: Id_Num_Cte
@@ -2710,7 +2722,7 @@
             $("#hddIdDirCteUpd").val(idDirCte);
             $('#lblNombreCte').text(resp.Nom_Cte + ' ' + resp.Ap_Paterno + ' ' + resp.Ap_Materno);
             $('#lblFolioCte').text(resp.Id_Num_Cte);
-            $('#lblClaveCte').text(resp.Id_Email);
+            $('#lblClaveCte').text(resp.Id_Email); 
             $('#lblCalleCte').text(resp.Calle + ' ' + resp.Num_Ext );
             $('#lblColoniaCte').text(resp.Colonia);
             $('#lblEdoCte').text(resp.Ciudad + ', ' + resp.Nom_Edo);
@@ -3017,6 +3029,7 @@
                         //$("#ddlCteColonia").val("0");
                         $("#txtCteTelefono").val(json.resp.Telefono);
                         $("#txtCteEamil").val(json.resp.Id_Email);
+                        $("#txtCteTarjetaLealtad").val(json.resp.TarjetaLealtad);
                         $("#ddlCteEstado").val(json.resp.Ids_Num_Edo);
                         GetCp(json.resp.Cod_Postal);
                         $('#ddlCteColonia option:contains(' + json.resp.Colonia + ')').attr('selected', 'selected');

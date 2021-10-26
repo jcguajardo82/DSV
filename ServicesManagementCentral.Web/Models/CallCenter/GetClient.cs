@@ -18,6 +18,7 @@ namespace ServicesManagement.Web.Models.CallCenter
         public string Ciudad { get; set; }
         public string Nom_Edo { get; set; }
         public string Id_Email { get; set; }
+        public string TarjetaLealtad { get; set; }
         public string Cod_Postal { get; set; }
         public string Telefono { get; set; }
         public string Direccion { get; set; }
