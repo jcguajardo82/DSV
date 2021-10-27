@@ -36,8 +36,8 @@ namespace ServicesManagement.Web.Controllers
         public string SellLimit { get; set; }// 100.0,
         public string Variants { get; set; }// public string public string ,
         public string AdditionalImages { get; set; }// public string public string ,
-        public string Price { get; set; }// 86.9,
-        public string PromotionalPrice { get; set; }// 0.0,
+        public decimal Price { get; set; }// 86.9,
+        public decimal PromotionalPrice { get; set; }// 0.0,
         public string PomotionalPriceCode { get; set; }// public string public string ,
         public string arrivals { get; set; }// public string public string ,
         public string beefCuts { get; set; }// public string public string ,
@@ -338,7 +338,7 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public JsonResult GetProduct(string product, string tienda, string categoria)
+        public ActionResult GetProduct(string product, string tienda, string categoria)
         {
             try
             {
@@ -373,8 +373,9 @@ namespace ServicesManagement.Web.Controllers
                 }
 
                 var result = new { Success = true, data = response1 };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                //return Json(result, JsonRequestBehavior.AllowGet);
                 //return Json("", JsonRequestBehavior.AllowGet);
+                return PartialView("tblBuscador", response1);
             }
             catch (Exception ex)
             {
