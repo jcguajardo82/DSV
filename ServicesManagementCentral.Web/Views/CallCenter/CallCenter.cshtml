@@ -194,6 +194,7 @@
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:20%;">Unidad de Venta</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:15%;">Total</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:30%;">Comentario</th>
+                                            <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:30%;">Sustituto</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Borrar</th>
                                         </tr>
                                     </thead>
@@ -403,6 +404,7 @@
                                             <th class="text-center sorting">Precio</th>
                                             <th class="text-center sorting">Subtotal</th>
                                             <th class="text-center sorting">Comentarios</th>
+                                            <th class="text-center sorting">Sustituto</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1086,6 +1088,7 @@
         var _descuento = 0;
         var _precioO = 0;
         var _SalesUnit = "";
+        var _Sustituto = "";
 
 
 
@@ -1707,6 +1710,7 @@
                 product.Precio_VtaOferta = row.find("TD").eq(3).html().replace('$', '');
                 product.Dcto = 0;//row.find("TD").eq(1).html();
                 product.obs = row.find("TD").eq(5).html();
+                product.Sustituto = row.find("TD").eq(6).html();
                 products.push(product);
             });
 
@@ -1867,10 +1871,7 @@
                             filter: true,
                             info: false,
                             stateSave: false,
-                            select: true,
-                            select: {
-                                style: 'single'
-                            },
+
                             //Paggin
                             paging: true,
                             pageLength: 10,
@@ -2096,6 +2097,7 @@
                 _Sku = sku;
                 _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _SalesUnit = SalesUnit;
+                _Sustituto = $("#bSustituto-" + barcode).val();
 
 
                 //$("#dlgAgregarProductoComentario").modal("show");
@@ -2180,6 +2182,7 @@
             _obj.sku = _Sku;
             _obj.SalesUnit = _SalesUnit;
             _obj.precioO = _precioO;
+            _obj.sustituto=_Sustituto
             _jsonProductsSelected.push(_obj);
 
 
@@ -2199,6 +2202,7 @@
                 .clear()
                 .draw();
             for (var i = 0; i < _jsonProductsSelected.length; i++) {
+
                 var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 var inp;
                 if (_jsonProductsSelected[i].SalesUnit == 'pza') {
@@ -2217,11 +2221,15 @@
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + totaArt,
                     "<input type='text' onchange='Change_2(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
+                    "<select class='form-control-sm' id='cSustituto-"+ _jsonProductsSelected[i].barcode +"'>"
+                              +"<option value='Si'>Si</option>"
+                              +"<option value='No'>No</option>"
+                    +"</select>",
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
 
-
+                $("#cSustituto-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].sustituto);
                 //cant = cant + parseInt(_jsonProductsSelected[i].quantity);
                 tot = tot + parseFloat(_jsonProductsSelected[i].total)
                 descuento = descuento + (_jsonProductsSelected[i].quantity *(parseFloat(_jsonProductsSelected[i].price) - parseFloat(_jsonProductsSelected[i].precioO)));
@@ -2234,7 +2242,8 @@
             cant = parseFloat(cant).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             descuento = parseFloat(descuento).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             $("#lblCantidad").empty();
-            $("#lblCantidad").append("Articulos Totales: " + cant);
+            $("#lblCantidad").append("Articulos Totales: " + _jsonProductsSelected.length);
+            //$("#lblCantidad").append("Articulos Totales: " + cant);
             $("#lblDescuento").empty();
             $("#lblDescuento").append("Ahorro: $" + descuento);
             $("#lblTotal").empty();
@@ -2262,6 +2271,7 @@
                         "$" + _jsonProductsSelected[x].precioO,
                         "$" + totaArt,
                         _jsonProductsSelected[x].comment,
+                        _jsonProductsSelected[x].sustituto,
                     ]).draw();
             }
 
