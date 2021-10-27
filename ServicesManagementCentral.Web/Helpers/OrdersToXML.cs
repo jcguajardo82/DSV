@@ -96,12 +96,12 @@ namespace ServicesManagement.Web.Helpers
                     for (int i = 0; i < nrows3; i++)
                     {
                         XmlSETCProductTMP = new XElement(nm + "product-lineitem",
-                                new XElement(nm + "net-price", dt3.Rows[i][26].ToString()), //dt3.Rows[i][0].ToString())
+                                new XElement(nm + "net-price", dt3.Rows[i][0].ToString()), //dt3.Rows[i][0].ToString())
                                 new XElement(nm + "tax", dt3.Rows[i][1].ToString()),
-                                new XElement(nm + "gross-price", dt3.Rows[i][26].ToString()), //dt3.Rows[i][2].ToString())
-                                new XElement(nm + "base-price", dt3.Rows[i][26].ToString()), //dt3.Rows[i][3].ToString()
+                                new XElement(nm + "gross-price", dt3.Rows[i][2].ToString()), //dt3.Rows[i][2].ToString())
+                                new XElement(nm + "base-price", dt3.Rows[i][3].ToString()), //dt3.Rows[i][3].ToString()
                                 new XElement(nm + "lineitem-text", dt3.Rows[i][4].ToString()), 
-                                new XElement(nm + "tax-basis", dt3.Rows[i][26].ToString()), //dt3.Rows[i][5].ToString()
+                                new XElement(nm + "tax-basis", dt3.Rows[i][5].ToString()), //dt3.Rows[i][5].ToString()
                                 // new XElement(nm + "position", dt3.Rows[i][6].ToString()),
                                 new XElement(nm + "position", i + 1),
                                 new XElement(nm + "product-id", dt3.Rows[i][7].ToString()),
@@ -114,7 +114,7 @@ namespace ServicesManagement.Web.Helpers
                                 // barcode - custom atribute
                                 new XElement(nm + "custom-attributes",
                                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "barcode"), dt3.Rows[i][24].ToString()),
-                                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "PriceOffer"), dt3.Rows[i][0].ToString()), //dt3.Rows[i][26].ToString()
+                                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "PriceOffer"), dt3.Rows[i][26].ToString()), //dt3.Rows[i][26].ToString()
                                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "conversionFactor"),"1.0"),
                                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "productNote"), dt3.Rows[i][25].ToString()),
                                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "salesUnit"), dt3.Rows[i][10].ToString())
@@ -411,16 +411,19 @@ namespace ServicesManagement.Web.Helpers
                     {
                         foreach (DataRow r in dt2.Rows)
                         {
-                            if (comentarioxtipo == "")
+                            if (r[85].ToString() != "")
                             {
-                                comentarios = comentarios + r[85].ToString() + ". <br />";
-                                comentarioxtipo = r[86].ToString();
-                            }
-                            else
-                            {
-                                if (comentarioxtipo ==r[86].ToString())
+                                if (comentarioxtipo == "")
                                 {
                                     comentarios = comentarios + r[85].ToString() + ". <br />";
+                                    comentarioxtipo = r[86].ToString();
+                                }
+                                else
+                                {
+                                    if (comentarioxtipo == r[86].ToString())
+                                    {
+                                        comentarios = comentarios + r[85].ToString() + ". <br />";
+                                    }
                                 }
                             }
 
