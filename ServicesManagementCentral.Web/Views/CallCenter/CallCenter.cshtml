@@ -5625,7 +5625,7 @@
             //    $("#txtCteEamil").focus();
             //    return;
             //}
-            if ($("#txtCteEamil").val().indexOf('@@', 0) == -1 || $("#txtCteEamil").val().indexOf('.', 0) == -1) {
+            if (($("#txtCteEamil").val().indexOf('@@', 0) == -1 || $("#txtCteEamil").val().indexOf('.', 0) == -1) && Id_Email.length > 0) {
                     $("#txtCteEamil").focus();
                     alert('El correo electrónico introducido no es correcto.');
                     return false;
