@@ -1494,8 +1494,13 @@ namespace ServicesManagement.Web.Controllers
                     DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
                         , item.Precio_VtaOferta, descuento, descripcion[0], item.Cve_UnVta, item.Num_CodBarra);
                     //COMENTARIOS POR ARTICULO
+
+
                     if (item.obs != null)
-                    { DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs); }
+                    { item.obs = string.Format("{0} *Sustituto: {1}", item.obs, item.Sustituto); }
+                    else { item.obs = string.Format("*Sustituto: {0}", item.Sustituto); }
+
+                    DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs);
                 }
 
                 //OBSERVACIONES NIVEL CARRITO
