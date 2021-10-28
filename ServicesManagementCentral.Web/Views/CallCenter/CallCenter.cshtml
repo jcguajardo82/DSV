@@ -1623,7 +1623,7 @@
                             var _StoreNum = $("#ddlTdas").val();
                             var _CodigoPostal = $("#rec_CP").val();
                               $.ajax({
-                                    async: false,
+                                    async: true,
                                     type: "GET",
                                     url: '@Url.Action("GetFlete", "CallCenter")',
                                     data: {
@@ -1658,10 +1658,6 @@
                                     }
 
                                 });
-
-
-
-
 
                             return true;
                         }

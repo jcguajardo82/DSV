@@ -1747,10 +1747,10 @@ namespace ServicesManagement.Web.Controllers
         //    }
         //}
 
-        public int TieneCobertura(int tienda, string codigopostal)
+        public bool TieneCobertura(int tienda, string codigopostal)
         {
 
-            int puede = DALCallCenter.upCorpOms_Cns_CoberturaTienda(tienda, codigopostal);
+            bool puede = DALCallCenter.upCorpOms_Cns_CoberturaTienda(tienda, codigopostal);
 
             return puede;
 
@@ -1798,20 +1798,32 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                int puede = int.Parse(TieneCobertura(StoreNum, CodigoPostal).ToString());
-                if (puede == 1)
+                //int puede = int.Parse(TieneCobertura(StoreNum, CodigoPostal).ToString());
+                if (TieneCobertura(StoreNum, CodigoPostal))
                 {
                     var ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
+
+                    var result = new
+                    {
+                        Success = true
+                          ,
+                        resp = ListP
+                    };
+
+                    return Json(result, JsonRequestBehavior.AllowGet);
                 }
-
-                var result = new
+                else
                 {
-                    Success = true
-                      ,
-                    resp = puede
-                };
 
-                return Json(result, JsonRequestBehavior.AllowGet);
+                    var result = new
+                    {
+                        Success = false
+                          ,
+                        Message = "Código Postal fuera de la cobertura de la tienda"
+                    };
+
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
 
             }
 
