@@ -45,6 +45,42 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
+        public static DataSet tbl_OrdenFotosRMA_sUp(int ordenRMA)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@ordenRMA", ordenRMA);
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[tbl_OrdenFotosRMA_sUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
         #region Historial
         public static DataSet upCorpOms_Cns_OrdersByHistorical(int OrderNo)
         {
@@ -436,10 +472,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
         }
 
 
-        public static DataSet tbl_OrdenCancelada_uUp(int Id_Cancelacion, int IdTSolicitud,int IdTmovimiento)
+        public static DataSet tbl_OrdenCancelada_uUp(int Id_Cancelacion, int IdTSolicitud, int IdTmovimiento)
         {
 
-          DataSet ds = new DataSet();
+            DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -455,7 +491,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 parametros.Add("@Id_Cancelacion", Id_Cancelacion);
                 parametros.Add("@IdTSolicitud", IdTSolicitud);
                 parametros.Add("@IdTmovimiento", IdTmovimiento);
-               
+
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[tbl_OrdenCancelada_uUp]", false, parametros);
 
@@ -1503,45 +1539,6 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet HistorialOrdenes_sUP(int Id_Num_Cte)
-        {
-
-
-
-            DataSet ds = new DataSet();
-
-            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
-            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
-            {
-                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
-            }
-
-            try
-            {
-                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
-                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-
-                parametros.Add("@Id_Num_Cte", Id_Num_Cte);
-
-
-
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "carrito.HistorialOrdenes_sUP", false, parametros);
-
-                return ds;
-            }
-            catch (SqlException ex)
-            {
-
-                throw ex;
-            }
-            catch (System.Exception ex)
-            {
-
-                throw ex;
-            }
-
-        }
-       
         #endregion
     }
 }

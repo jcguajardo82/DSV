@@ -10,6 +10,42 @@ namespace ServicesManagement.Web.DAL.Autorizacion
 {
     public class DALAutorizacion
     {
+        public static DataSet upCorpOms_Del_UeNoSupplyProcess(int OrderNo, string Cause_Desc, int IdCause, string UeNo)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@OrderNo", OrderNo);
+                parametros.Add("@Cause_Desc", Cause_Desc);
+                parametros.Add("@IdCause", IdCause);
+                parametros.Add("@UeNo", UeNo);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Del_UeNoSupplyProcess]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         public static DataSet up_Corp_cns_tbl_OrdenCancelada(string accion)
         {
 
@@ -25,10 +61,45 @@ namespace ServicesManagement.Web.DAL.Autorizacion
             {
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                if(!string.IsNullOrEmpty(accion.Trim()))
+                if (!string.IsNullOrEmpty(accion.Trim()))
                     parametros.Add("@accion", accion);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[up_Corp_cns_tbl_OrdenCancelada]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public static DataSet valida_foto_sUP(int Id_Cancelacion)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Cancelacion", Id_Cancelacion);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[valida_foto_sUP]", false, parametros);
 
                 return ds;
             }
@@ -60,7 +131,7 @@ namespace ServicesManagement.Web.DAL.Autorizacion
             {
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                
+
                 parametros.Add("@Id_cancelacion", Id_cancelacion);
                 parametros.Add("@accion", accion);
 
@@ -81,8 +152,8 @@ namespace ServicesManagement.Web.DAL.Autorizacion
 
         }
 
-        public static DataSet BitacoraAutRma_iUp(int IdEstatusAut, string UsuarioMovto, string Comentario 
-           ,string orderId,int Id_cancelacion)
+        public static DataSet BitacoraAutRma_iUp(int IdEstatusAut, string UsuarioMovto, string Comentario
+           , string orderId, int Id_cancelacion)
         {
 
             DataSet ds = new DataSet();
@@ -128,10 +199,10 @@ namespace ServicesManagement.Web.DAL.Autorizacion
 
 
         public static DataSet BitacoraAutRma_iUp_v2(int IdProceso, string IdAccion, string Comentario
-        , int Id_cancelacion,string UsuarioMovto)
+        , int Id_cancelacion, string UsuarioMovto)
         {
 
-               DataSet ds = new DataSet();
+            DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))

@@ -1,149 +1,52 @@
-﻿
+﻿@using System.Data;
 @{
     ViewBag.Title = "Call Center";
+
+
 }
 
 
+@*<input type="button" name="answer" onclick="xml()" value="XML" class="btn btn-success"  />*@
 <div class="row">
-    <div class="col-xs-5 col-md-5 col-lg-5">
-        <div class="ibox">
-            <div class="ibox-title">
-                Sucursales
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <table style="width:100%;">
-                    <tr>
-                        <td>
-                            <select class="form-control" id="cmbServicio" name="cmbServicio">
-                                <option selected="selected" value="0">--Elegir Servicio--</option>
-                                <option value="1">Cancelacion</option>
-                                <option value="2">Retorno</option>
 
-                            </select>
-                        </td>
-                        <td><input class="form-control" type="text" placeholder="Código Postal" value="" id="txtCp"></td>
-                        <td>
-                            <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas()">
-                                Tienda
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        @*<td colspan="3"><label class="form-control">24-Cumbres</label></td>*@
-                        <td colspan="3">
-                            <select class="form-control" id="cmbTda" name="cmbTda">
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+    <div class="col-xs-6 col-md-6 col-lg-6">
+
+        <div class="form-group">
+
+            @*<label>Tiena</label>*@
+            <select class="form-control m-b" id="ddlTdas">
+                @{
+                    DataSet ds = (DataSet)ViewBag.tdas;
+
+
+                    foreach (DataRow item in ds.Tables[0].Rows)
+                    {
+
+                        if (Session["Id_Num_UN"] != null)
+                        {
+                            if (@item["id_num_un"].ToString() == Session["Id_Num_UN"].ToString())
+                            {
+                                <option value="@item["id_num_un"]" selected>@item["Centros"]</option>
+                            }
+
+                        }
+                        else
+                        {
+                            <option value="@item["id_num_un"]">@item["Centros"]</option>
+                        }
+                    }
+                }
+
+            </select>
         </div>
     </div>
-    <div class="col-xs-7 col-md-7 col-lg-7">
-        <div class="ibox">
-            <div class="ibox-title">
-                Buscador  <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <table style="width:100%;">
-                    <tr>
-                        @*<td>
-                                <select class="form-control" id="cmbServicio" name="cmbServicio">
-                                    <option selected="selected" value="0">1</option>
-                                </select>
-                            </td>*@
-                        <td>
-                            <input class="form-control" type="text" placeholder="Producto" value="" id="txtProdArt">
-                        </td>
-                        <td style="text-align:center;">
-                            <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaProducto()" disabled>
-                                Buscar
-                            </button>
-                        </td>
-                        <td>
-                            <button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
-                                Historia
-                            </button>
-                        </td>
-                    </tr>
-                    @*<tr>
-                            <td colspan="2">
-                                <select class="form-control" id="cmbMarcas" name="cmbMarcas">
-                                    <option selected="selected" value="0">--Todas--</option>
-                                </select>
-                            </td>
-                            <td colspan="2">
-                                <select class="form-control" id="cmbDivision" name="cmbDivision">
-                                    <option selected="selected" value="0">--Todas--</option>
-                                </select>
-                            </td>
-                        </tr>*@
-                </table>
-            </div>
-        </div>
+    <div class="col-xs-4 col-md-4 col-lg-4">
 
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-10 col-md-10 col-lg-10">
-        <table id="tblBusquedaArt" class="table table-striped table-bordered table-hover">
-            <thead class="bg-primary">
-                <tr role="row">
-                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 118px;">Código</th>
-                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1">Descripción</th>
-                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 116px;">Marca</th>
-                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 126px;">Precio</th>
-                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 124px;">Normal</th>
-                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 120px;">Dscto</th>
-                </tr>
-            </thead>
-            @*<tbody>
-                    <tr>
-                        <td>123124</td>
-                        <td>Coca Cola 600 ml</td>
-                        <td>Coca Cola</td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                    </tr>
-                    <tr>
-                        <td>123124</td>
-                        <td>Coca Cola 600 ml</td>
-                        <td>Coca Cola</td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                    </tr>
-                    <tr>
-                        <td>123124</td>
-                        <td>Coca Cola 600 ml</td>
-                        <td>Coca Cola</td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                    </tr>
-                    <tr>
-                        <td>123124</td>
-                        <td>Coca Cola 600 ml</td>
-                        <td>Coca Cola</td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                        <td>$12.22</td>
-                    </tr>
-                </tbody>*@
-        </table>
     </div>
     <div class="col-xs-2 col-md-2 col-lg-2">
-        <img id="imgProduct" src="~/Content/images/theme/default_image_01.png" class="img-lg">
+        <div class="text-right">
+            @*<button type="button" class="btn btn-primary" onclick="popBuscador();">Buscador de Productos</button>*@
+        </div>
     </div>
 </div>
 <div class="row" style="padding-bottom:50px;">
@@ -151,10 +54,14 @@
         <div class="ibox ">
             <div class="ibox-content">
                 <div id="wizard">
-                    <h3>Cliente</h3>
+                    <h3>Seleccionar Cliente</h3>
                     <section>
                         <div class="row" id="divVerificaCliente">
                             <div class="col-xs-12 col-md-12 col-lg-12">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-primary" onclick="popBuscarClient();">Buscar Cliente</button>
+                                    <button type="button" class="btn btn-primary" onclick="popAddClient();">Nuevo Cliente</button>
+                                </div>
                                 <p>
                                     <b>Identificación del Cliente<br />Solicite al cliente cualquiera de los siguientes datos:</b>
                                     <ul>
@@ -164,7 +71,7 @@
                                     </ul>
                                 </p>
                                 <div class="input-group">
-                                    <input type="text" id="txtVerificaC" value="jreyes@itech.com.mx" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                                    <input type="text"  id="txtVerificaC" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
                                         <button type="button" class="btn btn-primary" onclick="VerificaCliente()">
                                             Verificar
                                         </button>
@@ -173,59 +80,61 @@
                                 <hr />
                             </div>
                         </div>
-                        <div class="row" id="divBuscaCliente">
-                            <div class="col-xs-12 col-md-12 col-lg-12">
-                                <p>
-                                    <b>Buscador de Clientes</b><br />Se puede buscar por nombre y apellido paterno y materno.Para buscar por telefono ingrese solo digitos.Para buscar por direccion captura
-                                    <b>Calle #,Colonia y Ciudad</b> usando comas como separador
-                                </p>
-                                <div class="input-group">
-                                    <input type="text" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
-                                        <button type="button" class="btn btn-primary" onclick="BuscarClinete()">
-                                            Buscar
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="row" id="divResultClient" style="display:none;">
                             <div class="col-xs-4 col-md-4 col-lg-4"></div>
                             <div class="col-xs-4 col-md-4 col-lg-4">
+                                <input type="hidden" id="hddIdCliente" />
+                                <input type="hidden" id="hddIdDirCteUpd" />
+                                <input type="hidden" id="hddCodBarFlete" />
                                 <table style="width:100%" class="table table-warning">
                                     <tr>
                                         <td>Nombre:</td>
-                                        <td><b>Juan Perex</b></td>
+                                        <td><b id="lblNombreCte"></b></td>
                                     </tr>
                                     <tr>
                                         <td>Folio del Cliente:</td>
-                                        <td>Juan Perex</td>
+                                        <td>
+                                            <p id="lblFolioCte"></p>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>Clave:</td>
-                                        <td>juan@gmial.com</td>
+                                        <td>Correo Electrónico:</td>
+                                        <td>
+                                            <p id="lblClaveCte"></p>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Dirección:</td>
                                         <td>
-                                            <p>
-                                                Villas de Belgica 277<br />
-                                                Colonia Roble Nuevo<br />
-                                                General Escobedo, N.L.
-                                            </p>
+                                            <p id="lblCalleCte"></p>
+                                            <p id="lblColoniaCte"></p>
+                                            <p id="lblEdoCte"></p>
+                                            <p id="lblCpCte"></p>
+
+
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Teléfono:</td>
-                                        <td>8119652099</td>
+                                        <td><p id="lblTelefonoCte"></p></td>
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-xs-4 col-md-4 col-lg-4">
+
+                            <div class="col-xs-2 col-md-2 col-lg-2">
                                 <button type="button" class="btn btn-default btn btn-xs" onclick="NuevaBusqueda()">
                                     Nueva Busqueda
                                 </button>
+                                <button type="button" class="btn btn-default btn btn-xs" onclick="popEditarCte()">
+                                    Editar Cliente
+                                </button>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-lg-2">
+
                             </div>
                         </div>
+
                     </section>
                     <h3>Fecha de Entrega</h3>
                     <section>
@@ -234,7 +143,8 @@
                             <div class="col col-xs-12 col-md-12">
                                 <div class="form-group">
                                     <label>Día</label>
-                                    <select class="form-control m-b" id="ddlDias"><option value="2021/04/16">HOY - 16 Abril</option><option value="2021/04/17">SÁBADO - 17 Abril</option><option value="2021/04/18">DOMINGO - 18 Abril</option><option value="2021/04/19">LUNES - 19 Abril</option><option value="2021/04/20">MARTES - 20 Abril</option><option value="2021/04/21">MIÉRCOLES - 21 Abril</option><option value="2021/04/22">JUEVES - 22 Abril</option></select>
+                                    <select class="form-control m-b" id="ddlDias" onchange="onchangeDias()">
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -242,7 +152,8 @@
                             <div class="col col-xs-12 col-md-12">
                                 <div class="form-group">
                                     <label>Entre</label>
-                                    <select class="form-control m-b" id="ddlHoras"><option value="15:01:00">15:01:00 - 16:00:00</option><option value="16:01:00">16:01:00 - 17:00:00</option><option value="17:01:00">17:01:00 - 18:00:00</option><option value="18:01:00">18:01:00 - 19:00:00</option><option value="19:01:00">19:01:00 - 20:00:00</option><option value="20:01:00">20:01:00 - 21:00:00</option><option value="21:01:00">21:01:00 - 22:00:00</option></select>
+                                    <select class="form-control m-b" id="ddlHoras">
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -251,18 +162,15 @@
                     <section>
                         @*<input id="flagCarrito" name="flagCarrito" value="1" style="visibility:hidden" />*@
                         <div class="row">
-                            <div class="col-8"></div>
-                            <div class="col-4">
+                            <div class="col-10"></div>
+                            <div class="col-2">
                                 @*<button type="button" onclick="seleccionarProducto()" class="btn btn-xs btn-danger btn-circle"><i class="fa fa-plus"></i></button>*@
                                 <button type="button" class="btn btn-primary" onclick="seleccionarProducto();">Agregar Articulo</button>
-                                <button type="button" id="btnHistoria" class="btn btn-primary" onclick="popHistorial()">
-                                    Historial
-                                </button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-lg-12">
-                                <table id="tblBusquedaArt" class="table table-striped table-bordered table-hover" style="width:100%;">
+                                <table id="tblPoductosSeleccionados" class="table table-striped table-bordered table-hover">
                                     <thead class="bg-warning">
                                         <tr role="row">
 
@@ -270,29 +178,21 @@
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Precio Normal</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Precio Oferta</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:20%;">Cantidad</th>
+                                            <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:20%;">Unidad de Venta</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:15%;">Total</th>
+                                            <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:30%;">Comentario</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Borrar</th>
                                         </tr>
                                     </thead>
                                     <tbody id="feedback2">
-                                        @*<tr>
-                                                <td>123124<br /><input type="text" placeholder="Indicaciones y Observaciones" class="form-control input-sm" /></td>
-                                                <td>$12.22</td>
-                                                <td>$12.22</td>
-                                                <td><input type="text" style="width:50px;" /> pza</td>
-                                                <td>2</td>
-                                                <td><input type="checkbox" class="checkbox" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>123124<br /><input type="text" placeholder="Indicaciones y Observaciones" class="form-control input-sm" /></td>
-                                                <td>$12.22</td>
-                                                <td>$12.22</td>
-                                                <td><input type="text" style="width:50px;" /> pza</td>
-                                                <td>2</td>
-                                                <td><input type="checkbox" class="checkbox" /></td>
-                                            </tr>*@
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <strong>  <label style="font-size:17px" id="lblCantidad"></label></strong>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <strong> <label style="font-size:17px" id="lblTotal"></label> </strong>
                             </div>
                         </div>
                         <div class="row">
@@ -301,22 +201,15 @@
                                     <thead class="bg-warning">
                                         <tr role="row">
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="2">Observaciones e instrucciones generales</th>
-
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1 . Favor de llamar por telefono antes de entregar</td>
-                                            <td>
-                                                <button type="button" style="visibility:visible;" class="btn btn-xs btn-danger btn-circle"><i class="fa fa-close"></i></button>
-                                            </td>
-                                        </tr>
+                                    <tbody id="Obs">
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td><input type="text" class="form-control input-sm" /></td>
+                                            <td><input type="text" id="ObservacionesGrles" class="form-control input-sm" /></td>
                                             <td>
-                                                <button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
+                                                <button type="button" id="btnHistoria" class="btn btn-primary" onclick="agregarObs()">
                                                     Agregar Observaciones
                                                 </button>
                                             </td>
@@ -326,18 +219,18 @@
                             </div>
                         </div>
                     </section>
-                    <h3>Metodo de  Entrega</h3>
+                    <h3>Metodo de Entrega</h3>
                     <section>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-lg-12">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                    <input class="form-check-input" type="radio" name="rdoMetodoEntrega" id="rdoTda" value="1">
                                     <label class="form-check-label" for="flexRadioDefault1">
                                         ENTREGA EN TIENDA (Si el cliente elige acudir por su pedido selecciona esta opción)
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                    <input class="form-check-input" type="radio" name="rdoMetodoEntrega" id="rdoDomicilio" value="2">
                                     <label class="form-check-label" for="flexRadioDefault2">
                                         ENTREGA A DOMICILIO (Confirma la Dirección del cliente o ingresa una nueva)
                                     </label>
@@ -346,11 +239,18 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-6 col-md-6 col-lg-6">
+                                <input type="hidden" id="hddIdDir" />
                                 <table>
                                     <tr>
                                         <td>
                                             <b>Nombre de la persona que recibira el pedido</b>
-                                            <input type="text" id="rec_name" class="form-control input-sm" />
+                                            <input type="text" id="rec_name" class="form-control input-sm" required />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Código Postal</b>
+                                            <input type="number" maxlength="5" id="rec_CP" class="form-control" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -362,7 +262,8 @@
                                     <tr>
                                         <td>
                                             <b>Estado</b>
-                                            <input type="text" id="rec_estado" class="form-control input-sm" />
+                                            @*<input type="text" id="rec_estado" class="form-control input-sm" />*@
+                                            <select id="ddlRec_Estado" class="form-control"></select>
                                         </td>
                                     </tr>
                                     <tr>
@@ -379,7 +280,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Número Interiór(si aplica)</b>
+                                            <b>Número Interior(si aplica)</b>
                                             <input type="text" id="rec_nunInt" class="form-control input-sm" />
                                         </td>
                                     </tr>
@@ -391,25 +292,29 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Código Postal</b>
-                                            <input type="text" id="rec_CP" class="form-control input-sm" />
+                                            <b>Teléfono</b>
+                                            <input type="text" id="rec_tel" class="form-control input-sm" />
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="col-xs-6 col-md-6 col-lg-6">
-                                <p>
-                                    Juan Perex<br />
-                                    Villas de Belgica 277<br />
-                                    Colonia Roble nuevo<br />
-                                    Escobedo<br />
-                                    CP: 092890
-                                    <br />
-                                    <button type="button" class="btn btn-default btn btn-xs" onclick="GetTdasTrasp()">
-                                        Utilizar esta direccón
-                                    </button>
-                                </p>
-                                <br />
+                                <table class="table" id="tblDirecciones">
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                @*<p>
+                                        Juan Perex<br />
+                                        Villas de Belgica 277<br />
+                                        Colonia Roble nuevo<br />
+                                        Escobedo<br />
+                                        CP: 092890
+                                        <br />
+                                        <button type="button" class="btn btn-default btn btn-xs" onclick="GetTdasTrasp()">
+                                            Utilizar esta direccón
+                                        </button>
+                                    </p>*@
+
 
                             </div>
                         </div>
@@ -418,6 +323,7 @@
                     <section>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-lg-12">
+                                <span class="h5 font-bold m-t block text-right" id="lblTotalFormaP"></span>
                                 <table id="tblFormaPago" class="table table-striped table-bordered table-hover" style="width:100%;">
                                     <thead class="bg-warning">
                                         <tr role="row">
@@ -429,15 +335,15 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="efectivo" checked>
+                                                    <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoEfevo" value="efectivo" checked>
                                                     <label class="form-check-label" for="flexRadioDefault2">
                                                         Efectivo y/o vales de papel de despensa
                                                     </label>
                                                 </div>
                                             </td>
-                                            <td style="text-align:right;">
-                                                Efectivo: <input type="text" id="in_pago" width="100px;" /><br />
-                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="in_vales" width="100px;" />
+                                            <td style="text-align:left;">
+                                                Efectivo: <input type="text" id="in_pago" disabled value="0.00" width="100px;" oninput="input(this)" /><br />
+                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled value="0.00" oninput="input(this)" id="in_vales" width="100px;" />
                                             </td>
                                         </tr>
                                         @*<tr>
@@ -454,9 +360,20 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="credito" checked>
+                                                    <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoCdto" value="credito" checked>
                                                     <label class="form-check-label" for="flexRadioDefault2">
-                                                        Tarjeta de Debito Terminal Portatil
+                                                        Tarjeta de Credito Terminal Portatil
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoDebito" value="debito" checked>
+                                                    <label class="form-check-label" for="flexRadioDefault2">
+                                                        Tarjeta de Débito Terminal Portatil
                                                     </label>
                                                 </div>
                                             </td>
@@ -472,73 +389,53 @@
                     <section>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-lg-12">
-                                <table id="tblFormaPago" class="table table-striped table-bordered table-hover" style="width:100%;">
+                                <table id="tblResumen" class="table table-striped table-bordered table-hover" style="width:100%;">
                                     <thead class="bg-warning">
                                         <tr role="row">
                                             <th class="text-center sorting">Descripción</th>
                                             <th class="text-center sorting">Cantidad</th>
+                                            <th class="text-center sorting">Unidad de Venta</th>
                                             <th class="text-center sorting">Precio</th>
                                             <th class="text-center sorting">Subtotal</th>
+                                            <th class="text-center sorting">Comentarios</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                coca cola 500 ml
-                                            </td>
-                                            <td>
-                                                1
-                                            </td>
-                                            <td>
-                                                $10.00
-                                            </td>
-                                            <td>
-                                                $10.00
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                coca cola 500 ml
-                                            </td>
-                                            <td>
-                                                1
-                                            </td>
-                                            <td>
-                                                $10.00
-                                            </td>
-                                            <td>
-                                                $10.00
-                                            </td>
-                                        </tr>
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td></td>
-                                            <td colspan="2"><b>Costo total de la orden</b></td>
-                                            <td><b>$20.00</b></td>
-                                        </tr>
-                                    </tfoot>
+
                                 </table>
+                                @*<div class="col-xs-12 col-md-12 col-lg-12">*@
+                                <table id="tblObervacionesResumen" class="table table-striped table-bordered table-hover" style="width:100%;">
+                                    <thead class="bg-warning">
+                                        <tr role="row">
+                                            <th class="text-center sorting" tabindex="0" rowspan="1" colspan="2">Observaciones e instrucciones generales</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ObsResumen">
+                                    </tbody>
+
+                                </table>
+                                @*</div>*@
+
+                                <strong> <label style="font-size:17px" id="lblTotalR"></label> </strong>
+
                                 <table class="table">
                                     <tr>
-                                        <td><b>Sera en tregada en:</b></td>
+                                        <td><b>Será entregada en:</b></td>
                                         <td>
-                                            <p>
-                                                Juan Perex<br />
-                                                Villas de Belgica 277<br />
-                                                Colonia Roble nuevo<br />
-                                                Escobedo<br />
-                                                CP: 092890
+                                            <p id="lblMetodoEntrega">
                                             </p>
+                                            <p><b id="lblNomDir"></b></p>
+                                            <p id="lblDirEnt"> </p>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><b>Fecha de entrega:</b></td>
-                                        <td>2021-07-01 21:00 HRS </td>
+                                        <td><p id="lblFecEnt"></p> </td>
                                     </tr>
                                     <tr>
                                         <td><b>Forma de Pago:</b></td>
-                                        <td>Tarjeta de Credito / Terminal Portatil </td>
+                                        <td><p id="lblFormaPago"></p> </td>
                                     </tr>
                                 </table>
                             </div>
@@ -550,29 +447,87 @@
         </div>
     </div>
 </div>
-
-<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade bd-example-modal-xl" id="popUpSeleccionarProductos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel2">Búsqueda de Productos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @*<div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <table id="tblBusquedaSeleccionar" class="table table-striped table-bordered table-hover">
+                                <thead class="bg-danger-sor">
+                                    <tr role="row">
+                                        <th>Código</th>
+                                        <th>Descripción</th>
+                                        <th>Marca</th>
+                                        <th>Precio</th>
+                                        <th>Normal</th>
+                                        <th>Dscto</th>
+                                        <th></th>
+                                        <th>Cantidad</th>
+                                            <th name="accion">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="feedback"></tbody>
+                            </table>
+                        </div>
+
+                    </div>*@
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                @*<button type="button" class="btn btn-primary" onclick="addProduct2()" data-dismiss="modal">Agregar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Búsqueda de Productos</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xs-10 col-md-10 col-lg-10">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
                         <table id="tblBusquedaArt2" class="table table-striped table-bordered table-hover">
-                            <thead class="bg-primary">
+                            <thead class="bg-danger-sor">
                                 <tr role="row">
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 118px;">Código</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1">Descripción</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 116px;">Marca</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 126px;">Precio</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 124px;">Normal</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 120px;">Dscto</th>
-                                    <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 120px;"></th>
+                                    <th>Código</th>
+                                    <th>Descripción</th>
+                                    <th>Marca</th>
+                                    <th>Precio</th>
+                                    <th>Normal</th>
+                                    <th>Dscto</th>
+                                    <th></th>
+                                    @*<th>Cantidad</th>
+                                        <th name="accion">Acción</th>*@
+                                </tr>
+                            </thead>
+                            <tbody id="feedback"></tbody>
+                        </table>
+                    </div>
+                    @*<div class="col-xs-2 col-md-2 col-lg-2">
+                            <img id="imgProduct2" src="~/Content/images/theme/default_image_01.png" class="img-lg">
+                        </div>*@
+                </div>
+                @*<div class="row">
+                        <div class="col-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2">Cantidad</span>
+                                <input type="text" id="Addcantidad" name="Addcantidad" class="form-control" placeholder="Cantidad de producto" aria-describedby="basic-addon2">
+                            </div>
+                        </div>
+                    </div>*@
 
             </div>
             <div class="modal-footer">
@@ -675,21 +630,15 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-7 col-md-7 col-lg-7">
-
-
-
                         <div class="ibox">
                             <div class="ibox-title">
-                                Buscador <div class="ibox-tools">
+                                Buscador  <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
                                         @*</a>*@
                                 </div>
                             </div>
                             <div class="ibox-content">
-
-
-
                                 <table style="width:100%;">
                                     <tr>
                                         <td>
@@ -704,28 +653,16 @@
                                             <select id="ddlCategorias" class="form-control m-b">
                                             </select>
                                             @*<button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
-                                                Historia
-                                                </button>*@
+            Historia
+        </button>*@
                                             @*<input id="tags" class="ui-autocomplete-input" autocomplete="off">*@
                                         </td>
                                     </tr>
-
-
 
                                 </table>
                             </div>
                         </div>
 
-
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 col-md-12 col-lg-12">
-                        <div class="alert alert-success" id="divOkArt">
-                            @* How quickly daft jumping zebras vex. <a class="alert-link" href="#">Alert Link</a>.*@
-                            El Articulo se ha agregado al carrito con éxito.
-                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -749,11 +686,7 @@
                         </table>
                     </div>
 
-
-
                 </div>
-
-
 
             </div>
             <div class="modal-footer">
@@ -813,95 +746,281 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xs-7 col-md-7 col-lg-7">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                Buscador  <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td>
+                                            <input class="form-control" type="text" placeholder="Producto" value="" id="txtProdArt">
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaProducto()">
+                                                Buscar
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
+                                                Historia
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                @*<button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="dlgAddClients" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Alta de Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
                 <div class="row">
-                    <div class="col-4">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon2">Cantidad</span>
-                            <input type="text" id="Addcantidad" name="Addcantidad" class="form-control" placeholder="Cantidad de producto" aria-describedby="basic-addon2">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <div class="alert alert-warning" id="divMsjAddClient">
+                            No se encontro ningun resultado para la busqueda. <b>Para dar de alta un nuevo cliente, llenar el siguiente formulario.</b>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="row">
                     <div class="col-xs-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             <label>E-Mail </label>
-                            <input type="email" id="txtCteEamil" placeholder="miemail@soriana.com" class="form-control" maxlength="100" />
+                            <input type="email" id="txtCteEamil"  class="form-control" maxlength="100" />
+                   
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label>Nombre </label>
+                            <input type="text" id="txtCteNombre" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Apellido Paterno </label>
+                            <input type="text" id="txtCteApPaterno" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Apellido Materno </label>
+                            <input type="text" id="txtCteApMaterno" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Alias de la Dirección </label>
+                            <input type="text" id="txtCteNomDir" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 col-md-2 col-lg-2">
+                        <div class="form-group">
+                            <label>Código Postal </label>
+                            <input type="text" id="txtCteCp" class="form-control" maxlength="5" min="0" />
+                        </div>
+                    </div>
+                    <div class="col-xs-5 col-md-3 col-lg-4">
+                        <div class="form-group">
+                            <label>Estado </label>
+                            <select id="ddlCteEstado" class="form-control" disabled></select>
+                            @*<input type="text" id="ddlCteEstado" class="form-control" disabled maxlength="100" />*@
+                        </div>
+                    </div>
+                    <div class="col-xs-5 col-md-3 col-lg-4">
+                        <div class="form-group">
+                            <label>Ciudad </label>
+                            <input type="text" id="txtCteCiudad" class="form-control" disabled maxlength="100" />
+                        </div>
+                    </div>
 
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Colónia </label>
+                            @*<input type="text" id="txtCteColonia" class="form-control" maxlength="100" />*@
+                            <select id="ddlCteColonia" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Calle </label>
+                            <input type="text" id="txtCteCalle" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Número Exterior </label>
+                            <input type="text" id="txtCteNumExt" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Número Interior </label>
+                            <input type="text" id="txtCteNumInt" class="form-control" maxlength="100" />
                         </div>
                     </div>
 
                 </div>
 
+                <div class="row">
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>Teléfono </label>
+                            <input type="text" id="txtCteTelefono" class="form-control" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="addProduct2()" data-dismiss="modal">Agregar</button>
+                <button type="button" class="btn btn-primary" onclick="AddClient()">Agregar</button>
             </div>
         </div>
     </div>
 </div>
-
-</div>
-
-
-
-
-
-<div class="modal fade bd-example-modal-xl" id="dlgHistorial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-xl" id="dlgListClients" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5>Historial del Cliente</h5>
+                <h5>Busqueda de Cliente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" id="divHistorialOrd">
-                    <div class="col-xs-12 col-md-12 col-lg-12">
-                        <table class="table table-striped table-bordered table-hover" id="tblHistorial">
-                            <thead class="bg-danger-sor center-block">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table id="tblConsultaCte" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                            <thead class="bg-danger-sor">
                                 <tr>
-                                    <th>Orden</th>
-                                    <th>Fecha</th>
-                                    <th>Importe</th>
-                                    <th>Puntos Obtenidos</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido Paterno</th>
+                                    <th>Apellido Materno</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Dirección</th>
+                                    <th name="accion"></th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
-
                     </div>
-                </div>
-                <div id="divHistorialDetalle">
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    @*<button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>*@
+                    <button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 
-<input id="add_product" name="add_product" value="1" style="visibility:hidden" />
 
+<input id="add_product" name="add_product" value="1" style="visibility:hidden" />
+<input id="add_Obs" name="add_product" value="0" style="visibility:hidden" />
 <input id="add_description" name="add_description" value="1" style="visibility:hidden" />
 <input id="add_price" name="add_price" value="1" style="visibility:hidden" />
 <input id="add_price_dsco" name="add_price_dsco" value="1" style="visibility:hidden" />
+<input id="TotalOrden" name="TotalOrden" value="0" style="visibility:hidden" />
 
 @section scripts {
 
+    <style>
+        .required {
+            position: absolute;
+            margin-left: -10px;
+            color: #FB0000;
+            font-size: 15px;
+        }
+    </style>
     <link href="~/Content/Inspinia/Styles/steps/jquery.steps.css" rel="stylesheet" />
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
 
     <script>
+        function xml() {
+            var tda = $("#ddlTdas").val();
+            alert(tda);
+
+            return false;
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("XMl", "CallCenter")',
+                    data: {
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //
+                        if (json.Success) {
+
+
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+        }
+
+        var _jsonProductsSelected = [];
+        var _jsonObservaciones = [];
+        var _countObservaciones = 1;
+        var _descripcion = undefined;
+        var _barcode = undefined;
+        var _precio = undefined;
+        var _cantidad = undefined;
+        var _Sku = undefined;
+        var _descuento = 0;
+        var _precioO = 0;
+        var _SalesUnit = "";
+
+
+
+
+
         $(document).ready(function () {
-            setTimeout(function () {
-                $("#divOkArt").fadeOut(1500);
-            }, 2000);
+
             GetCategorias();
 
             GetEstados();
@@ -1090,7 +1209,7 @@
                     "scrollY": "400px",
                     "scrollCollapse": true,
                     "paging": false
-                    , "order": [[2, "asc"]]
+
 
                 }
             );
@@ -1130,15 +1249,8 @@
             );
 
 
-            $('#tblHistorial').DataTable({
-                "order": [[1, "desc"]]
-                //, columnDefs: [
-                //    { className: 'text-right', targets: [2, 3] },
-                //    { className: 'text-center', targets: [0] }
-                //]
-            });
-
             $("#wizard").steps({
+                    supressPaginationOnFocus: false,
                 labels: {
                     current: "current step:",
                     pagination: "Pagination",
@@ -1336,7 +1448,6 @@
                                                 , json.resp.id_Num_Sku
                                                 , json.resp.Cve_UnVta
                                                 , json.resp.CostoEnvio
-                                                ,1
                                             )
 
                                             return true;
@@ -1439,7 +1550,7 @@
 
                     }
                 ,onFinished: function (event, currentIndex) {
-                    alert('ya acabe');
+                    Finalizar();
                 }
             });
 
@@ -1452,9 +1563,189 @@
 
         });
 
+        function toggleButton(buttonId, enable) {
+            if (enable) {
+                // Enable disabled button
+                var button = $("#wizard").find('a[href="#' + buttonId + '-disabled"]');
+                button.attr("href", '#' + buttonId);
+                button.parent().removeClass();
+            }
+            else {
+                // Disable enabled button
+                var button = $("#wizard").find('a[href="#' + buttonId + '"]');
+                button.attr("href", '#' + buttonId + '-disabled');
+                button.parent().addClass("disabled");
+            }
+        }
+
+        $(function () {
+            $('input:radio[name="rdoMetodoPago"]').change(function () {
+                if ($(this).val() == 'efectivo') {
+                    $("#in_pago").val('0.00');
+                    $("#in_vales").val('0.00');
+                    $("#in_pago").prop('disabled', false);
+                    $("#in_vales").prop('disabled', false);
+
+                } else {
+                    $("#in_pago").val('0.00');
+                    $("#in_vales").val('0.00');
+                    $("#in_pago").prop('disabled', true);
+                    $("#in_vales").prop('disabled', true);
+                }
+            });
+        });
+
+        var delayTimer;
+        function input(ele) {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(function () {
+                if (ele.value == "") {
+                    ele.value = 0;
+                }
+                ele.value = parseFloat(ele.value).toFixed(2).toString();
+            }, 1100);
+        }
+
+        function inputCar(ele) {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(function () {
+                if (ele.value == "") {
+                    ele.value = 0;
+                } else {
+                    //alert(ele.value);
+                    //alert(parseFloat(ele.value).toFixed(2).toString().length);
+                    if (parseFloat(ele.value).toFixed(2).toString().length > 8 ) {
+                        ele.value = 1;
+                    }
+                }
+
+
+                ele.value = parseFloat(ele.value).toFixed(2).toString();
+            }, 1100);
+        }
+
+        function Finalizar() {
+
+            toggleButton("finish", false);
+            var products = new Array();
+            var observaciones = new Array();
+
+
+            $("#tblResumen TBODY TR").each(function () {
+                var row = $(this);
+                var product = {};
+
+                row.find("td:eq(0) input[type='hidden']").each(function () {
+                    var id=   $(this).attr('id');
+                    if (id.includes("sku"))
+                    {
+                        product.Id_Num_Sku = $(this).val();
+                    } else if (id.includes("codBar") )
+                    {
+                        product.Num_CodBarra = $(this).val();
+                    } else
+                    {
+                        product.Precio_VtaNormal = $(this).val();
+                    }
+                })
+                product.Desc_art = row.find("TD").eq(0).html().replace("'", '');
+                product.Cant_Unidades = row.find("TD").eq(1).html();
+                product.Cve_UnVta = row.find("TD").eq(2).html();
+                //product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
+                product.Precio_VtaOferta = row.find("TD").eq(3).html().replace('$', '');
+                product.Dcto = 0;//row.find("TD").eq(1).html();
+                product.obs = row.find("TD").eq(5).html();
+                products.push(product);
+            });
+
+            $("#tblBusquedaArt TBODY TR").each(function () {
+                var row1 = $(this);
+                var observacion = {};
+
+
+                observacion.Desc_CarObs = row1.find("TD").eq(0).html();
+                observaciones.push(observacion);
+            });
+
+            var _idCliente = $("#hddIdCliente").val();
+            var _diaEnt = $("#ddlDias").val();
+            var _horaEnt = $("#ddlHoras").val();
+            var _metodoEnt = $("input:radio[name=rdoMetodoEntrega]:checked").val()
+            var _metodoPago = $("input:radio[name=rdoMetodoPago]:checked").val()
+            var _efectivo = $("#in_pago").val();
+            var _vales = $("#in_vales").val();
+            var _tda = $("#ddlTdas").val();
+
+            var Calle = $("#rec_calle").val();
+            var Nom_DirCTe = $("#rec_name").val();
+            var Num_Ext = $("#rec_num").val();
+            var Num_Int = $("#rec_nunInt").val();
+            var Ciudad = $("#rec_ciudad").val();
+            var Cod_Postal = $("#rec_CP").val();
+            var Colonia = $("#rec_col").val();
+            var Telefono = $("#rec_tel").val();
+
+            var Ids_Num_Edo = $("#ddlRec_Estado").val();
+            var _idDirPrinCte = $("#hddIdDirCteUpd").val();
+
+            //Send the JSON array to Controller using AJAX.
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("FinalizarOrden", "CallCenter")',
+
+                data: JSON.stringify(
+                    {
+                        arts: products,
+                        carObs:observaciones,
+                        idCliente: _idCliente,
+                        diaEnt: _diaEnt,
+                        horaEnt: _horaEnt,
+                        metodoEnt: _metodoEnt,
+                        metodoPago: _metodoPago,
+                        efectivo: _efectivo,
+                        vales: _vales,
+                        tda: _tda,
+
+                        Calle: Calle,
+                        Nom_DirCTe: Nom_DirCTe,
+                        Num_Ext: Num_Ext,
+                        Num_Int: Num_Int,
+                        Ciudad: Ciudad,
+                        Cod_Postal: Cod_Postal,
+                        Colonia: Colonia,
+                        Telefono: Telefono,
+                        Ids_Num_Edo: Ids_Num_Edo,
+                        idDirPrinCte:_idDirPrinCte
+                    }
+                ),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    if (r.Success) {
+                        alert(r.Message);
+                        location.reload();
+                    } else {
+                        alert(r.Message);
+                    }
+                }
+                , complete: function () {
+                    //Ajax request is finished, so we can enable
+                    //the button again.
+                    toggleButton("finish", true);
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+        }
+
         function cargaTdas() {
 
-
+            if ($('#txtCp').val() == "") {
+                $('#txtCp').focus();
+                return;
+            }
             $.ajax({
                         "url": "@Url.Action("TiendasCP", "CallCenter")",
                         "type": "get",
@@ -1476,17 +1767,102 @@
 
         }
 
+        function CargaSeleccionaProducto() {
+
+
+
+            if ($("#txtProdArt2").val().length == 0) {
+                $("#txtProdArt2").focus();
+                return;
+            }
+
+            var tda = $("#ddlTdas").val()
+            var categoria = $("#ddlCategorias").val();
+            debugger;
+            $.ajax({
+                "url": "@Url.Action("GetProduct", "CallCenter")",
+                "type": "get",
+                "data": {
+                    product: document.getElementById("txtProdArt2").value,
+                    tienda: tda,
+                    categoria: categoria
+                },
+
+                "dataType": "json",
+                "success": function (data) {
+                    debugger;
+                    if (data.Success) {
+                        debugger;
+                        var myTable = $('#tblBusquedaSeleccionar').DataTable();
+                        var nCant = 0;
+                        myTable
+                            .clear()
+                            .draw();
+
+                        if (data.data != null) {
+                            for (var i = 0; i < data.data.length; i++) {
+                                var inp;
+                                if (data.data[i].SalesUnit == 'pza') {
+                                    inp = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48'  min='1' step='1' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
+                                } else {
+                                    inp = "<input  oninput='inputCar(this)'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
+                                }
+
+                                var precio = parseFloat(data.data[i].Price).toFixed(2);
+                                var precioO = parseFloat(data.data[i].PromotionalPrice).toFixed(2);
+
+                                if (precioO == 0) { precioO = precio; }
+                                var desc = parseFloat(precio - precioO).toFixed(2);
+                                //onkeypress="return event.charCode >= 48" min="1"
+                                myTable.row.add([
+
+                                    data.data[i].Barcode,
+                                    data.data[i].Description,
+                                    data.data[i].Brand.BrandDescription,
+                                    precioO,
+                                    precio,
+                                    desc,
+                                    "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
+                                    inp,//"<input  onkeypress='return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
+                                    data.data[i].SalesUnit,
+                                    "<a  title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\""
+                                    + data.data[i].Description.replace("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price //replaceall
+                                    + "\",\"" + data.data[i].Sku
+                                    + "\",\"" + data.data[i].SalesUnit
+                                    + "\",\"" + precioO
+                                    + "\",\"" + data.data[i].desc       + "\")'>Agregar Prodcuto</a>"
+                                ]).draw();
+                            }
+                        } else {
+
+                            if (document.getElementById("txtProdArt2").value.length != 0) {
+                                alert("No se encontraron productos para la busqueda realizada.");
+                            }
+                                //$('#tblBusquedaSeleccionar').dataTable({
+                                //    "language": {
+                                //        "infoEmpty": "No entries to showssssssss"
+                                //    }
+                                //});
+
+                        }
+
+
+
+                    } else {
+                        alert(data.Message);
+                            }
+                        }
+                    });
+        }
+
+
         function CargaProducto() {
+            $("#dlgBuscador").modal("hide");
+            if ($('#txtProdArt').val() == "") {
+                $('#txtProdArt').focus();
+                return;
+            }
 
-            $("#exampleModal").modal("show");
-
-
-            //imgProduct
-            //document.getElementById("imgProduct").src = "https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/BGBD_STG/on/demandware.static/-/Sites-soriana-grocery-master-catalog/default/dw4f7cd627/images/product/7501022133286-A.jpg";
-
-            $('#tblBusquedaArt2 > tbody').empty();
-            document.getElementById("Addcantidad").value = "";
-            //tblBusquedaArt
             $.ajax({
                         "url": "@Url.Action("GetProduct", "CallCenter")",
                         "type": "get",
@@ -1494,39 +1870,46 @@
 
                         "dataType": "json",
                         "success": function (data) {
-                            //var options = "";
-                            //$.each(data, function (index, value) {
-                            //    options += '<option value="' + value.id + '">' + value.nombre + '</option>';
+                            var myTable = $('#tblBusquedaArt2').DataTable();
+                            var nCant = 0;
+                            myTable
+                                .clear()
+                                .draw();
+                            for (var i = 0; i < data.data.length; i++) {
+
+
+                                myTable.row.add([
+
+                                    data.data[i].Barcode,
+                                    data.data[i].Description,
+                                    data.data[i].Company,
+                                    data.data[i].Price,
+                                    data.data[i].Price,
+                                    data.data[i].PromotionalPrice,
+                                    "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">"
+                                    //"<input type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
+                                    //"<button title='Agregar Producto' onclick='addProduct3(" + '$("nCant-' + data.data[i].Barcode + "\"))' type='button' class='btn btn-white btn-circle'> <i class='fa fa-check'></i></button>"
+                                ]).draw();
+                            }
+
+                            $("#exampleModal").modal("show");
+
+                            //$.each(data.data, function (index, value) {
+                            //    $('#feedback').append("<tr><td>" + value.Barcode + "</td>"
+                            //        + "<td>" + value.Description + "</td>"
+                            //        + "<td>" + value.Company + "</td>"
+                            //        + "<td>" + value.Price + "</td>"
+                            //        + "<td>" + value.Price + "</td>"
+                            //        + "<td>" + value.PromotionalPrice + "</td><td>"
+                            //        + "<div class=\"col-xs-2 col-md-2 col-lg-2\">"
+                            //        + "<img width='100' height='100' id=\"imgProduct2\" src=\" " + value.UrlImage + " \" class=\"img - lg\">"
+                            //        + "</div>"
+                            //        + "</td>"
+                            //        + "<td>" + value.Price + "</td>"
+                            //        + "<td>" + value.Price + "</td>"
+                            //        + "</tr>");
+                            //    document.getElementById("imgProduct2").src = value.UrlImage;
                             //});
-                            //$("#cmbTda").html(options);
-
-                            //$("#cmbTda option[value=" + 0 + "]").attr("selected", true);
-                            //$('#csdc_tipoequipo option:not(:selected)').attr('disabled', true);
-
-                            debugger;
-
-                            $.each(data.data, function (index, value) {
-                                
-
-                                $('#feedback').append("<tr><td>" + value.Barcode + "</td>"
-                                    + "<td>" + value.Description + "</td>"
-                                    + "<td>" + value.Company + "</td>"
-                                    + "<td>" + value.Price + "</td>"
-                                    + "<td>" + value.Price + "</td>"
-                                    + "<td>" + value.PromotionalPrice + "</td><td>"
-                                    + "<div class=\"col-xs-2 col-md-2 col-lg-2\">"
-                                    + "<img id=\"imgProduct2\" src=\" " + value.UrlImage + " \" class=\"img - lg\">"
-                                    + "</div>"
-
-                                    + "</td></tr>");
-
-                                document.getElementById("imgProduct2").src = value.UrlImage;
-
-                            });
-
-
-                            
-
 
                             //document.getElementById("add_product").value = data.data.Barcode;
                             //document.getElementById("add_description").value = data.data.Description;
@@ -1544,6 +1927,9 @@
             document.getElementById("txtProdArt").focus();
             document.getElementById('btnBuscar').disabled = false;
         }
+        function DeleteProduct(barcode) {
+            var cantidad = $("#productCant-" + barcode).val();
+            var item = _jsonProductsSelected.find(x => x.barcode === barcode);
 
             let _index = _jsonProductsSelected.indexOf(item);
             if (_index > -1) {
@@ -1606,16 +1992,9 @@
                 //$("#dlgAgregarProductoComentario").modal("show");
                 ConfirmarProduct();
                 //$("#dlgSeleccionar").modal("hide");
-
-                $("#divOkArt").show();
-                setTimeout(function () {
-                    $("#divOkArt").fadeOut(1000);
-                }, 1000);
             }
-
-
         }
-        function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO, cant) {
+        function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO) {
             debugger;
 
 
@@ -1623,7 +2002,7 @@
                 _descripcion = descripcion.replace("|", "'"); //replaceall
                 _barcode = barcode;
                 _precio = parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                _cantidad = cant;
+                _cantidad = 1;
                 _Sku = sku;
                 _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _SalesUnit = SalesUnit;
@@ -1843,25 +2222,165 @@
         }
 
 
-        function buscarCliente() {
-            $('#divVerificaCliente').hide();
-            $('#divBuscaCliente').hide();
-            $('#divResultClient').show();
+        function BuscarCliente() {
+            //$('#divVerificaCliente').hide();
+            //$('#divBuscaCliente').hide();
+            //$('#divResultClient').show();
+            $('#divbuttonAddClient').hide();
+            $('#divgridClientes').hide();
+
+            var param = $('#txtBuscarCte').val();
+
+            //if (parm == 'Juan Perez')
+            //    $('#divgridClientes').show();
+            //else
+            //    $('#divbuttonAddClient').show();
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("BuscarCliente", "CallCenter")',
+                data: {
+                    Criterio: param
+
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+                        if (json.existe) {
+                            $('#divgridClientes').show();
+                            var myTable = $('#tblBusquedaCliente').DataTable();
+                            var nCant = 0;
+                            myTable
+                                .clear()
+                                .draw();
+                            for (var i = 0; i < json.resp.length; i++) {
+
+
+                                myTable.row.add([
+
+                                    json.resp[i].Nom_Cte + ' ' + json.resp[i].Ap_Paterno + ' ' + json.resp[i].Ap_Materno,
+                                    json.resp[i].Id_Email,
+                                    json.resp[i].Direccion,
+                                    json.resp[i].Telefono,
+                                    "<a title='Click para Seleccionar el Cliente' class='link-primary' onclick='SelCte(\""
+                                    + json.resp[i].Id_Email + "\"," + json.resp[i].Id_Cnsc_DirCTe+")'>Seleccionar Cliente</a>"
+                                ]).draw();
+                            }
+                        }
+                        else {
+                            $('#divbuttonAddClient').show();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+
+        function SelCte(mail,idcte) {
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("VerificaCliente", "CallCenter")',
+                data: {
+                    Criterio: mail,
+                    Id_Cnsc_DirCTe: idcte
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+                        if (json.existe) {
+                            LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
+                            $('#divVerificaCliente').hide();
+                            $('#divBuscaCliente').hide();
+                            $('#divResultClient').show();
+                            $("#dlgListClients").modal("hide");
+                            $('#divgridClientes').hide();
+                            $("#dlgBuscadorCliente").modal("hide");
+                        }
+                        else {
+                            popAddClient();
+                            $("#divMsjAddClient").show();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
         }
 
         function VerificaCliente() {
-            $('#divVerificaCliente').hide();
-            $('#divBuscaCliente').hide();
-            $('#divResultClient').show();
+            //$('#divVerificaCliente').hide();
+            //$('#divBuscaCliente').hide();
+            //$('#divResultClient').show();
+
+
+
+            var parm = $('#txtVerificaC').val();
+            if (parm.length == 0) {
+                $('#txtVerificaC').focus();
+                return;
+            }
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("VerificaCliente", "CallCenter")',
+                data: {
+                    Criterio: parm
+
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+                        if (json.existe) {
+                            LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
+                            $('#divVerificaCliente').hide();
+                            $('#divBuscaCliente').hide();
+                            $('#divResultClient').show();
+
+                        }
+                        else {
+                            popAddClient();
+                            $("#divMsjAddClient").show();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
         }
+
         function NuevaBusqueda() {
+
+            $('#txtVerificaC').val('');
             $('#divVerificaCliente').show();
             $('#divBuscaCliente').show();
             $('#divResultClient').hide();
+            $('#txtVerificaC').focus();
         }
 
         function popAddClient() {
-
+          
             $("txtCteEamil").prop('disabled', false);
             $("#txtCteNombre").val('');
             $("#txtCteApPaterno").val('');
@@ -1875,7 +2394,7 @@
             $("#ddlCteColonia").val("0");
             $("#txtCteTelefono").val('');
             $("#txtCteEamil").val('');
-
+           
 
             $("#hddIdCliente").val('0');
             $("#hddIdDirCteUpd").val('0');
@@ -1892,89 +2411,6 @@
 
         function popBuscarClient() {
             $("#dlgBuscadorCliente").modal("show");
-        }
-
-        function popHistorial() {
-
-                        var _Id_Num_Cte = $("#hddIdCliente").val();
-              $.ajax({
-                async: false,
-                type: "GET",
-                url: '@Url.Action("GetHistorial", "CallCenter")',
-                data: {
-
-                    Id_Num_Cte: _Id_Num_Cte
-
-                },
-                datatype: "html",
-                success: function (json) {
-
-                    if (json.Success) {
-
-
-                        var myTable = $('#tblHistorial').DataTable();
-
-
-
-
-                        myTable
-                            .clear()
-                            .draw();
-                        for (var i = 0; i < json.resp.length; i++) {
-
-                            myTable.row.add([
-
-                                "<td stryle='text-align: center;'><a title='Click para Seleccionar la Orden' class='link-primary' onclick='SelOrdHist(\""
-                                + json.resp[i].UeNo + "\")'>"+ json.resp[i].UeNo +"</a></td>",
-                                json.resp[i].OrderDate,
-                                json.resp[i].Imp_Pago,
-                                "0"
-                            ]).draw();
-                        }
-
-
-                        $('#divHistorialDetalle').hide();
-                        $('#divHistorialOrd').show();
-                        $("#dlgHistorial").modal("show");
-                    }
-                    else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                   alert(errorThrown);
-
-                }
-            });
-        }
-
-        function regresarHist(){
-            $('#divHistorialDetalle').hide();
-            $('#divHistorialOrd').show();
-        }
-
-        function SelOrdHist(UeNo) {
-                          $.ajax({
-                async: false,
-                type: "GET",
-                url: '@Url.Action("HistorialDetalle", "CallCenter")',
-                data: {
-
-                    UeNo: UeNo
-
-                },
-                datatype: "html",
-                              success: function (data) {
-                            $('#divHistorialOrd').hide();
-                            $("#divHistorialDetalle").html(data);
-                            $("#divHistorialDetalle").show();
-
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                   alert(errorThrown);
-
-                }
-            });
         }
 
         function AddClient() {
@@ -2485,37 +2921,7 @@
                 });
         }
 
-        function EcharCarrito(UeNo) {
-            var _tda = $("#ddlTdas").val();
-            $.ajax({
-                "url": "@Url.Action("EcharCarrito", "CallCenter")",
-                async:false,
-                "type": "get",
-                "data": {
-                 UeNo: UeNo,
-                 tienda: _tda
-             },
-                "dataType": "json",
-                "success": function (data)
-                {
-                    if (data.resp != null) {
-                        for (var i = 0; i < data.resp.length; i++) {
-                            var precio = parseFloat(data.resp[i].Price).toFixed(2);
-                            var precioO = parseFloat(data.resp[i].PromotionalPrice).toFixed(2);
-                            if (precioO == 0) {
-                                precioO = precio;
-                            }
-
-                            AddFlete(data.resp[i].Description, data.resp[i].Barcode, precio, data.resp[i].Sku, data.resp[i].SalesUnit, precioO, 1)
-
-                        }
-                        $("#dlgHistorial").modal("hide");
-                    } else {
-                        alert("No se encontraron productos para la tienda seleccionada.");
-                    }
-                }
-            });
-        }
+      
     </script>
 
 }

@@ -6,8 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ServicesManagement.Web.DAL.Actualizaciones;
 using ServicesManagement.Web.Helpers;
+using ServicesManagement.Web.DAL.Actualizaciones;
 using ServicesManagement.Web.Models.DTO;
 using System.Configuration;
 using System.Web.Script.Serialization;
@@ -15,6 +15,7 @@ using Microsoft.ServiceBus.Messaging;
 using RestSharp;
 using NPOI.SS.UserModel;
 using ServicesManagement.Web.Models.Config;
+using ExcelDataReader;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -115,7 +116,7 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult InsertaArchivo(string ArchivoCSV)
+        public ActionResult InsertaArchivo_old(string ArchivoCSV)
         {
             try
             {
@@ -140,9 +141,9 @@ namespace ServicesManagement.Web.Controllers
                         fileExcel[3], fileExcel[4], bitInsertDMOk);
                 }
 
-                SupplierStockDto supplierStockDto = CreateMessage(fileExcel);
+                //SupplierStockDto supplierStockDto = CreateMessage(fileExcel);
 
-                SendMessage(supplierStockDto);
+                //SendMessage(supplierStockDto);
 
                 var result = new { Success = true, resp = readString };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -156,6 +157,94 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult InsertaArchivo(HttpPostedFileBase ArchivoCSV)
+        {
+            try
+            {
+                int idSupWH = int.Parse(Request.Form["idSupWH"].ToString());
+                int idSupWCode = int.Parse(Request.Form["idSupWCode"].ToString());
+                decimal stockL = decimal.Parse(Request.Form["stockL"].ToString());
+                decimal stockCod = decimal.Parse(Request.Form["stockCod"].ToString());
+                string StockDate = Request.Form["StockDate"].ToString();
+                string StockTime = Request.Form["StockTime"].ToString();
+                //var fileData = GetDataFromFileGetDataFromFileExcel(importFile.InputStream);
+
+                //string[] fileExcel = readString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                //int elemFile = fileExcel.Length;
+
+                var insEnc = DALActualizaciones.SuppliersWHStockHeader_iUP(idSupWH, idSupWCode,
+                    stockL, stockCod, StockDate, StockTime);
+
+                var delInv = DALActualizaciones.SuppliersWHStockDetail_dUP(idSupWH, idSupWCode);
+                var delDMInv = DALActualizaciones.up_Corp_Vendor_Del_Inventario(idSupWH, idSupWCode);
+
+                var readString = GetDataFromFileExcel(ArchivoCSV.InputStream, idSupWH, idSupWCode, StockDate, StockTime);
+                var dt = readString.ToDataTable();
+
+                SupplierStockDto supplierStockDto = CreateMessage(dt, idSupWH, idSupWCode, stockL, stockCod, StockDate, StockTime);
+
+                SendMessage(supplierStockDto);
+
+                var result = new { Success = true, resp = "Carga exitosa!" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private List<ProductStock> GetDataFromFileExcel(Stream stream, int idSupWH, int idSupWCode, string StockDate, string StockTime)
+        {
+            var List = new List<ProductStock>();
+            try
+            {
+                using (var reader = ExcelReaderFactory.CreateCsvReader(stream))
+                {
+                    var dataSet = reader.AsDataSet(new ExcelDataSetConfiguration
+                    {
+                        ConfigureDataTable = _ => new ExcelDataTableConfiguration
+                        {
+                            UseHeaderRow = false // To set First Row As Column Names    
+                        }
+                    });
+
+                    if (dataSet.Tables.Count > 0)
+                    {
+                        var dataTable = dataSet.Tables[0];
+                        foreach (DataRow objDataRow in dataTable.Rows)
+                        {
+                            if (objDataRow.ItemArray.All(x => string.IsNullOrEmpty(x?.ToString()))) continue;
+                            if (objDataRow.ItemArray[0].ToString() == "DETAIL")
+                            {
+                                List.Add(new ProductStock()
+                                {
+                                    barCode = Convert.ToDecimal(objDataRow[1].ToString()),
+                                    stockLvl = Convert.ToDecimal(objDataRow[2].ToString()),
+                                    qtyStkS = Convert.ToDecimal(objDataRow[3].ToString()),
+                                    qtyStkFSale = 0,
+                                    qtyStkRsrvd = Convert.ToDecimal(objDataRow[4].ToString())
+                                });
+                                var insDMInv = DALActualizaciones.up_Corp_Vendor_Ins_Inventario(idSupWH, idSupWCode, Convert.ToDecimal(objDataRow[1].ToString()), Convert.ToDecimal(objDataRow[2].ToString()),
+                                    Convert.ToDecimal(objDataRow[4].ToString()), 0, Convert.ToDecimal(objDataRow[3].ToString()), StockDate, StockTime);
+                                int bitInsertDMOk = insDMInv.Tables[0].Rows[0][0].ToString() == "OK" ? 1 : 0;
+                                var insInv = DALActualizaciones.SuppliersWHStockDetail_iUP(idSupWH, idSupWCode, Convert.ToDecimal(objDataRow[1].ToString()), Convert.ToDecimal(objDataRow[2].ToString()),
+                                    Convert.ToDecimal(objDataRow[4].ToString()), 0, Convert.ToDecimal(objDataRow[3].ToString()), StockDate, StockTime, bitInsertDMOk);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return List;
+        }
         private void SendMessage(SupplierStockDto supplierStockDto)
         {
             var json = new JavaScriptSerializer().Serialize(supplierStockDto);
@@ -168,30 +257,32 @@ namespace ServicesManagement.Web.Controllers
             queueClient.Send(message);
         }
 
-        private SupplierStockDto CreateMessage(string[] fileExcel)
+        private SupplierStockDto CreateMessage(DataTable dataTable, int idSupWH, int idSupWCode, decimal stockL, decimal stockCod, string StockDate, string StockTime)
         {
             SupplierStockDto supplierStockDto = new SupplierStockDto();
 
-            supplierStockDto.idSupWH = int.Parse(fileExcel[1]);
-            supplierStockDto.idSupWCode = int.Parse(fileExcel[2]);
-            supplierStockDto.stockL = int.Parse(fileExcel[fileExcel.Length - 1]);
-            supplierStockDto.stockCod = int.Parse(fileExcel[fileExcel.Length - 2]);
-            supplierStockDto.StockDate = fileExcel[3];
-            supplierStockDto.StockTime = fileExcel[4];
+            supplierStockDto.idSupWH = idSupWH;
+            supplierStockDto.idSupWCode = idSupWCode;
+            supplierStockDto.stockL = stockL;
+            supplierStockDto.stockCod = stockCod;
+            supplierStockDto.StockDate = StockDate;
+            supplierStockDto.StockTime = StockTime;
 
             supplierStockDto.Stock = new List<ProductStock>();
 
-            for (int i = 7; i + 9 <= fileExcel.Length; i = i + 5)
+            foreach (DataRow objDataRow in dataTable.Rows)
             {
-                ProductStock productStock = new ProductStock();
-                productStock.barCode = decimal.Parse(fileExcel[i - 1]);
-                productStock.stockLvl = int.Parse(fileExcel[i]);
-                productStock.qtyStkS = int.Parse(fileExcel[i + 2]);
-                productStock.qtyStkFSale = 0;
-                productStock.qtyStkRsrvd = int.Parse(fileExcel[i + 1]);
+                if (objDataRow.ItemArray.All(x => string.IsNullOrEmpty(x?.ToString()))) continue;
+                    ProductStock productStock = new ProductStock();
+                    productStock.barCode = Convert.ToDecimal(objDataRow[0].ToString());
+                    productStock.stockLvl = Convert.ToDecimal(objDataRow[1].ToString());
+                    productStock.qtyStkS = Convert.ToDecimal(objDataRow[3].ToString());
+                    productStock.qtyStkFSale = 0;
+                    productStock.qtyStkRsrvd = Convert.ToDecimal(objDataRow[4].ToString());
 
-                supplierStockDto.Stock.Add(productStock);
+                    supplierStockDto.Stock.Add(productStock);
             }
+
             return supplierStockDto;
         }
 

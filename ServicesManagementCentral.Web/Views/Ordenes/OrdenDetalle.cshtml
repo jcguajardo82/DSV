@@ -58,7 +58,7 @@
                         <select class="form-control" id="Id_TipoFolio" name="Id_TipoFolio">
                             <option selected="selected" value="1">--Elegir Surtidor--</option>
                             @{
-                                if (Session["listS"] != null)
+                                if (Session["listS"] != null & Session["StatusDescription"].ToString() != "Orden Cancelada")
                                 {
                                     System.Data.DataSet ds = (System.Data.DataSet)Session["listS"];
                                     var dt = ds.Tables[0];
@@ -80,7 +80,7 @@
                                 var dt = ds.Tables[0];
                                 foreach (System.Data.DataRow p in dt.Rows)
                                 {
-                                    if (p["Unperm_info"].ToString().Trim() == "1")
+                                    if (p["Unperm_info"].ToString().Trim() == "1" & Session["StatusDescription"].ToString() != "Orden Cancelada")
                                     {
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                     }
@@ -97,9 +97,18 @@
                         </div>
                     </div>
                     <div class="col-sm-2 col-md-2 col-lg-2">
-                        <button type="button" id="btnAsignaSurtidor" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
-                            Cambiar Surtidor
-                        </button>
+                        @if (Session["StatusDescription"].ToString() != "Orden Cancelada")
+                        {
+                            <button type="button" id="btnAsignaSurtidor" class="btn btn-primary block full-width m-b" onclick="clickLogin()">
+                                Cambiar Surtidor
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" id="btnAsignaSurtidor" class="btn btn-primary block full-width m-b" disabled onclick="clickLogin()">
+                                Cambiar Surtidor
+                            </button>
+                        }
                     </div>
                     <div class="col-sm-2 col-md-2 col-lg-2">
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#" onclick="printdiv('div_print');" style="padding-bottom: 4px;margin-bottom: 10px;margin-top: 2px;"><i class="fa fa-print"></i> </a>
@@ -149,10 +158,10 @@
                                                 @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
                                             </span><br>
                                             @*<span>
-                                                <strong>
-                                                    <a onclick="popActulizaHora(@p["OrderNo"])" class="nav-link">Fecha Entrega:</a>
-                                                </strong> @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
-                                            </span>*@
+                                                    <strong>
+                                                        <a onclick="popActulizaHora(@p["OrderNo"])" class="nav-link">Fecha Entrega:</a>
+                                                    </strong> @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
+                                                </span>*@
                                             <input type="hidden" value="@p["isPickingManual"].ToString().ToUpper()" id="hddCheckMovil" />
                                         </p>
                                         <span>Surtidor:</span>
@@ -974,4 +983,3 @@
         }
     </script>
 }
-

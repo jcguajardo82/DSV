@@ -40,7 +40,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
 
         }
 
-        public static DataSet SuppliersWHStock_sUP(int idSupplierWH, int idSupplierWHCode)
+        public static DataSet SuppliersWHStock_sUP(int idSupplierWH, int idSupplierWHCode, bool aprobados)
         {
 
             DataSet ds = new DataSet();
@@ -58,6 +58,7 @@ namespace ServicesManagement.Web.DAL.Almacenes
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@idSupplierWH", idSupplierWH);
                 parametros.Add("@idSupplierWHCode", idSupplierWHCode);
+                parametros.Add("@aprobados", aprobados);
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[common].[SuppliersWHStock_sUP]", false, parametros);

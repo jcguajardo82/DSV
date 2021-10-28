@@ -165,7 +165,7 @@
                                                                     <tr>
                                                                         <td>
                                                                             <h5>Dirección:</h5>
-                                                                            <small>@p["Address1"] , @p["Address2"] </small>
+                                                                            <small>@p["DeliveryAddress"] </small>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -179,6 +179,17 @@
                                                                             <h5>Forma de pago:</h5>
                                                                             <small>
                                                                                 <FONT face=verdana,arial,helvetica size=2>@p["MethodPayment"] </FONT>
+                                                                                @switch (@p["MethodPaymentID"].ToString())
+                                                                                {
+
+                                                                                    case "2":
+                                                                                    case "5":
+                                                                                    case "6":
+                                                                                        <p>Efectivo: $@p["CashPay"].ToString() -- Vales:  $@p["VouchersPay"].ToString() </p>
+                                                                                        break;
+
+                                                                                }
+
                                                                             </small>
                                                                         </td>
                                                                     </tr>
@@ -209,7 +220,8 @@
                                                                         </td>
                                                                         <td style="text-align: left;">
                                                                             <small>
-                                                                                <b>@p["OrderDeliveryDate"]</b>
+                                                                                <b>@p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()</b>
+
                                                                             </small>
                                                                         </td>
                                                                     </tr>
@@ -315,7 +327,8 @@
                                                                         <td>
                                                                             <h5>Identificación del cliente:</h5>
                                                                             <small>
-                                                                                @p["IdReceive"]
+                                                                                @*@p["IdReceive"]*@
+                                                                                @p["NameReceive"]
                                                                             </small>
                                                                         </td>
                                                                     </tr>
@@ -324,6 +337,14 @@
                                                                             <h5>Observaciones:</h5>
                                                                             <small>
                                                                                 @p["Comments"]
+                                                                            </small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Coordenadas de la Entrega:</h5>
+                                                                            <small>
+                                                                                @p["Coordenadas"]
                                                                             </small>
                                                                         </td>
                                                                     </tr>

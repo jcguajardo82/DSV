@@ -52,7 +52,7 @@
                                     }
                                 }
                                 <!-- se comenta pues esta por hacerse -->
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>
+                                @*<li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>*@
                             </ul>
                             <div class="tab-content">
                                 <div role="tabpanel" id="tab-1" class="tab-pane active">
@@ -392,7 +392,7 @@
                                         </div>
                                     }
                                 }
-                                <div role="tabpanel" id="tab-3" class="tab-pane">
+                                @*<div role="tabpanel" id="tab-3" class="tab-pane">
                                     <div class="panel-body">
                                         <div class="tableFixHead table-responsive m-t">
                                             <table id="tblDescargaGuia" class="table invoice-table">
@@ -479,7 +479,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     }
@@ -978,7 +978,7 @@
         $.ajax({
             async: false,
             type: "POST",
-            url: '@Url.Action("FinalizarEmbarque", "Ordenes")',
+            url: '@Url.Action("FinalizarEmbarqueDSV", "Ordenes")',
             data: {
                 //num: id
 

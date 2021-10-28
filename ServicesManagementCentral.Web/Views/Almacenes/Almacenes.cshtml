@@ -20,6 +20,7 @@
                         <th>Dias Transcurridos</th>
                         <th>Fecha de Ultima Actualización</th>
                         <th name='accion'>Cantidad de Codigos</th>
+                        <th>Cantidad de Codigos No Aprobados</th>
                         @*<th name='accion'></th>*@
                     </tr>
                 </thead>
@@ -332,10 +333,13 @@
             $("#dlgDesHabilitar").modal('toggle');
         }
 
-        function PopInv(noProveedor, noAlmacen){
+        function PopInv(noProveedor, noAlmacen, aprobado){
 
            $("#dlgInventarios").modal('toggle');
+            var _aprobado = false;
 
+            if (aprobado == 1)
+                _aprobado = true;
 
             $.ajax({
                 async: false,
@@ -343,7 +347,8 @@
                 url: '@Url.Action("GetSuppliersWHStock", "almacenes")',
                 data: {
                     idSupplierWH: noProveedor,
-                    idSupplierWHCode: noAlmacen
+                    idSupplierWHCode: noAlmacen,
+                    aprobado: _aprobado
                 },
 
                 datatype: "json",
@@ -479,13 +484,14 @@
                             else { tr.append("<td><p>SI</p></td>");}
                             tr.append("<td>" + json.resp[i].TipoAlmacen + "</td>");
                             tr.append("<td>" + json.resp[i].noAlmacen + "</td>");
-                            tr.append("<td><a title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].nombreAlmacen + "</a></td>");
+                            tr.append("<td>" + json.resp[i].nombreAlmacen + "</td>");
                             tr.append("<td><a title='Click para ver contactos del Almacen' class='link-primary' onclick='PopContacts(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].noProveedor + "</a></td>");
                             //tr.append("<td>" + json.resp[i].noProveedor + "</td>");
                             tr.append("<td><a href='AltaProveedor/AltaProveedor?idSupplierWH=" + json.resp[i].noProveedor + "&idSupplierWHCode=" + json.resp[i].noAlmacen + "' title='Click para ir al proveedor' class='link-primary' >" + json.resp[i].nombreProv + "</td>");
                             tr.append("<td>" + json.resp[i].diasTrans + "</td>");
                             tr.append("<td>" + json.resp[i].FechaStock + "</td>");
-                            tr.append("<td>" + json.resp[i].NumCodigos + "</td>");
+                            tr.append("<td><a title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ",1)'>" + json.resp[i].NumCodigos + "</a></td>");
+                            tr.append("<td><a title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ",2)'>" + json.resp[i].NumCodigosNoApr + "</a></td>");
                             //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
                             //AltaProveedor/AltaProveedor
 

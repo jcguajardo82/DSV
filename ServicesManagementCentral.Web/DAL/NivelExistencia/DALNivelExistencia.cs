@@ -7,9 +7,9 @@ namespace ServicesManagement.Web.DAL.NivelExistencia
 {
     public class DALNivelExistencia
     {
-        public static DataSet upCorpOMS_Cns_UeNoStockLevels(DateTime FecIni,DateTime FecFin, int IdOwner, int IdTienda)
+        public static DataSet upCorpOMS_Cns_UeNoStockLevels(DateTime? FecIni,DateTime? FecFin, int? IdOwner, int? IdTienda)
         {
-
+            // update - 2021-09-23
             DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];

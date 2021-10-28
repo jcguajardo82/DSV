@@ -74,6 +74,7 @@
                     return;
                 }
                 var HeaderFec = fileExcel[3];
+                var HeaderTime = fileExcel[4];
                 var TrailerFec = fileExcel[elemExcel - 3];
                 if (HeaderFec != TrailerFec) {
                     alert("Los campos Fecha no coinciden!");
@@ -96,14 +97,24 @@
                     return;
                 }
 
+                var files = $("#docInv").get(0).files;
+
+                var formData = new FormData();
+                formData.append('ArchivoCSV', files[0]);
+                formData.append('idSupWH', HeaderProv);
+                formData.append('idSupWCode', HeaderAlm);
+                formData.append('stockL', TrailerSum);
+                formData.append('stockCod', TrailerTotCod);
+                formData.append('StockDate', HeaderFec);
+                formData.append('StockTime', HeaderTime);
+
                 $.ajax({
                     async: false,
-                    type: "GET",
+                    type: "POST",
                     url: '@Url.Action("InsertaArchivo", "Actualizaciones")',
-                    data: {
-                        ArchivoCSV: document.getElementById('docInvout').innerHTML
-                    },
-                    datatype: "html",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
                     success: function (json) {
                         debugger;
                         if (json.Success) {

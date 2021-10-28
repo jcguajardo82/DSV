@@ -20,5 +20,6 @@ namespace ServicesManagement.Web.Models.Almacenes
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public string FechaStock { get; set; }
         public int NumCodigos { get; set; }
+        public int NumCodigosNoApr { get; set; }
     }
 }

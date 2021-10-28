@@ -57,10 +57,10 @@ namespace ServicesManagement.Web.Controllers
             {
                 DataSet ds;
                 
-                if (code.Equals("STC") || code.Equals("EMB"))
+                //if (code.Equals("STC") || code.Equals("EMB"))
                     ds = DALServicesM.GetDimensionsByProduct(productId);
-                else
-                    ds = DALServicesM.GetShipmentPackingWMSByCode(code);
+                //else
+                //    ds = DALServicesM.GetShipmentPackingWMSByCode(code);
                 List<ProductDimensionsModel> listC = DataTableToModel.ConvertTo<ProductDimensionsModel>(ds.Tables[0]);
                 var result = new { Success = true, json = listC };
                 return Json(result, JsonRequestBehavior.AllowGet);

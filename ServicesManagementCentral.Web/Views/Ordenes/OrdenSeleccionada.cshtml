@@ -548,6 +548,14 @@
 
         $(document).ready(function () {
             //GetSuetidores();
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const _ueno = urlParams.get('Ueno');
+
+            if (_ueno != null) {
+                alert('La orden ' + _ueno + ' no es valida para ser consultada.');
+            }
+
             var values = [];
 
             $(".cbx").click(function () {

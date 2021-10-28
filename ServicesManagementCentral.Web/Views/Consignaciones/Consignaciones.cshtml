@@ -57,6 +57,7 @@
                         <th>Estatus del pedido Envio</th>
                         <th>No. de orden de compra (DSV)</th>
                         <th>Estatus de Orden de Compra (DSV)</th>
+                        <th>Transportista</th>
                         <th>No. Guía</th>
                         <th>Vigencia Guía</th>
                         @* <th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
@@ -183,7 +184,7 @@
                 success: function (json) {
                     if (json.Success) {
 
-
+                        $("h4.modal-title").text("Detalle del Pedido - " + Consignacion);
                         var table = $('#tblInventarios').DataTable();
 
                         table.clear().draw();
@@ -279,6 +280,7 @@
                                 json.resp[i].EstatusConsignacionEntrega,
                                 json.resp[i].NroOrdenCompra,
                                 json.resp[i].EstatusOrdenCompra,
+                                json.resp[i].Transportista,
                                 json.resp[i].GuiaEnvio,
                                 json.resp[i].GuiaVig,
                        

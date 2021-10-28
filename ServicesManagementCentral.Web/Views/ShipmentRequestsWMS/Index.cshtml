@@ -80,6 +80,7 @@
         var _jsonOrdenes = [];
         var _jsonPackings = [];
         var _optionsPackings = undefined;
+        var _uccWithPDF = [];
         $(document).ready(function () {
             Get();
             GetPackings();
@@ -98,7 +99,7 @@
                         console.log(json);
                         for (var i = 0; i < json.json.length; i++) {
                             let _obj = {};
-                            _obj.id = json.json[i].IdCnscPacking + '-' + json.json[i].IdPackingCode;
+                            _obj.id = json.json[i].idCnscPacking + '-' + json.json[i].IdPackingCode;
                             _obj.text = json.json[i].IdPackingType;
                             _obj.ancho = json.json[i].PackageWidth;
                             _obj.largo = json.json[i].PackageLength;
@@ -123,7 +124,9 @@
                 , error: function (jqXHR, textStatus, errorThrown) {
                     bootbox.alert(errorThrown);
                 }
-            });
+             });
+
+            console.log(_jsonPackings, _optionsPackings);
         }
         function ShowFilter() {
             $("#filter").collapse('toggle');
@@ -283,63 +286,28 @@
                 //alert('Guardarrr');
 
                 console.log(jsonConfirm);
-                for (var i = 0; i < jsonConfirm.length; i++) {
-                    var items = new Array();
-                    var products = new Array();
-                    var _UeNo = jsonConfirm[i].ueNo;
-                    var _OrderNo = jsonConfirm[i].orderNo;
-
-                    var item = {};
-
-                    item.Tipo = jsonConfirm[i].tipoEmpaque;
-                    item.Peso = jsonConfirm[i].peso;
-                    item.Largo = jsonConfirm[i].largo;
-                    item.Ancho = jsonConfirm[i].ancho;
-                    item.Alto = jsonConfirm[i].alto;
-
-                    items.push(item);
-
-                    var product = {};
-                    product.Barcode = jsonConfirm[i].barcode;
-                    product.ProductId = jsonConfirm[i].productId;
-                    product.ProductName = '000000000';
-                    product.product = {};
-                    products.push(product);
-
-                    var _ucc = jsonConfirm[i].ucc;
                     //Send the JSON array to Controller using AJAX.
                         $.ajax({
                             type: "POST",
-                            url: '@Url.Action("AddEmbalaje", "Ordenes")',
+                            url: '@Url.Action("AddEmbalajePendiente", "Ordenes")',
                             data: JSON.stringify({
-                                Paquetes: items,
-                                UeNo: _UeNo,
-                                OrderNo: _OrderNo,
-                                Products: products,
-                                contentType: _ucc
+                                Paquetes: jsonConfirm
 
-                                // Paquetes, string UeNo, int OrderNo,
                             }),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (json) {
-                                if (json.Success) {
-                                    console.log(jsonConfirm);
-                                    UCCProcessed(_ucc);
-                                    //alert(json.resp);
-                                }
-                                else {
+                                if (json.Success)
+                                    location.reload();
+                                else
                                     alert(json.Message);
-                                }
                             }
                             , error: function (jqXHR, textStatus, errorThrown) {
                                 alert(errorThrown);
 
                             }
                         });
-
-                }
-                location.reload();
+                
             }
             else
                 alert('Los datos estan Incompletos');
@@ -381,7 +349,7 @@
             var _alto;
             var _peso;
             _json = [];
-            if (_code == 'EMB' || _code == 'STC') {
+            //if (_code == 'EMB' || _code == 'STC') {
                 $.ajax({
                     async: false,
                     type: "GET",
@@ -393,23 +361,32 @@
                     datatype: "html",
                     success: function (json) {
                         if (json.Success) {
-                            _ancho = json.json[0].ANCHO;
-                            _largo = json.json[0].LARGO;
-                            _alto = json.json[0].ALTO;
-                            _peso = json.json[0].PESO;
+                            if(_code == 'EMB' || _code == 'STC') {
+                                _ancho = json.json[0].ANCHO;
+                                _largo = json.json[0].LARGO;
+                                _alto = json.json[0].ALTO;
+                                _peso = json.json[0].PESO;
+                            }
+                            else {
+                                var valores = _jsonPackings.find(x => x.id == selectVal);
+                                _ancho = valores.ancho;
+                                _largo = valores.largo;
+                                _alto = valores.alto;
+                                _peso = json.json[0].PESO;
+                            }
                         }
                     }
                     , error: function (jqXHR, textStatus, errorThrown) {
                         bootbox.alert(errorThrown);
                     }
                 });
-            } else {
-                var valores = _jsonPackings.find(x => x.id == selectVal);
-                _ancho = valores.ancho;
-                _largo = valores.largo;
-                _alto = valores.alto;
-                _peso = valores.peso;
-            }
+            //} else {
+            //    var valores = _jsonPackings.find(x => x.id == selectVal);
+            //    _ancho = valores.ancho;
+            //    _largo = valores.largo;
+            //    _alto = valores.alto;
+            //    _peso = valores.peso;
+            //}
 
             for (var x = 0; x < jsonCopy.length; x++) {
                 let _obj = {};

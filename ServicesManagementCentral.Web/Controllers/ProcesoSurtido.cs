@@ -153,7 +153,7 @@ namespace ServicesManagement.Web.Controllers
             try
             {
 
-                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_FinalizarSurtido"];
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_FinalizarSurtidoDSV"];
                 System.Data.DataSet d = DALServicesM.GetOrdersByOrderNo(UeNo);
                 string status = string.Empty, store = string.Empty;
                 foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
@@ -218,9 +218,8 @@ namespace ServicesManagement.Web.Controllers
 
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"], "", json2);
-
-
+                //Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"], "", json2);
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtidoDSV"], "", json2);
 
 
                 var result = new { Success = true, Message = "Alta exitosa" };
