@@ -1683,32 +1683,13 @@ namespace ServicesManagement.Web.Controllers
         //    }
         //}
 
-        public ActionResult TieneCobertura(int tienda, string codigopostal)
+        public int TieneCobertura(int tienda, string codigopostal)
         {
-            try
-            {
 
-                var ListP = DALCallCenter.upCorpOms_Cns_CoberturaTienda(tienda, codigopostal;
+            int puede = DALCallCenter.upCorpOms_Cns_CoberturaTienda(tienda, codigopostal);
 
-                var result = new
-                {
-                    Success = true
-                      ,
-                    resp = ListP
-                };
+            return puede;
 
-                return Json(result, JsonRequestBehavior.AllowGet);
-
-            }
-
-            catch (Exception x)
-
-            {
-
-                var result = new { Success = false, Message = x.Message };
-                return Json(result, JsonRequestBehavior.AllowGet);
-
-            }
         }
 
         public ActionResult GetCategorias()
@@ -1749,19 +1730,21 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult GetFlete(int StoreNum)
+        public ActionResult GetFlete(int StoreNum, string CodigoPostal)
         {
             try
             {
-
-                var ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
-
+                int puede = int.Parse(TieneCobertura(StoreNum, CodigoPostal).ToString());
+                if (puede == 1)
+                {
+                    var ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
+                }
 
                 var result = new
                 {
                     Success = true
                       ,
-                    resp = ListP
+                    resp = puede
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
