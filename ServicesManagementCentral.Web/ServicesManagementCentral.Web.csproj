@@ -3886,6 +3886,7 @@
     <Content Include="Views\NotificacionesSis\NotificacionSis.cshtml" />
     <Content Include="Views\ShipmentRequestsWMS\EnviosProcesados.cshtml" />
     <Content Include="Views\ReportesPDP\EstatusPayment.cshtml" />
+    <Content Include="Views\CallCenter\HistorialDetalle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
