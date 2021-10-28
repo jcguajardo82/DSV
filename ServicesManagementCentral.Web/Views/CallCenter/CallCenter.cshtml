@@ -4,6 +4,8 @@
 
 
 }
+
+
 <div id="spinner">
     <img src="~/Content/images/spinner-icon-gif-24.gif" style="display:none;" id="imgSpiner" />
 </div>
@@ -52,11 +54,8 @@
 <div class="row" style="padding-bottom:50px;">
     <div class="col-xs-12 col-md-12 col-lg-12">
         <div class="ibox ">
-            <div class="ibox-content" id="ibox1">
-                <div class="sk-spinner sk-spinner-double-bounce">
-                    <div class="sk-double-bounce1"></div>
-                    <div class="sk-double-bounce2"></div>
-                </div>
+            <div class="ibox-content">
+
                 <div id="wizard">
                     <h3>Seleccionar Cliente</h3>
                     <section>
@@ -649,10 +648,21 @@
                                 <table style="width:100%;">
                                     <tr>
                                         <td>
-                                            <input class="form-control" type="text" placeholder="Producto" value="" id="txtProdArt2">
+                                            @*<input class="form-control" type="text" placeholder="Producto" value="" id="txtProdArt2">*@
+                                            <form id="form1" runat="server">
+
+                                                <input type="text" id="txtProdArt2" placeholder="Buscar..." class="form-control" />
+
+                                                <div id="divTags" class="panel panel-default" style="position: absolute; z-index: 999; background: rgb(255, 255, 255);  height: 200px; width: 98%; overflow: auto; display: none;">
+                                                    <table class="table">
+                                                        <tbody id="output" style='cursor: pointer'>
+                                                    </table>
+                                                </div>
+
+                                            </form>
                                         </td>
                                         <td style="text-align:center;">
-                                            <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaSeleccionaProducto()">
+                                            <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaSeleccionaProducto('')">
                                                 Buscar
                                             </button>
                                         </td>
@@ -1016,6 +1026,110 @@
 <input id="TotalOrden" name="TotalOrden" value="0" style="visibility:hidden" />
 
 @section scripts {
+
+   @* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+    <script>
+
+        $(document).ready(function () {
+
+            $("#txtProdArt2").on("keyup", function () {
+
+                if (this.value.length > 0) {
+
+                    //let SearchObject = {
+                    //    product: $("#txtProdArt2").val()
+                    //    , tienda: $("#ddlTdas").val()
+                    //}
+
+                    $.ajax({
+
+                        type: "POST",
+
+                        "url": "@Url.Action("AutoComplete", "CallCenter")",
+
+                        data: JSON.stringify({
+                            product: $("#txtProdArt2").val()
+                            , tienda: $("#ddlTdas").val()
+                        }),
+
+                       
+
+                        contentType: "application/json; charset=utf-8",
+
+                        dataType: "json",
+
+                        beforeSend: function () {
+
+                            $("#divTags").show();
+
+                        },
+
+                        success: function (data) {
+
+                            if (data.data.length == 0) {
+                                $("#divTags").hide();
+                            }
+                            else {
+                                //data = JSON.parse(data.data)
+                                output = "";
+                                for (var i = 0; i < data.data.length; i++) {
+                                    output += "<tr><td  class='select'><img width='50px' height='60px' src=" + data.data[i].UrlImg + " /></td> <td class='select' id='srch-" + data.data[i].Barcode + "'>" + data.data[i].Description + "</td></tr></br>";
+                                }
+                                //let output = data.map(i => "<tr><td class='select'><img width='50px' height='60px' src=" + i.Barcode + " /></td> <td class='select'>" + i.Description + "</td></tr></br>");
+
+                                $("#output").html(output);
+                            }
+
+                        },
+
+                        error: function (errorMessage) {
+
+                            $("#divTags").hide();
+
+                            alert(errorMessage)
+
+                        },
+
+                        complete: function () {
+
+
+
+                        }
+
+                    });
+
+                } else {
+                    $("#divTags").hide();
+                }
+
+            })
+
+
+
+            $(document).on("click", ".select", function () {
+
+                if ($(this).html() != "") {
+                    var id = $(this).attr('id');
+                    var barCode = id.split("-");
+                  
+                    $("#txtProdArt2").val($(this).html());
+                    CargaSeleccionaProducto(barCode[1])
+                    $("#txtProdArt2").val('');
+                }
+
+                else {
+
+                    $("#txtProdArt2").val('');
+
+                }
+
+                $("#divTags").hide();
+
+            });
+
+        });
+
+    </script>
 
 
     <style>
@@ -1781,7 +1895,15 @@
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("FinalizarOrden", "CallCenter")',
+                beforeSend: function () {
+                    $("#imgSpiner").css("display", "block");
+                    document.getElementById("spinner").classList.add("show");
+                },
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
 
+                },
                 data: JSON.stringify(
                     {
                         arts: products,
@@ -1823,6 +1945,8 @@
                     toggleButton("finish", true);
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
                     alert(errorThrown);
 
                 }
@@ -1856,33 +1980,38 @@
 
         }
 
-        function CargaSeleccionaProducto() {
+        function CargaSeleccionaProducto(param) {
 
+            $("#divTags").hide();
+            if (param.length == 0) {
+                param = $("#txtProdArt2").val();
+            }
 
-            if ($("#txtProdArt2").val().length == 0) {
+            if (param.length == 0) {
                 $("#txtProdArt2").focus();
                 return;
             }
 
+           
             var tda = $("#ddlTdas").val()
             var categoria = $("#ddlCategorias").val();
 
 
 
             $.ajax({
-                beforeSend: function () { 
+                beforeSend: function () {
                     $("#imgSpiner").css("display", "block");
                     document.getElementById("spinner").classList.add("show");
                 },
-                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.                
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
                     document.getElementById("spinner").classList.remove("show");
                     $("#imgSpiner").css("display", "none");
-                   
+
                 },
                 "url": "@Url.Action("GetProduct", "CallCenter")",
                 "type": "get",
                 "data": {
-                    product: document.getElementById("txtProdArt2").value,
+                    product: param,
                     tienda: tda,
                     categoria: categoria
                 },
@@ -1929,72 +2058,7 @@
                     document.getElementById("spinner").classList.remove("show");
 
 
-                    //if (data.Success) {
-                    //    debugger;
-                    //    var myTable = $('#tblBusquedaSeleccionar').DataTable();
-                    //    var nCant = 0;
-                    //    myTable
-                    //        .clear()
-                    //        .draw();
-
-                    //    if (data.data != null) {
-
-                    //        for (var i = 0; i < data.data.length; i++) {
-                    //            var inp;
-                    //            if (data.data[i].SalesUnit == 'pza') {
-                    //                inp = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48'  min='1' step='1' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
-                    //            } else {
-                    //                inp = "<input  oninput='inputCar(this)'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
-                    //            }
-
-                    //            var precio = parseFloat(data.data[i].Price).toFixed(2);
-                    //            var precioO = parseFloat(data.data[i].PromotionalPrice).toFixed(2);
-
-                    //            if (precioO == 0) { precioO = precio; }
-                    //            var desc = parseFloat(precio - precioO).toFixed(2);
-                    //            //onkeypress="return event.charCode >= 48" min="1"
-                    //            myTable.row.add([
-
-                    //                data.data[i].Barcode,
-                    //                data.data[i].Description,
-                    //                data.data[i].Brand.BrandDescription,
-                    //                precioO,
-                    //                precio,
-                    //                desc,
-                    //                "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
-                    //                inp,//"<input  onkeypress='return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
-                    //                data.data[i].SalesUnit,
-                    //                "<a  title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\""
-                    //                + data.data[i].Description.replace("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price //replaceall
-                    //                + "\",\"" + data.data[i].Sku
-                    //                + "\",\"" + data.data[i].SalesUnit
-                    //                + "\",\"" + precioO
-                    //                + "\",\"" + data.data[i].desc       + "\")'>Agregar Prodcuto</a>"
-                    //            ]).draw();
-                    //        }
-
-                    //        if (data.data.length == 0) {
-                    //            alert("No se encontraron productos para la busqueda realizada.");
-                    //        }
-                    //    } else {
-
-                    //        if (document.getElementById("txtProdArt2").value.length != 0 || data.data.length==0) {
-                    //            alert("No se encontraron productos para la busqueda realizada.");
-                    //        }
-                    //            //$('#tblBusquedaSeleccionar').dataTable({
-                    //            //    "language": {
-                    //            //        "infoEmpty": "No entries to showssssssss"
-                    //            //    }
-                    //            //});
-
-                    //    }
-
-
-
-                    //} else {
-                    //    alert(data.Message);
-                    //        }
-                    //
+                 
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
                     document.getElementById("spinner").classList.remove("show");
@@ -2384,9 +2448,10 @@
         }
 
         function seleccionarProducto() {
+            $("#divTags").hide();
             $("#txtProdArt2").val("");
             $("#tblBuscador").html('');
-            CargaSeleccionaProducto();
+            CargaSeleccionaProducto('');
             $("#dlgSeleccionar").modal("show");
         }
         function addProduct2() {
@@ -2414,21 +2479,24 @@
 
 
         function BuscarCliente() {
-            //$('#divVerificaCliente').hide();
-            //$('#divBuscaCliente').hide();
-            //$('#divResultClient').show();
+          
             $('#divbuttonAddClient').hide();
             $('#divgridClientes').hide();
 
             var param = $('#txtBuscarCte').val();
 
-            //if (parm == 'Juan Perez')
-            //    $('#divgridClientes').show();
-            //else
-            //    $('#divbuttonAddClient').show();
 
             $.ajax({
-                async: false,
+                beforeSend: function () {
+                    $("#imgSpiner").css("display", "block");
+                    document.getElementById("spinner").classList.add("show");
+                },
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+
+                },
+                //async: false,
                 type: "GET",
                 url: '@Url.Action("BuscarCliente", "CallCenter")',
                 data: {
@@ -2469,7 +2537,9 @@
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(errorThrown);
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+                    alert(errorThrown);
 
                 }
             });
@@ -2602,6 +2672,7 @@
         }
 
         function popBuscarClient() {
+            $("#txtBuscarCte").val('');
             $("#dlgBuscadorCliente").modal("show");
         }
 
