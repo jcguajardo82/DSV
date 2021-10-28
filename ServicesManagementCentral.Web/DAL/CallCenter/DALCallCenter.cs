@@ -512,7 +512,40 @@ namespace ServicesManagement.Web.DAL.CallCenter
         #endregion
 
         #region Alta Pedido
+        public static int upCorpOms_Cns_CoberturaTienda(int id_num_UN, string cp)
+        {
+            DataSet ds = new DataSet();
+            int puede = 0;
 
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@id_num_UN", id_num_UN);
+                parametros.Add("@cp", cp);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_CoberturaTienda]", false, parametros);
+                puede = int.Parse(ds.Tables[0].Rows[0][0].ToString());
+                return puede;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public static DataSet DirCte_iUp(
             int Id_Num_Cte, int Id_Num_DirTipo, int Ids_Num_Edo,
             string Calle, string Nom_DirCTe, string Num_Ext, string Num_Int,
