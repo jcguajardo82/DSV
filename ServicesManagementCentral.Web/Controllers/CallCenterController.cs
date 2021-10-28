@@ -1752,6 +1752,174 @@ namespace ServicesManagement.Web.Controllers
             }
 
         }
+
+
+        public ActionResult GetHistorial(int Id_Num_Cte)
+        {
+            try
+            {
+
+                var ListP = DataTableToModel.ConvertTo<Historial>(DALCallCenter.HistorialOrdenes_sUP(Id_Num_Cte).Tables[0]);
+
+
+                var result = new
+                {
+                    Success = true
+                      ,
+                    resp = ListP
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
+        public ActionResult HistorialDetalle(string UeNo = "")
+        {
+            try
+            {
+
+                var orden = new HistorialOrden();
+
+                if (!string.IsNullOrEmpty(UeNo.Trim()))
+                {
+                    var ds = DALServicesM.GetOrdersByOrderNo(UeNo);
+
+
+
+                    orden = DataTableToModel.ConvertTo<HistorialOrden>(ds.Tables[0]).FirstOrDefault();
+                    //ds.Tables[5];
+                    orden.ArtNoSurtidos = DataTableToModel.ConvertTo<HistorialOrdenArt>(ds.Tables[5]);
+                    orden.ArtSurtidos = DataTableToModel.ConvertTo<HistorialOrdenArt>(ds.Tables[4]);
+                    orden.Totales = DataTableToModel.ConvertTo<HistorialTotales>(ds.Tables[6]).FirstOrDefault();
+                }
+
+                var result = new
+                {
+                    Success = true
+                      ,
+                    orden = orden
+                };
+
+                //return View("HistorialDetalle", orden);
+                return PartialView("HistorialDetalle", orden);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
+        public ActionResult EcharCarrito(string UeNo, string tienda)
+        {
+            try
+            {
+
+                List<ResponseBuscadorModel> productos = new List<ResponseBuscadorModel>();
+
+
+                var ds = DALServicesM.GetOrdersByOrderNo(UeNo);
+
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
+                var urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
+                var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
+
+                //orden.ArtNoSurtidos = DataTableToModel.ConvertTo<HistorialOrdenArt>(ds.Tables[5]);
+                //orden.ArtSurtidos = DataTableToModel.ConvertTo<HistorialOrdenArt>(ds.Tables[4]);
+                foreach (DataRow item in ds.Tables[5].Rows)
+                {
+
+
+                    string product = item["Barcode"].ToString();
+                    var url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
+
+
+
+                    var client = new RestClient(url);
+
+
+
+                    client.Timeout = -1;
+                    var request = new RestRequest(Method.POST);
+                    IRestResponse response = client.Execute(request);
+
+
+
+                    var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+
+                    if (response1 != null)
+                    {
+                        response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
+                    }
+
+                    productos.Add(response1.FirstOrDefault());
+                }
+                foreach (DataRow item in ds.Tables[4].Rows)
+                {
+
+
+                    string product = item["Barcode"].ToString();
+                    var url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
+
+
+
+                    var client = new RestClient(url);
+
+
+
+                    client.Timeout = -1;
+                    var request = new RestRequest(Method.POST);
+                    IRestResponse response = client.Execute(request);
+
+
+
+                    var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+
+                    if (response1 != null)
+                    {
+                        response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
+                    }
+
+                    productos.Add(response1.FirstOrDefault());
+                }
+
+
+
+                var result = new { Success = true, resp = productos };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
         #endregion
     }
 }
