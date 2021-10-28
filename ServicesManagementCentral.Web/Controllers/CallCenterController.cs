@@ -1683,7 +1683,33 @@ namespace ServicesManagement.Web.Controllers
         //    }
         //}
 
+        public ActionResult TieneCobertura(int tienda, string codigopostal)
+        {
+            try
+            {
 
+                var ListP = DALCallCenter.upCorpOms_Cns_CoberturaTienda(tienda, codigopostal;
+
+                var result = new
+                {
+                    Success = true
+                      ,
+                    resp = ListP
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
 
         public ActionResult GetCategorias()
         {
