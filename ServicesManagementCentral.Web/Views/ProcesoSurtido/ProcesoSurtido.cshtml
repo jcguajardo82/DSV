@@ -10,7 +10,7 @@
     <div class="dataTables_wrapper dt-bootstrap4 no-footer">
         <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center" ">
+                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
                     <h2>Proceso de Surtido</h2>
                 </div>
             </div>
@@ -661,14 +661,14 @@
                                 <td><input type="radio" checked="" value="Sobre" class="js-rate-type" id="optionsRadios1" name="optionsRadios"> Sobre</td>
                                 <td><input type="radio" value="Paquete" id="optionsRadios2" name="optionsRadios"> Paquete</td>
 
-                                <td><input type="text" class="form-control input-sm" placeholder="KG" id="txtKG" /></td>
+                                <td><input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0" class="form-control input-sm" placeholder="KG" id="txtKG" /></td>
 
-                                <td><input type="text" class="form-control input-sm" placeholder="Largo" id="txtLg" /></td>
+                                <td><input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0" class="form-control input-sm" placeholder="Largo" id="txtLg" /></td>
 
-                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" id="txtAn" /></td>
+                                <td><input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0" class="form-control input-sm" placeholder="Ancho" id="txtAn" /></td>
 
 
-                                <td><input type="text" class="form-control input-sm" placeholder="Alto" value="N/A" id="txtAltura" /></td>
+                                <td><input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0" class="form-control input-sm" placeholder="Alto" value="N/A" id="txtAltura" /></td>
                                 <td><input type="button" class="btn btn-primary" id="btnAdd" value="Agregar" /></td>
                             </tr>
                         </tfoot>
@@ -1081,11 +1081,32 @@
     }
 
         function popEmbalaje() {
-            $('#txtKG').val("");
-            $('#txtLg').val("");
-            $('#txtAn').val("");
-            $('#txtAltura').val("");
-            $('#dlgAddProdcut').modal('show');
+            var products = new Array();
+            //var i = 0;
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                    var product = {};
+                    row = $(this).closest("tr");
+                    var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
+                    product.Barcode = arrBarProd[0];
+                    product.ProductId = arrBarProd[1];
+                    product.ProductName = $(row)[0].cells[1].innerText;
+                    product.product = {};
+                    products.push(product);
+                }
+                //i++;
+            });
+            debugger;
+            if (products.length == 0) {
+                alert("Debe de seleccionar un artículo");
+            }
+            else {
+                $('#txtKG').val("");
+                $('#txtLg').val("");
+                $('#txtAn').val("");
+                $('#txtAltura').val("");
+                $('#dlgAddProdcut').modal('show');
+            }
         }
 
         function FinalizaEmbarqueDST() {
@@ -1604,7 +1625,8 @@
             });
             debugger;
             if (products.length == 0) {
-                alert("Debe de seleccionar un artículo")
+                alert("Debe de seleccionar un artículo");
+                return;
             }
 
 
