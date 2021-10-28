@@ -2963,8 +2963,6 @@
 
 }
 
-
-<div class="overlay"></div>
 <div class="row">
 
     <div class="col-xs-6 col-md-6 col-lg-6">
@@ -3595,9 +3593,6 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-7 col-md-7 col-lg-7">
-
-
-
                         <div class="ibox">
                             <div class="ibox-title">
                                 Buscador <div class="ibox-tools">
@@ -3607,9 +3602,6 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-
-
-
                                 <table style="width:100%;">
                                     <tr>
                                         <td>
@@ -3629,15 +3621,9 @@
                                             @*<input id="tags" class="ui-autocomplete-input" autocomplete="off">*@
                                         </td>
                                     </tr>
-
-
-
                                 </table>
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
                 <div class="row">
@@ -3646,6 +3632,7 @@
                             @* How quickly daft jumping zebras vex. <a class="alert-link" href="#">Alert Link</a>.*@
                             El Articulo se ha agregado al carrito con éxito.
                         </div>
+                        <div id="divLoading"></div>
                     </div>
                 </div>
                 <div class="row" id="tblBuscador">
@@ -3670,9 +3657,6 @@
                             </table>
                         </div>*@
                 </div>
-
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -3940,9 +3924,7 @@
             </div>
         </div>
     </div>
-
 </div>
-<div id="loader" class="lds-dual-ring hidden overlay"></div>
 <div class="modal fade bd-example-modal-xl" id="dlgHistorial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -3982,7 +3964,6 @@
 </div>
 
 
-
 <input id="add_product" name="add_product" value="1" style="visibility:hidden" />
 <input id="add_Obs" name="add_product" value="0" style="visibility:hidden" />
 <input id="add_description" name="add_description" value="1" style="visibility:hidden" />
@@ -3991,6 +3972,9 @@
 <input id="TotalOrden" name="TotalOrden" value="0" style="visibility:hidden" />
 
 @section scripts {
+
+
+
 
     <style>
         .required {
@@ -4053,6 +4037,10 @@
 
 
         $(document).ready(function () {
+
+
+
+
             setTimeout(function () {
                 $("#divOkArt").fadeOut(1500);
             }, 2000);
@@ -4355,8 +4343,10 @@
 
                     //REGRESA  CARRITO DE COMPRAS
                      if (currentIndex == 3 && newIndex == 2) {
-                         if ($("#hddCodBarFlete").val() != "0") {
-                             DeleteProduct($("#hddCodBarFlete").val());
+                         debugger;
+                         var codf = $("#hddCodBarFlete").val();
+                         if (codf.length != 0) {
+                             if (codf != "0") { DeleteProduct(codf) };
                          }
                         return true;
                     }
@@ -4382,8 +4372,9 @@
                             $("#rec_nunInt").val('');
                             $("#rec_col").val('');
                             $("#rec_CP").val('');
-                            if ($("#hddCodBarFlete").val() != "0") {
-                                DeleteProduct($("#hddCodBarFlete").val());
+                            var codf = $("#hddCodBarFlete").val();
+                            if (codf.length != 0) {
+                                if (codf != "0") { DeleteProduct(codf) };
                             }
                             $("#hddCodBarFlete").val('0');
 
@@ -4575,6 +4566,13 @@
 
 
         });
+
+        function ddlSustito(obj) {
+            alert(obj.value);
+            var value = obj.value;
+            obj.val = value;
+        }
+
 
         function toggleButton(buttonId, enable) {
             if (enable) {
@@ -4784,7 +4782,6 @@
         function CargaSeleccionaProducto() {
 
 
-
             if ($("#txtProdArt2").val().length == 0) {
                 $("#txtProdArt2").focus();
                 return;
@@ -4794,14 +4791,24 @@
             var categoria = $("#ddlCategorias").val();
 
 
-            debugger;
 
             $.ajax({
                 //beforeSend: function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
-                //    $('#loader').removeClass('hidden')
+                //    //$('#dlgLoading').modal('show');
+                //    //$('#tblBuscador').html('<div class="spinner-grow text-muted"></div>');
+                //    //$('#ibox1').children('.ibox-content').toggleClass('sk-loading');
+
+                //    //$('#divLoading').html('<div class="spinner-grow text-muted"></div>');
+                //    //$("#pleaseWaitDialog").modal('show');
+
+
+
                 //},
                 //complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
-                //    $('#loader').addClass('hidden')
+                //    //$('#dlgLoading').modal('hide');
+                //    //$('#ibox1').children('.ibox-content').toggleClass('sk-loading');
+                //    //$('#divLoading').html('')
+
                 //},
                 "url": "@Url.Action("GetProduct", "CallCenter")",
                 "type": "get",
@@ -4996,6 +5003,8 @@
         }
         function DeleteProduct(barcode) {
             var cantidad = $("#productCant-" + barcode).val();
+            var sus = $("#cSustituto-" + barcode).val();
+
             var item = _jsonProductsSelected.find(x => x.barcode === barcode);
 
             let _index = _jsonProductsSelected.indexOf(item);
@@ -5003,12 +5012,14 @@
                 _jsonProductsSelected.splice(_index, 1);
             }
 
+            item.sustituto = sus;
             llenarCarrito();
 
         }
         function Change(barcode) {
             var cantidad = $("#productCant-" + barcode).val();
             var comentario = $("#comment-" + barcode).val();
+            var sus = $("#cSustituto-" + barcode).val();
             var item = _jsonProductsSelected.find(x => x.barcode === barcode);
 
             //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
@@ -5016,6 +5027,7 @@
             item.quantity = cantidad;
             item.total = cantidad * item.precioO;
             item.comment = comentario;
+            item.sustituto = sus;
 
 
             console.log(_jsonProductsSelected);
@@ -5027,12 +5039,13 @@
             var cantidad = $("#productCant-" + barcode).val();
             var comentario = $("#comment-" + barcode).val();
             var item = _jsonProductsSelected.find(x => x.barcode === barcode);
-
+            var sus = $("#cSustituto-" + barcode).val();
             //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
 
             item.quantity = cantidad;
             item.total = cantidad * item.precioO;
             item.comment = comentario;
+            item.sustituto = sus;
 
             console.log(_jsonProductsSelected);
 
@@ -5085,7 +5098,7 @@
                 _Sku = sku;
                 _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _SalesUnit = SalesUnit;
-
+                _Sustituto = "No";
 
 
                 var item = _jsonProductsSelected.find(x => x.barcode === _barcode);
@@ -5107,6 +5120,7 @@
                 _obj.sku = _Sku;
                 _obj.SalesUnit = _SalesUnit;
                 _obj.precioO = _precioO;
+                _obj.sustituto = _Sustituto;
                 _jsonProductsSelected.push(_obj);
 
 
@@ -5179,7 +5193,7 @@
                       _jsonProductsSelected[i].SalesUnit,
                     "$" + totaArt,
                     "<input type='text' onchange='Change_2(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
-                    "<select class='form-control-sm' id='cSustituto-"+ _jsonProductsSelected[i].barcode +"'>"
+                    "<select onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' name='ddlDustituto' class='form-control' id='cSustituto-"+ _jsonProductsSelected[i].barcode +"'>"
                               +"<option value='Si'>Si</option>"
                               +"<option value='No'>No</option>"
                     +"</select>",
