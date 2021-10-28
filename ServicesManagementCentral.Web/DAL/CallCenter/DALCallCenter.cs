@@ -626,7 +626,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         
 
-        public static DataSet Email_uUp(int Id_Num_Cte, string Id_Email, string Cve_Acceso = "")
+        public static DataSet Email_uUp(int Id_Num_Cte, string Id_Email, string TarjetaLealtad, string Cve_Acceso = "")
         {
 
             DataSet ds = new DataSet();
@@ -645,6 +645,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 parametros.Add("@Id_Num_Cte", Id_Num_Cte);
                 parametros.Add("@Id_Email", Id_Email);
                 parametros.Add("@Cve_Acceso", Cve_Acceso);
+                parametros.Add("@TarjetaLealtad", TarjetaLealtad);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[Email_uUp]", false, parametros);
 
@@ -663,7 +664,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
 
-        public static DataSet Email_iUp(int Id_Num_Cte, string Id_Email, string Cve_Acceso = "")
+        public static DataSet Email_iUp(int Id_Num_Cte, string Id_Email, string TarjetaLealtad, string Cve_Acceso = "")
         {
 
             DataSet ds = new DataSet();
@@ -682,6 +683,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 parametros.Add("@Id_Num_Cte", Id_Num_Cte);
                 parametros.Add("@Id_Email", Id_Email);
                 parametros.Add("@Cve_Acceso", Cve_Acceso);
+                parametros.Add("@TarjetaLealtad", TarjetaLealtad);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[carrito].[Email_iUp]", false, parametros);
 
