@@ -4,7 +4,9 @@
 
 
 }
-
+<div id="spinner">
+    <img src="~/Content/images/spinner-icon-gif-24.gif" style="display:none;" id="imgSpiner" />
+</div>
 <div class="row">
 
     <div class="col-xs-6 col-md-6 col-lg-6">
@@ -1016,7 +1018,40 @@
 @section scripts {
 
 
+    <style>
+        /* (A) FULL SCREEN WRAPPER */
+        #spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            width: 100vw;
+            height: 100vh;
+            /*background: rgba(0, 0, 0, 0);*/
+            transition: opacity 0.2s;
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.7) !important;
+        }
 
+            /* (B) CENTER LOADING SPINNER */
+            #spinner img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%);
+            }
+
+        /* (C) SHOW & HIDE */
+        #spinner {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+            #spinner.show {
+                visibility: visible;
+                opacity: 1;
+            }
+    </style>
 
     <style>
         .required {
@@ -1835,23 +1870,15 @@
 
 
             $.ajax({
-                //beforeSend: function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
-                //    //$('#dlgLoading').modal('show');
-                //    //$('#tblBuscador').html('<div class="spinner-grow text-muted"></div>');
-                //    //$('#ibox1').children('.ibox-content').toggleClass('sk-loading');
-
-                //    //$('#divLoading').html('<div class="spinner-grow text-muted"></div>');
-                //    //$("#pleaseWaitDialog").modal('show');
-
-
-
-                //},
-                //complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
-                //    //$('#dlgLoading').modal('hide');
-                //    //$('#ibox1').children('.ibox-content').toggleClass('sk-loading');
-                //    //$('#divLoading').html('')
-
-                //},
+                beforeSend: function () { 
+                    $("#imgSpiner").css("display", "block");
+                    document.getElementById("spinner").classList.add("show");
+                },
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.                
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+                   
+                },
                 "url": "@Url.Action("GetProduct", "CallCenter")",
                 "type": "get",
                 "data": {
@@ -1898,7 +1925,8 @@
 
                         }
                     );
-
+                    $("#imgSpiner").css("display", "none");
+                    document.getElementById("spinner").classList.remove("show");
 
 
                     //if (data.Success) {
@@ -1967,6 +1995,12 @@
                     //    alert(data.Message);
                     //        }
                     //
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+                    alert(errorThrown);
+
                 }
                     });
         }
