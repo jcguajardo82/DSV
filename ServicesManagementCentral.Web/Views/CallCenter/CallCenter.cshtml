@@ -164,7 +164,7 @@
                                     </ul>
                                 </p>
                                 <div class="input-group">
-                                    <input type="text" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                                    <input type="text" id="txtVerificaC" value="jreyes@itech.com.mx" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
                                         <button type="button" class="btn btn-primary" onclick="VerificaCliente()">
                                             Verificar
                                         </button>
@@ -251,9 +251,13 @@
                     <section>
                         @*<input id="flagCarrito" name="flagCarrito" value="1" style="visibility:hidden" />*@
                         <div class="row">
-                            <div class="col-10"></div>
-                            <div class="col-2">
-                                <button type="button" onclick="addProduct()" style="visibility:visible;" class="btn btn-xs btn-danger btn-circle"><i class="fa fa-plus"></i></button>
+                            <div class="col-8"></div>
+                            <div class="col-4">
+                                @*<button type="button" onclick="seleccionarProducto()" class="btn btn-xs btn-danger btn-circle"><i class="fa fa-plus"></i></button>*@
+                                <button type="button" class="btn btn-primary" onclick="seleccionarProducto();">Agregar Articulo</button>
+                                <button type="button" id="btnHistoria" class="btn btn-primary" onclick="popHistorial()">
+                                    Historial
+                                </button>
                             </div>
                         </div>
                         <div class="row">
@@ -436,17 +440,17 @@
                                                 Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="in_vales" width="100px;" />
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="debito" checked>
-                                                    <label class="form-check-label" for="flexRadioDefault2">
-                                                        Tarjeta de Credito Terminal Portatil
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td></td>
-                                        </tr>
+                                        @*<tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoCdto" value="credito" checked>
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            Tarjeta de Credito Terminal Portatil
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td></td>
+                                            </tr>*@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
@@ -570,13 +574,244 @@
                                     <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 120px;">Dscto</th>
                                     <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width: 120px;"></th>
 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                @*<button type="button" class="btn btn-primary" onclick="addProduct2()" data-dismiss="modal">Agregar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl" id="dlgBuscadorCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Buscador de Clientes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="divBuscaCliente">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <p>
+                            <b>Buscador de Clientes</b><br />Se puede buscar por nombre y apellido paterno y materno.Para buscar por telefono ingrese solo digitos.Para buscar por direccion captura
+                            <b>Calle #,Colonia y Ciudad</b> usando comas como separador
+                        </p>
+                        <div class="input-group">
+                            <input type="text" id="txtBuscarCte" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                                <button type="button" class="btn btn-primary" onclick="BuscarCliente()">
+                                    Buscar
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div id="divgridClientes" style="display:none" class="col-sm-12 col-md-12 col-lg-12">
+                    <table id="tblBusquedaCliente" class="table table-striped table-bordered table-hover">
+                        <thead class="bg-danger-sor">
+                            <tr role="row">
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Direccion</th>
+                                <th>Telefono</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="divbuttonAddClient" style="display:none" class="col-sm-12 col-md-12 col-lg-12">
+                    <p>
+                        <b>No se encontraron resultados</b>
+                    </p>
+                    <button type="button" class="btn btn-primary" onclick="popAddClient();">Nuevo Cliente</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                @*<button type="button" class="btn btn-primary" data-dismiss="modal">Seleccionar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="dlgAgregarProductoComentario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Agregar Comentario al Producto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        @*<input type="text" id="txtComentario" multiple />*@
+                        <textarea id="txtComentario" cols="40" rows="5"></textarea>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="ConfirmarProduct()" data-dismiss="modal">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl" id="dlgSeleccionar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Agregar Articulo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-7 col-md-7 col-lg-7">
+
+
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                Buscador <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                        @*</a>*@
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+
+
+
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td>
+                                            <input class="form-control" type="text" placeholder="Producto" value="" id="txtProdArt2">
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaSeleccionaProducto()">
+                                                Buscar
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <select id="ddlCategorias" class="form-control m-b">
+                                            </select>
+                                            @*<button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
+                                                Historia
+                                                </button>*@
+                                            @*<input id="tags" class="ui-autocomplete-input" autocomplete="off">*@
+                                        </td>
+                                    </tr>
+
+
+
+                                </table>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <div class="alert alert-success" id="divOkArt">
+                            @* How quickly daft jumping zebras vex. <a class="alert-link" href="#">Alert Link</a>.*@
+                            El Articulo se ha agregado al carrito con éxito.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table id="tblBusquedaSeleccionar" class="table table-striped table-bordered table-hover">
+                            <thead class="bg-danger-sor">
+                                <tr role="row">
+                                    <th>Código</th>
+                                    <th>Descripción</th>
+                                    <th>Marca</th>
+                                    <th>Precio</th>
+                                    <th>Normal</th>
+                                    <th>Dscto</th>
+                                    <th></th>
+                                    <th>Cantidad</th>
+                                    <th>Unidad de Venta</th>
+                                    <th name="accion">Acción</th>
                                 </tr>
                             </thead>
                             <tbody id="feedback"></tbody>
                         </table>
                     </div>
-                    <div class="col-xs-2 col-md-2 col-lg-2">
-                        <img id="imgProduct2" src="~/Content/images/theme/default_image_01.png" class="img-lg">
+
+
+
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                @*<button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="dlgBuscador" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Alta de Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-5 col-md-5 col-lg-5">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                Sucursales
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <table style="width:100%;">
+                                    <tr>
+                                        @*<td>
+                                                <select class="form-control" id="cmbServicio" name="cmbServicio">
+                                                    <option selected="selected" value="0">--Elegir Servicio--</option>
+                                                    <option value="1">Cancelacion</option>
+                                                    <option value="2">Retorno</option>
+
+                                                </select>
+                                            </td>*@
+                                        <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
+                                        <td>
+                                            <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
+                                                Tienda
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td colspan="3">
+                                            <select class="form-control" id="cmbTda" name="cmbTda">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -584,6 +819,13 @@
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">Cantidad</span>
                             <input type="text" id="Addcantidad" name="Addcantidad" class="form-control" placeholder="Cantidad de producto" aria-describedby="basic-addon2">
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label>E-Mail </label>
+                            <input type="email" id="txtCteEamil" placeholder="miemail@soriana.com" class="form-control" maxlength="100" />
 
                         </div>
                     </div>
@@ -599,6 +841,51 @@
     </div>
 </div>
 
+</div>
+
+
+
+
+
+<div class="modal fade bd-example-modal-xl" id="dlgHistorial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Historial del Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="divHistorialOrd">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <table class="table table-striped table-bordered table-hover" id="tblHistorial">
+                            <thead class="bg-danger-sor center-block">
+                                <tr>
+                                    <th>Orden</th>
+                                    <th>Fecha</th>
+                                    <th>Importe</th>
+                                    <th>Puntos Obtenidos</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div id="divHistorialDetalle">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    @*<button type="button" class="btn btn-primary" onclick="AddClient()" data-dismiss="modal">Agregar</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <input id="add_product" name="add_product" value="1" style="visibility:hidden" />
 
 <input id="add_description" name="add_description" value="1" style="visibility:hidden" />
@@ -612,6 +899,245 @@
 
     <script>
         $(document).ready(function () {
+            setTimeout(function () {
+                $("#divOkArt").fadeOut(1500);
+            }, 2000);
+            GetCategorias();
+
+            GetEstados();
+
+            $("#txtCteCp").keydown(function (event) {	// Allow backspace and delete
+                if (event.keyCode == 46 || event.keyCode == 8) { } else {	   // Ensure that it is a number
+                    if (event.keyCode < 48 || event.keyCode > 57) { event.preventDefault(); }
+                }
+            });
+            $('#txtCteCp').keypress(function () {
+                var maxLength = $(this).val().length;
+                if (maxLength >= 5) {
+                    //alert('You cannot enter more than ' + maxLength + ' chars');
+                    return false;
+                }
+            });
+
+            $("#txtCteCp").on("input", function (e) {
+                var input = $(this);
+                var val = input.val();
+
+                if (input.data("lastval") != val) {
+                    input.data("lastval", val);
+
+                    if (val.length == 5) {
+                        GetCp($("#txtCteCp").val());
+                    }
+                    //your change action goes here
+                    console.log(val);
+                }
+
+            });
+
+            $('#txtCteCp').keyup(function (e) {
+                if (e.keyCode === 13) {
+                    if ($("#txtCteCp").val().length == 5) {
+                        GetCp($("#txtCteCp").val());
+
+                    } else {
+                        alert("La longitud del C.P. debe de ser de 5 caracteres");
+                        $("#txtCteCp").focus();
+                        return false;
+
+                    }
+                }
+            });
+
+
+
+            $('#tblConsultaCte thead tr').clone(true).appendTo('#tblConsultaCte thead');
+            $('#tblConsultaCte thead tr:eq(0) th').each(function (i) {
+                var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+
+                $('input', this).on('keyup change', function () {
+                    if (table.column(i).search() !== this.value) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+
+            var table = $("#tblConsultaCte").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: false,
+                    info: false,
+                    stateSave: false,
+                    select: true,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: true
+
+                }
+            );
+
+            $('#tblBusquedaArt2 thead tr').clone(true).appendTo('#tblBusquedaArt2 thead');
+            $('#tblBusquedaArt2 thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text"  placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table1.column(i).search() !== this.value) {
+                            table1
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+
+                $('input', this).on('keyup change', function () {
+                    if (table1.column(i).search() !== this.value) {
+                        table1
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+
+            var table1 = $("#tblBusquedaArt2").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: false,
+                    info: false,
+                    stateSave: false,
+                    select: true,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: [],
+                    orderCellsTop: false,
+                    fixedHeader: true,
+                    "scrollX": true,
+                    "scrollY": true
+
+
+                }
+            );
+
+            $("#tblBusquedaSeleccionar").DataTable(
+                {
+
+                    processing: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: true,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: [],
+                    orderCellsTop: false,
+                    "scrollY": "400px",
+                    "scrollCollapse": true,
+                    "paging": false
+                    , "order": [[2, "asc"]]
+
+                }
+            );
+
+            //tblBusquedaCliente
+            $("#tblBusquedaCliente").DataTable(
+                {
+
+                    processing: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: true,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: [],
+                    orderCellsTop: false,
+                    "scrollY": "250px",
+                    "scrollCollapse": true,
+
+
+
+                }
+            );
+
+
+            $('#tblHistorial').DataTable({
+                "order": [[1, "desc"]]
+                //, columnDefs: [
+                //    { className: 'text-right', targets: [2, 3] },
+                //    { className: 'text-center', targets: [0] }
+                //]
+            });
+
             $("#wizard").steps({
                 labels: {
                     current: "current step:",
@@ -625,7 +1151,293 @@
                 bodyTag: "section",
                 transitionEffect: "slideLeft",
                 autoFocus: true,
-                stepsOrientation: "vertical"
+               // stepsOrientation: "vertical",
+                 onStepChanging: function (event, currentIndex, newIndex)
+                {
+                     var ok = false;
+
+
+                   /*  alert(currentIndex);*/
+
+
+                    //busqueda de cliente
+                    if (currentIndex == 0 )
+                    {
+                        //alert('Index ' + currentIndex);
+                        var id = $("#hddIdCliente").val();
+                        //var id = 1;
+                        if (id.length == 0) {
+                            return false;
+                        }
+
+                        var t = Date.now();
+
+                         $.ajax({
+                            async: false,
+                            type: "GET",
+                            url: '@Url.Action("GetDias", "CallCenter")',
+                            data: {
+                                fechaOriginal: t
+                            },
+                            datatype: "html",
+                            success: function (json) {
+
+                                if (json.Success)
+                                {
+                                    var sel = $("#ddlDias");
+                                    sel.empty();
+
+                                    for (var i = 0; i < json.json.length; i++) {
+                                        sel.append('<option value="' + json.json[i].fecha + '">' + json.json[i].NombeDia + '</option>');
+                                    }
+
+                                    var sel2 = $("#ddlHoras");
+                                    sel2.empty();
+
+                                    for (var i = 0; i < json.horas.length; i++) {
+                                        sel2.append('<option value="' + json.horas[i].fecha + '">' + json.horas[i].NombeDia + '</option>');
+                                    }
+
+                                    ok = true;
+                            }
+                        }
+                        , error: function (jqXHR, textStatus, errorThrown) {
+                             bootbox.alert(errorThrown);
+
+                        }
+                         });
+
+                        return ok;
+                    }
+                    //AVANZA / REGRESA FECHA DE ENTREGAS
+                    if (currentIndex == 1) {
+                        return true;
+                    }
+
+                    //REGRESA A FECHA DE ENTREGAS
+                    if (currentIndex == 2 && newIndex==1) {
+                        return true;
+                    }
+                    //AVANZA METODO DE ENTREGA
+                     if (currentIndex == 2 && newIndex == 3) {
+                         var rowCount = $('#tblPoductosSeleccionados >tbody >tr').length;
+                         //rowCount = 1;
+                         if (rowCount == 0) {
+                             return false;
+                         }
+                        GetDirCteIdNumCte();
+                        return true;
+                    }
+
+                    //REGRESA  CARRITO DE COMPRAS
+                     if (currentIndex == 3 && newIndex == 2) {
+                         if ($("#hddCodBarFlete").val() != "0") {
+                             DeleteProduct($("#hddCodBarFlete").val());
+                         }
+                        return true;
+                    }
+                    //AVANZA A REGRESA A Metodo de entrega
+                    if (currentIndex == 3 && newIndex == 4) {
+
+                        var op = $("input:radio[name=rdoMetodoEntrega]:checked").val();
+
+                        if (op == null) {
+                            alert("Debe de seleccionar un metodo de entrega");
+                            return false;
+                        }
+
+                        //EN TIENDA
+                        if (op == "1") {
+                           //limpiamos todos los valores de direccion de entrega
+                            $("#hddIdDir").val('');
+                            $("#rec_name").val('');
+                            $("#rec_ciudad").val('');
+                            $("#ddlRec_Estado").val('0');
+                            $("#rec_calle").val('');
+                            $("#rec_num").val('');
+                            $("#rec_nunInt").val('');
+                            $("#rec_col").val('');
+                            $("#rec_CP").val('');
+                            if ($("#hddCodBarFlete").val() != "0") {
+                                DeleteProduct($("#hddCodBarFlete").val());
+                            }
+                            $("#hddCodBarFlete").val('0');
+
+
+
+                            return true;
+                        }
+                        //DOMICILIO
+                        if (op == "2") {
+
+                            //$("#hddIdDir").val('');
+                            if ($("#rec_name").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Nombre de la persona que recibira el pedido');
+                                $("#rec_name").focus();
+                                return false;
+                            }
+
+                            if ($("#rec_ciudad").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Ciudad');
+                                $("#rec_ciudad").focus();
+                                return false;
+                            }
+                            if ($("#ddlRec_Estado").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Estado');
+                                $("#ddlRec_Estado").focus();
+                                return false;
+                            } if ($("#rec_calle").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Calle');
+                                $("#rec_calle").focus();
+                                return false;
+                            } if ($("#rec_num").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Número');
+                                $("#rec_num").focus();
+                                return false;
+                            } if ($("#rec_col").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Colonia');
+                                $("#rec_col").focus();
+                                return false;
+                            }
+                            if ($("#rec_CP").val().length == 0) {
+                                //$("[required]").after("<span class='required'>*</span>");
+                                alert('Favor de capturar Código Postal');
+                                $("#rec_CP").focus();
+                                return false;
+                            }
+
+
+
+                            //alert("Aqui nos traemos el valor del flete");
+                            //Obtenemos el Flete
+                            var _StoreNum = $("#ddlTdas").val();
+                              $.ajax({
+                                    async: false,
+                                    type: "GET",
+                                    url: '@Url.Action("GetFlete", "CallCenter")',
+                                    data: {
+                                        StoreNum: _StoreNum
+                                    },
+                                    datatype: "html",
+                                    success: function (json) {
+                                        //
+                                        if (json.Success) {
+                                            debugger;
+                                            $("#hddCodBarFlete").val(json.resp.Num_CodBarra);
+                                            //addProduct3(descripcion, barcode, precio, sku, SalesUnit, precioO)
+                                            AddFlete(json.resp.Desc_art, json.resp.Num_CodBarra
+                                                , json.resp.CostoEnvio
+                                                , json.resp.id_Num_Sku
+                                                , json.resp.Cve_UnVta
+                                                , json.resp.CostoEnvio
+                                                ,1
+                                            )
+
+                                            return true;
+                                        }
+                                        else {
+                                            alert(json.Message);
+                                            return false;
+                                        }
+                                    }
+                                    , error: function (jqXHR, textStatus, errorThrown) {
+                                        alert(errorThrown);
+                                        return false;
+                                    }
+
+                                });
+
+
+
+
+
+                            return true;
+                        }
+
+                        return true;
+                    }
+
+                    //REGRESA A FORMA DE PAGO
+                    if (currentIndex == 4 && newIndex == 3) {
+                        return true;
+                    }
+
+                    //AVANZO A RESUMEN
+                    if (currentIndex == 4 && newIndex == 5) {
+
+                        if ($("input:radio[name=rdoMetodoEntrega]:checked").val() == "1") {
+                            $("#lblMetodoEntrega").text("Entrega en Tienda: " + $("[id='ddlTdas'] option:selected").text());
+                        } else {
+                        //<p><b id="lblNomDir"></b></p>
+                        //<p id="lblDirEnt"> </p>
+                            $("#lblNomDir").text($("#rec_name").val());
+                            var dir = $("#rec_calle").val() + ' ' + $("#rec_num").val();
+                            if ($("#rec_nunInt").val().length>0) {
+                                dir += ',No. Interior ' + $("#rec_nunInt").val();
+                            }
+
+                            dir += ',' + $("#rec_col").val() + ',' + $("#rec_ciudad").val() + ',' + $("#ddlRec_Estado option:selected").text(); + ' C.P.' + $("#rec_CP").val();
+
+                            $("#lblDirEnt").text(dir);
+                        }
+
+
+                        //fecha entrega
+                        var diaEnt = $("[id='ddlDias'] option:selected").text();
+                        var horaEnt = $("[id='ddlHoras'] option:selected").text();
+                        $("#lblFecEnt").text(diaEnt + ' en horario de ' + horaEnt);
+
+                        //metodo de pago
+
+                        var op = $("input:radio[name=rdoMetodoPago]:checked").val();
+
+                        if (op == "efectivo") {
+                            if ($("#in_pago").val().length == 0 && $("#in_vales").val()) {
+                                alert("Debe ingresar una canitdad en Efectivo o Vales");
+                                return false;
+                            } else {
+                                var totEfevo = parseFloat($("#in_pago").val()) + parseFloat($("#in_vales").val());
+                                if ( ! totEfevo > 0) {
+                                    alert("La cantidad de efectivo y vales no pude ser 0");
+                                    return false;
+                                }
+                                var TotalOrden = $("#TotalOrden").val();
+                                TotalOrden = parseFloat(TotalOrden).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                                if (totEfevo < TotalOrden) {
+                                    alert("El total de Efectivo y Vales no puede ser menor al total de la orden  ");
+                                    return false;
+                                }
+                            }
+
+                        }
+
+                        if (op == "efectivo") {
+                            var text = " Efectivo: $" + $("#in_pago").val() + "- Vales: $" + $("#in_vales").val() ;
+                            $("#lblFormaPago").text("Efectivo y / o vales de papel de despensa " + text);
+                        }
+                        if (op == "credito") {
+                            $("#lblFormaPago").text("Tarjeta de Credito Terminal Portatil")
+                        }
+                        if (op == "debito") {
+                            $("#lblFormaPago").text("Tarjeta de Debito Terminal Portatil")
+                        }
+
+
+                        return true;
+                    }
+
+                     if (currentIndex == 5 && newIndex == 4) {
+                         return true;
+                     }
+
+
+                    }
                 ,onFinished: function (event, currentIndex) {
                     alert('ya acabe');
                 }
@@ -733,6 +1545,280 @@
             document.getElementById('btnBuscar').disabled = false;
         }
 
+            let _index = _jsonProductsSelected.indexOf(item);
+            if (_index > -1) {
+                _jsonProductsSelected.splice(_index, 1);
+            }
+
+            llenarCarrito();
+
+        }
+        function Change(barcode) {
+            var cantidad = $("#productCant-" + barcode).val();
+            var comentario = $("#comment-" + barcode).val();
+            var item = _jsonProductsSelected.find(x => x.barcode === barcode);
+
+            //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
+
+            item.quantity = cantidad;
+            item.total = cantidad * item.precioO;
+            item.comment = comentario;
+
+            console.log(_jsonProductsSelected);
+
+                llenarCarrito();
+
+        }
+        function Change_2(barcode) {
+            var cantidad = $("#productCant-" + barcode).val();
+            var comentario = $("#comment-" + barcode).val();
+            var item = _jsonProductsSelected.find(x => x.barcode === barcode);
+
+            //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
+
+            item.quantity = cantidad;
+            item.total = cantidad * item.precioO;
+            item.comment = comentario;
+
+            console.log(_jsonProductsSelected);
+
+            llenarCarrito();
+
+        }
+        function addProduct3(descripcion, barcode, precio, sku, SalesUnit,precioO) {
+            debugger;
+            var cantidad = $("#nCant-" + barcode).val();
+            if (cantidad == 0) {
+                alert("La Cantidad debe ser Mayor a 0.")
+            }
+            else {
+
+                //parseFloat(document.getElementById(amtid4).innerHTML, 10).toFixed(2);
+                _descripcion = descripcion.replace("|", "'"); //replaceall
+                _barcode = barcode;
+                _precio = parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                _cantidad = cantidad;
+                _Sku = sku;
+                _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                _SalesUnit = SalesUnit;
+
+
+                //$("#dlgAgregarProductoComentario").modal("show");
+                ConfirmarProduct();
+                //$("#dlgSeleccionar").modal("hide");
+
+                $("#divOkArt").show();
+                setTimeout(function () {
+                    $("#divOkArt").fadeOut(1000);
+                }, 1000);
+            }
+
+
+        }
+        function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO, cant) {
+            debugger;
+
+
+
+                _descripcion = descripcion.replace("|", "'"); //replaceall
+                _barcode = barcode;
+                _precio = parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                _cantidad = cant;
+                _Sku = sku;
+                _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                _SalesUnit = SalesUnit;
+
+
+
+                var item = _jsonProductsSelected.find(x => x.barcode === _barcode);
+
+                if (item != undefined) {
+                    let _index = _jsonProductsSelected.indexOf(item);
+                    if (_index > -1) {
+                        _jsonProductsSelected.splice(_index, 1);
+                    }
+                }
+                debugger;
+                let _obj = {};
+                _obj.barcode = _barcode;
+                _obj.description = _descripcion;
+                _obj.price = _precio;
+                _obj.quantity = _cantidad;
+                _obj.total = _cantidad * _precioO;
+                _obj.comment = $("#txtComentario").val();
+                _obj.sku = _Sku;
+                _obj.SalesUnit = _SalesUnit;
+                _obj.precioO = _precioO;
+                _jsonProductsSelected.push(_obj);
+
+
+                llenarCarrito();
+
+
+        }
+
+
+
+
+
+        function ConfirmarProduct() {
+
+            var item = _jsonProductsSelected.find(x => x.barcode === _barcode);
+
+            if (item != undefined) {
+                let _index = _jsonProductsSelected.indexOf(item);
+                if (_index > -1) {
+                    _jsonProductsSelected.splice(_index, 1);
+                }
+            }
+            debugger;
+            let _obj = {};
+            _obj.barcode = _barcode;
+            _obj.description = _descripcion;
+            _obj.price = _precio;
+            _obj.quantity = _cantidad;
+            _obj.total = _cantidad * _precioO;
+            _obj.comment = $("#txtComentario").val();
+            _obj.sku = _Sku;
+            _obj.SalesUnit = _SalesUnit;
+            _obj.precioO = _precioO;
+            _jsonProductsSelected.push(_obj);
+
+
+            llenarCarrito();
+
+            $("#txtComentario").val("");
+            $("#dlgAgregarProductoComentario").modal("hide");
+            $("#dlgSeleccionar").modal("show");
+        }
+
+
+        function llenarCarrito() {
+            var cant = 0, tot = 0.0;
+
+            var myTable = $('#tblPoductosSeleccionados').DataTable();
+            myTable
+                .clear()
+                .draw();
+            for (var i = 0; i < _jsonProductsSelected.length; i++) {
+                var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                var inp;
+                if (_jsonProductsSelected[i].SalesUnit == 'pza') {
+                    inp = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48' min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                } else {
+                    inp = "<input  oninput='inputCar(this)'  min='1' step='0.01' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                }
+                myTable.row.add([
+
+                    _jsonProductsSelected[i].description,
+                    "$" + _jsonProductsSelected[i].price,
+                    "$" + _jsonProductsSelected[i].precioO,
+                    inp,//"<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
+                      _jsonProductsSelected[i].SalesUnit,
+                    "$" + totaArt,
+                    "<input type='text' onchange='Change_2(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
+                    "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
+                ]).draw();
+
+                cant = cant + parseInt(_jsonProductsSelected[i].quantity);
+                tot = tot + parseFloat(_jsonProductsSelected[i].total)
+
+                //parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            }
+
+
+            tot = parseFloat(tot).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            cant = parseFloat(cant).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            $("#lblCantidad").empty();
+            $("#lblCantidad").append("Articulos Totales: " + cant);
+            $("#lblTotal").empty();
+            $("#lblTotal").append("Total a Pagar: $" + tot);
+            $("#TotalOrden").val(tot);
+            $("#lblTotalFormaP").empty();
+            $("#lblTotalFormaP").append("Total a Pagar: $" + tot);
+
+            var myTableR = $('#tblResumen').DataTable();
+            myTableR
+                .clear()
+                .draw();
+
+            for (var x = 0; x < _jsonProductsSelected.length; x++) {
+                var totaArt = parseFloat(_jsonProductsSelected[x].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+
+                myTableR.row.add([
+                         _jsonProductsSelected[x].description
+                        +"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
+                        + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>"
+                        + "<input type='hidden' id='precioN-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].price + "'/>",
+
+                        _jsonProductsSelected[x].quantity,
+                        _jsonProductsSelected[x].SalesUnit,
+                        "$" + _jsonProductsSelected[x].precioO,
+                        "$" + totaArt,
+                        _jsonProductsSelected[x].comment,
+                    ]).draw();
+            }
+
+            $("#lblTotalR").empty();
+            $("#lblTotalR").append("Costo Total de la Orden: $" + tot);
+
+        }
+
+        function llenarObservacionesResumen() {
+            $('#ObsResumen').empty();
+            for (var x = 0; x < _jsonObservaciones.length; x++) {
+
+                $('#ObsResumen').append("<tr>"
+                    + "<td>" + _jsonObservaciones[x].observacion + "</td>");
+            }
+        }
+        function agregarObs() {
+            var sum_Obs = $('#add_Obs').val();
+        /*            var myTable = $('#tblBusquedaArt').DataTable();*/
+            //if (document.getElementById("ObservacionesGrles").value != '') {
+                let _obj = {};
+                _obj.id = _countObservaciones;
+                _obj.observacion = document.getElementById("ObservacionesGrles").value;
+                _jsonObservaciones.push(_obj);
+
+
+                $('#Obs').append("<tr>"
+                    + "<td>" + document.getElementById("ObservacionesGrles").value + "</td>"
+                    + "<td>" + "<button type=\"button\" id=\"btn\" name=\"btn\" class=\"btn btn-primary\" onclick=\"eliminarObservacion(" + _countObservaciones + ") \">Eliminar</button>" + "</td></tr>");
+
+                _countObservaciones = _countObservaciones + 1;
+
+                sum_Obs += 1;
+                $('#add_Obs').val(sum_Obs);
+                $('#ObservacionesGrles').val("");
+                $("#ObservacionesGrles").focus();
+                llenarObservacionesResumen();
+            //}
+        }
+
+        function eliminarObservacion(id) {
+            var item = _jsonObservaciones.find(x => x.id === id);
+
+            let _index = _jsonObservaciones.indexOf(item);
+            if (_index > -1) {
+                _jsonObservaciones.splice(_index, 1);
+            }
+
+            $('#Obs').empty();
+            for (var x = 0; x < _jsonObservaciones.length; x++) {
+
+                $('#Obs').append("<tr>"
+                    + "<td>" + _jsonObservaciones[x].observacion + "</td>"
+                    + "<td>" + "<button type=\"button\" id=\"btn\" name=\"btn\" class=\"btn btn-primary\" onclick=\"eliminarObservacion(" + _jsonObservaciones[x].id + ") \">Eliminar</button>" + "</td></tr>");
+            }
+            llenarObservacionesResumen();
+        }
+
+        function seleccionarProducto() {
+            $("#txtProdArt2").val("");
+            CargaSeleccionaProducto();
+            $("#dlgSeleccionar").modal("show");
+        }
         function addProduct2() {
 
             $('#feedback2').append("<tr id=\"" + document.getElementById("add_product").value +"\"> <td>" + document.getElementById("add_description").value + "<br /><input type=\"text\" placeholder=\"Indicaciones y Observaciones\" class=\"form-control input-sm\"/>" + "</td>"
@@ -774,6 +1860,662 @@
             $('#divResultClient').hide();
         }
 
+        function popAddClient() {
+
+            $("txtCteEamil").prop('disabled', false);
+            $("#txtCteNombre").val('');
+            $("#txtCteApPaterno").val('');
+            $("#txtCteApMaterno").val('');
+            $("#txtCteCalle").val('');
+            $("#txtCteNomDir").val('');
+            $("#txtCteNumExt").val('');
+            $("#txtCteNumInt").val('');
+            $("#txtCteCiudad").val('');
+            $("#txtCteCp").val('');
+            $("#ddlCteColonia").val("0");
+            $("#txtCteTelefono").val('');
+            $("#txtCteEamil").val('');
+
+
+            $("#hddIdCliente").val('0');
+            $("#hddIdDirCteUpd").val('0');
+            $("#divMsjAddClient").hide();
+            $("#txtCteEamil").focus();
+            $('#ddlCteEstado').val('0');
+            $("#dlgAddClients").modal("show");
+            $("#txtCteEamil").focus();
+        }
+
+        function popBuscador() {
+            $("#dlgBuscador").modal("show");
+        }
+
+        function popBuscarClient() {
+            $("#dlgBuscadorCliente").modal("show");
+        }
+
+        function popHistorial() {
+
+                        var _Id_Num_Cte = $("#hddIdCliente").val();
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetHistorial", "CallCenter")',
+                data: {
+
+                    Id_Num_Cte: _Id_Num_Cte
+
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+
+
+                        var myTable = $('#tblHistorial').DataTable();
+
+
+
+
+                        myTable
+                            .clear()
+                            .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+                            myTable.row.add([
+
+                                "<td stryle='text-align: center;'><a title='Click para Seleccionar la Orden' class='link-primary' onclick='SelOrdHist(\""
+                                + json.resp[i].UeNo + "\")'>"+ json.resp[i].UeNo +"</a></td>",
+                                json.resp[i].OrderDate,
+                                json.resp[i].Imp_Pago,
+                                "0"
+                            ]).draw();
+                        }
+
+
+                        $('#divHistorialDetalle').hide();
+                        $('#divHistorialOrd').show();
+                        $("#dlgHistorial").modal("show");
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+
+                }
+            });
+        }
+
+        function regresarHist(){
+            $('#divHistorialDetalle').hide();
+            $('#divHistorialOrd').show();
+        }
+
+        function SelOrdHist(UeNo) {
+                          $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("HistorialDetalle", "CallCenter")',
+                data: {
+
+                    UeNo: UeNo
+
+                },
+                datatype: "html",
+                              success: function (data) {
+                            $('#divHistorialOrd').hide();
+                            $("#divHistorialDetalle").html(data);
+                            $("#divHistorialDetalle").show();
+
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+
+                }
+            });
+        }
+
+        function AddClient() {
+            //alert("addclient");
+            var Nom_Cte = $("#txtCteNombre").val();
+            var Ap_Paterno = $("#txtCteApPaterno").val();
+            var Ap_Materno = $("#txtCteApMaterno").val();
+            var Calle = $("#txtCteCalle").val();
+            var Nom_DirCTe = $("#txtCteNomDir").val();
+            var Num_Ext = $("#txtCteNumExt").val();
+            var Num_Int = $("#txtCteNumInt").val();
+            var Ciudad = $("#txtCteCiudad").val();
+            var Cod_Postal = $("#txtCteCp").val();
+            var Colonia = $("#ddlCteColonia").val();
+            var Telefono = $("#txtCteTelefono").val();
+            var Id_Email = $("#txtCteEamil").val();
+            var Ids_Num_Edo = $("#ddlCteEstado").val();
+
+            var Id_Cnsc_DirCTe = $("#hddIdDirCteUpd").val();
+            var Id_Num_Cte = $("#hddIdCliente").val();
+
+
+
+
+            if (Id_Email.length == 0) {
+                $("#txtCteEamil").focus();
+                return;
+            }
+            if ($("#txtCteEamil").val().indexOf('@@', 0) == -1 || $("#txtCteEamil").val().indexOf('.', 0) == -1) {
+                    $("#txtCteEamil").focus();
+                    alert('El correo electrónico introducido no es correcto.');
+                    return false;
+                }
+
+
+            if (Nom_Cte.length == 0) {
+                $("#txtCteNombre").focus();
+                return;
+            }
+            if (Ap_Paterno.length == 0) {
+                $("#Ap_Paterno").focus();
+                return;
+            }
+            if (Ap_Materno.length == 0) {
+                $("#txtCteApMaterno").focus();
+                return;
+            }
+            if (Calle.length == 0) {
+                $("#txtCteCalle").focus();
+                return;
+            }
+            if (Nom_DirCTe.length == 0) {
+                $("#txtCteNomDir").focus();
+                return;
+            }
+            if (Num_Ext.length == 0) {
+                $("#txtCteNumExt").focus();
+                return;
+            }
+            if (Ciudad.length == 0) {
+                $("#txtCteCiudad").focus();
+                return;
+            }
+            if (Cod_Postal.length == 0) {
+                $("#txtCteCp").focus();
+                return;
+            }
+            if (Colonia == 0) {
+                $("#ddlCteColonia").focus();
+                return;
+            }
+            if (Telefono.length == 0) {
+                $("#txtCteTelefono").focus();
+                return;
+            }
+
+            if (Ids_Num_Edo == "0") {
+                $("#ddlCteEstado").focus();
+                return;
+            }
+
+            //alert("va a guardar");
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("AddClient", "CallCenter")',
+                data: {
+                    Nom_Cte: Nom_Cte,
+                    Ap_Materno: Ap_Materno,
+                    Ap_Paterno: Ap_Paterno,
+                    Calle: Calle,
+                    Nom_DirCTe: Nom_DirCTe,
+                    Num_Ext: Num_Ext,
+                    Num_Int: Num_Int,
+                    Ciudad: Ciudad,
+                    Cod_Postal: Cod_Postal,
+                    Colonia: Colonia,
+                    Telefono: Telefono,
+                    Id_Email: Id_Email,
+                    Ids_Num_Edo: Ids_Num_Edo,
+                    Id_Cnsc_DirCTe: Id_Cnsc_DirCTe,
+                    Id_Num_Cte: Id_Num_Cte
+
+
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+                        LlenaDatosCte(json.resp);
+                        $('#divVerificaCliente').hide();
+                        $('#divBuscaCliente').hide();
+                        $('#divResultClient').show();
+
+                        $("#dlgAddClients").modal('hide');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+        }
+
+        function LlenaDatosCte(resp,idDirCte) {
+
+
+            $("#hddIdCliente").val(resp.Id_Num_Cte);
+            $("#hddIdDirCteUpd").val(idDirCte);
+            $('#lblNombreCte').text(resp.Nom_Cte + ' ' + resp.Ap_Paterno + ' ' + resp.Ap_Materno);
+            $('#lblFolioCte').text(resp.Id_Num_Cte);
+            $('#lblClaveCte').text(resp.Id_Email);
+            $('#lblCalleCte').text(resp.Calle + ' ' + resp.Num_Ext );
+            $('#lblColoniaCte').text(resp.Colonia);
+            $('#lblEdoCte').text(resp.Ciudad + ', ' + resp.Nom_Edo);
+            $('#lblCpCte').text('C.P. '+ resp.Cod_Postal);
+            $('#lblTelefonoCte').text(resp.Telefono);
+
+
+        }
+
+        function onchangeDias() {
+
+            var _fechaOriginal = Date.now();
+            var _fecha = $("#ddlDias").val(); //$("[id='ddlDias'] option:selected").text();
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetHorasEntrega", "CallCenter")',
+                data: {
+                    fechaOriginal: _fechaOriginal
+                    , fechaSelec:_fecha
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success)
+                    {
+                        var sel = $("#ddlHoras");
+                        sel.empty();
+
+                        for (var i = 0; i < json.json.length; i++) {
+                            sel.append('<option value="' + json.json[i].fecha + '">' + json.json[i].NombeDia + '</option>');
+                        }
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            bootbox.alert(errorThrown);
+
+            }
+            });
+        }
+
+        function GetDirCteIdNumCte() {
+
+              var _Id_Num_Cte = $("#hddIdCliente").val();
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetDirCteIdNumCte", "CallCenter")',
+                data: {
+                    Id_Num_Cte: _Id_Num_Cte
+
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+                        $('#tblDirecciones tbody').empty();
+                        //var tr;
+
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+
+
+                            tr.append("<td>  <b> " + json.resp[i].Nom_DirCTe + "</b > <br>" + json.resp[i].Direccion + "</td>");
+                            //<button type="button" class="btn btn-default btn btn-xs" onclick="GetTdasTrasp()">
+                            tr.append("<td><button onclick='SelDirCte(" + json.resp[i].Id_Cnsc_DirCTe + ")' type = 'button' class= 'btn btn-default btn btn-xs'>Utilizar esta direccón</button></td >")
+                            $('#tblDirecciones').append(tr);
+                        }
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+
+                }
+            });
+        }
+
+        function SelDirCte(id) {
+            var _Id_Num_Cte = $("#hddIdCliente").val();
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetDirDirCteIdDirCTe", "CallCenter")',
+                data: {
+                    Id_Cnsc_DirCTe: id,
+                    Id_Num_Cte: _Id_Num_Cte
+
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+
+                        $("#hddIdDir").val(json.resp.Id_Cnsc_DirCTe);
+                        $("#rec_tel").val(json.resp.Telefono);
+                        $("#rec_ciudad").val(json.resp.Ciudad);
+                        $("#ddlRec_Estado").val(json.resp.Ids_Num_Edo);
+                        $("#rec_calle").val(json.resp.Calle);
+                        $("#rec_num").val(json.resp.Num_Ext);
+                        $("#rec_nunInt").val(json.resp.Num_Int);
+                        $("#rec_col").val(json.resp.Colonia);
+                        $("#rec_CP").val(json.resp.Cod_Postal);
+
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+
+                }
+            });
+        }
+
+        function GetCp(_postalCode) {
+            //alert($("#txtCodPos").val());
+            //var _postalCode = $("#txtCodPos").val();
+
+            if (_postalCode.length == 5) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetInfoByCP", "AltaProveedor")',
+                    data: {
+                        postalCode: _postalCode
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //
+                        if (json.Success) {
+                            debugger;
+                            GetEstados();
+                            var sel = $("#ddlCteColonia");
+                            sel.empty();
+
+
+
+                            $('#ddlCteColonia').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            for (var i = 0; i < json.resp.length; i++) {
+                                sel.append('<option value="' + json.resp[i].SubLocality + '">' + json.resp[i].SubLocality + '</option>');
+                            }
+
+                            if (json.resp.length > 0) {
+                                $("#txtCteCiudad").val(json.resp[0].Locality);
+
+                                //$("#ddlCteEstado").find("option[text=" + json.resp[0].Region1Name + "]").attr("selected", true);
+                                /// alert(json.resp[0].Region1Name);
+                                $('#ddlCteEstado option:contains(' + json.resp[0].Region1Name + ')').attr('selected', 'selected');
+                            }
+                            else {
+                                $("#txtCteCiudad").val('');
+                                alert("No hay resultados para el Código Postal Ingresado.")
+                            }
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            }
+
+        }
+
+
+        function GetCpDirEnt(_postalCode) {
+            //alert($("#txtCodPos").val());
+            //var _postalCode = $("#txtCodPos").val();
+
+            if (_postalCode.length == 5) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetInfoByCP", "AltaProveedor")',
+                    data: {
+                        postalCode: _postalCode
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //
+                        if (json.Success) {
+
+                            //
+                            //var sel = $("#ddlCteColonia");
+                            //sel.empty();
+
+                            //$('#ddlCteColonia').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            //for (var i = 0; i < json.resp.length; i++) {
+                            //    sel.append('<option value="' + json.resp[i].SubLocality + '">' + json.resp[i].SubLocality + '</option>');
+                            //}
+
+                            if (json.resp.length > 0) {
+                                $("#rec_ciudad").val(json.resp[0].Locality);
+
+                                //$("#ddlCteEstado").find("option[text=" + json.resp[0].Region1Name + "]").attr("selected", true);
+
+                                $('#ddlRec_Estado option:contains(' + json.resp[0].Region1Name + ')').attr('selected', 'selected');
+                            }
+
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            }
+
+        }
+
+        function GetEstados() {
+
+
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetEstados", "CallCenter")',
+                    data: {
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //
+                        if (json.Success) {
+
+
+                            var sel = $("#ddlCteEstado");
+                            sel.empty();
+
+                            $('#ddlCteEstado').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            for (var i = 0; i < json.resp.length; i++) {
+                                sel.append('<option value="' + json.resp[i].Id_Num_Estado + '">' + json.resp[i].Nom_Estado + '</option>');
+                            }
+
+
+                            var sel2 = $("#ddlRec_Estado");
+                            sel2.empty();
+
+                            $('#ddlRec_Estado').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                            for (var i = 0; i < json.resp.length; i++) {
+                                sel2.append('<option value="' + json.resp[i].Id_Num_Estado + '">' + json.resp[i].Nom_Estado + '</option>');
+                            }
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+
+
+        }
+
+        function popEditarCte() {
+
+            $("txtCteEamil").prop('disabled', true);
+            var idDirCte = $("#hddIdDirCteUpd").val();
+            var email = $('#lblClaveCte').text();
+                    $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("VerificaCliente", "CallCenter")',
+                data: {
+                    Criterio: email,
+                    Id_Cnsc_DirCTe: idDirCte
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+                        debugger;
+
+
+                        $("#hddIdDirCteUpd").val(json.resp.Id_Cnsc_DirCTe);
+                        $("#txtCteNombre").val(json.resp.Nom_Cte);
+                        $("#txtCteApPaterno").val(json.resp.Ap_Paterno);
+                        $("#txtCteApMaterno").val(json.resp.Ap_Materno);
+                        $("#txtCteCalle").val(json.resp.Calle);
+                        $("#txtCteNomDir").val(json.resp.Nom_DirCTe);
+                        $("#txtCteNumExt").val(json.resp.Num_Ext);
+                        $("#txtCteNumInt").val(json.resp.Num_Int);
+                        $("#txtCteCiudad").val(json.resp.Ciudad);
+                        $("#txtCteCp").val(json.resp.Cod_Postal);
+                        //$("#ddlCteColonia").val("0");
+                        $("#txtCteTelefono").val(json.resp.Telefono);
+                        $("#txtCteEamil").val(json.resp.Id_Email);
+                        $("#ddlCteEstado").val(json.resp.Ids_Num_Edo);
+                        GetCp(json.resp.Cod_Postal);
+                        $('#ddlCteColonia option:contains(' + json.resp.Colonia + ')').attr('selected', 'selected');
+                        $("#divMsjAddClient").hide();
+                        $("#txtCteEamil").focus();
+
+                        $("#dlgAddClients").modal("show");
+                        $("#txtCteEamil").focus();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+
+
+        }
+
+        function GetCategorias() {
+                    $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetCategorias", "CallCenter")',
+                    data: {
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        //
+                        if (json.Success) {
+                            debugger;
+                            //var availableTags = [];
+                            //for (var i = 0; i < json.resp.length; i++) {
+
+                            //    availableTags.push(json.resp[i].NombreCategoria );
+                            //}
+
+
+                            //$("#tags").autocomplete({
+                            //    source: availableTags
+                            //});
+
+
+
+                            var sel = $("#ddlCategorias");
+                            sel.empty();
+
+                            $('#ddlCategorias').get(0).options[0] = new Option("--Todas las Categorias--", "0");
+                            for (var i = 0; i < json.resp.length; i++) {
+                                sel.append('<option value="' + json.resp[i].NombreCategoria + '">' + json.resp[i].NombreCategoria  + '</option>');
+                            }
+
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+        }
+
+        function EcharCarrito(UeNo) {
+            var _tda = $("#ddlTdas").val();
+            $.ajax({
+                "url": "@Url.Action("EcharCarrito", "CallCenter")",
+                async:false,
+                "type": "get",
+                "data": {
+                 UeNo: UeNo,
+                 tienda: _tda
+             },
+                "dataType": "json",
+                "success": function (data)
+                {
+                    if (data.resp != null) {
+                        for (var i = 0; i < data.resp.length; i++) {
+                            var precio = parseFloat(data.resp[i].Price).toFixed(2);
+                            var precioO = parseFloat(data.resp[i].PromotionalPrice).toFixed(2);
+                            if (precioO == 0) {
+                                precioO = precio;
+                            }
+
+                            AddFlete(data.resp[i].Description, data.resp[i].Barcode, precio, data.resp[i].Sku, data.resp[i].SalesUnit, precioO, 1)
+
+                        }
+                        $("#dlgHistorial").modal("hide");
+                    } else {
+                        alert("No se encontraron productos para la tienda seleccionada.");
+                    }
+                }
+            });
+        }
     </script>
 
 }
