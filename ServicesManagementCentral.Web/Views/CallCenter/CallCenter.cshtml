@@ -2675,6 +2675,11 @@
 
         function popBuscarClient() {
             $("#txtBuscarCte").val('');
+            var myTable = $('#tblBusquedaCliente').DataTable();
+            var nCant = 0;
+            myTable
+                .clear()
+                .draw();
             $("#dlgBuscadorCliente").modal("show");
         }
 
