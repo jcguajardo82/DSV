@@ -1024,10 +1024,11 @@
 <input id="add_price" name="add_price" value="1" style="visibility:hidden" />
 <input id="add_price_dsco" name="add_price_dsco" value="1" style="visibility:hidden" />
 <input id="TotalOrden" name="TotalOrden" value="0" style="visibility:hidden" />
+<input id="TieneCobertura" name="TieneCobertura" value="0" style="visibility:hidden" />
 
 @section scripts {
 
-   @* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+    @* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
     <script>
 
         $(document).ready(function () {
@@ -1052,7 +1053,7 @@
                             , tienda: $("#ddlTdas").val()
                         }),
 
-                       
+
 
                         contentType: "application/json; charset=utf-8",
 
@@ -1111,7 +1112,7 @@
                 if ($(this).html() != "") {
                     var id = $(this).attr('id');
                     var barCode = id.split("-");
-                  
+
                     $("#txtProdArt2").val($(this).html());
                     CargaSeleccionaProducto(barCode[1])
                     $("#txtProdArt2").val('');
@@ -1634,7 +1635,7 @@
                                     success: function (json) {
                                         //
                                         if (json.Success) {
-                                            debugger;
+                                            $("#TieneCobertura").val("1");
                                             $("#hddCodBarFlete").val(json.resp.Num_CodBarra);
                                             //addProduct3(descripcion, barcode, precio, sku, SalesUnit, precioO)
                                             AddFlete(json.resp.Desc_art, json.resp.Num_CodBarra
@@ -1648,6 +1649,7 @@
                                             return true;
                                         }
                                         else {
+                                            $("#TieneCobertura").val("0");
                                             alert(json.Message);
                                             return false;
                                         }
@@ -1658,8 +1660,12 @@
                                     }
 
                                 });
-
-                            return true;
+                            if ($("#TieneCobertura").val() == "1") {
+                                return true;
+                            }
+                            else {
+                                return false;
+                            }
                         }
 
                         return true;
@@ -1988,7 +1994,7 @@
                 return;
             }
 
-           
+
             var tda = $("#ddlTdas").val()
             var categoria = $("#ddlCategorias").val();
 
@@ -2054,7 +2060,7 @@
                     document.getElementById("spinner").classList.remove("show");
 
 
-                 
+
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
                     document.getElementById("spinner").classList.remove("show");
@@ -2475,7 +2481,7 @@
 
 
         function BuscarCliente() {
-          
+
             $('#divbuttonAddClient').hide();
             $('#divgridClientes').hide();
 
