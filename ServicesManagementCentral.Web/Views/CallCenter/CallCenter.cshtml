@@ -1475,7 +1475,7 @@
                             //Obtenemos el Flete
                             var _StoreNum = $("#ddlTdas").val();
                               $.ajax({
-                                    async: true,
+                                    async: false,
                                     type: "GET",
                                     url: '@Url.Action("GetFlete", "CallCenter")',
                                     data: {
