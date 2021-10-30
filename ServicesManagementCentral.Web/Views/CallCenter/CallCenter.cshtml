@@ -73,7 +73,7 @@
                                     </ul>
                                 </p>
                                 <div class="input-group">
-                                    <input type="text" id="txtVerificaC" value="" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                                    <input type="text" id="txtVerificaC" value="" placeholder="CARACTERES VALIDOS:letras,n&uacute;meros,arroba(&#64;),gui&oacute;n medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
                                         <button type="button" class="btn btn-primary" onclick="VerificaCliente()">
                                             Verificar
                                         </button>
@@ -1667,13 +1667,13 @@
                 } else {
                     //alert(ele.value);
                     //alert(parseFloat(ele.value).toFixed(2).toString().length);
-                    if (parseFloat(ele.value).toFixed(2).toString().length > 8 ) {
+                    if (parseFloat(ele.value).toFixed(3).toString().length > 9 ) {
                         ele.value = 1;
                     }
                 }
 
 
-                ele.value = parseFloat(ele.value).toFixed(2).toString();
+                ele.value = parseFloat(ele.value).toFixed(3).toString();
             }, 1100);
         }
 
@@ -2224,7 +2224,7 @@
                     inp = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48' min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 } else {
                     cant = cant + 1;
-                    inp = "<input  oninput='inputCar(this)'  min='1' step='0.01' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                    inp = "<input  oninput='inputCar(this)'  min='1' step='0.001' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 }
                 myTable.row.add([
 
