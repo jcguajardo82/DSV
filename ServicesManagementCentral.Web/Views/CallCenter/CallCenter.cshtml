@@ -67,7 +67,7 @@
                                 <p>
                                     <b>Identificaci&oacute;n del Cliente<br />Solicite al cliente cualquiera de los siguientes datos:</b>
                                     <ul>
-                                        <li>Direccion de Correo Electronico</li>
+                                        <li>Direcci&oacute;n de Correo Electronico</li>
                                         <li>N&uacute;mero Telefonico(Capture sin Guiones)</li>
                                         <li>Si el Cliente no ha sido registrado con anterioridad debera darlo de alta</li>
                                     </ul>
@@ -113,7 +113,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Dirección:</td>
+                                        <td>Direcci&oacute;n:</td>
                                         <td>
                                             <p id="lblCalleCte"></p>
                                             <p id="lblColoniaCte"></p>
@@ -555,7 +555,7 @@
                 <div class="row" id="divBuscaCliente">
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <p>
-                            <b>Buscador de Clientes</b><br />Se puede buscar por nombre y apellido paterno y materno.Para buscar por telefono ingrese solo digitos.Para buscar por direccion captura
+                            <b>Buscador de Clientes</b><br />Se puede buscar por nombre y apellido paterno y materno.Para buscar por telefono ingrese solo digitos.Para buscar por direcci&oacute;n captura
                             <b>Calle #,Colonia y Ciudad</b> usando comas como separador
                         </p>
                         <div class="input-group">
@@ -574,8 +574,8 @@
                             <tr role="row">
                                 <th>Nombre</th>
                                 <th>Email</th>
-                                <th>Direccion</th>
-                                <th>Telefono</th>
+                                <th>Direcci&oacute;n</th>
+                                <th>Tel&eacute;fono</th>
                                 <th>Acci&oacute;n</th>
                             </tr>
                         </thead>
@@ -2857,7 +2857,7 @@
 
                             tr.append("<td>  <b> " + json.resp[i].Nom_DirCTe + "</b > <br>" + json.resp[i].Direccion + "</td>");
                             //<button type="button" class="btn btn-default btn btn-xs" onclick="GetTdasTrasp()">
-                            tr.append("<td><button onclick='SelDirCte(" + json.resp[i].Id_Cnsc_DirCTe + ")' type = 'button' class= 'btn btn-default btn btn-xs'>Utilizar esta direccón</button></td >")
+                            tr.append("<td><button onclick='SelDirCte(" + json.resp[i].Id_Cnsc_DirCTe + ")' type = 'button' class= 'btn btn-default btn btn-xs'>Utilizar esta direcci&oacute;n</button></td >")
                             $('#tblDirecciones').append(tr);
                         }
 
