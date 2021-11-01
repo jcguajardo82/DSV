@@ -1807,7 +1807,7 @@
                     ele.value = 0;
                 }
                 ele.value = parseFloat(ele.value).toFixed(2).toString();
-            }, 1100);
+            }, 2200);
         }
 
         function inputCar(ele) {
@@ -1818,14 +1818,14 @@
                 } else {
                     //alert(ele.value);
                     //alert(parseFloat(ele.value).toFixed(2).toString().length);
-                    if (parseFloat(ele.value).toFixed(2).toString().length > 8 ) {
+                    if (parseFloat(ele.value).toFixed(3).toString().length > 8 ) {
                         ele.value = 1;
                     }
                 }
 
 
-                ele.value = parseFloat(ele.value).toFixed(2).toString();
-            }, 1100);
+                ele.value = parseFloat(ele.value).toFixed(3).toString();
+            }, 2200);
         }
 
         function Finalizar() {
