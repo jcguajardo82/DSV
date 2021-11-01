@@ -51,7 +51,7 @@
         </div>
     </div>
 </div>
-<div class="row" style="padding-bottom:50px;">
+<div class="row" style="padding-bottom:50px;" id="divContent">
     <div class="col-xs-12 col-md-12 col-lg-12">
         <div class="ibox ">
             <div class="ibox-content">
@@ -1065,7 +1065,7 @@
                     //}
 
                     $.ajax({
-                       
+
                         complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
                             document.getElementById("spinner").classList.remove("show");
                             $("#imgSpiner").css("display", "none");
@@ -1092,7 +1092,7 @@
 
                         dataType: "json",
 
-                     
+
 
                         success: function (data) {
 
@@ -1120,7 +1120,7 @@
 
                         },
 
-                  
+
 
                     });
 
@@ -1157,7 +1157,23 @@
 
     </script>
 
+    <script>
+        document.onreadystatechange = function () {
+            if (document.readyState !== "complete") {
+                document.getElementById(
+                    "divContent").style.visibility = "hidden";
+                //$("#imgSpiner").css("display", "block");
+                //document.getElementById("spinner").classList.add("show");
+            } else {
+                //document.getElementById("spinner").classList.remove("show");
+                //$("#imgSpiner").css("display", "none");
+                document.getElementById(
+                    "divContent").style.visibility = "visible";
+            }
+        };
 
+      
+    </script>
     <style>
         .required {
             position: absolute;
@@ -1227,7 +1243,7 @@
             setTimeout(function () {
                 $("#divOkArt").fadeOut(1500);
             }, 2000);
-            GetCategorias();
+            //GetCategorias();
 
             GetEstados();
 
@@ -2684,7 +2700,7 @@
 
                         var _Id_Num_Cte = $("#hddIdCliente").val();
               $.ajax({
-                 
+
                       complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
                           document.getElementById("spinner").classList.remove("show");
                           $("#imgSpiner").css("display", "none");
@@ -3296,7 +3312,7 @@
             var _tda = $("#ddlTdas").val();
             $.ajax({
                 "url": "@Url.Action("EcharCarrito", "CallCenter")",
-               
+
                 "type": "get",
                 "data": {
                  UeNo: UeNo,
