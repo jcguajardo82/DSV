@@ -106,7 +106,8 @@ namespace ServicesManagement.Web.Controllers
 
     }
 
-    public class AutoComplete {
+    public class AutoComplete
+    {
         public string Barcode { get; set; }
         public string Description { get; set; }
         public string UrlImg { get; set; }
@@ -344,7 +345,7 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-        public ActionResult AutoComplete(string product, string tienda="", string categoria="")
+        public ActionResult AutoComplete(string product, string tienda = "", string categoria = "")
         {
             try
             {
@@ -1845,6 +1846,12 @@ namespace ServicesManagement.Web.Controllers
             {
 
                 var ListP = DataTableToModel.ConvertTo<Historial>(DALCallCenter.HistorialOrdenes_sUP(Id_Num_Cte).Tables[0]);
+
+                foreach (var item in ListP)
+                {
+                    var tot = DataTableToModel.ConvertTo<HistorialTotales>(DALServicesM.GetOrdersByOrderNo(item.UeNo).Tables[6]).FirstOrDefault();
+                    item.Imp_Pago = decimal.Parse(tot.TotPagado);
+                }
 
 
                 var result = new
