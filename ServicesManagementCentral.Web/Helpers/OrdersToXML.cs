@@ -436,6 +436,7 @@ namespace ServicesManagement.Web.Helpers
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "customerno"), dt2.Rows[0][90].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), comentarios.ToString())
                     );
                 }
@@ -448,6 +449,7 @@ namespace ServicesManagement.Web.Helpers
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "customerno"), dt2.Rows[0][90].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), comentarios.ToString())
                     );
                 }
@@ -460,6 +462,7 @@ namespace ServicesManagement.Web.Helpers
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "customerno"), dt2.Rows[0][90].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), comentarios.ToString())
                     );
                 }
@@ -471,6 +474,7 @@ namespace ServicesManagement.Web.Helpers
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                            new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "customerno"), dt2.Rows[0][90].ToString()),
                             new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), comentarios.ToString())
                     );
                 }
@@ -486,6 +490,7 @@ namespace ServicesManagement.Web.Helpers
                                     new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                                     new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
                                     new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                                    new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "customerno"), dt2.Rows[0][90].ToString()),
                                     new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), comentarios.ToString())
                             );
                         }
@@ -496,6 +501,7 @@ namespace ServicesManagement.Web.Helpers
                                     new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                                     new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
                                     new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
+                                    new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "customerno"), dt2.Rows[0][90].ToString()),
                                     new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), comentarios.ToString())
                             );
                         }
@@ -508,7 +514,7 @@ namespace ServicesManagement.Web.Helpers
                                 new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "additionalPoints"), dt2.Rows[0][82].ToString()),
                                 new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "redeemedPoints"), dt2.Rows[0][83].ToString()),
                                 new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "storeID"), dt2.Rows[0][3].ToString()),
-                                new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "customerno"), comentarios.ToString()),
+                                new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "customerno"), dt2.Rows[0][90].ToString()),
                                 new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "orderNote"), comentarios.ToString())
                         );
                     }
