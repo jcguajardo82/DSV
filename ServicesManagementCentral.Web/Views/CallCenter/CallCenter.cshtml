@@ -667,12 +667,12 @@
                                             </form>
                                         </td>
                                         <td style="text-align:center;">
-                                            <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaSeleccionaProducto('')">
+                                            <button type="button" id="btnBuscar" class="btn btn-primary" onclick="CargaSeleccionaProducto('',1)">
                                                 Buscar
                                             </button>
                                         </td>
                                         <td>
-                                            <select id="ddlCategorias" class="form-control m-b">
+                                            <select id="ddlCategorias" onchange="CargaSeleccionaProducto('',2)" class="form-control m-b">
                                             </select>
                                             @*<button type="button" id="btnHistoria" class="btn btn-primary" onclick="clickLogin()">
                                                 Historia
@@ -680,7 +680,7 @@
                                             @*<input id="tags" class="ui-autocomplete-input" autocomplete="off">*@
                                         </td>
                                         <td>
-                                            <select id="ddlMarcas" class="form-control m-b">
+                                            <select id="ddlMarcas"  onchange="CargaSeleccionaProducto('',2)" class="form-control m-b">
                                             </select>
                                         </td>
                                     </tr>
@@ -1128,7 +1128,7 @@
                     var barCode = id.split("-");
 
                     $("#txtProdArt2").val($(this).html());
-                    CargaSeleccionaProducto(barCode[1])
+                    CargaSeleccionaProducto(barCode[1],1)
                     $("#txtProdArt2").val('');
                 }
 
@@ -2014,7 +2014,7 @@
 
         }
 
-        function CargaSeleccionaProducto(param) {
+        function CargaSeleccionaProducto(param,op) {
 
             $("#divTags").hide();
             if (param.length == 0) {
@@ -2033,6 +2033,11 @@
            
             if (categoria.length == 0) { categoria = '0' };
             if (marca.length == 0) { marca = '0' };
+
+            if (op == 1) {
+                categoria = '0';
+                marca = '0';
+            }
 
             $.ajax({
                 beforeSend: function () {
