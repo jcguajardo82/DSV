@@ -97,15 +97,28 @@ namespace ServicesManagement.Web.Controllers
         public string UnidadVenta { get; set; }// public string public string ,
         public string varietal { get; set; }// public string public string ,
         public string weight { get; set; }// public string public string ,
-        public CategoryModel Category { get; set; }// {
+        public List<CategoryModel> categories { get; set; }// {
 
         public BrandModel Brand { get; set; }
         public List<PromotionsModels> Promotions { get; set; }
-        public string ConversionRule { get; set; }// null
+        public ConvertionRuleModel ConversionRule { get; set; }// null
 
 
     }
 
+    public class ConvertionRuleModel
+    {
+        public string baseUnit { get; set; }
+        public string equivalentUnit { get; set; }
+        public decimal factorConversion { get; set; }
+        public bool permiteFraccion { get; set; }
+
+    }
+    public class Combo
+    {
+        public string value { get; set; }
+        public string text { get; set; }
+    }
     public class AutoComplete
     {
         public string Barcode { get; set; }
@@ -114,8 +127,9 @@ namespace ServicesManagement.Web.Controllers
     }
     public class CategoryModel
     {
-        public string CategoryId { get; set; }// public string cuidado-de-los-piespublic string ,
-        public string CategoryDescription { get; set; }// public string Cuidado de los piespublic string     
+        public string categoryId { get; set; }// public string cuidado-de-los-piespublic string ,
+        public string categoryDescription { get; set; }// public string Cuidado de los piespublic string
+                                                       // 
     }
     public class BrandModel
     {
@@ -390,7 +404,7 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
-                var result = new { data = auto };
+                var result = new { data = auto, Success = true };
                 //return Json(result, JsonRequestBehavior.AllowGet);
                 //return Json("", JsonRequestBehavior.AllowGet);
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -432,15 +446,54 @@ namespace ServicesManagement.Web.Controllers
 
                 var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
 
+                List<string> marcas = new List<string>();
+                List<string> categorias = new List<string>();
+
                 if (response1 != null)
                 {
                     response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
+
+
+
+
+                    foreach (var item in response1)
+                    {
+                        if (!marcas.Contains(item.Brand.BrandDescription) && item.Brand.BrandDescription != null)
+                        {
+                            marcas.Add(item.Brand.BrandDescription);
+                        }
+                    }
+                    foreach (var item in response1)
+                    {
+                        foreach (var cat in item.categories)
+                        {
+                            if (!categorias.Contains(cat.categoryDescription) && cat.categoryDescription != null)
+                            {
+                                categorias.Add(cat.categoryDescription);
+                            }
+                        }
+
+                        
+                    }
                 }
 
-                var result = new { Success = true, data = response1 };
-                //return Json(result, JsonRequestBehavior.AllowGet);
-                //return Json("", JsonRequestBehavior.AllowGet);
-                return PartialView("tblBuscador", response1);
+                var view = RenderRazorViewToString(ControllerContext, "tblBuscador", response1);
+
+                var result = new
+                {
+
+                    view = view,
+                    Success = true,
+                    marcas = marcas,
+                    categ = categorias
+
+                };
+
+
+                //var result = new { marcas=marcas,categ=categorias};
+                return Json(result, JsonRequestBehavior.AllowGet);
+                ////return Json("", JsonRequestBehavior.AllowGet);
+                //return PartialView("tblBuscador", response1);
             }
             catch (Exception ex)
             {
@@ -450,6 +503,18 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+        public static string RenderRazorViewToString(ControllerContext controllerContext, string viewName, object model)
+        {
+            controllerContext.Controller.ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var ViewResult = ViewEngines.Engines.FindPartialView(controllerContext, viewName);
+                var ViewContext = new ViewContext(controllerContext, ViewResult.View, controllerContext.Controller.ViewData, controllerContext.Controller.TempData, sw);
+                ViewResult.View.Render(ViewContext, sw);
+                ViewResult.ViewEngine.ReleaseView(controllerContext, ViewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
 
         public List<OrderFacts_UEModel> getRams()
         {
@@ -1961,10 +2026,15 @@ namespace ServicesManagement.Web.Controllers
 
                     if (response1 != null)
                     {
-                        response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
+                        if (response1.Count > 0)
+                        {
+                            response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
+
+                            productos.Add(response1.FirstOrDefault());
+                        }
                     }
 
-                    productos.Add(response1.FirstOrDefault());
+
                 }
                 foreach (DataRow item in ds.Tables[4].Rows)
                 {
@@ -1989,10 +2059,15 @@ namespace ServicesManagement.Web.Controllers
 
                     if (response1 != null)
                     {
-                        response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
+                        if (response1.Count > 0)
+                        {
+                            response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
+
+                            productos.Add(response1.FirstOrDefault());
+                        }
                     }
 
-                    productos.Add(response1.FirstOrDefault());
+
                 }
 
 
