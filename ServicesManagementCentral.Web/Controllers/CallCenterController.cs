@@ -417,7 +417,7 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult GetProduct(string product, string tienda, string categoria)
+        public ActionResult GetProduct(string product, string tienda, string categoria, string marca = "")
         {
             try
             {
@@ -428,10 +428,10 @@ namespace ServicesManagement.Web.Controllers
                 var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
 
                 string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
-                if (categoria != "0")
-                {
-                    url = string.Format("{0}{1}&tienda={2}&filtro={3}", urlApi, product.Trim(), tienda, categoria);
-                }
+                //if (categoria != "0")
+                //{
+                //    url = string.Format("{0}{1}&tienda={2}&filtro={3}", urlApi, product.Trim(), tienda, categoria);
+                //}
 
 
                 var client = new RestClient(url);
@@ -454,7 +454,26 @@ namespace ServicesManagement.Web.Controllers
                     response1.All(x => { x.UrlImage = string.Format("{0}{1}{2}", urlImg, x.Barcode, exteImg); return true; });
 
 
+                    if (!string.IsNullOrEmpty(categoria) && categoria != "0")
+                    {
+                        List<ResponseBuscadorModel> r = new List<ResponseBuscadorModel>();
+                        foreach (var item in response1)
+                        {
+                            if (item.categories.Count(x => x.categoryDescription == categoria) > 0)
+                            {
+                                r.Add(item);
+                            }
+                        }
+                        response1 = r;
 
+                    }
+
+                    if (!string.IsNullOrEmpty(marca) && marca != "0")
+                    {
+                        response1 = response1.Where(x => x.Brand.BrandDescription == marca).ToList();
+                    }
+
+                   
 
                     foreach (var item in response1)
                     {
@@ -473,7 +492,7 @@ namespace ServicesManagement.Web.Controllers
                             }
                         }
 
-                        
+
                     }
                 }
 
