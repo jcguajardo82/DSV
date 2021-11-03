@@ -1044,7 +1044,7 @@
 
             $("#txtProdArt2").on("keyup", function () {
 
-                if (this.value.length > 1) {
+                if (this.value.length > 3) {
 
                     //let SearchObject = {
                     //    product: $("#txtProdArt2").val()
@@ -2030,7 +2030,7 @@
             var tda = $("#ddlTdas").val()
             var categoria = $("#ddlCategorias").val();
             var marca = $("#ddlMarcas").val();
-           
+
             if (categoria.length == 0) { categoria = '0' };
             if (marca.length == 0) { marca = '0' };
 
@@ -2397,6 +2397,13 @@
                 .draw();
             for (var i = 0; i < _jsonProductsSelected.length; i++) {
 
+                var _salesUnite = _jsonProductsSelected[i].SalesUnit;
+                var conversionRule = $("#um-" + _jsonProductsSelected[i].barcode).val();
+
+                if (typeof conversionRule !== "undefined") {
+                    _salesUnite = "<select id='umc-" + _jsonProductsSelected[i].barcode +"'></select>"
+                }
+
                 var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 var inp;
                 if (_jsonProductsSelected[i].SalesUnit == 'pza') {
@@ -2412,7 +2419,7 @@
                     "$" + _jsonProductsSelected[i].price,
                     "$" + _jsonProductsSelected[i].precioO,
                     inp,//"<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
-                      _jsonProductsSelected[i].SalesUnit,
+                    _salesUnite,
                     "$" + totaArt,
                     "<input type='text' onchange='Change_2(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
                     "<select onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' name='ddlDustituto' class='form-control' id='cSustituto-"+ _jsonProductsSelected[i].barcode +"'>"
@@ -2422,7 +2429,12 @@
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
-
+                if (typeof conversionRule !== "undefined") {
+                    //_salesUnite = "<opselect id='umc-" + _jsonProductsSelected[i].barcode + "'></select>"
+                    var $options = $("#um-"+ _jsonProductsSelected[i].barcode+" > option").clone();
+                    $("#umc-" + _jsonProductsSelected[i].barcode).append($options);
+                    $("#umc-" + _jsonProductsSelected[i].barcode).val(conversionRule);
+                }
                 $("#cSustituto-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].sustituto);
                 //cant = cant + parseInt(_jsonProductsSelected[i].quantity);
                 tot = tot + parseFloat(_jsonProductsSelected[i].total)
@@ -2446,12 +2458,21 @@
             $("#lblTotalFormaP").empty();
             $("#lblTotalFormaP").append("Total a Pagar: $" + tot);
 
+
+
+
             var myTableR = $('#tblResumen').DataTable();
             myTableR
                 .clear()
                 .draw();
 
             for (var x = 0; x < _jsonProductsSelected.length; x++) {
+
+
+
+
+
+
                 var totaArt = parseFloat(_jsonProductsSelected[x].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 
                 myTableR.row.add([
@@ -3445,6 +3466,24 @@
 
 
 
+        }
+
+        function conversionRule(BarCode) {
+
+            var cant = $("#nCant-" + BarCode).val();
+            $("#divUS-" + BarCode).html("");
+            //$("#divUS-" + BarCode).html("<input type='text' id='cnt'/>");
+          
+
+            var unitSale = $("#um-" + BarCode).val();
+            var _html = "";
+            if (unitSale == "pza") {
+                _html = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength='5' onkeypress='return event.charCode >= 48' min='1' step='1' type='number' id='nCant-" + BarCode + "' value='" + cant + "' class='form-control input-sm pull-right' />";
+            }
+            else {
+                _html = " <input oninput='inputCar(this)' min='1' step='0.001' type='number' id='nCant-" + BarCode+"' value='"+cant+"' class='form-control input-sm pull-right' />"
+            }
+            $("#divUS-" + BarCode).html(_html)
         }
     </script>
 
