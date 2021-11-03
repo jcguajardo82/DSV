@@ -30,8 +30,8 @@
                     if (precioO == 0) { precioO = precio; }
                     desc = precio - precioO;
 
-                    <tr>
-                        <td>@item.Barcode</td>
+                    <tr id="trB-@item.Barcode">
+                        <td><label id="lblBarCodeB- @item.Barcode"></label> @item.Barcode</td>
                         <td>@item.Description</td>
                         <td>@item.Brand.BrandDescription</td>
                         <td class="text-right">@precioO</td>
@@ -44,11 +44,19 @@
 
                             @if (item.ConversionRule != null)
                             {
-                                <select id="um-@item.Barcode" onchange="conversionRule(@item.Barcode)">
+                                <input type="hidden" value="@item.ConversionRule.factorConversion" id="facConvB-@item.Barcode" />
+                                <select id="um-@item.Barcode" onchange="conversionRule(@item.Barcode,1)" class="form-control-sm">
                                     <option value="@item.ConversionRule.baseUnit">
-                                        @item.ConversionRule.baseUnit
+                                        @item.ConversionRule.baseUnit.Trim()
                                     </option>
-                                    <option value="pza">pza</option>
+                                    @if (item.ConversionRule.equivalentUnit.ToLower() == "piezas")
+                                    {
+                                        <option value="pza">pza</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ConversionRule.equivalentUnit">@item.ConversionRule.equivalentUnit.Trim()</option>
+                                    }
                                 </select>
                             }
                             else
@@ -71,27 +79,53 @@
                             </div>
                         </td>
                         <td class="text-center">
-                          <select class="form-control-sm" id="bSustituto-@item.Barcode">
-                              <option value="Si">Si</option>
-                              <option value="No" selected>No</option>
-                          </select>
+                            <select class="form-control-sm" id="bSustituto-@item.Barcode">
+                                <option value="Si">Si</option>
+                                <option value="No" selected>No</option>
+                            </select>
 
                         </td>
                         <td>
-                            <a title='Click para Agregar Producto' class='link-primary'
-                               onclick="addProduct3('@item.Description.Replace('\'', '"')','@item.Barcode','@item.Price','@item.Sku','@item.SalesUnit','@precioO')">
-                                Agregar Prodcuto
-                            </a>
+                            @*<a title='Click para Agregar Producto' class='link-primary'
+           onclick="addProduct3('@item.Description.Replace('\'', '"')','@item.Barcode','@item.Price','@item.Sku','@item.SalesUnit','@precioO')">
+            Agregar Prodcuto
+        </a>*@
+                            @if (item.ConversionRule != null)
+                            {
+                                if (item.ConversionRule.equivalentUnit.ToLower() == "piezas")
+                                {
+                                    <a title='Click para Agregar Producto' class='link-primary'
+                                       onclick="addProduct3('@item.Description.Replace('\'', '"')','@item.Barcode','@item.Price','@item.Sku','@item.SalesUnit','@precioO', '@item.ConversionRule.baseUnit.Trim()','pza',@item.ConversionRule.factorConversion)">
+                                        Agregar Prodcuto
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a title='Click para Agregar Producto' class='link-primary'
+                                       onclick="addProduct3('@item.Description.Replace('\'', '"')','@item.Barcode','@item.Price','@item.Sku','@item.SalesUnit','@precioO', '@item.ConversionRule.baseUnit.Trim()','@item.ConversionRule.equivalentUnit.Trim()',@item.ConversionRule.factorConversion)">
+                                        Agregar Prodcuto
+                                    </a>
+                                }
+
+                            }
+                            else
+                            {
+                                <a title='Click para Agregar Producto' class='link-primary'
+                                   onclick="addProduct3('@item.Description.Replace('\'', '"')','@item.Barcode','@item.Price','@item.Sku','@item.SalesUnit','@precioO','','',0)">
+                                    Agregar Prodcuto
+                                </a>
+
+                            }
                         </td>
                     </tr>
                 }
 
             }
-            @*else { 
-            <tr>
-                <td colspan="11">(0) articulos encontrados</td>
-            </tr>
-            }*@
+            @*else {
+                <tr>
+                    <td colspan="11">(0) articulos encontrados</td>
+                </tr>
+                }*@
             @*data.data[i].Barcode,
                 data.data[i].Description,
                 data.data[i].Brand.BrandDescription,
