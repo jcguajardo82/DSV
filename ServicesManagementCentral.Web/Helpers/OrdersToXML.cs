@@ -47,7 +47,7 @@ namespace ServicesManagement.Web.Helpers
 
                     // informacion del cliente (customer)
                     new XElement(nm + "customer",
-                        new XElement(nm + "customer-no", dt2.Rows[0][90].ToString()),
+                        new XElement(nm + "customer-no", dt2.Rows[0][90].ToString()),  //para OrderFacts_POSClient
                         new XElement(nm + "customer-name", dt2.Rows[0][9].ToString()),
                         new XElement(nm + "customer-email", dt2.Rows[0][10].ToString()),
                         new XElement(nm + "billing-address",
