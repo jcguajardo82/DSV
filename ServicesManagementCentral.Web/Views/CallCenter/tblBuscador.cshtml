@@ -38,16 +38,37 @@
                         <td class="text-right">@precio</td>
                         <td class="text-right">@desc</td>
                         <td><img width='50' height='50' src="@item.UrlImage" class="img-lg\"></td>
-                        <td class="text-center">@item.SalesUnit</td>
-                        <td class="text-right">
-                            @if (@item.SalesUnit.ToLower() == "pza")
+                        <td class="text-center">
+
+
+
+                            @if (item.ConversionRule != null)
                             {
-                                <input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength='5' onkeypress='return event.charCode >= 48' min='1' step='1' type='number' id='nCant-@item.Barcode' value='0' class='form-control input-sm pull-right' />;
+                                <select id="um-@item.Barcode" onchange="conversionRule(@item.Barcode)">
+                                    <option value="@item.ConversionRule.baseUnit">
+                                        @item.ConversionRule.baseUnit
+                                    </option>
+                                    <option value="pza">pza</option>
+                                </select>
                             }
                             else
                             {
-                                <input oninput='inputCar(this)' min='1' step='0.01' type='number' id='nCant-@item.Barcode' value='0' class='form-control input-sm pull-right' />
+                                @item.SalesUnit
+
                             }
+
+                        </td>
+                        <td class="text-right">
+                            <div id="divUS-@item.Barcode">
+                                @if (@item.SalesUnit.ToLower() == "pza")
+                                {
+                                    <input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength='5' onkeypress='return event.charCode >= 48' min='1' step='1' type='number' id='nCant-@item.Barcode' value='0' class='form-control input-sm pull-right' />;
+                                }
+                                else
+                                {
+                                    <input oninput='inputCar(this)' min='1' step='0.001' type='number' id='nCant-@item.Barcode' value='0' class='form-control input-sm pull-right' />
+                                }
+                            </div>
                         </td>
                         <td class="text-center">
                           <select class="form-control-sm" id="bSustituto-@item.Barcode">
