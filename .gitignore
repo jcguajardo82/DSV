@@ -388,3 +388,5 @@ FodyWeavers.xsd
 **/[Ll]ogs/
 
 
+
+ServicesManagementCentral.Web/Web.config
