@@ -1012,10 +1012,111 @@
 <input id="add_price" name="add_price" value="1" style="visibility:hidden" />
 <input id="add_price_dsco" name="add_price_dsco" value="1" style="visibility:hidden" />
 <input id="TotalOrden" name="TotalOrden" value="0" style="visibility:hidden" />
+<input id="TieneCobertura" name="TieneCobertura" value="0" style="visibility:hidden" />
 
 @section scripts {
 
+    @* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+    <script>
 
+
+
+                if (this.value.length > 0) {
+
+                    //let SearchObject = {
+                    //    product: $("#txtProdArt2").val()
+                    //    , tienda: $("#ddlTdas").val()
+                    //}
+
+                    $.ajax({
+
+                        type: "POST",
+
+                        "url": "@Url.Action("AutoComplete", "CallCenter")",
+
+                        data: JSON.stringify({
+                            product: $("#txtProdArt2").val()
+                            , tienda: $("#ddlTdas").val()
+                        }),
+
+
+
+                        contentType: "application/json; charset=utf-8",
+
+                        dataType: "json",
+
+                        beforeSend: function () {
+
+                            $("#divTags").show();
+
+                        },
+
+                        success: function (data) {
+
+                            if (data.data.length == 0) {
+                                $("#divTags").hide();
+                            }
+                            else {
+                                //data = JSON.parse(data.data)
+                                output = "";
+                                for (var i = 0; i < data.data.length; i++) {
+                                    output += "<tr><td  class='select'><img width='50px' height='60px' src=" + data.data[i].UrlImg + " /></td> <td class='select' id='srch-" + data.data[i].Barcode + "'>" + data.data[i].Description + "</td></tr></br>";
+                                }
+                                //let output = data.map(i => "<tr><td class='select'><img width='50px' height='60px' src=" + i.Barcode + " /></td> <td class='select'>" + i.Description + "</td></tr></br>");
+
+                                $("#output").html(output);
+                            }
+
+                        },
+
+                        error: function (errorMessage) {
+
+                            $("#divTags").hide();
+
+                            alert(errorMessage)
+
+                        },
+
+                        complete: function () {
+
+
+
+                        }
+
+                    });
+
+                } else {
+                    $("#divTags").hide();
+                }
+
+            })
+
+
+
+            $(document).on("click", ".select", function () {
+
+                if ($(this).html() != "") {
+                    var id = $(this).attr('id');
+                    var barCode = id.split("-");
+
+                    $("#txtProdArt2").val($(this).html());
+                    CargaSeleccionaProducto(barCode[1])
+                    $("#txtProdArt2").val('');
+                }
+
+                else {
+
+                    $("#txtProdArt2").val('');
+
+                }
+
+                $("#divTags").hide();
+
+            });
+
+        });
+
+    </script>
 
 
     <style>
@@ -1485,7 +1586,7 @@
                                     success: function (json) {
                                         //
                                         if (json.Success) {
-                                            debugger;
+                                            $("#TieneCobertura").val("1");
                                             $("#hddCodBarFlete").val(json.resp.Num_CodBarra);
                                             //addProduct3(descripcion, barcode, precio, sku, SalesUnit, precioO)
                                             AddFlete(json.resp.Desc_art, json.resp.Num_CodBarra
@@ -1499,6 +1600,7 @@
                                             return true;
                                         }
                                         else {
+                                            $("#TieneCobertura").val("0");
                                             alert(json.Message);
                                             return false;
                                         }
@@ -1509,8 +1611,12 @@
                                     }
 
                                 });
-
-                            return true;
+                            if ($("#TieneCobertura").val() == "1") {
+                                return true;
+                            }
+                            else {
+                                return false;
+                            }
                         }
 
                         return true;
@@ -1825,6 +1931,7 @@
                 return;
             }
 
+
             var tda = $("#ddlTdas").val()
             var categoria = $("#ddlCategorias").val();
 
@@ -1896,6 +2003,12 @@
                     );
 
 
+
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+                    alert(errorThrown);
 
                     //if (data.Success) {
                     //    debugger;
@@ -2376,9 +2489,7 @@
 
 
         function BuscarCliente() {
-            //$('#divVerificaCliente').hide();
-            //$('#divBuscaCliente').hide();
-            //$('#divResultClient').show();
+
             $('#divbuttonAddClient').hide();
             $('#divgridClientes').hide();
 
