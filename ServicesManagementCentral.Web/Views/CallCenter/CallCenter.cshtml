@@ -1,14 +1,16 @@
 ﻿@using System.Data;
 @{
     ViewBag.Title = "Call Center";
-
-
 }
 
+@*<div id="spinner">
+    <img src="~/Content/images/spinner-icon-gif-24.gif" style="display:none;" id="imgSpiner" />
+</div>*@
 
 <div id="spinner">
     <img src="~/Content/images/spinner-icon-gif-24.gif" style="display:none;" id="imgSpiner" />
 </div>
+
 <div class="row">
 
     <div class="col-xs-6 col-md-6 col-lg-6">
@@ -1069,15 +1071,13 @@
                     $.ajax({
 
                         complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
-                            document.getElementById("spinner").classList.remove("show");
+                            document.getElementById("spinner").classList.remove("show"); //pasar
                             $("#imgSpiner").css("display", "none");
-
                         },
                         beforeSend: function () {
                             $("#imgSpiner").css("display", "block");
                             document.getElementById("spinner").classList.add("show");
                             $("#divTags").show();
-
                         },
                         type: "POST",
 
