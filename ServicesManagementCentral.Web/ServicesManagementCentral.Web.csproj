@@ -3573,6 +3573,8 @@
     <Content Include="Content\plugins\momment\moment-with-locales.js" />
     <Content Include="Content\plugins\momment\moment-with-locales.min.js" />
     <Content Include="Content\plugins\momment\moment.min.js" />
+    <Content Include="Content\plugins\multiselect\vanillaSelectBox.css" />
+    <Content Include="Content\plugins\multiselect\vanillaSelectBox.js" />
     <Content Include="Content\plugins\popper\popper.min.js" />
     <Content Include="Content\plugins\slick\ajax-loader.gif" />
     <Content Include="Content\plugins\slick\fonts\slick.svg" />
