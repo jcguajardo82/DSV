@@ -60,7 +60,7 @@
                         <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Telefono</th>
                         <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Contacto</th>
                         <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">PK</th>
-                        <th style="width: 50px;"></th>
+                        <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1" name='accion'>Seleccionar</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -82,6 +82,70 @@
         var _optionsPackings = undefined;
         var _uccWithPDF = [];
         $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel', {
+                        text: 'Excel XLS',
+                        action: function (e, dt, node, config) {
+
+                            Excel();
+
+                        }
+                    }
+
+                    ],
+                    orderCellsTop: false,
+                    //fixedHeader: {
+                    //    header: true
+                    //},
+                    "scrollX": true
+
+                }
+            );
             Get();
             GetPackings();
         });
@@ -131,7 +195,10 @@
         function ShowFilter() {
             $("#filter").collapse('toggle');
         };
+        function Excel() {
 
+            window.location = window.location.origin + '/ShipmentRequestsWMS/ExcelRequests';
+        }
         function Get() {
 
             $.ajax({
@@ -144,33 +211,28 @@
                 datatype: "html",
                 success: function (json) {
                     if (json.Success) {
-                        $("#tblConsulta tbody").remove();
-                        //var tr;
-                        console.log(json);
-                        //Append each row to html table
+                        var myTableR = $('#tblConsulta').DataTable();
+                        myTableR
+                            .clear()
+                            .draw();
                         for (var i = 0; i < json.json.length; i++) {
-                            tr = $('<tr/>');
-                            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                            tr.append("<td>" + json.json[i].Cuenta + "</td>");
-                            tr.append("<td>" + json.json[i].cantidad + "</td>");
-                            tr.append("<td>" + json.json[i].referencia2 + "</td>");
-                            tr.append("<td>" + json.json[i].siglasCliente + "</td>");
-                            tr.append("<td>" + json.json[i].direccion + "</td>");
-                            tr.append("<td>" + json.json[i].colonia + "</td>");
-                            tr.append("<td>" + json.json[i].poblacion + "</td>");
-
-                            tr.append("<td>" + json.json[i].codigoPostal + "</td>");
-                            tr.append("<td>" + json.json[i].telefono + "</td>");
-                            tr.append("<td>" + json.json[i].contacto + "</td>");
-                            tr.append("<td>" + json.json[i].ucc + "</td>");
-
-                            //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
-                            tr.append("<td><input class='form - check - input' type='checkbox' value='" + json.json[i].idShipmentWMS + "/" + json.json[i].ProductId + "/" + json.json[i].Barcode + "/" + json.json[i].UeNo + "/" + json.json[i].OrderNo + "/" + json.json[i].ucc + "' id='chkSel_" + json.json[i].idShipmentWMS + "' /> </td >")
-                            @*<input class="form-check-input" type="checkbox" value="" id="chkSel_@p["Barcode"].ToString()" />
-                            tr.append("<td><button onclick='Edit(" + json.json[i].idCnscPacking + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='Delete(" + json.json[i].idCnscPacking + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")*@
-                            $('#tblConsulta').append(tr);
+                            myTableR.row.add([
+                                json.json[i].Cuenta,
+                                json.json[i].cantidad,
+                                json.json[i].referencia2,
+                                json.json[i].siglasCliente,
+                                json.json[i].direccion,
+                                json.json[i].colonia,
+                                json.json[i].poblacion,
+                                json.json[i].codigoPostal,
+                                json.json[i].telefono,
+                                json.json[i].contacto,
+                                json.json[i].ucc,
+                                "<input class='form - check - input' type='checkbox' value='" + json.json[i].idShipmentWMS + "/" + json.json[i].ProductId + "/" + json.json[i].Barcode + "/" + json.json[i].UeNo + "/" + json.json[i].OrderNo + "/" + json.json[i].ucc + "' id='chkSel_" + json.json[i].idShipmentWMS + "' />"
+                            ]).draw();
 
                         }
+
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
