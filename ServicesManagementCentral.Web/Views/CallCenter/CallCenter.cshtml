@@ -1129,13 +1129,46 @@
 
 
     </script>
+
     <style>
-        .required {
+        /* (A) FULL SCREEN WRAPPER */
+        #spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            width: 100vw;
+            height: 100vh;
+            /*background: rgba(0, 0, 0, 0);*/
+            transition: opacity 0.2s;
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+            /* (B) CENTER LOADING SPINNER */
+            #spinner img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%);
+            }
+
+        /* (C) SHOW & HIDE */
+        #spinner {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+            #spinner.show {
+                visibility: visible;
+                opacity: 1;
+            }
+/*        .required {
             position: absolute;
             margin-left: -10px;
             color: #FB0000;
             font-size: 15px;
-        }
+        }*/
     </style>
     <link href="~/Content/Inspinia/Styles/steps/jquery.steps.css" rel="stylesheet" />
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
@@ -2440,7 +2473,6 @@
             $("#dlgSeleccionar").modal("show");
         }
 
-
         function llenarCarrito() {
             var cant = 0, tot = 0.0,descuento=0;
 
@@ -2566,6 +2598,7 @@
                     + "<td>" + _jsonObservaciones[x].observacion + "</td>");
             }
         }
+
         function agregarObs() {
             var sum_Obs = $('#add_Obs').val();
         /*            var myTable = $('#tblBusquedaArt').DataTable();*/
@@ -2623,6 +2656,7 @@
             CargaSeleccionaProducto();
             $("#dlgSeleccionar").modal("show");
         }
+
         function addProduct2() {
 
             $('#feedback2').append("<tr id=\"" + document.getElementById("add_product").value +"\"> <td>" + document.getElementById("add_description").value + "<br /><input type=\"text\" placeholder=\"Indicaciones y Observaciones\" class=\"form-control input-sm\"/>" + "</td>"
@@ -2646,7 +2680,6 @@
 
         }
 
-
         function BuscarCliente() {
 
             $('#divbuttonAddClient').hide();
@@ -2660,7 +2693,7 @@
             //    $('#divbuttonAddClient').show();
 
             $.ajax({
-                async: false,
+                //async: false,
                 type: "GET",
                 url: '@Url.Action("BuscarCliente", "CallCenter")',
                 data: {
@@ -2668,6 +2701,15 @@
 
                 },
                 datatype: "html",
+                beforeSend: function () {
+                    $("#imgSpiner").css("display", "block");
+                    document.getElementById("spinner").classList.add("show");
+                },
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+
+                },
                 success: function (json) {
 
                     if (json.Success) {
@@ -2706,7 +2748,6 @@
                 }
             });
         }
-
 
         function SelCte(mail,idcte) {
             $.ajax({
