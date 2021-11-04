@@ -361,8 +361,10 @@
                                                 </div>
                                             </td>
                                             <td style="text-align:left;">
-                                                Efectivo: <input type="text" id="in_pago" disabled value="0.00" width="100px;" oninput="input(this)" /><br />
-                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled value="0.00" oninput="input(this)" id="in_vales" width="100px;" />
+                                                @*Efectivo: <input type="text" id="in_pago" disabled value="0.00" width="100px;" oninput="input(this)" /><br />*@
+                                                Efectivo: <input type="text" id="in_pago" disabled value="0.00" width="100px;" onkeypress='return isNumberKey(event,this,3,0)' /><br />
+                                                @*Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled value="0.00" oninput="input(this)" id="in_vales" width="100px;" />*@
+                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled value="0.00" onkeypress='return isNumberKey(event,this,3,0)' id="in_vales" width="100px;" />
                                             </td>
                                         </tr>
                                         @*<tr>
