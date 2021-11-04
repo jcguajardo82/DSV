@@ -1829,11 +1829,8 @@ namespace ServicesManagement.Web.Controllers
 
         public bool TieneCobertura(int tienda, string codigopostal)
         {
-
             bool puede = DALCallCenter.upCorpOms_Cns_CoberturaTienda(tienda, codigopostal);
-
             return puede;
-
         }
 
         public ActionResult GetCategorias()
