@@ -678,6 +678,10 @@
                                                 </button>*@
                                             @*<input id="tags" class="ui-autocomplete-input" autocomplete="off">*@
                                         </td>
+                                        <td>
+                                            <select id="ddlMarcas" class="form-control m-b">
+                                            </select>
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
@@ -1037,7 +1041,7 @@
 
 
 
-                if (this.value.length > 3) {
+                if (this.value.length > 1) {
 
                     //let SearchObject = {
                     //    product: $("#txtProdArt2").val()
@@ -1075,21 +1079,23 @@
 
 
                         success: function (data) {
-
-                            if (data.data.length == 0) {
-                                $("#divTags").hide();
-                            }
-                            else {
-                                //data = JSON.parse(data.data)
-                                output = "";
-                                for (var i = 0; i < data.data.length; i++) {
-                                    output += "<tr><td  class='select'><img width='50px' height='60px' src=" + data.data[i].UrlImg + " /></td> <td class='select' id='srch-" + data.data[i].Barcode + "'>" + data.data[i].Description + "</td></tr></br>";
+                            if (data.Success) {
+                                if (data.data.length == 0) {
+                                    $("#divTags").hide();
                                 }
-                                //let output = data.map(i => "<tr><td class='select'><img width='50px' height='60px' src=" + i.Barcode + " /></td> <td class='select'>" + i.Description + "</td></tr></br>");
+                                else {
+                                    //data = JSON.parse(data.data)
+                                    output = "";
+                                    for (var i = 0; i < data.data.length; i++) {
+                                        output += "<tr><td  class='select'><img width='50px' height='60px' src=" + data.data[i].UrlImg + " /></td> <td class='select' id='srch-" + data.data[i].Barcode + "'>" + data.data[i].Description + "</td></tr></br>";
+                                    }
+                                    //let output = data.map(i => "<tr><td class='select'><img width='50px' height='60px' src=" + i.Barcode + " /></td> <td class='select'>" + i.Description + "</td></tr></br>");
 
-                                $("#output").html(output);
+                                    $("#output").html(output);
+                                }
+                            } else {
+                                alert(data.Message);
                             }
-
                         },
 
                         error: function (errorMessage) {
@@ -1152,7 +1158,7 @@
             }
         };
 
-      
+
     </script>
     <style>
         .required {
@@ -1523,7 +1529,7 @@
 
                     //REGRESA  CARRITO DE COMPRAS
                      if (currentIndex == 3 && newIndex == 2) {
-                         debugger;
+
                          var codf = $("#hddCodBarFlete").val();
                          if (codf.length != 0) {
                              if (codf != "0") { DeleteProduct(codf) };
@@ -1993,56 +1999,95 @@
 
                 //},
                 "url": "@Url.Action("GetProduct", "CallCenter")",
-                "type": "get",
+                "type": "post",
                 "data": {
                     product: document.getElementById("txtProdArt2").value,
                     tienda: tda,
                     categoria: categoria
                 },
-
-                "dataType": "html",
+                "dataType": "json",
                 "success": function (data) {
                     debugger;
-                    $("#tblBuscador").html(data);
+                    if (data.Success) {
 
 
+                        var sel = $("#ddlCategorias");
+                        sel.empty();
 
-                    var table=     $("#tblBusquedaSeleccionar").DataTable(
-                        {
-                            language: {
-                                emptyTable: "(0) articulos encontrados",
-                            },
-                            processing: true,
-                            ordering: true,
-                            order: [],
-                            filter: true,
-                            info: false,
-                            stateSave: false,
-
-                            //Paggin
-                            paging: true,
-                            pageLength: 10,
-                            lengthMenu: [10, 25, 50, 100, 500],
-
-                            // destroy: true, //destruye automaticamente la referencia a la tabla
-                            //Ajax
-                            //serverSide: true,
-                            //bServerSide: true,
-                            //sServerMethod: "GET",
-                            buttons: [],
-                            orderCellsTop: false,
-                            "scrollY": "400px",
-                            "scrollCollapse": true,
-
-                            //, "order": [[2, "asc"]]
-
+                        $('#ddlCategorias').get(0).options[0] = new Option("--Todas las Categorias--", "0");
+                        for (var i = 0; i < data.categ.length; i++) {
+                            sel.append('<option value="' + data.categ[i] + '">' + data.categ[i] + '</option>');
                         }
-                    );
 
+
+                        var sel1 = $("#ddlMarcas");
+                        sel1.empty();
+
+                        $('#ddlMarcas').get(0).options[0] = new Option("--Todas las Marcas--", "0");
+                        for (var i = 0; i < data.marcas.length; i++) {
+                            sel1.append('<option value="' + data.marcas[i] + '">' + data.marcas[i] + '</option>');
+                        }
+
+
+                        $('#ddlCategorias').attr('disabled', false);
+                        $('#ddlMarcas').attr('disabled', false);
+
+
+
+
+                        $("#tblBuscador").html(data.view);
+
+
+
+                        var table = $("#tblBusquedaSeleccionar").DataTable(
+                            {
+                                language: {
+                                    emptyTable: "(0) articulos encontrados",
+                                },
+                                processing: true,
+                                ordering: true,
+                                order: [],
+                                filter: true,
+                                info: false,
+                                stateSave: false,
+
+                                //Paggin
+                                paging: true,
+                                pageLength: 10,
+                                lengthMenu: [10, 25, 50, 100, 500],
+
+                                // destroy: true, //destruye automaticamente la referencia a la tabla
+                                //Ajax
+                                //serverSide: true,
+                                //bServerSide: true,
+                                //sServerMethod: "GET",
+                                buttons: [],
+                                orderCellsTop: false,
+                                "scrollY": "400px",
+                                "scrollCollapse": true,
+
+                                //, "order": [[2, "asc"]]
+
+                            }
+                        );
+
+
+
+
+
+
+
+
+
+
+                        $("#imgSpiner").css("display", "none");
+                        document.getElementById("spinner").classList.remove("show");
+                    }
 
 
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
+                    debugger;
                     document.getElementById("spinner").classList.remove("show");
                     $("#imgSpiner").css("display", "none");
                     alert(errorThrown);
@@ -2241,7 +2286,7 @@
 
         }
         function addProduct3(descripcion, barcode, precio, sku, SalesUnit,precioO) {
-            debugger;
+
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
                 alert("La Cantidad debe ser Mayor a 0.")
@@ -2275,7 +2320,7 @@
 
 
         function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO, cant) {
-            debugger;
+
 
 
 
@@ -2297,7 +2342,7 @@
                         _jsonProductsSelected.splice(_index, 1);
                     }
                 }
-                debugger;
+
                 let _obj = {};
                 _obj.barcode = _barcode;
                 _obj.description = _descripcion;
@@ -2331,7 +2376,7 @@
                     _jsonProductsSelected.splice(_index, 1);
                 }
             }
-            debugger;
+
             let _obj = {};
             _obj.barcode = _barcode;
             _obj.description = _descripcion;
@@ -2496,6 +2541,12 @@
         }
 
         function seleccionarProducto() {
+            $('#ddlCategorias').attr('disabled', true);
+            $('#ddlMarcas').attr('disabled', true);
+            $("#ddlCategorias").empty();
+            $("#ddlMarcas").empty();
+
+            $("#divTags").hide();
             $("#txtProdArt2").val("");
             $("#tblBuscador").html('');
             CargaSeleccionaProducto();
@@ -3089,7 +3140,7 @@
                     success: function (json) {
                         //
                         if (json.Success) {
-                            debugger;
+
                             GetEstados();
                             var sel = $("#ddlCteColonia");
                             sel.empty();
@@ -3251,7 +3302,7 @@
                 success: function (json) {
 
                     if (json.Success) {
-                        debugger;
+
 
 
                         $("#hddIdDirCteUpd").val(json.resp.Id_Cnsc_DirCTe);
@@ -3302,7 +3353,7 @@
                     success: function (json) {
                         //
                         if (json.Success) {
-                            debugger;
+
                             //var availableTags = [];
                             //for (var i = 0; i < json.resp.length; i++) {
 
@@ -3339,7 +3390,10 @@
 
         function EcharCarrito(UeNo) {
             var _tda = $("#ddlTdas").val();
-            $.ajax({
+
+
+            try {
+                 $.ajax({
                 "url": "@Url.Action("EcharCarrito", "CallCenter")",
 
                 "type": "get",
@@ -3382,6 +3436,16 @@
                     }
                 }
             });
+            } catch (error) {
+                document.getElementById("spinner").classList.remove("show");
+                $("#imgSpiner").css("display", "none");
+                alert(error);
+                // expected output: ReferenceError: nonExistentFunction is not defined
+                // Note - error messages will vary depending on browser
+            }
+
+
+
         }
     </script>
 
