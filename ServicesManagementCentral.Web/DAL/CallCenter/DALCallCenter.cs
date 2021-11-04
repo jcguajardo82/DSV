@@ -528,6 +528,9 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
+                //parametros.Add("@id_num_UN", id_num_UN);
+                //parametros.Add("@cp", cp);
+
                 parametros.Add("@id_num_UN", id_num_UN);
                 parametros.Add("@cp", cp);
 
