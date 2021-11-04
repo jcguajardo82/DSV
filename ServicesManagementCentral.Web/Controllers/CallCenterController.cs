@@ -1875,7 +1875,6 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                //int puede = int.Parse(TieneCobertura(StoreNum, CodigoPostal).ToString());
                 if (TieneCobertura(StoreNum, CodigoPostal))
                 {
                     var ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
