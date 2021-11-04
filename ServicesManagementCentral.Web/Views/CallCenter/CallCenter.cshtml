@@ -679,7 +679,7 @@
                                             @*<input id="tags" class="ui-autocomplete-input" autocomplete="off">*@
                                         </td>
                                         <td>
-                                            <select id="ddlMarcas"  onchange="CargaSeleccionaProducto('',2)" class="form-control m-b">
+                                            <select id="ddlMarcas" onchange="CargaSeleccionaProducto('',2)" class="form-control m-b">
                                             </select>
                                         </td>
                                     </tr>
@@ -1172,36 +1172,8 @@
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
 
     <script>
-        function xml() {
-            var tda = $("#ddlTdas").val();
-            alert(tda);
-
-            return false;
-                $.ajax({
-                    async: false,
-                    type: "GET",
-                    url: '@Url.Action("XMl", "CallCenter")',
-                    data: {
-
-                    },
-                    datatype: "html",
-                    success: function (json) {
-                        //
-                        if (json.Success) {
 
 
-                        }
-                        else {
-                            alert(json.Message);
-                        }
-                    }
-                    , error: function (jqXHR, textStatus, errorThrown) {
-                        alert(errorThrown);
-
-                    }
-
-                });
-        }
 
         var _jsonProductsSelected = [];
         var _jsonObservaciones = [];
@@ -1215,7 +1187,10 @@
         var _precioO = 0;
         var _SalesUnit = "";
         var _Sustituto = "";
-
+        var _UnitConv=""
+        var  _baseUnit = "";
+        var  _equivalentUnit = "";
+        var  _factorConversion = "0";
 
 
 
@@ -1637,7 +1612,10 @@
                                                 , json.resp.id_Num_Sku
                                                 , json.resp.Cve_UnVta
                                                 , json.resp.CostoEnvio
-                                                ,1
+                                                , 1
+                                                , ''
+                                                , ''
+                                                ,0
                                             )
 
                                             return true;
@@ -2265,14 +2243,39 @@
             var comentario = $("#comment-" + barcode).val();
             var sus = $("#cSustituto-" + barcode).val();
             var item = _jsonProductsSelected.find(x => x.barcode === barcode);
+            var total = cantidad * item.precioO;
+
+
+            if (cantidad == "0") {
+                $("#productCant-" + barcode).val('1');
+
+                $("#productCant-" + barcode).focus();
+                return false;
+            }
+
+            var conversionRule = $("#umc-" + barcode).val();
+
+            if (typeof conversionRule !== "undefined") {
+
+                if (conversionRule == 'pza') {
+                    var facCon = $("#facConvC-" + barcode).val();
+                    total = (parseFloat(cantidad) / parseFloat(facCon).toFixed(2)) * item.precioO;
+                }
+                else {
+                    total = cantidad * item.precioO;
+                }
+            }
+            else {
+                conversionRule = "";
+            }
 
             //console.log('item', item, "_jsonProductsSelected", _jsonProductsSelected, barcode);
 
             item.quantity = cantidad;
-            item.total = cantidad * item.precioO;
+            item.total =total;
             item.comment = comentario;
             item.sustituto = sus;
-
+            item.UnitConv = conversionRule;
 
             console.log(_jsonProductsSelected);
 
@@ -2296,13 +2299,22 @@
             llenarCarrito();
 
         }
-        function addProduct3(descripcion, barcode, precio, sku, SalesUnit,precioO) {
+        function addProduct3(descripcion, barcode, precio, sku, SalesUnit, precioO, baseUnit, equivalentUnit,factorConversion) {
 
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
                 alert("La Cantidad debe ser Mayor a 0.")
             }
             else {
+
+
+                _UnitConv = "";
+                var conversionRule = $("#um-" + barcode).val();
+
+                if (typeof conversionRule !== "undefined") {
+
+                    _UnitConv = conversionRule;
+                }
 
                 //parseFloat(document.getElementById(amtid4).innerHTML, 10).toFixed(2);
                 _descripcion = descripcion.replace("|", "'"); //replaceall
@@ -2314,6 +2326,9 @@
                 _SalesUnit = SalesUnit;
                 _Sustituto = $("#bSustituto-" + barcode).val();
 
+                _baseUnit = baseUnit;
+                _equivalentUnit = equivalentUnit;
+                _factorConversion = factorConversion;
 
                 //$("#dlgAgregarProductoComentario").modal("show");
                 ConfirmarProduct();
@@ -2330,7 +2345,7 @@
 
 
 
-        function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO, cant) {
+        function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO, cant, baseUnit, equivalentUnit, factorConversion) {
 
 
 
@@ -2343,7 +2358,15 @@
                 _precioO = parseFloat(precioO).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 _SalesUnit = SalesUnit;
                 _Sustituto = "No";
+                _baseUnit = baseUnit;
+                _equivalentUnit = equivalentUnit;
+                _factorConversion = factorConversion;
+                _UnitConv = "";
 
+                if (factorConversion !== 0) {
+
+                    _UnitConv = baseUnit;
+                }
 
                 var item = _jsonProductsSelected.find(x => x.barcode === _barcode);
 
@@ -2365,6 +2388,10 @@
                 _obj.SalesUnit = _SalesUnit;
                 _obj.precioO = _precioO;
                 _obj.sustituto = _Sustituto;
+                _obj.baseUnit = _baseUnit;
+                _obj.equivalentUnit = _equivalentUnit;
+                _obj.factorConversion = _factorConversion;
+                _obj.UnitConv = _UnitConv;
                 _jsonProductsSelected.push(_obj);
 
 
@@ -2388,17 +2415,37 @@
                 }
             }
 
+            var _total = 0;
+
+
+            if (_factorConversion != 0 && _UnitConv=="pza")
+            {
+                 _total = (parseFloat(_cantidad) / parseFloat(_factorConversion).toFixed(2)) * _precioO;
+            }
+            else
+            {
+                _total=  _cantidad * _precioO;
+            }
+
+
+
             let _obj = {};
             _obj.barcode = _barcode;
             _obj.description = _descripcion;
             _obj.price = _precio;
             _obj.quantity = _cantidad;
-            _obj.total = _cantidad * _precioO;
+            _obj.total = _total;
             _obj.comment = $("#txtComentario").val();
             _obj.sku = _Sku;
             _obj.SalesUnit = _SalesUnit;
             _obj.precioO = _precioO;
-            _obj.sustituto=_Sustituto
+            _obj.sustituto = _Sustituto;
+            _obj.UnitConv = _UnitConv;
+            _obj.baseUnit = _baseUnit;
+            _obj.equivalentUnit = _equivalentUnit;
+            _obj.factorConversion = _factorConversion;
+
+
             _jsonProductsSelected.push(_obj);
 
 
@@ -2420,17 +2467,18 @@
             for (var i = 0; i < _jsonProductsSelected.length; i++) {
 
                 var _salesUnite = _jsonProductsSelected[i].SalesUnit;
-                var conversionRule = $("#um-" + _jsonProductsSelected[i].barcode).val();
+                var factorConversion = _jsonProductsSelected[i].factorConversion;
 
-                if (typeof conversionRule !== "undefined") {
-                    _salesUnite = "<select id='umc-" + _jsonProductsSelected[i].barcode +"'></select>"
+                if (factorConversion !== 0) {
+                    var facCon = $("#facConvB-" + _jsonProductsSelected[i].barcode).val();
+                    _salesUnite = "<input type='hidden' value='" + factorConversion + "' id='facConvC-" + _jsonProductsSelected[i].barcode + "' /> <select class='form-control' id='umc-" + _jsonProductsSelected[i].barcode +"' onchange='conversionRule(" + _jsonProductsSelected[i].barcode +",2)'></select>"
                 }
 
                 var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 var inp;
                 if (_jsonProductsSelected[i].SalesUnit == 'pza') {
                     cant = cant + parseInt(_jsonProductsSelected[i].quantity);
-                    inp = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48' min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                    inp = "<input  oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48' min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 } else {
                     cant = cant + 1;
                     inp = "<input  oninput='inputCar(this)'  min='1' step='0.001' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
@@ -2440,10 +2488,10 @@
                     _jsonProductsSelected[i].description,
                     "$" + _jsonProductsSelected[i].price,
                     "$" + _jsonProductsSelected[i].precioO,
-                    inp,//"<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
+                    "<div id='divUSC-" + _jsonProductsSelected[i].barcode+"'>"+ inp+"</div>",//"<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                     _salesUnite,
                     "$" + totaArt,
-                    "<input type='text' onchange='Change_2(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
+                    "<input type='text'  onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
                     "<select onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' name='ddlDustituto' class='form-control' id='cSustituto-"+ _jsonProductsSelected[i].barcode +"'>"
                               +"<option value='Si'>Si</option>"
                               +"<option value='No'>No</option>"
@@ -2451,18 +2499,21 @@
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
-                if (typeof conversionRule !== "undefined") {
-                    //_salesUnite = "<opselect id='umc-" + _jsonProductsSelected[i].barcode + "'></select>"
-                    var $options = $("#um-"+ _jsonProductsSelected[i].barcode+" > option").clone();
-                    $("#umc-" + _jsonProductsSelected[i].barcode).append($options);
-                    $("#umc-" + _jsonProductsSelected[i].barcode).val(conversionRule);
+                if (factorConversion !== 0)
+                {
+
+                    $("#umc-" + _jsonProductsSelected[i].barcode).append("<option value='" + _jsonProductsSelected[i].baseUnit + "' >"+ _jsonProductsSelected[i].baseUnit+"</option>");
+                    $("#umc-" + _jsonProductsSelected[i].barcode).append("<option value='" + _jsonProductsSelected[i].equivalentUnit + "' >" + _jsonProductsSelected[i].equivalentUnit+"</option>");
+
+                    $("#umc-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].UnitConv);
                 }
+
                 $("#cSustituto-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].sustituto);
-                //cant = cant + parseInt(_jsonProductsSelected[i].quantity);
+
                 tot = tot + parseFloat(_jsonProductsSelected[i].total)
                 descuento = descuento + (_jsonProductsSelected[i].quantity *(parseFloat(_jsonProductsSelected[i].price) - parseFloat(_jsonProductsSelected[i].precioO)));
 
-                //parseFloat(precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+
             }
 
 
@@ -2490,13 +2541,14 @@
 
             for (var x = 0; x < _jsonProductsSelected.length; x++) {
 
-
-
-
-
-
                 var totaArt = parseFloat(_jsonProductsSelected[x].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                var _SalesUnit = _jsonProductsSelected[x].SalesUnit;
 
+                if (_jsonProductsSelected[x].UnitConv != "undefined") {
+                    if (_jsonProductsSelected[x].UnitConv.length > 0) {
+                        _SalesUnit = _jsonProductsSelected[x].UnitConv;
+                    }
+                }
                 myTableR.row.add([
                          _jsonProductsSelected[x].description
                         +"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
@@ -2504,7 +2556,7 @@
                         + "<input type='hidden' id='precioN-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].price + "'/>",
 
                         _jsonProductsSelected[x].quantity,
-                        _jsonProductsSelected[x].SalesUnit,
+                        _SalesUnit,//_jsonProductsSelected[x].SalesUnit,
                         "$" + _jsonProductsSelected[x].precioO,
                         "$" + totaArt,
                         _jsonProductsSelected[x].comment,
@@ -3458,7 +3510,19 @@
                                 precioO = precio;
                             }
 
-                            AddFlete(data.resp[i].Description, data.resp[i].Barcode, precio, data.resp[i].Sku, data.resp[i].SalesUnit, precioO, 1)
+                            var baseUnit = "", equivalentUnit = "", factorConversion = 0;
+
+                            if (data.resp[i].ConversionRule != null) {
+                                baseUnit = data.resp[i].ConversionRule.baseUnit;
+                                equivalentUnit = data.resp[i].ConversionRule.equivalentUnit;
+                                factorConversion = data.resp[i].ConversionRule.factorConversion;
+
+                                if (baseUnit.toLowerCase() == "piezas") { baseUnit = 'pza'; }
+                                if (equivalentUnit.toLowerCase() == "piezas") { equivalentUnit = 'pza'; }
+                            }
+                            debugger;
+
+                            AddFlete(data.resp[i].Description, data.resp[i].Barcode, precio, data.resp[i].Sku, data.resp[i].SalesUnit, precioO, 1, baseUnit, equivalentUnit, factorConversion)
 
                         }
                         $("#dlgHistorial").modal("hide");
@@ -3483,22 +3547,63 @@
 
         }
 
-        function conversionRule(BarCode) {
-
-            var cant = $("#nCant-" + BarCode).val();
-            $("#divUS-" + BarCode).html("");
-            //$("#divUS-" + BarCode).html("<input type='text' id='cnt'/>");
-          
-
-            var unitSale = $("#um-" + BarCode).val();
+        function conversionRule(BarCode,op) {
+            //op 1 === TABLA BUSCADOR
+            //OP 2 === TABLA CARRITO
+            var cant = 0;
+            var nCantidad = 0;
+            var unitSale = ""
             var _html = "";
-            if (unitSale == "pza") {
-                _html = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength='5' onkeypress='return event.charCode >= 48' min='1' step='1' type='number' id='nCant-" + BarCode + "' value='" + cant + "' class='form-control input-sm pull-right' />";
+            if (op == 1) {
+                cant = $("#nCant-" + BarCode).val();
+                $("#divUS-" + BarCode).html("");
+                unitSale = $("#um-" + BarCode).val();
+                nCantidad = nuevaCantidadCR(unitSale, BarCode, 'facConvB', cant)
+                if (unitSale == "pza") {
+                    _html = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength='5' onkeypress='return event.charCode >= 48' min='1' step='1' type='number' id='nCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />";
+                }
+                else {
+                    _html = " <input oninput='inputCar(this)' min='1' step='0.001' type='number' id='nCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />"
+                }
             }
             else {
-                _html = " <input oninput='inputCar(this)' min='1' step='0.001' type='number' id='nCant-" + BarCode+"' value='"+cant+"' class='form-control input-sm pull-right' />"
+                cant = $("#productCant-" + BarCode).val();
+                $("#divUSC-" + BarCode).html("");
+                unitSale = $("#umc-" + BarCode).val();
+                nCantidad = nuevaCantidadCR(unitSale, BarCode, 'facConvC', cant)
+                if (unitSale == "pza") {
+                    _html = "<input onfocusout='Change(\"" + BarCode + "\")'  onchange='Change(\"" + BarCode + "\")' oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength='5' onkeypress='return event.charCode >= 48' min='1' step='1' type='number' id='productCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />";
+                }
+                else {
+                    _html = " <input onfocusout='Change(\"" + BarCode + "\")'  onchange='Change(\"" + BarCode + "\")' oninput='inputCar(this)' min='1' step='0.001' type='number' id='productCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />"
+                }
+
             }
-            $("#divUS-" + BarCode).html(_html)
+            //productCant
+            //$("#divUS-" + BarCode).html("<input type='text' id='cnt'/>");
+
+
+
+
+            if (op == 1) {
+                $("#divUS-" + BarCode).html(_html);
+            } else {
+                $("#divUSC-" + BarCode).html(_html);
+                $("#productCant-" + BarCode).focus();
+            }
+        }
+
+        function nuevaCantidadCR(nUnidadMedidad, BarCode,nCtrl,cantidad) {
+            var factorConversion =parseFloat( $("#" + nCtrl + "-" + BarCode).val()).toFixed(2);
+            var nCantidad = 0;
+            if (nUnidadMedidad == 'pza') {
+                nCantidad = parseFloat((cantidad * factorConversion) / 1).toFixed(0);
+            }
+            else {
+                nCantidad = parseFloat((cantidad / factorConversion)).toFixed(3);
+            }
+
+            return nCantidad;
         }
     </script>
 
