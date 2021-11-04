@@ -3050,7 +3050,12 @@
             $('#lblFolioCte').text(resp.Id_Num_Cte);
             $('#lblClaveCte').text(resp.Id_Email);
             $('#lblTarjetaLealtad').text(resp.TarjetaLealtad);
-            $('#lblCalleCte').text(resp.Calle + ' ' + resp.Num_Ext );
+            if (resp.Num_Int == null) {
+                $('#lblCalleCte').text(resp.Calle + ' ' + resp.Num_Ext);
+            } else {
+                $('#lblCalleCte').text(resp.Calle + ' ' + resp.Num_Ext + ',No. Int. ' + resp.Num_Int);
+            }
+           
             $('#lblColoniaCte').text(resp.Colonia);
             $('#lblEdoCte').text(resp.Ciudad + ', ' + resp.Nom_Edo);
             $('#lblCpCte').text('C.P. '+ resp.Cod_Postal);
