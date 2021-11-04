@@ -7,7 +7,7 @@ namespace ServicesManagement.Web.DAL.NivelExistencia
 {
     public class DALNivelExistencia
     {
-        public static DataSet upCorpOMS_Cns_UeNoStockLevels(DateTime? FecIni,DateTime? FecFin, int? IdOwner, int? IdTienda)
+        public static DataSet upCorpOMS_Cns_UeNoStockLevels(int? IdOwner, string IdTienda)
         {
             // update - 2021-09-23
             DataSet ds = new DataSet();
@@ -23,8 +23,6 @@ namespace ServicesManagement.Web.DAL.NivelExistencia
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DM"].ConnectionString);
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
-                parametros.Add("@FechaIni", FecIni);
-                parametros.Add("@FechaFin", FecFin);
                 parametros.Add("@IdOwner", IdOwner);
                 parametros.Add("@IdTienda", IdTienda);
 
