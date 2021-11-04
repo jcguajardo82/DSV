@@ -19,8 +19,9 @@
                         <th>Nombre de Proveedor</th>
                         <th>Dias Transcurridos</th>
                         <th>Fecha de Ultima Actualización</th>
-                        <th name='accion'>Cantidad de Codigos</th>
+                        <th>Cantidad de Codigos</th>
                         <th>Cantidad de Codigos No Aprobados</th>
+                        <th>Total Articulos</th>
                         @*<th name='accion'></th>*@
                     </tr>
                 </thead>
@@ -492,6 +493,7 @@
                             tr.append("<td>" + json.resp[i].FechaStock + "</td>");
                             tr.append("<td><a title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ",1)'>" + json.resp[i].NumCodigos + "</a></td>");
                             tr.append("<td><a title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ",2)'>" + json.resp[i].NumCodigosNoApr + "</a></td>");
+                            tr.append("<td>" + (json.resp[i].NumCodigosNoApr + json.resp[i].NumCodigos) + "</td>");
                             //tr.append("<td><button type='button' title='Click para ver el inventario' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-tasks'></i></button></td >");
                             //AltaProveedor/AltaProveedor
 
