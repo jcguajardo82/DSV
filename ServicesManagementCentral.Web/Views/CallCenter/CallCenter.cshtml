@@ -1807,34 +1807,49 @@
             var products = new Array();
             var observaciones = new Array();
 
-
-            $("#tblResumen TBODY TR").each(function () {
-                var row = $(this);
+            for (var i = 0; i < _jsonProductsSelected.length; i++) {
                 var product = {};
-
-                row.find("td:eq(0) input[type='hidden']").each(function () {
-                    var id=   $(this).attr('id');
-                    if (id.includes("sku"))
-                    {
-                        product.Id_Num_Sku = $(this).val();
-                    } else if (id.includes("codBar") )
-                    {
-                        product.Num_CodBarra = $(this).val();
-                    } else
-                    {
-                        product.Precio_VtaNormal = $(this).val();
-                    }
-                })
-                product.Desc_art = row.find("TD").eq(0).html().replace("'", '');
-                product.Cant_Unidades = row.find("TD").eq(1).html();
-                product.Cve_UnVta = row.find("TD").eq(2).html();
+                product.Id_Num_Sku = _jsonProductsSelected[i].sku;
+                product.Num_CodBarra = _jsonProductsSelected[i].barcode;
+                product.Precio_VtaNormal = _jsonProductsSelected[i].price;
+                product.Desc_art = _jsonProductsSelected[i].description;
+                product.Cant_Unidades = _jsonProductsSelected[i].quantity;
+                product.Cve_UnVta = _jsonProductsSelected[i].SalesUnit;
                 //product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
-                product.Precio_VtaOferta = row.find("TD").eq(3).html().replace('$', '');
+                product.Precio_VtaOferta = _jsonProductsSelected[i].precioO;
                 product.Dcto = 0;//row.find("TD").eq(1).html();
-                product.obs = row.find("TD").eq(5).html();
-                product.Sustituto = row.find("TD").eq(6).html();
+                product.obs = _jsonProductsSelected[i].comment;
+                product.Sustituto = _jsonProductsSelected[i].sustituto;
                 products.push(product);
-            });
+            }
+
+            //$("#tblResumen TBODY TR").each(function () {
+            //    var row = $(this);
+            //    var product = {};
+
+            //    row.find("td:eq(0) input[type='hidden']").each(function () {
+            //        var id=   $(this).attr('id');
+            //        if (id.includes("sku"))
+            //        {
+            //            product.Id_Num_Sku = $(this).val();
+            //        } else if (id.includes("codBar") )
+            //        {
+            //            product.Num_CodBarra = $(this).val();
+            //        } else
+            //        {
+            //            product.Precio_VtaNormal = $(this).val();
+            //        }
+            //    })
+            //    product.Desc_art = row.find("TD").eq(0).html().replace("'", '');
+            //    product.Cant_Unidades = row.find("TD").eq(1).html();
+            //    product.Cve_UnVta = row.find("TD").eq(2).html();
+            //    //product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
+            //    product.Precio_VtaOferta = row.find("TD").eq(3).html().replace('$', '');
+            //    product.Dcto = 0;//row.find("TD").eq(1).html();
+            //    product.obs = row.find("TD").eq(5).html();
+            //    product.Sustituto = row.find("TD").eq(6).html();
+            //    products.push(product);
+            //});
 
             $("#tblBusquedaArt TBODY TR").each(function () {
                 var row1 = $(this);
