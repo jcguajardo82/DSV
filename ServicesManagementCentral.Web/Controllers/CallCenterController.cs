@@ -1876,7 +1876,7 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-        public ActionResult GetFlete(int StoreNum, string CodigoPostal)
+        public ActionResult GetFlete(int StoreNum, string CodigoPostal = "")
         {
             try
             {
