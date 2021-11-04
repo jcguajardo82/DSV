@@ -106,6 +106,12 @@ namespace ServicesManagement.Web.Controllers
 
     }
 
+    public class AutoComplete
+    {
+        public string Barcode { get; set; }
+        public string Description { get; set; }
+        public string UrlImg { get; set; }
+    }
     public class CategoryModel
     {
         public string CategoryId { get; set; }// public string cuidado-de-los-piespublic string ,
@@ -337,6 +343,65 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+
+
+        public ActionResult AutoComplete(string product, string tienda = "", string categoria = "")
+        {
+            try
+            {
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
+                var urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
+                var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
+
+                string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
+                if (categoria != "0")
+                {
+                    url = string.Format("{0}{1}&tienda={2}&filtro={3}", urlApi, product.Trim(), tienda, categoria);
+                }
+
+
+                var client = new RestClient(url);
+
+
+                //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
+
+                client.Timeout = -1;
+                var request = new RestRequest(Method.POST);
+                IRestResponse response = client.Execute(request);
+                Console.WriteLine(response.Content);
+
+                var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+
+                var auto = new List<AutoComplete>();
+                if (response1 != null)
+                {
+                    foreach (var item in response1)
+                    {
+                        auto.Add(new AutoComplete
+                        {
+                            Barcode = item.Barcode
+                            ,
+                            Description = item.Description
+                            ,
+                            UrlImg = string.Format("{0}{1}{2}", urlImg, item.Barcode, exteImg)
+                        });
+                    }
+                }
+
+                var result = new { data = auto };
+                //return Json(result, JsonRequestBehavior.AllowGet);
+                //return Json("", JsonRequestBehavior.AllowGet);
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message, urlRedirect = "" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
 
         public ActionResult GetProduct(string product, string tienda, string categoria)
         {
@@ -1777,6 +1842,12 @@ namespace ServicesManagement.Web.Controllers
             {
 
                 var ListP = DataTableToModel.ConvertTo<Historial>(DALCallCenter.HistorialOrdenes_sUP(Id_Num_Cte).Tables[0]);
+
+                foreach (var item in ListP)
+                {
+                    var tot = DataTableToModel.ConvertTo<HistorialTotales>(DALServicesM.GetOrdersByOrderNo(item.UeNo).Tables[6]).FirstOrDefault();
+                    item.Imp_Pago = decimal.Parse(tot.TotPagado);
+                }
 
 
                 var result = new
