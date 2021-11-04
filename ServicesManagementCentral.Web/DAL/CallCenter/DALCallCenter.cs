@@ -512,13 +512,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
         #endregion
 
         #region Alta Pedido
-
-        public static DataSet HistorialOrdenes_sUP(int Id_Num_Cte)
+        public static bool upCorpOms_Cns_CoberturaTienda(int id_num_UN, string cp)
         {
-
-
-
             DataSet ds = new DataSet();
+            bool puede = false;
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -533,11 +530,9 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
                 parametros.Add("@Id_Num_Cte", Id_Num_Cte);
 
-
-
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "carrito.HistorialOrdenes_sUP", false, parametros);
-
-                return ds;
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_CoberturaTienda]", false, parametros);
+                puede = Convert.ToBoolean(ds.Tables[0].Rows[0][0].ToString());
+                return puede;
             }
             catch (SqlException ex)
             {

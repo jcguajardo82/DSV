@@ -1683,7 +1683,10 @@ namespace ServicesManagement.Web.Controllers
         //    }
         //}
 
+        public bool TieneCobertura(int tienda, string codigopostal)
+        {
 
+            bool puede = DALCallCenter.upCorpOms_Cns_CoberturaTienda(tienda, codigopostal);
 
         public ActionResult GetCategorias()
         {
@@ -1727,18 +1730,32 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-
-                var ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
-
-
-                var result = new
+                //int puede = int.Parse(TieneCobertura(StoreNum, CodigoPostal).ToString());
+                if (TieneCobertura(StoreNum, CodigoPostal))
                 {
-                    Success = true
-                      ,
-                    resp = ListP
-                };
+                    var ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
 
-                return Json(result, JsonRequestBehavior.AllowGet);
+                    var result = new
+                    {
+                        Success = true
+                          ,
+                        resp = ListP
+                    };
+
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+
+                    var result = new
+                    {
+                        Success = false
+                          ,
+                        Message = "Código Postal fuera de la cobertura de la tienda"
+                    };
+
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
 
             }
 
