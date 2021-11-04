@@ -66,15 +66,15 @@
                                     <button type="button" class="btn btn-primary" onclick="popAddClient();">Nuevo Cliente</button>
                                 </div>
                                 <p>
-                                    <b>Identificación del Cliente<br />Solicite al cliente cualquiera de los siguientes datos:</b>
+                                    <b>Identificaci&oacute;n del Cliente<br />Solicite al cliente cualquiera de los siguientes datos:</b>
                                     <ul>
-                                        <li>Dirección de Correo Electrónico</li>
-                                        <li>Número Telefónico(Capture sin Guiones)</li>
+                                        <li>Direcci&oacute;n de Correo Electr&oacute;nico</li>
+                                        <li>N&uacute;mero Telef&oacute;nico(Capture sin Guiones)</li>
                                         <li>Si el Cliente no ha sido registrado con anterioridad debera darlo de alta</li>
                                     </ul>
                                 </p>
                                 <div class="input-group">
-                                    <input type="text" id="txtVerificaC" value="" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                                    <input type="text" id="txtVerificaC" value="" placeholder="CARACTERES VALIDOS:letras, n&uacute;meros, arroba(&#64;), gui&oacute;n medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
                                         <button type="button" class="btn btn-primary" onclick="VerificaCliente()">
                                             Verificar
                                         </button>
@@ -102,7 +102,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Correo Electrónico:</td>
+                                        <td>Correo Electr&oacute;nico:</td>
                                         <td>
                                             <p id="lblClaveCte"></p>
                                         </td>
@@ -114,7 +114,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Dirección:</td>
+                                        <td>Direcci&oacute;n:</td>
                                         <td>
                                             <p id="lblCalleCte"></p>
                                             <p id="lblColoniaCte"></p>
@@ -125,7 +125,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Teléfono:</td>
+                                        <td>Tel&eacute;fono:</td>
                                         <td><p id="lblTelefonoCte"></p></td>
                                     </tr>
                                 </table>
@@ -133,7 +133,7 @@
 
                             <div class="col-xs-2 col-md-2 col-lg-2">
                                 <button type="button" class="btn btn-default btn btn-xs" onclick="NuevaBusqueda()">
-                                    Nueva Búsqueda
+                                    Nueva B&uacute;squeda
                                 </button>
                                 <button type="button" class="btn btn-default btn btn-xs" onclick="popEditarCte()">
                                     Editar Cliente
@@ -147,11 +147,11 @@
                     </section>
                     <h3>Fecha de Entrega</h3>
                     <section>
-                        <p><b>*Recuerda al cliente que nuestro horario de entrega es de 8:00 am a 10:00 pm de lunes a domingo, seleciona el dia y hora que indique el cliente </b></p>
+                        <p><b>*Recuerda al cliente que nuestro horario de entrega es de 8:00 am a 10:00 pm de lunes a domingo, seleciona el d&iacute;a y hora que indique el cliente </b></p>
                         <div class="row">
                             <div class="col col-xs-12 col-md-12">
                                 <div class="form-group">
-                                    <label>Día</label>
+                                    <label>D&iacute;a</label>
                                     <select class="form-control m-b" id="ddlDias" onchange="onchangeDias()">
                                     </select>
                                 </div>
@@ -174,7 +174,7 @@
                             <div class="col-8">
                                 <div class="alert alert-success" id="divOkArtHistorial">
                                     @* How quickly daft jumping zebras vex. <a class="alert-link" href="#">Alert Link</a>.*@
-                                    Los arituclos de la orden se cargaron al carrito con éxito.
+                                    Los arituclos de la orden se cargaron al carrito con &eacute;xito.
                                 </div>
                             </div>
                             <div class="col-4">
@@ -191,7 +191,7 @@
                                     <thead class="bg-warning">
                                         <tr role="row">
 
-                                            <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1">Descripción</th>
+                                            <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1">Descripci&oacute;n</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Precio Normal</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:10%;">Precio Oferta</th>
                                             <th class="text-center sorting" tabindex="0" rowspan="1" colspan="1" style="width:20%;">Cantidad</th>
@@ -247,13 +247,13 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="rdoMetodoEntrega" id="rdoTda" value="1">
                                     <label class="form-check-label" for="flexRadioDefault1">
-                                        ENTREGA EN TIENDA (Si el cliente elige acudir por su pedido selecciona esta opción)
+                                        ENTREGA EN TIENDA (Si el cliente elige acudir por su pedido selecciona esta opci&oacute;n)
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="rdoMetodoEntrega" id="rdoDomicilio" value="2">
                                     <label class="form-check-label" for="flexRadioDefault2">
-                                        ENTREGA A DOMICILIO (Confirma la Dirección del cliente o ingresa una nueva)
+                                        ENTREGA A DOMICILIO (Confirma la Direcci&oacute;n del cliente o ingresa una nueva)
                                     </label>
                                 </div>
                             </div>
@@ -270,7 +270,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Código Postal</b>
+                                            <b>C&oacute;digo Postal</b>
                                             <input type="number" maxlength="5" id="rec_CP" class="form-control" />
                                         </td>
                                     </tr>
@@ -295,13 +295,13 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Número</b>
+                                            <b>N&uacute;mero</b>
                                             <input type="text" id="rec_num" class="form-control input-sm" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Número Interior(si aplica)</b>
+                                            <b>N&uacute;mero Interior(si aplica)</b>
                                             <input type="text" id="rec_nunInt" class="form-control input-sm" />
                                         </td>
                                     </tr>
@@ -313,7 +313,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>Teléfono</b>
+                                            <b>Tel&eacute;fono</b>
                                             <input type="text" id="rec_tel" class="form-control input-sm" />
                                         </td>
                                     </tr>
@@ -383,7 +383,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="rdoMetodoPago" id="rdoDebito" value="debito" checked>
                                                     <label class="form-check-label" for="flexRadioDefault2">
-                                                        Tarjeta de Débito/Crédito Terminal Portatil
+                                                        Tarjeta de D&eacute;bito/Cr&eacute;dito Terminal Portatil
                                                     </label>
                                                 </div>
                                             </td>
@@ -402,7 +402,7 @@
                                 <table id="tblResumen" class="table table-striped table-bordered table-hover" style="width:100%;">
                                     <thead class="bg-warning">
                                         <tr role="row">
-                                            <th class="text-center sorting">Descripción</th>
+                                            <th class="text-center sorting">Descripci&oacute;n</th>
                                             <th class="text-center sorting">Cantidad</th>
                                             <th class="text-center sorting">Unidad de Venta</th>
                                             <th class="text-center sorting">Precio</th>
@@ -432,7 +432,7 @@
 
                                 <table class="table">
                                     <tr>
-                                        <td><b>Será entregada en:</b></td>
+                                        <td><b>Ser&aacute; entregada en:</b></td>
                                         <td>
                                             <p id="lblMetodoEntrega">
                                             </p>
@@ -462,7 +462,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel2">Búsqueda de Productos</h5>
+                <h5 class="modal-title" id="exampleModalLabel2">B&uacute;squeda de Productos</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -502,7 +502,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Búsqueda de Productos</h5>
+                <h5 class="modal-title" id="exampleModalLabel">B&uacute;squeda de Productos</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -513,8 +513,8 @@
                         <table id="tblBusquedaArt2" class="table table-striped table-bordered table-hover">
                             <thead class="bg-danger-sor">
                                 <tr role="row">
-                                    <th>Código</th>
-                                    <th>Descripción</th>
+                                    <th>C&oacute;digo</th>
+                                    <th>Descripci&oacute;n</th>
                                     <th>Marca</th>
                                     <th>Precio</th>
                                     <th>Normal</th>
@@ -561,11 +561,11 @@
                 <div class="row" id="divBuscaCliente">
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <p>
-                            <b>Buscador de Clientes</b><br />Se puede buscar por nombre y apellido paterno y materno.Para buscar por telefono ingrese solo digitos.Para buscar por dirección captura
+                            <b>Buscador de Clientes</b><br />Se puede buscar por nombre y apellido paterno y materno.Para buscar por telefono ingrese solo digitos.Para buscar por direcci&oacute;n captura
                             <b>Calle #,Colonia y Ciudad</b> usando comas como separador
                         </p>
                         <div class="input-group">
-                            <input type="text" id="txtBuscarCte" placeholder="CARACTERES VALIDOS:letras,números,arroba(&#64;),guión medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
+                            <input type="text" id="txtBuscarCte" placeholder="CARACTERES VALIDOS:letras, n&ucute;meros, arroba(&#64;), gui&oacute;n medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
                                 <button type="button" class="btn btn-primary" onclick="BuscarCliente()">
                                     Buscar
                                 </button>
@@ -580,9 +580,9 @@
                             <tr role="row">
                                 <th>Nombre</th>
                                 <th>Email</th>
-                                <th>Dirección</th>
-                                <th>Teléfono</th>
-                                <th>Acción</th>
+                                <th>Direcci&oacute;n</th>
+                                <th>Tel&eacute;fono</th>
+                                <th>Acci&oacute;n</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -693,7 +693,7 @@
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <div class="alert alert-success" id="divOkArt">
                             @* How quickly daft jumping zebras vex. <a class="alert-link" href="#">Alert Link</a>.*@
-                            El Articulo se ha agregado al carrito con éxito.
+                            El Articulo se ha agregado al carrito con &eacute;xito.
                         </div>
                         <div id="divLoading"></div>
                     </div>
@@ -760,7 +760,7 @@
 
                                                 </select>
                                             </td>*@
-                                        <td><input class="form-control" type="number" min="1" max="99999" placeholder="Código Postal" value="" id="txtCp"></td>
+                                        <td><input class="form-control" type="number" min="1" max="99999" placeholder="C&oacute;digo Postal" value="" id="txtCp"></td>
                                         <td>
                                             <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
                                                 Tienda
@@ -878,7 +878,7 @@
                 <div class="row">
                     <div class="col-xs-3 col-md-3 col-lg-3">
                         <div class="form-group">
-                            <label>Alias de la Dirección </label>
+                            <label>Alias de la Direcci&oacute;n </label>
                             <input type="text" id="txtCteNomDir" class="form-control" maxlength="100" />
                         </div>
                     </div>
@@ -886,7 +886,7 @@
                 <div class="row">
                     <div class="col-xs-2 col-md-2 col-lg-2">
                         <div class="form-group">
-                            <label>Código Postal </label>
+                            <label>C&oacute;digo Postal </label>
                             <input type="text" id="txtCteCp" class="form-control" maxlength="5" min="0" />
                         </div>
                     </div>
@@ -909,7 +909,7 @@
                 <div class="row">
                     <div class="col-xs-3 col-md-3 col-lg-3">
                         <div class="form-group">
-                            <label>Colónia </label>
+                            <label>Col&oacute;nia </label>
                             @*<input type="text" id="txtCteColonia" class="form-control" maxlength="100" />*@
                             <select id="ddlCteColonia" class="form-control">
                             </select>
@@ -923,13 +923,13 @@
                     </div>
                     <div class="col-xs-3 col-md-3 col-lg-3">
                         <div class="form-group">
-                            <label>Número Exterior </label>
+                            <label>N&uacute;mero Exterior </label>
                             <input type="text" id="txtCteNumExt" class="form-control" maxlength="100" />
                         </div>
                     </div>
                     <div class="col-xs-3 col-md-3 col-lg-3">
                         <div class="form-group">
-                            <label>Número Interior </label>
+                            <label>N&uacute;mero Interior </label>
                             <input type="text" id="txtCteNumInt" class="form-control" maxlength="100" />
                         </div>
                     </div>
@@ -939,7 +939,7 @@
                 <div class="row">
                     <div class="col-xs-3 col-md-3 col-lg-3">
                         <div class="form-group">
-                            <label>Teléfono </label>
+                            <label>Tel&eacute;fono </label>
                             <input type="text" id="txtCteTelefono" class="form-control" maxlength="100" />
                         </div>
                     </div>
@@ -971,8 +971,8 @@
                                     <th>Apellido Paterno</th>
                                     <th>Apellido Materno</th>
                                     <th>Email</th>
-                                    <th>Teléfono</th>
-                                    <th>Dirección</th>
+                                    <th>Tel&oacute;fono</th>
+                                    <th>Direcci&oacute;n</th>
                                     <th name="accion"></th>
                                 </tr>
                             </thead>
@@ -1043,16 +1043,8 @@
         $(document).ready(function () {
 
             $("#txtProdArt2").on("keyup", function () {
-
                 if (this.value.length > 3) {
-
-                    //let SearchObject = {
-                    //    product: $("#txtProdArt2").val()
-                    //    , tienda: $("#ddlTdas").val()
-                    //}
-
                     $.ajax({
-
                         complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
                             document.getElementById("spinner").classList.remove("show");
                             $("#imgSpiner").css("display", "none");
@@ -1065,21 +1057,14 @@
 
                         },
                         type: "POST",
-
                         "url": "@Url.Action("AutoComplete", "CallCenter")",
-
                         data: JSON.stringify({
                             product: $("#txtProdArt2").val()
                             , tienda: $("#ddlTdas").val()
                         }),
 
-
-
                         contentType: "application/json; charset=utf-8",
-
                         dataType: "json",
-
-
 
                         success: function (data) {
                             if (data.Success) {
@@ -1087,42 +1072,29 @@
                                     $("#divTags").hide();
                                 }
                                 else {
-                                    //data = JSON.parse(data.data)
                                     output = "";
                                     for (var i = 0; i < data.data.length; i++) {
                                         output += "<tr><td  class='select'><img width='50px' height='60px' src=" + data.data[i].UrlImg + " /></td> <td class='select' id='srch-" + data.data[i].Barcode + "'>" + data.data[i].Description + "</td></tr></br>";
                                     }
-                                    //let output = data.map(i => "<tr><td class='select'><img width='50px' height='60px' src=" + i.Barcode + " /></td> <td class='select'>" + i.Description + "</td></tr></br>");
-
                                     $("#output").html(output);
                                 }
-                            } else {
+                            }
+                            else {
                                 alert(data.Message);
                             }
                         },
-
                         error: function (errorMessage) {
-
                             $("#divTags").hide();
-
-                            alert(errorMessage)
-
+                            alert(errorMessage);
                         },
-
-
-
                     });
-
-                } else {
+                }
+                else {
                     $("#divTags").hide();
                 }
-
-            })
-
-
+            });
 
             $(document).on("click", ".select", function () {
-
                 if ($(this).html() != "") {
                     var id = $(this).attr('id');
                     var barCode = id.split("-");
@@ -1131,17 +1103,12 @@
                     CargaSeleccionaProducto(barCode[1],1)
                     $("#txtProdArt2").val('');
                 }
-
                 else {
-
                     $("#txtProdArt2").val('');
-
                 }
 
                 $("#divTags").hide();
-
             });
-
         });
 
     </script>
@@ -3141,7 +3108,7 @@
 
                             tr.append("<td>  <b> " + json.resp[i].Nom_DirCTe + "</b > <br>" + json.resp[i].Direccion + "</td>");
                             //<button type="button" class="btn btn-default btn btn-xs" onclick="GetTdasTrasp()">
-                            tr.append("<td><button onclick='SelDirCte(" + json.resp[i].Id_Cnsc_DirCTe + ")' type = 'button' class= 'btn btn-default btn btn-xs'>Utilizar esta dirección</button></td >")
+                            tr.append("<td><button onclick='SelDirCte(" + json.resp[i].Id_Cnsc_DirCTe + ")' type = 'button' class= 'btn btn-default btn btn-xs'>Utilizar esta direcci&oacute;n</button></td >")
                             $('#tblDirecciones').append(tr);
                         }
 
