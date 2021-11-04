@@ -1126,6 +1126,7 @@
 
 
     </script>
+
     <style>
         /* (A) FULL SCREEN WRAPPER */
         #spinner {
@@ -1159,15 +1160,12 @@
                 visibility: visible;
                 opacity: 1;
             }
-    </style>
-
-    <style>
-        .required {
+/*        .required {
             position: absolute;
             margin-left: -10px;
             color: #FB0000;
             font-size: 15px;
-        }
+        }*/
     </style>
     <link href="~/Content/Inspinia/Styles/steps/jquery.steps.css" rel="stylesheet" />
     <script src="~/Content/Inspinia/plugins/steps/jquery.steps.min.js"></script>
@@ -2412,7 +2410,6 @@
             $("#dlgSeleccionar").modal("show");
         }
 
-
         function llenarCarrito() {
             var cant = 0, tot = 0.0,descuento=0;
 
@@ -2538,6 +2535,7 @@
                     + "<td>" + _jsonObservaciones[x].observacion + "</td>");
             }
         }
+
         function agregarObs() {
             var sum_Obs = $('#add_Obs').val();
         /*            var myTable = $('#tblBusquedaArt').DataTable();*/
@@ -2595,6 +2593,7 @@
             CargaSeleccionaProducto('');
             $("#dlgSeleccionar").modal("show");
         }
+
         function addProduct2() {
 
             $('#feedback2').append("<tr id=\"" + document.getElementById("add_product").value +"\"> <td>" + document.getElementById("add_description").value + "<br /><input type=\"text\" placeholder=\"Indicaciones y Observaciones\" class=\"form-control input-sm\"/>" + "</td>"
@@ -2618,7 +2617,6 @@
 
         }
 
-
         function BuscarCliente() {
 
             $('#divbuttonAddClient').hide();
@@ -2628,6 +2626,14 @@
 
 
             $.ajax({
+                //async: false,
+                type: "GET",
+                url: '@Url.Action("BuscarCliente", "CallCenter")',
+                data: {
+                    Criterio: param
+
+                },
+                datatype: "html",
                 beforeSend: function () {
                     $("#imgSpiner").css("display", "block");
                     document.getElementById("spinner").classList.add("show");
@@ -2637,14 +2643,6 @@
                     $("#imgSpiner").css("display", "none");
 
                 },
-                //async: false,
-                type: "GET",
-                url: '@Url.Action("BuscarCliente", "CallCenter")',
-                data: {
-                    Criterio: param
-
-                },
-                datatype: "html",
                 success: function (json) {
 
                     if (json.Success) {
@@ -2685,7 +2683,6 @@
                 }
             });
         }
-
 
         function SelCte(mail,idcte) {
             $.ajax({
