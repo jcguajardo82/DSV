@@ -40,7 +40,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 1115px;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 1115px;">
                 <thead class="bg-primary">
                     <tr role="row">
                         @*<th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1">Referencia</th>*@
@@ -103,9 +103,77 @@
     <script type="text/javascript">
         var _json = undefined;
         $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel', {
+                        text: 'Excel XLS',
+                        action: function (e, dt, node, config) {
+
+                            Excel();
+
+                        }
+                    }
+
+                    ],
+                    orderCellsTop: false,
+                    //fixedHeader: {
+                    //    header: true
+                    //},
+                    "scrollX": true
+
+                }
+            );
+
             Get();
         });
-
+        function Excel() {
+            
+            window.location = window.location.origin + '/ShipmentRequestsWMS/Excel';
+        }
         function showpdf(cnscOrder, cuenta) {
             //debugger;
             var item = _json.find(x => x.CnscOrder == cnscOrder && x.Cuenta == cuenta);
@@ -153,36 +221,61 @@
                 datatype: "html",
                 success: function (json) {
                     if (json.Success) {
-                        $("#tblConsulta tbody").remove();
-                        //var tr;
-                        _json = json.json;
-                        console.log(json);
-                        //Append each row to html table
+                        var myTableR = $('#tblConsulta').DataTable();
+                        myTableR
+                            .clear()
+                            .draw();
                         for (var i = 0; i < json.json.length; i++) {
-                            tr = $('<tr/>');
-                            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                            tr.append("<td>" + json.json[i].FechaConsignacion + "</td>");
-                            tr.append("<td>" + json.json[i].Cuenta + "</td>");
-                            tr.append("<td>" + json.json[i].cantidad + "</td>");
-                            tr.append("<td>" + json.json[i].referencia2 + "</td>");
-                            tr.append("<td>" + json.json[i].siglasCliente + "</td>");
-                            tr.append("<td>" + json.json[i].direccion + "</td>");
-                            tr.append("<td>" + json.json[i].colonia + "</td>");
-                            tr.append("<td>" + json.json[i].poblacion + "</td>");
-
-                            tr.append("<td>" + json.json[i].codigoPostal + "</td>");
-                            tr.append("<td>" + json.json[i].telefono + "</td>");
-                            tr.append("<td>" + json.json[i].contacto + "</td>");
-                            tr.append("<td>" + json.json[i].ucc + "</td>");
-                            if (json.json[i].IdTrackingService == '--')
-                                tr.append("<td></td>");
-                            else
-                                tr.append("<td><a onclick='showpdf(" + json.json[i].CnscOrder + "," + json.json[i].Cuenta + "); return false;'  style='width:180px;'  title='Click para ver el pdf de la guía' class='btn btn-link'>" + json.json[i].IdTrackingService + "</a></td>");
-                            tr.append("<td>" + json.json[i].TrackingServiceName + "</td>");
-                            
-                            $('#tblConsulta').append(tr);
-
+                            myTableR.row.add([
+                                 json.json[i].FechaConsignacion,
+                                 json.json[i].Cuenta,
+                                 json.json[i].cantidad,
+                                 json.json[i].referencia2,
+                                 json.json[i].siglasCliente,
+                                 json.json[i].direccion,
+                                 json.json[i].colonia,
+                                 json.json[i].poblacion,
+                                 json.json[i].codigoPostal,
+                                 json.json[i].telefono,
+                                 json.json[i].contacto,
+                                 json.json[i].ucc,
+                                 json.json[i].IdTrackingService == '--' ? ''
+                                     : "<a onclick='showpdf(" + json.json[i].CnscOrder + "," + json.json[i].Cuenta + "); return false;'  style='width:180px;'  title='Click para ver el pdf de la guía' class='btn btn-link'>" + json.json[i].IdTrackingService + "</a>",
+                                 json.json[i].TrackingServiceName
+                            ]).draw();
+             
                         }
+
+                        //$("#tblConsulta tbody").remove();
+                        ////var tr;
+                        //_json = json.json;
+                        //console.log(json);
+                        ////Append each row to html table
+                        //for (var i = 0; i < json.json.length; i++) {
+                        //    tr = $('<tr/>');
+                        //    //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+                        //    tr.append("<td>" + json.json[i].FechaConsignacion + "</td>");
+                        //    tr.append("<td>" + json.json[i].Cuenta + "</td>");
+                        //    tr.append("<td>" + json.json[i].cantidad + "</td>");
+                        //    tr.append("<td>" + json.json[i].referencia2 + "</td>");
+                        //    tr.append("<td>" + json.json[i].siglasCliente + "</td>");
+                        //    tr.append("<td>" + json.json[i].direccion + "</td>");
+                        //    tr.append("<td>" + json.json[i].colonia + "</td>");
+                        //    tr.append("<td>" + json.json[i].poblacion + "</td>");
+
+                        //    tr.append("<td>" + json.json[i].codigoPostal + "</td>");
+                        //    tr.append("<td>" + json.json[i].telefono + "</td>");
+                        //    tr.append("<td>" + json.json[i].contacto + "</td>");
+                        //    tr.append("<td>" + json.json[i].ucc + "</td>");
+                        //    if (json.json[i].IdTrackingService == '--')
+                        //        tr.append("<td></td>");
+                        //    else
+                        //        tr.append("<td><a onclick='showpdf(" + json.json[i].CnscOrder + "," + json.json[i].Cuenta + "); return false;'  style='width:180px;'  title='Click para ver el pdf de la guía' class='btn btn-link'>" + json.json[i].IdTrackingService + "</a></td>");
+                        //    tr.append("<td>" + json.json[i].TrackingServiceName + "</td>");
+                            
+                        //    $('#tblConsulta').append(tr);
+
+                        //}
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
