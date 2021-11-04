@@ -2039,16 +2039,15 @@
 
         function CargaSeleccionaProducto(param,op) {
 
-            $("#divTags").hide();
-            if (param.length == 0) {
-                param = $("#txtProdArt2").val();
+            $("#divTags").hide();//
+            if (param.length == 0) {//
+                param = $("#txtProdArt2").val();//
             }
 
-            if (param.length == 0) {
-                $("#txtProdArt2").focus();
-                return;
-            }
-
+            if (param.length == 0) {//
+                $("#txtProdArt2").focus();//
+                return;//
+            }//
 
             var tda = $("#ddlTdas").val()
             var categoria = $("#ddlCategorias").val();
@@ -2063,15 +2062,7 @@
             }
 
             $.ajax({
-                beforeSend: function () {
-                    $("#imgSpiner").css("display", "block");
-                    document.getElementById("spinner").classList.add("show");
-                },
-                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
-                    document.getElementById("spinner").classList.remove("show");
-                    $("#imgSpiner").css("display", "none");
-
-                },
+               
                 "url": "@Url.Action("GetProduct", "CallCenter")",
                 "type": "post",
                 "data": {
@@ -2164,7 +2155,16 @@
                     }
 
 
-                }
+                },
+                 beforeSend: function () {
+                    $("#imgSpiner").css("display", "block");
+                    document.getElementById("spinner").classList.add("show");
+                },
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+
+                },
                 , error: function (jqXHR, textStatus, errorThrown) {
                     debugger;
                     document.getElementById("spinner").classList.remove("show");
