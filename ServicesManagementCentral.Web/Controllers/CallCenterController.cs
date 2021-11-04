@@ -20,6 +20,7 @@ using System.Configuration;
 using static ServicesManagement.Web.Controllers.OrderFacts_UEModel;
 using System.Threading.Tasks;
 using System.Globalization;
+using Newtonsoft.Json.Linq;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -473,7 +474,7 @@ namespace ServicesManagement.Web.Controllers
                         response1 = response1.Where(x => x.Brand.BrandDescription == marca).ToList();
                     }
 
-                   
+
 
                     foreach (var item in response1)
                     {
@@ -1760,6 +1761,18 @@ namespace ServicesManagement.Web.Controllers
                 if (r.code != "00")
                 {
                     throw new Exception(r.message);
+                }
+                else
+                {
+                    JObject json = JObject.Parse(r.message);
+                    JToken v1, v2;
+                    if (json.TryGetValue("status-description-detail", out v1))
+                    {
+                        if (JObject.Parse(v1.ToString()).TryGetValue("numeroOrden", out v2))
+                        {
+                            Id_Num_Orden = int.Parse(v2.ToString().Replace("{", "").Replace("}", ""));
+                        }
+                    }
                 }
 
                 #endregion
