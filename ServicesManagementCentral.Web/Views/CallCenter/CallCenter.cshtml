@@ -2526,7 +2526,7 @@
 
                     $("#umc-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].UnitConv);
                     if (_jsonProductsSelected[i].UnitConv == 'pza') {
-                        descuento = descuento + (parseFloat(_jsonProductsSelected[i].quantity) / parseFloat(factorConversion).toFixed(2))
+                        descuento = descuento + ((parseFloat(_jsonProductsSelected[i].quantity) / parseFloat(factorConversion).toFixed(2)) * (parseFloat(_jsonProductsSelected[i].price) - parseFloat(_jsonProductsSelected[i].precioO)));
                     } else {
                         descuento = descuento + (_jsonProductsSelected[i].quantity * (parseFloat(_jsonProductsSelected[i].price) - parseFloat(_jsonProductsSelected[i].precioO)));
                     }
