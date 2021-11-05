@@ -7,7 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using System.IO;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -64,11 +64,7 @@ namespace ServicesManagement.Web.Controllers
                 ViewBag.IdTienda = IdTienda;
                 Session["IdTiendaNiveles"] = IdTienda;
             }
-
-            //list = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoTotalsByOrder>(
-            //    DALNivelExistencia.upCorpOMS_Cns_UeNoStockLevels(FecIni, FecFin, IdOwner, IdTienda).Tables[0]);
-
-            //ViewBag.Orders = list;
+            Session["lstNiveles"] = null;
 
             return View();
         }
@@ -77,12 +73,6 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                //ViewBag.FecIni = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
-                //ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
-                //ViewBag.IdOwner = 0;
-                //ViewBag.IdTienda = 0;
-
-
                 List<upCorpOMS_Cns_UeNoTotalsByOrder> list = new List<upCorpOMS_Cns_UeNoTotalsByOrder>();
 
                 DateTime FecIni = DateTime.Now.AddDays(-7), FecFin = DateTime.Now;
@@ -135,34 +125,42 @@ namespace ServicesManagement.Web.Controllers
                     skip = start != null ? Convert.ToInt32(start) : 0;
                     recordsTotal = 0;
 
-                    IQueryable<upCorpOMS_Cns_UeNoTotalsByOrder> query = from row in DALNivelExistencia.upCorpOMS_Cns_UeNoStockLevels(IdOwner, IdTienda).Tables[0].AsEnumerable().AsQueryable()
-                                                                        select new upCorpOMS_Cns_UeNoTotalsByOrder()
-                                                                        {
-                                                                            EAN = (row["EAN"].ToString()),
-                                                                            SKU = (row["SKU"].ToString()),
-                                                                            Descripcion = row["Descripcion"].ToString(),
-                                                                            Categoria = (row["Categoria"].ToString()),
-                                                                            NroProveedor = row["NroProveedor"].ToString(),
-                                                                            TipoAlmacen = row["TipoAlmacen"].ToString(),
-                                                                            NombreProveedor = row["NombreProveedor"].ToString(),
-                                                                            NivelExistencia = row["NivelExistencia"].ToString(),
-                                                                            InvReservado = row["InvReservado"].ToString(),
-                                                                            InvVenta = row["InvVenta"].ToString(),
-                                                                            InvSeguridad = row["InvSeguridad"].ToString(),
-                                                                            TipoArticulo = row["TipoArticulo"].ToString(),
-                                                                            Largo = (row["Largo"].ToString()),
-                                                                            Alto = row["Alto"].ToString(),
-                                                                            Ancho = row["Ancho"].ToString(),
-                                                                            Peso = row["Peso"].ToString(),
-                                                                            PesoVol = row["PesoVol"].ToString(),
-                                                                            PesoReal = row["PesoReal"].ToString(),
-                                                                            EstatusProducto = row["EstatusProducto"].ToString(),
-                                                                            CostoMaterial = row["CostoMaterial"].ToString(),
-                                                                            FechaCreacion = row["FechaCreacion"].ToString(),
-                                                                            NroProvOrigen = row["NroProvOrigen"].ToString(),
-                                                                            NomProvOrigen = row["NomProvOrigen"].ToString()
-                                                                        };
-
+                    IQueryable<upCorpOMS_Cns_UeNoTotalsByOrder> query = null;
+                    if (Session["lstNiveles"] == null)
+                    {
+                        query = from row in DALNivelExistencia.upCorpOMS_Cns_UeNoStockLevels(IdOwner, IdTienda).Tables[0].AsEnumerable().AsQueryable()
+                                                                            select new upCorpOMS_Cns_UeNoTotalsByOrder()
+                                                                            {
+                                                                                EAN = (row["EAN"].ToString()),
+                                                                                SKU = (row["SKU"].ToString()),
+                                                                                Descripcion = row["Descripcion"].ToString(),
+                                                                                Categoria = (row["Categoria"].ToString()),
+                                                                                NroProveedor = row["NroProveedor"].ToString(),
+                                                                                TipoAlmacen = row["TipoAlmacen"].ToString(),
+                                                                                NombreProveedor = row["NombreProveedor"].ToString(),
+                                                                                NivelExistencia = row["NivelExistencia"].ToString(),
+                                                                                InvReservado = row["InvReservado"].ToString(),
+                                                                                InvVenta = row["InvVenta"].ToString(),
+                                                                                InvSeguridad = row["InvSeguridad"].ToString(),
+                                                                                TipoArticulo = row["TipoArticulo"].ToString(),
+                                                                                Largo = (row["Largo"].ToString()),
+                                                                                Alto = row["Alto"].ToString(),
+                                                                                Ancho = row["Ancho"].ToString(),
+                                                                                Peso = row["Peso"].ToString(),
+                                                                                PesoVol = row["PesoVol"].ToString(),
+                                                                                PesoReal = row["PesoReal"].ToString(),
+                                                                                EstatusProducto = row["EstatusProducto"].ToString(),
+                                                                                CostoMaterial = row["CostoMaterial"].ToString(),
+                                                                                FechaCreacion = row["FechaCreacion"].ToString(),
+                                                                                NroProvOrigen = row["NroProvOrigen"].ToString(),
+                                                                                NomProvOrigen = row["NomProvOrigen"].ToString()
+                                                                            };
+                        Session["lstNiveles"] = query;
+                    }
+                    else
+                    {
+                        query = (IQueryable<upCorpOMS_Cns_UeNoTotalsByOrder>)Session["lstNiveles"];
+                    }
 
 
 
@@ -244,6 +242,102 @@ namespace ServicesManagement.Web.Controllers
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
+
+        }
+        public FileResult Excel()
+        {
+            List<upCorpOMS_Cns_UeNoTotalsByOrder> lst = new List<upCorpOMS_Cns_UeNoTotalsByOrder>();
+
+            var query = (IQueryable<upCorpOMS_Cns_UeNoTotalsByOrder>)Session["lstNiveles"];
+
+            lst = query.ToList();
+            string nombreArchivo = "NivelesExistencia";
+
+            //Excel to create an object file
+
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+
+            //Add a sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+
+
+            //Here you can set a variety of styles seemingly font color backgrounds, but not very convenient, there is not set
+            //Sheet1 head to add the title of the first row
+            NPOI.SS.UserModel.IRow row1 = sheet1.CreateRow(0);
+
+            row1.CreateCell(0).SetCellValue("EAN/Codigo de barras");
+            row1.CreateCell(1).SetCellValue("ID (#numero material SAP)");
+            row1.CreateCell(2).SetCellValue("Nombre del Producto");
+            row1.CreateCell(3).SetCellValue("Grupo de Categorías");
+            row1.CreateCell(4).SetCellValue("No. Proveedor");
+            row1.CreateCell(5).SetCellValue("T. Almacen");
+            row1.CreateCell(6).SetCellValue("Nombre Proveedor");
+            row1.CreateCell(7).SetCellValue("Nombre Almacen");
+            row1.CreateCell(8).SetCellValue("Nivel de Existencias");
+            row1.CreateCell(9).SetCellValue("Inventario Reservado");
+            row1.CreateCell(10).SetCellValue("Inventario disponible para la venta");
+            row1.CreateCell(11).SetCellValue("Stock de seguridad");
+            row1.CreateCell(12).SetCellValue("Tipo de Articulo");
+            row1.CreateCell(13).SetCellValue("Largo");
+            row1.CreateCell(14).SetCellValue("Alto");
+            row1.CreateCell(15).SetCellValue("Ancho");
+            row1.CreateCell(16).SetCellValue("Peso");
+            row1.CreateCell(17).SetCellValue("Peso Volumetrico");
+            row1.CreateCell(18).SetCellValue("Peso Real");
+            row1.CreateCell(19).SetCellValue("Estatus del codigo");
+            row1.CreateCell(20).SetCellValue("Costo del Material");
+            row1.CreateCell(21).SetCellValue("Fecha de cracion del Material");
+            row1.CreateCell(22).SetCellValue("Num de proveedor que surte producto");
+            row1.CreateCell(23).SetCellValue("Nom de proveedor que surte producto");
+
+
+            //The data is written progressively sheet1 each row
+
+            for (int i = 0; i < lst.Count; i++)
+            {
+                NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(i + 1);
+                rowtemp.CreateCell(0).SetCellValue(lst[i].EAN.ToString());
+                rowtemp.CreateCell(1).SetCellValue(lst[i].SKU.ToString());
+                rowtemp.CreateCell(2).SetCellValue(lst[i].Descripcion.ToString());
+                rowtemp.CreateCell(3).SetCellValue(lst[i].Categoria.ToString());
+                rowtemp.CreateCell(4).SetCellValue(lst[i].NroProveedor.ToString());
+                rowtemp.CreateCell(5).SetCellValue(lst[i].TipoAlmacen.ToString());
+                rowtemp.CreateCell(6).SetCellValue(lst[i].NombreProveedor.ToString());
+                rowtemp.CreateCell(7).SetCellValue(lst[i].NombreAlmacen != null ? lst[i].NombreAlmacen.ToString() : "");
+                rowtemp.CreateCell(8).SetCellValue(lst[i].NivelExistencia.ToString());
+                rowtemp.CreateCell(9).SetCellValue(lst[i].InvReservado.ToString());
+                rowtemp.CreateCell(10).SetCellValue(lst[i].InvVenta.ToString());
+                rowtemp.CreateCell(11).SetCellValue(lst[i].InvSeguridad.ToString());
+                rowtemp.CreateCell(12).SetCellValue(lst[i].TipoArticulo.ToString());
+                rowtemp.CreateCell(13).SetCellValue(lst[i].Largo.ToString());
+                rowtemp.CreateCell(14).SetCellValue(lst[i].Alto.ToString());
+                rowtemp.CreateCell(15).SetCellValue(lst[i].Ancho.ToString());
+                rowtemp.CreateCell(16).SetCellValue(lst[i].Peso.ToString());
+                rowtemp.CreateCell(17).SetCellValue(lst[i].PesoVol.ToString());
+                rowtemp.CreateCell(18).SetCellValue(lst[i].PesoReal.ToString());
+                rowtemp.CreateCell(19).SetCellValue(lst[i].EstatusProducto.ToString());
+                rowtemp.CreateCell(20).SetCellValue(lst[i].CostoMaterial.ToString());
+                rowtemp.CreateCell(21).SetCellValue(lst[i].FechaCreacion.ToString());
+                rowtemp.CreateCell(23).SetCellValue(lst[i].NroProvOrigen.ToString());
+                rowtemp.CreateCell(24).SetCellValue(lst[i].NomProvOrigen.ToString());
+
+            }
+
+            //  Write to the client 
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+
+            book.Write(ms);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            DateTime dt = DateTime.Now;
+
+            string dateTime = dt.ToString("yyyyMMddHHmmssfff");
+
+            string fileName = nombreArchivo + "_" + dateTime + ".xls";
+
+            return File(ms, "application/vnd.ms-excel", fileName);
 
         }
     }

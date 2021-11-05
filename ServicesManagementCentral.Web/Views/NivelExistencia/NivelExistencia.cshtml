@@ -576,7 +576,13 @@
                         [10, 25, 50, -1],
                         ['10 Registros', '25 Registros', '50 Registros', 'Mostrar Todos']
                     ],
-                    buttons: ['csv', 'excel'],
+                    buttons: [{
+                        text: 'Excel XLS',
+                        action: function (e, dt, node, config) {
+
+                            Excel();
+                        }
+                        }],
                     orderCellsTop: false,
                     fixedHeader: {
                         header: true,
@@ -592,6 +598,10 @@
             ListAlmacen();
         });
 
+    function Excel() {
+
+        window.location = window.location.origin + '/NivelExistencia/Excel';
+    }
     function Busqueda() {
         //var _FecIni = $("#txtFecIni").val();
         //var _FecFin = $("#txtFecFin").val();
