@@ -362,9 +362,9 @@
                                             </td>
                                             <td style="text-align:left;">
                                                 @*Efectivo: <input type="text" id="in_pago" disabled value="0.00" width="100px;" oninput="input(this)" /><br />*@
-                                                Efectivo: <input type="text" id="in_pago" disabled value="0.00" width="100px;" onkeypress='return isNumberKey(event,this,3,0)' /><br />
+                                                Efectivo: <input type="text" id="in_pago" disabled value="0.00" width="100px;" onfocus="if(this.value !== '') {this.value=''}" onblur="blurDecimal(this)" onkeypress='return isNumberKey(event,this,3,0)' autocomplete="off" /><br />
                                                 @*Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled value="0.00" oninput="input(this)" id="in_vales" width="100px;" />*@
-                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled value="0.00" onkeypress='return isNumberKey(event,this,3,0)' id="in_vales" width="100px;" />
+                                                Vales:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" disabled value="0.00" onfocus="if(this.value !== '') {this.value=''}" onblur="blurDecimal(this)" onkeypress='return isNumberKey(event,this,3,0)' id="in_vales" width="100px;" autocomplete="off" />
                                             </td>
                                         </tr>
                                         @*<tr>
@@ -3647,6 +3647,13 @@
 
             }
             return true;
+        }
+        function blurDecimal(obj) {
+            if (obj.value == "") {
+                obj.value = "0.00";
+            } else {
+                obj.value = parseFloat(obj.value).toFixed(2);
+            }
         }
     </script>
 
