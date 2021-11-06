@@ -2506,7 +2506,7 @@ namespace ServicesManagement.Web.Controllers
             {
 
 
-                m.OriginInfo = new AddressModel();
+                m.Origin = new AddressModel();
 
                 m.OriginInfo.address1 = r["address1"].ToString();
                 m.OriginInfo.address2 = r["address2"].ToString();
@@ -2588,7 +2588,7 @@ namespace ServicesManagement.Web.Controllers
                 string pdfcadena2 = Convert.ToBase64String(re.pdf, Base64FormattingOptions.None);
 
                 //return re.Guia + "," + re.pdf;
-                return re.Guia + "," + pdfcadena2;
+                return re.Labels[0].Folios[0] + "," + pdfcadena2;
 
             }
 
