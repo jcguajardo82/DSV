@@ -1599,7 +1599,7 @@
                 item.Ancho = row.find("TD").eq(3).html();
                 var alto= row.find("TD").eq(4).html()
 
-                item.Alto = alto=="N/A" ? 0 : alto;
+                item.Alto = alto=="" ? 0 : alto;
 
                 items.push(item);
             });
@@ -1628,8 +1628,6 @@
                 alert("Debe de seleccionar un artículo");
                 return;
             }
-
-
 
             //Send the JSON array to Controller using AJAX.
             $.ajax({

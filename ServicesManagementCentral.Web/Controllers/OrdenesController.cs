@@ -97,8 +97,8 @@ namespace ServicesManagement.Web.Controllers
 
     public class ProductEmbalaje
     {
-        public decimal Barcode { get; set; }
-        public decimal ProductId { get; set; }
+        public long Barcode { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; }
     }
     #endregion
@@ -1967,8 +1967,8 @@ namespace ServicesManagement.Web.Controllers
 
         #region Embarques
 
-
-        public ActionResult AddEmbalaje(List<PackageMeasure> Paquetes, string UeNo, int OrderNo,List<ProductEmbalaje> Products, string contentType, string TrackingType ="Normal")
+        [HttpPost]
+        public ActionResult AddEmbalaje(List<PackageMeasure> Paquetes, string UeNo, int OrderNo,List<ProductEmbalaje> Products, string TrackingType ="Normal")
         {
             string tarifa = string.Empty;
             try
@@ -2014,7 +2014,7 @@ namespace ServicesManagement.Web.Controllers
 
                     var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
                     item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
-                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, contentType).Tables[0].Rows[0][0];
+                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null).Tables[0].Rows[0][0];
 
                     #endregion
                 }
@@ -2030,10 +2030,10 @@ namespace ServicesManagement.Web.Controllers
 
                 }
 
-                if (contentType != null)
-                {
-                    DALServicesM.UCCProcesada(contentType);
-                }
+                //if (contentType != null)
+                //{
+                //    DALServicesM.UCCProcesada(contentType);
+                //}
 
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -2080,7 +2080,7 @@ namespace ServicesManagement.Web.Controllers
 
                     string guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
 
-                    string servicioPaq = "estafeta";
+                    string servicioPaq = "Logyt-Estafeta";
                     string GuiaEstatus = "CREADA";
                     //TarifaModel tarifaSeleccionada = new TarifaModel();
                     //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
@@ -2209,7 +2209,7 @@ namespace ServicesManagement.Web.Controllers
                     type = 4;
                 string guia = CreateGuiaEstafeta(UeNo, OrderNo,int.Parse(PackageWeight.ToString()),type);
 
-                string servicioPaq = "estafeta";
+                string servicioPaq = "Logyt-Estafeta";
                 string GuiaEstatus = "CREADA";
                 //TarifaModel tarifaSeleccionada = new TarifaModel();
                 //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
@@ -2356,19 +2356,18 @@ namespace ServicesManagement.Web.Controllers
             {
 
 
-                m.OriginInfo = new AddressModel();
+                m.Origin = new AddressModel();
 
-                m.OriginInfo.address1 = r["address1"].ToString();
-                m.OriginInfo.address2 = r["address2"].ToString();
-                m.OriginInfo.cellPhone = r["cellPhone"].ToString();
-                m.OriginInfo.city = r["city"].ToString();
-                m.OriginInfo.contactName = r["contactName"].ToString();
-                m.OriginInfo.corporateName = r["corporateName"].ToString();
-                m.OriginInfo.customerNumber = r["customerNumber"].ToString();
-                m.OriginInfo.neighborhood = r["neighborhood"].ToString();
-                m.OriginInfo.phoneNumber = r["phone"].ToString();
-                m.OriginInfo.state = r["state"].ToString();
-                m.OriginInfo.zipCode = r["zipCode"].ToString();
+                m.Origin.Address1 = r["address1"].ToString();
+                m.Origin.Address2 = r["address2"].ToString();
+                m.Origin.City = r["city"].ToString();
+                m.Origin.ContactName = r["contactName"].ToString();
+                m.Origin.CorporateName = r["corporateName"].ToString();
+                m.Origin.CustomerNumber = r["customerNumber"].ToString();
+                m.Origin.Neighborhood = r["neighborhood"].ToString();
+                m.Origin.PhoneNumber = r["phone"].ToString();
+                m.Origin.State = r["state"].ToString();
+                m.Origin.ZipCode = r["zipCode"].ToString();
                 
             }
 
@@ -2377,33 +2376,33 @@ namespace ServicesManagement.Web.Controllers
 
                     System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                    m.serviceTypeId = "70";
+                    m.ServiceType = "70";
 
                     if (weight >= 70)
                     {
-                        m.serviceTypeId = "L0";
+                        m.ServiceType = "L0";
                     }
 
-                    m.DestinationInfo = new AddressModel();
+                    m.Destination = new AddressModel();
 
-                    m.DestinationInfo.address1 = r["Address1"].ToString();
-                    m.DestinationInfo.address2 = r["Address2"].ToString();
-                    m.DestinationInfo.cellPhone = r["Phone"].ToString();
-                    m.DestinationInfo.city = r["City"].ToString();
-                    m.DestinationInfo.contactName = r["CustomerName"].ToString();
-                    //m.DestinationInfo.corporateName = r["CustomerName"].ToString();
-                    m.DestinationInfo.corporateName = r["UeNo"].ToString();
-                    m.DestinationInfo.customerNumber = r["CustomerNo"].ToString();
-                    m.DestinationInfo.neighborhood = r["NameReceives"].ToString();
-                    m.DestinationInfo.phoneNumber = r["Phone"].ToString();
-                    m.DestinationInfo.state = r["StateCode"].ToString();
-                    m.DestinationInfo.zipCode = r["PostalCode"].ToString();
+                    m.Destination.Address1 = r["Address1"].ToString();
+                    m.Destination.Address2 = r["Address2"].ToString();
+                    m.Destination.City = r["City"].ToString();
+                    m.Destination.ContactName = r["CustomerName"].ToString();
+                    //m.Destination.corporateName = r["CustomerName"].ToString();
+                    m.Destination.CorporateName = r["UeNo"].ToString();
+                    m.Destination.CustomerNumber = r["CustomerNo"].ToString();
+                    m.Destination.Neighborhood = r["NameReceives"].ToString();
+                    m.Destination.PhoneNumber = r["Phone"].ToString();
+                    m.Destination.State = r["StateCode"].ToString();
+                    m.Destination.ZipCode = r["PostalCode"].ToString();
                     
-                    m.reference = r["Reference"].ToString();
-                    m.originZipCodeForRouting = r["PostalCode"].ToString();
-                    m.weight = weight; // lo capturado en el modal
-                    m.parcelTypeId = typeId; // 1 - sobre, 4 - paquete
-                    m.effectiveDate = r["effectiveDate"].ToString();
+                    m.Reference = r["Reference"].ToString();
+                    //m.originZipCodeForRouting = r["PostalCode"].ToString();
+                    m.Weight = weight; // lo capturado en el modal
+                    m.Volume = weight;  
+                    //m.parcelTypeId = typeId; // 1 - sobre, 4 - paquete
+                    //m.effectiveDate = r["effectiveDate"].ToString();
 
                 //OrderNo
                 //    CnscOrder
@@ -2433,10 +2432,10 @@ namespace ServicesManagement.Web.Controllers
 
                     ResponseModels re = JsonConvert.DeserializeObject<ResponseModels>(r2.message);
                     
-                    string pdfcadena2 = Convert.ToBase64String(re.pdf, Base64FormattingOptions.None);
+                    string pdfcadena2 = Convert.ToBase64String(re.Labels[0].PDF, Base64FormattingOptions.None);
 
                 //return re.Guia + "," + re.pdf;
-                return re.Guia + "," + pdfcadena2;
+                return re.Labels[0].Folios[0] + "," + pdfcadena2;
 
             }
 
@@ -2631,7 +2630,7 @@ namespace ServicesManagement.Web.Controllers
 
         //el detalle producto a producto
         public ActionResult DetalleProdaProd(string UeNo, int OrderNo, string IdTracking, string TrackingType,
-            decimal ProductId, decimal Barcode, string ProductName,
+            int ProductId, long Barcode, string ProductName,
             string CreationId)
         {
             try

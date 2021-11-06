@@ -219,7 +219,7 @@ namespace ServicesManagement.Web.DAL.Embarques
 
 
         public static DataSet upCorpOms_Ins_UeNoTrackingDetail(string UeNo, int OrderNo, string IdTracking, string TrackingType,
-            decimal ProductId, decimal Barcode, string ProductName, 
+            int ProductId, long Barcode, string ProductName, 
             string CreationId)
         {
 

@@ -14,8 +14,8 @@ namespace ServicesManagement.Web.Models
         public decimal largo { get; set; }
         public decimal ancho { get; set; }
         public decimal alto { get; set; }
-        public decimal barcode { get; set; }
-        public decimal productId { get; set; }
+        public long barcode { get; set; }
+        public int productId { get; set; }
         public string ucc { get; set; }
 
     }
