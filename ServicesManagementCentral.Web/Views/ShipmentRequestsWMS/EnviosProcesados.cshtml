@@ -134,10 +134,6 @@
                     filter: true,
                     info: false,
                     stateSave: false,
-                    select: false,
-                    select: {
-                        style: 'single'
-                    },
                     //Paggin
 
                     paging: true,
@@ -175,7 +171,7 @@
             window.location = window.location.origin + '/ShipmentRequestsWMS/Excel';
         }
         function showpdf(cnscOrder, cuenta) {
-            //debugger;
+            debugger;
             var item = _json.find(x => x.CnscOrder == cnscOrder && x.Cuenta == cuenta);
 
             //alert(item.IdTrackingService);
@@ -221,6 +217,7 @@
                 datatype: "html",
                 success: function (json) {
                     if (json.Success) {
+                        _json = json.json;
                         var myTableR = $('#tblConsulta').DataTable();
                         myTableR
                             .clear()
