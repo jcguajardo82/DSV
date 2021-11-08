@@ -24,6 +24,7 @@ namespace ServicesManagement.Web.Models.CallCenter
         public decimal Num_CodBarra { get; set; }
 
         public string Sustituto { get; set; }
+        public decimal Factor { get; set; }
         //public string Impto { get; set; }
         //public string Bit_SkuObligadoComp { get; set; }
         //public string Bit_SkuObligadoSurt { get; set; }

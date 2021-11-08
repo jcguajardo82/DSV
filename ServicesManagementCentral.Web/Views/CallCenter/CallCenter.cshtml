@@ -1814,12 +1814,13 @@
                 product.Precio_VtaNormal = _jsonProductsSelected[i].price;
                 product.Desc_art = _jsonProductsSelected[i].description;
                 product.Cant_Unidades = _jsonProductsSelected[i].quantity;
-                product.Cve_UnVta = _jsonProductsSelected[i].SalesUnit;
+                product.Cve_UnVta = _jsonProductsSelected[i].UnitConv;
                 //product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
                 product.Precio_VtaOferta = _jsonProductsSelected[i].precioO;
                 product.Dcto = 0;//row.find("TD").eq(1).html();
                 product.obs = _jsonProductsSelected[i].comment;
                 product.Sustituto = _jsonProductsSelected[i].sustituto;
+                product.Factor = _jsonProductsSelected[i].factorConversion;
                 products.push(product);
             }
 
@@ -1927,13 +1928,16 @@
                         location.reload();
                     } else {
                         alert(r.Message);
+                        document.getElementById("spinner").classList.remove("show");
+                        $("#imgSpiner").css("display", "none");
+                        toggleButton("finish", true);
                     }
                 }
-                , complete: function () {
-                    //Ajax request is finished, so we can enable
-                    //the button again.
-                    toggleButton("finish", true);
-                }
+                //, complete: function () {
+                //    //Ajax request is finished, so we can enable
+                //    //the button again.
+                //    toggleButton("finish", true);
+                //}
                 , error: function (jqXHR, textStatus, errorThrown) {
                     document.getElementById("spinner").classList.remove("show");
                     $("#imgSpiner").css("display", "none");
