@@ -116,7 +116,7 @@ namespace ServicesManagement.Web.Helpers
                                 new XElement(nm + "custom-attributes",
                                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "barcode"), dt3.Rows[i][24].ToString()),
                                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "PriceOffer"), dt3.Rows[i][26].ToString()), //dt3.Rows[i][26].ToString()
-                                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "conversionFactor"),"1.0"),
+                                        new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "conversionFactor"), dt3.Rows[i][27].ToString()),
                                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "productNote"), dt3.Rows[i][25].ToString()),
                                         new XElement(nm + "custom-attribute", new XAttribute("attribute-id", "salesUnit"), dt3.Rows[i][10].ToString())
                                     )
