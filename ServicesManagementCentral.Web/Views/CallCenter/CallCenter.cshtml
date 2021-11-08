@@ -1814,7 +1814,12 @@
                 product.Precio_VtaNormal = _jsonProductsSelected[i].price;
                 product.Desc_art = _jsonProductsSelected[i].description;
                 product.Cant_Unidades = _jsonProductsSelected[i].quantity;
-                product.Cve_UnVta = _jsonProductsSelected[i].UnitConv;
+                if (_jsonProductsSelected[i].factorConversion != 0) {
+                    product.Cve_UnVta = _jsonProductsSelected[i].UnitConv;
+                }
+                else {
+                    product.Cve_UnVta = _jsonProductsSelected[i].SalesUnit;
+                }
                 //product.Precio_VtaNormal = row.find("TD").eq(3).html().replace('$','');
                 product.Precio_VtaOferta = _jsonProductsSelected[i].precioO;
                 product.Dcto = 0;//row.find("TD").eq(1).html();
