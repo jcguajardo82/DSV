@@ -1631,17 +1631,6 @@ namespace ServicesManagement.Web.Controllers
 
                     decimal descuento = item.Precio_VtaNormal - item.Precio_VtaOferta;
 
-
-                    if (item.Precio_VtaOferta < item.Precio_VtaNormal)
-                    {
-                        TotOrden += item.Cant_Unidades * item.Precio_VtaOferta;
-                    }
-                    else
-                    {
-                        TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
-                    }
-
-
                     decimal Cant_Piezas = 0;
                     if (item.Factor > 0)
                     {
@@ -1666,11 +1655,17 @@ namespace ServicesManagement.Web.Controllers
                         DALCallCenter.ArtCar_o_iUp(Id_Num_Car, item.Id_Num_Sku, Cant_Piezas, item.Factor);
                     }
 
+                    if (item.Precio_VtaOferta < item.Precio_VtaNormal)
+                    {
+                        TotOrden += item.Cant_Unidades * item.Precio_VtaOferta;
+                    }
+                    else
+                    {
+                        TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
+                    }
+
 
                     //COMENTARIOS POR ARTICULO
-
-
-
                     if (item.obs != null)
                     { DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs); }
                 }
@@ -1766,7 +1761,7 @@ namespace ServicesManagement.Web.Controllers
 
 
                 OrdersToXML obj = new OrdersToXML();
-                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'"); ;
+                string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
                 var OrderToMicroService = new OrderJson
                 {
                     xmlOrden = x
