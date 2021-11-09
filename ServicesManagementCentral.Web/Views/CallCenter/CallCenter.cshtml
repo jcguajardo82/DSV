@@ -1730,7 +1730,9 @@
             });
 
 
-
+            $('#tblPoductosSeleccionados').dataTable({
+                "order": []
+            });
         });
 
         function ddlSustito(obj) {
@@ -2426,6 +2428,11 @@
             var cant = 0, tot = 0.0,descuento=0;
 
             var myTable = $('#tblPoductosSeleccionados').DataTable();
+
+
+ 
+            let CurrentPageNo = myTable.page.info().page; 
+
             myTable
                 .clear()
                 .draw();
@@ -2436,7 +2443,25 @@
 
                 if (factorConversion !== 0) {
                     var facCon = $("#facConvB-" + _jsonProductsSelected[i].barcode).val();
-                    _salesUnite = "<input type='hidden' value='" + factorConversion + "' id='facConvC-" + _jsonProductsSelected[i].barcode + "' /> <select class='form-control' id='umc-" + _jsonProductsSelected[i].barcode +"' onchange='conversionRule(" + _jsonProductsSelected[i].barcode +",2)'></select>"
+                    let optionFactorCon = "";
+
+                    if (_jsonProductsSelected[i].UnitConv == _jsonProductsSelected[i].baseUnit) {
+                        optionFactorCon = "<option selected value='" + _jsonProductsSelected[i].baseUnit + "' >" + _jsonProductsSelected[i].baseUnit + "</option>"
+                        + "<option value='" + _jsonProductsSelected[i].equivalentUnit + "' >" + _jsonProductsSelected[i].equivalentUnit + "</option>";
+                    } else {
+                        optionFactorCon = "<option  value='" + _jsonProductsSelected[i].baseUnit + "' >" + _jsonProductsSelected[i].baseUnit + "</option>"
+                        + "<option selected value='" + _jsonProductsSelected[i].equivalentUnit + "' >" + _jsonProductsSelected[i].equivalentUnit + "</option>";
+                    }
+
+     
+                   
+
+                  
+
+                    _salesUnite = "<input type='hidden' value='" + factorConversion + "' id='facConvC-" + _jsonProductsSelected[i].barcode + "' />"            
+                        + " <select class='form-control' id='umc-" + _jsonProductsSelected[i].barcode + "' onchange='conversionRule(" + _jsonProductsSelected[i].barcode + ",2)'>"
+                        + optionFactorCon
+                        + "</select>"
                 }
 
                 var totaArt = Math.round(parseFloat(_jsonProductsSelected[i].total).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&,') * 100) / 100;;
@@ -2448,6 +2473,20 @@
                     cant = cant + 1;
                     inp = "<input  onkeypress='return isNumberKey(event,this,4,9)'  min='1' step='0.001' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 }
+
+
+
+                var _sustitutoOptions = "";
+
+                if (_jsonProductsSelected[i].sustituto == "Si") {
+                    _sustitutoSelecetd = "<option value='Si' selected>Si</option>"
+                        + "<option value='No'>No</option>";
+                } else {
+                    _sustitutoSelecetd = "<option value='Si' >Si</option>"
+                        + "<option value='No' selected>No</option>";
+                }
+
+
                 myTable.row.add([
 
                     _jsonProductsSelected[i].description,
@@ -2458,18 +2497,14 @@
                     "$" + totaArt,
                     "<input type='text'  onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
                     "<select onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' name='ddlDustituto' class='form-control' id='cSustituto-"+ _jsonProductsSelected[i].barcode +"'>"
-                              +"<option value='Si'>Si</option>"
-                              +"<option value='No'>No</option>"
+                    + _sustitutoSelecetd
                     +"</select>",
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
                 if (factorConversion !== 0) {
 
-                    $("#umc-" + _jsonProductsSelected[i].barcode).append("<option value='" + _jsonProductsSelected[i].baseUnit + "' >" + _jsonProductsSelected[i].baseUnit + "</option>");
-                    $("#umc-" + _jsonProductsSelected[i].barcode).append("<option value='" + _jsonProductsSelected[i].equivalentUnit + "' >" + _jsonProductsSelected[i].equivalentUnit + "</option>");
 
-                    $("#umc-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].UnitConv);
                     if (_jsonProductsSelected[i].UnitConv == 'pza') {
                         descuento = descuento + ((parseFloat(_jsonProductsSelected[i].quantity) / parseFloat(factorConversion).toFixed(2)) * (parseFloat(_jsonProductsSelected[i].price) - parseFloat(_jsonProductsSelected[i].precioO)));
                     } else {
@@ -2479,7 +2514,7 @@
                 else {
                     descuento = descuento + (_jsonProductsSelected[i].quantity * (parseFloat(_jsonProductsSelected[i].price) - parseFloat(_jsonProductsSelected[i].precioO)));
                 }
-                $("#cSustituto-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].sustituto);
+                //$("#cSustituto-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].sustituto);
 
                 tot = tot + parseFloat(_jsonProductsSelected[i].total)
 
@@ -2487,6 +2522,9 @@
 
             }
 
+
+            var myTable2 = $('#tblPoductosSeleccionados').DataTable();
+            myTable2.page(CurrentPageNo).draw(false)
 
             tot = parseFloat(tot).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             cant = parseFloat(cant).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
