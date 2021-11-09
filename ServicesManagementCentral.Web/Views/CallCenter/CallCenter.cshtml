@@ -2486,7 +2486,7 @@
                     _salesUnite = "<input type='hidden' value='" + factorConversion + "' id='facConvC-" + _jsonProductsSelected[i].barcode + "' /> <select class='form-control' id='umc-" + _jsonProductsSelected[i].barcode +"' onchange='conversionRule(" + _jsonProductsSelected[i].barcode +",2)'></select>"
                 }
 
-                var totaArt = parseFloat(_jsonProductsSelected[i].total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                var totaArt = Math.round(parseFloat(_jsonProductsSelected[i].total).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&,') * 100) / 100;;
                 var inp;
                 if (_jsonProductsSelected[i].SalesUnit == 'pza') {
                     cant = cant + parseInt(_jsonProductsSelected[i].quantity);
