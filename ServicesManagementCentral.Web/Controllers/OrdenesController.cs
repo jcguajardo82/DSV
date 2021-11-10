@@ -2614,10 +2614,10 @@ namespace ServicesManagement.Web.Controllers
 
                     m.ServiceType = "70";
 
-                    //if (weight >= 70)
-                    //{
-                    //    m.ServiceType = "L0";
-                    //}
+                    if (weight >= 70)
+                    {
+                        m.ServiceType = "L0";
+                    }
 
                     m.Destination = new LogytAddressModel();
 
