@@ -1614,10 +1614,11 @@
                 if ($(this).is(":checked") && $(this).is(":disabled") == false) {
                     var product = {};
                     row = $(this).closest("tr");
-                    var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
+                    var arrBarProd = $(row)[i].cells[0].innerText.split("\n")
                     product.Barcode = arrBarProd[0];
                     product.ProductId = arrBarProd[1];
-                    product.ProductName = $(row)[0].cells[1].innerText;
+                    product.ProductName = $(row)[i].cells[1].innerText;
+                    product.Pieces = $(row)[i].cells[2].innerText;
                     product.product = {};
                     products.push(product);
                 }

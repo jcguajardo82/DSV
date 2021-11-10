@@ -327,6 +327,7 @@
     <Compile Include="Models\EstatusReenvioMcia\EstatusReenvioMcia.cs" />
     <Compile Include="Models\Gastos.cs" />
     <Compile Include="Models\GastosVehiculoModel.cs" />
+    <Compile Include="Models\LogytRequestModel.cs" />
     <Compile Include="Models\ManualesOperativosModels.cs" />
     <Compile Include="Models\ManualesOp\ManualTypesModel.cs" />
     <Compile Include="Models\NivelExistencia\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
@@ -401,6 +402,7 @@
     <Compile Include="Models\UNModel.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoTracking.cs" />
     <Compile Include="Models\VehiculoModel.cs" />
+    <Compile Include="Models\WeightByProducts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

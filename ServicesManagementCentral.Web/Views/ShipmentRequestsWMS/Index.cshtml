@@ -264,6 +264,7 @@
                     _obj.ucc = $(this).val().split('/')[5];
 
                     _obj.cuenta = $(row)[0].cells[0].innerText;
+                    _obj.piezas = $(row)[0].cells[1].innerText;
                     _obj.referencia = $(row)[0].cells[2].innerText;
                     _obj.pk = $(row)[0].cells[10].innerText;
                     _obj.tipoEmpaque = '';
@@ -333,6 +334,7 @@
                 _obj.cuenta = jsonCopy[x].cuenta;
                 _obj.referencia = jsonCopy[x].referencia;
                 _obj.pk = jsonCopy[x].pk;
+                _obj.piezas = jsonCopy[x].piezas;
                 _obj.porcentaje = $("#porcentaje" + x).val();
                 if (jsonCopy[x].tipoEmpaque != '')
                     count++;
