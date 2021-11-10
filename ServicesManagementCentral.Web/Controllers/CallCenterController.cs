@@ -1637,8 +1637,8 @@ namespace ServicesManagement.Web.Controllers
                     {
                         if (item.Cve_UnVta == "pza")
                         {
-                             Cant_Piezas = item.Cant_Unidades;
-                                          
+                            Cant_Piezas = item.Cant_Unidades;
+
                             item.Cant_Unidades = (item.Cant_Unidades / item.Factor); ;
                             item.Cve_UnVta = "Kg";
                         }
@@ -1961,7 +1961,21 @@ namespace ServicesManagement.Web.Controllers
                 foreach (var item in ListP)
                 {
                     var tot = DataTableToModel.ConvertTo<HistorialTotales>(DALServicesM.GetOrdersByOrderNo(item.UeNo).Tables[6]).FirstOrDefault();
-                    item.Imp_Pago = decimal.Parse(tot.TotPagado);
+                    //try
+                    //{
+                    //    item.Imp_Pago = decimal.Parse(tot.TotPagado);
+                    //}
+                    //catch (Exception ex )
+                    //{
+
+                    //    throw ex;
+                    //}
+                    if (tot.TotPagado == null)
+                    {
+                        item.Imp_Pago = 0;
+                    }
+                    else
+                    { item.Imp_Pago = decimal.Parse(tot.TotPagado); }
                 }
 
 
