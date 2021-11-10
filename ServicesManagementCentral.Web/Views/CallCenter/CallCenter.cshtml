@@ -2464,7 +2464,7 @@
                         + "</select>"
                 }
 
-                var totaArt = Math.round(parseFloat(_jsonProductsSelected[i].total).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&,') * 100) / 100;
+                var totaArt = Math.round(parseFloat(_jsonProductsSelected[i].total) * 100) / 100;;
                 var inp;
                 if (_jsonProductsSelected[i].SalesUnit == 'pza') {
                     cant = cant + parseInt(_jsonProductsSelected[i].quantity);
@@ -2526,7 +2526,8 @@
             var myTable2 = $('#tblPoductosSeleccionados').DataTable();
             myTable2.page(CurrentPageNo).draw(false)
 
-            tot = Math.round(parseFloat(tot).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&,') * 100) / 100;
+            tot = Math.round(parseFloat(tot) * 100) / 100;;
+            //tot = parseFloat(tot).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             cant = parseFloat(cant).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             descuento = parseFloat(descuento).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             $("#lblCantidad").empty();
