@@ -17,6 +17,7 @@ namespace ServicesManagement.Web.Models
         public long barcode { get; set; }
         public int productId { get; set; }
         public string ucc { get; set; }
+        public int piezas { get; set; }
 
     }
 }
