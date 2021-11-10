@@ -1300,9 +1300,10 @@ namespace ServicesManagement.Web.Controllers
 
                 GetClient list = new GetClient();
 
-                list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Id_Email).Tables[0]).FirstOrDefault();
+                //list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Id_Email).Tables[0]).FirstOrDefault();
 
-                if (list == null && Id_Cnsc_DirCTe == 0 && Id_Num_Cte == 0)
+                //if (list == null && Id_Cnsc_DirCTe == 0 && Id_Num_Cte == 0)
+                if ( Id_Cnsc_DirCTe == 0 && Id_Num_Cte == 0)
                 {
 
 
