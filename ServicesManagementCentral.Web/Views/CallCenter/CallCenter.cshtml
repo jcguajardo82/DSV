@@ -2534,7 +2534,7 @@
                     inp = "<input  oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48' min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 } else {
                     cant = cant + 1;
-                    inp = "<input  onkeypress='return isNumberKey(event,this,4,9)'  min='1' step='0.001' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                    inp = "<input  onkeypress='return isNumberKey(event,this,4,9)'  min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 }
                 myTable.row.add([
 
@@ -3633,7 +3633,7 @@
                     _html = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength='5' onkeypress='return event.charCode >= 48' min='1' step='1' type='number' id='nCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />";
                 }
                 else {
-                    _html = " <input oninput='inputCar(this)' min='1' step='0.001' type='number' id='nCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />"
+                    _html = " <input oninput='inputCar(this)' min='1' step='1' type='number' id='nCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />"
                 }
             }
             else {
@@ -3645,7 +3645,7 @@
                     _html = "<input onfocusout='Change(\"" + BarCode + "\")'  onchange='Change(\"" + BarCode + "\")' oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength='5' onkeypress='return event.charCode >= 48' min='1' step='1' type='number' id='productCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />";
                 }
                 else {
-                    _html = " <input onfocusout='Change(\"" + BarCode + "\")'  onchange='Change(\"" + BarCode + "\")' onkeypress='return isNumberKey(event,this,4,9)' min='1' step='0.001' type='number' id='productCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />"
+                    _html = " <input onfocusout='Change(\"" + BarCode + "\")'  onchange='Change(\"" + BarCode + "\")' onkeypress='return isNumberKey(event,this,4,9)' min='1' step='1' type='number' id='productCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />"
                 }
 
             }
