@@ -253,10 +253,21 @@
                                                                     <h5>Compromiso entrega:</h5>
                                                                 </td>
                                                                 <td style="text-align: left;">
-                                                                    <small>
-                                                                        <b>@p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()</b>
+                                                                    @if (p["UeType"].ToString().Equals("DST"))
+                                                                    {
+                                                                        <small>
+                                                                            <b>@p["DeliveryOptionName"].ToString()</b>
 
-                                                                    </small>
+                                                                        </small>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <small>
+                                                                            <b>@p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()</b>
+
+                                                                        </small>
+                                                                    }
+
                                                                 </td>
                                                             </tr>
                                                             <tr>
