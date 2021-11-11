@@ -487,7 +487,7 @@
                             tr.append("<td>" + json.resp[i].nombreAlmacen + "</td>");
                             tr.append("<td><a title='Click para ver contactos del Almacen' class='link-primary' onclick='PopContacts(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ")'>" + json.resp[i].noProveedor + "</a></td>");
                             //tr.append("<td>" + json.resp[i].noProveedor + "</td>");
-                            tr.append("<td><a href='AltaProveedor/AltaProveedor?idSupplierWH=" + json.resp[i].noProveedor + "&idSupplierWHCode=" + json.resp[i].noAlmacen + "' title='Click para ir al proveedor' class='link-primary' >" + json.resp[i].nombreProv + "</td>");
+                            tr.append("<td><a href='AltaProveedor/AltaProveedor?edit=1&idSupplierWH=" + json.resp[i].noProveedor + "&idSupplierWHCode=" + json.resp[i].noAlmacen + "' title='Click para ir al proveedor' class='link-primary' >" + json.resp[i].nombreProv + "</td>");
                             tr.append("<td>" + json.resp[i].diasTrans + "</td>");
                             tr.append("<td>" + json.resp[i].FechaStock + "</td>");
                             tr.append("<td><a title='Click para ver el inventario' class='link-primary' onclick='PopInv(" + json.resp[i].noProveedor + "," + json.resp[i].noAlmacen + ",1)'>" + json.resp[i].NumCodigos + "</a></td>");
