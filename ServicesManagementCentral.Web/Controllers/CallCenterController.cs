@@ -134,7 +134,6 @@ namespace ServicesManagement.Web.Controllers
     }
     public class BrandModel
     {
-
         public string BrandId { get; set; }// public string G867public string ,
         public string BrandDescription { get; set; }// public string UNESIApublic string 
     }
@@ -253,6 +252,20 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+    }
+    public class Balance
+    {
+        public string accountType { get; set; }
+        public string balance { get; set; }
+    }
+    public class LoyaltyModel
+    {
+        public string Cve_RespCode { get; set; }
+        public string cuenta { get; set; }
+        public Balance balances { get; set; }
+        public string clientName { get; set; }
+        public string cardType { get; set; }
+        public string cardName { get; set; }
     }
     public class CallCenterController : Controller
     {
@@ -1792,11 +1805,7 @@ namespace ServicesManagement.Web.Controllers
                         }
                     }
                 }
-
                 #endregion
-
-
-
 
                 var result = new
                 {
@@ -1818,7 +1827,6 @@ namespace ServicesManagement.Web.Controllers
 
             }
         }
-
 
         //public ActionResult XML(int orderid)
         //{
@@ -1863,6 +1871,36 @@ namespace ServicesManagement.Web.Controllers
         //    }
         //}
 
+        public ActionResult GetLoyaltyPoints()
+        {
+            try
+            {
+                var urlApi = System.Configuration.ConfigurationManager.AppSettings["call_center_LoyaltyAccount"];
+                //"https://loyaltyaccountqa.azurewebsites.net/api/LoyaltyAccount"
+                var client = new RestClient(urlApi);
+                client.Timeout = -1;
+                var request = new RestRequest(Method.POST);
+                IRestResponse response = client.Execute(request);
+                Console.WriteLine(response.Content);
+
+                List<LoyaltyModel> ListP = JsonConvert.DeserializeObject<List<LoyaltyModel>>(response.Content);
+
+                var result = new
+                {
+                    Success = true, resp = ListP
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public bool TieneCobertura(int tienda, string codigopostal)
         {
             bool puede = DALCallCenter.upCorpOms_Cns_CoberturaTienda(tienda, codigopostal);
@@ -1881,9 +1919,7 @@ namespace ServicesManagement.Web.Controllers
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);
 
-
                 List<CategoriasModels> ListP = JsonConvert.DeserializeObject<List<CategoriasModels>>(response.Content);
-
 
                 var result = new
                 {
@@ -1893,16 +1929,12 @@ namespace ServicesManagement.Web.Controllers
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
-
             }
 
             catch (Exception x)
-
             {
-
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
-
             }
 
         }
@@ -1949,7 +1981,6 @@ namespace ServicesManagement.Web.Controllers
             }
 
         }
-
 
         public ActionResult GetHistorial(int Id_Num_Cte)
         {
