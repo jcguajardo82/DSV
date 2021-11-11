@@ -1350,7 +1350,7 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult GetDias(string fechaOriginal)
+        public ActionResult GetDias(string fechaOriginal="")
         {
             try
             {
@@ -1375,7 +1375,14 @@ namespace ServicesManagement.Web.Controllers
                     dias.Add(dia);
                 }
 
-                var horas = HoraEntrga(fechaOriginal, "HOY");
+
+                string fechaActual = DateTime.Now.ToString("yyyy/MM/dd");
+                if (string.IsNullOrEmpty(fechaOriginal)) {
+                    fechaOriginal = DateTime.Now.ToString("yyyy/MM/dd");
+                }
+
+
+                var horas = HoraEntrga(fechaOriginal, fechaActual);
                 var result = new { Success = true, json = dias, horas = horas };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -1391,7 +1398,11 @@ namespace ServicesManagement.Web.Controllers
         {
             List<Dias> dias = new List<Dias>();
             int hora = 9;
-            if (fechaSelec.ToUpper().Equals("HOY"))
+
+
+
+            //if (fechaSelec.ToUpper().Equals("HOY"))
+            if(fechaOriginal==fechaSelec)
             {
                 //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
                 var fec = DateTime.Now.AddHours(-5).ToString();
@@ -1413,14 +1424,14 @@ namespace ServicesManagement.Web.Controllers
             return dias;
         }
 
-        public ActionResult GetHorasEntrega(string fechaOriginal, string fechaSelec)
+        public ActionResult GetHorasEntrega( string fechaSelec)
         {
 
             try
             {
 
-
-                var dias = HoraEntrga(fechaOriginal, fechaSelec);
+                
+                var dias = HoraEntrga(DateTime.Now.ToString("yyyy/MM/dd"), fechaSelec);
                 var result = new { Success = true, json = dias };
                 return Json(result, JsonRequestBehavior.AllowGet);
 

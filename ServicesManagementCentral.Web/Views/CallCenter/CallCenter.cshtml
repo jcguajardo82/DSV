@@ -1528,7 +1528,7 @@
                             type: "GET",
                             url: '@Url.Action("GetDias", "CallCenter")',
                             data: {
-                                fechaOriginal: t
+                                //fechaOriginal: t
                             },
                             datatype: "html",
                             success: function (json) {
@@ -1559,11 +1559,26 @@
                          });
 
                         return ok;
-                    }
-                    //AVANZA / REGRESA FECHA DE ENTREGAS
-                    if (currentIndex == 1) {
+                     }
+
+                     //regresar a busqueda
+                     if (currentIndex == 1 && newIndex == 0) {
+                       
+                         return true;
+                     }
+
+
+                    //AVANZA  FECHA DE ENTREGAS
+                     if (currentIndex == 1 && newIndex==2) {
+                         var hrs = $("#ddlHoras").val();
+                         if (hrs == null) {
+                             alert("No hay horario disponible para " + $("#ddlDias option:selected").text());
+                             return false;
+                         }
                         return true;
                     }
+                    
+
 
                     //REGRESA A FECHA DE ENTREGAS
                     if (currentIndex == 2 && newIndex==1) {
@@ -3172,8 +3187,7 @@
                 type: "GET",
                 url: '@Url.Action("GetHorasEntrega", "CallCenter")',
                 data: {
-                    fechaOriginal: _fechaOriginal
-                    , fechaSelec:_fecha
+                    fechaSelec:_fecha
                 },
                 datatype: "html",
                 success: function (json) {
