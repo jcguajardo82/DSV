@@ -261,8 +261,11 @@
                             .clear()
                             .draw();
                         for (var i = 0; i < json.resp.length; i++) {
-
-
+                            //alert(json.resp[i].GuiaEnvio);
+                            var guia = '';
+                            if (json.resp[i].GuiaEnvio != ' ')
+                                guia = json.resp[i].GuiaEnvio + "_";
+                        
                             myTable.row.add([
                                 "<a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(\"" + json.resp[i].Consignacion + "\")'><u>" + json.resp[i].Consignacion + "</u></a>",
                                 json.resp[i].NroProveedor,
@@ -281,7 +284,7 @@
                                 json.resp[i].NroOrdenCompra,
                                 json.resp[i].EstatusOrdenCompra,
                                 json.resp[i].Transportista,
-                                json.resp[i].GuiaEnvio,
+                                guia,
                                 json.resp[i].GuiaVig,
                        
                                 
