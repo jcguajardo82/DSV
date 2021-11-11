@@ -261,7 +261,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-6 col-md-6 col-lg-6">
+                            <div class="col-xs-3 col-md-3 col-lg-3">
                                 <input type="hidden" id="hddIdDir" />
                                 <table>
                                     <tr>
@@ -321,7 +321,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-xs-6 col-md-6 col-lg-6">
+                            <div class="col-xs-9 col-md-9 col-lg-9">
                                 <table class="table" id="tblDirecciones">
                                     <tbody>
                                     </tbody>
@@ -1494,11 +1494,12 @@
                     }
                     //AVANZA METODO DE ENTREGA
                      if (currentIndex == 2 && newIndex == 3) {
-                         var rowCount = $('#tblPoductosSeleccionados >tbody >tr').length;
-                         //rowCount = 1;
-                         if (rowCount == 0) {
+                        
+                         var table = $('#tblPoductosSeleccionados').DataTable();
+                         if (!table.data().count()) {
                              return false;
                          }
+                        
                         GetDirCteIdNumCte();
                         return true;
                     }
@@ -2430,8 +2431,8 @@
             var myTable = $('#tblPoductosSeleccionados').DataTable();
 
 
- 
-            let CurrentPageNo = myTable.page.info().page; 
+
+            let CurrentPageNo = myTable.page.info().page;
 
             myTable
                 .clear()
@@ -2453,12 +2454,12 @@
                         + "<option selected value='" + _jsonProductsSelected[i].equivalentUnit + "' >" + _jsonProductsSelected[i].equivalentUnit + "</option>";
                     }
 
-     
-                   
 
-                  
 
-                    _salesUnite = "<input type='hidden' value='" + factorConversion + "' id='facConvC-" + _jsonProductsSelected[i].barcode + "' />"            
+
+
+
+                    _salesUnite = "<input type='hidden' value='" + factorConversion + "' id='facConvC-" + _jsonProductsSelected[i].barcode + "' />"
                         + " <select class='form-control' id='umc-" + _jsonProductsSelected[i].barcode + "' onchange='conversionRule(" + _jsonProductsSelected[i].barcode + ",2)'>"
                         + optionFactorCon
                         + "</select>"
@@ -3176,15 +3177,20 @@
                         //var tr;
 
                         //Append each row to html table
-
+                        
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
 
 
                             tr.append("<td>  <b> " + json.resp[i].Nom_DirCTe + "</b > <br>" + json.resp[i].Direccion + "</td>");
                             //<button type="button" class="btn btn-default btn btn-xs" onclick="GetTdasTrasp()">
-                            tr.append("<td><button onclick='SelDirCte(" + json.resp[i].Id_Cnsc_DirCTe + ")' type = 'button' class= 'btn btn-default btn btn-xs'>Utilizar esta direcci&oacute;n</button></td >")
-                            $('#tblDirecciones').append(tr);
+                            tr.append("<td><button onclick='SelDirCte(" + json.resp[i].Id_Cnsc_DirCTe + ")' type = 'button' class= 'btn btn-default btn btn-xs'>Utilizar esta direcci&oacute;n</button></td >");
+                            if (json.total > 1) {
+                                tr.append("<td><button onclick='DelDirCte(" + json.resp[i].Id_Cnsc_DirCTe + ")' type = 'button' class= 'btn btn-default btn btn-xs'>Eliminar esta direcci&oacute;n</button></td >");
+                            } else {
+                                tr.append("<td></td>");
+                            }
+                                $('#tblDirecciones').append(tr);
                         }
 
                     }
@@ -3607,7 +3613,7 @@
                 }
 
             }
-           
+
             if (op == 1) {
                 $("#divUS-" + BarCode).html(_html);
             } else {
@@ -3658,6 +3664,42 @@
             } else {
                 obj.value = parseFloat(obj.value).toFixed(2);
             }
+        }
+
+
+        function DelDirCte(id) {
+
+            if (!confirm("¿Desea elimnar esta dirección?")) {
+                return false;
+            }
+            var _Id_Num_Cte = $("#hddIdCliente").val();
+              $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("DelDirCte", "CallCenter")',
+                data: {
+                    Id_Cnsc_DirCTe: id,
+                    Id_Num_Cte: _Id_Num_Cte
+
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success) {
+
+                        GetDirCteIdNumCte();
+
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+
+                }
+            });
         }
     </script>
 

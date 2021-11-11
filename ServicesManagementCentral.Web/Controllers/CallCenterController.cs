@@ -1485,14 +1485,14 @@ namespace ServicesManagement.Web.Controllers
 
                 var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(Id_Num_Cte).Tables[0]);
 
-
+               
 
                 var result = new
                 {
                     Success = true
                     ,
                     resp = list
-
+                    ,total=list.Count
 
                 };
 
@@ -1692,7 +1692,7 @@ namespace ServicesManagement.Web.Controllers
                 //SE CREA LA ORDEN
                 var Id_Num_Orden = int.Parse(DALCallCenter.Orden_iUp(Id_Num_Car, idCliente, id_Num_SrvEntrega).Tables[0].Rows[0][0].ToString());
 
-                //SE REGRISTRA LA FECJA DE ENTREGA
+                //SE REGRISTRA LA FECHA DE ENTREGA
                 DateTime Fec_Entrega = Convert.ToDateTime(string.Format("{0} {1}", diaEnt, horaEnt));
 
                 //SE GUARDA LA FECCHA DE ENTREGA
@@ -2161,6 +2161,34 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+
+        public ActionResult DelDirCte(int Id_Cnsc_DirCTe, int Id_Num_Cte) {
+            try
+            {
+
+
+              var msj  =  DALCallCenter.DirCte_dUp(Id_Num_Cte,Id_Cnsc_DirCTe).Tables[0].Rows[0][0].ToString();
+
+
+                if (!msj.Equals("ok")) {
+                    throw new Exception(msj);
+                }
+
+                var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+
+            }
+
+            catch (Exception x)
+
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+        }
         #endregion
     }
 }
