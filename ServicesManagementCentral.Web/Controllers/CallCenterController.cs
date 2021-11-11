@@ -261,8 +261,9 @@ namespace ServicesManagement.Web.Controllers
     public class LoyaltyModel
     {
         public string Cve_RespCode { get; set; }
+        public string Desc_MensajeError { get; set; }
         public string cuenta { get; set; }
-        public Balance balances { get; set; }
+        public List<Balance> balances { get; set; }
         public string clientName { get; set; }
         public string cardType { get; set; }
         public string cardName { get; set; }
@@ -1848,31 +1849,25 @@ namespace ServicesManagement.Web.Controllers
         //    }
         //}
 
-        public ActionResult GetLoyaltyPoints(string ClientId, int Action = 9)
+        public ActionResult GetLoyaltyPoints(string Cliente)
         {
             try
             {
+                string Accion = "9";
                 string apiUrl = System.Configuration.ConfigurationManager.AppSettings["call_center_LoyaltyAccount"];
-                var req = new { Action = Action, ClientId = ClientId.ToString() };
-                var json2 = JsonConvert.SerializeObject(new { Action = Action, ClientId = ClientId.ToString() });
-                string PPSRequest = JsonConvert.SerializeObject(req);
+                var req = new { Action = Accion, ClientId = Cliente.ToString() };
+                var json2 = JsonConvert.SerializeObject(new { Action = Accion, ClientId = Cliente.ToString() });
 
-                var client = new RestClient(apiUrl);
-                client.Timeout = -1;
-                var request = new RestRequest(Method.POST);
-                IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
 
-                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
-                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
 
-                List<LoyaltyModel> ListP = JsonConvert.DeserializeObject<List<LoyaltyModel>>(response.Content);
+                var json3 = JsonConvert.SerializeObject(r.message);
+                var LoyaltyT = JsonConvert.DeserializeObject<LoyaltyModel>(r.message);
 
                 var result = new
                 {
-                    Success = true, resp = ListP
+                    Success = true, resp = LoyaltyT
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
