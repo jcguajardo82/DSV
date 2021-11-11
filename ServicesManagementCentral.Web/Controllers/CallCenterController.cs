@@ -1227,13 +1227,18 @@ namespace ServicesManagement.Web.Controllers
             {
 
                 bool exist = false;
-
+                int total = 0;
+              
                 var list = new GetClient();
+                
+
 
                 if (string.IsNullOrEmpty(Id_Cnsc_DirCTe))
                 {
 
-                    list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]).FirstOrDefault();
+                    var res = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]);
+                    total = res.Count();
+                    list = res.FirstOrDefault();
                 }
                 else
                 {
@@ -1262,6 +1267,8 @@ namespace ServicesManagement.Web.Controllers
                     resp = list
                     ,
                     existe = exist
+                    ,total= total
+
 
                 };
 
