@@ -124,14 +124,15 @@ namespace ServicesManagement.Web.Controllers
         }
 
         public FileResult ExcelConsignacionesProveedor(string op,DateTime FecIni,DateTime FecFin)
-
         {
+            DataSet ds = DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor(User.Identity.Name, FecIni, FecFin);
 
+            var d = ds.Tables[0];
 
-            var d = DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedor(User.Identity.Name,FecIni,FecFin).Tables[0];
+            var guias = ds.Tables[1];
 
             string nombreArchivo = "EnvíoPedidosPendientes";
-
+            string stGuias = string.Empty;
             //Excel to create an object file
 
             NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
@@ -162,7 +163,17 @@ namespace ServicesManagement.Web.Controllers
 
             for (int i = 0; i < d.Rows.Count; i++)
             {
-                NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(i + 1);
+                stGuias = string.Empty;
+                for (int g = 0; g < guias.Rows.Count; g++)
+                {
+                    if(d.Rows[i]["OrdenCompra"].ToString() == guias.Rows[g]["Id_Num_Orden"].ToString()
+                        && d.Rows[i]["Consignacion"].ToString() == guias.Rows[g]["UeNo"].ToString())
+                    {
+                        stGuias += guias.Rows[g]["IdGuiasPaq"].ToString() + "_";
+                    }
+                }
+
+                    NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(i + 1);
                 rowtemp.CreateCell(0).SetCellValue(d.Rows[i]["Consignacion"].ToString());
                 rowtemp.CreateCell(1).SetCellValue(d.Rows[i]["FechaCreacion"].ToString());
                 rowtemp.CreateCell(2).SetCellValue(d.Rows[i]["HoraCreacion"].ToString());
@@ -173,7 +184,7 @@ namespace ServicesManagement.Web.Controllers
                 rowtemp.CreateCell(7).SetCellValue(d.Rows[i]["EstatusConsignacionEntrega"].ToString());
                 rowtemp.CreateCell(8).SetCellValue(d.Rows[i]["NroOrdenCompra"].ToString());
                 rowtemp.CreateCell(9).SetCellValue(d.Rows[i]["EstatusOrdenCompra"].ToString());
-                rowtemp.CreateCell(10).SetCellValue(d.Rows[i]["GuiaEnvio"].ToString());
+                rowtemp.CreateCell(10).SetCellValue(stGuias);
                 rowtemp.CreateCell(11).SetCellValue(d.Rows[i]["GuiaVig"].ToString());
                 rowtemp.CreateCell(12).SetCellValue(d.Rows[i]["FechaEntrega"].ToString());
 
