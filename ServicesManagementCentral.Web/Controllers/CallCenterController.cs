@@ -749,11 +749,7 @@ namespace ServicesManagement.Web.Controllers
                                 DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId
                                 , item.Position, quantity, item.ProductId, Desc);
                             }
-
-
                         }
-
-
                         //if (UeType.ToUpper().Equals("SETC"))
                         //    Cancelacion(int.Parse(orden.Orderid));
                     }
@@ -779,10 +775,6 @@ namespace ServicesManagement.Web.Controllers
                     }
 
                 }
-
-
-
-
 
                 var result = new { Success = true, url = cliente };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -827,18 +819,10 @@ namespace ServicesManagement.Web.Controllers
                 {
                     throw new Exception(r.message);
                 }
-
-
-
-
-
-
-
             }
             catch (Exception x)
             {
                 throw x;
-
             }
         }
 
@@ -847,8 +831,6 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-
-
                 if (Session["CheckListProd"] == null)
                 {
                     List<ProdCheckList> lst = new List<ProdCheckList>();
@@ -878,12 +860,8 @@ namespace ServicesManagement.Web.Controllers
                             ProdId = prodId
                         });
                     }
-
-
                     Session["CheckListProd"] = lst;
                 }
-
-
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -981,7 +959,6 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-
                 var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByDates>(
                     DALCallCenter.upCorpOms_Cns_OrdersByDatesSF(FecIni, FecFin, OrderId).Tables[0]);
                 var result = new { Success = true, resp = list };
@@ -1874,17 +1851,25 @@ namespace ServicesManagement.Web.Controllers
         //    }
         //}
 
-        public ActionResult GetLoyaltyPoints()
+        public ActionResult GetLoyaltyPoints(string ClientId, int Action = 9)
         {
             try
             {
-                var urlApi = System.Configuration.ConfigurationManager.AppSettings["call_center_LoyaltyAccount"];
-                //"https://loyaltyaccountqa.azurewebsites.net/api/LoyaltyAccount"
-                var client = new RestClient(urlApi);
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["call_center_LoyaltyAccount"];
+                var req = new { Action = Action, ClientId = ClientId.ToString() };
+                var json2 = JsonConvert.SerializeObject(new { Action = Action, ClientId = ClientId.ToString() });
+                string PPSRequest = JsonConvert.SerializeObject(req);
+
+                var client = new RestClient(apiUrl);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);
+
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
 
                 List<LoyaltyModel> ListP = JsonConvert.DeserializeObject<List<LoyaltyModel>>(response.Content);
 
@@ -1894,7 +1879,6 @@ namespace ServicesManagement.Web.Controllers
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
-
             }
 
             catch (Exception x)
