@@ -570,7 +570,7 @@
                         </p>
                         <div class="input-group">
                             <input type="text" id="txtBuscarCte" placeholder="CARACTERES VALIDOS:letras, n&uacute;meros, arroba(&#64;), gui&oacute;n medio(-) y bajo(_)" class="form-control"> <span class="input-group-append">
-                                <button type="button" class="btn btn-primary" onclick="BuscarCliente()">
+                                <button type="button" class="btn btn-primary" onclick="BuscarCliente('')">
                                     Buscar
                                 </button>
                             </span>
@@ -2680,13 +2680,13 @@
 
         }
 
-        function BuscarCliente() {
+        function BuscarCliente(param) {
 
             $('#divbuttonAddClient').hide();
             $('#divgridClientes').hide();
-
-            var param = $('#txtBuscarCte').val();
-
+            if (param.length == 0) {
+                param = $('#txtBuscarCte').val();
+            }
 
             $.ajax({
                 //async: false,
@@ -2749,7 +2749,7 @@
 
         function SelCte(mail,idcte) {
             $.ajax({
-                async: false,
+              
                 type: "GET",
                 url: '@Url.Action("VerificaCliente", "CallCenter")',
                 data: {
@@ -2761,13 +2761,15 @@
 
                     if (json.Success) {
                         if (json.existe) {
-                            LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
-                            $('#divVerificaCliente').hide();
-                            $('#divBuscaCliente').hide();
-                            $('#divResultClient').show();
-                            $("#dlgListClients").modal("hide");
-                            $('#divgridClientes').hide();
-                            $("#dlgBuscadorCliente").modal("hide");
+                           
+                                LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
+                                $('#divVerificaCliente').hide();
+                                $('#divBuscaCliente').hide();
+                                $('#divResultClient').show();
+                                $("#dlgListClients").modal("hide");
+                                $('#divgridClientes').hide();
+                                $("#dlgBuscadorCliente").modal("hide");
+                           
                         }
                         else {
                             popAddClient();
@@ -2810,10 +2812,15 @@
 
                     if (json.Success) {
                         if (json.existe) {
-                            LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
-                            $('#divVerificaCliente').hide();
-                            $('#divBuscaCliente').hide();
-                            $('#divResultClient').show();
+                            if (json.total == 1) {
+                                LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
+                                $('#divVerificaCliente').hide();
+                                $('#divBuscaCliente').hide();
+                                $('#divResultClient').show();
+                            } else {
+                                BuscarCliente(parm);
+                                popBuscarClient();
+                            }
 
                         }
                         else {
