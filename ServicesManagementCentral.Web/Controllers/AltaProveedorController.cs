@@ -37,7 +37,7 @@ namespace ServicesManagement.Web.Controllers
                 idSupplierWHCode = int.Parse(Request.QueryString["idSupplierWHCode"].ToString());
 
                 prov = DataTableToModel.ConvertTo<AltaProveedor>(DALAltaProveedor.SuppliersWHByCode_sUP(idSupplierWH, idSupplierWHCode).Tables[0]).FirstOrDefault();
-                if (Request.QueryString["Nuevo"] != null && prov != null)
+                if (Request.QueryString["Nuevo"] != null && prov != null && Request.QueryString["edit"] == null)
                 {
                     prov.idSupplierWHCode = prov.idSupplierWHCode + 1;
                 }

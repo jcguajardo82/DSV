@@ -385,8 +385,9 @@
             const urlParams = new URLSearchParams(queryString);
             const _processed = urlParams.get('PROCESSED');
             const _from = urlParams.get('from');
+            const _edit = urlParams.get('edit');
 
-            if (_from == 'DSV') {
+            if (_from == 'DSV' || _edit != null) {
                 $('#txtNumPro').attr('readonly', true);
                 $('#txtNomPro').attr('readonly', true);
             }
@@ -571,6 +572,10 @@
 
         function ObtenerDatos() {
             var _txtNumPro = $("#txtNumPro").val();
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const _edit = urlParams.get('edit');
+
             if (_txtNumPro.length != 0) {
                 $.ajax({
                     async: false,
@@ -583,16 +588,17 @@
                     success: function (json) {
                         debugger;
                         if (json.Success) {
-                            $("#txtNumAlmacen").val(json.resp[0].idSupplierWHCode);
+                            if (_edit == null) 
+                                $("#txtNumAlmacen").val(json.resp[0].idSupplierWHCode);
+
                             $("#txtNomPro").val(json.resp[0].supplierName);
                             var noProveedor = $("#txtNumPro").val();
                             var noAlmacenprev = json.resp[0].idSupplierWHCode - 1;
-                            if (json.resp[0].supplierName == null) {
+                            if (json.resp[0].supplierName == null || _edit != null) {
 
                             }
                             else {
-                                const queryString = window.location.search;
-                                const urlParams = new URLSearchParams(queryString);
+                             
                                 const _from = urlParams.get('from');
 
                                 window.location.href = "AltaProveedor/AltaProveedor?from=" + _from + "&idSupplierWH=" + noProveedor + "&idSupplierWHCode=" + noAlmacenprev + "&Nuevo=" + 1 + "&PROCESSED=true";
