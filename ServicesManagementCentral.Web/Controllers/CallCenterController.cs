@@ -1,26 +1,24 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using ServicesManagement.Web.DAL.Autorizacion;
 using ServicesManagement.Web.DAL.CallCenter;
-using ServicesManagement.Web.Helpers;
-using ServicesManagement.Web.Models.Autorizacion;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Net;
-using System.Web.Mvc;
 using ServicesManagement.Web.DAL.DALHistorialRMA;
 using ServicesManagement.Web.Helpers;
-using System.IO;
+using ServicesManagement.Web.Models.Autorizacion;
 using ServicesManagement.Web.Models.CallCenter;
-using System.Linq;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
-using static ServicesManagement.Web.Controllers.OrderFacts_UEModel;
-using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
 using System.Globalization;
-using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
+using static ServicesManagement.Web.Controllers.OrderFacts_UEModel;
+
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -144,50 +142,50 @@ namespace ServicesManagement.Web.Controllers
     }
     public class OrderFacts_UEModel
     {
-        public Int32 OrderNo { get; set; }
-        public Int64 CnscOrder { get; set; }
-        public Int32 StoreNum { get; set; }
-        public String UeNo { get; set; }
-        public Byte StatusUe { get; set; }
+        public int OrderNo { get; set; }
+        public long CnscOrder { get; set; }
+        public int StoreNum { get; set; }
+        public string UeNo { get; set; }
+        public byte StatusUe { get; set; }
         public DateTime OrderDate { get; set; }
         public TimeSpan OrderTime { get; set; }
         public DateTime OrderDeliveryDate { get; set; }
         public TimeSpan OrderDeliveryTime { get; set; }
-        public String CreatedBy { get; set; }
-        public String DeliveryType { get; set; }
-        public String UeType { get; set; }
-        public Boolean IsPickingManual { get; set; }
-        public Int32 CustomerNo { get; set; }
-        public String CustomerName { get; set; }
-        public String Phone { get; set; }
-        public String Address1 { get; set; }
-        public String Address2 { get; set; }
-        public String City { get; set; }
-        public String StateCode { get; set; }
-        public String PostalCode { get; set; }
-        public String Reference { get; set; }
-        public String NameReceives { get; set; }
-        public Decimal Total { get; set; }
-        public Int32 NumPoints { get; set; }
-        public Int32 NumCashier { get; set; }
-        public Int32 NumPos { get; set; }
-        public String TransactionId { get; set; }
-        public String MethodPayment { get; set; }
-        public String CardNumber { get; set; }
-        public String ShipperName { get; set; }
+        public string CreatedBy { get; set; }
+        public string DeliveryType { get; set; }
+        public string UeType { get; set; }
+        public bool IsPickingManual { get; set; }
+        public int CustomerNo { get; set; }
+        public string CustomerName { get; set; }
+        public string Phone { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string StateCode { get; set; }
+        public string PostalCode { get; set; }
+        public string Reference { get; set; }
+        public string NameReceives { get; set; }
+        public decimal Total { get; set; }
+        public int NumPoints { get; set; }
+        public int NumCashier { get; set; }
+        public int NumPos { get; set; }
+        public string TransactionId { get; set; }
+        public string MethodPayment { get; set; }
+        public string CardNumber { get; set; }
+        public string ShipperName { get; set; }
         public DateTime ShippingDate { get; set; }
-        public String TransactionNo { get; set; }
-        public String TrackingNo { get; set; }
-        public Int32 NumBags { get; set; }
-        public Int32 NumCoolers { get; set; }
-        public Int32 NumContainers { get; set; }
-        public String Terminal { get; set; }
+        public string TransactionNo { get; set; }
+        public string TrackingNo { get; set; }
+        public int NumBags { get; set; }
+        public int NumCoolers { get; set; }
+        public int NumContainers { get; set; }
+        public string Terminal { get; set; }
         public DateTime DeliveryDate { get; set; }
         public TimeSpan DeliveryTime { get; set; }
-        public String IdReceive { get; set; }
-        public String NameReceive { get; set; }
-        public String Comments { get; set; }
-        public Int32 Id_Supplier { get; set; }
+        public string IdReceive { get; set; }
+        public string NameReceive { get; set; }
+        public string Comments { get; set; }
+        public int Id_Supplier { get; set; }
         public DateTime PickingDateEnd { get; set; }
         public TimeSpan PickingTimeEnd { get; set; }
         public DateTime PaymentDateEnd { get; set; }
@@ -198,35 +196,35 @@ namespace ServicesManagement.Web.Controllers
         public TimeSpan CancelOrderTime { get; set; }
         public DateTime CarrierDate { get; set; }
         public TimeSpan CarrierTime { get; set; }
-        public String CancelCause { get; set; }
-        public Int32 idOwner { get; set; }
-        public Boolean BitRMA { get; set; }
-        public Int32 OrderRMA { get; set; }
-        public String UeNoRMA { get; set; }
-        public Boolean BitBigT { get; set; }
-        public Int16 SplitMethod { get; set; }
-        public Int32 OriginType { get; set; }
-        public Int64 idSupplierWH { get; set; }
-        public Int64 idSupplierWHCode { get; set; }
-        public String SupplierName { get; set; }
-        public String SupplierWHName { get; set; }
-        public Int32 CarrierIDCotize { get; set; }
-        public Decimal CarrierCostCotize { get; set; }
-        public Int32 CarrierIDFinal { get; set; }
-        public Decimal CarrierCostFinal { get; set; }
+        public string CancelCause { get; set; }
+        public int idOwner { get; set; }
+        public bool BitRMA { get; set; }
+        public int OrderRMA { get; set; }
+        public string UeNoRMA { get; set; }
+        public bool BitBigT { get; set; }
+        public short SplitMethod { get; set; }
+        public int OriginType { get; set; }
+        public long idSupplierWH { get; set; }
+        public long idSupplierWHCode { get; set; }
+        public string SupplierName { get; set; }
+        public string SupplierWHName { get; set; }
+        public int CarrierIDCotize { get; set; }
+        public decimal CarrierCostCotize { get; set; }
+        public int CarrierIDFinal { get; set; }
+        public decimal CarrierCostFinal { get; set; }
         public DateTime WHPickedDate { get; set; }
         public TimeSpan WHPickedTime { get; set; }
         public DateTime ShippingEstDate { get; set; }
         public TimeSpan ShippingEstTime { get; set; }
-        public String ConsignmentType { get; set; }
+        public string ConsignmentType { get; set; }
         //NVS
-        public String SupplyStarted { get; set; }
-        public String SupplyCompleted { get; set; }
-        public String PaymentStart { get; set; }
-        public String PaymentCompleted { get; set; }
-        public String DeliveryMethod { get; set; }
-        public String ShippingType { get; set; }
-        public String StoreDescription { get; set; }
+        public string SupplyStarted { get; set; }
+        public string SupplyCompleted { get; set; }
+        public string PaymentStart { get; set; }
+        public string PaymentCompleted { get; set; }
+        public string DeliveryMethod { get; set; }
+        public string ShippingType { get; set; }
+        public string StoreDescription { get; set; }
         //public String OrderDate { get; set; }
         //public String UeType { get; set; }
 
@@ -285,7 +283,7 @@ namespace ServicesManagement.Web.Controllers
 
             System.Data.DataSet ds = new DataSet();
 
-            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            string _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             _ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
@@ -298,8 +296,9 @@ namespace ServicesManagement.Web.Controllers
 
 
                     using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                    {
                         dataAdapter.Fill(ds);
-
+                    }
 
                     Session["listaServicios"] = ds;
 
@@ -314,7 +313,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 System.Data.DataSet ds = new DataSet();
 
-                var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+                string _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
                 _ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
                 //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
@@ -332,16 +331,19 @@ namespace ServicesManagement.Web.Controllers
 
 
                         using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                        {
                             dataAdapter.Fill(ds);
-
+                        }
 
                         Session["listaServicios"] = ds;
 
                     }
                 }
 
-                List<object> devolver = new List<object>();
-                devolver.Add(new { id = 0, nombre = "Todas..." });
+                List<object> devolver = new List<object>
+                {
+                    new { id = 0, nombre = "Todas..." }
+                };
 
                 if (ds != null)
                 {
@@ -380,9 +382,9 @@ namespace ServicesManagement.Web.Controllers
             {
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
-                var urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
-                var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
+                string urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
+                string urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
+                string exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
 
                 string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
                 if (categoria != "0")
@@ -391,22 +393,24 @@ namespace ServicesManagement.Web.Controllers
                 }
 
 
-                var client = new RestClient(url);
+                RestClient client = new RestClient(url)
+                {
 
 
-                //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
+                    //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
 
-                client.Timeout = -1;
-                var request = new RestRequest(Method.POST);
+                    Timeout = -1
+                };
+                RestRequest request = new RestRequest(Method.POST);
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);
 
-                var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+                List<ResponseBuscadorModel> response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
 
-                var auto = new List<AutoComplete>();
+                List<AutoComplete> auto = new List<AutoComplete>();
                 if (response1 != null)
                 {
-                    foreach (var item in response1)
+                    foreach (ResponseBuscadorModel item in response1)
                     {
                         auto.Add(new AutoComplete
                         {
@@ -438,9 +442,9 @@ namespace ServicesManagement.Web.Controllers
             {
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
-                var urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
-                var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
+                string urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
+                string urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
+                string exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
 
                 string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
                 //if (categoria != "0")
@@ -449,17 +453,19 @@ namespace ServicesManagement.Web.Controllers
                 //}
 
 
-                var client = new RestClient(url);
+                RestClient client = new RestClient(url)
+                {
 
 
-                //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
+                    //https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Producto?tienda=24&productId=coca
 
-                client.Timeout = -1;
-                var request = new RestRequest(Method.POST);
+                    Timeout = -1
+                };
+                RestRequest request = new RestRequest(Method.POST);
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);
 
-                var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+                List<ResponseBuscadorModel> response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
 
                 List<string> marcas = new List<string>();
                 List<string> categorias = new List<string>();
@@ -472,7 +478,7 @@ namespace ServicesManagement.Web.Controllers
                     if (!string.IsNullOrEmpty(categoria) && categoria != "0")
                     {
                         List<ResponseBuscadorModel> r = new List<ResponseBuscadorModel>();
-                        foreach (var item in response1)
+                        foreach (ResponseBuscadorModel item in response1)
                         {
                             if (item.categories.Count(x => x.categoryDescription == categoria) > 0)
                             {
@@ -490,16 +496,16 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-                    foreach (var item in response1)
+                    foreach (ResponseBuscadorModel item in response1)
                     {
                         if (!marcas.Contains(item.Brand.BrandDescription) && item.Brand.BrandDescription != null)
                         {
                             marcas.Add(item.Brand.BrandDescription);
                         }
                     }
-                    foreach (var item in response1)
+                    foreach (ResponseBuscadorModel item in response1)
                     {
-                        foreach (var cat in item.categories)
+                        foreach (CategoryModel cat in item.categories)
                         {
                             if (!categorias.Contains(cat.categoryDescription) && cat.categoryDescription != null)
                             {
@@ -511,7 +517,7 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
-                var view = RenderRazorViewToString(ControllerContext, "tblBuscador", response1);
+                string view = RenderRazorViewToString(ControllerContext, "tblBuscador", response1);
 
                 var result = new
                 {
@@ -540,10 +546,10 @@ namespace ServicesManagement.Web.Controllers
         public static string RenderRazorViewToString(ControllerContext controllerContext, string viewName, object model)
         {
             controllerContext.Controller.ViewData.Model = model;
-            using (var sw = new StringWriter())
+            using (StringWriter sw = new StringWriter())
             {
-                var ViewResult = ViewEngines.Engines.FindPartialView(controllerContext, viewName);
-                var ViewContext = new ViewContext(controllerContext, ViewResult.View, controllerContext.Controller.ViewData, controllerContext.Controller.TempData, sw);
+                ViewEngineResult ViewResult = ViewEngines.Engines.FindPartialView(controllerContext, viewName);
+                ViewContext ViewContext = new ViewContext(controllerContext, ViewResult.View, controllerContext.Controller.ViewData, controllerContext.Controller.TempData, sw);
                 ViewResult.View.Render(ViewContext, sw);
                 ViewResult.ViewEngine.ReleaseView(controllerContext, ViewResult.View);
                 return sw.GetStringBuilder().ToString();
@@ -554,10 +560,11 @@ namespace ServicesManagement.Web.Controllers
         {
 
             //var client = new RestClient("http://localhost:7071/api/GetRAM");
-            var client = new RestClient("https://sorianacallcentergetramqa.azurewebsites.net/api/GetRAM");
-
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
+            RestClient client = new RestClient("https://sorianacallcentergetramqa.azurewebsites.net/api/GetRAM")
+            {
+                Timeout = -1
+            };
+            RestRequest request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
 
@@ -641,7 +648,7 @@ namespace ServicesManagement.Web.Controllers
             try
             {
                 Session.Remove("CheckListProd");
-                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByDates>(
+                List<upCorpOms_Cns_OrdersByDates> list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByDates>(
                     DALHistorialRMA.upCorpOms_Cns_OrdersByDates(FecIni, FecFin, OrderId).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -656,13 +663,13 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
-                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
+                string urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
+                List<upCorpOms_Cns_OrdersByHistorical> list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
                     DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
 
-                var tot = list.Sum(x => x.SubTotal);
+                decimal tot = list.Sum(x => x.SubTotal);
 
-                var cliente = string.Format("{0}/?order={1}", urlbase, OrderId);
+                string cliente = string.Format("{0}/?order={1}", urlbase, OrderId);
 
                 var result = new { Success = true, resp = list, total = tot, url = cliente };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -678,10 +685,10 @@ namespace ServicesManagement.Web.Controllers
             , string Desc, List<OrderDetailCap> Products, string UeType
             , int? IdTSolicitud, int? IdTmovimiento)
         {
-            var cliente = string.Empty;
+            string cliente = string.Empty;
             try
             {
-                var urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
+                string urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
                 string accion = "retorno";// Operacion == 5 ? "cancelar" : "retorno";
 
                 int? EstatusRma = 1;
@@ -698,15 +705,15 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
-                var ds = DALCallCenter.up_Corp_cns_OrderInfo(OrderId);
+                DataSet ds = DALCallCenter.up_Corp_cns_OrderInfo(OrderId);
 
-                var orden = DataTableToModel.ConvertTo<Order>(ds.Tables[0]).First();
-                var detalle = DataTableToModel.ConvertTo<OrderDetail>(ds.Tables[1]);
+                Order orden = DataTableToModel.ConvertTo<Order>(ds.Tables[0]).First();
+                List<OrderDetail> detalle = DataTableToModel.ConvertTo<OrderDetail>(ds.Tables[1]);
 
                 if (string.IsNullOrEmpty(orden.Clientphone))
                 { orden.Clientphone = string.Empty; }
 
-                var id = DataTableToModel.ConvertTo<AutorizacionShow>(
+                AutorizacionShow id = DataTableToModel.ConvertTo<AutorizacionShow>(
                     DALCallCenter.up_Corp_ins_tbl_OrdenCancelada(
                         orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
                         , EstatusRma, ProcesoAut, IdTSolicitud, IdTmovimiento).Tables[0]).FirstOrDefault();
@@ -718,7 +725,7 @@ namespace ServicesManagement.Web.Controllers
                 {
                     cliente = string.Format("Se ha generado con éxito el folio RMA numero : {0}", id.Id_cancelacion);
                 }
-                foreach (var item in detalle)
+                foreach (OrderDetail item in detalle)
                 {
 
 
@@ -726,7 +733,7 @@ namespace ServicesManagement.Web.Controllers
                     {
                         int quantity = Convert.ToInt32(item.Quantity);
                         //var i = Products.Select(x => x.ProductId == item.ProductId).ToList().FirstOrDefault();
-                        foreach (var i in Products)
+                        foreach (OrderDetailCap i in Products)
                         {
                             if (i.ProductId == item.ProductId)
                             {
@@ -742,7 +749,7 @@ namespace ServicesManagement.Web.Controllers
                     {
                         decimal quantity = item.Quantity;
                         //var i = Products.Select(x => x.ProductId == item.ProductId).ToList().FirstOrDefault();
-                        foreach (var i in Products)
+                        foreach (OrderDetailCap i in Products)
                         {
                             if (i.ProductId == item.ProductId)
                             {
@@ -758,7 +765,7 @@ namespace ServicesManagement.Web.Controllers
 
                 if (Operacion == 5)
                 {
-                    var ShipmentId = detalle[0].ShipmentId;
+                    string ShipmentId = detalle[0].ShipmentId;
                     DALAutorizacion.upCorpOms_Del_UeNoSupplyProcess(OrderId, Desc, 1, ShipmentId);
                     if (UeType.ToUpper().Equals("SETC"))
                     {
@@ -770,7 +777,7 @@ namespace ServicesManagement.Web.Controllers
                 if (Session["CheckListProd"] != null)
                 {
                     List<ProdCheckList> lst = (List<ProdCheckList>)Session["CheckListProd"];
-                    foreach (var item in lst)
+                    foreach (ProdCheckList item in lst)
                     {
                         DALCallCenter.Catalogo_Checklist_iUP(id.Id_cancelacion, item.IdPregunta, Convert.ToInt32(item.ProdId), Convert.ToBoolean(item.Resp));
                     }
@@ -804,7 +811,7 @@ namespace ServicesManagement.Web.Controllers
                 ////json2 = js.Serialize(o);
                 //js = null;
 
-                var json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
+                string json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
 
                 string PPSRequest = JsonConvert.SerializeObject(req);
 
@@ -848,7 +855,7 @@ namespace ServicesManagement.Web.Controllers
                 }
                 else
                 {
-                    var lst = (List<ProdCheckList>)Session["CheckListProd"];
+                    List<ProdCheckList> lst = (List<ProdCheckList>)Session["CheckListProd"];
 
                     lst.RemoveAll(x => x.ProdId == prodId);
 
@@ -881,7 +888,7 @@ namespace ServicesManagement.Web.Controllers
 
                 if (Session["CheckListProd"] != null)
                 {
-                    var lst = (List<ProdCheckList>)Session["CheckListProd"];
+                    List<ProdCheckList> lst = (List<ProdCheckList>)Session["CheckListProd"];
                     lst.RemoveAll(x => x.ProdId == prodId);
                     Session["CheckListProd"] = lst;
                 }
@@ -929,7 +936,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<MotivosRMAById>(
+                List<MotivosRMAById> list = DataTableToModel.ConvertTo<MotivosRMAById>(
                   DALCallCenter.MotivosRMAById_sUp(Id_Padre).Tables[0]);
 
 
@@ -960,7 +967,7 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByDates>(
+                List<upCorpOms_Cns_OrdersByDates> list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByDates>(
                     DALCallCenter.upCorpOms_Cns_OrdersByDatesSF(FecIni, FecFin, OrderId).Tables[0]);
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -977,10 +984,10 @@ namespace ServicesManagement.Web.Controllers
             try
             {
 
-                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
+                List<upCorpOms_Cns_OrdersByHistorical> list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
                     DALCallCenter.upCorpOms_Cns_OrdersByHistoricalSF(idOrden, IdCancelacion).Tables[0]);
 
-                var tot = list.Sum(x => x.SubTotal);
+                decimal tot = list.Sum(x => x.SubTotal);
 
 
                 var result = new { Success = true, resp = list, total = tot };
@@ -996,10 +1003,10 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult FinalizarSF(int IdCancelacion
            , int IdTSolicitud, int IdTmovimiento)
         {
-            var cliente = string.Empty;
+            string cliente = string.Empty;
             try
             {
-                var urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
+                string urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
 
 
                 cliente = string.Format("{0}/?order={1}", urlbase, IdCancelacion);
@@ -1045,7 +1052,7 @@ namespace ServicesManagement.Web.Controllers
 
             {
 
-                var list = DataTableToModel.ConvertTo<AltaRMAModel>(DALHistorialRMA.MotivosRMA_sUp().Tables[0]);
+                List<AltaRMAModel> list = DataTableToModel.ConvertTo<AltaRMAModel>(DALHistorialRMA.MotivosRMA_sUp().Tables[0]);
 
 
 
@@ -1189,7 +1196,7 @@ namespace ServicesManagement.Web.Controllers
 
                 bool exist = false;
 
-                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByName(Criterio).Tables[0]);
+                List<GetClient> list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByName(Criterio).Tables[0]);
 
                 if (list != null && list.Count > 0)
                 {
@@ -1220,6 +1227,81 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult BuscarCliente2(string Criterio = "")
+        {
+            //logistica datatable
+            var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            var start = Request.Form.GetValues("start").FirstOrDefault();
+            var length = Request.Form.GetValues("length").FirstOrDefault();
+            var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+            var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+            var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault().ToLower();
+
+            bool existe = false;
+
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt16(start) : 0;
+            int recordsTotal = 0;
+
+
+
+            List<GetClient> query = new List<GetClient>() ;
+
+            foreach (DataRow item in DALCallCenter.GetClientByName(Criterio).Tables[0].Rows)
+            {
+                query.Add(
+                    new GetClient
+                    {
+                        Nom_Cte=item["NomCompleto"].ToString(),
+                        Id_Email = item["Id_Email"].ToString(),
+                        Direccion = item["Direccion"].ToString(),
+                        Telefono = item["Telefono"].ToString(),
+                        Id_Cnsc_DirCTe= item["Id_Cnsc_DirCTe"].ToString()
+                    }
+                    );
+            }
+        
+
+
+            if (searchValue != "")
+                query = query.Where(d => d.Nom_Cte.ToLower().Contains(searchValue)
+                || d.Id_Email.ToString().ToLower().Contains(searchValue)
+                || d.Direccion.ToString().ToLower().Contains(searchValue)
+                || d.Telefono.ToString().ToLower().Contains(searchValue)
+
+                ).ToList();
+
+
+            //{ data: "Nom_Cte" },
+            //{ data: "Id_Email" },
+            //{ data: "Direccion" },
+            //{ data: "Telefono" },
+            //{ data: "Telefono" },
+
+
+            recordsTotal = query.Count();
+
+            if (recordsTotal > 0) { existe = true; }
+
+            //Sorting    
+            //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
+            //{
+            //    query = query.OrderBy(sortColumn + " " + sortColumnDir).ToList();
+
+            //}
+
+
+
+
+            List<GetClient> data = query.Skip(skip).Take(pageSize).ToList();
+            return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data,
+                Success = true
+                    ,
+                existe = existe
+            },
+                JsonRequestBehavior.AllowGet);
+        }
         public ActionResult VerificaCliente(string Criterio = "", string Id_Cnsc_DirCTe = "")
         {
             try
@@ -1228,15 +1310,15 @@ namespace ServicesManagement.Web.Controllers
 
                 bool exist = false;
                 int total = 0;
-              
-                var list = new GetClient();
-                
+
+                GetClient list = new GetClient();
+
 
 
                 if (string.IsNullOrEmpty(Id_Cnsc_DirCTe))
                 {
 
-                    var res = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]);
+                    List<GetClient> res = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0]);
                     total = res.Count();
                     list = res.FirstOrDefault();
                 }
@@ -1267,7 +1349,8 @@ namespace ServicesManagement.Web.Controllers
                     resp = list
                     ,
                     existe = exist
-                    ,total= total
+                    ,
+                    total = total
 
 
                 };
@@ -1350,7 +1433,7 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult GetDias(string fechaOriginal="")
+        public ActionResult GetDias(string fechaOriginal = "")
         {
             try
             {
@@ -1377,12 +1460,13 @@ namespace ServicesManagement.Web.Controllers
 
 
                 string fechaActual = DateTime.Now.ToString("yyyy/MM/dd");
-                if (string.IsNullOrEmpty(fechaOriginal)) {
+                if (string.IsNullOrEmpty(fechaOriginal))
+                {
                     fechaOriginal = DateTime.Now.ToString("yyyy/MM/dd");
                 }
 
 
-                var horas = HoraEntrga(fechaOriginal, fechaActual);
+                List<Dias> horas = HoraEntrga(fechaOriginal, fechaActual);
                 var result = new { Success = true, json = dias, horas = horas };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -1402,10 +1486,10 @@ namespace ServicesManagement.Web.Controllers
 
 
             //if (fechaSelec.ToUpper().Equals("HOY"))
-            if(fechaOriginal==fechaSelec)
+            if (fechaOriginal == fechaSelec)
             {
                 //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
-                var fec = DateTime.Now.AddHours(-5).ToString();
+                string fec = DateTime.Now.AddHours(-5).ToString();
                 hora = Convert.ToDateTime(fec).AddHours(4).Hour;
             }
 
@@ -1413,10 +1497,11 @@ namespace ServicesManagement.Web.Controllers
             {
                 for (int i = hora; i < 22; i++)
                 {
-                    Dias dia = new Dias();
-
-                    dia.fecha = string.Format("{0}:01:00", i);
-                    dia.NombeDia = string.Format("{0}:01:00 - {1}:00:00", i, i + 1);
+                    Dias dia = new Dias
+                    {
+                        fecha = string.Format("{0}:01:00", i),
+                        NombeDia = string.Format("{0}:01:00 - {1}:00:00", i, i + 1)
+                    };
 
                     dias.Add(dia);
                 }
@@ -1424,14 +1509,14 @@ namespace ServicesManagement.Web.Controllers
             return dias;
         }
 
-        public ActionResult GetHorasEntrega( string fechaSelec)
+        public ActionResult GetHorasEntrega(string fechaSelec)
         {
 
             try
             {
 
-                
-                var dias = HoraEntrga(DateTime.Now.ToString("yyyy/MM/dd"), fechaSelec);
+
+                List<Dias> dias = HoraEntrga(DateTime.Now.ToString("yyyy/MM/dd"), fechaSelec);
                 var result = new { Success = true, json = dias };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -1501,16 +1586,17 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(Id_Num_Cte).Tables[0]);
+                List<GetClient> list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(Id_Num_Cte).Tables[0]);
 
-               
+
 
                 var result = new
                 {
                     Success = true
                     ,
                     resp = list
-                    ,total=list.Count
+                    ,
+                    total = list.Count
 
                 };
 
@@ -1537,7 +1623,7 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-                var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirDirCteIdDirCTe(Id_Cnsc_DirCTe, Id_Num_Cte).Tables[0]).FirstOrDefault();
+                GetClient list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirDirCteIdDirCTe(Id_Cnsc_DirCTe, Id_Num_Cte).Tables[0]).FirstOrDefault();
 
 
 
@@ -1572,7 +1658,7 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-                var list = DataTableToModel.ConvertTo<Edos>(DALCallCenter.Estado_d_sUp(1).Tables[0]);
+                List<Edos> list = DataTableToModel.ConvertTo<Edos>(DALCallCenter.Estado_d_sUp(1).Tables[0]);
 
 
 
@@ -1630,11 +1716,11 @@ namespace ServicesManagement.Web.Controllers
 
                 int id_Num_SrvEntrega = 0;
                 //CREACION DEL CARRITO
-                var Id_Num_Car = int.Parse(DALCallCenter.Car_iUp(tda).Tables[0].Rows[0][0].ToString());
+                int Id_Num_Car = int.Parse(DALCallCenter.Car_iUp(tda).Tables[0].Rows[0][0].ToString());
 
 
                 //DETALLE DEL CARRITO
-                foreach (var item in arts)
+                foreach (ArtCar_d item in arts)
                 {
                     //ARTICULOS
                     string[] descripcion = item.Desc_art.Split('<');
@@ -1683,7 +1769,7 @@ namespace ServicesManagement.Web.Controllers
                 //OBSERVACIONES NIVEL CARRITO
                 if (carObs != null)
                 {
-                    foreach (var item in carObs)
+                    foreach (CarObs item in carObs)
                     {
                         DALCallCenter.CarObs_iUp(Id_Num_Car, item.Desc_CarObs);
                     }
@@ -1705,7 +1791,7 @@ namespace ServicesManagement.Web.Controllers
                 }
 
                 //SE CREA LA ORDEN
-                var Id_Num_Orden = int.Parse(DALCallCenter.Orden_iUp(Id_Num_Car, idCliente, id_Num_SrvEntrega).Tables[0].Rows[0][0].ToString());
+                int Id_Num_Orden = int.Parse(DALCallCenter.Orden_iUp(Id_Num_Car, idCliente, id_Num_SrvEntrega).Tables[0].Rows[0][0].ToString());
 
                 //SE REGRISTRA LA FECHA DE ENTREGA
                 DateTime Fec_Entrega = Convert.ToDateTime(string.Format("{0} {1}", diaEnt, horaEnt));
@@ -1716,7 +1802,7 @@ namespace ServicesManagement.Web.Controllers
                 //REGISTRAMOS/CONSULTAMOS LA DIRECCION DE ENTREGA EN LA TABLA DIRCTE
                 if (metodoEnt == 2)
                 {
-                    var Id_Cnsc_DirCTe = int.Parse(DALCallCenter.DirCteEnt_iUp(idCliente, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int
+                    int Id_Cnsc_DirCTe = int.Parse(DALCallCenter.DirCteEnt_iUp(idCliente, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int
                         , Ciudad, Cod_Postal, Colonia, Telefono, "").Tables[0].Rows[0][0].ToString());
 
                     //REGISTRAMOS LA DIRECCION ENTREGA
@@ -1725,7 +1811,7 @@ namespace ServicesManagement.Web.Controllers
                 else
                 {
                     //entrega en tienda
-                    var list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(idCliente).Tables[0]).Min(y => y.Id_Cnsc_DirCTe);
+                    string list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetDirCteIdNumCte(idCliente).Tables[0]).Min(y => y.Id_Cnsc_DirCTe);
                     //REGISTRAMOS LA DIRECCION ENTREGA
                     DALCallCenter.DirEnt_iUp(Id_Num_Orden, idCliente, int.Parse(list));
 
@@ -1767,12 +1853,12 @@ namespace ServicesManagement.Web.Controllers
 
                 #region Llamado al APi
                 string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_AltaCarrito"];
-                var ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden, Nom_DirCTe, idDirPrinCte);
+                DataSet ds = DALCallCenter.sp_OMSGetOrderDetails(Id_Num_Orden, Nom_DirCTe, idDirPrinCte);
 
 
                 OrdersToXML obj = new OrdersToXML();
                 string x = obj.CreateXMLDocument(ds, Id_Num_Orden.ToString()).ToString().Replace("\"", "'");
-                var OrderToMicroService = new OrderJson
+                OrderJson OrderToMicroService = new OrderJson
                 {
                     xmlOrden = x
                 };
@@ -1792,10 +1878,9 @@ namespace ServicesManagement.Web.Controllers
                 else
                 {
                     JObject json = JObject.Parse(r.message);
-                    JToken v1, v2;
-                    if (json.TryGetValue("status-description-detail", out v1))
+                    if (json.TryGetValue("status-description-detail", out JToken v1))
                     {
-                        if (JObject.Parse(v1.ToString()).TryGetValue("numeroOrden", out v2))
+                        if (JObject.Parse(v1.ToString()).TryGetValue("numeroOrden", out JToken v2))
                         {
                             Id_Num_Orden = int.Parse(v2.ToString().Replace("{", "").Replace("}", ""));
                         }
@@ -1874,18 +1959,19 @@ namespace ServicesManagement.Web.Controllers
                 string Accion = "9";
                 string apiUrl = System.Configuration.ConfigurationManager.AppSettings["call_center_LoyaltyAccount"];
                 var req = new { Action = Accion, ClientId = Cliente.ToString() };
-                var json2 = JsonConvert.SerializeObject(new { Action = Accion, ClientId = Cliente.ToString() });
+                string json2 = JsonConvert.SerializeObject(new { Action = Accion, ClientId = Cliente.ToString() });
 
 
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
 
-                var json3 = JsonConvert.SerializeObject(r.message);
-                var LoyaltyT = JsonConvert.DeserializeObject<LoyaltyModel>(r.message);
+                string json3 = JsonConvert.SerializeObject(r.message);
+                LoyaltyModel LoyaltyT = JsonConvert.DeserializeObject<LoyaltyModel>(r.message);
 
                 var result = new
                 {
-                    Success = true, resp = LoyaltyT
+                    Success = true,
+                    resp = LoyaltyT
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -1908,11 +1994,13 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-                var urlApi = System.Configuration.ConfigurationManager.AppSettings["call_center_busqueda_categorias"];
+                string urlApi = System.Configuration.ConfigurationManager.AppSettings["call_center_busqueda_categorias"];
                 //"https://sorianacallcenterbuscadorqa.azurewebsites.net/api/Buscador_Categorias"
-                var client = new RestClient(urlApi);
-                client.Timeout = -1;
-                var request = new RestRequest(Method.POST);
+                RestClient client = new RestClient(urlApi)
+                {
+                    Timeout = -1
+                };
+                RestRequest request = new RestRequest(Method.POST);
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);
 
@@ -1942,7 +2030,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 if (TieneCobertura(StoreNum, CodigoPostal))
                 {
-                    var ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
+                    CostoFlete ListP = DataTableToModel.ConvertTo<CostoFlete>(DALCallCenter.Selecciona_CostoFlete_sUp(StoreNum).Tables[0]).FirstOrDefault();
 
                     var result = new
                     {
@@ -1984,11 +2072,11 @@ namespace ServicesManagement.Web.Controllers
             try
             {
 
-                var ListP = DataTableToModel.ConvertTo<Historial>(DALCallCenter.HistorialOrdenes_sUP(Id_Num_Cte).Tables[0]);
+                List<Historial> ListP = DataTableToModel.ConvertTo<Historial>(DALCallCenter.HistorialOrdenes_sUP(Id_Num_Cte).Tables[0]);
 
-                foreach (var item in ListP)
+                foreach (Historial item in ListP)
                 {
-                    var tot = DataTableToModel.ConvertTo<HistorialTotales>(DALServicesM.GetOrdersByOrderNo(item.UeNo).Tables[6]).FirstOrDefault();
+                    HistorialTotales tot = DataTableToModel.ConvertTo<HistorialTotales>(DALServicesM.GetOrdersByOrderNo(item.UeNo).Tables[6]).FirstOrDefault();
                     //try
                     //{
                     //    item.Imp_Pago = decimal.Parse(tot.TotPagado);
@@ -2034,11 +2122,11 @@ namespace ServicesManagement.Web.Controllers
             try
             {
 
-                var orden = new HistorialOrden();
+                HistorialOrden orden = new HistorialOrden();
 
                 if (!string.IsNullOrEmpty(UeNo.Trim()))
                 {
-                    var ds = DALServicesM.GetOrdersByOrderNo(UeNo);
+                    DataSet ds = DALServicesM.GetOrdersByOrderNo(UeNo);
 
 
 
@@ -2080,14 +2168,14 @@ namespace ServicesManagement.Web.Controllers
                 List<ResponseBuscadorModel> productos = new List<ResponseBuscadorModel>();
 
 
-                var ds = DALServicesM.GetOrdersByOrderNo(UeNo);
+                DataSet ds = DALServicesM.GetOrdersByOrderNo(UeNo);
 
 
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
-                var urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
-                var exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
+                string urlApi = System.Configuration.ConfigurationManager.AppSettings["api_BuscadorCarrito"];
+                string urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
+                string exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
 
                 //orden.ArtNoSurtidos = DataTableToModel.ConvertTo<HistorialOrdenArt>(ds.Tables[5]);
                 //orden.ArtSurtidos = DataTableToModel.ConvertTo<HistorialOrdenArt>(ds.Tables[4]);
@@ -2096,21 +2184,20 @@ namespace ServicesManagement.Web.Controllers
 
 
                     string product = item["Barcode"].ToString();
-                    var url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
+                    string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
 
 
 
-                    var client = new RestClient(url);
-
-
-
-                    client.Timeout = -1;
-                    var request = new RestRequest(Method.POST);
+                    RestClient client = new RestClient(url)
+                    {
+                        Timeout = -1
+                    };
+                    RestRequest request = new RestRequest(Method.POST);
                     IRestResponse response = client.Execute(request);
 
 
 
-                    var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+                    List<ResponseBuscadorModel> response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
 
                     if (response1 != null)
                     {
@@ -2129,21 +2216,20 @@ namespace ServicesManagement.Web.Controllers
 
 
                     string product = item["Barcode"].ToString();
-                    var url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
+                    string url = string.Format("{0}{1}&tienda={2}", urlApi, product.Trim(), tienda);
 
 
 
-                    var client = new RestClient(url);
-
-
-
-                    client.Timeout = -1;
-                    var request = new RestRequest(Method.POST);
+                    RestClient client = new RestClient(url)
+                    {
+                        Timeout = -1
+                    };
+                    RestRequest request = new RestRequest(Method.POST);
                     IRestResponse response = client.Execute(request);
 
 
 
-                    var response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
+                    List<ResponseBuscadorModel> response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResponseBuscadorModel>>(response.Content);
 
                     if (response1 != null)
                     {
@@ -2177,15 +2263,17 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-        public ActionResult DelDirCte(int Id_Cnsc_DirCTe, int Id_Num_Cte) {
+        public ActionResult DelDirCte(int Id_Cnsc_DirCTe, int Id_Num_Cte)
+        {
             try
             {
 
 
-              var msj  =  DALCallCenter.DirCte_dUp(Id_Num_Cte,Id_Cnsc_DirCTe).Tables[0].Rows[0][0].ToString();
+                string msj = DALCallCenter.DirCte_dUp(Id_Num_Cte, Id_Cnsc_DirCTe).Tables[0].Rows[0][0].ToString();
 
 
-                if (!msj.Equals("ok")) {
+                if (!msj.Equals("ok"))
+                {
                     throw new Exception(msj);
                 }
 

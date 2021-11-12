@@ -1301,53 +1301,8 @@
 
 
 
-            $('#tblConsultaCte thead tr').clone(true).appendTo('#tblConsultaCte thead');
-            $('#tblConsultaCte thead tr:eq(0) th').each(function (i) {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
 
-                $('input', this).on('keyup change', function () {
-                    if (table.column(i).search() !== this.value) {
-                        table
-                            .column(i)
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-            });
 
-            var table = $("#tblConsultaCte").DataTable(
-                {
-                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
-                    processing: true,
-                    searching: true,
-                    ordering: true,
-                    order: [[1, 'asc']],
-                    filter: false,
-                    info: false,
-                    stateSave: false,
-                    select: true,
-                    select: {
-                        style: 'single'
-                    },
-                    //Paggin
-                    paging: true,
-                    pageLength: 10,
-                    lengthMenu: [10, 25, 50, 100, 500],
-
-                    // destroy: true, //destruye automaticamente la referencia a la tabla
-                    //Ajax
-                    //serverSide: true,
-                    //bServerSide: true,
-                    //sServerMethod: "GET",
-                    buttons: ['csv', 'excel'],
-                    orderCellsTop: false,
-                    fixedHeader: true
-
-                }
-            );
 
             $('#tblBusquedaArt2 thead tr').clone(true).appendTo('#tblBusquedaArt2 thead');
             $('#tblBusquedaArt2 thead tr:eq(0) th').each(function (i) {
@@ -1445,39 +1400,7 @@
                 }
             );
 
-            //tblBusquedaCliente
-            $("#tblBusquedaCliente").DataTable(
-                {
 
-                    processing: true,
-                    ordering: true,
-                    order: [[1, 'asc']],
-                    filter: true,
-                    info: false,
-                    stateSave: false,
-                    select: true,
-                    select: {
-                        style: 'single'
-                    },
-                    //Paggin
-                    paging: true,
-                    pageLength: 10,
-                    lengthMenu: [10, 25, 50, 100, 500],
-
-                    // destroy: true, //destruye automaticamente la referencia a la tabla
-                    //Ajax
-                    //serverSide: true,
-                    //bServerSide: true,
-                    //sServerMethod: "GET",
-                    buttons: [],
-                    orderCellsTop: false,
-                    "scrollY": "250px",
-                    "scrollCollapse": true,
-
-
-
-                }
-            );
 
 
             $('#tblHistorial').DataTable({
@@ -1563,7 +1486,7 @@
 
                      //regresar a busqueda
                      if (currentIndex == 1 && newIndex == 0) {
-                       
+
                          return true;
                      }
 
@@ -1577,7 +1500,7 @@
                          }
                         return true;
                     }
-                    
+
 
 
                     //REGRESA A FECHA DE ENTREGAS
@@ -1586,12 +1509,12 @@
                     }
                     //AVANZA METODO DE ENTREGA
                      if (currentIndex == 2 && newIndex == 3) {
-                        
+
                          var table = $('#tblPoductosSeleccionados').DataTable();
                          if (!table.data().count()) {
                              return false;
                          }
-                        
+
                         GetDirCteIdNumCte();
                         return true;
                     }
@@ -2735,8 +2658,60 @@
             if (param.length == 0) {
                 param = $('#txtBuscarCte').val();
             }
+            $("#imgSpiner").css("display", "block");
+            document.getElementById("spinner").classList.add("show");
+            $('#tblBusquedaCliente').DataTable().destroy();
 
-            $.ajax({
+
+
+            $('#tblBusquedaCliente').DataTable({
+           
+            processing: true,
+            serverSide: true,
+            searchable: true,
+                initComplete: function (settings, json) {
+                   
+                    document.getElementById("spinner").classList.remove("show");
+                $("#imgSpiner").css("display", "none");
+                   
+                },
+
+            ajax: {
+                url: '@Url.Action("BuscarCliente2", "CallCenter")',
+                type: 'POST',
+                data: {
+                    Criterio: param
+
+                },
+              "datatype": "json",
+               
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+
+                }
+
+            },
+                columns: [
+                    { data: "Nom_Cte" },
+                    { data: "Id_Email" },
+                    { data: "Direccion" },
+                    { data: "Telefono" },
+                    {
+                        //adds td row for button
+                        data: null,
+                        render: function (data, type, row) {
+                            return "<a title='Click para Seleccionar el Cliente' class='link-primary' onclick='SelCte(\""
+                                + data.Id_Email + "\"," + data.Id_Cnsc_DirCTe+")'>Seleccionar Cliente</a>";
+
+
+                        }
+                    }
+
+                ]
+        });
+            $('#divgridClientes').show();
+            @*$.ajax({
                 //async: false,
                 type: "GET",
                 url: '@Url.Action("BuscarCliente", "CallCenter")',
@@ -2759,24 +2734,36 @@
                     if (json.Success) {
                         if (json.existe) {
                             $('#divgridClientes').show();
-                            var myTable = $('#tblBusquedaCliente').DataTable();
-                            var nCant = 0;
-                            myTable
-                                .clear()
-                                .draw();
-                            for (var i = 0; i < json.resp.length; i++) {
+                            $('#tblBusquedaCliente').dataTable({
+                                "aaData": json.resp,
+                                columns: [
+                                    { data: "Nom_Cte" },
+                                    { data: "Id_Email" },
+                                    { data: "Direccion" },
+                                    { data: "Telefono" },
+                                    { data: "Telefono" },
+
+                                ]
+                            })
+
+                            //var myTable = $('#tblBusquedaCliente').DataTable();
+                            //var nCant = 0;
+                            //myTable
+                            //    .clear()
+                            //    .draw();
+                            //for (var i = 0; i < json.resp.length; i++) {
 
 
-                                myTable.row.add([
+                            //    myTable.row.add([
 
-                                    json.resp[i].Nom_Cte + ' ' + json.resp[i].Ap_Paterno + ' ' + json.resp[i].Ap_Materno,
-                                    json.resp[i].Id_Email,
-                                    json.resp[i].Direccion,
-                                    json.resp[i].Telefono,
-                                    "<a title='Click para Seleccionar el Cliente' class='link-primary' onclick='SelCte(\""
-                                    + json.resp[i].Id_Email + "\"," + json.resp[i].Id_Cnsc_DirCTe+")'>Seleccionar Cliente</a>"
-                                ]).draw();
-                            }
+                            //        json.resp[i].Nom_Cte + ' ' + json.resp[i].Ap_Paterno + ' ' + json.resp[i].Ap_Materno,
+                            //        json.resp[i].Id_Email,
+                            //        json.resp[i].Direccion,
+                            //        json.resp[i].Telefono,
+                            //        "<a title='Click para Seleccionar el Cliente' class='link-primary' onclick='SelCte(\""
+                            //        + json.resp[i].Id_Email + "\"," + json.resp[i].Id_Cnsc_DirCTe+")'>Seleccionar Cliente</a>"
+                            //    ]).draw();
+                            //}
                         }
                         else {
                             $('#divbuttonAddClient').show();
@@ -2792,12 +2779,12 @@
                     alert(errorThrown);
 
                 }
-            });
+            });*@
         }
 
         function SelCte(mail,idcte) {
             $.ajax({
-              
+
                 type: "GET",
                 url: '@Url.Action("VerificaCliente", "CallCenter")',
                 data: {
@@ -2809,7 +2796,7 @@
 
                     if (json.Success) {
                         if (json.existe) {
-                           
+
                                 LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
                                 $('#divVerificaCliente').hide();
                                 $('#divBuscaCliente').hide();
@@ -2817,7 +2804,7 @@
                                 $("#dlgListClients").modal("hide");
                                 $('#divgridClientes').hide();
                                 $("#dlgBuscadorCliente").modal("hide");
-                           
+
                         }
                         else {
                             popAddClient();
@@ -2873,7 +2860,7 @@
                         }
                         else {
                             popAddClient();
-                            $("#divMsjAddClient").show();
+                           // $("#divMsjAddClient").show();
                         }
                     }
                     else {
@@ -2929,10 +2916,13 @@
         function popBuscarClient() {
             $("#txtBuscarCte").val('');
             var myTable = $('#tblBusquedaCliente').DataTable();
-            var nCant = 0;
+            //var nCant = 0;
             myTable
                 .clear()
                 .draw();
+            $('#tblBusquedaCliente').DataTable().destroy();
+
+            $('#divgridClientes').hide();
             $("#dlgBuscadorCliente").modal("show");
         }
 
@@ -3228,7 +3218,7 @@
                         //var tr;
 
                         //Append each row to html table
-                        
+
                         for (var i = 0; i < json.resp.length; i++) {
                             tr = $('<tr/>');
 
