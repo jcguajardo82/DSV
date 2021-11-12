@@ -2377,7 +2377,7 @@ namespace ServicesManagement.Web.Controllers
 
                     System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                    m.serviceTypeId = "70";
+                    m.serviceTypeId = "60";
 
                     if (weight >= 70)
                     {
