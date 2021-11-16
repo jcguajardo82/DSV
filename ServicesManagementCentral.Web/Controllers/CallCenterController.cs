@@ -1248,7 +1248,7 @@ namespace ServicesManagement.Web.Controllers
 
             List<GetClient> query = new List<GetClient>() ;
 
-            foreach (DataRow item in DALCallCenter.GetClientByName(Criterio).Tables[0].Rows)
+            foreach (DataRow item in DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0].Rows)
             {
                 query.Add(
                     new GetClient
