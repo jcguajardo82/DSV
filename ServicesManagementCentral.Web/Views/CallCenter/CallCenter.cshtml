@@ -2052,13 +2052,7 @@
                         $('#ddlCategorias').attr('disabled', false);
                         $('#ddlMarcas').attr('disabled', false);
 
-
-
-
                         $("#tblBuscador").html(data.view);
-
-
-
                         var table = $("#tblBusquedaSeleccionar").DataTable(
                             {
                                 language: {
@@ -2090,21 +2084,9 @@
 
                             }
                         );
-
-
-
-
-
-
-
-
-
-
                         $("#imgSpiner").css("display", "none");
                         document.getElementById("spinner").classList.remove("show");
                     }
-
-
                 },
                  beforeSend: function () {
                     $("#imgSpiner").css("display", "block");
@@ -2207,8 +2189,8 @@
             }
 
             llenarCarrito();
-
         }
+
         function Change(barcode) {
             var cantidad = $("#productCant-" + barcode).val();
             var comentario = $("#comment-" + barcode).val();
@@ -2251,8 +2233,8 @@
             console.log(_jsonProductsSelected);
 
                 llenarCarrito();
-
         }
+
         function Change_2(barcode) {
             var cantidad = $("#productCant-" + barcode).val();
             var comentario = $("#comment-" + barcode).val();
@@ -2269,6 +2251,7 @@
             llenarCarrito();
 
         }
+
         function addProduct3(descripcion, barcode, precio, sku, SalesUnit, precioO, baseUnit, equivalentUnit,factorConversion) {
 
             var cantidad = $("#nCant-" + barcode).val();
@@ -2311,8 +2294,6 @@
 
 
         }
-
-
 
         function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO, cant, baseUnit, equivalentUnit, factorConversion) {
 
@@ -2368,10 +2349,6 @@
 
 
         }
-
-
-
-
 
         function ConfirmarProduct() {
 
@@ -2660,9 +2637,13 @@
             }
             $("#imgSpiner").css("display", "block");
             document.getElementById("spinner").classList.add("show");
+
+            var myTable = $('#tblBusquedaCliente').DataTable();
+            //var nCant = 0;
+            myTable
+                .clear()
+                .draw();
             $('#tblBusquedaCliente').DataTable().destroy();
-
-
 
             $('#tblBusquedaCliente').DataTable({
            
