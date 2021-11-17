@@ -1244,7 +1244,19 @@
 
         $(document).ready(function () {
 
+            $('#txtProdArt2').on('keypress', function (e) {
+                if (e.which === 13) {
+                    event.preventDefault();
+                    ////Disable textbox to prevent multiple submit
+                    //$(this).attr("disabled", "disabled");
+                    CargaSeleccionaProducto('', 1)
+                    ////Do Stuff, submit, etc..
 
+                    ////Enable the textbox again if needed.
+                    //$(this).removeAttr("disabled");
+                    $('#txtProdArt').focus();
+                }
+            });
             setTimeout(function () {
                 $("#divOkArtHistorial").fadeOut(1500);
             }, 2000);
@@ -2175,7 +2187,9 @@
 
 
                         }
-                    });
+            });
+
+            $('#txtProdArt').focus();
         }
 
         function addProduct() {
