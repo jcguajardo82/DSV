@@ -1491,7 +1491,7 @@ namespace ServicesManagement.Web.Controllers
         public List<Dias> HoraEntrga(string fechaOriginal, string fechaSelec)
         {
             List<Dias> dias = new List<Dias>();
-            int hora = 9;
+            int hora = 8;
 
 
 
@@ -1499,11 +1499,12 @@ namespace ServicesManagement.Web.Controllers
             if (fechaOriginal == fechaSelec)
             {
                 //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
+               // string fec = DateTime.Now.AddHours(-5).ToString();
                 string fec = DateTime.Now.AddHours(-5).ToString();
                 hora = Convert.ToDateTime(fec).AddHours(4).Hour;
             }
 
-            if (hora > 8 & hora < 21)
+            if (hora > 7 & hora < 23)
             {
                 for (int i = hora; i < 22; i++)
                 {
