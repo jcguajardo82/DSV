@@ -252,7 +252,7 @@ namespace ServicesManagement.Web.Controllers
 
     }
 
-    public class LoyaltyModel
+        public class LoyaltyModel
     {
         public string Cve_RespCode { get; set; }
         public string Desc_MensajeError { get; set; }
@@ -1263,7 +1263,25 @@ namespace ServicesManagement.Web.Controllers
                     }
                     );
             }
-        
+
+
+
+            if (query.Count == 0)
+            {
+                foreach (DataRow item in DALCallCenter.GetClientByName(Criterio).Tables[0].Rows)
+                {
+                    query.Add(
+                        new GetClient
+                        {
+                            Nom_Cte = item["NomCompleto"].ToString(),
+                            Id_Email = item["Id_Email"].ToString(),
+                            Direccion = item["Direccion"].ToString(),
+                            Telefono = item["Telefono"].ToString(),
+                            Id_Cnsc_DirCTe = item["Id_Cnsc_DirCTe"].ToString()
+                        }
+                        );
+                }
+            }
 
 
             if (searchValue != "")
