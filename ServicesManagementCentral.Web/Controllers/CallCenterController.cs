@@ -1502,6 +1502,7 @@ namespace ServicesManagement.Web.Controllers
                // string fec = DateTime.Now.AddHours(-5).ToString();
                 string fec = DateTime.Now.AddHours(-5).ToString();
                 hora = Convert.ToDateTime(fec).AddHours(4).Hour;
+
             }
 
             if (hora > 7 & hora < 23)
@@ -1525,10 +1526,11 @@ namespace ServicesManagement.Web.Controllers
 
             try
             {
+                var fecActual = DateTime.Now.AddHours(-5).ToString("yyyy/MM/dd");
 
 
-                List<Dias> dias = HoraEntrga(DateTime.Now.ToString("yyyy/MM/dd"), fechaSelec);
-                var result = new { Success = true, json = dias };
+                List<Dias> dias = HoraEntrga(fecActual, fechaSelec);
+                var result = new { Success = true, json = dias, fecAct= fecActual,fechaSelec=fechaSelec };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
 
