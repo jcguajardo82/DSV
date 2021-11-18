@@ -18,8 +18,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using static ServicesManagement.Web.Controllers.OrderFacts_UEModel;
-using System.Threading.Tasks;
-using System.Globalization;
 
 
 namespace ServicesManagement.Web.Controllers
@@ -134,7 +132,6 @@ namespace ServicesManagement.Web.Controllers
     }
     public class BrandModel
     {
-
         public string BrandId { get; set; }// public string G867public string ,
         public string BrandDescription { get; set; }// public string UNESIApublic string 
     }
@@ -499,7 +496,6 @@ namespace ServicesManagement.Web.Controllers
                         response1 = response1.Where(x => x.Brand.BrandDescription == marca).ToList();
                     }
 
-                   
 
 
                     foreach (ResponseBuscadorModel item in response1)
@@ -643,7 +639,7 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        #endregion
+        #endregion<
 
         //NVS
 
@@ -763,11 +759,7 @@ namespace ServicesManagement.Web.Controllers
                                 DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId
                                 , item.Position, quantity, item.ProductId, Desc);
                             }
-
-
                         }
-
-
                         //if (UeType.ToUpper().Equals("SETC"))
                         //    Cancelacion(int.Parse(orden.Orderid));
                     }
@@ -793,10 +785,6 @@ namespace ServicesManagement.Web.Controllers
                     }
 
                 }
-
-
-
-
 
                 var result = new { Success = true, url = cliente };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -841,18 +829,10 @@ namespace ServicesManagement.Web.Controllers
                 {
                     throw new Exception(r.message);
                 }
-
-
-
-
-
-
-
             }
             catch (Exception x)
             {
                 throw x;
-
             }
         }
 
@@ -861,8 +841,6 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-
-
                 if (Session["CheckListProd"] == null)
                 {
                     List<ProdCheckList> lst = new List<ProdCheckList>();
@@ -892,12 +870,8 @@ namespace ServicesManagement.Web.Controllers
                             ProdId = prodId
                         });
                     }
-
-
                     Session["CheckListProd"] = lst;
                 }
-
-
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -1274,22 +1248,22 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-            List<GetClient> query = new List<GetClient>() ;
+            List<GetClient> query = new List<GetClient>();
 
-            foreach (DataRow item in DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0].Rows)
+            foreach (DataRow item in DALCallCenter.GetClientByName(Criterio).Tables[0].Rows)
             {
                 query.Add(
                     new GetClient
                     {
-                        Nom_Cte=item["NomCompleto"].ToString(),
+                        Nom_Cte = item["NomCompleto"].ToString(),
                         Id_Email = item["Id_Email"].ToString(),
                         Direccion = item["Direccion"].ToString(),
                         Telefono = item["Telefono"].ToString(),
-                        Id_Cnsc_DirCTe= item["Id_Cnsc_DirCTe"].ToString()
+                        Id_Cnsc_DirCTe = item["Id_Cnsc_DirCTe"].ToString()
                     }
                     );
             }
-        
+
 
 
             if (searchValue != "")
@@ -1323,7 +1297,12 @@ namespace ServicesManagement.Web.Controllers
 
 
             List<GetClient> data = query.Skip(skip).Take(pageSize).ToList();
-            return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data,
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = recordsTotal,
+                recordsTotal = recordsTotal,
+                data = data,
                 Success = true
                     ,
                 existe = existe
@@ -1379,6 +1358,7 @@ namespace ServicesManagement.Web.Controllers
                     existe = exist
                     ,
                     total = total
+
 
                 };
 
@@ -1516,7 +1496,7 @@ namespace ServicesManagement.Web.Controllers
             if (fechaOriginal == fechaSelec)
             {
                 //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
-               // string fec = DateTime.Now.AddHours(-5).ToString();
+                // string fec = DateTime.Now.AddHours(-5).ToString();
                 string fec = DateTime.Now.AddHours(-5).ToString();
                 hora = Convert.ToDateTime(fec).AddHours(4).Hour;
 
@@ -1547,7 +1527,7 @@ namespace ServicesManagement.Web.Controllers
 
 
                 List<Dias> dias = HoraEntrga(fecActual, fechaSelec);
-                var result = new { Success = true, json = dias, fecAct= fecActual,fechaSelec=fechaSelec };
+                var result = new { Success = true, json = dias, fecAct = fecActual, fechaSelec = fechaSelec };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
 
@@ -1627,7 +1607,6 @@ namespace ServicesManagement.Web.Controllers
                     resp = list
                     ,
                     total = list.Count
-
 
                 };
 
@@ -1758,6 +1737,29 @@ namespace ServicesManagement.Web.Controllers
 
                     decimal descuento = item.Precio_VtaNormal - item.Precio_VtaOferta;
 
+                    decimal Cant_Piezas = 0;
+                    if (item.Factor > 0)
+                    {
+                        if (item.Cve_UnVta == "pza")
+                        {
+                            Cant_Piezas = item.Cant_Unidades;
+
+                            item.Cant_Unidades = (item.Cant_Unidades / item.Factor); ;
+                            item.Cve_UnVta = "Kg";
+                        }
+
+                    }
+
+
+                    DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
+                        , item.Precio_VtaOferta, descuento, descripcion[0], item.Cve_UnVta, item.Num_CodBarra);
+
+
+                    //SE AGREGA QUE EL ARTICULO SE PIDIO EN PIEZAS PARA QUE VIAJE EN OMS
+                    if (Cant_Piezas > 0)
+                    {
+                        DALCallCenter.ArtCar_o_iUp(Id_Num_Car, item.Id_Num_Sku, Cant_Piezas, item.Factor);
+                    }
 
                     if (item.Precio_VtaOferta < item.Precio_VtaNormal)
                     {
@@ -1768,11 +1770,8 @@ namespace ServicesManagement.Web.Controllers
                         TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
                     }
 
-                    DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
-                        , item.Precio_VtaOferta, descuento, descripcion[0], item.Cve_UnVta, item.Num_CodBarra);
+
                     //COMENTARIOS POR ARTICULO
-
-
                     if (item.obs != null)
                     { item.obs = string.Format("{0} *Sustituto: {1}", item.obs, item.Sustituto); }
                     else { item.obs = string.Format("*Sustituto: {0}", item.Sustituto); }
@@ -1807,7 +1806,7 @@ namespace ServicesManagement.Web.Controllers
                 //SE CREA LA ORDEN
                 int Id_Num_Orden = int.Parse(DALCallCenter.Orden_iUp(Id_Num_Car, idCliente, id_Num_SrvEntrega).Tables[0].Rows[0][0].ToString());
 
-                //SE REGRISTRA LA FECJA DE ENTREGA
+                //SE REGRISTRA LA FECHA DE ENTREGA
                 DateTime Fec_Entrega = Convert.ToDateTime(string.Format("{0} {1}", diaEnt, horaEnt));
 
                 //SE GUARDA LA FECCHA DE ENTREGA
@@ -1902,9 +1901,6 @@ namespace ServicesManagement.Web.Controllers
                 }
                 #endregion
 
-
-
-
                 var result = new
                 {
                     Success = true
@@ -1925,7 +1921,6 @@ namespace ServicesManagement.Web.Controllers
 
             }
         }
-
 
         //public ActionResult XML(int orderid)
         //{
@@ -2022,9 +2017,7 @@ namespace ServicesManagement.Web.Controllers
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);
 
-
                 List<CategoriasModels> ListP = JsonConvert.DeserializeObject<List<CategoriasModels>>(response.Content);
-
 
                 var result = new
                 {
@@ -2034,16 +2027,12 @@ namespace ServicesManagement.Web.Controllers
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
-
             }
 
             catch (Exception x)
-
             {
-
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
-
             }
 
         }
@@ -2090,7 +2079,6 @@ namespace ServicesManagement.Web.Controllers
             }
 
         }
-
 
         public ActionResult GetHistorial(int Id_Num_Cte)
         {
