@@ -254,6 +254,23 @@ namespace ServicesManagement.Web.Controllers
         }
 
     }
+
+    public class LoyaltyModel
+    {
+        public string Cve_RespCode { get; set; }
+        public string Desc_MensajeError { get; set; }
+        public string cuenta { get; set; }
+        public List<Balance> balances { get; set; }
+        public string clientName { get; set; }
+        public string cardType { get; set; }
+        public string cardName { get; set; }
+    }
+    public class Balance
+    {
+        public string accountType { get; set; }
+        public string balance { get; set; }
+    }
+
     public class CallCenterController : Controller
     {
         // GET: CallCenter
