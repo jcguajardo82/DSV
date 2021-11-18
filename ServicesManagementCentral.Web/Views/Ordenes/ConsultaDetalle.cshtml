@@ -700,7 +700,7 @@
             var motCan = "0";
             var OrderNo = $("#OrderNo").val();
             var _UeNo = $("#UeNo").val();
-            var _motivoCancelacion = $("#txtMotCan").val();
+            var _motivoCancelacion = $("#ddlMotCan option:selected").text();
             if (txtPassCan.length == 0) {
                 $("#txtPassCan").focus();
                 return;
