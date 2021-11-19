@@ -410,6 +410,8 @@
   <ItemGroup>
     <Content Include="Content\blocks-Loader.gif" />
     <Content Include="Content\icon.ico" />
+    <Content Include="Content\images\spinner-icon-gif-24.gif" />
+    <Content Include="Content\images\spinner-icon-gif-24.jpg" />
     <Content Include="Content\images\theme\folder.jpg" />
     <Content Include="Content\images\theme\folder.png" />
     <Content Include="Content\images\theme\logo.png" />

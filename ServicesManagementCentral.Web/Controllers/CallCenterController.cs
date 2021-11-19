@@ -35,8 +35,8 @@ namespace ServicesManagement.Web.Controllers
         public string SellLimit { get; set; }// 100.0,
         public string Variants { get; set; }// public string public string ,
         public string AdditionalImages { get; set; }// public string public string ,
-        public string Price { get; set; }// 86.9,
-        public string PromotionalPrice { get; set; }// 0.0,
+        public decimal Price { get; set; }// 86.9, cambio a decimal
+        public decimal PromotionalPrice { get; set; }// 0.0, cambio a decimal
         public string PomotionalPriceCode { get; set; }// public string public string ,
         public string arrivals { get; set; }// public string public string ,
         public string beefCuts { get; set; }// public string public string ,
