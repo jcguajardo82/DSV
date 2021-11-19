@@ -1641,9 +1641,36 @@ namespace ServicesManagement.Web.Controllers
                         TotOrden += item.Cant_Unidades * item.Precio_VtaNormal;
                     }
 
+
+                    decimal Cant_Piezas = 0;
+                    if (item.Factor > 0)
+                    {
+                        if (item.Cve_UnVta == "pza")
+                        {
+                             Cant_Piezas = item.Cant_Unidades;
+                                          
+                            item.Cant_Unidades = (item.Cant_Unidades / item.Factor); ;
+                            item.Cve_UnVta = "Kg";
+                        }
+
+                    }
+
+
                     DALCallCenter.ArtCar_d_iUp(Id_Num_Car, item.Id_Num_Sku, item.Cant_Unidades, item.Precio_VtaNormal
                         , item.Precio_VtaOferta, descuento, descripcion[0], item.Cve_UnVta, item.Num_CodBarra);
+
+
+                    //SE AGREGA QUE EL ARTICULO SE PIDIO EN PIEZAS PARA QUE VIAJE EN OMS
+                    if (Cant_Piezas > 0)
+                    {
+                        DALCallCenter.ArtCar_o_iUp(Id_Num_Car, item.Id_Num_Sku, Cant_Piezas, item.Factor);
+                    }
+
+
                     //COMENTARIOS POR ARTICULO
+
+
+
                     if (item.obs != null)
                     { DALCallCenter.ArtCar_Obser_iUp(Id_Num_Car, item.Id_Num_Sku, item.obs); }
                 }

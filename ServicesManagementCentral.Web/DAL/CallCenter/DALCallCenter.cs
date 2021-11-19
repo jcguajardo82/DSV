@@ -1615,6 +1615,52 @@ namespace ServicesManagement.Web.DAL.CallCenter
         }
 
 
+        public static DataSet ArtCar_o_iUp(int Id_Num_Car,int  id_Num_Sku,decimal Cant_Piezas,decimal Fact_Conv, int  Bit_Piezas=1, int Cve_Madurez=1, int Cve_Tamano=1)
+        {
+
+ 
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@Id_Num_Car", Id_Num_Car);
+                parametros.Add("@id_Num_Sku", id_Num_Sku);
+                parametros.Add("@Bit_Piezas", Bit_Piezas);
+                parametros.Add("@Cve_Madurez", Cve_Madurez);
+                parametros.Add("@Cve_Tamano", Cve_Tamano);
+                parametros.Add("@Cant_Piezas", Cant_Piezas);
+                parametros.Add("@Fact_Conv", Fact_Conv);
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "carrito.ArtCar_o_iUp", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        //[Carrito].[ArtCar_o_iUp]
+
+
         //public static DataSet HistorialOrdenes_sUP(int Id_Num_Cte)
         //{
 
