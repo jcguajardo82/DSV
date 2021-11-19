@@ -98,10 +98,10 @@ namespace ServicesManagement.Web.Helpers
                         XmlSETCProductTMP = new XElement(nm + "product-lineitem",
                                 new XElement(nm + "net-price", dt3.Rows[i][0].ToString()),
                                 new XElement(nm + "tax", dt3.Rows[i][1].ToString()),
-                                new XElement(nm + "gross-price", dt3.Rows[i][2].ToString()),
-                                new XElement(nm + "base-price", dt3.Rows[i][3].ToString()),
-                                new XElement(nm + "lineitem-text", dt3.Rows[i][4].ToString()),
-                                new XElement(nm + "tax-basis", dt3.Rows[i][5].ToString()),
+                                new XElement(nm + "gross-price", dt3.Rows[i][26].ToString()), //dt3.Rows[i][2].ToString())
+                                new XElement(nm + "base-price", dt3.Rows[i][26].ToString()), //dt3.Rows[i][3].ToString()
+                                new XElement(nm + "lineitem-text", dt3.Rows[i][4].ToString()), 
+                                new XElement(nm + "tax-basis", dt3.Rows[i][26].ToString()), //dt3.Rows[i][5].ToString()
                                 // new XElement(nm + "position", dt3.Rows[i][6].ToString()),
                                 new XElement(nm + "position", i + 1),
                                 new XElement(nm + "product-id", dt3.Rows[i][7].ToString()),
