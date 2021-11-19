@@ -1489,17 +1489,17 @@
                                 return false;
                             }
 
-
-
                             //alert("Aqui nos traemos el valor del flete");
                             //Obtenemos el Flete
                             var _StoreNum = $("#ddlTdas").val();
+                            var _CodigoPostal = $("#rec_CP").val();
                               $.ajax({
                                     async: false,
                                     type: "GET",
                                     url: '@Url.Action("GetFlete", "CallCenter")',
                                     data: {
-                                        StoreNum: _StoreNum
+                                        StoreNum: _StoreNum,
+                                        CodigoPostal: _CodigoPostal
                                     },
                                     datatype: "html",
                                     success: function (json) {
@@ -1846,6 +1846,15 @@
             var categoria = $("#ddlCategorias").val();
             debugger;
             $.ajax({
+                beforeSend: function () {
+                    $("#imgSpiner").css("display", "block");
+                    document.getElementById("spinner").classList.add("show");
+                },
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+
+                },
                 "url": "@Url.Action("GetProduct", "CallCenter")",
                 "type": "get",
                 "data": {
