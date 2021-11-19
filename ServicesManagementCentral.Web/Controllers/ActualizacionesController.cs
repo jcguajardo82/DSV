@@ -167,7 +167,7 @@ namespace ServicesManagement.Web.Controllers
                 int idSupWCode = int.Parse(Request.Form["idSupWCode"].ToString());
                 decimal stockL = decimal.Parse(Request.Form["stockL"].ToString());
                 decimal stockCod = decimal.Parse(Request.Form["stockCod"].ToString());
-                DateTime dTime = Convert.ToDateTime(DateTime.Now.ToString(new CultureInfo("es-MX")));
+                DateTime dTime = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss", new CultureInfo("es-MX")));
                 string StockDate = dTime.ToString("dd/MM/yyyy");
                
                 TimeSpan time = TimeSpan.FromTicks(dTime.Ticks);
