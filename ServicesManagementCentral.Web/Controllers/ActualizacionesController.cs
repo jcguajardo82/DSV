@@ -168,9 +168,9 @@ namespace ServicesManagement.Web.Controllers
                 decimal stockL = decimal.Parse(Request.Form["stockL"].ToString());
                 decimal stockCod = decimal.Parse(Request.Form["stockCod"].ToString());
                 DateTime dTime = Convert.ToDateTime(DateTime.Now.ToString(new CultureInfo("es-MX")), new CultureInfo("es-MX"));
-                string StockDate = dTime.ToString("dd/MM/yyyy");
+                string StockDate = dTime.AddHours(-6).ToString("dd/MM/yyyy");
                
-                TimeSpan time = TimeSpan.FromTicks(dTime.Ticks);
+                TimeSpan time = TimeSpan.FromTicks(dTime.AddHours(-6).Ticks);
                 string StockTime = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString();
                 //var fileData = GetDataFromFileGetDataFromFileExcel(importFile.InputStream);
 
