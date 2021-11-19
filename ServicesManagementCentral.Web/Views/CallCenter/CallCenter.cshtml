@@ -982,8 +982,8 @@
                                     <th>Apellido Paterno</th>
                                     <th>Apellido Materno</th>
                                     <th>Email</th>
-                                    <th>Teléfono</th>
-                                    <th>Dirección</th>
+                                    <th>Tel&eacute;fono</th>
+                                    <th>Direcci&oacute;n</th>
                                     <th name="accion"></th>
                                 </tr>
                             </thead>
@@ -1056,9 +1056,7 @@
 
     @* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
     <script>
-
-        $(document).ready(function () {
-
+        $(document).ready(function () { //para que suba el cambio
             $("#txtProdArt2").on("keyup", function () {
 
                 if (this.value.length > 3) {
@@ -1089,15 +1087,9 @@
                             product: $("#txtProdArt2").val()
                             , tienda: $("#ddlTdas").val()
                         }),
-
-
-
                         contentType: "application/json; charset=utf-8",
 
                         dataType: "json",
-
-
-
                         success: function (data) {
                             if (data.Success) {
                                 if (data.data.length == 0) {
