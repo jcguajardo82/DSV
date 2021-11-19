@@ -166,8 +166,9 @@ namespace ServicesManagement.Web.Controllers
                 int idSupWCode = int.Parse(Request.Form["idSupWCode"].ToString());
                 decimal stockL = decimal.Parse(Request.Form["stockL"].ToString());
                 decimal stockCod = decimal.Parse(Request.Form["stockCod"].ToString());
-                string StockDate = Request.Form["StockDate"].ToString();
-                string StockTime = Request.Form["StockTime"].ToString();
+                string StockDate = DateTime.Now.ToString("dd/MM/yyyy");
+                TimeSpan time = TimeSpan.FromTicks(DateTime.Now.Ticks);
+                string StockTime = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString();
                 //var fileData = GetDataFromFileGetDataFromFileExcel(importFile.InputStream);
 
                 //string[] fileExcel = readString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
