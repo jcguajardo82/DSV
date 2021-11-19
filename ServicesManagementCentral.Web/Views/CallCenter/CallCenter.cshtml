@@ -680,6 +680,10 @@
                                                 </button>*@
                                             @*<input id="tags" class="ui-autocomplete-input" autocomplete="off">*@
                                         </td>
+                                        <td>
+                                            <select id="ddlMarcas" class="form-control m-b">
+                                            </select>
+                                        </td>
                                     </tr>
 
 
@@ -1057,7 +1061,7 @@
 
             $("#txtProdArt2").on("keyup", function () {
 
-                if (this.value.length > 3) {
+                if (this.value.length > 1) {
 
                     //let SearchObject = {
                     //    product: $("#txtProdArt2").val()
@@ -1095,21 +1099,23 @@
 
 
                         success: function (data) {
-
-                            if (data.data.length == 0) {
-                                $("#divTags").hide();
-                            }
-                            else {
-                                //data = JSON.parse(data.data)
-                                output = "";
-                                for (var i = 0; i < data.data.length; i++) {
-                                    output += "<tr><td  class='select'><img width='50px' height='60px' src=" + data.data[i].UrlImg + " /></td> <td class='select' id='srch-" + data.data[i].Barcode + "'>" + data.data[i].Description + "</td></tr></br>";
+                            if (data.Success) {
+                                if (data.data.length == 0) {
+                                    $("#divTags").hide();
                                 }
-                                //let output = data.map(i => "<tr><td class='select'><img width='50px' height='60px' src=" + i.Barcode + " /></td> <td class='select'>" + i.Description + "</td></tr></br>");
+                                else {
+                                    //data = JSON.parse(data.data)
+                                    output = "";
+                                    for (var i = 0; i < data.data.length; i++) {
+                                        output += "<tr><td  class='select'><img width='50px' height='60px' src=" + data.data[i].UrlImg + " /></td> <td class='select' id='srch-" + data.data[i].Barcode + "'>" + data.data[i].Description + "</td></tr></br>";
+                                    }
+                                    //let output = data.map(i => "<tr><td class='select'><img width='50px' height='60px' src=" + i.Barcode + " /></td> <td class='select'>" + i.Description + "</td></tr></br>");
 
-                                $("#output").html(output);
+                                    $("#output").html(output);
+                                }
+                            } else {
+                                alert(data.Message);
                             }
-
                         },
 
                         error: function (errorMessage) {
@@ -1172,7 +1178,7 @@
             }
         };
 
-      
+
     </script>
     <style>
         .required {
@@ -1573,8 +1579,10 @@
 
                     //REGRESA  CARRITO DE COMPRAS
                      if (currentIndex == 3 && newIndex == 2) {
-                         if ($("#hddCodBarFlete").val() != "0") {
-                             DeleteProduct($("#hddCodBarFlete").val());
+
+                         var codf = $("#hddCodBarFlete").val();
+                         if (codf.length != 0) {
+                             if (codf != "0") { DeleteProduct(codf) };
                          }
                         return true;
                     }
@@ -2036,80 +2044,96 @@
 
                 },
                 "url": "@Url.Action("GetProduct", "CallCenter")",
-                "type": "get",
+                "type": "post",
                 "data": {
                     product: param,
                     tienda: tda,
                     categoria: categoria
                 },
-
                 "dataType": "json",
                 "success": function (data) {
                     debugger;
                     if (data.Success) {
-                        debugger;
-                        var myTable = $('#tblBusquedaSeleccionar').DataTable();
-                        var nCant = 0;
-                        myTable
-                            .clear()
-                            .draw();
 
                         if (data.data != null) {
 
-                            for (var i = 0; i < data.data.length; i++) {
-                                var inp;
-                                if (data.data[i].SalesUnit == 'pza') {
-                                    inp = "<input oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48'  min='1' step='1' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
-                                } else {
-                                    inp = "<input  oninput='inputCar(this)'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />";
-                                }
+                        var sel = $("#ddlCategorias");
+                        sel.empty();
 
-                                var precio = parseFloat(data.data[i].Price).toFixed(2);
-                                var precioO = parseFloat(data.data[i].PromotionalPrice).toFixed(2);
-
-                                if (precioO == 0) { precioO = precio; }
-                                var desc = parseFloat(precio - precioO).toFixed(2);
-                                //onkeypress="return event.charCode >= 48" min="1"
-                                myTable.row.add([
-
-                                    data.data[i].Barcode,
-                                    data.data[i].Description,
-                                    data.data[i].Brand.BrandDescription,
-                                    precioO,
-                                    precio,
-                                    desc,
-                                    "<img width='100' height='100' id=\"imgProduct2\" src=\"" + data.data[i].UrlImage + "\" class=\"img-lg\">",
-                                    inp,//"<input  onkeypress='return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57'  min='1' step='0.01' type='number' id='nCant-" + data.data[i].Barcode + "' value='" + nCant + "' class='form-control input-sm' " + "" + " />",
-                                    data.data[i].SalesUnit,
-                                    "<a  title='Click para Agregar Producto' class='link-primary' onclick='addProduct3(\""
-                                    + data.data[i].Description.replace("'", '|') + "\", \"" + data.data[i].Barcode + "\", \"" + + data.data[i].Price //replaceall
-                                    + "\",\"" + data.data[i].Sku
-                                    + "\",\"" + data.data[i].SalesUnit
-                                    + "\",\"" + precioO
-                                    + "\",\"" + data.data[i].desc       + "\")'>Agregar Prodcuto</a>"
-                                ]).draw();
-                            }
-
-                            if (data.data.length == 0) {
-                                alert("No se encontraron productos para la busqueda realizada.");
-                            }
-                        } else {
-
-                            if (document.getElementById("txtProdArt2").value.length != 0 || data.data.length==0) {
-                                alert("No se encontraron productos para la busqueda realizada.");
-                            }
-                                //$('#tblBusquedaSeleccionar').dataTable({
-                                //    "language": {
-                                //        "infoEmpty": "No entries to showssssssss"
-                                //    }
-                                //});
-
+                        $('#ddlCategorias').get(0).options[0] = new Option("--Todas las Categorias--", "0");
+                        for (var i = 0; i < data.categ.length; i++) {
+                            sel.append('<option value="' + data.categ[i] + '">' + data.categ[i] + '</option>');
                         }
 
+
+                        var sel1 = $("#ddlMarcas");
+                        sel1.empty();
+
+                        $('#ddlMarcas').get(0).options[0] = new Option("--Todas las Marcas--", "0");
+                        for (var i = 0; i < data.marcas.length; i++) {
+                            sel1.append('<option value="' + data.marcas[i] + '">' + data.marcas[i] + '</option>');
+                        }
+
+
+                        $('#ddlCategorias').attr('disabled', false);
+                        $('#ddlMarcas').attr('disabled', false);
+
+
+
+
+                        $("#tblBuscador").html(data.view);
+
+
+
+                        var table = $("#tblBusquedaSeleccionar").DataTable(
+                            {
+                                language: {
+                                    emptyTable: "(0) articulos encontrados",
+                                },
+                                processing: true,
+                                ordering: true,
+                                order: [],
+                                filter: true,
+                                info: false,
+                                stateSave: false,
+
+                                //Paggin
+                                paging: true,
+                                pageLength: 10,
+                                lengthMenu: [10, 25, 50, 100, 500],
+
+                                // destroy: true, //destruye automaticamente la referencia a la tabla
+                                //Ajax
+                                //serverSide: true,
+                                //bServerSide: true,
+                                //sServerMethod: "GET",
+                                buttons: [],
+                                orderCellsTop: false,
+                                "scrollY": "400px",
+                                "scrollCollapse": true,
+
+                                //, "order": [[2, "asc"]]
+
+                            }
+                        );
+
+
+
+
+
+
+
+
+
+
+                        $("#imgSpiner").css("display", "none");
+                        document.getElementById("spinner").classList.remove("show");
+                    }
 
 
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
+                    debugger;
                     document.getElementById("spinner").classList.remove("show");
                     $("#imgSpiner").css("display", "none");
                     alert(errorThrown);
@@ -2235,7 +2259,7 @@
 
         }
         function addProduct3(descripcion, barcode, precio, sku, SalesUnit,precioO) {
-            debugger;
+
             var cantidad = $("#nCant-" + barcode).val();
             if (cantidad == 0) {
                 alert("La Cantidad debe ser Mayor a 0.")
@@ -2265,7 +2289,7 @@
 
         }
         function AddFlete(descripcion, barcode, precio, sku, SalesUnit, precioO, cant) {
-            debugger;
+
 
 
 
@@ -2287,7 +2311,7 @@
                         _jsonProductsSelected.splice(_index, 1);
                     }
                 }
-                debugger;
+
                 let _obj = {};
                 _obj.barcode = _barcode;
                 _obj.description = _descripcion;
@@ -2320,7 +2344,7 @@
                     _jsonProductsSelected.splice(_index, 1);
                 }
             }
-            debugger;
+
             let _obj = {};
             _obj.barcode = _barcode;
             _obj.description = _descripcion;
@@ -2464,6 +2488,11 @@
         }
 
         function seleccionarProducto() {
+            $('#ddlCategorias').attr('disabled', true);
+            $('#ddlMarcas').attr('disabled', true);
+            $("#ddlCategorias").empty();
+            $("#ddlMarcas").empty();
+
             $("#divTags").hide();
             $("#txtProdArt2").val("");
             $("#tblBuscador").html('');
@@ -3061,7 +3090,7 @@
                     success: function (json) {
                         //
                         if (json.Success) {
-                            debugger;
+
                             GetEstados();
                             var sel = $("#ddlCteColonia");
                             sel.empty();
@@ -3223,7 +3252,7 @@
                 success: function (json) {
 
                     if (json.Success) {
-                        debugger;
+
 
 
                         $("#hddIdDirCteUpd").val(json.resp.Id_Cnsc_DirCTe);
@@ -3273,7 +3302,7 @@
                     success: function (json) {
                         //
                         if (json.Success) {
-                            debugger;
+
                             //var availableTags = [];
                             //for (var i = 0; i < json.resp.length; i++) {
 
@@ -3310,7 +3339,10 @@
 
         function EcharCarrito(UeNo) {
             var _tda = $("#ddlTdas").val();
-            $.ajax({
+
+
+            try {
+                 $.ajax({
                 "url": "@Url.Action("EcharCarrito", "CallCenter")",
 
                 "type": "get",
@@ -3353,6 +3385,16 @@
                     }
                 }
             });
+            } catch (error) {
+                document.getElementById("spinner").classList.remove("show");
+                $("#imgSpiner").css("display", "none");
+                alert(error);
+                // expected output: ReferenceError: nonExistentFunction is not defined
+                // Note - error messages will vary depending on browser
+            }
+
+
+
         }
     </script>
 
