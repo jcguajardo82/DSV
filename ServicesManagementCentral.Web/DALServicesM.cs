@@ -2266,6 +2266,53 @@ namespace ServicesManagement.Web
                 throw ex;
             }
         }
+        public static DataSet CancelaOrden_Uup2(int Orden, string motivo = "", int Id_Num_MotCan = 0, string UeNo = "", string idUsuario ="")
+        {
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@Orden", Orden);
+                parametros.Add("@motivo", motivo);
+                if (Id_Num_MotCan != 0)
+                    parametros.Add("@Id_Num_MotCan", Id_Num_MotCan);
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@idUsuario", idUsuario);
+
+
+                //[dbo].[ecCancelaOrden_Uup_V2]
+                //@Orden INT
+                //, @motivo            VARCHAR(50)
+                //,@Id_Num_MotCan TINYINT = NULL
+                //, @UeNo            VARCHAR(25
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "ecCancelaOrden_Uup_V3", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
         //CatMotivoCan_Sup
         public static DataSet CatMotivoCan_Sup(int Id_Num_MotCan = 0, bool Bit_Eliminado = false)

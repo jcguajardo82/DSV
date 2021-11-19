@@ -1582,6 +1582,44 @@ namespace ServicesManagement.Web.Controllers
             }
 
         }
+        public JsonResult CancelOrder2(string OrderNo, string pass, string Id_Num_MotCan = "0", string motivoCancelacion = "", string UeNo = "")
+        {
+            try
+            {
+                string msj = "Clave incorrecta";
+                bool isSucces = false;
+                if (Session["Id_Num_UN"] != null)
+                {
+                    DataSet ds = DALServicesM.GetPassCan(int.Parse(Session["Id_Num_UN"].ToString()));
+
+                    if (ds.Tables[0].Rows.Count != 0)
+                    {
+                        if (ds.Tables[0].Rows[0][0].ToString().Equals(pass))
+                        {
+                            DALServicesM.CancelaOrden_Uup2(int.Parse(OrderNo), motivoCancelacion, int.Parse(Id_Num_MotCan), UeNo, User.Identity.Name);
+
+                            isSucces = true;
+                        }
+                    }
+
+                    var result = new { Success = isSucces, Message = msj };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var result = new { Success = false, json = "Caduco la sesión" };
+                    RedirectToAction("Index", "Ordenes");
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
 
         //CatMotivoCan_Sup
         [HttpGet]
