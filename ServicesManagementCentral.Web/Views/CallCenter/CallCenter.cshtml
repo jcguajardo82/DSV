@@ -1748,6 +1748,12 @@
 
         });
 
+        function ddlSustito(obj) {
+            alert(obj.value);
+            var value = obj.value;
+            obj.val = value;
+        }
+
         function toggleButton(buttonId, enable) {
             if (enable) {
                 // Enable disabled button
@@ -2107,7 +2113,6 @@
                     });
         }
 
-
         function CargaProducto() {
             $("#dlgBuscador").modal("hide");
             if ($('#txtProdArt').val() == "") {
@@ -2179,6 +2184,7 @@
             document.getElementById("txtProdArt").focus();
             document.getElementById('btnBuscar').disabled = false;
         }
+
         function DeleteProduct(barcode) {
             var cantidad = $("#productCant-" + barcode).val();
             var item = _jsonProductsSelected.find(x => x.barcode === barcode);
@@ -2903,7 +2909,7 @@
                 .draw();
             $('#tblBusquedaCliente').DataTable().destroy();
 
-            $('#divgridClientes').hide();
+            $('#divgridClientes').show();
             $("#dlgBuscadorCliente").modal("show");
         }
 
