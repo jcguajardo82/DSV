@@ -16,6 +16,7 @@ using RestSharp;
 using NPOI.SS.UserModel;
 using ServicesManagement.Web.Models.Config;
 using ExcelDataReader;
+using System.Globalization;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -166,8 +167,10 @@ namespace ServicesManagement.Web.Controllers
                 int idSupWCode = int.Parse(Request.Form["idSupWCode"].ToString());
                 decimal stockL = decimal.Parse(Request.Form["stockL"].ToString());
                 decimal stockCod = decimal.Parse(Request.Form["stockCod"].ToString());
-                string StockDate = DateTime.Now.ToString("dd/MM/yyyy");
-                TimeSpan time = TimeSpan.FromTicks(DateTime.Now.Ticks);
+                DateTime dTime = Convert.ToDateTime(DateTime.Now.ToString(new CultureInfo("es-MX")));
+                string StockDate = dTime.ToString("dd/MM/yyyy");
+               
+                TimeSpan time = TimeSpan.FromTicks(dTime.Ticks);
                 string StockTime = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString();
                 //var fileData = GetDataFromFileGetDataFromFileExcel(importFile.InputStream);
 
