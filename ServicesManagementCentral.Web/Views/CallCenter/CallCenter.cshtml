@@ -4,8 +4,8 @@
 }
 
 @*<div id="spinner">
-    <img src="~/Content/images/spinner-icon-gif-24.gif" style="display:none;" id="imgSpiner" />
-</div>*@
+        <img src="~/Content/images/spinner-icon-gif-24.gif" style="display:none;" id="imgSpiner" />
+    </div>*@
 
 <div id="spinner">
     <img src="~/Content/images/spinner-icon-gif-24.gif" style="display:none;" id="imgSpiner" />
@@ -1206,7 +1206,7 @@
                 visibility: visible;
                 opacity: 1;
             }
-/*        .required {
+        /*        .required {
             position: absolute;
             margin-left: -10px;
             color: #FB0000;
@@ -2062,7 +2062,7 @@
             }
 
             $.ajax({
-               
+
                 "url": "@Url.Action("GetProduct", "CallCenter")",
                 "type": "post",
                 "data": {
@@ -2499,7 +2499,7 @@
                     inp = "<input  oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength ='5'  onkeypress='return event.charCode >= 48' min='1' step='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 } else {
                     cant = cant + 1;
-                    inp = "<input  oninput='inputCar(this)'  min='1' step='0.001' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
+                    inp = "<input  onkeypress='return isNumberKey(event,this,4,9)'  min='1' step='0.001' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm' /> ";
                 }
                 myTable.row.add([
 
@@ -2517,18 +2517,25 @@
                     "<button type='button'  onclick='DeleteProduct(\"" + _jsonProductsSelected[i].barcode + "\")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button>"
                 ]).draw();
 
-                if (factorConversion !== 0)
-                {
+                if (factorConversion !== 0) {
 
-                    $("#umc-" + _jsonProductsSelected[i].barcode).append("<option value='" + _jsonProductsSelected[i].baseUnit + "' >"+ _jsonProductsSelected[i].baseUnit+"</option>");
-                    $("#umc-" + _jsonProductsSelected[i].barcode).append("<option value='" + _jsonProductsSelected[i].equivalentUnit + "' >" + _jsonProductsSelected[i].equivalentUnit+"</option>");
+                    $("#umc-" + _jsonProductsSelected[i].barcode).append("<option value='" + _jsonProductsSelected[i].baseUnit + "' >" + _jsonProductsSelected[i].baseUnit + "</option>");
+                    $("#umc-" + _jsonProductsSelected[i].barcode).append("<option value='" + _jsonProductsSelected[i].equivalentUnit + "' >" + _jsonProductsSelected[i].equivalentUnit + "</option>");
 
                     $("#umc-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].UnitConv);
+                    if (_jsonProductsSelected[i].UnitConv == 'pza') {
+                        descuento = descuento + (parseFloat(_jsonProductsSelected[i].quantity) / parseFloat(factorConversion).toFixed(2))
+                    } else {
+                        descuento = descuento + (_jsonProductsSelected[i].quantity * (parseFloat(_jsonProductsSelected[i].price) - parseFloat(_jsonProductsSelected[i].precioO)));
+                    }
                 }
-
+                else {
+                    descuento = descuento + (_jsonProductsSelected[i].quantity * (parseFloat(_jsonProductsSelected[i].price) - parseFloat(_jsonProductsSelected[i].precioO)));
+                }
                 $("#cSustituto-" + _jsonProductsSelected[i].barcode).val(_jsonProductsSelected[i].sustituto);
 
                 tot = tot + parseFloat(_jsonProductsSelected[i].total)
+
 
 
             }
@@ -2567,7 +2574,7 @@
                         +"<input type='hidden' id='sku-" + _jsonProductsSelected[x].sku + "' value='" + _jsonProductsSelected[x].sku + "'/>"
                         + "<input type='hidden' id='codBar-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].barcode + "'/>"
                         + "<input type='hidden' id='precioN-" + _jsonProductsSelected[x].barcode + "' value='" + _jsonProductsSelected[x].price + "'/>",
-
+                        //proxima validacion de decimales fixed con base al salesunit
                         _jsonProductsSelected[x].quantity,
                         _SalesUnit,//_jsonProductsSelected[x].SalesUnit,
                         "$" + _jsonProductsSelected[x].precioO,
@@ -3105,7 +3112,7 @@
             } else {
                 $('#lblCalleCte').text(resp.Calle + ' ' + resp.Num_Ext + ',No. Int. ' + resp.Num_Int);
             }
-           
+
             $('#lblColoniaCte').text(resp.Colonia);
             $('#lblEdoCte').text(resp.Ciudad + ', ' + resp.Nom_Edo);
             $('#lblCpCte').text('C.P. '+ resp.Cod_Postal);
@@ -3590,16 +3597,11 @@
                     _html = "<input onfocusout='Change(\"" + BarCode + "\")'  onchange='Change(\"" + BarCode + "\")' oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxlength='5' onkeypress='return event.charCode >= 48' min='1' step='1' type='number' id='productCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />";
                 }
                 else {
-                    _html = " <input onfocusout='Change(\"" + BarCode + "\")'  onchange='Change(\"" + BarCode + "\")' oninput='inputCar(this)' min='1' step='0.001' type='number' id='productCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />"
+                    _html = " <input onfocusout='Change(\"" + BarCode + "\")'  onchange='Change(\"" + BarCode + "\")' onkeypress='return isNumberKey(event,this,4,9)' min='1' step='0.001' type='number' id='productCant-" + BarCode + "' value='" + nCantidad + "' class='form-control input-sm pull-right' />"
                 }
 
             }
-            //productCant
-            //$("#divUS-" + BarCode).html("<input type='text' id='cnt'/>");
-
-
-
-
+           
             if (op == 1) {
                 $("#divUS-" + BarCode).html(_html);
             } else {
@@ -3619,6 +3621,30 @@
             }
 
             return nCantidad;
+        }
+
+        function isNumberKey(evt, element,decimals,size) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode == 46 || charCode == 8))
+                return false;
+            else {
+                var len = $(element).val().length;
+                var index = $(element).val().indexOf('.');
+                if (index > 0 && charCode == 46) {
+                    return false;
+                }
+                if (index > 0) {
+                    var CharAfterdot = (len + 1) - index;
+                    if (CharAfterdot > decimals) {
+                        return false;
+                    }
+                }
+                if (size > 0) {
+                    if (len > size) { return false; }
+                }
+
+            }
+            return true;
         }
     </script>
 
