@@ -2032,7 +2032,11 @@
 
             var tda = $("#ddlTdas").val()
             var categoria = $("#ddlCategorias").val();
-            debugger;
+            var marca = $("#ddlMarcas").val();
+           
+            if (categoria.length == 0) { categoria = '0' };
+            if (marca.length == 0) { marca = '0' };
+
             $.ajax({
                 beforeSend: function () {
                     $("#imgSpiner").css("display", "block");
@@ -2048,7 +2052,8 @@
                 "data": {
                     product: param,
                     tienda: tda,
-                    categoria: categoria
+                    categoria: categoria,
+                    marca: marca
                 },
                 "dataType": "json",
                 "success": function (data) {
@@ -2074,6 +2079,9 @@
                             sel1.append('<option value="' + data.marcas[i] + '">' + data.marcas[i] + '</option>');
                         }
 
+
+                        $('#ddlCategorias').val(categoria);
+                        $('#ddlMarcas').val(marca);
 
                         $('#ddlCategorias').attr('disabled', false);
                         $('#ddlMarcas').attr('disabled', false);
@@ -2492,6 +2500,9 @@
             $('#ddlMarcas').attr('disabled', true);
             $("#ddlCategorias").empty();
             $("#ddlMarcas").empty();
+            $('#ddlCategorias').get(0).options[0] = new Option("--Todas las Categorias--", "0");
+            $('#ddlMarcas').get(0).options[0] = new Option("--Todas las Categorias--", "0");
+
 
             $("#divTags").hide();
             $("#txtProdArt2").val("");
