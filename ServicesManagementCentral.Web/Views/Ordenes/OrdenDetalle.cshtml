@@ -153,15 +153,28 @@
                                         </h4>
                                         <p>
                                             <span><strong>Fecha de Solicitud:</strong> @p["OrderDate"]</span><br>
-                                            <span>
-                                                <strong>Fecha Entrega:</strong>
-                                                @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
-                                            </span><br>
+                                            @if (p["UeType"].ToString().Equals("DST"))
+                                            {
+                                                <span>
+                                                    <strong>Fecha Entrega:</strong>
+
+                                                    @p["DeliveryOptionName"].ToString()
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    <strong>Fecha Entrega:</strong>
+
+                                                    @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
+                                                </span>
+                                            }
+                                            <br>
                                             @*<span>
-                                                    <strong>
-                                                        <a onclick="popActulizaHora(@p["OrderNo"])" class="nav-link">Fecha Entrega:</a>
-                                                    </strong> @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
-                                                </span>*@
+            <strong>
+                <a onclick="popActulizaHora(@p["OrderNo"])" class="nav-link">Fecha Entrega:</a>
+            </strong> @p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()
+        </span>*@
                                             <input type="hidden" value="@p["isPickingManual"].ToString().ToUpper()" id="hddCheckMovil" />
                                         </p>
                                         <span>Surtidor:</span>

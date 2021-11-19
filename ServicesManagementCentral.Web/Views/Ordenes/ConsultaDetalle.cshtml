@@ -212,151 +212,162 @@
                                                                             <h5>Registro:</h5>
                                                                             <small>@p["OrderDate"] </small>
 
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Compromiso entrega:</h5>
-                                                                        </td>
-                                                                        <td style="text-align: left;">
-                                                                            <small>
-                                                                                <b>@p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()</b>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Compromiso entrega:</h5>
+                                                                </td>
+                                                                <td style="text-align: left;">
+                                                                    @if (p["UeType"].ToString().Equals("DST"))
+                                                                    {
+                                                                        <small>
+                                                                            <b>@p["DeliveryOptionName"].ToString()</b>
 
-                                                                            </small>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Inicio surtido:</h5>
-                                                                        </td>
-                                                                        <td style="text-align: left;"><small>@p["PickingDateStart"] </small></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Orden surtida:</h5>
-                                                                        </td>
-                                                                        <td style="text-align: left;"><small>@p["PickingDate"]</small></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Orden pagada:</h5>
-                                                                        </td>
-                                                                        <td style="text-align: left;"><small>@p["PaymentDate"]</small></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Embarque:</h5>
-                                                                        </td>
-                                                                        <td style="text-align: left;"><small>@p["CarrierDate"].ToString()</small></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Entrega:</h5>
-                                                                        </td>
-                                                                        <td style="text-align: left;"><small>@p["DeliveryDate"].ToString() </small></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td style="vertical-align:top">
-                                                    <!-- Procesamiento de orden-->
-                                                    <div class="ibox ">
-                                                        <div class="ibox-title">
-                                                            <h5>Procesamiento de pedido </h5>
-                                                            <hr style="margin-top: 0; margin-bottom: 0;" />
-                                                        </div>
-                                                        <div class="ibox-content">
-                                                            <table width="100%">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Carrito virtual:</h5>
-                                                                            <small>@p["ShoppingCart"]</small>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Surtió:</h5>
-                                                                            @*Supplier_Name*@
-                                                                            <small>
-                                                                                @p["Supplier_Name"].ToString()
-                                                                            </small>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Contenedores:</h5>
-                                                                            <small>
-                                                                                @if (int.Parse(@p["NumContainers"].ToString()) > 0)
-                                                                                {
-                                                                                    @p["NumContainers"].ToString()
-                                                                                }
-                                                                            </small>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Guia embarque:</h5>
-                                                                            <small>@p["TrackingNo"]</small>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Entregó</h5>
-                                                                            <small>@p["ShipperName"]</small>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td style="vertical-align:top">
-                                                    <!-- Entrega y observaciones-->
-                                                    <div class="ibox ">
-                                                        <div class="ibox-title">
-                                                            <h5>Entrega y observaciones </h5>
-                                                            <hr style="margin-top: 0; margin-bottom: 0;" />
-                                                        </div>
-                                                        <div class="ibox-content">
-                                                            <table width="100%">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Identificación del cliente:</h5>
-                                                                            <small>
-                                                                                @*@p["IdReceive"]*@
-                                                                                @p["NameReceive"]
-                                                                            </small>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Observaciones:</h5>
-                                                                            <small>
-                                                                                @p["Comments"]
-                                                                            </small>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h5>Coordenadas de la Entrega:</h5>
-                                                                            <small>
-                                                                                @p["Coordenadas"]
-                                                                            </small>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
+                                                                        </small>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <small>
+                                                                            <b>@p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()</b>
+
+                                                                        </small>
+                                                                    }
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Inicio surtido:</h5>
+                                                                </td>
+                                                                <td style="text-align: left;"><small>@p["PickingDateStart"] </small></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Orden surtida:</h5>
+                                                                </td>
+                                                                <td style="text-align: left;"><small>@p["PickingDate"]</small></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Orden pagada:</h5>
+                                                                </td>
+                                                                <td style="text-align: left;"><small>@p["PaymentDate"]</small></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Embarque:</h5>
+                                                                </td>
+                                                                <td style="text-align: left;"><small>@p["CarrierDate"].ToString()</small></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Entrega:</h5>
+                                                                </td>
+                                                                <td style="text-align: left;"><small>@p["DeliveryDate"].ToString() </small></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="vertical-align:top">
+                                            <!-- Procesamiento de orden-->
+                                            <div class="ibox ">
+                                                <div class="ibox-title">
+                                                    <h5>Procesamiento de pedido </h5>
+                                                    <hr style="margin-top: 0; margin-bottom: 0;" />
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <table width="100%">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Carrito virtual:</h5>
+                                                                    <small>@p["ShoppingCart"]</small>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Surtió:</h5>
+                                                                    @*Supplier_Name*@
+                                                                    <small>
+                                                                        @p["Supplier_Name"].ToString()
+                                                                    </small>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Contenedores:</h5>
+                                                                    <small>
+                                                                        @if (int.Parse(@p["NumContainers"].ToString()) > 0)
+                                                                        {
+                                                                            @p["NumContainers"].ToString()
+                                                                        }
+                                                                    </small>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Guia embarque:</h5>
+                                                                    <small>@p["TrackingNo"]</small>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Entregó</h5>
+                                                                    <small>@p["ShipperName"]</small>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="vertical-align:top">
+                                            <!-- Entrega y observaciones-->
+                                            <div class="ibox ">
+                                                <div class="ibox-title">
+                                                    <h5>Entrega y observaciones </h5>
+                                                    <hr style="margin-top: 0; margin-bottom: 0;" />
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <table width="100%">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Identificación del cliente:</h5>
+                                                                    <small>
+                                                                        @*@p["IdReceive"]*@
+                                                                        @p["NameReceive"]
+                                                                    </small>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Observaciones:</h5>
+                                                                    <small>
+                                                                        @p["Comments"]
+                                                                    </small>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h5>Coordenadas de la Entrega:</h5>
+                                                                    <small>
+                                                                        @p["Coordenadas"]
+                                                                    </small>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
 
                             }
 
