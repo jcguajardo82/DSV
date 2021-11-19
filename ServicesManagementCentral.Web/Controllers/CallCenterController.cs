@@ -1392,8 +1392,7 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult AddClient(
             string Nom_Cte, string Ap_Materno, string Ap_Paterno, string Calle, string Nom_DirCTe,
             string Num_Ext, string Num_Int, string Ciudad, string Cod_Postal, string Colonia,
-            string Telefono, string Id_Email, int Ids_Num_Edo, int Id_Cnsc_DirCTe, int Id_Num_Cte = 0
-            )
+            string Telefono, string Id_Email, string TarjetaLealtad, int Ids_Num_Edo, int Id_Cnsc_DirCTe, int Id_Num_Cte = 0) //Lealtad
         {
             try
 
@@ -1410,7 +1409,7 @@ namespace ServicesManagement.Web.Controllers
 
                     Id_Num_Cte = int.Parse(DALCallCenter.Cte_iUp(Nom_Cte, Ap_Paterno, Ap_Materno).Tables[0].Rows[0]["Id_Num_Cte"].ToString());
 
-                    DALCallCenter.Email_iUp(Id_Num_Cte, Id_Email);
+                    DALCallCenter.Email_iUp(Id_Num_Cte, Id_Email, TarjetaLealtad); //Lealtad
                     DALCallCenter.DirCte_iUp(Id_Num_Cte, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int, Ciudad, Cod_Postal, Colonia, Telefono);
                     list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Telefono).Tables[0]).FirstOrDefault();
 
@@ -1424,7 +1423,7 @@ namespace ServicesManagement.Web.Controllers
                     {
 
                         DALCallCenter.Cte_uUp(Id_Num_Cte, Nom_Cte, Ap_Paterno, Ap_Materno);
-                        DALCallCenter.Email_uUp(Id_Num_Cte, Id_Email);
+                        DALCallCenter.Email_uUp(Id_Num_Cte, Id_Email, TarjetaLealtad); //Lealtad
                         DALCallCenter.DirCte_uUp(Id_Cnsc_DirCTe, Id_Num_Cte, 1, Ids_Num_Edo, Calle, Nom_DirCTe, Num_Ext, Num_Int, Ciudad, Cod_Postal, Colonia, Telefono);
                         list = DataTableToModel.ConvertTo<GetClient>(DALCallCenter.GetClientByPhoneEmail(Telefono).Tables[0])
                             .Where(x => x.Id_Cnsc_DirCTe == Id_Cnsc_DirCTe.ToString()).FirstOrDefault();
