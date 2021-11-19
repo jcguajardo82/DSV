@@ -171,7 +171,12 @@
                     <section>
                         @*<input id="flagCarrito" name="flagCarrito" value="1" style="visibility:hidden" />*@
                         <div class="row">
-                            <div class="col-8"></div>
+                            <div class="col-8">
+                                <div class="alert alert-success" id="divOkArtHistorial">
+                                    @* How quickly daft jumping zebras vex. <a class="alert-link" href="#">Alert Link</a>.*@
+                                    Los arituclos de la orden se cargaron al carrito con éxito.
+                                </div>
+                            </div>
                             <div class="col-4">
                                 @*<button type="button" onclick="seleccionarProducto()" class="btn btn-xs btn-danger btn-circle"><i class="fa fa-plus"></i></button>*@
                                 <button type="button" class="btn btn-primary" onclick="seleccionarProducto();">Agregar Articulo</button>
@@ -652,7 +657,7 @@
                                             @*<input class="form-control" type="text" placeholder="Producto" value="" id="txtProdArt2">*@
                                             <form id="form1" runat="server">
 
-                                                <input type="text" id="txtProdArt2" placeholder="Buscar..." class="form-control" />
+                                                <input type="text" id="txtProdArt2" placeholder="Buscar..." class="form-control" autocomplete="off" />
 
                                                 <div id="divTags" class="panel panel-default" style="position: absolute; z-index: 999; background: rgb(255, 255, 255);  height: 200px; width: 98%; overflow: auto; display: none;">
                                                     <table class="table">
@@ -1060,7 +1065,18 @@
                     //}
 
                     $.ajax({
+                       
+                        complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                            document.getElementById("spinner").classList.remove("show");
+                            $("#imgSpiner").css("display", "none");
 
+                        },
+                        beforeSend: function () {
+                            $("#imgSpiner").css("display", "block");
+                            document.getElementById("spinner").classList.add("show");
+                            $("#divTags").show();
+
+                        },
                         type: "POST",
 
                         "url": "@Url.Action("AutoComplete", "CallCenter")",
@@ -1076,11 +1092,7 @@
 
                         dataType: "json",
 
-                        beforeSend: function () {
-
-                            $("#divTags").show();
-
-                        },
+                     
 
                         success: function (data) {
 
@@ -1108,11 +1120,7 @@
 
                         },
 
-                        complete: function () {
-
-
-
-                        }
+                  
 
                     });
 
@@ -1210,6 +1218,12 @@
 
 
         $(document).ready(function () {
+
+
+            setTimeout(function () {
+                $("#divOkArtHistorial").fadeOut(1500);
+            }, 2000);
+
             setTimeout(function () {
                 $("#divOkArt").fadeOut(1500);
             }, 2000);
@@ -2670,7 +2684,18 @@
 
                         var _Id_Num_Cte = $("#hddIdCliente").val();
               $.ajax({
-                async: false,
+                 
+                      complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                          document.getElementById("spinner").classList.remove("show");
+                          $("#imgSpiner").css("display", "none");
+
+                      },
+                      beforeSend: function () {
+                          $("#imgSpiner").css("display", "block");
+                          document.getElementById("spinner").classList.add("show");
+                          $("#divTags").show();
+
+                      },
                 type: "GET",
                 url: '@Url.Action("GetHistorial", "CallCenter")',
                 data: {
@@ -2699,7 +2724,7 @@
                                 "<td stryle='text-align: center;'><a title='Click para Seleccionar la Orden' class='link-primary' onclick='SelOrdHist(\""
                                 + json.resp[i].UeNo + "\")'>"+ json.resp[i].UeNo +"</a></td>",
                                 json.resp[i].OrderDate,
-                                json.resp[i].Imp_Pago,
+                                '$' + parseFloat( json.resp[i].Imp_Pago).toFixed(2),
                                 "0"
                             ]).draw();
                         }
@@ -3161,7 +3186,17 @@
             var idDirCte = $("#hddIdDirCteUpd").val();
             var email = $('#lblClaveCte').text();
                     $.ajax({
-                async: false,
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+
+                },
+                beforeSend: function () {
+                    $("#imgSpiner").css("display", "block");
+                    document.getElementById("spinner").classList.add("show");
+                    $("#divTags").show();
+
+                },
                 type: "GET",
                 url: '@Url.Action("VerificaCliente", "CallCenter")',
                 data: {
@@ -3261,13 +3296,24 @@
             var _tda = $("#ddlTdas").val();
             $.ajax({
                 "url": "@Url.Action("EcharCarrito", "CallCenter")",
-                async:false,
+               
                 "type": "get",
                 "data": {
                  UeNo: UeNo,
                  tienda: _tda
              },
                 "dataType": "json",
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
+
+                },
+                beforeSend: function () {
+                    $("#imgSpiner").css("display", "block");
+                    document.getElementById("spinner").classList.add("show");
+                    $("#divTags").show();
+
+                },
                 "success": function (data)
                 {
                     if (data.resp != null) {
@@ -3282,6 +3328,10 @@
 
                         }
                         $("#dlgHistorial").modal("hide");
+                        $("#divOkArtHistorial").show();
+                        setTimeout(function () {
+                            $("#divOkArtHistorial").fadeOut(1000);
+                        }, 1000);
                     } else {
                         alert("No se encontraron productos para la tienda seleccionada.");
                     }
