@@ -38,7 +38,7 @@ namespace ServicesManagement.Web.Models
         //Código postal de Origen para enrutamiento
         public string originZipCodeForRouting { get; set; } = "62250";
         //Servicio que se usará
-        public string serviceTypeId { get; set; } = "60";
+        public string serviceTypeId { get; set; } = "70";
         //Numero de oficina que corresponde al cliente
         public string officeNum { get; set; } = "421";
         //Documento de retorno
