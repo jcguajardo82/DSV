@@ -1500,7 +1500,7 @@ namespace ServicesManagement.Web.Controllers
         public List<Dias> HoraEntrga(string fechaOriginal, string fechaSelec)
         {
             List<Dias> dias = new List<Dias>();
-            int hora = 8;
+            int hora = 9;
 
 
 
@@ -1514,7 +1514,7 @@ namespace ServicesManagement.Web.Controllers
 
             }
 
-            if (hora > 7 & hora < 23)
+            if (hora > 8 & hora < 23)
             {
                 for (int i = hora; i < 22; i++)
                 {
