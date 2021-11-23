@@ -2519,12 +2519,13 @@ namespace ServicesManagement.Web.Controllers
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 //m.serviceTypeId = "60";
-                m.serviceTypeId = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
-
+                //m.serviceTypeId = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
+                m.serviceTypeId = r["ServiceType"].ToString();
                 if (weight >= 70)
                 {
                     m.serviceTypeId = "L0";
                 }
+                
 
                 m.DestinationInfo = new AddressModel();
 
@@ -2651,12 +2652,13 @@ namespace ServicesManagement.Web.Controllers
 
                     System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                    m.ServiceType = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
-
-                    if (weight >= 70)
-                    {
-                        m.ServiceType = "L0";
-                    }
+                //m.ServiceType = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
+                m.ServiceType = r["ServiceType"].ToString();
+                if (weight >= 70)
+                {
+                    m.ServiceType = "L0";
+                }
+                
 
                     m.Destination = new LogytAddressModel();
 
