@@ -813,6 +813,8 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult AddPasilloUnLinea(string Id_Num_UN, string Id_Cnsc_Pasillo
             , string Id_Num_Lineas, string Id_Num_Div, string Id_Num_Categ)
         {
+            List<string> lstLineasOcupadas = new List<string>();
+            
             try
             {
                 if (Session["Id_Num_UN"] != null)
@@ -823,10 +825,15 @@ namespace ServicesManagement.Web.Controllers
                     {
                         string Id_Num_Linea = value.Replace("chbElegDer-", "");
                         DataSet d = DALServicesM.AddPasilloUN_Linea(int.Parse(Id_Num_UN), int.Parse(Id_Cnsc_Pasillo), int.Parse(Id_Num_Linea));
+
+                        if (d.Tables[0].Rows[0][0].ToString() != "OK")
+                        {
+                            lstLineasOcupadas.Add(d.Tables[0].Rows[0][0].ToString());
+                        }
                     }
 
                     var lista = GetEditCateg(int.Parse(Id_Num_UN), int.Parse(Id_Cnsc_Pasillo), int.Parse(Id_Num_Div), int.Parse(Id_Num_Categ));
-                    var result = new { Success = true, json = lista };
+                    var result = new { Success = true, json = lista, lineasOcupadas = lstLineasOcupadas };
                     return Json(result, JsonRequestBehavior.AllowGet);
 
                 }

@@ -426,6 +426,9 @@
                         debugger;
                         if (json.Success) {
 
+                            for (var i = 0; i < json.lineasOcupadas.length; i++) {
+                                alert(json.lineasOcupadas[i]);
+                            }
                             LlenaLineasIzq(json.json.Linea);
                             LlenaLineasDer(json.json.PasilloUnCateg);
                         }
