@@ -291,38 +291,6 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        @if (ViewBag.ArtSup == null)
-                                        {
-                                            <div class="row">
-                                                <div class="col-sm-12 col-md-12 col-lg-12">
-                                                    <table style="width:100%">
-                                                        <tr>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td style="width:25%;">
-                                                                <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="Consignacion()">
-                                                                    Aceptar Pedido
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td>
-                                                            </td>
-                                                            <td></td>
-                                                            <td style="width:25%;">
-                                                                <button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="popCancelar()"> Cancelar Pedido </button>
-                                                                @*<button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="alert('La siguiente consignación será cancelada por el siguiente motivo')"> Cancelar  Consignación </button>*@
-                                                            </td>
-                                                        </tr>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        }
                                     </div>
                                 </div>
                                 @if (EsVehiculo)
@@ -1111,40 +1079,59 @@
 
         function FinalizaEmbarqueDST() {
 
-        var ch = "0";
+            var ch = "0";
+            var checked = 0;
+            var count = 0;
+            var existsProd = false;
         //if (document.getElementById('CheckPinPad').checked) {
         //    ch = "1";
         //}
 
-        $.ajax({
-            async: false,
-            type: "POST",
-            url: '@Url.Action("FinalizarEmbarqueDSV", "Ordenes")',
-            data: {
-                //num: id
+            $("#tblSolicitutGuia TBODY TR").each(function () {
+                var row1 = $(this);
 
-                OrderNo: document.getElementById("hddOrderNo").value,
-                ue: document.getElementById("hddUeNo").value,
-                store: document.getElementById("hddStoreNum").value,
-                status: document.getElementById("hddStatusUe").value,
-                bolsas: 0, //document.getElementById("in_bolsas").value,
-                contenedores: 0, //document.getElementById("in_contenedores").value,
 
-                hieleras: 0, //document.getElementById("in_hieleras").value,
-                checkPinPad: ch
-            },
-            datatype: "html",
-            success: function (json) {
-                if (json.Success) {
-                    location.reload();
-                    //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
-                }
+                if (row1.find("TD").eq(3).html() == 'x')
+                    checked = checked + 1;
+
+                count = count + 1;
+                existsProd = true;
+            });
+
+            console.log(existsProd, checked, count);
+            if (existsProd == true && count == checked) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("FinalizarEmbarqueDSV", "Ordenes")',
+                    data: {
+                        //num: id
+
+                        OrderNo: document.getElementById("hddOrderNo").value,
+                        ue: document.getElementById("hddUeNo").value,
+                        store: document.getElementById("hddStoreNum").value,
+                        status: document.getElementById("hddStatusUe").value,
+                        bolsas: 0, //document.getElementById("in_bolsas").value,
+                        contenedores: 0, //document.getElementById("in_contenedores").value,
+
+                        hieleras: 0, //document.getElementById("in_hieleras").value,
+                        checkPinPad: ch
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            location.reload();
+                            //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
             }
-            , error: function (jqXHR, textStatus, errorThrown) {
-               alert(errorThrown);
-
-            }
-        });
+            else
+                alert('No se puede Finalizar debido a que aun hay productos sin guia.');
 
     }
 
