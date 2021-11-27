@@ -336,6 +336,7 @@
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrdersDetail.cs" />
     <Compile Include="Models\ProcesoReciboDevoluciones\ProcesoReciboDevoluciones.cs" />
+    <Compile Include="Models\ProcesoSurtido\Guias_por_OrderFact.cs" />
     <Compile Include="Models\ProcesoSurtido\OrderFacts_UE_CancelCauses.cs" />
     <Compile Include="Models\MotivosCancel.cs" />
     <Compile Include="Controllers\OrdenesController.cs" />
@@ -380,6 +381,7 @@
     <Compile Include="Models\PasilloUnReporteMapModel.cs" />
     <Compile Include="Models\PasilloUnRepPasillo.cs" />
     <Compile Include="Models\PassCancelModel.cs" />
+    <Compile Include="Models\ProcesoSurtido\UenoTracking.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoConsigmentsVehicles.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcess.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcessSel.cs" />

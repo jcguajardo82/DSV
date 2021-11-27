@@ -2,10 +2,12 @@
 using ServicesManagement.Web.DAL.Embarques;
 using ServicesManagement.Web.DAL.ProcesoSurtido;
 using ServicesManagement.Web.Helpers;
+using ServicesManagement.Web.Models;
 using ServicesManagement.Web.Models.ProcesoSurtido;
 using Soriana.OMS.Ordenes.Common.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -43,6 +45,7 @@ namespace ServicesManagement.Web.Controllers
                 return View();
             }
 
+            Session["lstGuiasDetalle"] = null;
             var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcess(UeNo, OrderNo);
             ViewBag.OrderNo = OrderNo;
             ViewBag.UeNo = UeNo;
@@ -53,9 +56,6 @@ namespace ServicesManagement.Web.Controllers
             ViewBag.Header = enc;
             ViewBag.PorProcesar = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcessSel>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcessSel(UeNo, OrderNo).Tables[0]);
             ViewBag.Vehiculos = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoConsigmentsVehicles>(DALProcesoSurtido.upCorpOms_Cns_UeNoConsigmentsVehicles(UeNo, OrderNo, enc.idSupplierWH, enc.IdSupplierWHCode).Tables[0]);
-            Session["OrderPackages"] = DALEmbarques.upCorpOms_Cns_UeNoTracking(UeNo, OrderNo);
-
-
 
             if (ds.Tables.Count == 1)
             {
@@ -74,12 +74,156 @@ namespace ServicesManagement.Web.Controllers
                 }
 
                 ViewBag.UeNoSupplyProcess = list;
-                ViewBag.Encabezado = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[1]);
+                ViewBag.Encabezado = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[2]);
+
+                if (ds.Tables.Count == 3)
+                    ViewBag.Guias = GetGuias(ds.Tables[1], UeNo);
+
+                var lstTracking = DataTableToModel.ConvertTo<UenoTracking>(DALEmbarques.upCorpOms_Cns_UeNoTracking(UeNo, OrderNo).Tables[0]);
+                List<UenoTracking> lstTrackingF = new List<UenoTracking>();
+                foreach (var item in lstTracking)
+                {
+                    UenoTracking newItem = new UenoTracking();
+                    newItem.declaredValue = item.declaredValue;
+                    newItem.IdTrackingService = item.IdTrackingService;
+                    newItem.PackageHeight = item.PackageHeight;
+                    newItem.PackageLength = item.PackageLength;
+                    newItem.PackageWeight = item.PackageWeight;
+                    newItem.PackageWidth = item.PackageWidth;
+                    newItem.Quantity = item.Quantity;
+                    newItem.ShippingMethod = item.ShippingMethod;
+                    newItem.IdTracking = item.IdTracking;
+                    newItem.PesoReal = GetPesoReal(item.IdTrackingService);
+
+                    lstTrackingF.Add(newItem);
+                }
+
+                Session["OrderTrackings"] = lstTrackingF;
             }
 
             return View();
         }
+        private List<Guias_por_OrderFact> GetGuias(DataTable dt, string UeNo)
+        {
+            var lstGuias = DataTableToModel.ConvertTo<Guias_por_OrderFact>(dt);
+            List<Guias_por_OrderFact> lst = new List<Guias_por_OrderFact>();
 
+            foreach (var item in lstGuias)
+            {
+                Guias_por_OrderFact newItem = new Guias_por_OrderFact();
+                newItem.IdTrackingService = item.IdTrackingService;
+                newItem.PackageType = item.PackageType;
+                newItem.PackageWeight = GetGuiasDetails(UeNo, item.IdTrackingService);
+
+                lst.Add(newItem);
+            }
+
+            return lst;
+        }
+        private decimal? GetGuiasDetails(string UeNo, string idTrackingService)
+        {
+            List<upCorpOms_Cns_UeNoSupplyProcess> lst = new List<upCorpOms_Cns_UeNoSupplyProcess>();
+            var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoTrackingProducts(UeNo, idTrackingService);
+            var listDetails = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[0]);
+            decimal pesoVol = 0;
+            foreach (var itemD in listDetails)
+            {
+                upCorpOms_Cns_UeNoSupplyProcess newItem = new upCorpOms_Cns_UeNoSupplyProcess();
+
+                var dsProd = DALServicesM.GetDimensionsByProduct(itemD.SKU.ToString());
+                var product = DataTableToModel.ConvertTo<ProductDimensionsModel>(dsProd.Tables[0]).FirstOrDefault();
+                pesoVol = 0;
+                if (product.UNIDAD_PES.Equals("KG"))
+                    pesoVol = (product.ALTO * product.ANCHO * product.LARGO) / 5000;
+                else
+                    pesoVol = ((product.ALTO * product.ANCHO * product.LARGO) / 5000) / 1000;
+
+                newItem.Descripcion = itemD.Descripcion;
+                newItem.SKU = itemD.SKU;
+                newItem.Piezas = itemD.Piezas;
+                newItem.IdTrackingService = idTrackingService;
+
+                if (pesoVol > product.PESO)
+                    newItem.PesoReal = (pesoVol * decimal.Parse(itemD.Piezas.ToString()));
+                else
+                    newItem.PesoReal = (product.PESO * decimal.Parse(itemD.Piezas.ToString()));
+
+
+                lst.Add(newItem);
+
+            }
+
+            if (Session["lstGuiasDetalle"] != null)
+            {
+                var lstDetalle = (List<upCorpOms_Cns_UeNoSupplyProcess>)Session["lstGuiasDetalle"];
+
+                lstDetalle.AddRange(lst);
+
+                Session["lstGuiasDetalle"] = lstDetalle;
+            }
+            else
+                Session["lstGuiasDetalle"] = lst;
+
+            var pesoRealTot = lst.Where(x => x.IdTrackingService == idTrackingService).Sum(x => x.PesoReal);
+
+            return pesoRealTot;
+
+        }
+        private decimal? GetPesoReal(string idTrackingService)
+        {
+            decimal? pesoReal = 0;
+            try
+            {
+                if (Session["lstGuiasDetalle"] != null)
+                {
+                    var lstDetalle = (List<upCorpOms_Cns_UeNoSupplyProcess>)Session["lstGuiasDetalle"];
+                    var list = lstDetalle.Where(x => x.IdTrackingService == idTrackingService);
+
+                    pesoReal = list.Sum(x => x.PesoReal);
+                }
+
+            }
+            catch (Exception x)
+            {
+
+            }
+
+            return pesoReal;
+        }
+        [HttpPost]
+        public ActionResult GetDetails(string idTrackingService)
+        {
+            try
+            {
+                if (Session["lstGuiasDetalle"] != null)
+                {
+                    var lstDetalle = (List<upCorpOms_Cns_UeNoSupplyProcess>)Session["lstGuiasDetalle"];
+                    var list = lstDetalle.Where(x => x.IdTrackingService == idTrackingService);
+
+                    var result = new
+                    {
+                        Success = true
+                        ,
+                        data = list
+                    };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var result = new
+                    {
+                        Success = false
+                    };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpPost]
         public ActionResult GetSolicitarGuia()
         {
@@ -134,7 +278,7 @@ namespace ServicesManagement.Web.Controllers
 
                 var result = new
                 {
-                    Success = true               
+                    Success = true
                 };
 
 
@@ -193,7 +337,7 @@ namespace ServicesManagement.Web.Controllers
 
                     a.Precio = p[0].Precio;                                                     // Price
                     a.Observaciones = p[0].Observaciones;                                       // Observations
-                    a.UnidadMedida = p[0].UnidadMedida.Length == 0 ? " ": p[0].UnidadMedida;    // UnitMeasure
+                    a.UnidadMedida = p[0].UnidadMedida.Length == 0 ? " " : p[0].UnidadMedida;    // UnitMeasure
                     a.NumeroOrden = p[0].OrderNo.ToString();                                    // OrderNo
                     //  a.FueSuministrado = true;
                     //  a.Cantidad = p[0].Piezas;
@@ -240,19 +384,19 @@ namespace ServicesManagement.Web.Controllers
 
         [HttpPost]
         public ActionResult SaveVehiculo(string UeNo, int OrderNo
-           , string idOwner, int idSupplierWH, int idSupplierWHCode, string SerialId, string BateryId,string EntryBy, string EntryDate, string PetitionId
-           , string MotorId,string RepuveId, string Year, int ColorId, string ModelId, string BrandId, string CylinderCapacityId)
+           , string idOwner, int idSupplierWH, int idSupplierWHCode, string SerialId, string BateryId, string EntryBy, string EntryDate, string PetitionId
+           , string MotorId, string RepuveId, string Year, int ColorId, string ModelId, string BrandId, string CylinderCapacityId)
         {
             try
             {
 
-                    DALProcesoSurtido.upCorpOms_Ins_UeNoConsigmentsVehicles(
-                         UeNo, OrderNo
-                       , idOwner, idSupplierWH, idSupplierWHCode, SerialId, BateryId,EntryBy, Convert.ToDateTime(EntryDate), PetitionId
-                       , MotorId, RepuveId, Year, ColorId, ModelId, BrandId, CylinderCapacityId, User.Identity.Name);           
+                DALProcesoSurtido.upCorpOms_Ins_UeNoConsigmentsVehicles(
+                     UeNo, OrderNo
+                   , idOwner, idSupplierWH, idSupplierWHCode, SerialId, BateryId, EntryBy, Convert.ToDateTime(EntryDate), PetitionId
+                   , MotorId, RepuveId, Year, ColorId, ModelId, BrandId, CylinderCapacityId, User.Identity.Name);
                 var result = new
                 {
-                    Success = true         
+                    Success = true
                 };
 
 
