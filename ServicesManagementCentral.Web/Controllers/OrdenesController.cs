@@ -2595,117 +2595,117 @@ namespace ServicesManagement.Web.Controllers
             return string.Empty;
 
         }
-        public string CreateGuiaLogyt(string UeNo, int OrderNo, int weight, int typeId)
-        {
-            var ServiceTypeId = 1;
-            DataSet ds = new DataSet();
-            DataSet dsO = new DataSet();
+        //public string CreateGuiaLogyt(string UeNo, int OrderNo, int weight, int typeId)
+        //{
+        //    var ServiceTypeId = 1;
+        //    DataSet ds = new DataSet();
+        //    DataSet dsO = new DataSet();
 
-            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
-            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
-            {
-                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
-            }
-
-
-            try
-            {
-                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
-
-                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                parametros.Add("@UeNo", UeNo);
-                parametros.Add("@OrderNo", OrderNo);
-
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Sel_EstafetaInfo]", false, parametros);
+        //    string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+        //    if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+        //    {
+        //        conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+        //    }
 
 
+        //    try
+        //    {
+        //        Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
-                System.Collections.Hashtable parametros2 = new System.Collections.Hashtable();
-                parametros2.Add("@UeNo", UeNo);
+        //        System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+        //        parametros.Add("@UeNo", UeNo);
+        //        parametros.Add("@OrderNo", OrderNo);
 
-
-                dsO = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoOriginInfo]", false, parametros2);
-
-            }
-            catch (SqlException ex)
-            {
-                return "ERRSQL";
-            }
-            catch (System.Exception ex)
-            {
-                return "ERR";
-            }
-
-            LogytRequestModel m = new LogytRequestModel();
-            foreach (DataRow r in dsO.Tables[0].Rows)
-            {
+        //        ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Sel_EstafetaInfo]", false, parametros);
 
 
-                m.Origin = new LogytAddressModel();
 
-                m.Origin.Address1 = r["address1"].ToString();
-                m.Origin.Address2 = r["address2"].ToString();
-                m.Origin.City = r["city"].ToString();
-                m.Origin.ContactName = r["contactName"].ToString();
-                m.Origin.CorporateName = r["corporateName"].ToString();
-                m.Origin.CustomerNumber = r["customerNumber"].ToString();
-                m.Origin.Neighborhood = r["neighborhood"].ToString();
-                m.Origin.PhoneNumber = r["phone"].ToString();
-                m.Origin.State = r["state"].ToString();
-                m.Origin.ZipCode = r["zipCode"].ToString();
-
-            }
-
-            foreach (DataRow r in ds.Tables[0].Rows)
-            {
-
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-                //m.ServiceType = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
-                m.ServiceType = r["ServiceType"].ToString();
-                if (weight >= 70)
-                {
-                    m.ServiceType = "L0";
-                }
+        //        System.Collections.Hashtable parametros2 = new System.Collections.Hashtable();
+        //        parametros2.Add("@UeNo", UeNo);
 
 
-                m.Destination = new LogytAddressModel();
+        //        dsO = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoOriginInfo]", false, parametros2);
 
-                m.Destination.Address1 = r["Address1"].ToString();
-                m.Destination.Address2 = r["Address2"].ToString();
-                m.Destination.City = r["City"].ToString();
-                m.Destination.ContactName = r["CustomerName"].ToString();
-                //m.Destination.corporateName = r["CustomerName"].ToString();
-                m.Destination.CorporateName = r["UeNo"].ToString();
-                m.Destination.CustomerNumber = r["CustomerNo"].ToString();
-                m.Destination.Neighborhood = r["NameReceives"].ToString();
-                m.Destination.PhoneNumber = r["Phone"].ToString();
-                m.Destination.State = r["StateCode"].ToString();
-                m.Destination.ZipCode = r["PostalCode"].ToString();
+        //    }
+        //    catch (SqlException ex)
+        //    {
+        //        return "ERRSQL";
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        return "ERR";
+        //    }
 
-                m.Reference = r["Reference"].ToString();
-                //m.originZipCodeForRouting = r["PostalCode"].ToString();
-                m.Weight = weight; // lo capturado en el modal
-                m.Volume = weight;
+        //    LogytRequestModel m = new LogytRequestModel();
+        //    foreach (DataRow r in dsO.Tables[0].Rows)
+        //    {
 
-                string json2 = JsonConvert.SerializeObject(m);
 
-                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Logyt_Guia"], "", json2);
+        //        m.Origin = new LogytAddressModel();
 
-                string msg = r2.message;
+        //        m.Origin.Address1 = r["address1"].ToString();
+        //        m.Origin.Address2 = r["address2"].ToString();
+        //        m.Origin.City = r["city"].ToString();
+        //        m.Origin.ContactName = r["contactName"].ToString();
+        //        m.Origin.CorporateName = r["corporateName"].ToString();
+        //        m.Origin.CustomerNumber = r["customerNumber"].ToString();
+        //        m.Origin.Neighborhood = r["neighborhood"].ToString();
+        //        m.Origin.PhoneNumber = r["phone"].ToString();
+        //        m.Origin.State = r["state"].ToString();
+        //        m.Origin.ZipCode = r["zipCode"].ToString();
 
-                LogytResponseModels re = JsonConvert.DeserializeObject<LogytResponseModels>(r2.message);
+        //    }
 
-                string pdfcadena2 = Convert.ToBase64String(re.Labels[0].PDF, Base64FormattingOptions.None);
+        //    foreach (DataRow r in ds.Tables[0].Rows)
+        //    {
 
-                //return re.Guia + "," + re.pdf;
-                return re.Labels[0].Folios[0] + "," + pdfcadena2;
+        //        System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            }
+        //        //m.ServiceType = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
+        //        m.ServiceType = r["ServiceType"].ToString();
+        //        if (weight >= 70)
+        //        {
+        //            m.ServiceType = "L0";
+        //        }
 
-            return string.Empty;
 
-        }
+        //        m.Destination = new LogytAddressModel();
+
+        //        m.Destination.Address1 = r["Address1"].ToString();
+        //        m.Destination.Address2 = r["Address2"].ToString();
+        //        m.Destination.City = r["City"].ToString();
+        //        m.Destination.ContactName = r["CustomerName"].ToString();
+        //        //m.Destination.corporateName = r["CustomerName"].ToString();
+        //        m.Destination.CorporateName = r["UeNo"].ToString();
+        //        m.Destination.CustomerNumber = r["CustomerNo"].ToString();
+        //        m.Destination.Neighborhood = r["NameReceives"].ToString();
+        //        m.Destination.PhoneNumber = r["Phone"].ToString();
+        //        m.Destination.State = r["StateCode"].ToString();
+        //        m.Destination.ZipCode = r["PostalCode"].ToString();
+
+        //        m.Reference = r["Reference"].ToString();
+        //        //m.originZipCodeForRouting = r["PostalCode"].ToString();
+        //        m.Weight = weight; // lo capturado en el modal
+        //        m.Volume = weight;
+
+        //        string json2 = JsonConvert.SerializeObject(m);
+
+        //        Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Logyt_Guia"], "", json2);
+
+        //        string msg = r2.message;
+
+        //        LogytResponseModels re = JsonConvert.DeserializeObject<LogytResponseModels>(r2.message);
+
+        //        string pdfcadena2 = Convert.ToBase64String(re.Labels[0].PDF, Base64FormattingOptions.None);
+
+        //        //return re.Guia + "," + re.pdf;
+        //        return re.Labels[0].Folios[0] + "," + pdfcadena2;
+
+        //    }
+
+        //    return string.Empty;
+
+        //}
         public string GuardarTarifas(string UeNo, int OrderNo, string json)
         {
 

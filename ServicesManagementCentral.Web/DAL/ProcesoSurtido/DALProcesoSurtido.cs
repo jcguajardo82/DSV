@@ -210,7 +210,7 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
 
 
         public static DataSet upCorpOms_Ins_UeNoConsigmentsVehicles(string UeNo, int? OrderNo
-           , string idOwner, int idSupplierWH,int idSupplierWHCode,string SerialId,string BateryId,string EntryBy, DateTime EntryDate,string PetitionId
+           , string idOwner, int idSupplierWH, int idSupplierWHCode, string SerialId, string BateryId, string EntryBy, DateTime EntryDate, string PetitionId
            , string MotorId, string RepuveId, string Year, int ColorId, string ModelId, string BrandId, string CylinderCapacityId, string CreationId)
         {
             DataSet ds = new DataSet();
@@ -243,13 +243,13 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
                 parametros.Add("@MotorId", MotorId);
                 parametros.Add("@RepuveId", RepuveId);
                 parametros.Add("@Year", Year);
-             
+
                 parametros.Add("@ColorId", ColorId);
                 parametros.Add("@ModelId", ModelId);
                 parametros.Add("@BrandId", BrandId);
                 parametros.Add("@CylinderCapacityId", CylinderCapacityId);
                 parametros.Add("@CreationId", CreationId);
-                
+
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoConsigmentsVehicles]", false, parametros);
@@ -269,7 +269,7 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
 
         }
 
-        public static DataSet upCorpOms_Cns_UeNoConsigmentsVehicles(string UeNo, int? OrderNo,int idSupplierWH,int idSupplierWHCode)
+        public static DataSet upCorpOms_Cns_UeNoConsigmentsVehicles(string UeNo, int? OrderNo, int idSupplierWH, int idSupplierWHCode)
         {
 
             DataSet ds = new DataSet();
@@ -291,12 +291,48 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
                 if (OrderNo != null)
                     parametros.Add("@OrderNo", OrderNo);
 
-                    parametros.Add("@idSupplierWH", idSupplierWH);
-                    parametros.Add("@idSupplierWHCode", idSupplierWHCode);
+                parametros.Add("@idSupplierWH", idSupplierWH);
+                parametros.Add("@idSupplierWHCode", idSupplierWHCode);
 
 
 
-        ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoConsigmentsVehicles]", false, parametros);
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoConsigmentsVehicles]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public static DataSet upCorpOms_Cns_UeNoTrackingDetails(string UeNo, string idTrackingService)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@idTrackingService", idTrackingService);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoTrackingDetails]", false, parametros);
 
                 return ds;
             }
@@ -313,5 +349,41 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
 
         }
 
+        public static DataSet upCorpOms_Cns_UeNoTrackingProducts(string UeNo, string idTrackingService)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@idTrackingService", idTrackingService);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoTrackingProducts]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
     }
 }

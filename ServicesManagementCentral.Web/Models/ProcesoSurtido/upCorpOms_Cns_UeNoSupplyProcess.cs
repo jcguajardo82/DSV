@@ -20,7 +20,8 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
         public string Observaciones { get; set; }
         public string TipoEnvio { get; set; }
         public bool Suplido { get; set; }
-
+        public string IdTrackingService { get; set; }
+        public decimal? PesoReal { get; set; }
 
     }
 
