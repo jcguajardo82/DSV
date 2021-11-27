@@ -2128,6 +2128,9 @@ namespace ServicesManagement.Web.Controllers
 
             }
 
+            if (sumPeso < 1)
+                sumPeso = 1;
+
             DataSet ds = DALServicesM.OrdersLogistics(orderNo, sumPeso, bigTicket);
 
 
@@ -2244,6 +2247,9 @@ namespace ServicesManagement.Web.Controllers
                 }
 
             }
+
+            if (sumPeso < 1)
+                sumPeso = 1;
 
             DataSet ds = DALServicesM.OrdersLogistics(Paquete.orderNo, sumPeso, bigTicket);
 
