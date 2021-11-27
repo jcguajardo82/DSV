@@ -92,14 +92,15 @@ namespace ServicesManagement.Web.Controllers
         public decimal Largo { get; set; }
         public decimal Ancho { get; set; }
         public decimal Alto { get; set; }
-      
+
     }
 
     public class ProductEmbalaje
     {
-        public decimal Barcode { get; set; }
-        public decimal ProductId { get; set; }
+        public long Barcode { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; }
+        public int Pieces { get; set; }
     }
     #endregion
     [Authorize]
@@ -679,17 +680,17 @@ namespace ServicesManagement.Web.Controllers
                             if (!value.Equals(array[0]))
                             {
 
-                                 d = DALServicesM.GetOrdersByOrderNo(value);
+                                d = DALServicesM.GetOrdersByOrderNo(value);
                                 //OrderNo = array[0];
                                 foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
                                 {
-                                   
+
 
                                     o.Expedidor.NumeroOrdenes.Add(r1["OrderNo"].ToString());
                                 }
 
 
-                                
+
                             }
                         }
 
@@ -998,7 +999,7 @@ namespace ServicesManagement.Web.Controllers
                 if (ueType.Equals("DST"))
                     IdOwner = 2;
                 if (ueType.Equals("CEDIS") || ueType.Equals("DSV"))
-                    return RedirectToAction("OrdenSeleccionada", "Ordenes", new { Ueno= order });
+                    return RedirectToAction("OrdenSeleccionada", "Ordenes", new { Ueno = order });
 
                 ViewBag.MotCanCD = DataTableToModel.ConvertTo<OrderFacts_UE_CancelCauses>(DALProcesoSurtido.upCorpOms_Cns_UeCancelCauses(IdOwner).Tables[0]);
                 Session["OrderSelected"] = ds;
@@ -2005,10 +2006,10 @@ namespace ServicesManagement.Web.Controllers
 
         #region Embarques
 
-
-        public ActionResult AddEmbalaje(List<PackageMeasure> Paquetes, string UeNo, int OrderNo,List<ProductEmbalaje> Products, string contentType, string TrackingType ="Normal")
+        [HttpPost]
+        public ActionResult AddEmbalaje(List<PackageMeasure> Paquetes, string UeNo, int OrderNo, List<ProductEmbalaje> Products, string TrackingType = "Normal")
         {
-            string tarifa = string.Empty;
+            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty;
             try
             {
                 List<string> folios = new List<string>();
@@ -2068,7 +2069,7 @@ namespace ServicesManagement.Web.Controllers
 
                     var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
                     item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
-                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, contentType).Tables[0].Rows[0][0];
+                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null).Tables[0].Rows[0][0];
 
                     #endregion
                 }
@@ -2084,10 +2085,10 @@ namespace ServicesManagement.Web.Controllers
 
                 }
 
-                if (contentType != null)
-                {
-                    DALServicesM.UCCProcesada(contentType);
-                }
+                //if (contentType != null)
+                //{
+                //    DALServicesM.UCCProcesada(contentType);
+                //}
 
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -2098,12 +2099,51 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+        //private string SeleccionarPaqueteria(List<ProductEmbalaje> Products, int orderNo)
+        //{
+        //    string productsAll = string.Empty;
+        //    bool bigTicket = false;
+        //    decimal sumPeso = 0;
+
+        //    foreach (var p in Products)
+        //    {
+        //        productsAll += p.ProductId.ToString() + ",";
+        //    }
+        //    List<WeightByProducts> lstPesos = DataTableToModel.ConvertTo<WeightByProducts>(DALServicesM.GetDimensionsByProducts(productsAll).Tables[0]);
+
+        //    foreach (var item in lstPesos)
+        //    {
+        //        if (item.PesoVol > item.Peso)
+        //        {
+        //            if (item.PesoVol > 70)
+        //                bigTicket = true;
+
+        //            var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
+        //            sumPeso = sumPeso + (item.PesoVol * piezas);
+        //        }
+        //        else
+        //        {
+        //            if (item.Peso > 70)
+        //                bigTicket = true;
+
+        //            var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
+        //            sumPeso = sumPeso + (item.Peso * piezas);
+        //        }
+
+        //    }
+
+        //    DataSet ds = DALServicesM.OrdersLogistics(orderNo, sumPeso, bigTicket);
+
+
+
+        //    return ds.Tables[0].Rows[0][1].ToString();
+        //}
         public ActionResult AddEmbalajePendiente(List<ShipmentToTrackingModel> Paquetes)
         {
-            string tarifa = string.Empty;
+            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty;
             try
             {
-                
+
                 foreach (ShipmentToTrackingModel item in Paquetes)
                 {
                     #region Guias
@@ -2182,6 +2222,44 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+        //private string SeleccionarPaqueteriaPendiente(ShipmentToTrackingModel Paquete)
+        //{
+        //    string productsAll = string.Empty;
+        //    bool bigTicket = false;
+        //    decimal sumPeso = 0;
+
+
+        //    productsAll = Paquete.productId.ToString();
+
+        //    List<WeightByProducts> lstPesos = DataTableToModel.ConvertTo<WeightByProducts>(DALServicesM.GetDimensionsByProducts(productsAll).Tables[0]);
+
+        //    foreach (var item in lstPesos)
+        //    {
+        //        if (item.PesoVol > item.Peso)
+        //        {
+        //            if (item.PesoVol > 70)
+        //                bigTicket = true;
+
+        //            var piezas = Paquete.piezas;
+        //            sumPeso = sumPeso + (item.PesoVol * piezas);
+        //        }
+        //        else
+        //        {
+        //            if (item.Peso > 70)
+        //                bigTicket = true;
+
+        //            var piezas = Paquete.piezas;
+        //            sumPeso = sumPeso + (item.Peso * piezas);
+        //        }
+
+        //    }
+
+        //    DataSet ds = DALServicesM.OrdersLogistics(Paquete.orderNo, sumPeso, bigTicket);
+
+
+
+        //    return ds.Tables[0].Rows[0][1].ToString();
+        //}
         //Cabeceras y productos
         public ActionResult LstCabecerasGuiasProds(string UeNo, int OrderNo)
         {
@@ -2258,15 +2336,15 @@ namespace ServicesManagement.Web.Controllers
             string tarifa = string.Empty;
             try
             {
-                string[] carriers = {"redpack", "carssa", "sendex", "noventa9minutos" };
+                string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
                 List<string> lstCarriers = new List<string>(carriers);
 
 
 
 
 
-                
-                
+
+
                 //EliminarTarifasAnteriores(UeNo, OrderNo);
                 //foreach (var carrier in lstCarriers)
                 //{
@@ -2279,9 +2357,9 @@ namespace ServicesManagement.Web.Controllers
 
                 if (PackageType.Equals("Paquete"))
                     type = 4;
-                string guia = CreateGuiaEstafeta(UeNo, OrderNo,int.Parse(PackageWeight.ToString()),type);
+                string guia = CreateGuiaEstafeta(UeNo, OrderNo, int.Parse(PackageWeight.ToString()), type);
 
-                string servicioPaq = "estafeta";
+                string servicioPaq = "Logyt-Estafeta";
                 string GuiaEstatus = "CREADA";
                 //TarifaModel tarifaSeleccionada = new TarifaModel();
                 //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
@@ -2333,7 +2411,7 @@ namespace ServicesManagement.Web.Controllers
             }
             catch (SqlException ex)
             {
-               result = "ERRSQL";
+                result = "ERRSQL";
             }
             catch (System.Exception ex)
             {
@@ -2441,13 +2519,13 @@ namespace ServicesManagement.Web.Controllers
                 m.OriginInfo.phoneNumber = r["phone"].ToString();
                 m.OriginInfo.state = r["state"].ToString();
                 m.OriginInfo.zipCode = r["zipCode"].ToString();
-                
+
             }
 
             foreach (DataRow r in ds.Tables[0].Rows)
             {
 
-                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 //m.serviceTypeId = "60";
                 //m.serviceTypeId = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
@@ -2456,28 +2534,28 @@ namespace ServicesManagement.Web.Controllers
                 {
                     m.serviceTypeId = "L0";
                 }
-                
 
-                    m.DestinationInfo = new AddressModel();
 
-                    m.DestinationInfo.address1 = r["Address1"].ToString();
-                    m.DestinationInfo.address2 = r["Address2"].ToString();
-                    m.DestinationInfo.cellPhone = r["Phone"].ToString();
-                    m.DestinationInfo.city = r["City"].ToString();
-                    m.DestinationInfo.contactName = r["CustomerName"].ToString();
-                    //m.DestinationInfo.corporateName = r["CustomerName"].ToString();
-                    m.DestinationInfo.corporateName = r["UeNo"].ToString();
-                    m.DestinationInfo.customerNumber = r["CustomerNo"].ToString();
-                    m.DestinationInfo.neighborhood = r["NameReceives"].ToString();
-                    m.DestinationInfo.phoneNumber = r["Phone"].ToString();
-                    m.DestinationInfo.state = r["StateCode"].ToString();
-                    m.DestinationInfo.zipCode = r["PostalCode"].ToString();
-                    
-                    m.reference = r["Reference"].ToString();
-                    m.originZipCodeForRouting = r["PostalCode"].ToString();
-                    m.weight = weight; // lo capturado en el modal
-                    m.parcelTypeId = typeId; // 1 - sobre, 4 - paquete
-                    m.effectiveDate = r["effectiveDate"].ToString();
+                m.DestinationInfo = new AddressModel();
+
+                m.DestinationInfo.address1 = r["Address1"].ToString();
+                m.DestinationInfo.address2 = r["Address2"].ToString();
+                m.DestinationInfo.cellPhone = r["Phone"].ToString();
+                m.DestinationInfo.city = r["City"].ToString();
+                m.DestinationInfo.contactName = r["CustomerName"].ToString();
+                //m.DestinationInfo.corporateName = r["CustomerName"].ToString();
+                m.DestinationInfo.corporateName = r["UeNo"].ToString();
+                m.DestinationInfo.customerNumber = r["CustomerNo"].ToString();
+                m.DestinationInfo.neighborhood = r["NameReceives"].ToString();
+                m.DestinationInfo.phoneNumber = r["Phone"].ToString();
+                m.DestinationInfo.state = r["StateCode"].ToString();
+                m.DestinationInfo.zipCode = r["PostalCode"].ToString();
+
+                m.reference = r["Reference"].ToString();
+                m.originZipCodeForRouting = r["PostalCode"].ToString();
+                m.weight = weight; // lo capturado en el modal
+                m.parcelTypeId = typeId; // 1 - sobre, 4 - paquete
+                m.effectiveDate = r["effectiveDate"].ToString();
 
                 //OrderNo
                 //    CnscOrder
@@ -2501,13 +2579,13 @@ namespace ServicesManagement.Web.Controllers
 
                 string json2 = JsonConvert.SerializeObject(m);
 
-                    Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Estafeta_Guia"], "", json2);
+                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Estafeta_Guia"], "", json2);
 
-                    string msg = r2.message;
+                string msg = r2.message;
 
-                    ResponseModels re = JsonConvert.DeserializeObject<ResponseModels>(r2.message);
-                    
-                    string pdfcadena2 = Convert.ToBase64String(re.pdf, Base64FormattingOptions.None);
+                ResponseModels re = JsonConvert.DeserializeObject<ResponseModels>(r2.message);
+
+                string pdfcadena2 = Convert.ToBase64String(re.pdf, Base64FormattingOptions.None);
 
                 //return re.Guia + "," + re.pdf;
                 return re.Guia + "," + pdfcadena2;
@@ -2575,13 +2653,13 @@ namespace ServicesManagement.Web.Controllers
                 m.Origin.PhoneNumber = r["phone"].ToString();
                 m.Origin.State = r["state"].ToString();
                 m.Origin.ZipCode = r["zipCode"].ToString();
-                
+
             }
 
             foreach (DataRow r in ds.Tables[0].Rows)
             {
 
-                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 //m.ServiceType = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
                 m.ServiceType = r["ServiceType"].ToString();
@@ -2589,27 +2667,27 @@ namespace ServicesManagement.Web.Controllers
                 {
                     m.ServiceType = "L0";
                 }
-                
 
-                    m.Destination = new LogytAddressModel();
 
-                    m.Destination.Address1 = r["Address1"].ToString();
-                    m.Destination.Address2 = r["Address2"].ToString();
-                    m.Destination.City = r["City"].ToString();
-                    m.Destination.ContactName = r["CustomerName"].ToString();
-                    //m.Destination.corporateName = r["CustomerName"].ToString();
-                    m.Destination.CorporateName = r["UeNo"].ToString();
-                    m.Destination.CustomerNumber = r["CustomerNo"].ToString();
-                    m.Destination.Neighborhood = r["NameReceives"].ToString();
-                    m.Destination.PhoneNumber = r["Phone"].ToString();
-                    m.Destination.State = r["StateCode"].ToString();
-                    m.Destination.ZipCode = r["PostalCode"].ToString();
-                    
-                    m.Reference = r["Reference"].ToString();
-                    //m.originZipCodeForRouting = r["PostalCode"].ToString();
-                    m.Weight = weight; // lo capturado en el modal
-                    m.Volume = weight;  
-                
+                m.Destination = new LogytAddressModel();
+
+                m.Destination.Address1 = r["Address1"].ToString();
+                m.Destination.Address2 = r["Address2"].ToString();
+                m.Destination.City = r["City"].ToString();
+                m.Destination.ContactName = r["CustomerName"].ToString();
+                //m.Destination.corporateName = r["CustomerName"].ToString();
+                m.Destination.CorporateName = r["UeNo"].ToString();
+                m.Destination.CustomerNumber = r["CustomerNo"].ToString();
+                m.Destination.Neighborhood = r["NameReceives"].ToString();
+                m.Destination.PhoneNumber = r["Phone"].ToString();
+                m.Destination.State = r["StateCode"].ToString();
+                m.Destination.ZipCode = r["PostalCode"].ToString();
+
+                m.Reference = r["Reference"].ToString();
+                //m.originZipCodeForRouting = r["PostalCode"].ToString();
+                m.Weight = weight; // lo capturado en el modal
+                m.Volume = weight;
+
                 string json2 = JsonConvert.SerializeObject(m);
 
                 Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Logyt_Guia"], "", json2);
@@ -2617,8 +2695,8 @@ namespace ServicesManagement.Web.Controllers
                 string msg = r2.message;
 
                 LogytResponseModels re = JsonConvert.DeserializeObject<LogytResponseModels>(r2.message);
-                    
-               string pdfcadena2 = Convert.ToBase64String(re.Labels[0].PDF, Base64FormattingOptions.None);
+
+                string pdfcadena2 = Convert.ToBase64String(re.Labels[0].PDF, Base64FormattingOptions.None);
 
                 //return re.Guia + "," + re.pdf;
                 return re.Labels[0].Folios[0] + "," + pdfcadena2;
@@ -2664,7 +2742,7 @@ namespace ServicesManagement.Web.Controllers
 
             return "ok";
         }
-            public string CreateGuiaCotizador(string UeNo, int OrderNo, int type, string carrier)
+        public string CreateGuiaCotizador(string UeNo, int OrderNo, int type, string carrier)
         {
 
             DataSet ds = new DataSet();
@@ -2723,7 +2801,7 @@ namespace ServicesManagement.Web.Controllers
                 origin.coordinates = coordinates;
 
                 requestCotizador.origin = origin;
-                
+
             }
             foreach (DataRow r in ds.Tables[1].Rows)
             {
@@ -2778,7 +2856,7 @@ namespace ServicesManagement.Web.Controllers
 
                 shipment.carrier = r["carrier"].ToString();
                 shipment.type = int.Parse(r["type"].ToString());
-                
+
                 requestCotizador.shipment = shipment;
             }
 
@@ -2816,7 +2894,7 @@ namespace ServicesManagement.Web.Controllers
 
         //el detalle producto a producto
         public ActionResult DetalleProdaProd(string UeNo, int OrderNo, string IdTracking, string TrackingType,
-            decimal ProductId, decimal Barcode, string ProductName,
+            int ProductId, long Barcode, string ProductName,
             string CreationId)
         {
             try
