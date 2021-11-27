@@ -2042,7 +2042,7 @@ namespace ServicesManagement.Web.Controllers
 
                     guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
 
-                    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
 
                     //DESCOMENTAR CUANDO YA ESTA HABILITADO EL API DE LOGYT
                     //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
@@ -2175,7 +2175,7 @@ namespace ServicesManagement.Web.Controllers
 
                     guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
 
-                    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
 
                     //DESCOMENTAR CUANDO YA ESTA HABILITADO EL API DE LOGYT
                     //paqueteria = SeleccionarPaqueteriaPendiente(item);
