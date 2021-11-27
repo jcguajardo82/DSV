@@ -263,6 +263,48 @@
 
                                     </div>
                                 </div>
+                                <div role="tabpanel" id="tab-3" class="tab-pane">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <table id="tblGuias" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                                                    <thead class="bg-danger-sor">
+                                                        <tr>
+                                                            <th style="text-align:center;">No. Guia</th>
+                                                            <th style="text-align:center;">Peso Real</th>
+                                                            <th style="text-align:center;">Tipo de Envio</th>
+                                                            <th style="width:250px" name="accion">Acciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+
+                                                            IEnumerable<Guias_por_OrderFact> listG = ViewBag.Guias as IEnumerable<Guias_por_OrderFact>;
+
+                                                        }
+                                                        @foreach (Guias_por_OrderFact itemG in listG)
+                                                        {
+                                                            <tr>
+
+                                                                <td>@itemG.IdTrackingService</td>
+                                                                <td style="text-align:right;">@itemG.PackageWeight</td>
+                                                                <td style="text-align:left;">@itemG.PackageType</td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-primary" onclick="showpdf('@itemG.IdTrackingService');">Descargar Guía</button>
+                                                                    <button type="button" class="btn btn-primary" onclick="showDetails('@itemG.IdTrackingService');">Ver Detalle de Guía</button>
+                                                                </td>
+
+                                                            </tr>
+
+
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 @if (EsVehiculo)
                                 {
                                     if (ViewBag.Vehiculos != null)
@@ -970,40 +1012,59 @@
 
         function FinalizaEmbarqueDST() {
 
-        var ch = "0";
+            var ch = "0";
+            var checked = 0;
+            var count = 0;
+            var existsProd = false;
         //if (document.getElementById('CheckPinPad').checked) {
         //    ch = "1";
         //}
 
-        $.ajax({
-            async: false,
-            type: "POST",
-            url: '@Url.Action("FinalizarEmbarqueDSV", "Ordenes")',
-            data: {
-                //num: id
+            $("#tblSolicitutGuia TBODY TR").each(function () {
+                var row1 = $(this);
 
-                OrderNo: document.getElementById("hddOrderNo").value,
-                ue: document.getElementById("hddUeNo").value,
-                store: document.getElementById("hddStoreNum").value,
-                status: document.getElementById("hddStatusUe").value,
-                bolsas: 0, //document.getElementById("in_bolsas").value,
-                contenedores: 0, //document.getElementById("in_contenedores").value,
 
-                hieleras: 0, //document.getElementById("in_hieleras").value,
-                checkPinPad: ch
-            },
-            datatype: "html",
-            success: function (json) {
-                if (json.Success) {
-                    location.reload();
-                    //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
-                }
+                if (row1.find("TD").eq(3).html() == 'x')
+                    checked = checked + 1;
+
+                count = count + 1;
+                existsProd = true;
+            });
+
+            console.log(existsProd, checked, count);
+            if (existsProd == true && count == checked) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("FinalizarEmbarqueDSV", "Ordenes")',
+                    data: {
+                        //num: id
+
+                        OrderNo: document.getElementById("hddOrderNo").value,
+                        ue: document.getElementById("hddUeNo").value,
+                        store: document.getElementById("hddStoreNum").value,
+                        status: document.getElementById("hddStatusUe").value,
+                        bolsas: 0, //document.getElementById("in_bolsas").value,
+                        contenedores: 0, //document.getElementById("in_contenedores").value,
+
+                        hieleras: 0, //document.getElementById("in_hieleras").value,
+                        checkPinPad: ch
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            location.reload();
+                            //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
             }
-            , error: function (jqXHR, textStatus, errorThrown) {
-               alert(errorThrown);
-
-            }
-        });
+            else
+                alert('No se puede Finalizar debido a que aun hay productos sin guia.');
 
     }
 
