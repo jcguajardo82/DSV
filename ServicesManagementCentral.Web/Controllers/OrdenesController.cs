@@ -2039,9 +2039,25 @@ namespace ServicesManagement.Web.Controllers
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
                         type = 4;
 
-                    string guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+                    guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
 
-                    string servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+
+                    //DESCOMENTAR CUANDO YA ESTA HABILITADO EL API DE LOGYT
+                    //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
+
+                    //if (paqueteria.Equals("Logyt"))
+                    //{
+                    //    guia = CreateGuiaLogyt(UeNo, OrderNo, peso, type);
+
+                    //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    //}
+                    //else
+                    //{
+                    //    guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+
+                    //    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    //}
                     string GuiaEstatus = "CREADA";
                     //TarifaModel tarifaSeleccionada = new TarifaModel();
                     //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
@@ -2116,9 +2132,27 @@ namespace ServicesManagement.Web.Controllers
                     if (item.tipoEmpaque.Equals("CJA") || item.tipoEmpaque.Equals("EMB") || item.tipoEmpaque.Equals("STC"))
                         type = 4;
 
-                    string guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
 
-                    string servicioPaq = "estafeta";
+                    guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+
+                    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+
+                    //DESCOMENTAR CUANDO YA ESTA HABILITADO EL API DE LOGYT
+                    //paqueteria = SeleccionarPaqueteriaPendiente(item);
+
+                    //if (paqueteria.Equals("Logyt"))
+                    //{
+                    //    guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
+
+                    //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    //}
+                    //else
+                    //{
+                    //    guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+
+                    //    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    //}
+
                     string GuiaEstatus = "CREADA";
                     //TarifaModel tarifaSeleccionada = new TarifaModel();
                     //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
