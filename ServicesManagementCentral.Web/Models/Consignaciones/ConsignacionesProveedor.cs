@@ -47,6 +47,13 @@ namespace ServicesManagement.Web.Models.Consignaciones
         public string GuiaStatus { get; set; }
         public string NroAlmacen { get; set; }
         public string NombreAlmacen { get; set; }
+        public string ProductId { get; set; }
+        public string Barcode { get; set; }
+        public string ProductName { get; set; }
+        public string Quantity { get; set; }
+        public string Price { get; set; }
+        public string CostoConsignacion { get; set; }
+        public string Categoria { get; set; }
         ////[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         //public string FechaStock { get; set; }
         //public int NumCodigos { get; set; }

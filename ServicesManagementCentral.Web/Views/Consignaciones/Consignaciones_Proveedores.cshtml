@@ -56,6 +56,14 @@
                         <th>No. Guía</th>
                         <th>Vigencia Guía</th>
                         <th>Fecha Recolección</th>
+                        <th>Costo Total del Pedido</th>
+                        <th>Codigo de Producto</th>
+                        <th>Codigo de Barras</th>
+                        <th style="width:700px">Nombre del Producto</th>
+                        <th style="width:200px">Categoria del Producto</th>
+                        <th>Cantidad de Productos</th>
+                        <th>Precio de Producto</th>
+                        <th>Costo de la Consignación</th>
                         @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
                         @*<th>Guia de devolucion</th>*@
                         @*<th>Estatus de la Guia de Devolucion</th>*@
@@ -235,8 +243,7 @@
                                         urlGuia += '<br/> <a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '_</a>'
                                 }
                             }
-                            //console.log('guia', urlGuia);
-
+                            
                             myTable.row.add([
                                 json.resp[i].NroAlmacen,
                                 json.resp[i].NombreAlmacen,
@@ -253,7 +260,15 @@
                                 urlGuia,//json.resp[i].GuiaEnvio,
                                 json.resp[i].GuiaVig,
                                 json.resp[i].FechaProg,
-
+                                json.resp[i].TotalConsignacion,
+                                json.resp[i].ProductId,
+                                json.resp[i].Barcode,
+                                "<div style='width: 700px'>" + json.resp[i].ProductName + "</div>",
+                                "<div style='width: 200px'>" + json.resp[i].Categoria + "</div>",
+                                json.resp[i].Quantity,
+                                json.resp[i].Price,
+                                json.resp[i].CostoConsignacion
+                                
                             ]).draw();
                         }
                     }

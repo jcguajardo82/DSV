@@ -113,7 +113,20 @@ namespace ServicesManagement.Web.Controllers
                     ds.Tables[0]);
                 var listGuias = DataTableToModel.ConvertTo<ConsignacionesGuias>(
                     ds.Tables[1]);
-                var result = new { Success = true, resp = list, guias =listGuias };
+
+                List<ConsignacionesProveedor> listF = new List<ConsignacionesProveedor>();
+
+                foreach(var item in list)
+                {
+                    var dsC = DALConsignacionesProveedor.GetCategoryByProduct(item.ProductId);
+
+                    item.Categoria = dsC.Tables[0].Rows[0][3].ToString();
+
+                    listF.Add(item);
+                }
+
+
+                var result = new { Success = true, resp = listF, guias =listGuias};
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
@@ -158,7 +171,13 @@ namespace ServicesManagement.Web.Controllers
             row1.CreateCell(10).SetCellValue("No.Guía");
             row1.CreateCell(11).SetCellValue("Vigencia Guía");
             row1.CreateCell(12).SetCellValue("Fecha Recolección");
-
+            row1.CreateCell(13).SetCellValue("Codigo de Producto");
+            row1.CreateCell(14).SetCellValue("Codigo de Barras");
+            row1.CreateCell(15).SetCellValue("Nombre del Producto");
+            row1.CreateCell(16).SetCellValue("Categoria del Producto");
+            row1.CreateCell(17).SetCellValue("Cantidad de Productos");
+            row1.CreateCell(19).SetCellValue("Precio de Producto");
+            row1.CreateCell(19).SetCellValue("Costo de la Consignacion");
             //The data is written progressively sheet1 each row
 
             for (int i = 0; i < d.Rows.Count; i++)
@@ -187,6 +206,17 @@ namespace ServicesManagement.Web.Controllers
                 rowtemp.CreateCell(10).SetCellValue(stGuias);
                 rowtemp.CreateCell(11).SetCellValue(d.Rows[i]["GuiaVig"].ToString());
                 rowtemp.CreateCell(12).SetCellValue(d.Rows[i]["FechaEntrega"].ToString());
+
+                rowtemp.CreateCell(13).SetCellValue(d.Rows[i]["ProductId"].ToString());
+                rowtemp.CreateCell(14).SetCellValue(d.Rows[i]["Barcode"].ToString());
+                rowtemp.CreateCell(15).SetCellValue(d.Rows[i]["ProductName"].ToString());
+                var dsC = DALConsignacionesProveedor.GetCategoryByProduct(d.Rows[i]["ProductId"].ToString());
+
+                //item.Categoria = dsC.Tables[0].Rows[0][3].ToString();
+                rowtemp.CreateCell(16).SetCellValue(dsC.Tables[0].Rows[0][3].ToString());
+                rowtemp.CreateCell(17).SetCellValue(d.Rows[i]["Quantity"].ToString());
+                rowtemp.CreateCell(18).SetCellValue(d.Rows[i]["Price"].ToString());
+                rowtemp.CreateCell(19).SetCellValue(d.Rows[i]["CostoConsignacion"].ToString());
 
             }
 
