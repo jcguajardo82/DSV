@@ -2040,21 +2040,23 @@ namespace ServicesManagement.Web.Controllers
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
                         type = 4;
 
+                    guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
 
-                    paqueteria = SeleccionarPaqueteria(Products, OrderNo);
+                    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
 
-                    if (paqueteria.Equals("Logyt"))
-                    {
-                        guia = CreateGuiaLogyt(UeNo, OrderNo, peso, type);
+                    //if (paqueteria.Equals("Logyt"))
+                    //{
+                    //    guia = CreateGuiaLogyt(UeNo, OrderNo, peso, type);
 
-                        servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                    }
-                    else
-                    {
-                        guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+                    //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    //}
+                    //else
+                    //{
+                    //    guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
 
-                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
-                    }
+                    //    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    //}
                     string GuiaEstatus = "CREADA";
                     //TarifaModel tarifaSeleccionada = new TarifaModel();
                     //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
@@ -2171,21 +2173,23 @@ namespace ServicesManagement.Web.Controllers
                     if (item.tipoEmpaque.Equals("CJA") || item.tipoEmpaque.Equals("EMB") || item.tipoEmpaque.Equals("STC"))
                         type = 4;
 
+                    guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
 
-                    paqueteria = SeleccionarPaqueteriaPendiente(item);
+                    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    //paqueteria = SeleccionarPaqueteriaPendiente(item);
 
-                    if (paqueteria.Equals("Logyt"))
-                    {
-                        guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
+                    //if (paqueteria.Equals("Logyt"))
+                    //{
+                    //    guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
 
-                        servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                    }
-                    else
-                    {
-                        guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+                    //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    //}
+                    //else
+                    //{
+                    //    guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
 
-                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
-                    }
+                    //    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    //}
 
                     string GuiaEstatus = "CREADA";
                     //TarifaModel tarifaSeleccionada = new TarifaModel();
