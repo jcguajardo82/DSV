@@ -29,7 +29,18 @@ namespace ServicesManagement.Web.Controllers
             {
                 var list = DataTableToModel.ConvertTo<ConsignacionesAdm>(
                     DALConsignacionesAdm.upCorpAlmacen_Cns_Consigments(User.Identity.Name,FecIni,FecFin).Tables[0]);
-                var result = new { Success = true, resp = list };
+
+                List<ConsignacionesAdm> listF = new List<ConsignacionesAdm>();
+
+                foreach (var item in list)
+                {
+                    var dsC = DALConsignacionesProveedor.GetCategoryByProduct(item.ProductId);
+
+                    item.Categoria = dsC.Tables[0].Rows[0][3].ToString();
+
+                    listF.Add(item);
+                }
+                var result = new { Success = true, resp = listF };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
