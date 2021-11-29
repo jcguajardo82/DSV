@@ -60,6 +60,13 @@
                         <th>Transportista</th>
                         <th>No. Guía</th>
                         <th>Vigencia Guía</th>
+                        <th>Codigo de Producto</th>
+                        <th>Codigo de Barras</th>
+                        <th style="width:700px">Nombre del Producto</th>
+                        <th style="width:200px">Categoria del Producto</th>
+                        <th>Cantidad de Productos</th>
+                        <th>Precio de Producto</th>
+                        <th>Costo de la Consignación</th>
                         @* <th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
                         @* <th>Guia de devolucion</th>*@
                         @*<th>Estatus de la Guia de Devolucion</th>*@
@@ -286,7 +293,13 @@
                                 json.resp[i].Transportista,
                                 guia,
                                 json.resp[i].GuiaVig,
-                       
+                                json.resp[i].ProductId,
+                                json.resp[i].Barcode,
+                                "<div style='width: 700px'>" + json.resp[i].ProductName + "</div>",
+                                "<div style='width: 200px'>" + json.resp[i].Categoria + "</div>",
+                                json.resp[i].Quantity,
+                                json.resp[i].Price,
+                                json.resp[i].CostoConsignacion
                                 
                             ]).draw();
                         }
