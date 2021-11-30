@@ -2135,45 +2135,6 @@ namespace ServicesManagement.Web.Controllers
 
             return ds.Tables[0].Rows[0][1].ToString();
         }
-        //private string SeleccionarPaqueteria(List<ProductEmbalaje> Products, int orderNo)
-        //{
-        //    string productsAll = string.Empty;
-        //    bool bigTicket = false;
-        //    decimal sumPeso = 0;
-
-        //    foreach (var p in Products)
-        //    {
-        //        productsAll += p.ProductId.ToString() + ",";
-        //    }
-        //    List<WeightByProducts> lstPesos = DataTableToModel.ConvertTo<WeightByProducts>(DALServicesM.GetDimensionsByProducts(productsAll).Tables[0]);
-
-        //    foreach (var item in lstPesos)
-        //    {
-        //        if (item.PesoVol > item.Peso)
-        //        {
-        //            if (item.PesoVol > 70)
-        //                bigTicket = true;
-
-        //            var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
-        //            sumPeso = sumPeso + (item.PesoVol * piezas);
-        //        }
-        //        else
-        //        {
-        //            if (item.Peso > 70)
-        //                bigTicket = true;
-
-        //            var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
-        //            sumPeso = sumPeso + (item.Peso * piezas);
-        //        }
-
-        //    }
-
-        //    DataSet ds = DALServicesM.OrdersLogistics(orderNo, sumPeso, bigTicket);
-
-
-
-        //    return ds.Tables[0].Rows[0][1].ToString();
-        //}
         public ActionResult AddEmbalajePendiente(List<ShipmentToTrackingModel> Paquetes)
         {
             string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty;
