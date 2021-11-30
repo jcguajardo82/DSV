@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -145,6 +146,28 @@ namespace ServicesManagement.Web.Controllers
 
 
                 DALAutorizacion.BitacoraAutRma_iUp_v2(IdProceso, IdAccion, Comentario, Id_cancelacion, User.Identity.Name);
+
+                if (IdAccion.Equals("1"))
+                {
+                  var ds=  DALCallCenter.PaymentsGetCancelacion_sUp(Id_cancelacion);
+                    if (Convert.ToBoolean(ds.Tables[0].Rows[0]["isCancelacion"])) {
+
+
+                        string apiUrl = System.Configuration.ConfigurationManager.AppSettings["Rma_PaymentsGetCancelacion"];
+
+                        apiUrl = string.Format("{0}?order={1}&amount={2}", apiUrl, ds.Tables[0].Rows[0]["OrderNo"].ToString(), ds.Tables[0].Rows[0]["TotalAmount"].ToString());
+
+                        System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                        Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "");
+
+                        if (r.code != "00")
+                        {
+                            throw new Exception("Error al ejecutar el api PaymentsGetCancelacion "+r.message);
+                        }
+
+                    }
+                }
 
                 var result = new { Success = true };
 
