@@ -2671,17 +2671,16 @@ namespace ServicesManagement.Web.Controllers
 
                 m.Origin = new LogytAddressModel();
 
-                m.OriginInfo.address1 = r["address1"].ToString();
-                m.OriginInfo.address2 = r["address2"].ToString();
-                m.OriginInfo.cellPhone = r["cellPhone"].ToString();
-                m.OriginInfo.city = r["city"].ToString();
-                m.OriginInfo.contactName = r["contactName"].ToString();
-                m.OriginInfo.corporateName = r["corporateName"].ToString();
-                m.OriginInfo.customerNumber = r["customerNumber"].ToString();
-                m.OriginInfo.neighborhood = r["neighborhood"].ToString();
-                m.OriginInfo.phoneNumber = r["phone"].ToString();
-                m.OriginInfo.state = r["state"].ToString();
-                m.OriginInfo.zipCode = r["zipCode"].ToString();
+                m.Origin.Address1 = r["address1"].ToString();
+                m.Origin.Address2 = r["address2"].ToString();
+                m.Origin.City = r["city"].ToString();
+                m.Origin.ContactName = r["contactName"].ToString();
+                m.Origin.CorporateName = r["corporateName"].ToString();
+                m.Origin.CustomerNumber = r["customerNumber"].ToString();
+                m.Origin.Neighborhood = r["neighborhood"].ToString();
+                m.Origin.PhoneNumber = r["phone"].ToString();
+                m.Origin.State = r["state"].ToString();
+                m.Origin.ZipCode = r["zipCode"].ToString();
 
             }
 
