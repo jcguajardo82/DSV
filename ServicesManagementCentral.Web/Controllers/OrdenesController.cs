@@ -2040,9 +2040,16 @@ namespace ServicesManagement.Web.Controllers
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
                         type = 4;
 
-                    paqueteria = SeleccionarPaqueteria(Products, OrderNo);
+                    //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
                     decimal decimalPeso = decimal.Round(decimal.Parse(Session["SumPeso"].ToString()));
                     int peso = decimal.ToInt32(decimalPeso);
+
+                    guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+                    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+
+                    //if (paqueteria.Equals("Logyt"))
+                    //{
+                    //    guia = CreateGuiaLogyt(UeNo,OrderNo,peso, type)
 
                     //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
                     //}
