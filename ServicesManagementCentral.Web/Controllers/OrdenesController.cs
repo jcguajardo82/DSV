@@ -2030,19 +2030,19 @@ namespace ServicesManagement.Web.Controllers
                             GuardarTarifas(UeNo, OrderNo, tarifa);
                     }
 
-                    decimal decimalRound = decimal.Round(item.Peso);
-                    if (decimalRound == 0)
-                        decimalRound = 1;
+                    //decimal decimalRound = decimal.Round(item.Peso);
+                    //if (decimalRound == 0)
+                    //    decimalRound = 1;
 
-                    int peso = decimal.ToInt32(decimalRound);
+                    //int peso = decimal.ToInt32(decimalRound);
                     int type = 1;
 
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
                         type = 4;
 
-
-
                     paqueteria = SeleccionarPaqueteria(Products, OrderNo);
+                    decimal decimalPeso = decimal.Round(decimal.Parse(Session["SumPeso"].ToString()));
+                    int peso = decimal.ToInt32(decimalPeso);
 
                     if (paqueteria.Equals("Logyt"))
                     {
@@ -2129,6 +2129,10 @@ namespace ServicesManagement.Web.Controllers
 
             }
 
+            if (sumPeso < 1)
+                sumPeso = 1;
+
+            Session["SumPeso"] = sumPeso;
             DataSet ds = DALServicesM.OrdersLogistics(orderNo, sumPeso, bigTicket);
 
 
@@ -2244,6 +2248,8 @@ namespace ServicesManagement.Web.Controllers
                 }
 
             }
+            if (sumPeso < 1)
+                sumPeso = 1;
 
             DataSet ds = DALServicesM.OrdersLogistics(Paquete.orderNo, sumPeso, bigTicket);
 
