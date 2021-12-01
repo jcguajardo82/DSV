@@ -702,6 +702,7 @@
                     product.Barcode = arrBarProd[0];
                     product.ProductId = arrBarProd[1];
                     product.ProductName = $(row)[0].cells[1].innerText;
+                    product.Pieces = parseInt($(row)[0].cells[4].innerText);
                     product.product = {};
                     products.push(product);
                 }
