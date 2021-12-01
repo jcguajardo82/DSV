@@ -803,9 +803,8 @@ namespace ServicesManagement.Web.Controllers
             try
             {
 
-                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"];
-
-
+                //string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"];
+                string apiUrl2 = System.Configuration.ConfigurationManager.AppSettings["api_CancelacionTotal"];
 
                 var req = new { OrderID = OrderId.ToString() };
                 //string json2 = string.Empty;
@@ -819,15 +818,20 @@ namespace ServicesManagement.Web.Controllers
 
                 Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
 
-                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl2, false, null);
 
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
+                //Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
+                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl2, "", json2);
 
-                if (r.code != "00")
+                //if (r.code != "00")
+                //{
+                //    throw new Exception(r.message);
+                //}
+                if (r2.code != "00")
                 {
-                    throw new Exception(r.message);
+                    throw new Exception(r2.message);
                 }
             }
             catch (Exception x)
