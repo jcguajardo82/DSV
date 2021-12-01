@@ -804,8 +804,7 @@ namespace ServicesManagement.Web.Controllers
             {
 
                 string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"];
-
-
+                string apiUrl2 = System.Configuration.ConfigurationManager.AppSettings["api_CancelacionTotal"];
 
                 var req = new { OrderID = OrderId.ToString() };
                 //string json2 = string.Empty;
@@ -824,10 +823,15 @@ namespace ServicesManagement.Web.Controllers
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
+                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl2, "", json2);
 
                 if (r.code != "00")
                 {
                     throw new Exception(r.message);
+                }
+                if (r2.code != "00")
+                {
+                    throw new Exception(r2.message);
                 }
             }
             catch (Exception x)
