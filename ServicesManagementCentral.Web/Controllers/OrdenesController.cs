@@ -2030,24 +2030,19 @@ namespace ServicesManagement.Web.Controllers
                             GuardarTarifas(UeNo, OrderNo, tarifa);
                     }
 
-                    decimal decimalRound = decimal.Round(item.Peso);
-                    if (decimalRound == 0)
-                        decimalRound = 1;
+                    //decimal decimalRound = decimal.Round(item.Peso);
+                    //if (decimalRound == 0)
+                    //    decimalRound = 1;
 
-                    int peso = decimal.ToInt32(decimalRound);
+                    //int peso = decimal.ToInt32(decimalRound);
                     int type = 1;
 
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
                         type = 4;
 
-                    guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
-
-                    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                    //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
-
-                    //if (paqueteria.Equals("Logyt"))
-                    //{
-                    //    guia = CreateGuiaLogyt(UeNo, OrderNo, peso, type);
+                    paqueteria = SeleccionarPaqueteria(Products, OrderNo);
+                    decimal decimalPeso = decimal.Round(decimal.Parse(Session["SumPeso"].ToString()));
+                    int peso = decimal.ToInt32(decimalPeso);
 
                     //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
                     //}
@@ -2133,6 +2128,7 @@ namespace ServicesManagement.Web.Controllers
             if (sumPeso < 1)
                 sumPeso = 1;
 
+            Session["SumPeso"] = sumPeso;
             DataSet ds = DALServicesM.OrdersLogistics(orderNo, sumPeso, bigTicket);
 
 
@@ -2251,6 +2247,8 @@ namespace ServicesManagement.Web.Controllers
                 }
 
             }
+            if (sumPeso < 1)
+                sumPeso = 1;
 
             if (sumPeso < 1)
                 sumPeso = 1;
