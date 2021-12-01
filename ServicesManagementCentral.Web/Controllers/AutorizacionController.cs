@@ -155,7 +155,7 @@ namespace ServicesManagement.Web.Controllers
 
                         string apiUrl = System.Configuration.ConfigurationManager.AppSettings["Rma_PaymentsGetCancelacion"];
 
-                        apiUrl = string.Format("{0}?order={1}&amount={2}", apiUrl, ds.Tables[0].Rows[0]["OrderNo"].ToString(), ds.Tables[0].Rows[0]["TotalAmount"].ToString());
+                        apiUrl = string.Format("{0}?order={1}&amount={2}", apiUrl, ds.Tables[0].Rows[0]["OrderSF"].ToString(), ds.Tables[0].Rows[0]["TotalAmount"].ToString());
 
                         System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
