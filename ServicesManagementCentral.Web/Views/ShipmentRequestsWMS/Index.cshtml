@@ -82,6 +82,7 @@
         var _optionsPackings = undefined;
         var _uccWithPDF = [];
         $(document).ready(function () {
+            $('#btnSolicitar').attr('disabled', true);
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(0) th').each(function (i) {
                 if ($(this).attr('name') != "accion") {
@@ -279,6 +280,7 @@
             });
             
             if (selProd > 0) {
+                $('#btnSolicitar').attr('disabled', false);
                 $('#dlgCreateServicios').modal('show');
                 console.log(_json);
 
@@ -348,7 +350,7 @@
             }
             if (jsonCopy.length == count) {
                 //alert('Guardarrr');
-
+                $('#btnSolicitar').attr('disabled', true);
                 console.log(jsonConfirm);
                     //Send the JSON array to Controller using AJAX.
                         $.ajax({
