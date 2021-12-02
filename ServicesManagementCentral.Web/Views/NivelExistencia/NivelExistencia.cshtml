@@ -277,8 +277,7 @@
     <div class="col-sm-2 col-md-3 col-lg-2">
         <div class="form-group">
             <label>Almacen </label>
-            <select class="form-control m-b" id="ddlAlmacenes">
-                <option value="0">--SELECCIONE--</option>
+            <select class="form-control m-b" id="ddlAlmacenes" name="ddlAlmacenes" multiple size="3">
             </select>
         </div>
     </div>
@@ -316,11 +315,17 @@
                     <th>Stock de seguridad</th>
                     <th>Tipo de Articulo</th>
                     <th>Largo</th>
+                    <th>Unidad de Medida Largo</th>
                     <th>Alto</th>
+                    <th>Unidad de Medida Alto</th>
                     <th>Ancho</th>
+                    <th>Unidad de Medida Ancho</th>
                     <th>Peso</th>
+                    <th>Unidad de Medida Peso</th>
                     <th>Peso Volumetrico</th>
+                    <th>Unidad de Medida Peso Volumetrico</th>
                     <th>Peso Real</th>
+                    <th>Unidad de Medida Peso Real</th>
                     <th>Estatus del codigo</th>
                     <th>Costo del Material</th>
                     <th>Fecha de cracion del Material</th>
@@ -388,7 +393,14 @@
             });
 
         });
-
+        function isJson(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
 
         function ListAlmacen() {
              $.ajax({
@@ -405,13 +417,18 @@
                         var sel = $("#ddlAlmacenes");
                         sel.empty();
 
-                        $('#ddlAlmacenes').get(0).options[0] = new Option("--SELECCIONE--", "0");
                         for (var i = 0; i < json.resp.length; i++) {
                             sel.append('<option value="' + json.resp[i].IdOwner + '">' + json.resp[i].OwnerName +'</option>');
                         }
+                        var almacenesSelected =  "@ViewBag.IdOwner";
+                        init("ddlAlmacenes");
+                        if (almacenesSelected != '') {
+                            var _array = almacenesSelected.split(',');
 
-                        $("#ddlAlmacenes").val("@ViewBag.IdOwner");
-                        GetSupp(@ViewBag.IdOwner);
+                            setValuesAlmacen(_array);
+
+                            GetSupp(almacenesSelected);
+                        }
 
                     }
                     else {
@@ -427,7 +444,21 @@
 
         $("#ddlAlmacenes").change(function () {
 
-            GetSupp($("#ddlAlmacenes").val());
+                var count = 1;
+                var values = getValues('ddlAlmacenes');
+                var _almacenes = '';
+
+                values.forEach(x => {
+
+                    if (count > 1)
+                        _almacenes = _almacenes + ',' + x;
+                    else
+                        _almacenes = x;
+
+                    count++;
+                });
+            //alert(_tiendas);
+            GetSupp(_almacenes);
 
         });
 
@@ -437,7 +468,7 @@
                 type: "GET",
                 url: '@Url.Action("ListSuppliersById", "Config")',
                 data: {
-                    idOwner: _idOwner
+                    idsOwner: _idOwner
                 },
                 datatype: "html",
                 success: function (json) {
@@ -451,19 +482,15 @@
                         }
 
 
-
-                        @*if ($("#ddlTienda option[value='@ViewBag.IdTienda']").length == 0) {
-                            $("#ddlTienda").val("0");
-                        } else { $("#ddlTienda").val("@ViewBag.IdTienda"); }*@
-
                         init("ddlTienda");
 
-                        var valores = "@ViewBag.IdTienda";
+                        var tiendasSelected = "@ViewBag.IdTienda";
 
-                        if (valores != '') {
-                            var _array = valores.split(',');
+                        if (tiendasSelected != '') {
+                            var _array = tiendasSelected.split(',');
 
                             setValues(_array);
+
                         }
                     }
                     else {
@@ -526,11 +553,17 @@
                         { "data": "InvSeguridad", "name": "InvSeguridad", "autoWidth": true },
                         { "data": "TipoArticulo", "name": "TipoArticulo", "autoWidth": true },
                         { "data": "Largo", "name": "Largo", "autoWidth": true },
+                        { "data": "UnidadLargo", "name": "Unidad de Medida Largo", "autoWidth": true },
                         { "data": "Alto", "name": "Alto", "autoWidth": true },
+                        { "data": "UnidadAlto", "name": "Unidad de Medida Alto", "autoWidth": true },
                         { "data": "Ancho", "name": "Ancho", "autoWidth": true },
+                        { "data": "UnidadAncho", "name": "Unidad de Medida Ancho", "autoWidth": true },
                         { "data": "Peso", "name": "Peso", "autoWidth": true },
+                        { "data": "UnidadPeso", "name": "Unidad de Medida Peso", "autoWidth": true },
                         { "data": "PesoVol", "name": "PesoVol", "autoWidth": true },
+                        { "data": "UnidadPesoVol", "name": "Unidad de Medida Peso Vol", "autoWidth": true },
                         { "data": "PesoReal", "name": "PesoReal", "autoWidth": true },
+                        { "data": "UnidadPesoReal", "name": "Unidad de Medida PesoReal", "autoWidth": true },
                         { "data": "EstatusProducto", "name": "EstatusProducto", "autoWidth": true },
                         { "data": "CostoMaterial", "name": "CostoMaterial", "autoWidth": true },
                         { "data": "FechaCreacion", "name": "FechaCreacion", "autoWidth": true },
@@ -594,8 +627,9 @@
                 }
             );
 
-
             ListAlmacen();
+            //init("ddlAlmacenes");
+
         });
 
     function Excel() {
@@ -610,34 +644,34 @@
         var count = 1;
         var values = getValues('ddlTienda');
         var _tiendas = '';
+        var _json = [];
 
         values.forEach(x => {
 
-            if (count > 1)
-                _tiendas = _tiendas + ',' + x;
-            else
-                _tiendas = x;
+            let _obj = {};
+            _obj.IdTienda = x.split('-')[0];
+            _obj.IdOwner = x.split('-')[1];
+            _obj.Nombre = x.split('-')[2];
+            _obj.NombreProveedor = x.split('-')[3];
+            _json.push(_obj);
 
-            count++;
+        count = count +1;
         });
 
 
-        //if (_FecIni.length == 0) {
-        //    $("#txtFecIni").focus();
-        //    return;
-        //}
-
-
-        //if (_FecFin.length == 0) {
-        //    $("#txtFecFin").focus();
-        //    return;
-        //}
-
-        window.location.href = "NivelExistencia/NivelExistencia?IdOwner=" + _IdOwner + "&IdTienda=" + _tiendas;
+        if(count >1){
+            window.location.href = "NivelExistencia/NivelExistencia?IdOwner=" + _IdOwner + "&IdTienda=" + JSON.stringify(_json);
+        }
+        else{
+                alert('Debe de Seleccionar minimo un Almacen y una Tienda/Proveedor');
+            }
         }
         function empty() {
             if (selectBox2 != null) {
                 selectBox2.empty();
+            }
+            if (selectBox1 != null) {
+                selectBox1.empty();
             }
         }
         function doDestroy(id) {
@@ -649,10 +683,21 @@
             }
         }
         function init(id) {
+            if (id == "ddlAlmacenes") {
+
+                selectBox1 = new vanillaSelectBox("#ddlAlmacenes", { "disableSelectAll": true, "maxHeight": 200, "search": false, "translations": { "all": "All", "items": "Seleccionados", "selectAll": "Check All", "clearAll": "Clear All" } });
+
+            }
             if (id == "ddlTienda") {
 
                 selectBox2 = new vanillaSelectBox("#ddlTienda", { "disableSelectAll": true, "maxHeight": 200, "search":false, "translations": { "all": "All", "items": "Seleccionados", "selectAll": "Check All", "clearAll": "Clear All" } });
-                
+
+            }
+
+        }
+        function setValuesAlmacen(value) {
+            if (selectBox1 != null) {
+                selectBox1.setValue(value);
             }
         }
         function setValues(value) {
@@ -668,6 +713,7 @@
                     result.push(x.value);
                 }
             });
+            console.log('result', result);
             return result;
         }
     </script>
