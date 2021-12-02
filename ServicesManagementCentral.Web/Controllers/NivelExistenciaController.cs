@@ -8,6 +8,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
+using Newtonsoft.Json;
+using Microsoft.Ajax.Utilities;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -27,7 +29,7 @@ namespace ServicesManagement.Web.Controllers
         {
             ViewBag.FecIni = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
             ViewBag.FecFin = DateTime.Now.ToString("yyyy/MM/dd");
-            ViewBag.IdOwner = 0;
+            ViewBag.IdOwner = "";
             ViewBag.IdTienda = "";
 
 
@@ -51,18 +53,34 @@ namespace ServicesManagement.Web.Controllers
             Session["IdOwnerNiveles"] = null;
             Session["IdTiendaNiveles"] = null;
 
-            if (Request.QueryString["IdOwner"] != null)
-            {
-                IdOwner = int.Parse(Request.QueryString["IdOwner"].ToString());
-                ViewBag.IdOwner = IdOwner;
-                Session["IdOwnerNiveles"] = IdOwner;
-            }
+            //if (Request.QueryString["IdOwner"] != null)
+            //{
+            //    IdOwner = int.Parse(Request.QueryString["IdOwner"].ToString());
+            //    ViewBag.IdOwner = IdOwner;
+            //    Session["IdOwnerNiveles"] = IdOwner;
+            //}
 
             if (Request.QueryString["IdTienda"] != null)
             {
                 IdTienda = Request.QueryString["IdTienda"].ToString();
-                ViewBag.IdTienda = IdTienda;
+                
                 Session["IdTiendaNiveles"] = IdTienda;
+                List<JsonData> lstJson = JsonConvert.DeserializeObject<List<JsonData>>(Request.QueryString["IdTienda"]);
+                Session["lstJsonNiveles"] = lstJson;
+
+                var owners="";
+                var tiendas = "";
+                foreach (var item in lstJson)
+                {
+                    tiendas += item.IdTienda + "-"+item.IdOwner + "-" + item.Nombre + "-" + item.NombreProveedor + ",";
+                }
+
+                foreach (var item in lstJson.DistinctBy(x =>x.IdOwner))
+                {
+                    owners += item.IdOwner + ",";
+                }
+                ViewBag.IdTienda = tiendas;
+                ViewBag.IdOwner = owners;
             }
             Session["lstNiveles"] = null;
 
@@ -80,11 +98,11 @@ namespace ServicesManagement.Web.Controllers
                 string IdTienda = string.Empty;
                 bool parameters = false;
 
-                if (Session["IdOwnerNiveles"] != null)
-                {
-                    IdOwner = int.Parse(Session["IdOwnerNiveles"].ToString());
-                    parameters = true;
-                }
+                //if (Session["IdOwnerNiveles"] != null)
+                //{
+                //    IdOwner = int.Parse(Session["IdOwnerNiveles"].ToString());
+                //    parameters = true;
+                //}
 
                 if (Session["IdTiendaNiveles"] != null)
                 {
@@ -124,11 +142,13 @@ namespace ServicesManagement.Web.Controllers
                     pageSize = length != null ? Convert.ToInt32(length) : 0;
                     skip = start != null ? Convert.ToInt32(start) : 0;
                     recordsTotal = 0;
-
-                    IQueryable<upCorpOMS_Cns_UeNoTotalsByOrder> query = null;
+                    List<JsonData> lstJson = new List<JsonData>();
+                    
+                    IQueryable <upCorpOMS_Cns_UeNoTotalsByOrder> query = null;
                     if (Session["lstNiveles"] == null)
                     {
-                        query = from row in DALNivelExistencia.upCorpOMS_Cns_UeNoStockLevels(IdOwner, IdTienda).Tables[0].AsEnumerable().AsQueryable()
+                        lstJson = (List<JsonData>)Session["lstJsonNiveles"];
+                        query = from row in DALNivelExistencia.upCorpOMS_Cns_UeNoStockLevelsV2(IdTienda).Tables[0].AsEnumerable().AsQueryable()
                                                                             select new upCorpOMS_Cns_UeNoTotalsByOrder()
                                                                             {
                                                                                 EAN = (row["EAN"].ToString()),
@@ -137,7 +157,7 @@ namespace ServicesManagement.Web.Controllers
                                                                                 Categoria = (row["Categoria"].ToString()),
                                                                                 NroProveedor = row["NroProveedor"].ToString(),
                                                                                 TipoAlmacen = row["TipoAlmacen"].ToString(),
-                                                                                NombreProveedor = row["NombreProveedor"].ToString(),
+                                                                                NombreProveedor =  lstJson.Where(x => x.IdTienda == int.Parse(row["NroProveedor"].ToString())).FirstOrDefault().NombreProveedor,
                                                                                 NivelExistencia = row["NivelExistencia"].ToString(),
                                                                                 InvReservado = row["InvReservado"].ToString(),
                                                                                 InvVenta = row["InvVenta"].ToString(),
@@ -149,11 +169,18 @@ namespace ServicesManagement.Web.Controllers
                                                                                 Peso = row["Peso"].ToString(),
                                                                                 PesoVol = row["PesoVol"].ToString(),
                                                                                 PesoReal = row["PesoReal"].ToString(),
+                                                                                UnidadLargo = (row["UnidadLargo"].ToString()),
+                                                                                UnidadAlto = row["UnidadAlto"].ToString(),
+                                                                                UnidadAncho = row["UnidadAncho"].ToString(),
+                                                                                UnidadPeso = row["UnidadPeso"].ToString(),
+                                                                                UnidadPesoVol = row["UnidadPesoVol"].ToString(),
+                                                                                UnidadPesoReal = row["UnidadPesoReal"].ToString(),
                                                                                 EstatusProducto = row["EstatusProducto"].ToString(),
                                                                                 CostoMaterial = row["CostoMaterial"].ToString(),
                                                                                 FechaCreacion = row["FechaCreacion"].ToString(),
                                                                                 NroProvOrigen = row["NroProvOrigen"].ToString(),
-                                                                                NomProvOrigen = row["NomProvOrigen"].ToString()
+                                                                                NomProvOrigen = row["NomProvOrigen"].ToString(),
+                                                                                NombreAlmacen = lstJson.Where(x => x.IdTienda == int.Parse(row["NroProveedor"].ToString())).FirstOrDefault().Nombre
                                                                             };
                         Session["lstNiveles"] = query;
                     }
@@ -279,16 +306,22 @@ namespace ServicesManagement.Web.Controllers
             row1.CreateCell(11).SetCellValue("Stock de seguridad");
             row1.CreateCell(12).SetCellValue("Tipo de Articulo");
             row1.CreateCell(13).SetCellValue("Largo");
-            row1.CreateCell(14).SetCellValue("Alto");
-            row1.CreateCell(15).SetCellValue("Ancho");
-            row1.CreateCell(16).SetCellValue("Peso");
-            row1.CreateCell(17).SetCellValue("Peso Volumetrico");
-            row1.CreateCell(18).SetCellValue("Peso Real");
-            row1.CreateCell(19).SetCellValue("Estatus del codigo");
-            row1.CreateCell(20).SetCellValue("Costo del Material");
-            row1.CreateCell(21).SetCellValue("Fecha de cracion del Material");
-            row1.CreateCell(22).SetCellValue("Num de proveedor que surte producto");
-            row1.CreateCell(23).SetCellValue("Nom de proveedor que surte producto");
+            row1.CreateCell(14).SetCellValue("Unidad de Medida Largo");
+            row1.CreateCell(15).SetCellValue("Alto");
+            row1.CreateCell(16).SetCellValue("Unidad de Medida Alto");
+            row1.CreateCell(17).SetCellValue("Ancho");
+            row1.CreateCell(18).SetCellValue("Unidad de Medida Ancho");
+            row1.CreateCell(19).SetCellValue("Peso");
+            row1.CreateCell(20).SetCellValue("Unidad de Medida Peso");
+            row1.CreateCell(21).SetCellValue("Peso Volumetrico");
+            row1.CreateCell(22).SetCellValue("Unidad de Medida Peso Volumetrico");
+            row1.CreateCell(23).SetCellValue("Peso Real");
+            row1.CreateCell(24).SetCellValue("Unidad de Medida Peso Real");
+            row1.CreateCell(25).SetCellValue("Estatus del codigo");
+            row1.CreateCell(26).SetCellValue("Costo del Material");
+            row1.CreateCell(27).SetCellValue("Fecha de cracion del Material");
+            row1.CreateCell(28).SetCellValue("Num de proveedor que surte producto");
+            row1.CreateCell(29).SetCellValue("Nom de proveedor que surte producto");
 
 
             //The data is written progressively sheet1 each row
@@ -310,16 +343,22 @@ namespace ServicesManagement.Web.Controllers
                 rowtemp.CreateCell(11).SetCellValue(lst[i].InvSeguridad.ToString());
                 rowtemp.CreateCell(12).SetCellValue(lst[i].TipoArticulo.ToString());
                 rowtemp.CreateCell(13).SetCellValue(lst[i].Largo.ToString());
-                rowtemp.CreateCell(14).SetCellValue(lst[i].Alto.ToString());
-                rowtemp.CreateCell(15).SetCellValue(lst[i].Ancho.ToString());
-                rowtemp.CreateCell(16).SetCellValue(lst[i].Peso.ToString());
-                rowtemp.CreateCell(17).SetCellValue(lst[i].PesoVol.ToString());
-                rowtemp.CreateCell(18).SetCellValue(lst[i].PesoReal.ToString());
-                rowtemp.CreateCell(19).SetCellValue(lst[i].EstatusProducto.ToString());
-                rowtemp.CreateCell(20).SetCellValue(lst[i].CostoMaterial.ToString());
-                rowtemp.CreateCell(21).SetCellValue(lst[i].FechaCreacion.ToString());
-                rowtemp.CreateCell(23).SetCellValue(lst[i].NroProvOrigen.ToString());
-                rowtemp.CreateCell(24).SetCellValue(lst[i].NomProvOrigen.ToString());
+                rowtemp.CreateCell(14).SetCellValue(lst[i].UnidadLargo.ToString());
+                rowtemp.CreateCell(15).SetCellValue(lst[i].Alto.ToString());
+                rowtemp.CreateCell(16).SetCellValue(lst[i].UnidadAlto.ToString());
+                rowtemp.CreateCell(17).SetCellValue(lst[i].Ancho.ToString());
+                rowtemp.CreateCell(18).SetCellValue(lst[i].UnidadAncho.ToString());
+                rowtemp.CreateCell(19).SetCellValue(lst[i].Peso.ToString());
+                rowtemp.CreateCell(20).SetCellValue(lst[i].UnidadPeso.ToString());
+                rowtemp.CreateCell(21).SetCellValue(lst[i].PesoVol.ToString());
+                rowtemp.CreateCell(22).SetCellValue(lst[i].UnidadPesoVol.ToString());
+                rowtemp.CreateCell(23).SetCellValue(lst[i].PesoReal.ToString());
+                rowtemp.CreateCell(24).SetCellValue(lst[i].UnidadPesoReal.ToString());
+                rowtemp.CreateCell(25).SetCellValue(lst[i].EstatusProducto.ToString());
+                rowtemp.CreateCell(26).SetCellValue(lst[i].CostoMaterial.ToString());
+                rowtemp.CreateCell(27).SetCellValue(lst[i].FechaCreacion.ToString());
+                rowtemp.CreateCell(28).SetCellValue(lst[i].NroProvOrigen.ToString());
+                rowtemp.CreateCell(29).SetCellValue(lst[i].NomProvOrigen.ToString());
 
             }
 

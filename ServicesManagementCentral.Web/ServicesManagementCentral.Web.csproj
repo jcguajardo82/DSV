@@ -302,6 +302,7 @@
     <Compile Include="Models\Config\Owners.cs" />
     <Compile Include="Models\Config\SuppliersById.cs" />
     <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByDates.cs" />
+    <Compile Include="Models\Config\SuppliersByIds.cs" />
     <Compile Include="Models\Config\Usuario.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesAdm.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesCEDIS.cs" />
@@ -332,6 +333,7 @@
     <Compile Include="Models\LogytRequestModel.cs" />
     <Compile Include="Models\ManualesOperativosModels.cs" />
     <Compile Include="Models\ManualesOp\ManualTypesModel.cs" />
+    <Compile Include="Models\NivelExistencia\JsonData.cs" />
     <Compile Include="Models\NivelExistencia\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
     <Compile Include="Models\NotificacionesSis\ImagenNotificacion.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />

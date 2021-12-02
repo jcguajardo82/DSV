@@ -26,6 +26,12 @@ namespace ServicesManagement.Web.Models.NivelExistencia
         public string Peso { get; set; }
         public string PesoVol { get; set; }
         public string PesoReal { get; set; }
+        public string UnidadLargo { get; set; }
+        public string UnidadAlto { get; set; }
+        public string UnidadAncho { get; set; }
+        public string UnidadPeso { get; set; }
+        public string UnidadPesoVol { get; set; }
+        public string UnidadPesoReal { get; set; }
         public string EstatusProducto { get; set; }
         public string CostoMaterial { get; set; }
         public string FechaCreacion { get; set; }
