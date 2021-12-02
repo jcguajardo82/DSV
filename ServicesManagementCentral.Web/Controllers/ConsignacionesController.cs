@@ -27,8 +27,11 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
+                DataSet ds = DALConsignacionesAdm.upCorpAlmacen_Cns_Consigments(User.Identity.Name, FecIni, FecFin);
                 var list = DataTableToModel.ConvertTo<ConsignacionesAdm>(
-                    DALConsignacionesAdm.upCorpAlmacen_Cns_Consigments(User.Identity.Name,FecIni,FecFin).Tables[0]);
+                    ds.Tables[0]);
+                var listGuias = DataTableToModel.ConvertTo<ConsignacionesGuias>(
+                    ds.Tables[1]);
 
                 List<ConsignacionesAdm> listF = new List<ConsignacionesAdm>();
 
@@ -40,7 +43,7 @@ namespace ServicesManagement.Web.Controllers
 
                     listF.Add(item);
                 }
-                var result = new { Success = true, resp = listF };
+                var result = new { Success = true, resp = listF, guias = listGuias };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)

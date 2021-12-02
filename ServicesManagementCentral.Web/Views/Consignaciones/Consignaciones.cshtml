@@ -268,10 +268,17 @@
                             .clear()
                             .draw();
                         for (var i = 0; i < json.resp.length; i++) {
-                            //alert(json.resp[i].GuiaEnvio);
-                            var guia = '';
-                            if (json.resp[i].GuiaEnvio != ' ')
-                                guia = json.resp[i].GuiaEnvio + "_";
+                            var urlGuia = '';
+                            for (var x = 0; x < json.guias.length; x++) {
+                                if (json.resp[i].OrdenCompra == json.guias[x].Id_Num_Orden && json.resp[i].Consignacion == json.guias[x].UeNo)
+                                {
+                                    if (urlGuia == '')
+                                        urlGuia = '<a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '_</a>'
+                                    else
+                                        urlGuia += '<br/> <a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '_</a>'
+                                }
+                            }
+                            
                         
                             myTable.row.add([
                                 "<a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(\"" + json.resp[i].Consignacion + "\")'><u>" + json.resp[i].Consignacion + "</u></a>",
@@ -291,7 +298,7 @@
                                 json.resp[i].NroOrdenCompra,
                                 json.resp[i].EstatusOrdenCompra,
                                 json.resp[i].Transportista,
-                                guia,
+                                urlGuia,
                                 json.resp[i].GuiaVig,
                                 json.resp[i].ProductId,
                                 json.resp[i].Barcode,
