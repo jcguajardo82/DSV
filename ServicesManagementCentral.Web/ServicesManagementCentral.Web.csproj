@@ -228,7 +228,6 @@
     <Compile Include="Controllers\DevolucionesController.cs" />
     <Compile Include="Controllers\Estatus_guia_envioController.cs" />
     <Compile Include="Controllers\AltaProveedorController.cs" />
-    <Compile Include="Controllers\GuiasDevolucionesController.cs" />
     <Compile Include="Controllers\ManualesOperativosController.cs" />
     <Compile Include="Controllers\NivelExistenciaController.cs" />
     <Compile Include="Controllers\NotificacionesSisController.cs" />
@@ -248,6 +247,7 @@
     <Compile Include="Controllers\TMSController.cs" />
     <Compile Include="Controllers\TotalOrdenesController.cs" />
     <Compile Include="Controllers\SolicitudGuiasReenvioController.cs" />
+    <Compile Include="Correos\Correos.cs" />
     <Compile Include="DALConfig.cs" />
     <Compile Include="DAL\ActualizacionesInventario\DALActualizacionesInventario.cs" />
     <Compile Include="DAL\Actualizaciones\DALActualizaciones.cs" />
@@ -303,7 +303,6 @@
     <Compile Include="Models\Config\Owners.cs" />
     <Compile Include="Models\Config\SuppliersById.cs" />
     <Compile Include="Models\CallCenter\upCorpOms_Cns_OrdersByDates.cs" />
-    <Compile Include="Models\Config\SuppliersByIds.cs" />
     <Compile Include="Models\Config\Usuario.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesAdm.cs" />
     <Compile Include="Models\Consignaciones\ConsignacionesCEDIS.cs" />
@@ -331,16 +330,13 @@
     <Compile Include="Models\EstatusReenvioMcia\EstatusReenvioMcia.cs" />
     <Compile Include="Models\Gastos.cs" />
     <Compile Include="Models\GastosVehiculoModel.cs" />
-    <Compile Include="Models\LogytRequestModel.cs" />
     <Compile Include="Models\ManualesOperativosModels.cs" />
     <Compile Include="Models\ManualesOp\ManualTypesModel.cs" />
-    <Compile Include="Models\NivelExistencia\JsonData.cs" />
     <Compile Include="Models\NivelExistencia\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
     <Compile Include="Models\NotificacionesSis\ImagenNotificacion.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrdersDetail.cs" />
     <Compile Include="Models\ProcesoReciboDevoluciones\ProcesoReciboDevoluciones.cs" />
-    <Compile Include="Models\ProcesoSurtido\Guias_por_OrderFact.cs" />
     <Compile Include="Models\ProcesoSurtido\OrderFacts_UE_CancelCauses.cs" />
     <Compile Include="Models\MotivosCancel.cs" />
     <Compile Include="Controllers\OrdenesController.cs" />
@@ -385,7 +381,6 @@
     <Compile Include="Models\PasilloUnReporteMapModel.cs" />
     <Compile Include="Models\PasilloUnRepPasillo.cs" />
     <Compile Include="Models\PassCancelModel.cs" />
-    <Compile Include="Models\ProcesoSurtido\UenoTracking.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoConsigmentsVehicles.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcess.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoSupplyProcessSel.cs" />
@@ -404,11 +399,9 @@
     <Compile Include="Models\SubirArchivos\CargaManuales.cs" />
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="Models\TotalOrdenes\upCorpOMS_Cns_UeNoTotalsByOrder.cs" />
-    <Compile Include="Models\TrackingInfo.cs" />
     <Compile Include="Models\UNModel.cs" />
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoTracking.cs" />
     <Compile Include="Models\VehiculoModel.cs" />
-    <Compile Include="Models\WeightByProducts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -3583,8 +3576,6 @@
     <Content Include="Content\plugins\momment\moment-with-locales.js" />
     <Content Include="Content\plugins\momment\moment-with-locales.min.js" />
     <Content Include="Content\plugins\momment\moment.min.js" />
-    <Content Include="Content\plugins\multiselect\vanillaSelectBox.css" />
-    <Content Include="Content\plugins\multiselect\vanillaSelectBox.js" />
     <Content Include="Content\plugins\popper\popper.min.js" />
     <Content Include="Content\plugins\slick\ajax-loader.gif" />
     <Content Include="Content\plugins\slick\fonts\slick.svg" />
@@ -3645,7 +3636,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\GuiasDevoluciones\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Inspinia\bootstrap.css.map" />
@@ -3903,8 +3893,6 @@
     <Content Include="Views\ReportesPDP\EstatusPayment.cshtml" />
     <Content Include="Views\CallCenter\HistorialDetalle.cshtml" />
     <Content Include="Views\CallCenter\tblBuscador.cshtml" />
-    <Content Include="Views\Catalogo\TransportistasDST\Create.cshtml" />
-    <Content Include="Views\Catalogo\TransportistasDST\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
