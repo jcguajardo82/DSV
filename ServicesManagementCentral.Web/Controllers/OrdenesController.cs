@@ -2690,11 +2690,22 @@ namespace ServicesManagement.Web.Controllers
                 Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Logyt_Guia"], "", json2);
 
                 string msg = r2.message;
+                string pdfcadena2 = string.Empty;
 
                 LogytResponseModels re = JsonConvert.DeserializeObject<LogytResponseModels>(r2.message);
-                    
-               string pdfcadena2 = Convert.ToBase64String(re.Labels[0].PDF, Base64FormattingOptions.None);
 
+
+                if (!Convert.ToBoolean(re.Error))
+                    pdfcadena2 = Convert.ToBase64String(re.Labels[0].PDF, Base64FormattingOptions.None);
+                else
+                {
+                    string msgDetail = string.Empty;
+                    foreach(var itemMsg in re.Messages)
+                    {
+                        msgDetail += itemMsg + ". ";
+                    }
+                    throw new Exception(msgDetail);
+                }
                 //return re.Guia + "," + re.pdf;
                 return re.Labels[0].Folios[0] + "," + pdfcadena2;
 
