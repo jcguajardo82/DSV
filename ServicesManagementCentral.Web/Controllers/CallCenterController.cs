@@ -813,6 +813,16 @@ namespace ServicesManagement.Web.Controllers
                 Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
+
+                JObject json = JObject.Parse(r.message);
+                if (json.TryGetValue("errorCode", out JToken v1))
+                {
+                    if (((Newtonsoft.Json.Linq.JValue)v1).Value.ToString() == "99")
+                    {
+                        throw new Exception(r.message);
+                    }
+                }
+
                 if (r.code != "00")
                 {
                     throw new Exception(r.message);
