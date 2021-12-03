@@ -802,36 +802,20 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-
-                //string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"];
-                string apiUrl2 = System.Configuration.ConfigurationManager.AppSettings["api_CancelacionTotal"];
-
-                var req = new { OrderID = OrderId.ToString() };
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"]; var req = new { OrderID = OrderId.ToString() };
                 //string json2 = string.Empty;
                 //JavaScriptSerializer js = new JavaScriptSerializer();
                 ////json2 = js.Serialize(o);
-                //js = null;
-
+                //js = null; 
                 string json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
-
                 string PPSRequest = JsonConvert.SerializeObject(req);
-
                 Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
-
-                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl2, false, null);
-
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-                //Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
-                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl2, "", json2);
-
-                //if (r.code != "00")
-                //{
-                //    throw new Exception(r.message);
-                //}
-                if (r2.code != "00")
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
+                if (r.code != "00")
                 {
-                    throw new Exception(r2.message);
+                    throw new Exception(r.message);
                 }
             }
             catch (Exception x)
