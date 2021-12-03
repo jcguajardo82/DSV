@@ -225,6 +225,7 @@ namespace ServicesManagement.Web.Controllers
 
                  Correos.Correos.Correo8(349);
                  Correos.Correos.Correo8A(349);
+                 Correos.Correos.Correo8A(349);
                 var result = new
                 {
                     Success = true
