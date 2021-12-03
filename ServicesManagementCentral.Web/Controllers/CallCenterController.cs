@@ -798,42 +798,6 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public void Cancelacion(int OrderId)
-        {
-            try
-            {
-                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"]; var req = new { OrderID = OrderId.ToString() };
-                //string json2 = string.Empty;
-                //JavaScriptSerializer js = new JavaScriptSerializer();
-                ////json2 = js.Serialize(o);
-                //js = null; 
-                string json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
-                string PPSRequest = JsonConvert.SerializeObject(req);
-                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
-                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
-
-                JObject json = JObject.Parse(r.message);
-                if (json.TryGetValue("errorCode", out JToken v1))
-                {
-                    if (((Newtonsoft.Json.Linq.JValue)v1).Value.ToString() == "99")
-                    {
-                        throw new Exception(r.message);
-                    }
-                }
-
-                if (r.code != "00")
-                {
-                    throw new Exception(r.message);
-                }
-            }
-            catch (Exception x)
-            {
-                throw x;
-            }
-        }
-
         [HttpPost]
         public ActionResult AddCheckList(int[] values, string prodId)
         {
@@ -885,7 +849,6 @@ namespace ServicesManagement.Web.Controllers
             try
             {
 
-
                 if (Session["CheckListProd"] != null)
                 {
                     List<ProdCheckList> lst = (List<ProdCheckList>)Session["CheckListProd"];
@@ -931,7 +894,6 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-
         public ActionResult GetMotivos(int Id_Padre)
         {
             try
@@ -947,6 +909,42 @@ namespace ServicesManagement.Web.Controllers
             {
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public void Cancelacion(int OrderId)
+        {
+            try
+            {
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"]; var req = new { OrderID = OrderId.ToString() };
+                //string json2 = string.Empty;
+                //JavaScriptSerializer js = new JavaScriptSerializer();
+                ////json2 = js.Serialize(o);
+                //js = null; 
+                string json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
+                string PPSRequest = JsonConvert.SerializeObject(req);
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
+
+                JObject json = JObject.Parse(r.message);
+                if (json.TryGetValue("errorCode", out JToken v1))
+                {
+                    if (((Newtonsoft.Json.Linq.JValue)v1).Value.ToString() == "99")
+                    {
+                        throw new Exception(r.message);
+                    }
+                }
+
+                if (r.code != "00")
+                {
+                    throw new Exception(r.message);
+                }
+            }
+            catch (Exception x)
+            {
+                throw x;
             }
         }
 
