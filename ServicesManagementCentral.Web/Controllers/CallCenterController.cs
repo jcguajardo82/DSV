@@ -917,10 +917,7 @@ namespace ServicesManagement.Web.Controllers
             try
             {
                 string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Cancelacion"]; var req = new { OrderID = OrderId.ToString() };
-                //string json2 = string.Empty;
-                //JavaScriptSerializer js = new JavaScriptSerializer();
-                ////json2 = js.Serialize(o);
-                //js = null; 
+
                 string json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
                 string PPSRequest = JsonConvert.SerializeObject(req);
                 Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
