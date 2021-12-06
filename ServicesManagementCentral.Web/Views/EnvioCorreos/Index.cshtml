@@ -1,0 +1,63 @@
+﻿@using System.Data;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dt = (DataTable)ViewBag.Plantillas;
+}
+
+<div class="form-group">
+    <select id="ddlPlantillas" class="form-control">
+        @foreach (DataRow item in dt.Rows)
+        {
+            <option value="@item["Id"].ToString()">@item["IdPlantilla"].ToString() - @item["Subject"].ToString()</option>
+        }
+
+    </select>
+    <input type="text" class="form-control" id="txtOrden">
+    <button type="button" class="btn btn-default" onclick="Correos()">Enviar Correo</button>
+</div>
+@section scripts {
+   
+    <link href="~/Content/plugins/zoomy/zoomy.css" rel="stylesheet" />
+    <script>
+       
+        function Correos() {
+            var orden = $("#txtOrden").val();
+            var id = $("#ddlPlantillas").val();
+            if (orden.length == 0) {
+                $("#txtOrden").focus();
+                return;
+            }
+            $.ajax({
+                async: false,
+                type: "get",
+                url: '@Url.Action("EnvioCorreo", "EnvioCorreos")',
+                data: {
+                    Orden: orden,
+                    id: id
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                       alert("Correo enviado con éxito")
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+        }
+
+   
+
+    </script>
+}
+

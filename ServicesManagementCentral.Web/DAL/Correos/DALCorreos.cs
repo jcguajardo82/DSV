@@ -45,7 +45,7 @@ namespace ServicesManagement.Web.DAL.Correos
 
         }
 
-        public static DataSet spDatosCte_sUP(int @rderNo)
+        public static DataSet spDatosArticulosbyOrderId_sUP(int OrderNo)
         {
             DataSet ds = new DataSet();
 
@@ -60,7 +60,42 @@ namespace ServicesManagement.Web.DAL.Correos
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                parametros.Add("@OrderNo", @rderNo); // parametro Admin fijo
+                parametros.Add("@OrderId", OrderNo); // parametro Admin fijo
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[Correo].[spDatosArticulosbyOrderId_sUP]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public static DataSet spDatosCte_sUP(int OrderNo)
+        {
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@OrderNo", OrderNo); // parametro Admin fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[Correo].[spDatosCte_sUP]", false, parametros);
@@ -80,7 +115,7 @@ namespace ServicesManagement.Web.DAL.Correos
 
         }
 
-        public static DataSet spDatosEntrega_sUP(int @rderNo)
+        public static DataSet spDatosEntrega_sUP(int OrderNo)
         {
             DataSet ds = new DataSet();
 
@@ -95,7 +130,7 @@ namespace ServicesManagement.Web.DAL.Correos
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                parametros.Add("@OrderNo", @rderNo); // parametro Admin fijo
+                parametros.Add("@OrderNo", OrderNo); // parametro Admin fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[Correo].[spDatosEntrega_sUP]", false, parametros);
@@ -115,7 +150,7 @@ namespace ServicesManagement.Web.DAL.Correos
 
         }
 
-        public static DataSet spDatosGrales_sUP(int @rderNo)
+        public static DataSet spDatosGrales_sUP(int OrderNo)
         {
             DataSet ds = new DataSet();
 
@@ -130,7 +165,7 @@ namespace ServicesManagement.Web.DAL.Correos
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                parametros.Add("@OrderNo", @rderNo); // parametro Admin fijo
+                parametros.Add("@OrderNo", OrderNo); // parametro Admin fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[Correo].[spDatosGrales_sUP]", false, parametros);
@@ -150,7 +185,7 @@ namespace ServicesManagement.Web.DAL.Correos
 
         }
 
-        public static DataSet spDatosPago_sUP(int @rderNo)
+        public static DataSet spDatosPago_sUP(int OrderNo)
         {
             DataSet ds = new DataSet();
 
@@ -165,7 +200,7 @@ namespace ServicesManagement.Web.DAL.Correos
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                parametros.Add("@OrderNo", @rderNo); // parametro Admin fijo
+                parametros.Add("@OrderNo", OrderNo); // parametro Admin fijo
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[Correo].[spDatosPago_sUP]", false, parametros);
@@ -220,7 +255,40 @@ namespace ServicesManagement.Web.DAL.Correos
 
         }
 
+        public static DataSet spDatosResumenCompra_sUP(int OrderNo)
+        {
+            DataSet ds = new DataSet();
 
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@OrderNo", OrderNo); // parametro Admin fijo
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[Correo].[spDatosResumenCompra_sUP]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         //Correo.EmailLayout_iUp
 
         public static DataSet EmailLayout_iUp(string Subject,string Message)
@@ -293,5 +361,41 @@ namespace ServicesManagement.Web.DAL.Correos
             }
 
         }
+
+        public static DataSet EmailLayoutAll_sUp()
+        {
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[Correo].[EmailLayoutAll_sUp]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
     }
 }
