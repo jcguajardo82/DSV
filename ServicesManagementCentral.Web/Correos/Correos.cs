@@ -50,7 +50,7 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 1;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
+
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -113,7 +113,7 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 5;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
+    
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -149,11 +149,8 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 2;
             requestMessage.MailTo = CustomerEmail;
-
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
-            var requestMail = JsonConvert.SerializeObject(requestMessage);
 
             enviaCorreo(requestMessage);
 
@@ -185,7 +182,7 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 3;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
+
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -221,7 +218,7 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 6;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
+  
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -255,7 +252,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 6;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -289,7 +285,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 8;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -323,7 +318,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 9;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -358,7 +352,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 10;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -423,7 +416,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId =11;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -487,7 +479,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 12;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -550,7 +541,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 12;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -612,7 +602,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 12;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -674,7 +663,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 12;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -736,7 +724,6 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 12;
             requestMessage.MailTo = CustomerEmail;
-            requestMessage.MailTo = "Agonzalez@itechdev.com.mx;";
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -1088,7 +1075,7 @@ namespace ServicesManagement.Web.Correos
 
             //Console.Write(html);
 
-            //requestMessage.MailTo = "agonzalez@itechdev.com.mx";
+            ////requestMessage.MailTo = "agonzalez@itechdev.com.mx";
 
 
             var requestMail = JsonConvert.SerializeObject(requestMessage);
@@ -1096,7 +1083,7 @@ namespace ServicesManagement.Web.Correos
             SendMessage(requestMail);
 
 
-           
+
         }
 
     }
