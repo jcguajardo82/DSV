@@ -226,6 +226,7 @@
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\CpanelController.cs" />
     <Compile Include="Controllers\DevolucionesController.cs" />
+    <Compile Include="Controllers\EnvioCorreosController.cs" />
     <Compile Include="Controllers\Estatus_guia_envioController.cs" />
     <Compile Include="Controllers\AltaProveedorController.cs" />
     <Compile Include="Controllers\ManualesOperativosController.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="DAL\Consignaciones\DALConsignacionesAdm.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesCEDIS.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesProveedor.cs" />
+    <Compile Include="DAL\Correos\DALCorreos.cs" />
     <Compile Include="DAL\EstatusGuiasEnvio\DALEstatusGuiasEnvio.cs" />
     <Compile Include="DAL\EstatusReenvioMcia\DALEstatusReenvioMcia.cs" />
     <Compile Include="DAL\ManualesOperativos\DALManualesOperativos.cs" />
@@ -3893,6 +3895,7 @@
     <Content Include="Views\ReportesPDP\EstatusPayment.cshtml" />
     <Content Include="Views\CallCenter\HistorialDetalle.cshtml" />
     <Content Include="Views\CallCenter\tblBuscador.cshtml" />
+    <Content Include="Views\EnvioCorreos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
