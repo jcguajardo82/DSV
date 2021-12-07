@@ -287,8 +287,9 @@
 
 
         function SaveAut() {
-           // $("btnAceptar").addClass("disabled");
-            document.getElementById('btnAceptar').disabled = true;
+            // $("btnAceptar").addClass("disabled");
+            $("#btnAceptar").attr("disabled", true);
+            //document.getElementById('btnAceptar').disabled = true;
             var _Comentario = $("#txtMotCan").val();
             var _IdEstatusAut = $("#hddOp").val();
             var _Id_cancelacion = $("#hddIdCancelacion").val();
@@ -318,8 +319,10 @@
                         location.reload();
                     }
                     else {
-                        document.getElementById('btnAceptar').disabled = true;
+                        $("#btnAceptar").attr("disabled", false);
+                        //document.getElementById('btnAceptar').disabled = false;
                         alert(json.Message);
+                        location.reload();
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
