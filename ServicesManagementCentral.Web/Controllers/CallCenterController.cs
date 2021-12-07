@@ -252,7 +252,7 @@ namespace ServicesManagement.Web.Controllers
 
     }
 
-        public class LoyaltyModel
+    public class LoyaltyModel
     {
         public string Cve_RespCode { get; set; }
         public string Desc_MensajeError { get; set; }
@@ -729,8 +729,6 @@ namespace ServicesManagement.Web.Controllers
                 }
                 foreach (OrderDetail item in detalle)
                 {
-
-
                     if (Operacion != 5)
                     {
                         int quantity = Convert.ToInt32(item.Quantity);
@@ -742,15 +740,21 @@ namespace ServicesManagement.Web.Controllers
                                 quantity = Convert.ToInt32(i.NewQuantity);
                                 DALCallCenter.up_Corp_ins_tbl_OrdenRetorno_Detalle(id.Id_cancelacion, orden.Orderid, item.ShipmentId, item.Position, quantity, item.ProductId, Desc);
                             }
-
-
                         }
-
                     }
                     else
                     {
                         decimal quantity = item.Quantity;
                         //var i = Products.Select(x => x.ProductId == item.ProductId).ToList().FirstOrDefault();
+                        if (!UeType.ToUpper().Equals("SETC"))
+                        {
+                            //Obtengo el costo de envío. Agregar el costo a Products. upCorpOms_Cns_OrdersEnvio
+                            foreach (DataRow Flete in DALCallCenter.upCorpOms_Cns_OrdersEnvio(OrderId).Tables[0].Rows)
+                            {
+                                DALCallCenter.up_Corp_ins_tbl_OrdenCancelada_Detalle(id.Id_cancelacion, orden.Orderid, Flete["UeNo"].ToString(),
+                                Products.Count + 1, 1, int.Parse(Flete["ProductId"].ToString()), Desc);
+                            }
+                        }
                         foreach (OrderDetailCap i in Products)
                         {
                             if (i.ProductId == item.ProductId)
@@ -772,7 +776,13 @@ namespace ServicesManagement.Web.Controllers
                     if (UeType.ToUpper().Equals("SETC"))
                     {
                         if (DALCallCenter.up_PPS_Sel_PaymenTransactionOrderCancellation(orden.Orderid).Tables[0].Rows.Count > 0)
-                        { Cancelacion(int.Parse(orden.Orderid)); }
+                        {
+                            Cancelacion(int.Parse(orden.Orderid));
+                        }
+                    }
+                    else
+                    {
+
                     }
                 }
 
