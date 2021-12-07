@@ -61,7 +61,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="SaveAut()" class="btn btn-primary">Aceptar</button>
+                    <button type="button" onclick="SaveAut()" id="btnAceptar" class="btn btn-primary">Aceptar</button>
                     @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
                 </div>
             </div>
@@ -287,6 +287,8 @@
 
 
         function SaveAut() {
+           // $("btnAceptar").addClass("disabled");
+            document.getElementById('btnAceptar').disabled = true;
             var _Comentario = $("#txtMotCan").val();
             var _IdEstatusAut = $("#hddOp").val();
             var _Id_cancelacion = $("#hddIdCancelacion").val();
@@ -316,6 +318,7 @@
                         location.reload();
                     }
                     else {
+                        document.getElementById('btnAceptar').disabled = true;
                         alert(json.Message);
                     }
                 }
