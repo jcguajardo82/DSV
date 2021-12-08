@@ -157,7 +157,7 @@ namespace ServicesManagement.Web.Controllers
                                                                                 Categoria = (row["Categoria"].ToString()),
                                                                                 NroProveedor = row["NroProveedor"].ToString(),
                                                                                 TipoAlmacen = row["TipoAlmacen"].ToString(),
-                                                                                NombreProveedor =  lstJson.Where(x => x.IdTienda == int.Parse(row["NroProveedor"].ToString())).FirstOrDefault().NombreProveedor,
+                                                                                NombreProveedor =  lstJson.Where(x => x.IdTienda == int.Parse(row["NroProveedor"].ToString())).FirstOrDefault().Nombre,
                                                                                 NivelExistencia = row["NivelExistencia"].ToString(),
                                                                                 InvReservado = row["InvReservado"].ToString(),
                                                                                 InvVenta = row["InvVenta"].ToString(),
@@ -180,7 +180,7 @@ namespace ServicesManagement.Web.Controllers
                                                                                 FechaCreacion = row["FechaCreacion"].ToString(),
                                                                                 NroProvOrigen = row["NroProvOrigen"].ToString(),
                                                                                 NomProvOrigen = row["NomProvOrigen"].ToString(),
-                                                                                NombreAlmacen = lstJson.Where(x => x.IdTienda == int.Parse(row["NroProveedor"].ToString())).FirstOrDefault().Nombre
+                                                                                NombreAlmacen = lstJson.Where(x => x.IdTienda == int.Parse(row["NroProveedor"].ToString())).FirstOrDefault().NombreProveedor
                                                                             };
                         Session["lstNiveles"] = query;
                     }
