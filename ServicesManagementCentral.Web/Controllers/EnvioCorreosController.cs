@@ -26,7 +26,7 @@ namespace ServicesManagement.Web.Controllers
                 {
                     //1   Confirmación de Pago en Tienda Entrega en Tienda    6A
                     case 1:
-                        Correos.Correos.Correo6(Orden);
+                        Correos.Correos.Correo6A(Orden);
                         break;
                     //2   Solicitud de Cancelación    8
                     case 2:

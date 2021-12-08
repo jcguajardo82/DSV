@@ -778,41 +778,27 @@ namespace ServicesManagement.Web.Correos
                 case 2:
                     foreach (DataRow item in ds.Tables[1].Rows)
                     {
-                        //var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
-                        //tablaProductos.Append("<tr>");
-                        //tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
-                        //tablaProductos.Append($"<td class='tg-oe15'> {item["ProductName"].ToString()} </td>");
-                        //tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()} {piezas} </td>");
-                        //tablaProductos.Append($"<td class='tg-c1kk'>{item["Price"].ToString()}</td>");
-                        //tablaProductos.Append("</tr>");
 
 
-                        parameters.Add("@totalMergeRows", (ds.Tables[1].Rows.Count * 7).ToString());
-                        parameters.Add("@total_articulos", ds.Tables[1].Rows.Count.ToString());
+
+                      
 
                         tablaProductos.Append("<tr>");
-                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
-                        tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
-                        tablaProductos.Append($"<td class='tg-zv4m'>Puntos a descontar: [ <span style='color:#FE0000'>Numeros</span>]</td>");
-                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'>[ <span style='font-weight:bold'>Numero total</span>]</td>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
+                        tablaProductos.Append($"<td style = 'Word-wrap: break-Word; width: 70%;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
+                        tablaProductos.Append($"<td class='tg-zv4m'></td>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <span style='font-weight:bold'>{item["Price"].ToString()}</span></td>");
                         tablaProductos.Append("</tr>");
                         tablaProductos.Append("<tr>");
-                        tablaProductos.Append("<td class='tg-zv4m'>Puntos a devolver: [ <span style='color:#BBBE2F'>Numeros</span>]</td>");
+                        tablaProductos.Append("<td class='tg-zv4m'></td>");
                         tablaProductos.Append("</tr>");
 
-                        // < tr >
-
-                        //   < td class='tg-zv4m' rowspan='2'> <img src = 'https://www.soriana.com/dw/image/v2/BGBD_PRD/on/demandware.static/-/Sites-soriana-grocery-master-catalog/default/dwffb6b384/images/product/7502249667165-A.jpg' alt='Image' width='75' height='60'>
-                        //</td>
-                        //	<td style = "Word-wrap: break-Word; width: 230px;" class='tg-t0vf' rowspan='2'> Bafle Gowin Red-785 Bluetooth 15 Pulg<br> 1.000 </td>
-                        //	<td class='tg-zv4m'>Puntos a descontar: [ <span style='color:#FE0000'>Numeros</span>]</td>
-                        //	<td class='tg-zv4m' rowspan='2'>[ <span style='font-weight:bold'>Numero total</span>]</td>
-                        //</tr>
-                        //<tr>
-                        //	<td class='tg-zv4m'>Puntos a devolver: [ <span style='color:#BBBE2F'>Numeros</span>]</td>
-                        //</tr>
+                      
 
                     }
+
+                    parameters.Add("@totalMergeRows", (ds.Tables[1].Rows.Count * 7).ToString());
+                    parameters.Add("@tot_arti", ds.Tables[1].Rows.Count.ToString());
                     break;
                 case 3:
                     foreach (DataRow item in ds.Tables[2].Rows)
@@ -1073,9 +1059,10 @@ namespace ServicesManagement.Web.Correos
 
             //var html = replacelayout(requestMessage, requestMessage.LayoutId);
 
-            //Console.Write(html);
+            ////Console.Write(html);
 
-            ////requestMessage.MailTo = "agonzalez@itechdev.com.mx";
+            //requestMessage.MailTo = "agonzalez@itechdev.com.mx";
+            //requestMessage.MailTo = "josera@soriana.com";
 
 
             var requestMail = JsonConvert.SerializeObject(requestMessage);
