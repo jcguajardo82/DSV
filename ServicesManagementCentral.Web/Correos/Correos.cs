@@ -1057,12 +1057,20 @@ namespace ServicesManagement.Web.Correos
         public static void enviaCorreo(MailMessage requestMessage)
         {
 
-            //var html = replacelayout(requestMessage, requestMessage.LayoutId);
+            //Header
+          var header=  DALCorreos.EmailLayout_sUp(17).Tables[0].Rows[0]["Message"].ToString();
+          var footer=  DALCorreos.EmailLayout_sUp(18).Tables[0].Rows[0]["Message"].ToString();
+
+
+            requestMessage.Parameters.Add("@header", header);
+            requestMessage.Parameters.Add("@footer", footer);
+
+            var html = replacelayout(requestMessage, requestMessage.LayoutId);
 
             ////Console.Write(html);
 
             //requestMessage.MailTo = "agonzalez@itechdev.com.mx";
-            //requestMessage.MailTo = "josera@soriana.com";
+            requestMessage.MailTo = "josera@soriana.com";
 
 
             var requestMail = JsonConvert.SerializeObject(requestMessage);
