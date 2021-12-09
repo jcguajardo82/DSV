@@ -860,7 +860,7 @@ namespace ServicesManagement.Web.Correos
                         tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
                         tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-oe15'> {item["ProductName"].ToString()} </td>");
                         tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()} {piezas} </td>");
-                        tablaProductos.Append($"<td class='tg-c1kk'>{item["Price"].ToString()}</td>");
+                        tablaProductos.Append($"<td class='tg-c1kk'>${item["Price"].ToString()}</td>");
                         tablaProductos.Append("</tr>");
                  
                     }
@@ -873,7 +873,7 @@ namespace ServicesManagement.Web.Correos
                         tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
                         tablaProductos.Append($"<td style = 'Word-wrap: break-Word; width: 70%;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
                         tablaProductos.Append($"<td class='tg-zv4m'></td>");
-                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <span style='font-weight:bold'>{item["Price"].ToString()}</span></td>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <span style='font-weight:bold'>${item["Price"].ToString()}</span></td>");
                         tablaProductos.Append("</tr>");
                         tablaProductos.Append("<tr>");
                         tablaProductos.Append("<td class='tg-zv4m'></td>");
