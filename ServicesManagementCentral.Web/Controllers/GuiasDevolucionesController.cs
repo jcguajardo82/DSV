@@ -66,7 +66,7 @@ namespace ServicesManagement.Web.Controllers
 
                     var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, item.OrderNo, FolioDisp, "DEVOLUCION",
                     item.PackageType, item.PackageLength, item.PackageWidth, item.PackageHeight, item.PackageWeight,
-                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null).Tables[0].Rows[0][0];
+                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null,"").Tables[0].Rows[0][0];
 
                     #endregion
                     DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(UeNo, item.OrderNo, FolioDisp, "DEVOLUCION",
