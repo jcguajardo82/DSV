@@ -1,142 +1,109 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Autorizaciones Bancarias";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .container {
+        width: 30em;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+</style>
+
 <h2>Autorizaciones Bancarias</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-        <div style="width:99%;">
-            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Fecha Inicio</label>
+                    <input type="date" id="txtFecIni" class="form-control" />
+                    <div class="input-group date" id="datetimepicker1"></div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+        <div style="width: 99%; overflow-x: scroll; overflow-y: hidden;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer container">
                 <thead class="bg-danger-sor">
                     <tr>
                         <th>Orden ID</th>
-                        <th>Carrito</th>
                         <th>ID Transacción</th>
-                        <th>Mes Creación</th>
-                        <th>Fecha Creación</th>
-                        <th>Hora Creacón</th>
-                        <th>No. Afiliación</th>
-                        <th>Adquiriente</th>
-                        <th>Monto de Orden</th>
-                        <th>Decison emisor</th>
-                        <th>Codigo rechazo</th>
-                        <th>Descripcion rechazo</th>
-                        <th>Catálogo</th>
-                        <th>Tipo Entrega</th>
-                        <th>Tipo de Transporte</th>
-                        <th>Tipo almacen</th>
-                        <th>SKU Cátalogo</th>
-                        <th>Nombre del Articulo</th>
-                        <th>Canal de Compra</th>
-                        <th>Forma de Pago</th>
-                        <th>3D/safe key</th>
-                        <th>3D/safe key</th>
-                        <th>Codigos</th>
-                        <th>SIGNIFICADO DE CODIGO</th>
-                        <th>Estatus de Pago</th>
-                        <th>Consignación ID</th>
-                        <th>No.Pzas Consignación</th>
-                        <th>Monto Consignación</th>
-                        <th>Costo Envio</th>
+                        <th>Fecha Creacion</th>
+                        <th>Hora Creacion</th>
                         <th>Monto Total Orden</th>
                         <th>Banco</th>
                         <th>Bin</th>
                         <th>Sufijo</th>
                         <th>Tipo Tarjeta</th>
                         <th>Marca</th>
-                        <th>No. Autorizacion</th>
-                        <th>Msi</th>
-                        <th>Nombre de persona registrada</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>No Tarjeta Lealtad</th>
-                        <th>Método Envio</th>
-                        <th>Correo</th>
-                        <th>Nombre Persona a Recibir</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>Teléfono</th>
-                        <th>Calle</th>
-                        <th>Colonia</th>
-                        <th>Ciudad</th>
-                        <th>Número</th>
-                        <th>Interior</th>
-                        <th>CP</th>
+                        <th>No. Autorización</th>
+                        <th>MSI</th>
+                        <th>Decision emisor</th>
+                        <th>Codigo Respuesta emisor</th>
+                        <th>Descripcion Respuesta emisor</th>
+                        <th>Catalogo</th>
+                        <th>Canal Compra</th>
+                        <th>Forma Pago</th>
+                        <th>3D/Safe Key</th>
+                        <th>3D/Safe Key</th>
                         <th>Estatus Orden</th>
-
-
-
-
-
-
-
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    @{
+                        if (Session["listaGrid"] != null)
+                        {
+                            var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase>>(Session["listaGrid"].ToString());
+
+                            foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase o in lista)
+                            {
+                                <tr>
+                                    <td>@o.OrderReferenceNumber</td>
+                                    <td>@o.PaymentTransactionID</td>
+                                    <td>@o.OrderDate</td>
+                                    <td>@o.OrderHour</td>
+                                    <td>@o.OrderAmount</td>
+                                    <td>@o.Bank</td>
+                                    <td>@o.BinCode</td>
+                                    <td>@o.MaskCard</td>
+                                    <td>@o.TypeOfCard</td>
+                                    <td>@o.PaymentMethod</td>
+                                    <td>@o.TransactionAuthorizationId</td>
+                                    <td>@o.shippingPaymentInstallments</td>
+                                    <td>@o.DecisionEmisor</td>
+                                    <td>@o.CveReespuestaEmisor</td>
+                                    <td>@o.DescReespuestaEmisor</td>
+                                    <td>@o.Catalogo</td>
+                                    <td>@o.OrderSaleChannel</td>
+                                    <td>@o.paymentTypeJson</td>
+                                    <td>@o.Apply3DS</td>
+                                    <td>@o.Apply3DS</td>
+                                    <td>@o.PaymentTransactionService</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
             </table>
         </div>
     </div>
 </div>
 @section scripts {
-<script>$(document).ready(function () {
-            //GetReporte();
-        });
-
-        function GetReporte() {
-
-            //var _Id_Num_UN = $("#hddTda").val();
-
-            debugger;
-
-            $.ajax({
-                async: false,
-                type: "GET",
-                url: '@Url.Action("GetFormaPago", "ReportesPDP")',
-                data: {
-                    //  Id_Num_UN: _Id_Num_UN
-                },
-
-                datatype: "json",
-                success: function (json) {
-                    if (json.Success) {
-
-                        $('#tblConsulta tbody').empty();
-                        //var tr;
-                        debugger;
-                        //Append each row to html table
-
-                        for (var i = 0; i < json.resp.length; i++) {
-                            tr = $('<tr/>');
-
-
-                            tr.append("<td>" + json.resp[i].NoOrden + "</td>");
-                            tr.append("<td>" + json.resp[i].Fecha + "</td>");
-                            tr.append("<td>" + json.resp[i].NoConsignacion + "</td>");
-                            tr.append("<td>" + json.resp[i].Monto + "</td>");
-                            tr.append("<td>" + json.resp[i].TipoPAgo + "</td>");
-                            tr.append("<td>" + json.resp[i].Origen + "</td>");
-                            tr.append("<td>" + json.resp[i].FecEntrega + "</td>");
-
-
-                            $('#tblConsulta').append(tr);
-                        }
-
-
-                    }
-                    else {
-                        alert(json.Message);
-                    }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert("errorThrown");
-                }
-
-            });
-
-        }</script>
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
-<script>$(document).ready(function () {
+    <script>
+        $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(1) th').each(function (i) {
                 if ($(this).attr('name') != "accion") {
@@ -192,6 +159,108 @@
 
                 }
             );
-        });</script>
+        });
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+
+        function GetHistorialRMA() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetParamDates", "ReportesPDP")',
+                data: {
+                        FecIni: _FecIni,
+                        FecFin: _FecFin,
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        debugger;
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable.clear().draw();
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            debugger;
+                            var rw = json.resp[i];
+                            var OrderReferenceNumber = rw.OrderReferenceNumber;
+                            var PaymentTransactionID = rw.PaymentTransactionID;
+                            var OrderDate = rw.OrderDate;
+                            var OrderHour = rw.OrderHour;
+                            var OrderAmount = rw.OrderAmount;
+                            var Bank = rw.Bank;
+                            var BinCode = rw.BinCode;
+                            var MaskCard = rw.MaskCard;
+                            var TypeOfCard =rw.TypeOfCard;
+                            var PaymentMethod = rw.PaymentMethod;
+                            var TransactionAuthorizationId = rw.TransactionAuthorizationId;
+                            var shippingPaymentInstallments = rw.shippingPaymentInstallments;
+                            var DecisionEmisor = rw.DecisionEmisor;
+                            var CveReespuestaEmisor = rw.CveReespuestaEmisor;
+                            var DescReespuestaEmisor = rw.DescReespuestaEmisor;
+                            var Catalogo = rw.Catalogo;
+                            var OrderSaleChannel = rw.OrderSaleChannel;
+                            var paymentTypeJson = rw.paymentTypeJson;
+                            var Apply3DS = rw.Apply3DS;
+                            var PaymentTransactionService = rw.PaymentTransactionService;
+
+                            myTable.row.add([
+                                OrderReferenceNumber,
+                                PaymentTransactionID,
+                                OrderDate,
+                                OrderHour,
+                                OrderAmount,
+                                Bank,
+                                BinCode,
+                                MaskCard,
+                                TypeOfCard,
+                                PaymentMethod,
+                                TransactionAuthorizationId,
+                                shippingPaymentInstallments,
+                                DecisionEmisor,
+                                CveReespuestaEmisor,
+                                DescReespuestaEmisor,
+                                Catalogo,
+                                OrderSaleChannel,
+                                paymentTypeJson,
+                                Apply3DS,
+                                Apply3DS,
+                                PaymentTransactionService,
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+            });
+        }
+    </script>
 }
 
