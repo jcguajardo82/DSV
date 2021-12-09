@@ -2012,56 +2012,73 @@ namespace ServicesManagement.Web.Controllers
         [HttpPost]
         public ActionResult AddEmbalaje(List<PackageMeasure> Paquetes, string UeNo, int OrderNo,List<ProductEmbalaje> Products, string TrackingType ="Normal")
         {
-            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty;
+            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty, service = string.Empty, trackUrl = string.Empty;
             try
             {
+                int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
+
                 List<string> folios = new List<string>();
                 foreach (PackageMeasure item in Paquetes)
                 {
                     #region Guias
                     var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
                     folios.Add(FolioDisp);
-                    string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
+                    //string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
+                    string[] carriers = {"fedex" };
                     List<string> lstCarriers = new List<string>(carriers);
+                    List<CarrierRequest> lstCarrierRequests = new List<CarrierRequest>();
 
                     EliminarTarifasAnteriores(UeNo, OrderNo);
-                    foreach (var carrier in lstCarriers)
+                    CrearCotizacionesLogyt(Products, OrderNo);
+
+                    if (enviaCom == 1)
                     {
-                        tarifa = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
+                        foreach (var carrier in lstCarriers)
+                        {
+                            var tarifaCarrier = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
 
-                        if (!tarifa.Equals("error"))
-                            GuardarTarifas(UeNo, OrderNo, tarifa);
+                            if (tarifaCarrier.Carrier != null)
+                            {
+                                GuardarTarifas(UeNo, OrderNo, tarifaCarrier.msj);
+                                lstCarrierRequests.Add(tarifaCarrier);
+                            }
+                        }
                     }
-
-                    //decimal decimalRound = decimal.Round(item.Peso);
-                    //if (decimalRound == 0)
-                    //    decimalRound = 1;
-
-                    //int peso = decimal.ToInt32(decimalRound);
                     int type = 1;
 
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
                         type = 4;
 
+                    DataSet dsCarrier = DALServicesM.CarrierSelected(OrderNo);
+
                     //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
+                    paqueteria = dsCarrier.Tables[0].Rows[0][0].ToString();
+                    service = dsCarrier.Tables[0].Rows[0][1].ToString();
                     decimal decimalPeso = decimal.Round(decimal.Parse(Session["SumPeso"].ToString()));
                     int peso = decimal.ToInt32(decimalPeso);
 
-                    guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
-                    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+                    //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
 
-                    //if (paqueteria.Equals("Logyt"))
-                    //{
-                    //    guia = CreateGuiaLogyt(UeNo,OrderNo,peso, type)
+                    if (paqueteria.Equals("Logyt"))
+                    {
+                        guia = CreateGuiaLogyt(UeNo, OrderNo, peso, type);
 
-                    //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                    //}
-                    //else
-                    //{
-                    //    guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+                        servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    }
+                    if (paqueteria.Equals("Estafeta"))
+                    {
+                        guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
 
-                    //    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
-                    //}
+                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    }
+                    else
+                    {
+                        var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
+                        guia = CreateGuiaEnvia(request, service);
+                        servicioPaq = "Envia-" + paqueteria;
+                        trackUrl = guia.Split(',')[2];
+                    }
                     string GuiaEstatus = "CREADA";
                     //TarifaModel tarifaSeleccionada = new TarifaModel();
                     //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
@@ -2070,14 +2087,15 @@ namespace ServicesManagement.Web.Controllers
                     //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
                     //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
 
+                    //DESCOMENTAR
                     var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
                     item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
-                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null).Tables[0].Rows[0][0];
+                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
 
                     #endregion
                 }
 
-
+                //DESCOMENTAR
                 foreach (var folio in folios)
                 {
                     foreach (var p in Products)
@@ -2088,11 +2106,6 @@ namespace ServicesManagement.Web.Controllers
 
                 }
 
-                //if (contentType != null)
-                //{
-                //    DALServicesM.UCCProcesada(contentType);
-                //}
-
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -2101,6 +2114,71 @@ namespace ServicesManagement.Web.Controllers
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
+        }
+        private void CrearCotizacionesLogyt(List<ProductEmbalaje> Products, int orderNo)
+        {
+            string productsAll = string.Empty;
+            bool bigTicket = false;
+            decimal sumPeso = 0, width=0, length=0, heigth=0;
+
+            foreach (var p in Products)
+            {
+                productsAll += p.ProductId.ToString() + ",";
+            }
+            List<WeightByProducts> lstPesos = DataTableToModel.ConvertTo<WeightByProducts>(DALServicesM.GetDimensionsByProducts(productsAll).Tables[0]);
+
+            foreach (var item in lstPesos)
+            {
+                if (item.PesoVol > item.Peso)
+                {
+                    if (item.PesoVol > 70)
+                        bigTicket = true;
+
+                    var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
+                    sumPeso += (item.PesoVol * piezas);
+                    width += item.Width;
+                    length += item.Lenght;
+                    heigth += item.Height;
+                }
+                else
+                {
+                    if (item.Peso > 70)
+                        bigTicket = true;
+
+                    var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
+                    sumPeso += (item.Peso * piezas);
+                    width += item.Width;
+                    length += item.Lenght;
+                    heigth += item.Height;
+                }
+
+            }
+
+            if (sumPeso < 1)
+                sumPeso = 1;
+
+            var  widthRound = decimal.Round(width);
+            if (widthRound > 1)
+                Session["SumWidth"] = decimal.ToInt32(widthRound);
+            else
+                Session["SumWidth"] = 1;
+
+            var lengthRound = decimal.Round(length);
+            if (lengthRound > 1)
+                Session["SumLength"] = decimal.ToInt32(lengthRound);
+            else
+                Session["SumLength"] = 1;
+
+            var heightRound = decimal.Round(heigth);
+            if (heightRound > 1)
+                Session["SumHeigth"] = decimal.ToInt32(heightRound);
+            else
+                Session["SumHeigth"] = 1;
+
+            Session["SumPeso"] = sumPeso;
+
+            DALServicesM.GuardarTarifasLogyt(orderNo, sumPeso, bigTicket);
+
         }
         private string SeleccionarPaqueteria(List<ProductEmbalaje> Products, int orderNo)
         {
@@ -2139,6 +2217,9 @@ namespace ServicesManagement.Web.Controllers
                 sumPeso = 1;
 
             Session["SumPeso"] = sumPeso;
+            
+            DALServicesM.GuardarTarifasLogyt(orderNo, sumPeso, bigTicket);
+            
             DataSet ds = DALServicesM.OrdersLogistics(orderNo, sumPeso, bigTicket);
 
 
@@ -2147,41 +2228,76 @@ namespace ServicesManagement.Web.Controllers
         }
         public ActionResult AddEmbalajePendiente(List<ShipmentToTrackingModel> Paquetes)
         {
-            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty;
+            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty, service = string.Empty, trackUrl = string.Empty;
             try
             {
-                
+                int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
                 foreach (ShipmentToTrackingModel item in Paquetes)
                 {
                     #region Guias
                     //List<string> folios = new List<string>();
                     var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
                     //folios.Add(FolioDisp);
-                    string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
+                    //string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
+                    string[] carriers = { "fedex" };
                     List<string> lstCarriers = new List<string>(carriers);
 
-                    EliminarTarifasAnteriores(item.ueNo, item.orderNo);
-                    foreach (var carrier in lstCarriers)
-                    {
-                        tarifa = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, carrier);
+                    //EliminarTarifasAnteriores(item.ueNo, item.orderNo);
+                    //foreach (var carrier in lstCarriers)
+                    //{
+                    //    //tarifa = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, carrier);
 
-                        if (!tarifa.Equals("error"))
-                            GuardarTarifas(item.ueNo, item.orderNo, tarifa);
+                    //    if (!tarifa.Equals("error"))
+                    //        GuardarTarifas(item.ueNo, item.orderNo, tarifa);
+                    //}
+                    //LO NUEVO
+                    List<CarrierRequest> lstCarrierRequests = new List<CarrierRequest>();
+
+                    EliminarTarifasAnteriores(item.ueNo, item.orderNo);
+                    CrearCotizacionesLogytPendiente(item);
+
+                    var widthRound = decimal.Round(item.ancho);
+                    if (widthRound > 1)
+                        Session["SumWidth"] = decimal.ToInt32(widthRound);
+                    else
+                        Session["SumWidth"] = 1;
+
+                    var lengthRound = decimal.Round(item.largo);
+                    if (lengthRound > 1)
+                        Session["SumLength"] = decimal.ToInt32(lengthRound);
+                    else
+                        Session["SumLength"] = 1;
+
+                    var heightRound = decimal.Round(item.largo);
+                    if (heightRound > 1)
+                        Session["SumHeigth"] = decimal.ToInt32(heightRound);
+                    else
+                        Session["SumHeigth"] = 1;
+
+
+                    if (enviaCom == 1)
+                    {
+                        foreach (var carrier in lstCarriers)
+                        {
+                            var tarifaCarrier = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, carrier);
+
+                            if (tarifaCarrier.Carrier != null)
+                            {
+                                GuardarTarifas(item.ueNo, item.orderNo, tarifaCarrier.msj);
+                                lstCarrierRequests.Add(tarifaCarrier);
+                            }
+                        }
                     }
 
-                    decimal decimalRound = decimal.Round(item.peso);
-                    if (decimalRound == 0)
-                        decimalRound = 1;
 
-                    int peso = decimal.ToInt32(decimalRound);
                     int type = 1;
 
                     if (item.tipoEmpaque.Equals("CJA") || item.tipoEmpaque.Equals("EMB") || item.tipoEmpaque.Equals("STC"))
                         type = 4;
 
-                    guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+                    //guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
 
-                    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
                     //paqueteria = SeleccionarPaqueteriaPendiente(item);
 
                     //if (paqueteria.Equals("Logyt"))
@@ -2197,6 +2313,51 @@ namespace ServicesManagement.Web.Controllers
                     //    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
                     //}
 
+                    //string GuiaEstatus = "CREADA";
+                    //TarifaModel tarifaSeleccionada = new TarifaModel();
+                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
+
+                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
+                    //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                    //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
+                    //--------------
+                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                    //item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
+                    //User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc).Tables[0].Rows[0][0];
+
+                    DataSet dsCarrier = DALServicesM.CarrierSelected(item.orderNo);
+
+                    //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
+                    paqueteria = dsCarrier.Tables[0].Rows[0][0].ToString();
+                    service = dsCarrier.Tables[0].Rows[0][1].ToString();
+                    decimal decimalRound = decimal.Round(item.peso);
+                    if (decimalRound == 0)
+                        decimalRound = 1;
+
+                    int peso = decimal.ToInt32(decimalRound);
+
+                    //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+                    //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+
+                    if (paqueteria.Equals("Logyt"))
+                    {
+                        guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
+
+                        servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                    }
+                    if (paqueteria.Equals("Estafeta"))
+                    {
+                        guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+
+                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    }
+                    else
+                    {
+                        var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
+                        guia = CreateGuiaEnvia(request, service);
+                        servicioPaq = "Envia-" + paqueteria;
+                        trackUrl = guia.Split(',')[2];
+                    }
                     string GuiaEstatus = "CREADA";
                     //TarifaModel tarifaSeleccionada = new TarifaModel();
                     //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
@@ -2205,10 +2366,13 @@ namespace ServicesManagement.Web.Controllers
                     //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
                     //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
 
-                    var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
-                    item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
-                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc).Tables[0].Rows[0][0];
+                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
+                    //item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
+                    //User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
 
+                    var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                     item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
+                     User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc,trackUrl).Tables[0].Rows[0][0];
 
                     DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
                      item.productId, item.barcode, "000000000", User.Identity.Name);
@@ -2226,7 +2390,7 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
-        private string SeleccionarPaqueteriaPendiente(ShipmentToTrackingModel Paquete)
+        private void CrearCotizacionesLogytPendiente(ShipmentToTrackingModel Paquete)
         {
             string productsAll = string.Empty;
             bool bigTicket = false;
@@ -2260,14 +2424,10 @@ namespace ServicesManagement.Web.Controllers
             if (sumPeso < 1)
                 sumPeso = 1;
 
-            if (sumPeso < 1)
-                sumPeso = 1;
+            Session["SumPeso"] = sumPeso;
 
-            DataSet ds = DALServicesM.OrdersLogistics(Paquete.orderNo, sumPeso, bigTicket);
-
-
-
-            return ds.Tables[0].Rows[0][1].ToString();
+            //DataSet ds = DALServicesM.OrdersLogistics(Paquete.orderNo, sumPeso, bigTicket);
+            DALServicesM.GuardarTarifasLogyt(Paquete.orderNo, sumPeso, bigTicket);
         }
         //Cabeceras y productos
         public ActionResult LstCabecerasGuiasProds(string UeNo, int OrderNo)
@@ -2379,7 +2539,7 @@ namespace ServicesManagement.Web.Controllers
 
                 var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
                 PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null).Tables[0].Rows[0][0];
+                User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null,"").Tables[0].Rows[0][0];
 
 
 
@@ -2715,6 +2875,27 @@ namespace ServicesManagement.Web.Controllers
             return string.Empty;
 
         }
+        public string CreateGuiaEnvia(CotizadorRequestModel request, string service)
+        {
+
+            request.shipment.service = service;
+
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            string json2 = JsonConvert.SerializeObject(request);
+
+            Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Envia_Guia"], "", json2);
+
+            string msg = r2.message;
+
+            //string msg = "{ 'meta': 'generate', 'data': [{'carrier': 'fedex','service': 'express','trackingNumber': '794693403268','trackUrl': 'https://test.envia.com/rastreo?label=794693403268&cntry_code=mx', 'label': 'https://s3.us-east-2.amazonaws.com/envia-staging/uploads/fedex/79469340326840461b0130d92379.pdf', 'additionalFiles': [],'totalPrice': 434,'currentBalance': 1580, 'currency': 'MXN'} ]}";
+
+
+            EnviaResponseModel re = JsonConvert.DeserializeObject<EnviaResponseModel>(msg);
+
+
+            return re.data[0].trackingNumber + "," + re.data[0].label + "," + re.data[0].trackUrl;
+        }
         public string GuardarTarifas(string UeNo, int OrderNo, string json)
         {
 
@@ -2751,10 +2932,11 @@ namespace ServicesManagement.Web.Controllers
 
             return "ok";
         }
-            public string CreateGuiaCotizador(string UeNo, int OrderNo, int type, string carrier)
+            public CarrierRequest CreateGuiaCotizador(string UeNo, int OrderNo, int type, string carrier)
         {
 
             DataSet ds = new DataSet();
+            CarrierRequest carrierRequest = new CarrierRequest();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -2777,11 +2959,11 @@ namespace ServicesManagement.Web.Controllers
             }
             catch (SqlException ex)
             {
-                return "ERRSQL";
+                return carrierRequest;
             }
             catch (System.Exception ex)
             {
-                return "ERR";
+                return carrierRequest;
             }
 
             CotizadorRequestModel requestCotizador = new CotizadorRequestModel();
@@ -2841,17 +3023,19 @@ namespace ServicesManagement.Web.Controllers
 
             PackageModel packages = new PackageModel();
             packages.amount = 1;
-            packages.content = "zapatos";
+            packages.content = "Mercancias Generales";
             packages.declaredValue = 0;
             packages.insurance = 0;
-            packages.weight = 1;
+            var pesoRound = decimal.Round(Convert.ToDecimal(Session["SumPeso"].ToString()));
+            var peso = decimal.ToInt32(pesoRound);
+            packages.weight = peso;
             packages.weightUnit = "KG";
             packages.lenghtUnit = "CM";
             packages.type = "box";
             DimensionsModel dimensions = new DimensionsModel();
-            dimensions.height = 20;
-            dimensions.length = 11;
-            dimensions.width = 15;
+            dimensions.height = int.Parse(Session["SumHeigth"].ToString());
+            dimensions.length = int.Parse(Session["SumLength"].ToString());
+            dimensions.width = int.Parse(Session["SumWidth"].ToString());
             packages.dimensions = dimensions;
 
             List<PackageModel> lstPackages = new List<PackageModel>();
@@ -2893,11 +3077,12 @@ namespace ServicesManagement.Web.Controllers
             if (msg.Contains("costSummary"))
             {
                 CotizadorResponseModel re = JsonConvert.DeserializeObject<CotizadorResponseModel>(r2.message);
-                return msg;
+                carrierRequest.Carrier = carrier;
+                carrierRequest.request = requestCotizador;
+                carrierRequest.msj= msg;
             }
-            else
-                return "error";
 
+            return carrierRequest;
         }
 
 
@@ -2926,6 +3111,7 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult GetPdfGuia(string guia)
         {
             string pdfBase = string.Empty;
+            string urlPdf = string.Empty;
             try
             {
                 DataSet ds = new DataSet();
@@ -2953,6 +3139,7 @@ namespace ServicesManagement.Web.Controllers
                             {
 
                                 pdfBase = ds.Tables[0].Rows[0][0].ToString();
+                                urlPdf = ds.Tables[0].Rows[0][1].ToString();
                             }
                         }
                     }
@@ -2968,7 +3155,7 @@ namespace ServicesManagement.Web.Controllers
                     throw ex;
                 }
 
-                var result = new { Success = true, pdf = pdfBase };
+                var result = new { Success = true, pdf = pdfBase, url = urlPdf };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)

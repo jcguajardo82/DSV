@@ -427,7 +427,10 @@
             success: function (json) {
             if (json.Success) {
 
-            document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+            if (json.pdf != 'url')
+                document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+            else
+                document.getElementById("viewrPDF").setAttribute('src', json.url);
 
             $("#myModal").modal("show");
 

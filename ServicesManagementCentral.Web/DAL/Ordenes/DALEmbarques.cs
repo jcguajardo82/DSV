@@ -168,7 +168,8 @@ namespace ServicesManagement.Web.DAL.Embarques
             string IdTrackingService,
             string pdfstring,
             string GuiaEstatus,
-            string contentType)
+            string contentType,
+            string trackUrl)
         {
 
             DataSet ds = new DataSet();
@@ -197,9 +198,19 @@ namespace ServicesManagement.Web.DAL.Embarques
                 parametros.Add("@CreationId", CreationId);
                 parametros.Add("@IdTrackingService", IdTrackingService);
                 parametros.Add("@TrackingServiceName", servicioPaq);
-                parametros.Add("@pdfstring", pdfstring);
+                
                 parametros.Add("@TrackingServiceStatus", GuiaEstatus); // GuiaEstatus
                 parametros.Add("@contentType", contentType == null ? "": contentType);
+
+                if(servicioPaq.Equals("Logyt-Estafeta") || servicioPaq.Equals("Soriana-Estafeta"))
+                {
+                    parametros.Add("@pdfstring", pdfstring);
+                }
+                else
+                {
+                    parametros.Add("@labelUrl", pdfstring);
+                    parametros.Add("@trackUrl", trackUrl);
+                }
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoTracking]", false, parametros);
 
                 return ds;
