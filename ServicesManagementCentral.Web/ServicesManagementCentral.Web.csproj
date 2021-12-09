@@ -338,6 +338,8 @@
     <Compile Include="Models\NotificacionesSis\ImagenNotificacion.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrdersDetail.cs" />
+    <Compile Include="Models\ProcesadorPagosSoriana\JsonRespoonseModel.cs" />
+    <Compile Include="Models\ProcesadorPagosSoriana\ProcesadorPagosBase.cs" />
     <Compile Include="Models\ProcesoReciboDevoluciones\ProcesoReciboDevoluciones.cs" />
     <Compile Include="Models\ProcesoSurtido\Guias_por_OrderFact.cs" />
     <Compile Include="Models\ProcesoSurtido\OrderFacts_UE_CancelCauses.cs" />
@@ -407,6 +409,7 @@
     <Compile Include="Models\ProcesoSurtido\upCorpOms_Cns_UeNoTracking.cs" />
     <Compile Include="Models\VehiculoModel.cs" />
     <Compile Include="Models\WeightByProducts.cs" />
+    <Compile Include="ProcesadorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

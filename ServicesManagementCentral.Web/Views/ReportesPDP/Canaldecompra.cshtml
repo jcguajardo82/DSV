@@ -6,103 +6,103 @@
 <h2>Canal de Compra</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-        <div style="width:99%;">
-            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
-                <thead class="bg-danger-sor">
-                    <tr>
-                        <th>Canal de compra</th>
-                        <th>Tipo mobile</th>
-                        <th>Relate Consigment</th>
-                        <th>Orden ID</th>
-                        <th>Carrito</th>
-                        <th>ID transaccion </th>
-                        <th>Fecha Creación</th>
-                        <th>Hora Creacón</th>
-                        <th>No. Afiliación</th>
-                        <th>Adquiriente</th>
-                        <th>Catálogo</th>
-                        <th>Tipo Entrega</th>
-                        <th>Tipo de Transporte</th>
-                        <th>Sku Catalogo</th>
-                        <th>Nombre Articulo </th>
-                        <th>Tipo almacen </th>
-                        <th>Forma de pago</th>
-                        <th>3D/Safe Key </th>
-                        <th>Estatus de pago </th>
-                        <th>Consignsciones ID</th>
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Fecha Inicio</label>
+                    <input type="date" id="txtFecIni" class="form-control" />
+                    <div class="input-group date" id="datetimepicker1"></div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+                    Buscar
+                </button>
+            </div>
+            <div style="width:99%;">
+                <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                    <thead class="bg-danger-sor">
+                        <tr>
+                            <th>Canal de compra</th>
+                            <th>Tipo de mobile</th>
+                            <th>Orden ID</th>
+                            <th>ID transaccion</th>
+                            <th>Fecha de creación</th>
+                            <th>Hora de creación</th>
+                            <th>No. Afiliacion</th>
+                            <th>Adquirente</th>
+                            <th>Catálogo</th>
+                            <th>Tipo entrega</th>
+                            <th>Tipo de almacen</th>
+                            <th>Forma de pago</th>
+                            <th>3Ds/safe key</th>
+                            <th>Estatus de pago de envío</th>
+                            <th>Monto total de la orden</th>
+                            <th>Banco</th>
+                            <th>Bin</th>
+                            <th>Sufijo</th>
+                            <th>Tipo de tarjeta</th>
+                            <th>Marca</th>
+                            <th>No. Autorizacion</th>
+                            <th>MSI</th>
+                            <th>Puntos Aplicados</th>
+                            <th>Promociones aplicadas</th>
+                            <th>Nombre persona registrada</th>
+                            <th>Correo</th>
+                            <th>Estatus de la orden</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if (Session["listaGrid"] != null)
+                            {
+                                var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase>>(Session["listaGrid"].ToString());
 
-                        <th>No.Piezas Consignación</th>
-                        <th>Monto Consignación</th>
-                        <th>Costo Envio</th>
-                        <th>Monto Total Orden</th>
-                        <th>Banco</th>
-                        <th>Bin</th>
-                        <th>Sufijo</th>
-                        <th>Tipo Tarjeta</th>
-                        <th>Marca</th>
-                        <th>No. Autorizacion</th>
-                        <th>Msi</th>
-                        <th>Puntos Aplicados</th>
-                        <th>Promociones Aplicadas</th>
-                        <th>Nombre Persona registrada</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>No Tarjeta Lealtad</th>
-                        <th>Método Envio</th>
-                        <th>Correo</th>
-                        <th>Nombre Persona a Recibir</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>Teléfono</th>
-                        <th>Calle</th>
-                        <th>Colonia</th>
-                        <th>Ciudad</th>
-                        <th>Número</th>
-                        <th>Interior</th>
-                        <th>CP</th>
-                        <th>Estatus Orden</th>
-                        <th>Estatus Envio</th>
-                        <th>EStatus logistica Inversa</th>
-                        <th>No. RMA</th>
-                        <th>Nombre Quien Cancela</th>
-                        <th>Motivo Cancelación</th>
-                        <th>Fecha de Cancelación</th>
-                        <th>Hora de cancelacion </th>
-                        <th>Monto de cancelacion</th>
-                        <th> ID Consignación Cancelada</th>
-                        <th>Monto Consignación Cancelada</th>
-                        <th>No. Piezas Consignación</th>
-                        <th>Fecha Liberación Saldo</th>
-                        <th>Hora Liberacion Saldo</th>
-                        <th>Monto de Saldo Liberado</th>
-                        <th>Fecha Ingreso RMA</th>
-                        <th>Consignación ID Devolución</th>
-                        <th>Detalle de la Consignación ingresada</th>
-                        <th>No. Piezas de la Consignación</th>
-                        <th>Fecha Decolución</th>
-                        <th>Hora Devolución</th>
-                        <th>Monto Devolución Consignación</th>
-                        <th>Consignación ID Reenviado</th>
-                        <th>No Piezas Consignación ID Reenviado</th>
-                        <th>Fecha de devolucion </th>
-                        <th>Hora de devolucion</th>
-                        <th>Monto de devolucion consignacion </th>
-                        <th>ID Consignacion Reenviado</th>
-                        <th>No. de piezas de la consignacion reenvio </th>
-                        <th>Fecha de consignacion </th>
-                        <th>Fecha Reembolso</th>
-                        <th>Hora Reembolso</th>
-                        <th>Monto reembolso</th>
-                        <th>Forma de Pago donde se aplico el Reembolso</th>
-                        <th>BIN tarjeta</th>
-                        <th>Sufijo Tarjeta</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+                                foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase o in lista)
+                                {
+                                    <tr>
+                                        <td>@o.OrderSaleChannel</td>
+                                        <td>@*Tipo de mobile*@</td>
+                                        <td>@o.OrderReferenceNumber</td>
+                                        <td>@o.PaymentTransactionID</td>
+                                        <td>@o.OrderDate</td>
+                                        <td>@o.OrderHour</td>
+                                        <td>@*No. Afiliacion*@</td>
+                                        <td>@o.Bank</td>
+                                        <td>@*Catálogo*@</td>
+                                        <td>@o.ShippingDeliveryDesc</td>
+                                        <td>@*Tipo de almacen*@</td>
+                                        <td>@o.paymentTypeJson</td>
+                                        <td>@o.Apply3DS</td>
+                                        <td>@*Estatus de pago de envío*@</td>
+                                        <td>@o.orderAmount</td>
+                                        <td>@o.Bank</td>
+                                        <td>@o.BinCode</td>
+                                        <td>@o.MaskCard</td>
+                                        <td>@o.TypeOfCard</td>
+                                        <td>@o.PaymentMethod</td>
+                                        <td>@o.TransactionAuthorizationId</td>
+                                        <td>@o.shippingPaymentInstallments</td>
+                                        <td>@*Puntos Aplicados*@</td>
+                                        <td>@*Promociones aplicadas*@</td>
+                                        <td>@o.ShippingFirstName</td>
+                                        <td>@o.clientEmail </td>
+                                        <td>@*>Estatus de la orden*@</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 @section scripts {
     <script>
         $(document).ready(function () {
@@ -165,7 +165,7 @@
 
     </script>
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
-    <script>
+<script>
         $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(1) th').each(function (i) {
@@ -221,8 +221,115 @@
                     "scrollX": true
 
                 }
-            );            
+            );
         });
-    </script>
+
+
+          function GetHistorialRMA() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetParamDatesCanalCompra", "ReportesPDP")',
+                data: {
+                        FecIni: _FecIni,
+                        FecFin: _FecFin,
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        debugger;
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable.clear().draw();
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            debugger;
+                            var rw = json.resp[i];
+                            var OrderSaleChannel = rw.OrderSaleChannel;
+                            var Mobile = "";
+                            var OrderReferenceNumber = rw.OrderReferenceNumber;
+                            var PaymentTransactionID = rw.PaymentTransactionID;
+                            var OrderDate = rw.OrderDate;
+                            var OrderHour = rw.OrderHour;
+                            var afiliacion = "";
+
+                            var MaskCard = rw.Bank;
+                            var Catalogo ="";
+                            var ShippingDeliveryDesc = rw.ShippingDeliveryDesc;
+                            var Alamacen = "";
+                            var paymentTypeJson = rw.paymentTypeJson;
+                            var Apply3DS = rw.Apply3DS;
+                            var PagoEnvioEstatus = "";
+                            var orderAmount = rw.orderAmount;
+                            var Bank = rw.Bank;
+                            var BinCode = rw.BinCode;
+                            var MaskCard = rw.MaskCard;
+                            var TypeOfCard = rw.TypeOfCard;
+
+                            var PaymentMethod = rw.PaymentMethod;
+                            var TransactionAuthorizationId = rw.TransactionAuthorizationId;
+                            var shippingPaymentInstallments = rw.shippingPaymentInstallments;
+                            var PtsAPP = "";
+                            var Promo = "";
+                            var ShippingFirstName = rw.ShippingFirstName;
+                            var clientEmail = rw.clientEmail;
+                            var EstatusOR = "";
+
+                            myTable.row.add([
+                                OrderSaleChannel 
+                                , Mobile 
+                                , OrderReferenceNumber 
+                                , PaymentTransactionID 
+                                , OrderDate
+                                , OrderHour 
+                                , afiliacion 
+
+                                , MaskCard 
+                                , Catalogo 
+                                , ShippingDeliveryDesc 
+                                , Alamacen 
+                                , paymentTypeJson 
+                                , Apply3DS 
+                                , PagoEnvioEstatus 
+                                , orderAmount 
+                                , Bank 
+                                , BinCode 
+                                , MaskCard 
+                                , TypeOfCard
+
+                                , PaymentMethod 
+                                , TransactionAuthorizationId 
+                                , shippingPaymentInstallments 
+                                , PtsAPP 
+                                , Promo 
+                                , ShippingFirstName
+                                , clientEmail 
+                                , EstatusOR 
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+            });
+        }
+</script>
 }
 
