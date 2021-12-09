@@ -1600,6 +1600,9 @@ namespace ServicesManagement.Web.Controllers
                             DALServicesM.CancelaOrden_Uup2(int.Parse(OrderNo), motivoCancelacion, int.Parse(Id_Num_MotCan), UeNo, User.Identity.Name);
 
                             isSucces = true;
+
+
+                            Correos.Correos.Correo8A(int.Parse(OrderNo), 2);
                         }
                     }
 
