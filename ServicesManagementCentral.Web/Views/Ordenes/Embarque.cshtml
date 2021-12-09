@@ -723,13 +723,17 @@
                     Paquetes: items,
                     UeNo: _UeNo,
                     OrderNo: _OrderNo,
-                    Products: products
+                    Products: products,
+                    TrackingType: 'Normal'
                     // Paquetes, string UeNo, int OrderNo,
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (json) {
+                    debugger;
                     if (json.Success) {
+
+                        location.reload();
                         //alert(json.resp);
                     }
                     else {
@@ -749,7 +753,6 @@
                 }
             });
 
-            location.reload();
         }
 
 

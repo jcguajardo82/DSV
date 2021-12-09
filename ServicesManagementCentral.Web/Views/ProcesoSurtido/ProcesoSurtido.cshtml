@@ -1619,18 +1619,20 @@
             //Send the JSON array to Controller using AJAX.
             $.ajax({
                 type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 url: '@Url.Action("AddEmbalaje", "Ordenes")',
                 data: JSON.stringify({
                     Paquetes: items,
                     UeNo: _UeNo,
                     OrderNo: _OrderNo,
-                    Products: products
+                    Products: products,
+                    TrackingType:'Normal'
                     // Paquetes, string UeNo, int OrderNo,
                 }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
                 success: function (json) {
                     if (json.Success) {
+                        location.reload();
                         //alert(json.resp);
                     }
                     else {
@@ -1650,7 +1652,7 @@
                 }
             });
 
-            location.reload();
+            
     }
     function showpdf(num_guia) {
             //debugger;
@@ -1666,7 +1668,10 @@
             success: function (json) {
             if (json.Success) {
 
-            document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+            if (json.pdf != 'url')
+                document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+            else
+                document.getElementById("viewrPDF").setAttribute('src', json.url);
 
             $("#myModal").modal("show");
 
