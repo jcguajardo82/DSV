@@ -228,6 +228,7 @@
     <Compile Include="Controllers\DevolucionesController.cs" />
     <Compile Include="Controllers\Estatus_guia_envioController.cs" />
     <Compile Include="Controllers\AltaProveedorController.cs" />
+    <Compile Include="Controllers\GuiasDevolucionesController.cs" />
     <Compile Include="Controllers\ManualesOperativosController.cs" />
     <Compile Include="Controllers\NivelExistenciaController.cs" />
     <Compile Include="Controllers\NotificacionesSisController.cs" />
