@@ -275,7 +275,7 @@ namespace ServicesManagement.Web.Controllers
 
                 DALProcesoSurtido.upCorpOms_Del_UeNoSupplyProcess(OrderNo, Cause_Desc, int.Parse(IdCause), UeNo);
 
-
+                Correos.Correos.Correo8A(OrderNo, 2);
                 var result = new
                 {
                     Success = true

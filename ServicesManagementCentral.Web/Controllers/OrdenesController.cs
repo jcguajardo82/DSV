@@ -1562,6 +1562,9 @@ namespace ServicesManagement.Web.Controllers
                             DALServicesM.CancelaOrden_Uup(int.Parse(OrderNo), motivoCancelacion, int.Parse(Id_Num_MotCan), UeNo);
 
                             isSucces = true;
+
+
+                            Correos.Correos.Correo8A(int.Parse(OrderNo), 2);
                         }
                     }
 
