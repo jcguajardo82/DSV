@@ -7,6 +7,7 @@ using ServicesManagement.Web.Models.CallCenter;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -148,6 +149,63 @@ namespace ServicesManagement.Web.Controllers
 
                 var result = new { Success = true };
 
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult A8()
+        {
+            try
+            {
+                #region Modelo
+                CorreoModel correo = new CorreoModel();
+
+                List<ProductosCorreoModel> productos = new List<ProductosCorreoModel>();
+
+                for (int i = 1; i < 11; i++)
+                {
+                    productos.Add(
+                        new ProductosCorreoModel
+                        {
+                            Fotorgafia = "",
+                            Desc = "Desc " + i.ToString(),
+                            Marca = "Marca " + i.ToString(),
+                            Cantidad = i.ToString(),
+                            Precio = i.ToString(),
+                            PuntosAbonar = i.ToString(),
+                            PuntosCargar = i.ToString(),
+                            Material = "Material " + i.ToString(),
+                            BarCode = "123213213 - " + i.ToString()
+
+
+                        }
+
+
+                        );
+                }
+
+                correo.NombreCte = "Cliente 1";
+                correo.OrderNo = "000982361";
+                correo.IdCancelacion = "290";
+                correo.NoTda = "24";
+                correo.NombreTda = "Cumbres Monterrey";
+                correo.ImportePagadoTda = "1234.00";
+                correo.ProdCancelar = productos;
+                #endregion
+
+                // var html = Helper.RenderViewToString(ControllerContext, "~/views/correos/a8.cshtml", correo, false);
+
+                 Correos.Correos.Correo8(349);
+                 Correos.Correos.Correo8A(349);
+                var result = new
+                {
+                    Success = true
+                };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
