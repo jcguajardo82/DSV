@@ -2300,9 +2300,8 @@ namespace ServicesManagement.Web.Controllers
                     //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
                     //paqueteria = SeleccionarPaqueteriaPendiente(item);
 
-                    //if (paqueteria.Equals("Logyt"))
-                    //{
-                    //    guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
+                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    }
 
                     //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
                     //}
@@ -2877,6 +2876,30 @@ namespace ServicesManagement.Web.Controllers
         }
         public string CreateGuiaEnvia(CotizadorRequestModel request, string service)
         {
+
+            request.shipment.service = service;
+
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            string json2 = JsonConvert.SerializeObject(request);
+
+            Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Envia_Guia"], "", json2);
+
+            string msg = r2.message;
+
+            //string msg = "{ 'meta': 'generate', 'data': [{'carrier': 'fedex','service': 'express','trackingNumber': '794693403268','trackUrl': 'https://test.envia.com/rastreo?label=794693403268&cntry_code=mx', 'label': 'https://s3.us-east-2.amazonaws.com/envia-staging/uploads/fedex/79469340326840461b0130d92379.pdf', 'additionalFiles': [],'totalPrice': 434,'currentBalance': 1580, 'currency': 'MXN'} ]}";
+
+
+            EnviaResponseModel re = JsonConvert.DeserializeObject<EnviaResponseModel>(msg);
+
+
+            return re.data[0].trackingNumber + "," + re.data[0].label + "," + re.data[0].trackUrl;
+        }
+        //public string CreateGuiaLogyt(string UeNo, int OrderNo, int weight, int typeId)
+        //{
+        //    var ServiceTypeId = 1;
+        //    DataSet ds = new DataSet();
+        //    DataSet dsO = new DataSet();
 
             request.shipment.service = service;
 
