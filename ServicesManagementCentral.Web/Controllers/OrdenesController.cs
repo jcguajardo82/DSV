@@ -2023,8 +2023,8 @@ namespace ServicesManagement.Web.Controllers
                     #region Guias
                     var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
                     folios.Add(FolioDisp);
-                    //string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
-                    string[] carriers = {"fedex" };
+                    string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
+                    //string[] carriers = {"fedex" };
                     List<string> lstCarriers = new List<string>(carriers);
                     List<CarrierRequest> lstCarrierRequests = new List<CarrierRequest>();
 
@@ -2238,8 +2238,8 @@ namespace ServicesManagement.Web.Controllers
                     //List<string> folios = new List<string>();
                     var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
                     //folios.Add(FolioDisp);
-                    //string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
-                    string[] carriers = { "fedex" };
+                    string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
+                    //string[] carriers = { "fedex" };
                     List<string> lstCarriers = new List<string>(carriers);
 
                     //EliminarTarifasAnteriores(item.ueNo, item.orderNo);
@@ -2300,8 +2300,8 @@ namespace ServicesManagement.Web.Controllers
                     //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
                     //paqueteria = SeleccionarPaqueteriaPendiente(item);
 
-                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
-                    }
+                    //    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    //}
 
                     //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
                     //}
