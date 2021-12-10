@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ServicesManagement.Web.Models.ProcesadorPagosSoriana;
 using ServicesManagement.Web.Models.ReportesPDP;
+using Soriana.ProcesadorPagosWeb;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,144 +12,6 @@ using System.Web.Mvc;
 
 namespace ServicesManagement.Web.Controllers
 {
-    public class GetOrderPaymentModel
-    {
-
-
-        public string requestPaymentId { get; set; }
-
-    }
-
-    public class PaymentResponseModel
-    {
-
-        public string responseError { get; set; } = "0";
-        public string responseMessage { get; set; } = "";
-        public Guid requestPaymentId { get; set; }
-        public string orderReferenceNumber { get; set; }
-        public string redirectURL { get; set; }
-
-
-    }
-
-    public class PaymentModel
-    {
-
-
-        public string orderReferenceNumber { get; set; }
-        public string orderDateTime { get; set; }
-        public string orderSaleChannel { get; set; }
-        public string orderAmount { get; set; }
-        public string paymentType { get; set; }
-        public string paymentProcessor { get; set; }
-        public string paymentToken { get; set; }
-        public string paymentCardCVV { get; set; }
-        public string paymentCardNIP { get; set; }
-        public string paymentSaveCard { get; set; }
-        public string customerEmail { get; set; }
-        public string customerFirstName { get; set; }
-        public string customerLastName { get; set; }
-        public string customerAddress { get; set; }
-        public string customerCity { get; set; }
-        public string customerState { get; set; }
-        public string customerId { get; set; }
-        public string customerDeviceFingerPrintId { get; set; }
-
-        public string customerIPAddress { get; set; }
-        public string customerZipCode { get; set; }
-        public string customerCountry { get; set; }
-
-
-        public string customerPurchaseQuantity { get; set; }
-        public string customerContact { get; set; }
-        public string customerLoyaltyCardId { get; set; }
-        public string customerLoyaltyRedeemElectronicMoney { get; set; }
-        public string customerLoyaltyRedeemPoints { get; set; }
-        public string customerLoyaltyRedeemMoney { get; set; }
-        public string customerRegisteredDays { get; set; }
-        public string returnURL { get; set; }
-        public List<ShipmentsModel> shipments { get; set; }
-
-        public string AuthenticationTransactionId { get; set; } = "";
-        public bool init_3ds { get; set; } = false;
-        public bool aut_3ds { get; set; } = false;
-        public bool not_3ds { get; set; } = false;
-        public string ReferenceId { get; set; } = "";
-    }
-
-    public class ShipmentsModel
-    {
-
-
-        public string shippingReferenceNumber { get; set; }
-        public string shippingStoreId { get; set; }
-        public string shippingStoreName { get; set; }
-        public string shippingDeliveryId { get; set; }
-        public string shippingDeliveryDesc { get; set; }
-        public string shippingPaymentInstallments { get; set; }
-        public string shippingPaymentImport { get; set; }
-        public string shippingFirstName { get; set; }
-        public string shippingLastName { get; set; }
-        public string shippingAddress { get; set; }
-        public string shippingCity { get; set; }
-        public List<ItemModels> items { get; set; }
-
-
-    }
-
-
-    public class ItemModels
-    {
-
-        public string shippingItemId { get; set; }
-        public string shippingItemEAN { get; set; }
-        public string shippingItemName { get; set; }
-        public string shippingItemCategory { get; set; }
-        public decimal shippingItemPrice { get; set; }
-        public double shippingItemQuantity { get; set; }
-        public decimal shippingItemTotal { get; set; }
-
-
-    }
-
-
-    public class ResponsePDPModels
-    {
-
-
-        [JsonProperty("statusCode", Order = 1)]
-        public int statusCode { get; set; } = 200;
-
-        [JsonProperty("description", Order = 2)]
-        public string description { get; set; } = "OK";
-
-        [JsonProperty("descriptiondetail", Order = 3)]
-        public string descriptiondetail { get; set; } = "startOrderPayment";
-
-        [JsonProperty("object", Order = 4)]
-        public objectsModels item { get; set; }
-        //public Guid paymentProcessingId { get; set; }
-        //public string responseMessage { get; set; }
-        //public string responseCode { get; set; }
-        //public string responseErrorText { get; set; }
-        //public string responseError { get; set; }
-        //public string RetunrURL { get; set; }
-    }
-
-    public class objectsModels
-    {
-
-
-        public string responseError { get; set; } = "0";
-        public string responseMessage { get; set; } = "";
-        public string requestPaymentId { get; set; }
-        //public Guid requestPaymentId { get; set; }
-        public string orderReferenceNumber { get; set; }
-        public string redirectURL { get; set; }
-
-
-    }
-
 
     public class PagosModels
     {
@@ -279,14 +143,49 @@ namespace ServicesManagement.Web.Controllers
         public string Cve_Accion { get; set; } = "DISMINUYE";//" : "AUMENTA"
     }
 
+    #region Aprobacion Bancaria
+    public class ResponseEmisor
+    {
+        public string DecisionEmisor { get; set; }
+        public string CveReespuestaEmisor { get; set; }
+        public string DescReespuestaEmisor { get; set; }
+    }
+
+    public class Emisor
+    {
+        public string id { get; set; }
+	    public string status { get; set; }
+    }
+
+    public class ApprovalCodeModel
+    {
+        public bool IsValid { get; set; } = false;
+        public string Status { get; set; }
+        public string ReasonCodes { get; set; }
+        public responseObject ResponseObject { get; set; }
+    }
+
+    public class responseObject
+    {
+        public ProcessorInformation processorInformation { get; set; }
+    }
+
+    public class ProcessorInformation
+    {
+        public string approvalCode { get; set; }
+    }
+
+    public class ApprovalCodeJsonResponse
+    {
+        public string ResponseJson { get; set; }
+    }
+    #endregion
 
     [Authorize]
     public class ReportesPDPController : Controller
     {
         // GET: ReportesPDP
         #region FormaPago
-
-
         public ActionResult FormaPago()
         {
             return View();
@@ -308,6 +207,42 @@ namespace ServicesManagement.Web.Controllers
         }
         #endregion
 
+        #region Autorizaciones Bancarias
+        public ActionResult AutBancarias()
+        {
+            Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetProcesadorPagosBase("", "", "AuthBancaria"));
+
+            return View();
+        }
+
+        public ActionResult GetParamDates(string FecIni, string FecFin)
+        {
+            List<ProcesadorPagosBase> autoriazionBancaria = GetProcesadorPagosBase(FecIni, FecFin, "AuthBancaria");
+
+            var result = new { Success = true, resp = autoriazionBancaria };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region Canal de Compra
+        public ActionResult Canaldecompra()
+        {
+            Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetProcesadorPagosBase("", "", "CanalCompra"));
+
+            return View();
+        }
+
+        public ActionResult GetParamDatesCanalCompra(string FecIni, string FecFin)
+        {
+            List<ProcesadorPagosBase> autoriazionBancaria = GetProcesadorPagosBase(FecIni, FecFin, "CanalCompra");
+
+            var result = new { Success = true, resp = autoriazionBancaria };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        
+        #endregion
+
         public ActionResult CanalPago()
         {
             var list = new List<ReportesPDP>();
@@ -318,16 +253,7 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-        public ActionResult Canaldecompra()
-        {
-            var list = new List<ReportesPDP>();
-
-            ViewBag.Reporte = list;
-
-
-            return View();
-        }
-
+      
         public ActionResult CanalGenerarOrden()
         {
             var list = new List<ReportesPDP>();
@@ -398,15 +324,7 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-        public ActionResult AutBancarias()
-        {
-            var list = new List<ReportesPDP>();
-
-            ViewBag.Reporte = list;
-
-
-            return View();
-        }
+       
 
         public ActionResult AutDM()
         {
@@ -649,7 +567,6 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-
         public List<OrderPagoModels> GetOrdenes()
         {
 
@@ -658,7 +575,7 @@ namespace ServicesManagement.Web.Controllers
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             _ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             List<OrderPagoModels> lista = new List<OrderPagoModels>();
 
@@ -730,7 +647,6 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
-
         public ActionResult GetEstatusPayment(string order)
         {
             var list = new List<ReportesPDP>();
@@ -742,7 +658,7 @@ namespace ServicesManagement.Web.Controllers
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             _ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             try
             {
@@ -798,11 +714,11 @@ namespace ServicesManagement.Web.Controllers
                                                 if (!string.IsNullOrEmpty(out_response["responseCode"].ToString()))
                                                 {
                                                     if (out_response["responseCode"].ToString().Equals("202")) { p.ErrorSpecified = true; break; }
-                                                    //if (out_response["responseCode"].ToString().Equals("400")) { p.ErrorSpecified = true; break; }
+                                                    if (out_response["responseCode"].ToString().Equals("400")) { p.ErrorSpecified = true; break; }
                                                 }
                                             }
 
-                                            if (out_response["responseError"] != null && !out_response["responseCode"].ToString().Equals("400"))
+                                            if (out_response["responseError"] != null)
                                             {
                                                 if (!string.IsNullOrEmpty(out_response["responseError"].ToString()))
                                                 {
@@ -945,7 +861,7 @@ namespace ServicesManagement.Web.Controllers
                                             if (orde3["errorInformation"] != null)
                                             {
 
-                                                JObject error = JObject.Parse(orde3["errorInformation"].ToString());
+                                                JObject error = JObject.Parse(r["ResponseJson"].ToString());
 
                                                 p.CreatejsonResponse.razon = error["reason"].ToString();
                                                 p.CreatejsonResponse.decision = error["message"].ToString();
@@ -966,7 +882,7 @@ namespace ServicesManagement.Web.Controllers
                                             if (orde4["errorInformation"] != null)
                                             {
 
-                                                JObject error = JObject.Parse(orde4["errorInformation"].ToString());
+                                                JObject error = JObject.Parse(r["ResponseJson"].ToString());
 
                                                 p.EnrollmentjsonResponse.razon = error["reason"].ToString();
                                                 p.EnrollmentjsonResponse.decision = error["message"].ToString();
@@ -987,7 +903,7 @@ namespace ServicesManagement.Web.Controllers
                                             if (orde2["errorInformation"] != null)
                                             {
 
-                                                JObject error = JObject.Parse(orde2["errorInformation"].ToString());
+                                                JObject error = JObject.Parse(r["ResponseJson"].ToString());
 
                                                 p.ValidatejsonResponse.razon = error["reason"].ToString();
                                                 p.ValidatejsonResponse.decision = error["message"].ToString();
@@ -1010,7 +926,7 @@ namespace ServicesManagement.Web.Controllers
                                             if (orde5["errorInformation"] != null)
                                             {
 
-                                                JObject error = JObject.Parse(orde5["errorInformation"].ToString());
+                                                JObject error = JObject.Parse(r["ResponseJson"].ToString());
 
                                                 p.ProcessOrderjsonResponse.razon = error["reason"].ToString();
                                                 p.ProcessOrderjsonResponse.decision = error["message"].ToString();
@@ -1059,7 +975,383 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+        private List<ProcesadorPagosBase> GetProcesadorPagosBase(string FecIni, string FecFin, string Method)
+        {
+            DataSet ds = new DataSet();
+            List<ProcesadorPagosBase> LstppsBase = new List<ProcesadorPagosBase>();
+            string spName = string.Empty;
+
+            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+            spName = "up_PPS_sel_PaymentTransactionRpt";
+
+            try
+            {
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(spName, cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        if (FecIni != "" && FecFin != "")
+                        {
+                            System.Data.SqlClient.SqlParameter param;
+                            param = cmd.Parameters.Add("@fechaini", SqlDbType.VarChar);
+                            param.Value = FecIni;
+
+                            System.Data.SqlClient.SqlParameter param2;
+                            param2 = cmd.Parameters.Add("@fechafin", SqlDbType.VarChar);
+                            param2.Value = FecFin;
+                        }
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                ProcesadorPagosBase ppsBase = new ProcesadorPagosBase();
+
+                                #region Mapping
+                                ppsBase.PaymentToken = row["PaymentToken"].ToString();
+                                ppsBase.OrderReferenceNumber = row["OrderReferenceNumber"].ToString();          //Orden ID
+                                ppsBase.PaymentTransactionID = row["PaymentTransactionID"].ToString();          //Transacción
+                                var fechaCreacion = row["OrderDate"].ToString();
+                                DateTime FecCreate = DateTime.Parse(fechaCreacion);
+                                ppsBase.OrderMonth = FecCreate.ToString("MMMM");
 
 
+                                ppsBase.OrderDate = row["OrderDate"].ToString().Substring(0, 10);                                //Fecha Creacion 
+                                ppsBase.OrderHour = fechaCreacion.Substring(10);
+                                ppsBase.OrderAmount = row["OrderAmount"].ToString();                            //Monto Total Orden
+                                ppsBase.Products = row["Products"].ToString();                                  //SKU Catálogo
+                                ppsBase.OrderSaleChannel = row["OrderSaleChannel"].ToString();                  //Canal Compra
+
+                                #region Tokenizacion
+                                ppsBase.Bank = row["Bank"].ToString();                                          //Banco
+                                ppsBase.BinCode = row["BinCode"].ToString();
+                                ppsBase.MaskCard = row["MaskCard"].ToString().Substring(15);                                  // Sufijo hay q recortar
+                                ppsBase.TypeOfCard = row["TypeOfCard"].ToString();                              //Tipo Tarjeta
+                                ppsBase.PaymentMethod = row["PaymentMethod"].ToString();                        //Marca
+                                ppsBase.CustomerFirstName = row["CustomerFirstName"].ToString();
+                                ppsBase.CustomerLastName = row["CustomerLastName"].ToString();
+                                #endregion
+
+                                #region shipping
+                                ppsBase.ShippingStoreId = row["shippingStoreId"].ToString();                    //Tipo ALmacen
+                                ppsBase.ShippingReferenceNumber = row["ShippingReferenceNumber"].ToString();    //Consignación ID
+                                ppsBase.ShippingPaymentImport = row["ShippingPaymentImport"].ToString();        //Monto Consignación
+                                ppsBase.ShippingFirstName = row["ShippingFirstName"].ToString();                //Nombre de Persona a Recibir
+                                ppsBase.ShippingLastName = row["ShippingLastName"].ToString();                  //Apellido P 
+                                ppsBase.CustomerContact = row["CustomerContact"].ToString();                    //Apellido M
+                                ppsBase.CustomerContact = row["CustomerContact"].ToString();                    //Teléfono
+                                ppsBase.CustomerAddress = row["ShippingAddress"].ToString();                    //Calle
+                                ppsBase.CustomerCity = row["ShippingCity"].ToString();                          //Ciudad
+                                ppsBase.CustomerZipCode = row["CustomerZipCode"].ToString();                     //CP
+                                #endregion
+
+                                ppsBase.PaymentTransactionService = row["PaymentTransactionService"].ToString();                         //Estatus Orden
+                                ppsBase.TransactionStatus = row["TransactionStatus"].ToString();                //Estatus ENvio
+
+                                if (row["ShippingDeliveryDesc"].ToString() == "Envío - 1 - 1")
+                                {
+                                    ppsBase.ShippingDeliveryDesc = "SETC";
+                                    ppsBase.Catalogo = "SETC";
+                                }
+
+                                else
+                                {
+                                    ppsBase.ShippingDeliveryDesc = "MG";
+                                    ppsBase.Catalogo = "MG";
+                                }
+                                    ppsBase.ShippingDeliveryDesc = "MG";
+
+                                ppsBase.CustomerLoyaltyRedeemPoints = row["CustomerLoyaltyRedeemPoints"].ToString(); //punto aplicados
+                                ppsBase.CustomerLoyaltyRedeemMoney = row["CustomerLoyaltyRedeemMoney"].ToString();  //efectivo disponble /dinero en efectivo                              
+                                ppsBase.CustomerLoyaltyCardId = row["CustomerLoyaltyCardId"].ToString();
+                                ppsBase.MethodPaymentShipment = row["MethodPaymentShipment"].ToString();
+
+                                #region Cancellation
+                                /*ppsBase.Id_cancelacion = row["Id_cancelacion"].ToString();                      //No. RMA
+                                ppsBase.clientEmail = row["clientEmail"].ToString();                            //Nombre de quien Cancela
+                                ppsBase.Motivo = row["Motivo"].ToString();                                      //Motivo Cancelacion
+                                //ppsBase.newProductQuantity = Cancel.newProductQuantity;                         //No Piezas Consignación Cancelada
+                                ppsBase.fec_movto = row["fec_movto"].ToString();                                //Fecha INgreso RMA
+                                //ppsBase.productId = Cancel.productId;                                           //Detalle de la Consignación Ingresada (SKU)
+                                ppsBase.fec_movto = row["fec_movto"].ToString();                                //Fecha Devolución
+                                ppsBase.fec_movto = row["fec_movto"].ToString();                                //Fecha Reembolso
+                                ppsBase.Bin_Reembolso = row["BinCode"].ToString();                              //BIN Tarjeta Reembolso
+                                ppsBase.SufijoReembolso = row["MaskCard"].ToString();                           //Sufijo Tarjeta Reembolso                                                           
+                                */
+                                #endregion
+
+                                #region rpt_v2
+                                /*ppsBase.ofUE_StatusUE = row["StatusUE"].ToString();
+                                ppsBase.ofUE_DeliveryType = row["DeliveryType"].ToString();
+                                ppsBase.ofUE_UEType = row["UEType"].ToString();
+                                ppsBase.ofUE_IsPickingManual = row["IsPickingManual"].ToString();
+                                ppsBase.ofUE_CustomerNo = row["CustomerNo"].ToString();
+                                ppsBase.ofUE_CustomerName = row["CustomerName"].ToString();
+                                ppsBase.ofUE_Phone = row["Phone"].ToString();
+                                ppsBase.ofUE_Address1 = row["Address1"].ToString();
+                                ppsBase.ofUE_Address2 = row["Address2"].ToString();
+                                ppsBase.ofUE_City = row["City"].ToString();
+                                ppsBase.ofUE_StateCode = row["StateCode"].ToString();
+                                ppsBase.ofUE_PostalCode = row["PostalCode"].ToString();
+                                ppsBase.ofUE_Total = row["Total"].ToString();
+                                ppsBase.ofUE_MethodPayment = row["MethodPayment"].ToString();
+                                ppsBase.ofUE_OrderRMA = row["OrderRMA"].ToString();
+                                ppsBase.uSC_StatusDescription = row["StatusDescription"].ToString();*/
+                                #endregion
+
+                                #region GetTrace
+                                var DatosExtra = GetTracePayment(ppsBase.OrderReferenceNumber);
+
+                                if (DatosExtra.orderReferenceNumber != null)
+                                {
+                                    ppsBase.orderAmount = DatosExtra.orderAmount;
+                                    ppsBase.paymentTypeJson = DatosExtra.paymentType;
+                                    ppsBase.TransactionAuthorizationId = DatosExtra.TransactionAuthorizationId;
+                                    ppsBase.TransactionReferenceID = DatosExtra.TransactionReferenceID;
+                                    ppsBase.AffiliationType = DatosExtra.AffiliationType;
+                                    ppsBase.IsAuthenticated = DatosExtra.IsAuthenticated;
+                                    ppsBase.IsAuthorized = DatosExtra.IsAuthorized;
+                                    ppsBase.Apply3DS = DatosExtra.Apply3DS;
+                                    ppsBase.MerchandiseType = DatosExtra.MerchandiseType;
+                                    if (DatosExtra.shipments.Count > 0)
+                                    {
+                                        ppsBase.shippingDeliveryDesc = DatosExtra.shipments[0].shippingDeliveryDesc;
+                                        ppsBase.shippingPaymentImport = DatosExtra.shipments[0].shippingPaymentImport;
+                                        ppsBase.shippingPaymentInstallments = DatosExtra.shipments[0].shippingPaymentInstallments;
+                                        ppsBase.shippingItemCategory = DatosExtra.shipments[0].Items[0].shippingItemCategory;
+                                        ppsBase.shippingItemId = DatosExtra.shipments[0].Items[0].shippingItemId;
+                                        ppsBase.shippingItemName = DatosExtra.shipments[0].Items[0].shippingItemName;
+                                        ppsBase.ShippingItemTotal = DatosExtra.shipments[0].Items[0].ShippingItemTotal;
+
+                                    }
+                                }
+                                #endregion
+
+                                if(Method == "AuthBancaria")
+                                {
+                                    #region Emisor
+                                    var EmisorResponse = GetDatosEmisor(ppsBase.OrderReferenceNumber);
+
+                                    ppsBase.DecisionEmisor = EmisorResponse.DecisionEmisor;
+                                    ppsBase.CveReespuestaEmisor = EmisorResponse.CveReespuestaEmisor;
+                                    ppsBase.DescReespuestaEmisor = EmisorResponse.DescReespuestaEmisor;
+                                    #endregion
+                                }
+                                #endregion
+
+                                LstppsBase.Add(ppsBase);
+                            }
+                        }
+                    }
+                }
+
+                return LstppsBase;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        private JsonRespoonseModel GetTracePayment(string OrderReferenceNumber)
+        {
+            string ceros = "";
+            DataSet ds = new DataSet();
+            string JsonRequest = string.Empty;
+            JsonRespoonseModel Response = new JsonRespoonseModel();
+
+            var count = OrderReferenceNumber.Length;
+
+            int ceros2 = 8 - count;
+
+
+            for (int x = 0; x < ceros2; x++)
+            {
+                ceros = "0" + ceros;
+            }
+
+            OrderReferenceNumber = ceros + OrderReferenceNumber;
+
+            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
+            try
+            {
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand("[up_PPS_sel_Trace_payments_Prov]", cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        System.Data.SqlClient.SqlParameter param;
+                        param = cmd.Parameters.Add("@OrderReferenceNumber", SqlDbType.VarChar);
+                        param.Value = OrderReferenceNumber;
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                JsonRequest = row["RequestJson"].ToString();
+
+                            }
+                        }
+
+                        if (JsonRequest != "")
+                        {
+                            Response = JsonConvert.DeserializeObject<JsonRespoonseModel>(JsonRequest);
+                            shipments shipment = new shipments();
+                            items item = new items();
+                            List<items> lstItems = new List<items>();
+
+                            foreach (var row in Response.shipments)
+                            {
+                                shipment.shippingDeliveryDesc = row.shippingDeliveryDesc;
+                                shipment.shippingPaymentImport = row.shippingPaymentImport;
+                                shipment.shippingPaymentInstallments = row.shippingPaymentInstallments;
+                                foreach (var row2 in row.Items)
+                                {
+                                    if (row2.shippingItemCategory == "Costo de envio")
+                                    {
+                                        item.shippingItemCategory = row2.shippingItemCategory;
+                                        item.shippingItemId = row2.shippingItemId;
+                                        item.shippingItemName = row2.shippingItemName;
+                                        item.ShippingItemTotal = row2.ShippingItemTotal;
+
+                                        lstItems.Add(item);
+
+                                        shipment.Items = lstItems;
+                                    }
+                                }
+
+                            }
+
+                            Response.shipments.Clear();
+                            Response.shipments.Add(shipment);
+                        }
+
+                    }
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private ResponseEmisor GetDatosEmisor(string OrderReferenceNumber)
+        {
+            DataSet ds = new DataSet();
+            List<ProcesadorPagosBase> LstppsBase = new List<ProcesadorPagosBase>();
+            ResponseEmisor ResponseEmisor = new ResponseEmisor();
+            Emisor EmisorRes = new Emisor();
+            ApprovalCodeModel aproval = new ApprovalCodeModel();
+            string spName = string.Empty;
+
+            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+            spName = "up_PPS_Sel_DecisionEmisor";
+
+            try
+            {
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(spName, cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        System.Data.SqlClient.SqlParameter param;
+                        param = cmd.Parameters.Add("@OrderReferenceNumber", SqlDbType.VarChar);
+                        param.Value = OrderReferenceNumber;
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                //OrderReferenceNumber ResponseJson    method
+                                if (row["method"].ToString() == "Process_fin")
+                                {
+                                    if (row["ResponseJson"].ToString() != "")
+                                    {
+                                        aproval = JsonConvert.DeserializeObject<ApprovalCodeModel>((row["ResponseJson"].ToString()));
+                                    }
+
+                                    if (aproval.ResponseObject.processorInformation != null)
+                                        ResponseEmisor.CveReespuestaEmisor = aproval.ResponseObject.processorInformation.approvalCode;
+
+                                    else
+                                        ResponseEmisor.CveReespuestaEmisor = "";
+
+                                    ResponseEmisor.DecisionEmisor = aproval.Status;
+                                    ResponseEmisor.DescReespuestaEmisor = aproval.ReasonCodes;
+
+                                    break;
+                                }
+                                else if (row["method"].ToString() == "ValidateAuthentication")
+                                {
+                                    if(row["ResponseJson"].ToString() != "")
+                                    {
+                                        EmisorRes = JsonConvert.DeserializeObject<Emisor>(row["ResponseJson"].ToString());
+                                    }
+
+                                    ResponseEmisor.CveReespuestaEmisor = EmisorRes.id;
+                                    ResponseEmisor.DecisionEmisor = EmisorRes.status;
+
+                                    break;
+                                }
+                                else if (row["method"].ToString() == "EnrollmentPayment")
+                                {
+                                    if (row["ResponseJson"].ToString() != "")
+                                    {
+                                        EmisorRes = JsonConvert.DeserializeObject<Emisor>(row["ResponseJson"].ToString());
+                                    }
+
+                                    ResponseEmisor.CveReespuestaEmisor = EmisorRes.id;
+                                    ResponseEmisor.DecisionEmisor = EmisorRes.status;
+
+                                    break;
+                                }
+                                else if (row["method"].ToString() == "createDecision")
+                                {
+                                    if (row["ResponseJson"].ToString() != "")
+                                    {
+                                        EmisorRes = JsonConvert.DeserializeObject<Emisor>(row["ResponseJson"].ToString());
+                                    }
+
+                                    ResponseEmisor.CveReespuestaEmisor = EmisorRes.id;
+                                    ResponseEmisor.DecisionEmisor = EmisorRes.status;
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return ResponseEmisor;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
