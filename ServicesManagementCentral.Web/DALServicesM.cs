@@ -455,7 +455,7 @@ namespace ServicesManagement.Web
             {
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
-                
+
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[upCorpOms_Sel_ShipmentPackingWMS]", false);
 
                 return ds;
@@ -511,7 +511,7 @@ namespace ServicesManagement.Web
 
         }
 
-        public static DataSet AddShipmentPackingWMS(int IdCnscPacking,string IdPackingCode,string IdPackingType,decimal? PackageLength, decimal? PackageWidth, 
+        public static DataSet AddShipmentPackingWMS(int IdCnscPacking, string IdPackingCode, string IdPackingType, decimal? PackageLength, decimal? PackageWidth,
                                         decimal? PackageHeight, decimal? PackageWeight, bool BitActivo, string createdUser)
         {
 
@@ -583,7 +583,7 @@ namespace ServicesManagement.Web
 
 
                 parametros.Add("@IdCnscPacking", IdCnscPacking);
-                
+
 
 
 
@@ -2220,7 +2220,7 @@ namespace ServicesManagement.Web
         #endregion
 
         #region Cancelacion Orden
-        public static DataSet CancelaOrden_Uup(int Orden, string motivo = "", int Id_Num_MotCan = 0,string UeNo="")
+        public static DataSet CancelaOrden_Uup(int Orden, string motivo = "", int Id_Num_MotCan = 0, string UeNo = "")
         {
             DataSet ds = new DataSet();
 
@@ -2266,7 +2266,7 @@ namespace ServicesManagement.Web
                 throw ex;
             }
         }
-        public static DataSet CancelaOrden_Uup2(int Orden, string motivo = "", int Id_Num_MotCan = 0, string UeNo = "", string idUsuario ="")
+        public static DataSet CancelaOrden_Uup2(int Orden, string motivo = "", int Id_Num_MotCan = 0, string UeNo = "", string idUsuario = "")
         {
             DataSet ds = new DataSet();
 
@@ -2611,7 +2611,7 @@ namespace ServicesManagement.Web
 
         public static void UpdProductsToOrder(string OrderNo, string PosBarcode, string PosProductDescription
             , string PosQuantity, string PosPriceNormalSale, string PosPriceOfferSale
-            , string ProductId, string UnitMeasure, string comments,string UeNo)
+            , string ProductId, string UnitMeasure, string comments, string UeNo)
         {
 
 
@@ -2642,7 +2642,7 @@ namespace ServicesManagement.Web
                 parametros.Add("@Desc_ArtCarObser", comments);
                 parametros.Add("@UeNo", UeNo);
 
-                
+
 
                 Soriana.FWK.FmkTools.SqlHelper.ExecuteNonQuery(CommandType.StoredProcedure, "upCorpOms_Upd_ProductsToOrder_v2", false, parametros);
 
@@ -3129,7 +3129,7 @@ namespace ServicesManagement.Web
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@orderNo", orderNo);
-                parametros.Add("@PesoOrder", PesoOrder); 
+                parametros.Add("@PesoOrder", PesoOrder);
                 parametros.Add("@Bigticket", Bigticket);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_OrdersLogistics]", false, parametros);
@@ -3164,7 +3164,7 @@ namespace ServicesManagement.Web
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@orderNo", orderNo);
-                
+
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_CarrierSelected]", false, parametros);
 
                 return ds;
