@@ -263,7 +263,25 @@ namespace ServicesManagement.Web.Controllers
             }
 
         }
-        public ActionResult ListSuppliersById(string idsOwner)
+
+        public ActionResult ListSuppliersById(int idOwner)
+        {
+            try
+            {
+                var list = DataTableToModel.ConvertTo<SuppliersById>(DALConfig.upCorpTms_Cns_SuppliersById(idOwner).Tables[0]);
+
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public ActionResult ListSuppliersById2(string idsOwner)
         {
             try
             {
