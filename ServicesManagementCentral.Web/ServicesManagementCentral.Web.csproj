@@ -247,6 +247,7 @@
     <Compile Include="Controllers\TMSController.cs" />
     <Compile Include="Controllers\TotalOrdenesController.cs" />
     <Compile Include="Controllers\SolicitudGuiasReenvioController.cs" />
+    <Compile Include="Correos\Correos.cs" />
     <Compile Include="DALConfig.cs" />
     <Compile Include="DAL\ActualizacionesInventario\DALActualizacionesInventario.cs" />
     <Compile Include="DAL\Actualizaciones\DALActualizaciones.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="DAL\Consignaciones\DALConsignacionesAdm.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesCEDIS.cs" />
     <Compile Include="DAL\Consignaciones\DALConsignacionesProveedor.cs" />
+    <Compile Include="DAL\Correos\DALCorreos.cs" />
     <Compile Include="DAL\EstatusGuiasEnvio\DALEstatusGuiasEnvio.cs" />
     <Compile Include="DAL\EstatusReenvioMcia\DALEstatusReenvioMcia.cs" />
     <Compile Include="DAL\ManualesOperativos\DALManualesOperativos.cs" />

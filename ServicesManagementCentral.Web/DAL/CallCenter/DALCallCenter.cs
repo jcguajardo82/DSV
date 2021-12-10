@@ -1741,10 +1741,12 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
         #endregion
-        #region End Point Cancelacion
+        #region End Point Cancelacion
+
         public static DataSet PaymentsGetCancelacion_sUp(int Id_cancelacion)
         {
 
+            DataSet ds = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -1757,10 +1759,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
-                parametros.Add("@Id_cancelacion", Id_cancelacion);
-
-
-
+                parametros.Add("@Id_cancelacion", Id_cancelacion);
+
+
+
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[PaymentsGetCancelacion_sUp]", false, parametros);
 
                 return ds;
@@ -1776,8 +1778,10 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 throw ex;
             }
 
-        }
-        #endregion
+        }
+
+        #endregion
+
 
     }
 }
