@@ -106,8 +106,8 @@ namespace ServicesManagement.Web.DAL.Embarques
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@UeNo", UeNo);
-                if(OrderNo!=null)
-                parametros.Add("@OrderNo", OrderNo);
+                if (OrderNo != null)
+                    parametros.Add("@OrderNo", OrderNo);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoTracking]", false, parametros);
 
@@ -168,7 +168,8 @@ namespace ServicesManagement.Web.DAL.Embarques
             string IdTrackingService,
             string pdfstring,
             string GuiaEstatus,
-            string contentType)
+            string contentType,
+            string trackUrl)
         {
 
             DataSet ds = new DataSet();
@@ -179,7 +180,7 @@ namespace ServicesManagement.Web.DAL.Embarques
                 conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
             }
 
-             
+
             try
             {
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
@@ -197,9 +198,19 @@ namespace ServicesManagement.Web.DAL.Embarques
                 parametros.Add("@CreationId", CreationId);
                 parametros.Add("@IdTrackingService", IdTrackingService);
                 parametros.Add("@TrackingServiceName", servicioPaq);
-                parametros.Add("@pdfstring", pdfstring);
+
                 parametros.Add("@TrackingServiceStatus", GuiaEstatus); // GuiaEstatus
-                parametros.Add("@contentType", contentType == null ? "": contentType);
+                parametros.Add("@contentType", contentType == null ? "" : contentType);
+
+                if (servicioPaq.Equals("Logyt-Estafeta") || servicioPaq.Equals("Soriana-Estafeta"))
+                {
+                    parametros.Add("@pdfstring", pdfstring);
+                }
+                else
+                {
+                    parametros.Add("@labelUrl", pdfstring);
+                    parametros.Add("@trackUrl", trackUrl);
+                }
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoTracking]", false, parametros);
 
                 return ds;
@@ -219,7 +230,7 @@ namespace ServicesManagement.Web.DAL.Embarques
 
 
         public static DataSet upCorpOms_Ins_UeNoTrackingDetail(string UeNo, int OrderNo, string IdTracking, string TrackingType,
-            int ProductId, long Barcode, string ProductName, 
+            int ProductId, long Barcode, string ProductName,
             string CreationId)
         {
 
@@ -247,6 +258,43 @@ namespace ServicesManagement.Web.DAL.Embarques
                 parametros.Add("@CreationId", CreationId);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoTrackingDetail]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public static DataSet upCorpOms_Cns_UeNoTrackingInfo(string UeNo, int ProductId)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@ProductId", ProductId);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoTrackingInfo]", false, parametros);
 
                 return ds;
             }

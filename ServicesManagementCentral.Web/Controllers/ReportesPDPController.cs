@@ -575,7 +575,7 @@ namespace ServicesManagement.Web.Controllers
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             _ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             List<OrderPagoModels> lista = new List<OrderPagoModels>();
 
@@ -658,7 +658,7 @@ namespace ServicesManagement.Web.Controllers
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             _ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             try
             {
@@ -714,11 +714,11 @@ namespace ServicesManagement.Web.Controllers
                                                 if (!string.IsNullOrEmpty(out_response["responseCode"].ToString()))
                                                 {
                                                     if (out_response["responseCode"].ToString().Equals("202")) { p.ErrorSpecified = true; break; }
-                                                    //if (out_response["responseCode"].ToString().Equals("400")) { p.ErrorSpecified = true; break; }
+                                                    if (out_response["responseCode"].ToString().Equals("400")) { p.ErrorSpecified = true; break; }
                                                 }
                                             }
 
-                                            if (out_response["responseError"] != null && !out_response["responseCode"].ToString().Equals("400"))
+                                            if (out_response["responseError"] != null)
                                             {
                                                 if (!string.IsNullOrEmpty(out_response["responseError"].ToString()))
                                                 {
@@ -861,7 +861,7 @@ namespace ServicesManagement.Web.Controllers
                                             if (orde3["errorInformation"] != null)
                                             {
 
-                                                JObject error = JObject.Parse(orde3["errorInformation"].ToString());
+                                                JObject error = JObject.Parse(r["ResponseJson"].ToString());
 
                                                 p.CreatejsonResponse.razon = error["reason"].ToString();
                                                 p.CreatejsonResponse.decision = error["message"].ToString();
@@ -882,7 +882,7 @@ namespace ServicesManagement.Web.Controllers
                                             if (orde4["errorInformation"] != null)
                                             {
 
-                                                JObject error = JObject.Parse(orde4["errorInformation"].ToString());
+                                                JObject error = JObject.Parse(r["ResponseJson"].ToString());
 
                                                 p.EnrollmentjsonResponse.razon = error["reason"].ToString();
                                                 p.EnrollmentjsonResponse.decision = error["message"].ToString();
@@ -903,7 +903,7 @@ namespace ServicesManagement.Web.Controllers
                                             if (orde2["errorInformation"] != null)
                                             {
 
-                                                JObject error = JObject.Parse(orde2["errorInformation"].ToString());
+                                                JObject error = JObject.Parse(r["ResponseJson"].ToString());
 
                                                 p.ValidatejsonResponse.razon = error["reason"].ToString();
                                                 p.ValidatejsonResponse.decision = error["message"].ToString();
@@ -926,7 +926,7 @@ namespace ServicesManagement.Web.Controllers
                                             if (orde5["errorInformation"] != null)
                                             {
 
-                                                JObject error = JObject.Parse(orde5["errorInformation"].ToString());
+                                                JObject error = JObject.Parse(r["ResponseJson"].ToString());
 
                                                 p.ProcessOrderjsonResponse.razon = error["reason"].ToString();
                                                 p.ProcessOrderjsonResponse.decision = error["message"].ToString();
