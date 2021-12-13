@@ -5,6 +5,7 @@ using System.Web;
 
 namespace ServicesManagement.Web.Models
 {
+    // TrackingInfo
     public class TrackingInfo
     {
         public decimal PackageHeight { get; set; }

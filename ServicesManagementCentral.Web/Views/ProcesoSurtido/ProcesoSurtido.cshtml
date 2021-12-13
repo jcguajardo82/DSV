@@ -226,23 +226,23 @@
                                                     @if (Session["OrderTrackings"] != null)
                                                     {
                                                         var lst = (List<UenoTracking>)Session["OrderTrackings"];
-                                                        
-                                                            foreach (var op in lst)
-                                                            {
-                                                                <tr>
-                                                                    <td>@op.IdTrackingService</td>
-                                                                    <td>@op.PackageHeight</td>
-                                                                    <td>@op.PackageLength</td>
-                                                                    <td>@op.PackageWidth</td>
-                                                                    <td>@op.PackageWeight</td>
-                                                                    <td>@op.PesoReal</td>
-                                                                    <td>@op.ShippingMethod</td>
-                                                                    <td>@op.Quantity</td>
-                                                                    
-                                                                    <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op.IdTracking")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
-                                                                </tr>
-                                                            }
-                                                        
+
+                                                        foreach (var op in lst)
+                                                        {
+                                                            <tr>
+                                                                <td>@op.IdTrackingService</td>
+                                                                <td>@op.PackageHeight</td>
+                                                                <td>@op.PackageLength</td>
+                                                                <td>@op.PackageWidth</td>
+                                                                <td>@op.PackageWeight</td>
+                                                                <td>@op.PesoReal</td>
+                                                                <td>@op.ShippingMethod</td>
+                                                                <td>@op.Quantity</td>
+
+                                                                <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op.IdTracking")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
+                                                            </tr>
+                                                        }
+
                                                     }
                                                 </tbody>
                                             </table>
@@ -724,7 +724,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                       
                     </tbody>
                 </table>
                 <div class="modal-footer">
@@ -1337,7 +1336,7 @@
     </script>
 
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
-<script>
+    <script>
 
         $(document).ready(function () {
             $('#tblAcepConsig thead tr').clone(true).appendTo('#tblAcepConsig thead');
@@ -1653,7 +1652,7 @@
                 }
             });
 
-            
+
     }
     function showpdf(num_guia) {
             //debugger;
@@ -1725,5 +1724,5 @@
             });
 
     }
-</script>
+    </script>
 }

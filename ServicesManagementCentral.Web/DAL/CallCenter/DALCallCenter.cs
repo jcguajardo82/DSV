@@ -1656,7 +1656,6 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         #endregion
 
-
         #region HistoriaSF
         public static DataSet upCorpOms_Cns_OrdersByDatesSF(DateTime FecIni, DateTime FecFin, int? OrderId)
         {
@@ -1777,7 +1776,6 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
         #endregion
-
         #region End Point Cancelacion
         public static DataSet PaymentsGetCancelacion_sUp(int Id_cancelacion)
         {
@@ -1796,7 +1794,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
 
                 parametros.Add("@Id_cancelacion", Id_cancelacion);
-              
+
 
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[PaymentsGetCancelacion_sUp]", false, parametros);
@@ -1816,5 +1814,6 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         }
         #endregion
+
     }
 }

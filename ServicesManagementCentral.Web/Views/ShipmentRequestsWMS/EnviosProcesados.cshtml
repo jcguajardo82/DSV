@@ -2,7 +2,7 @@
 
 @{ Layout = "~/Views/Shared/_Layout.cshtml";
 
-                ViewBag.Title = "Ordenes Procesados"; }
+    ViewBag.Title = "Ordenes Procesados"; }
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
         <h2>@ViewBag.Title </h2>
@@ -52,7 +52,7 @@
                         <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Dirección 1</th>
 
                         @*<th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1">Dirección 2</th>*@
-                        <th class="sorting". tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Colonia</th>
+                        <th class="sorting" . tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Colonia</th>
                         <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Población</th>
                         <th class="text-center sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1">Codigo Postal</th>
                         <th class="sorting" tabindex="0" aria-controls="tblConsulta" rowspan="1" colspan="1">Telefono</th>
@@ -167,7 +167,7 @@
             Get();
         });
         function Excel() {
-            
+
             window.location = window.location.origin + '/ShipmentRequestsWMS/Excel';
         }
         function showpdf(cnscOrder, cuenta) {
@@ -243,7 +243,7 @@
                                      : "<a onclick='showpdf(" + json.json[i].CnscOrder + "," + json.json[i].Cuenta + "); return false;'  style='width:180px;'  title='Click para ver el pdf de la guía' class='btn btn-link'>" + json.json[i].IdTrackingService + "</a>",
                                  json.json[i].TrackingServiceName
                             ]).draw();
-             
+
                         }
 
                         //$("#tblConsulta tbody").remove();
@@ -272,7 +272,7 @@
                         //    else
                         //        tr.append("<td><a onclick='showpdf(" + json.json[i].CnscOrder + "," + json.json[i].Cuenta + "); return false;'  style='width:180px;'  title='Click para ver el pdf de la guía' class='btn btn-link'>" + json.json[i].IdTrackingService + "</a></td>");
                         //    tr.append("<td>" + json.json[i].TrackingServiceName + "</td>");
-                            
+
                         //    $('#tblConsulta').append(tr);
 
                         //}

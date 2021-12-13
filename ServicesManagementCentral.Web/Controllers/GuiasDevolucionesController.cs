@@ -35,7 +35,7 @@ namespace ServicesManagement.Web.Controllers
                 {
                     #region Guias
                     var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
-                    
+
 
                     //decimal decimalRound = decimal.Round(item.Peso);
                     //if (decimalRound == 0)
@@ -66,13 +66,13 @@ namespace ServicesManagement.Web.Controllers
 
                     var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, item.OrderNo, FolioDisp, "DEVOLUCION",
                     item.PackageType, item.PackageLength, item.PackageWidth, item.PackageHeight, item.PackageWeight,
-                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null,"").Tables[0].Rows[0][0];
+                    User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, "").Tables[0].Rows[0][0];
 
                     #endregion
                     DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(UeNo, item.OrderNo, FolioDisp, "DEVOLUCION",
                         Product, item.Barcode, item.ProductName, User.Identity.Name);
 
-                    
+
                 }
 
                 //if (contentType != null)
@@ -112,7 +112,7 @@ namespace ServicesManagement.Web.Controllers
                 sumPeso = 1;
 
             return sumPeso;
-            
+
         }
         public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
         {

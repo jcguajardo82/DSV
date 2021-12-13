@@ -243,7 +243,7 @@
                                         urlGuia += '<br/> <a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '_</a>'
                                 }
                             }
-                            
+
                             myTable.row.add([
                                 json.resp[i].NroAlmacen,
                                 json.resp[i].NombreAlmacen,
@@ -268,7 +268,7 @@
                                 json.resp[i].Quantity,
                                 json.resp[i].Price,
                                 json.resp[i].CostoConsignacion
-                                
+
                             ]).draw();
                         }
                     }
