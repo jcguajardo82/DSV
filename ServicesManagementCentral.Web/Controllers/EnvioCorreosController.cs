@@ -34,7 +34,7 @@ namespace ServicesManagement.Web.Controllers
                         break;
                     //3   Confirmación de Cancelación de Productos, Envío y/ o Orden. 8A
                     case 3:
-                        Correos.Correos.Correo8A(Orden);
+                        Correos.Correos.Correo8A(Orden, 2);
                         break;
                     case 4:
                         Correos.Correos.Correo6(Orden);

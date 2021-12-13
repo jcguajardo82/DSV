@@ -28,7 +28,7 @@ namespace ServicesManagement.Web.Correos
         {
             var parameters = new Dictionary<string, string>();
 
-      
+
 
             DatosGrales(ref parameters, OrderNo);
             DatosPago(ref parameters, OrderNo);
@@ -37,8 +37,8 @@ namespace ServicesManagement.Web.Correos
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
 
-           
-          
+
+
 
 
 
@@ -113,7 +113,7 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 5;
             requestMessage.MailTo = CustomerEmail;
-    
+
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -201,7 +201,7 @@ namespace ServicesManagement.Web.Correos
             enviaCorreo(requestMessage);
 
         }
-   
+
 
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 6;
             requestMessage.MailTo = CustomerEmail;
-  
+
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -428,7 +428,7 @@ namespace ServicesManagement.Web.Correos
 
 
             MailMessage requestMessage = new MailMessage();
-            requestMessage.LayoutId =11;
+            requestMessage.LayoutId = 11;
             requestMessage.MailTo = CustomerEmail;
             requestMessage.Parameters = parameters;
 
@@ -792,41 +792,27 @@ namespace ServicesManagement.Web.Correos
                 case 2:
                     foreach (DataRow item in ds.Tables[1].Rows)
                     {
-                        //var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
-                        //tablaProductos.Append("<tr>");
-                        //tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
-                        //tablaProductos.Append($"<td class='tg-oe15'> {item["ProductName"].ToString()} </td>");
-                        //tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()} {piezas} </td>");
-                        //tablaProductos.Append($"<td class='tg-c1kk'>{item["Price"].ToString()}</td>");
-                        //tablaProductos.Append("</tr>");
 
 
-                        parameters.Add("@totalMergeRows", (ds.Tables[1].Rows.Count * 7).ToString());
-                        parameters.Add("@total_articulos", ds.Tables[1].Rows.Count.ToString());
+
+
 
                         tablaProductos.Append("<tr>");
-                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
-                        tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
-                        tablaProductos.Append($"<td class='tg-zv4m'>Puntos a descontar: [ <span style='color:#FE0000'>Numeros</span>]</td>");
-                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'>[ <span style='font-weight:bold'>Numero total</span>]</td>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
+                        tablaProductos.Append($"<td style = 'Word-wrap: break-Word; width: 70%;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
+                        tablaProductos.Append($"<td class='tg-zv4m'></td>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <span style='font-weight:bold'>{item["Price"].ToString()}</span></td>");
                         tablaProductos.Append("</tr>");
                         tablaProductos.Append("<tr>");
-                        tablaProductos.Append("<td class='tg-zv4m'>Puntos a devolver: [ <span style='color:#BBBE2F'>Numeros</span>]</td>");
+                        tablaProductos.Append("<td class='tg-zv4m'></td>");
                         tablaProductos.Append("</tr>");
 
-                        // < tr >
 
-                        //   < td class='tg-zv4m' rowspan='2'> <img src = 'https://www.soriana.com/dw/image/v2/BGBD_PRD/on/demandware.static/-/Sites-soriana-grocery-master-catalog/default/dwffb6b384/images/product/7502249667165-A.jpg' alt='Image' width='75' height='60'>
-                        //</td>
-                        //	<td style = "Word-wrap: break-Word; width: 230px;" class='tg-t0vf' rowspan='2'> Bafle Gowin Red-785 Bluetooth 15 Pulg<br> 1.000 </td>
-                        //	<td class='tg-zv4m'>Puntos a descontar: [ <span style='color:#FE0000'>Numeros</span>]</td>
-                        //	<td class='tg-zv4m' rowspan='2'>[ <span style='font-weight:bold'>Numero total</span>]</td>
-                        //</tr>
-                        //<tr>
-                        //	<td class='tg-zv4m'>Puntos a devolver: [ <span style='color:#BBBE2F'>Numeros</span>]</td>
-                        //</tr>
 
                     }
+
+                    parameters.Add("@totalMergeRows", (ds.Tables[1].Rows.Count * 7).ToString());
+                    parameters.Add("@tot_arti", ds.Tables[1].Rows.Count.ToString());
                     break;
                 case 3:
                     foreach (DataRow item in ds.Tables[2].Rows)
@@ -853,8 +839,13 @@ namespace ServicesManagement.Web.Correos
 
         }
 
-
-        public static void DatosArticulosOrden(ref Dictionary<string, string> parameters, int OrdenNo)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="OrdenNo"></param>
+        /// <param name="opcion">1.Orden,2.Cancelacion</param>
+        public static void DatosArticulosOrden(ref Dictionary<string, string> parameters, int OrdenNo, int opcion = 1)
         {
             //Orden resultset 1, Cancelación o Devolución resultset 2, Surtidos resultset 3
             var ds = DALCorreos.spDatosArticulosbyOrderId_sUP(OrdenNo);
@@ -863,22 +854,44 @@ namespace ServicesManagement.Web.Correos
 
             StringBuilder tablaProductos = new StringBuilder("");
 
-
-            foreach (DataRow item in ds.Tables[0].Rows)
+            switch (opcion)
             {
+                case 1:
+                    foreach (DataRow item in ds.Tables[0].Rows)
+                    {
 
-                var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
-                tablaProductos.Append("<tr>");
-                tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
-                tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-oe15'> {item["ProductName"].ToString()} </td>");
-                tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()} {piezas} </td>");
-                tablaProductos.Append($"<td class='tg-c1kk'>{item["Price"].ToString()}</td>");
-                tablaProductos.Append("</tr>");
+                        var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
+                        tablaProductos.Append("<tr>");
+                        tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
+                        tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-oe15'> {item["ProductName"].ToString()} </td>");
+                        tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()} {piezas} </td>");
+                        tablaProductos.Append($"<td class='tg-c1kk'>${item["Price"].ToString()}</td>");
+                        tablaProductos.Append("</tr>");
 
+                    }
+                    parameters.Add("@totalMergeRows", (ds.Tables[0].Rows.Count * 2).ToString());
+                    break;
+                case 2:
+                    foreach (DataRow item in ds.Tables[0].Rows)
+                    {
+                        tablaProductos.Append("<tr>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
+                        tablaProductos.Append($"<td style = 'Word-wrap: break-Word; width: 70%;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
+                        tablaProductos.Append($"<td class='tg-zv4m'></td>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <span style='font-weight:bold'>${item["Price"].ToString()}</span></td>");
+                        tablaProductos.Append("</tr>");
+                        tablaProductos.Append("<tr>");
+                        tablaProductos.Append("<td class='tg-zv4m'></td>");
+                        tablaProductos.Append("</tr>");
 
+                    }
+                    parameters.Add("@totalMergeRows", (ds.Tables[0].Rows.Count * 7).ToString());
+                    break;
+                default:
+                    break;
             }
 
-            parameters.Add("@totalMergeRows", (ds.Tables[0].Rows.Count * 2).ToString());
+
             parameters.Add("@tot_arti", ds.Tables[0].Rows.Count.ToString());
 
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
@@ -1052,6 +1065,29 @@ namespace ServicesManagement.Web.Correos
             }
         }
 
+        //[Correo].[spTotalesImporteDevByOrder_sUp]
+        public static void TotalesImporteDevByOrder(ref Dictionary<string, string> parameters, int OrderNo)
+        {
+            var ds = DALCorreos.spTotalesImporteDevByOrder_sUp(OrderNo);
+
+            foreach (DataRow item in ds.Tables[0].Rows)
+            {
+
+
+                parameters.Add("@subTotal", "$" + item["subTotal"].ToString());
+                parameters.Add("@envio", "$" + item["Flete"].ToString());
+                parameters.Add("@total", "$" + item["Total"].ToString());
+
+                //correo.TotalProductosDev = item["TotalProductos"].ToString();
+                //correo.subTotalDev = item["subTotal"].ToString();
+                //correo.FleteDev = item["Flete"].ToString();
+                //correo.Total = item["Total"].ToString();
+                //correo.OrderSF = item["OrderSF"].ToString();
+                //correo.OrderNo = item["OrderNo"].ToString();
+
+            }
+        }
+
         private static void SendMessage(string mensaje)
         {
 
@@ -1085,11 +1121,20 @@ namespace ServicesManagement.Web.Correos
         public static void enviaCorreo(MailMessage requestMessage)
         {
 
-            //var html = replacelayout(requestMessage, requestMessage.LayoutId);
+            //Header
+            var header = DALCorreos.EmailLayout_sUp(17).Tables[0].Rows[0]["Message"].ToString();
+            var footer = DALCorreos.EmailLayout_sUp(18).Tables[0].Rows[0]["Message"].ToString();
 
-            //Console.Write(html);
 
-            ////requestMessage.MailTo = "agonzalez@itechdev.com.mx";
+            requestMessage.Parameters.Add("@header", header);
+            requestMessage.Parameters.Add("@footer", footer);
+
+            var html = replacelayout(requestMessage, requestMessage.LayoutId);
+
+            ////Console.Write(html);
+
+            //requestMessage.MailTo = "petkstillo@gmail.com";
+            requestMessage.MailTo = "josera@soriana.com";
 
 
             var requestMail = JsonConvert.SerializeObject(requestMessage);
