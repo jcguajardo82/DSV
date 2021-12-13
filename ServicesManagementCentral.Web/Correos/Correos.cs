@@ -59,18 +59,82 @@ namespace ServicesManagement.Web.Correos
         /// <summary>
         /// Confirmación de Pago en Tienda Entrega a Domicilio
         /// </summary>
-        /// <param name="OrderNo"></param>
-        public static void Correo6(int OrderNo)
+        /// <param name="OrderNo">Orden original,antes del split, sin los sufijo 10,20,30,N</param>
+        public static void Correo6(int CurrentOrderNo)
         {
             var parameters = new Dictionary<string, string>();
 
+            parameters.Add("@pedido", CurrentOrderNo.ToString()) ;
+            var shipments = DALCorreos.spDatosSplitOrder_sUP(CurrentOrderNo);
 
 
-            DatosGrales(ref parameters, OrderNo);
-            DatosPago(ref parameters, OrderNo);
-            ResumenCompra(ref parameters, OrderNo);
-            DatosArticulosOrden(ref parameters, OrderNo);
-            DatosEntrega(ref parameters, OrderNo);
+            int OrderNo = int.Parse(shipments.Tables[0].Rows[0]["OrderNo"].ToString());
+             DatosPago(ref parameters, OrderNo);
+
+            var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
+            parameters.Add("@direccionEntrega", dirEntrega);
+            int totArt = 0;
+
+            StringBuilder tablaProductos = new StringBuilder("");
+            int envio = 1;
+            string urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
+            string exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
+
+            //Articulos
+            foreach (DataTable shipment in shipments.Tables)
+            {
+                foreach (DataRow dr in shipment.Rows)
+                {
+
+                    #region Tabla Articulos
+                    tablaProductos.Append("<table class='tg' style='width:100%'>");
+                    tablaProductos.Append("<tr>");
+                    tablaProductos.Append("<td class='tg-8s30' rowspan='90'></td>");
+                    tablaProductos.Append($"<td class='tg-fkgn' colspan='4'> <b> Productos con envío a domicilio - Envío {envio} de {shipment.Rows.Count}</b></td>");
+                    tablaProductos.Append("<td class='tg-fkgn' rowspan='90'></td>");
+                    tablaProductos.Append("</tr>");
+                    tablaProductos.Append("<tr>");
+                    tablaProductos.Append($"<td class='tg-t0vf' colspan='4'><b> Dirección de envío </b> <br/>{dirEntrega}</td>");
+                    tablaProductos.Append("</tr>");
+
+
+
+                    var arts = DALCorreos.spDatosArticulosbyOrderId_sUP(int.Parse(dr["OrderNo"].ToString()));
+                    totArt += arts.Tables[0].Rows.Count;
+                    foreach (DataRow item in arts.Tables[0].Rows)
+                    {
+                        tablaProductos.Append("<tr>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
+                        tablaProductos.Append($"<td style='Word-wrap:break-Word; width:70%;' rowspan='2'> {item["ProductName"].ToString()} </td>");
+                        tablaProductos.Append($"<td class='tg-zv4m'>Cantidad: {item["Quantity"].ToString()} </td>");
+                        tablaProductos.Append($"<td class='tg-zv4m'>${item["Price"].ToString()}</td>");
+                        tablaProductos.Append("</tr>");
+
+                        tablaProductos.Append("<tr>");
+                        tablaProductos.Append("<td class='tg-zv4m' colspan='4'></td>");
+                        tablaProductos.Append("</tr>");
+                    }
+                    envio++;
+                    tablaProductos.Append("</table>");
+                    #endregion
+
+                    #region totales
+           
+                    #endregion
+                }
+            }
+
+
+
+
+
+
+            parameters.Add("@tabla_articulos", tablaProductos.ToString());
+            parameters.Add("@tot_arti", totArt.ToString());
+
+            //ResumenCompra(ref parameters, OrderNo);
+            //DatosArticulosOrden(ref parameters, OrderNo);
+            //DatosEntrega(ref parameters, OrderNo);
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
             if (string.IsNullOrEmpty(CustomerEmail))
@@ -860,35 +924,15 @@ namespace ServicesManagement.Web.Correos
                     foreach (DataRow item in ds.Tables[0].Rows)
                     {
 
-                        //var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
-                        tablaProductos.Append("<tr>");
-                        tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
-                        tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-oe15'> {item["ProductName"].ToString()} </td>");
-                        tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()}  </td>");
-                        tablaProductos.Append($"<td class='tg-c1kk'>${item["Price"].ToString()}</td>");
-                        tablaProductos.Append("</tr>");
-                 
-                    }
-                    parameters.Add("@totalMergeRows", (ds.Tables[0].Rows.Count * 2).ToString());
-                    break;
-                case 2:
-                    foreach (DataRow item in ds.Tables[0].Rows)
-                    {
-                        tablaProductos.Append("<tr>");
-                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
-                        tablaProductos.Append($"<td style = 'Word-wrap: break-Word; width: 70%;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
-                        tablaProductos.Append($"<td class='tg-zv4m'></td>");
-                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <span style='font-weight:bold'>${item["Price"].ToString()}</span></td>");
-                        tablaProductos.Append("</tr>");
-                        tablaProductos.Append("<tr>");
-                        tablaProductos.Append("<td class='tg-zv4m'></td>");
-                        tablaProductos.Append("</tr>");
-                 
-                    }
-                    parameters.Add("@totalMergeRows", (ds.Tables[0].Rows.Count * 7).ToString());
-                    break;
-                default:
-                    break;
+               // var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
+                tablaProductos.Append("<tr>");
+                tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
+                tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-oe15'> {item["ProductName"].ToString()} </td>");
+                tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()}  </td>");
+                tablaProductos.Append($"<td class='tg-c1kk'>{item["Price"].ToString()}</td>");
+                tablaProductos.Append("</tr>");
+
+
             }
 
    
@@ -947,7 +991,7 @@ namespace ServicesManagement.Web.Correos
             {
                 parameters.Add("@numero_tienda", item["StoreNum"].ToString());
                 parameters.Add("@nombre_tienda", item["Desc_UN"].ToString());
-                parameters.Add("@total", item["Total"].ToString());
+                parameters.Add("@total","$"+ item["Total"].ToString());
                 parameters.Add("@cantidad", item["Total"].ToString());
                 parameters.Add("@direccion_tienda", "direccion_tienda");
                 parameters.Add("@horario_tienda", "horario_tienda");
@@ -1139,7 +1183,7 @@ namespace ServicesManagement.Web.Correos
 
             var requestMail = JsonConvert.SerializeObject(requestMessage);
 
-            SendMessage(requestMail);
+            //SendMessage(requestMail);
 
 
 
