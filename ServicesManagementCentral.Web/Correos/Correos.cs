@@ -860,11 +860,11 @@ namespace ServicesManagement.Web.Correos
                     foreach (DataRow item in ds.Tables[0].Rows)
                     {
 
-                        var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
+                        //var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
                         tablaProductos.Append("<tr>");
                         tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
                         tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-oe15'> {item["ProductName"].ToString()} </td>");
-                        tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()} {piezas} </td>");
+                        tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()}  </td>");
                         tablaProductos.Append($"<td class='tg-c1kk'>${item["Price"].ToString()}</td>");
                         tablaProductos.Append("</tr>");
                  
