@@ -120,6 +120,52 @@ namespace ServicesManagement.Web.Correos
 
         }
 
+
+        /// <summary>
+        /// Confirmación de Cancelación de Productos, Envío y/o Orden.
+        /// </summary>
+        /// <param name="Id_cancelacion">OrderNo/IdCancelacion, depende de opcion</param>
+        /// <param name="opcion">1.IdCancelacion 2.OrderNo</param>
+        public static void Correo8A(int Id_cancelacion, int opcion)
+        {
+            var parameters = new Dictionary<string, string>();
+
+            int OrderNo = 0, OrderSF = 0;
+
+
+            if (Id_cancelacion == 1)
+            {
+                PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
+                DatosArticulos(ref parameters, Id_cancelacion, 2);
+                TotalesImporteDev(ref parameters, Id_cancelacion);
+            }
+            else
+            {
+                OrderNo = Id_cancelacion;
+                DatosArticulosOrden(ref parameters, OrderNo, 2);
+                TotalesImporteDevByOrder(ref parameters, OrderNo);
+            }
+
+
+            DatosGrales(ref parameters, OrderNo);
+            var CustomerEmail = DatosCte(ref parameters, OrderNo);
+
+            if (string.IsNullOrEmpty(CustomerEmail))
+            {
+                throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
+            }
+
+            MailMessage requestMessage = new MailMessage();
+            requestMessage.LayoutId = 3;
+            requestMessage.MailTo = CustomerEmail;
+
+            requestMessage.Parameters = parameters;
+
+            enviaCorreo(requestMessage);
+
+        }
+
+
         /// <summary>
         /// Solicitud de Cancelación de Productos, Envío y/o Orden.
         /// </summary>
@@ -155,39 +201,7 @@ namespace ServicesManagement.Web.Correos
             enviaCorreo(requestMessage);
 
         }
-        /// <summary>
-        /// Confirmación de Cancelación de Productos, Envío y/o Orden.
-        /// </summary>
-        public static void Correo8A(int Id_cancelacion)
-        {
-            var parameters = new Dictionary<string, string>();
-
-            int OrderNo = 0, OrderSF = 0;
-
-
-
-
-            PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
-            DatosGrales(ref parameters, OrderNo);
-            var CustomerEmail = DatosCte(ref parameters, OrderNo);
-            DatosArticulos(ref parameters, Id_cancelacion, 2);
-            TotalesImporteDev(ref parameters, Id_cancelacion);
-
-
-            if (string.IsNullOrEmpty(CustomerEmail))
-            {
-                throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
-            }
-
-            MailMessage requestMessage = new MailMessage();
-            requestMessage.LayoutId = 3;
-            requestMessage.MailTo = CustomerEmail;
-
-            requestMessage.Parameters = parameters;
-
-            enviaCorreo(requestMessage);
-
-        }
+   
 
 
         /// <summary>
