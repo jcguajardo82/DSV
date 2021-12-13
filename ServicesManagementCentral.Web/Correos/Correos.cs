@@ -28,7 +28,7 @@ namespace ServicesManagement.Web.Correos
         {
             var parameters = new Dictionary<string, string>();
 
-      
+
 
             DatosGrales(ref parameters, OrderNo);
             DatosPago(ref parameters, OrderNo);
@@ -37,8 +37,8 @@ namespace ServicesManagement.Web.Correos
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
 
-           
-          
+
+
 
 
 
@@ -64,12 +64,12 @@ namespace ServicesManagement.Web.Correos
         {
             var parameters = new Dictionary<string, string>();
 
-            parameters.Add("@pedido", CurrentOrderNo.ToString()) ;
+            parameters.Add("@pedido", CurrentOrderNo.ToString());
             var shipments = DALCorreos.spDatosSplitOrder_sUP(CurrentOrderNo);
 
 
             int OrderNo = int.Parse(shipments.Tables[0].Rows[0]["OrderNo"].ToString());
-             DatosPago(ref parameters, OrderNo);
+            DatosPago(ref parameters, OrderNo);
 
             var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
             parameters.Add("@direccionEntrega", dirEntrega);
@@ -119,7 +119,7 @@ namespace ServicesManagement.Web.Correos
                     #endregion
 
                     #region totales
-           
+
                     #endregion
                 }
             }
@@ -177,7 +177,7 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 5;
             requestMessage.MailTo = CustomerEmail;
-    
+
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -265,7 +265,7 @@ namespace ServicesManagement.Web.Correos
             enviaCorreo(requestMessage);
 
         }
-   
+
 
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace ServicesManagement.Web.Correos
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 6;
             requestMessage.MailTo = CustomerEmail;
-  
+
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -492,7 +492,7 @@ namespace ServicesManagement.Web.Correos
 
 
             MailMessage requestMessage = new MailMessage();
-            requestMessage.LayoutId =11;
+            requestMessage.LayoutId = 11;
             requestMessage.MailTo = CustomerEmail;
             requestMessage.Parameters = parameters;
 
@@ -808,6 +808,7 @@ namespace ServicesManagement.Web.Correos
 
         }
 
+
         #region Metodos mapeo 
         public static void PaymentsGetCancelacion(ref int OrderNo, ref int OrderSF, int Id_cancelacion)
         {
@@ -859,7 +860,7 @@ namespace ServicesManagement.Web.Correos
 
 
 
-                      
+
 
                         tablaProductos.Append("<tr>");
                         tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
@@ -871,7 +872,7 @@ namespace ServicesManagement.Web.Correos
                         tablaProductos.Append("<td class='tg-zv4m'></td>");
                         tablaProductos.Append("</tr>");
 
-                      
+
 
                     }
 
@@ -909,7 +910,7 @@ namespace ServicesManagement.Web.Correos
         /// <param name="parameters"></param>
         /// <param name="OrdenNo"></param>
         /// <param name="opcion">1.Orden,2.Cancelacion</param>
-        public static void DatosArticulosOrden(ref Dictionary<string, string> parameters, int OrdenNo,int opcion=1)
+        public static void DatosArticulosOrden(ref Dictionary<string, string> parameters, int OrdenNo, int opcion = 1)
         {
             //Orden resultset 1, Cancelación o Devolución resultset 2, Surtidos resultset 3
             var ds = DALCorreos.spDatosArticulosbyOrderId_sUP(OrdenNo);
@@ -924,18 +925,38 @@ namespace ServicesManagement.Web.Correos
                     foreach (DataRow item in ds.Tables[0].Rows)
                     {
 
-               // var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
-                tablaProductos.Append("<tr>");
-                tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
-                tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-oe15'> {item["ProductName"].ToString()} </td>");
-                tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()}  </td>");
-                tablaProductos.Append($"<td class='tg-c1kk'>{item["Price"].ToString()}</td>");
-                tablaProductos.Append("</tr>");
+                        var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
+                        tablaProductos.Append("<tr>");
+                        tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
+                        tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-oe15'> {item["ProductName"].ToString()} </td>");
+                        tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()} {piezas} </td>");
+                        tablaProductos.Append($"<td class='tg-c1kk'>${item["Price"].ToString()}</td>");
+                        tablaProductos.Append("</tr>");
 
+                    }
+                    parameters.Add("@totalMergeRows", (ds.Tables[0].Rows.Count * 2).ToString());
+                    break;
+                case 2:
+                    foreach (DataRow item in ds.Tables[0].Rows)
+                    {
+                        tablaProductos.Append("<tr>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
+                        tablaProductos.Append($"<td style = 'Word-wrap: break-Word; width: 70%;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
+                        tablaProductos.Append($"<td class='tg-zv4m'></td>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <span style='font-weight:bold'>${item["Price"].ToString()}</span></td>");
+                        tablaProductos.Append("</tr>");
+                        tablaProductos.Append("<tr>");
+                        tablaProductos.Append("<td class='tg-zv4m'></td>");
+                        tablaProductos.Append("</tr>");
 
+                    }
+                    parameters.Add("@totalMergeRows", (ds.Tables[0].Rows.Count * 7).ToString());
+                    break;
+                default:
+                    break;
             }
 
-   
+
             parameters.Add("@tot_arti", ds.Tables[0].Rows.Count.ToString());
 
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
@@ -991,7 +1012,7 @@ namespace ServicesManagement.Web.Correos
             {
                 parameters.Add("@numero_tienda", item["StoreNum"].ToString());
                 parameters.Add("@nombre_tienda", item["Desc_UN"].ToString());
-                parameters.Add("@total","$"+ item["Total"].ToString());
+                parameters.Add("@total", item["Total"].ToString());
                 parameters.Add("@cantidad", item["Total"].ToString());
                 parameters.Add("@direccion_tienda", "direccion_tienda");
                 parameters.Add("@horario_tienda", "horario_tienda");
@@ -1166,8 +1187,8 @@ namespace ServicesManagement.Web.Correos
         {
 
             //Header
-          var header=  DALCorreos.EmailLayout_sUp(17).Tables[0].Rows[0]["Message"].ToString();
-          var footer=  DALCorreos.EmailLayout_sUp(18).Tables[0].Rows[0]["Message"].ToString();
+            var header = DALCorreos.EmailLayout_sUp(17).Tables[0].Rows[0]["Message"].ToString();
+            var footer = DALCorreos.EmailLayout_sUp(18).Tables[0].Rows[0]["Message"].ToString();
 
 
             requestMessage.Parameters.Add("@header", header);
@@ -1175,19 +1196,20 @@ namespace ServicesManagement.Web.Correos
 
             var html = replacelayout(requestMessage, requestMessage.LayoutId);
 
-            ////Console.Write(html);
 
-            //requestMessage.MailTo = "petkstillo@gmail.com";
+            //este correo es de la persona que esta haciendo pruebas de parte de soriana
             requestMessage.MailTo = "josera@soriana.com";
 
 
             var requestMail = JsonConvert.SerializeObject(requestMessage);
 
-            //SendMessage(requestMail);
+            SendMessage(requestMail);
 
 
 
         }
+
+
 
     }
 
