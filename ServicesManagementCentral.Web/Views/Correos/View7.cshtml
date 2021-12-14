@@ -1,0 +1,246 @@
+﻿@header
+<!-- confirmacion del envío -->
+<div style="min-width: 600px; width: 72.5%; margin: 0 auto 16px; min-height: 400px; color: #666666;">
+    <p style="font-size: 25px; letter-spacing: 0px;">
+        <span style="font-size: 26px; font-weight: bold; letter-spacing: 0px; margin: 0 6px 20px 0;">¡Hola @customer_first_name,</span>
+        <br><br>
+
+        <span style="font-size: 19px;  margin: 0 6px 20px 0;">
+            <b>Hemos enviado a tu domicilio los los productos del envio</b><font color="BBBE2F">@UeNo</font> de tu pedido <font color="BBBE2F">@pedido</font>
+            el cual contiene los siguientes productos:
+        </span>
+
+        <br><br><br>
+
+        <style type="text/css">
+            .tg {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+                .tg td {
+/*                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;*/
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg th {
+/*                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;*/
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg .tg-zv4m {
+                    border-color: #ffffff;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-t0vf {
+                    border-color: #ffffff;
+                    font-size: 100%;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-8s30 {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    color: #c0c0c0;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-fkgn {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+            .tg {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+                .tg td {
+/*                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;*/
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg th {
+/*                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;*/
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg .tg-oe15 {
+                    background-color: #ffffff;
+                    border-color: #ffffff;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-4ez0 {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    font-weight: bold;
+                    text-align: center;
+                    vertical-align: top
+                }
+
+                .tg .tg-fkgn {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-c1kk {
+                    background-color: #ffffff;
+                    border-color: #ffffff;
+                    text-align: right;
+                    vertical-align: top
+                }
+        </style>
+
+        <style type="text/css">
+            li {
+                list-style: none;
+            }
+
+                li:before {
+                    content: '\2022';
+                    For a square bullet content:'\25A0';
+                    display: block;
+                    position: relative;
+                    max-width: 0px;
+                    max-height: 0px;
+                    left: -20px;
+                    top: -10px;
+                    color: BBBE2F;
+                    font-size: 35px;
+                }
+        </style>
+
+        <table style="width:100%">
+            <tbody>
+                <tr>
+                    <td style="vertical-align:top; width:75%">
+                        <table class="tg" style="width:100%">
+                            <tr>
+                                <td class="tg-8s30" rowspan="90"></td>
+                                <td class="tg-fkgn" colspan="4"><b> Productos con envío a domicilio</b></td>
+                                <td class="tg-fkgn" rowspan="90"></td>
+                            </tr>
+                            <tr>
+                                <td class='tg-zv4m' colspan="2">
+                                    <span style="font-weight:bold">Tienda</span><br>@numero_tienda @nombre_tienda
+                                    <br><font color="Red">Rastrear Pedido</font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:top; width:77%">
+                                    @tabla_articulos
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td valign=top>
+                        <!-- otra tabla -->
+                        <table class="tg">
+                            <thead>
+                                <tr>
+                                    <th class="tg-4ez0" colspan="4">Total de orden</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="tg-oe15" rowspan="2">No. Artículos<br></td>
+                                    <td class="tg-c1kk" rowspan="2">@tot_arti</td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-oe15">Subtotal</td>
+                                    <td class="tg-c1kk">@subtotal</td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-oe15">Envio</td>
+                                    <td class="tg-c1kk">@envio</td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-oe15"><span style="font-weight:bold">Total</span><br></td>
+                                    <td class="tg-c1kk">@total</td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-oe15" colspan="2" center valign=top>Incluye impuestos aplicables</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <style type="text/css">
+            .tg .tg-oe15 {
+                background-color: #ffffff;
+                border-color: #ffffff;
+                text-align: left;
+                vertical-align: top
+            }
+
+            .tg .tg-wk8r {
+                background-color: #ffffff;
+                border-color: #ffffff;
+                text-align: center;
+                vertical-align: top
+            }
+        </style>
+        <center>
+            <table class="tg">
+                <thead>
+                    <tr>
+                        <td class="tg-oe15"><img src="C:\Users\josera\Downloads\html\html\alerta.png" alt="Image" width="55" height="50"></td>
+                        <td class="tg-wk8r"><span style="font-size: 22px;  margin: 0 6px 22px 0;" align ="center"> <font color="Red">   IMPORTANTE   </font><align /></span></td>
+                        <td class="tg-oe15"><img src="C:\Users\josera\Downloads\html\html\alerta.png" alt="Image" width="55" height="50"></td>
+                    </tr>
+                </thead>
+            </table>
+        </center>
+
+        <br><br>
+        <span style="font-size: 18px;  margin: 0 6px 22px 0;">
+            Debes recibir tu pedido en óptimas condiciones. Por favor <b>
+                ábrelo y revisalo con detenimiento el mismo dia que lo
+                recibiste.
+            </b>
+            <br><br>
+            Si detectas que tiene algun daño, comunicate durante las próximas 24 horas nuestro <b> Call Center al 55 5062 8019 o Super 78737</b> para reportar la incidencia.
+        </span>
+
+    </p>
+</div>
+@footer
