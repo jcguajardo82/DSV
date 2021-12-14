@@ -54,14 +54,20 @@ namespace ServicesManagement.Web.Correos
                     tablaProductos.Append("<table class='tg' style='width:100%'>");
                     tablaProductos.Append("<tr>");
                     tablaProductos.Append("<td class='tg-8s30' rowspan='90'></td>");
-                    tablaProductos.Append($"<td class='tg-fkgn' colspan='4'> <b> Productos con envío a domicilio - Envío {envio} de {shipment.Rows.Count}</b></td>");
+                    tablaProductos.Append($"<td class='tg-fkgn' colspan='4'> <b> Productos con entrega en tienda  - Envío {envio} de {shipment.Rows.Count}</b></td>");
                     tablaProductos.Append("<td class='tg-fkgn' rowspan='90'></td>");
                     tablaProductos.Append("</tr>");
                     tablaProductos.Append("<tr>");
-                    tablaProductos.Append($"<td class='tg-t0vf' colspan='4'><b> Dirección de envío </b> <br/>{dirEntrega}</td>");
+                    tablaProductos.Append($"<td class='tg-zv4m' colspan='2'><span style='font-weight:bold'> Tienda </span> <br/>{dirEntrega}</td>");
+                    tablaProductos.Append("<td class='tg-zv4m'></td>");
+                    tablaProductos.Append("<td class='tg-zv4m'></td>");
                     tablaProductos.Append("</tr>");
-
-
+                    tablaProductos.Append("<tr>");
+                    tablaProductos.Append($"<td class='tg-oe15' colspan='2'><span style = 'font-weight:bold' > Horario </ span > <br/>{dirEntrega}</td>");
+                    tablaProductos.Append("</tr>");
+                    tablaProductos.Append("<tr>");
+                    tablaProductos.Append("<td class='tg-zv4m' colspan='4'></td>");
+                    tablaProductos.Append("</tr>");
 
                     var arts = DALCorreos.spDatosArticulosbyOrderId_sUP(int.Parse(dr["OrderNo"].ToString()));
                     totArt += arts.Tables[0].Rows.Count;
@@ -71,7 +77,7 @@ namespace ServicesManagement.Web.Correos
                         tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
                         tablaProductos.Append($"<td style='Word-wrap:break-Word; width:70%;' rowspan='2'> {item["ProductName"].ToString()} </td>");
                         tablaProductos.Append($"<td class='tg-zv4m'>Cantidad: {item["Quantity"].ToString()} </td>");
-                        tablaProductos.Append($"<td class='tg-zv4m'>${item["Price"].ToString()}</td>");
+                        tablaProductos.Append($"<td class='tg-zv4m'><span style='font-weight:bold'>${item["Price"].ToString()}</span></td>");
                         tablaProductos.Append("</tr>");
 
                         tablaProductos.Append("<tr>");
@@ -79,6 +85,9 @@ namespace ServicesManagement.Web.Correos
                         tablaProductos.Append("</tr>");
                     }
                     envio++;
+                    tablaProductos.Append("<tr>");
+                    tablaProductos.Append("<td class='tg-8s30' colspan='4'></td>");
+                    tablaProductos.Append("</tr>");
                     tablaProductos.Append("</table>");
                     #endregion
 
@@ -94,7 +103,7 @@ namespace ServicesManagement.Web.Correos
                 }
             }
 
-            parameters.Add("@subTotal", "$" + subtotal.ToString());
+            parameters.Add("@subtotal", "$" + subtotal.ToString());
             parameters.Add("@envio", "$" + totalEnvio.ToString());
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
@@ -171,7 +180,7 @@ namespace ServicesManagement.Web.Correos
                         tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
                         tablaProductos.Append($"<td style='Word-wrap:break-Word; width:70%;' rowspan='2'> {item["ProductName"].ToString()} </td>");
                         tablaProductos.Append($"<td class='tg-zv4m'>Cantidad: {item["Quantity"].ToString()} </td>");
-                        tablaProductos.Append($"<td class='tg-zv4m'>${item["Price"].ToString()}</td>");
+                        tablaProductos.Append($"<td class='tg-zv4m'><span style='font-weight:bold'>${item["Price"].ToString()}</span></td>");
                         tablaProductos.Append("</tr>");
 
                         tablaProductos.Append("<tr>");
@@ -179,7 +188,9 @@ namespace ServicesManagement.Web.Correos
                         tablaProductos.Append("</tr>");
                     }
                     envio++;
-
+                    tablaProductos.Append("<tr>");
+                    tablaProductos.Append("<td class='tg-8s30' colspan='4'></td>");
+                    tablaProductos.Append("</tr>");
                     tablaProductos.Append("</table>");
                     #endregion
 
@@ -199,7 +210,7 @@ namespace ServicesManagement.Web.Correos
 
 
 
-            parameters.Add("@subTotal", "$" + subtotal.ToString());
+            parameters.Add("@subtotal", "$" + subtotal.ToString());
             parameters.Add("@envio", "$" + totalEnvio.ToString());
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
