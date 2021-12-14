@@ -364,9 +364,14 @@ namespace ServicesManagement.Web.Correos
         /// <param name="Id_cancelacion">Id de la Rma</param>
         public static void Correo9(int Id_cancelacion)
         {
+            //call_center_cliente
+            string urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();       
+            string cliente = string.Format("{0}/?order={1}", urlbase, Id_cancelacion);
+
             var parameters = new Dictionary<string, string>();
 
             parameters.Add("@idCancelacion", Id_cancelacion.ToString());
+            parameters.Add("@linkCliente", cliente);
 
             int OrderNo = 0, OrderSF = 0;
 
@@ -931,12 +936,12 @@ namespace ServicesManagement.Web.Correos
                     foreach (DataRow item in ds.Tables[0].Rows)
                     {
 
-                        var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
+                        //var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
                         tablaProductos.Append("<tr>");
                         tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
                         tablaProductos.Append($"<td class='tg-oe15'> {item["ProductName"].ToString()} </td>");
-                        tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()} {piezas} </td>");
-                        tablaProductos.Append($"<td class='tg-c1kk'>{item["Price"].ToString()}</td>");
+                        tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()}  </td>");
+                        tablaProductos.Append($"<td class='tg-c1kk'>${item["Price"].ToString()}</td>");
                         tablaProductos.Append("</tr>");
 
                         parameters.Add("@totalMergeRows", (ds.Tables[0].Rows.Count * 2).ToString());
@@ -956,7 +961,7 @@ namespace ServicesManagement.Web.Correos
                         tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
                         tablaProductos.Append($"<td style = 'Word-wrap: break-Word; width: 70%;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
                         tablaProductos.Append($"<td class='tg-zv4m'></td>");
-                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <span style='font-weight:bold'>{item["Price"].ToString()}</span></td>");
+                        tablaProductos.Append($"<td class='tg-zv4m' rowspan='2'> <span style='font-weight:bold'>${item["Price"].ToString()}</span></td>");
                         tablaProductos.Append("</tr>");
                         tablaProductos.Append("<tr>");
                         tablaProductos.Append("<td class='tg-zv4m'></td>");
