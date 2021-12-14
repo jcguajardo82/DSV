@@ -237,9 +237,15 @@ namespace ServicesManagement.Web.Correos
             DatosGrales(ref parameters, OrderNo);
             DatosPago(ref parameters, OrderNo);
             ResumenCompra(ref parameters, OrderNo);
-            DatosArticulosOrden(ref parameters, OrderNo);
+            ///DatosArticulosOrden(ref parameters, OrderNo);
+            ///
+
+
             DatosEntrega(ref parameters, OrderNo);
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
+
+
+
 
             if (string.IsNullOrEmpty(CustomerEmail))
             {
@@ -998,11 +1004,11 @@ namespace ServicesManagement.Web.Correos
                     foreach (DataRow item in ds.Tables[0].Rows)
                     {
 
-                        var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
+                        //var piezas = decimal.Parse(item["Quantity"].ToString()) > 1 ? "piezas" : "pieza";
                         tablaProductos.Append("<tr>");
                         tablaProductos.Append($"<td class='tg-oe15'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
                         tablaProductos.Append($"<td style='Word-wrap:break-Word;width:230px;' class='tg-oe15'> {item["ProductName"].ToString()} </td>");
-                        tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()} {piezas} </td>");
+                        tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item["Quantity"].ToString()}  </td>");
                         tablaProductos.Append($"<td class='tg-c1kk'>${item["Price"].ToString()}</td>");
                         tablaProductos.Append("</tr>");
 
@@ -1269,14 +1275,15 @@ namespace ServicesManagement.Web.Correos
 
             var html = replacelayout(requestMessage, requestMessage.LayoutId);
 
+            Console.WriteLine(html);
 
             //este correo es de la persona que esta haciendo pruebas de parte de soriana
-            requestMessage.MailTo = "josera@soriana.com";
+            //requestMessage.MailTo = "josera@soriana.com";
 
 
-            var requestMail = JsonConvert.SerializeObject(requestMessage);
+            //var requestMail = JsonConvert.SerializeObject(requestMessage);
 
-            SendMessage(requestMail);
+            //SendMessage(requestMail);
 
 
 
