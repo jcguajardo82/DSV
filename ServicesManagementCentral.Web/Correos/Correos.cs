@@ -38,7 +38,7 @@ namespace ServicesManagement.Web.Correos
             var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
             parameters.Add("@direccionEntrega", dirEntrega);
             int totArt = 0;
-
+            decimal totalEnvio = 0, subtotal = 0;
             StringBuilder tablaProductos = new StringBuilder("");
             int envio = 1;
             string urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
@@ -83,16 +83,19 @@ namespace ServicesManagement.Web.Correos
                     #endregion
 
                     #region totales
+                    var totales = DALCorreos.spTotalesImporteDevByOrder_sUp(int.Parse(dr["OrderNo"].ToString()));
 
+                    foreach (DataRow item in totales.Tables[0].Rows)
+                    {
+                        subtotal += decimal.Parse(item["subTotal"].ToString());
+                        totalEnvio = decimal.Parse(item["Flete"].ToString());
+                    }
                     #endregion
                 }
             }
 
-
-
-
-
-
+            parameters.Add("@subTotal", "$" + subtotal.ToString());
+            parameters.Add("@envio", "$" + totalEnvio.ToString());
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
 
@@ -115,6 +118,7 @@ namespace ServicesManagement.Web.Correos
             enviaCorreo(requestMessage);
 
         }
+
         /// <summary>
         /// Confirmación de Pago en Tienda Entrega a Domicilio
         /// </summary>
@@ -133,6 +137,7 @@ namespace ServicesManagement.Web.Correos
             var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
             parameters.Add("@direccionEntrega", dirEntrega);
             int totArt = 0;
+            decimal totalEnvio = 0, subtotal = 0;
 
             StringBuilder tablaProductos = new StringBuilder("");
             int envio = 1;
@@ -179,7 +184,13 @@ namespace ServicesManagement.Web.Correos
                     #endregion
 
                     #region totales
+                    var totales = DALCorreos.spTotalesImporteDevByOrder_sUp(int.Parse(dr["OrderNo"].ToString()));
 
+                    foreach (DataRow item in totales.Tables[0].Rows)
+                    {
+                        subtotal += decimal.Parse(item["subTotal"].ToString());
+                        totalEnvio = decimal.Parse(item["Flete"].ToString());
+                    }
                     #endregion
                 }
             }
@@ -188,7 +199,8 @@ namespace ServicesManagement.Web.Correos
 
 
 
-
+            parameters.Add("@subTotal", "$" + subtotal.ToString());
+            parameters.Add("@envio", "$" + totalEnvio.ToString());
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
 
@@ -211,6 +223,7 @@ namespace ServicesManagement.Web.Correos
             enviaCorreo(requestMessage);
 
         }
+
         /// <summary>
         /// Confirmación de Envío.
         /// </summary>
@@ -1072,7 +1085,7 @@ namespace ServicesManagement.Web.Correos
             {
                 parameters.Add("@numero_tienda", item["StoreNum"].ToString());
                 parameters.Add("@nombre_tienda", item["Desc_UN"].ToString());
-                parameters.Add("@total","$"+ item["Total"].ToString());
+                parameters.Add("@total", "$" + item["Total"].ToString());
                 parameters.Add("@cantidad", item["Total"].ToString());
                 parameters.Add("@direccion_tienda", "direccion_tienda");
                 parameters.Add("@horario_tienda", "horario_tienda");
