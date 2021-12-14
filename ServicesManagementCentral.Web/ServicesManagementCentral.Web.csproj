@@ -3914,6 +3914,7 @@
     <Content Include="Views\CallCenter\HistorialDetalle.cshtml" />
     <Content Include="Views\CallCenter\tblBuscador.cshtml" />
     <Content Include="Views\EnvioCorreos\Index.cshtml" />
+    <Content Include="Views\Correos\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
