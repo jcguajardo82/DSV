@@ -53,6 +53,10 @@ namespace ServicesManagement.Web.Models.Consignaciones
         public string Price { get; set; }
         public string CostoConsignacion { get; set; }
         public string Categoria { get; set; }
+
+        public string FechaSolicitudGuia { get; set; }
+        public string PuntoDeVenta { get; set; }
+
         ////[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         //public string FechaStock { get; set; }
         //public int NumCodigos { get; set; }

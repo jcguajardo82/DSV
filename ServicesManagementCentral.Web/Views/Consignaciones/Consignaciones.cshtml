@@ -60,6 +60,8 @@
                         <th>Transportista</th>
                         <th>No. Guía</th>
                         <th>Vigencia Guía</th>
+                        <th>Fecha Solicitud de Guía</th>
+                        <th>Punto de Venta</th>
                         <th>Codigo de Producto</th>
                         <th>Codigo de Barras</th>
                         <th style="width:700px">Nombre del Producto</th>
@@ -300,6 +302,8 @@
                                 json.resp[i].Transportista,
                                 urlGuia,
                                 json.resp[i].GuiaVig,
+                                json.resp[i].FechaSolicitudGuia,
+                                json.resp[i].PuntoDeVenta,
                                 json.resp[i].ProductId,
                                 json.resp[i].Barcode,
                                 "<div style='width: 700px'>" + json.resp[i].ProductName + "</div>",
