@@ -35,6 +35,10 @@ namespace ServicesManagement.Web.Correos
             int OrderNo = int.Parse(shipments.Tables[0].Rows[0]["OrderNo"].ToString());
             DatosPago(ref parameters, OrderNo);
 
+
+            var tienda = DALCorreos.spDatosPago_sUP(OrderNo).Tables[0].Rows[0]["Desc_UN"].ToString();
+            var notienda = DALCorreos.spDatosPago_sUP(OrderNo).Tables[0].Rows[0]["StoreNum"].ToString();
+
             var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
             parameters.Add("@direccionEntrega", dirEntrega);
             var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
@@ -60,7 +64,7 @@ namespace ServicesManagement.Web.Correos
                     tablaProductos.Append("<td class='tg-fkgn' rowspan='90'></td>");
                     tablaProductos.Append("</tr>");
                     tablaProductos.Append("<tr>");
-                    tablaProductos.Append($"<td class='tg-zv4m' colspan='2'><span style='font-weight:bold'> Tienda </span> <br/>{dirEntrega}</td>");
+                    tablaProductos.Append($"<td class='tg-zv4m' colspan='2'><span style='font-weight:bold'> Tienda </span> <br/>{notienda} - {tienda}</td>");
                     tablaProductos.Append("<td class='tg-zv4m'></td>");
                     tablaProductos.Append("<td class='tg-zv4m'></td>");
                     tablaProductos.Append("</tr>");
@@ -482,7 +486,8 @@ namespace ServicesManagement.Web.Correos
             PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
             DatosGrales(ref parameters, OrderNo);
             DatosArticulos(ref parameters, Id_cancelacion, 2);
-            TotalesImporteDev(ref parameters, Id_cancelacion);
+            TotalesImporteDevCanc(ref parameters, Id_cancelacion);
+            //TotalesImporteDev(ref parameters, Id_cancelacion);
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
@@ -582,7 +587,8 @@ namespace ServicesManagement.Web.Correos
             PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
             DatosGrales(ref parameters, OrderNo);
             DatosArticulos(ref parameters, Id_cancelacion, 2);
-            TotalesImporteDev(ref parameters, Id_cancelacion);
+            TotalesImporteDevCanc(ref parameters, Id_cancelacion);
+            //TotalesImporteDev(ref parameters, Id_cancelacion);
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
@@ -616,7 +622,8 @@ namespace ServicesManagement.Web.Correos
             PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
             DatosGrales(ref parameters, OrderNo);
             DatosArticulos(ref parameters, Id_cancelacion, 2);
-            TotalesImporteDev(ref parameters, Id_cancelacion);
+            TotalesImporteDevCanc(ref parameters, Id_cancelacion);
+            //TotalesImporteDev(ref parameters, Id_cancelacion);
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
@@ -1056,11 +1063,6 @@ namespace ServicesManagement.Web.Correos
                 case 2:
                     foreach (DataRow item in ds.Tables[1].Rows)
                     {
-
-
-
-
-
                         tablaProductos.Append("<tr>");
                         tablaProductos.Append($"<td class='tg-zv4m' rowspan='2' style='width:10%'> <img src='{string.Format("{0}{1}{2}", urlImg, item["CodeBarra"].ToString(), exteImg)}' alt='Image' width='75' height='60'></td>");
                         tablaProductos.Append($"<td style = 'Word-wrap: break-Word; width: 70%;' class='tg-t0vf' rowspan='2'> {item["ProductName"].ToString()} <br> {item["Quantity"].ToString()} </td>");
@@ -1070,9 +1072,6 @@ namespace ServicesManagement.Web.Correos
                         tablaProductos.Append("<tr>");
                         tablaProductos.Append("<td class='tg-zv4m'></td>");
                         tablaProductos.Append("</tr>");
-
-
-
                     }
 
                     parameters.Add("@totalMergeRows", (ds.Tables[1].Rows.Count * 7).ToString());
@@ -1313,20 +1312,31 @@ namespace ServicesManagement.Web.Correos
 
             foreach (DataRow item in ds.Tables[0].Rows)
             {
-
-
                 parameters.Add("@subTotal", "$" + item["subTotal"].ToString());
                 parameters.Add("@envio", "$" + item["Flete"].ToString());
                 parameters.Add("@total", "$" + item["Total"].ToString());
-
-                //correo.TotalProductosDev = item["TotalProductos"].ToString();
-                //correo.subTotalDev = item["subTotal"].ToString();
-                //correo.FleteDev = item["Flete"].ToString();
-                //correo.Total = item["Total"].ToString();
-                //correo.OrderSF = item["OrderSF"].ToString();
-                //correo.OrderNo = item["OrderNo"].ToString();
-
             }
+        }
+
+        public static void TotalesImporteDevCanc(ref Dictionary<string, string> parameters, int Id_cancelacion)
+        {
+            var ds = DALCorreos.spTotalesImporteDev_sUp(@Id_cancelacion);
+            decimal subtotal = 0;
+            decimal envio = 0;
+            decimal total = 0;
+
+            foreach (DataRow item in ds.Tables[0].Rows)
+            {
+                subtotal = decimal.Parse(item["subTotal"].ToString());
+                if (envio == 0)
+                {
+                    envio = decimal.Parse(item["Flete"].ToString());
+                }
+                total =  decimal.Parse(item["Total"].ToString());
+            }
+            parameters.Add("@subTotal", "$" + subtotal);
+            parameters.Add("@envio", "$" + envio);
+            parameters.Add("@total", "$" + total);
         }
 
         //[Correo].[spTotalesImporteDevByOrder_sUp]

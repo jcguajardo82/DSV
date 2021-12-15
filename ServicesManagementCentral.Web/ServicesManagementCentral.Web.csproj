@@ -3917,7 +3917,6 @@
     <Content Include="Views\Correos\View9A.cshtml" />
     <Content Include="Views\Correos\View9B.cshtml" />
     <Content Include="Views\Correos\View9.cshtml" />
-    <Content Include="Views\Correos\View10.cshtml" />
     <Content Include="Views\Correos\View6A.cshtml" />
   </ItemGroup>
   <ItemGroup>
