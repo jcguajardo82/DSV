@@ -1,0 +1,99 @@
+﻿
+@header<!-- Cancelacion de productos -->
+<div style="min-width: 600px; width: 72.5%; margin: 0 auto 16px; min-height: 400px; color: #666666;">
+    <p style="font-size: 25px; letter-spacing: 0px;">
+        <span style="font-size: 26px; font-weight: bold; letter-spacing: 0px; margin: 0 6px 20px 0;">¡Hola @customer_first_name,</span>
+        <br>
+        <br>
+        <span style="font-size: 19px;  margin: 0 6px 20px 0;">
+            Confirmamos que tu solicitud de devolución con folio <font color="BBBE2F"><b>@idCancelacion</b></font> de la orden<font color="BBBE2F"><b> @pedido </b></font>
+            , fue aplicada y se realizara tu reembolso conforme a las políticas de devoluciones, establecido en nuestros <b>términos y condiciones</b>.
+        </span>
+        <br><br><br>
+
+        <style type="text/css">
+            .tg {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+                .tg td {
+                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg th {
+                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg .tg-zv4m {
+                    border-color: #ffffff;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-t0vf {
+                    border-color: #ffffff;
+                    font-size: 100%;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-8s30 {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    color: #c0c0c0;
+                    text-align: center;
+                    vertical-align: top
+                }
+
+                .tg .tg-fkgn {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    text-align: center;
+                    vertical-align: top
+                }
+        </style>
+
+        </style>
+
+        <table class="tg" style="float: center" ; "border-bottom:1px solid #000000">
+            <thead>
+                <tr>
+                    <td class="tg-8s30" rowspan="@totalMergeRows"></td>
+                    <td class="tg-fkgn" colspan="4"></td>
+                    <td class="tg-fkgn" rowspan="@totalMergeRows"></td>
+                </tr>
+                <tr>
+                    <td class="tg-fkgn">Producto devuelto</td>
+                    <td class="tg-fkgn"></td>
+                    <td class="tg-fkgn"></td>
+                    <td class="tg-fkgn"></td>
+                </tr>
+                @tabla_articulos
+                <tr>
+                    <td class="tg-8s30" colspan="4"></td>
+                </tr>
+            </thead>
+        </table>
+
+
+
+    </p>
+</div>
+@footer
+

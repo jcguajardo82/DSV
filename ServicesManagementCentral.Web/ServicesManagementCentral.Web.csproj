@@ -3911,6 +3911,14 @@
     <Content Include="Views\EnvioCorreos\Index.cshtml" />
     <Content Include="Views\Correos\View.cshtml" />
     <Content Include="Views\Correos\View7.cshtml" />
+    <Content Include="Views\Correos\View12.cshtml" />
+    <Content Include="Views\Correos\View10A.cshtml" />
+    <Content Include="Views\Correos\View10B.cshtml" />
+    <Content Include="Views\Correos\View9A.cshtml" />
+    <Content Include="Views\Correos\View9B.cshtml" />
+    <Content Include="Views\Correos\View9.cshtml" />
+    <Content Include="Views\Correos\View10.cshtml" />
+    <Content Include="Views\Correos\View6A.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

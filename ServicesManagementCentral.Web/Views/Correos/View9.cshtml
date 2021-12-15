@@ -1,16 +1,27 @@
 ﻿@header
-<!-- confirmacion del envío -->
+<!-- Cancelacion de productos -->
 <div style="min-width: 600px; width: 72.5%; margin: 0 auto 16px; min-height: 400px; color: #666666;">
     <p style="font-size: 25px; letter-spacing: 0px;">
         <span style="font-size: 26px; font-weight: bold; letter-spacing: 0px; margin: 0 6px 20px 0;">¡Hola @customer_first_name,</span>
         <br><br>
-
-        <span style="font-size: 19px;  margin: 0 6px 20px 0;">
-            <b>Hemos enviado a tu domicilio los los productos del envio </b><font color="BBBE2F">@UeNo</font> de tu pedido <font color="BBBE2F">@pedido</font>
-            el cual contiene los siguientes productos:
+        <span style="font-size: 18px;  margin: 0 6px 20px 0;">
+            Tu solicitud de devolución es <b><font color="BBBE2F">@idCancelacion</b></font>
         </span>
 
-        <br><br><br>
+
+    <p style="font-size: 20px; letter-spacing: 0px;">
+        <span style="font-size: 18px; font-weight: bold; letter-spacing: 0px; margin: 0 6px 20px 0;">Para continuar con el preceso realizar los siguientes pasos</span>
+
+        <br><br>
+
+        <span style="font-size: 18px;  margin: 0 6px 20px 0;">
+            <b>1.</b> Por favor da clic  la siguiente loga para descargar e imprimir tu guía-pagada<font color="BBBE2F"><u> <a href="@linkCliente">Descargar Guía</a></u></font> y adhiérela al paquete. Recuperada que
+            todos los productos deben conservar accesorios, empaque y sellos originales sin daño alguno
+            <br><br>
+            Este folio de solicitud, procede exclusivamente para el siguiente listado de productos:
+        </span>
+        <br><br>
+
 
         <style type="text/css">
             .tg {
@@ -19,9 +30,9 @@
             }
 
                 .tg td {
-                    /*                    border-color: black;
+                    border-color: black;
                     border-style: solid;
-                    border-width: 1px;*/
+                    border-width: 1px;
                     font-family: Arial, sans-serif;
                     font-size: 14px;
                     overflow: hidden;
@@ -30,9 +41,9 @@
                 }
 
                 .tg th {
-                    /*                    border-color: black;
+                    border-color: black;
                     border-style: solid;
-                    border-width: 1px;*/
+                    border-width: 1px;
                     font-family: Arial, sans-serif;
                     font-size: 14px;
                     font-weight: normal;
@@ -75,9 +86,9 @@
             }
 
                 .tg td {
-                    /*                    border-color: black;
+                    border-color: black;
                     border-style: solid;
-                    border-width: 1px;*/
+                    border-width: 1px;
                     font-family: Arial, sans-serif;
                     font-size: 14px;
                     overflow: hidden;
@@ -86,9 +97,9 @@
                 }
 
                 .tg th {
-                    /*                    border-color: black;
+                    border-color: black;
                     border-style: solid;
-                    border-width: 1px;*/
+                    border-width: 1px;
                     font-family: Arial, sans-serif;
                     font-size: 14px;
                     font-weight: normal;
@@ -149,8 +160,21 @@
         <table style="width:100%">
             <tbody>
                 <tr>
-                    <td style="vertical-align:top; width:75%">
-                        @tabla_articulos
+                    <td style="vertical-align:top; width:80%">
+                        <table class="tg" style="width:100%">
+                            <tr>
+                                <td class="tg-8s30" rowspan="6"></td>
+                                <td class="tg-fkgn" colspan="4"><b>Producto devuelto</b></td>
+                                <td class="tg-fkgn" rowspan="6"></td>
+                            </tr>
+
+                            @tabla_articulos <!-- Asta aqui -->
+
+                            <tr>
+                                <td class="tg-8s30" colspan="4"></td>
+                            </tr>
+                        </table>
+
                     </td>
                     <td valign=top>
                         <!-- otra tabla -->
@@ -192,43 +216,25 @@
             </tbody>
         </table>
 
-        <style type="text/css">
-            .tg .tg-oe15 {
-                background-color: #ffffff;
-                border-color: #ffffff;
-                text-align: left;
-                vertical-align: top
-            }
 
-            .tg .tg-wk8r {
-                background-color: #ffffff;
-                border-color: #ffffff;
-                text-align: center;
-                vertical-align: top
-            }
-        </style>
-        <center>
-            <table class="tg">
-                <thead>
-                    <tr>
-                        <td class="tg-oe15"><img src="C:\Users\josera\Downloads\html\html\alerta.png" alt="Image" width="55" height="50"></td>
-                        <td class="tg-wk8r"><span style="font-size: 22px;  margin: 0 6px 22px 0;" align="center"> <font color="Red">   IMPORTANTE   </font><align /></span></td>
-                        <td class="tg-oe15"><img src="C:\Users\josera\Downloads\html\html\alerta.png" alt="Image" width="55" height="50"></td>
-                    </tr>
-                </thead>
-            </table>
-        </center>
-
+        <br><br><br>
+        <br><br><br>
+        <br><br><br>
         <br><br>
-        <span style="font-size: 18px;  margin: 0 6px 22px 0;">
-            Debes recibir tu pedido en óptimas condiciones. Por favor <b>
-                ábrelo y revisalo con detenimiento el mismo dia que lo
-                recibiste.
-            </b>
+
+        <span style="font-size: 18px;  margin: 0 6px 20px 0;">
+            <b>2.</b> Comunícate al teléfono <b>01 800 378 2338</b> para confirmar la fecha en que una unidad de transporte pasara a tu domicilio para recolectar lo conocimientos en tu folio
             <br><br>
-            Si detectas que tiene algun daño, comunicate durante las próximas 24 horas nuestro <b> Call Center al 55 5062 8019 o Super 78737</b> para reportar la incidencia.
+            <b>3.</b> El envío de la devolución a nuestro almacenes requieren un plazo que depende del tipo y tamaño de los productos a devolver (artículos No voluminosos
+            necesitan de 3-5 días hábiles y artículos voluminosos hasta 12 días hábiles) Estos tiempos se consideran a partir de recolectado el producto en tu domicilio.
+            <br><br>
+            <b>4.</b> Una vez recibimos lo productos, evaluaremos cumplan con nuestra <b><u> Política de Devoluciones.</b></u>
+            <br><br>
+            <b>5.</b> Al término de la evaluación de los productos; recibirás por correo electrónicos el resultado
         </span>
+
 
     </p>
 </div>
 @footer
+

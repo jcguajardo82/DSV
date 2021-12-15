@@ -1,17 +1,15 @@
 ﻿@header
-<!-- confirmacion del envío -->
 <div style="min-width: 600px; width: 72.5%; margin: 0 auto 16px; min-height: 400px; color: #666666;">
     <p style="font-size: 25px; letter-spacing: 0px;">
         <span style="font-size: 26px; font-weight: bold; letter-spacing: 0px; margin: 0 6px 20px 0;">¡Hola @customer_first_name,</span>
-        <br><br>
-
+        <span style="font-size: 19px;  margin: 0 6px 20px 0;">Gracias por su prefrerencia</span>
+        <br>
+        <br>
         <span style="font-size: 19px;  margin: 0 6px 20px 0;">
-            <b>Hemos enviado a tu domicilio los los productos del envio </b><font color="BBBE2F">@UeNo</font> de tu pedido <font color="BBBE2F">@pedido</font>
-            el cual contiene los siguientes productos:
+            <b>Hemos recibido</b> tu pago en tienda <font color="BBBE2F">@numero_tienda @nombre_tienda </font> por la cantidad de <font color="BBBE2F">@total</font> <br>
+            para el pedido <font color="BBBE2F">@pedido </font>
         </span>
-
         <br><br><br>
-
         <style type="text/css">
             .tg {
                 border-collapse: collapse;
@@ -19,7 +17,7 @@
             }
 
                 .tg td {
-                    /*                    border-color: black;
+                    /* border-color: black;
                     border-style: solid;
                     border-width: 1px;*/
                     font-family: Arial, sans-serif;
@@ -30,7 +28,7 @@
                 }
 
                 .tg th {
-                    /*                    border-color: black;
+                    /*border-color: black;
                     border-style: solid;
                     border-width: 1px;*/
                     font-family: Arial, sans-serif;
@@ -75,7 +73,7 @@
             }
 
                 .tg td {
-                    /*                    border-color: black;
+                    /* border-color: black;
                     border-style: solid;
                     border-width: 1px;*/
                     font-family: Arial, sans-serif;
@@ -86,7 +84,7 @@
                 }
 
                 .tg th {
-                    /*                    border-color: black;
+                    /* border-color: black;
                     border-style: solid;
                     border-width: 1px;*/
                     font-family: Arial, sans-serif;
@@ -126,7 +124,6 @@
                     vertical-align: top
                 }
         </style>
-
         <style type="text/css">
             li {
                 list-style: none;
@@ -145,15 +142,18 @@
                     font-size: 35px;
                 }
         </style>
-
         <table style="width:100%">
             <tbody>
                 <tr>
-                    <td style="vertical-align:top; width:75%">
+
+                    <td style="vertical-align:top; width:77%"><b><font color="Red">Nota</font></b> : Para los productos que su entrega es recoger en tienda. recibirás un correo<br>de confirmación con el horario en la que pueda acudir a la tienda. recuerda llevar tu numero<br>de pedido y una identificación oficial.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top; width:77%">
                         @tabla_articulos
                     </td>
                     <td valign=top>
-                        <!-- otra tabla -->
                         <table class="tg">
                             <thead>
 
@@ -163,24 +163,24 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="tg-fkgn" rowspan="5"></td>
+                                    <td class="tg-fkgn" rowspan="8"></td>
                                     <td class="tg-oe15" rowspan="2">No. Artículos<br></td>
                                     <td class="tg-c1kk" rowspan="2">@tot_arti</td>
-                                    <td class="tg-fkgn" rowspan="5"></td>
+                                    <td class="tg-fkgn" rowspan="8"></td>
                                 </tr>
                                 <tr>
                                 </tr>
                                 <tr>
                                     <td class="tg-oe15">Subtotal</td>
-                                    <td class="tg-c1kk">@subTotal</td>
+                                    <td class="tg-c1kk">@subtotal</td>
                                 </tr>
                                 <tr>
-                                    <td class="tg-oe15">Envio</td>
-                                    <td class="tg-c1kk">@envio</td>
+                                    <td class="tg-oe15"><span style="font-weight:bold">Total</span><br></td>
+                                    <td class="tg-c1kk"><span style="font-weight:bold">@total</span></td>
                                 </tr>
+
                                 <tr>
-                                    <td class="tg-oe15"><span style="font-weight:bold">Total a devolver</span><br></td>
-                                    <td class="tg-c1kk">@total</td>
+                                    <td class="tg-oe15" colspan="2" center valign=top>Incluye impuestos aplicables</td>
                                 </tr>
                                 <tr>
                                     <td class="tg-fkgn" colspan="4"></td>
@@ -192,43 +192,25 @@
             </tbody>
         </table>
 
-        <style type="text/css">
-            .tg .tg-oe15 {
-                background-color: #ffffff;
-                border-color: #ffffff;
-                text-align: left;
-                vertical-align: top
-            }
 
-            .tg .tg-wk8r {
-                background-color: #ffffff;
-                border-color: #ffffff;
-                text-align: center;
-                vertical-align: top
-            }
-        </style>
-        <center>
-            <table class="tg">
-                <thead>
-                    <tr>
-                        <td class="tg-oe15"><img src="C:\Users\josera\Downloads\html\html\alerta.png" alt="Image" width="55" height="50"></td>
-                        <td class="tg-wk8r"><span style="font-size: 22px;  margin: 0 6px 22px 0;" align="center"> <font color="Red">   IMPORTANTE   </font><align /></span></td>
-                        <td class="tg-oe15"><img src="C:\Users\josera\Downloads\html\html\alerta.png" alt="Image" width="55" height="50"></td>
-                    </tr>
-                </thead>
-            </table>
-        </center>
 
         <br><br>
+        <center>
+            <span style="font-size: 22px;  margin: 0 6px 22px 0;"><b><font color="Red">CONSERVA ESTE CORREO PARA CUELQUIER ACLARACION</b></font></span>
+        </center>
+        <br><br>
         <span style="font-size: 18px;  margin: 0 6px 22px 0;">
-            Debes recibir tu pedido en óptimas condiciones. Por favor <b>
-                ábrelo y revisalo con detenimiento el mismo dia que lo
-                recibiste.
-            </b>
+            Los Puntoss y Dinero Electrónico del <b>Programa de Recompensa Soriana</b> se veran reflejados en tu
+            tarjeta hasta el momento de recibir el pedido en tu domicilio y tiene vigencia al 30 de Abril y 31 de Octubre del año en curso. Aplican
+            <b><u>Politicas del Programa de Recompensas Soriana</u></b>
             <br><br>
-            Si detectas que tiene algun daño, comunicate durante las próximas 24 horas nuestro <b> Call Center al 55 5062 8019 o Super 78737</b> para reportar la incidencia.
+            Consulta nuestras <b><u>Politicas de Cancelaciones y Devolucioines</u></b> para mayor informaciíon
+            <br><br>
+            Productos, precios y promociones exclusivos de la tienda en linea Soriana.com y por tal motivo, <b>
+                NO APLICA entrega de productos, cambios, ni devoluciones
+                en tiendas físicas Soriana.
+            </b>
         </span>
-
     </p>
 </div>
 @footer
