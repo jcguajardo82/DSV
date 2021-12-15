@@ -190,8 +190,10 @@ namespace ServicesManagement.Web.Controllers
             row1.CreateCell(15).SetCellValue("Nombre del Producto");
             row1.CreateCell(16).SetCellValue("Categoria del Producto");
             row1.CreateCell(17).SetCellValue("Cantidad de Productos");
-            row1.CreateCell(19).SetCellValue("Precio de Producto");
+            row1.CreateCell(18).SetCellValue("Precio de Producto");
             row1.CreateCell(19).SetCellValue("Costo de la Consignacion");
+            row1.CreateCell(20).SetCellValue("Fecha Solicitud de Guía");
+            row1.CreateCell(21).SetCellValue("Punto de Venta");
             //The data is written progressively sheet1 each row
 
             for (int i = 0; i < d.Rows.Count; i++)
@@ -231,6 +233,8 @@ namespace ServicesManagement.Web.Controllers
                 rowtemp.CreateCell(17).SetCellValue(d.Rows[i]["Quantity"].ToString());
                 rowtemp.CreateCell(18).SetCellValue(d.Rows[i]["Price"].ToString());
                 rowtemp.CreateCell(19).SetCellValue(d.Rows[i]["CostoConsignacion"].ToString());
+                rowtemp.CreateCell(20).SetCellValue(d.Rows[i]["FechaSolicitudGuia"].ToString());
+                rowtemp.CreateCell(21).SetCellValue(d.Rows[i]["PuntoDeVenta"].ToString());
 
             }
 

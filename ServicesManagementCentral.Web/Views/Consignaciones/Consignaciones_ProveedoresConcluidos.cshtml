@@ -61,6 +61,8 @@
                         <th>Fecha de Entrega</th>
                         <th>Hora de Entrega</th>
                         <th>Nombre de Quien Recibio</th>
+                        <th>Fecha Solicitud de Guía</th>
+                        <th>Punto de Venta</th>
 
                         @*<th>Vigencia Guía</th>*@
                         @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
@@ -306,7 +308,9 @@
                                 json.resp[i].GuiaStatus,
                                 json.resp[i].FechaEntrega,
                                 json.resp[i].HoraEntrega,
-                                json.resp[i].QuienRecibio
+                                json.resp[i].QuienRecibio,
+                                json.resp[i].FechaSolicitudGuia,
+                                json.resp[i].PuntoDeVenta
                        
                             ]).draw();
                         }
