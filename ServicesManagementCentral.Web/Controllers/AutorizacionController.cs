@@ -175,15 +175,17 @@ namespace ServicesManagement.Web.Controllers
                         switch (IdProceso)
                         {
                             case 2:
-                                // Solicitud de Cancelación
+                                // Se autoriza Cancelación
                                 Correos.Correos.Correo8A(Id_cancelacion, 2);
+                                // Se aprueba por Supervisor
+                                Correos.Correos.Correo9(Id_cancelacion);
                                 break;
                             case 3:
-                                // DSV, DST, CEDIS Duda: 9A y 9B
-                                Correos.Correos.Correo9B(Id_cancelacion);
+                                // DSV, DST, CEDIS Duda: Da entrada Almacen
+                                Correos.Correos.Correo10A(Id_cancelacion);
                                 break;
                             case 4:
-                                // Administrador Reembolso Duda; 10B
+                                // Administrador  Autoriza Gerencia
                                 Correos.Correos.Correo10A(Id_cancelacion);
                                 break;
                         }
