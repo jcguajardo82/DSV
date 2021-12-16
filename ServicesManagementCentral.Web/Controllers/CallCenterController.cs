@@ -4,6 +4,9 @@ using RestSharp;
 using ServicesManagement.Web.DAL.Autorizacion;
 using ServicesManagement.Web.DAL.CallCenter;
 using ServicesManagement.Web.DAL.DALHistorialRMA;
+using ServicesManagement.Web.Controllers;
+using ServicesManagement.Web.Correos;
+using ServicesManagement.Web.DAL.Correos;
 using ServicesManagement.Web.Helpers;
 using ServicesManagement.Web.Models.Autorizacion;
 using ServicesManagement.Web.Models.CallCenter;
@@ -727,6 +730,15 @@ namespace ServicesManagement.Web.Controllers
                 {
                     cliente = string.Format("Se ha generado con éxito el folio RMA numero : {0}", id.Id_cancelacion);
                 }
+
+                switch (Operacion)
+                {
+                    case 1:
+                        // Solicitud de Cancelación
+                        Correos.Correos.Correo8(id.Id_cancelacion);
+                        break;
+                }
+
                 foreach (OrderDetail item in detalle)
                 {
                     if (Operacion != 5)
@@ -778,6 +790,8 @@ namespace ServicesManagement.Web.Controllers
                         if (DALCallCenter.up_PPS_Sel_PaymenTransactionOrderCancellation(orden.Orderid).Tables[0].Rows.Count > 0)
                         {
                             Cancelacion(int.Parse(orden.Orderid));
+                            // Confirmación de Cancelación de Productos, Envío y/o Orden.
+                            Correos.Correos.Correo8A(id.Id_cancelacion, 2);
                         }
                     }
                     else
