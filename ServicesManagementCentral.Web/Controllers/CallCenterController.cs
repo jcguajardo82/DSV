@@ -731,30 +731,6 @@ namespace ServicesManagement.Web.Controllers
                     cliente = string.Format("Se ha generado con éxito el folio RMA numero : {0}", id.Id_cancelacion);
                 }
 
-                switch (Operacion)
-                {
-                    case 1:
-                        // Sustituto
-                        //Correos.Correos.Correo9(id.Id_cancelacion);
-                        break;
-                    case 2:
-                        // Reembolso
-                        Correos.Correos.Correo9A(id.Id_cancelacion);
-                        break;
-                    case 3:
-                        // Cambio Fisico
-                        Correos.Correos.Correo9A(id.Id_cancelacion);
-                        break;
-                    case 4:
-                        // Reenvio
-                        //Correos.Correos.Correo8(id.Id_cancelacion);
-                        break;
-                    case 5:
-                        // Solicitud de Cancelación
-                        Correos.Correos.Correo8(id.Id_cancelacion);
-                        break;
-                }
-
                 foreach (OrderDetail item in detalle)
                 {
                     if (Operacion != 5)
@@ -795,6 +771,30 @@ namespace ServicesManagement.Web.Controllers
                         //if (UeType.ToUpper().Equals("SETC"))
                         //    Cancelacion(int.Parse(orden.Orderid));
                     }
+                }
+
+                switch (Operacion)
+                {
+                    case 1:
+                        // Sustituto
+                        //Correos.Correos.Correo9(id.Id_cancelacion);
+                        break;
+                    case 2:
+                        // Reembolso
+                        Correos.Correos.Correo9A(id.Id_cancelacion);
+                        break;
+                    case 3:
+                        // Cambio Fisico
+                        Correos.Correos.Correo9A(id.Id_cancelacion);
+                        break;
+                    case 4:
+                        // Reenvio
+                        //Correos.Correos.Correo8(id.Id_cancelacion);
+                        break;
+                    case 5:
+                        // Solicitud de Cancelación
+                        Correos.Correos.Correo8(id.Id_cancelacion);
+                        break;
                 }
 
                 if (Operacion == 5)
