@@ -357,19 +357,12 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
 
-            //DatosGrales(ref parameters, OrderNo);
-            //DatosPago(ref parameters, OrderNo);
-            //ResumenCompra(ref parameters, OrderNo);
-            //DatosArticulosOrden(ref parameters, OrderNo);
-
-            //DatosEntrega(ref parameters, OrderNo);
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-
-            //if (string.IsNullOrEmpty(CustomerEmail))
-            //{
-            //    throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
-            //}
+            if (string.IsNullOrEmpty(CustomerEmail))
+            {
+                throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
+            }
 
 
             MailMessage requestMessage = new MailMessage();
@@ -463,8 +456,6 @@ namespace ServicesManagement.Web.Correos
             enviaCorreo(requestMessage);
 
         }
-
-
 
         /// <summary>
         /// Solicitud de Devolucion Aceptada
@@ -715,11 +706,14 @@ namespace ServicesManagement.Web.Correos
         {
             var parameters = new Dictionary<string, string>();
 
-
-
             DatosGrales(ref parameters, OrderNo);
             DatosPago(ref parameters, OrderNo);
+            DatosEntrega(ref parameters, OrderNo);
 
+            var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
+            parameters.Add("@direccionEntrega", dirEntrega);
+            var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
+            parameters.Add("@horarioEntrega", horEntrega);
 
             #region Articulos
             StringBuilder tablaProductos = new StringBuilder("");
@@ -777,11 +771,14 @@ namespace ServicesManagement.Web.Correos
         {
             var parameters = new Dictionary<string, string>();
 
-
-
             DatosGrales(ref parameters, OrderNo);
             DatosPago(ref parameters, OrderNo);
+            DatosPago(ref parameters, OrderNo);
 
+            var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
+            parameters.Add("@direccionEntrega", dirEntrega);
+            var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
+            parameters.Add("@horarioEntrega", horEntrega);
 
             #region Articulos
             StringBuilder tablaProductos = new StringBuilder("");
@@ -1021,7 +1018,6 @@ namespace ServicesManagement.Web.Correos
 
         }
 
-
         #region Metodos mapeo 
         public static void PaymentsGetCancelacion(ref int OrderNo, ref int OrderSF, int Id_cancelacion)
         {
@@ -1221,13 +1217,6 @@ namespace ServicesManagement.Web.Correos
                 parameters.Add("@cantidad", item["Total"].ToString());
                 parameters.Add("@direccion_tienda", "direccion_tienda");
                 parameters.Add("@horario_tienda", "horario_tienda");
-
-
-
-
-                //correo.StoreNum = item["Desc_UN"].ToString();
-                //correo.Desc_UN = item["Desc_UN"].ToString();
-                //correo.Total = item["Total"].ToString();
             }
         }
 
@@ -1284,6 +1273,7 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@nombreProveedor", "nombre del proveedor");
 
         }
+
         public static void TotalesImporteDev(ref Dictionary<string, string> parameters, int Id_cancelacion)
         {
             var ds = DALCorreos.spTotalesImporteDev_sUp(@Id_cancelacion);
@@ -1396,8 +1386,6 @@ namespace ServicesManagement.Web.Correos
 
 
         }
-
-
 
     }
 
