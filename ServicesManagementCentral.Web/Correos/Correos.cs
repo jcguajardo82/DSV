@@ -723,7 +723,7 @@ namespace ServicesManagement.Web.Correos
 
             #region Articulos
             StringBuilder tablaProductos = new StringBuilder("");
-            var dt = DALCorreos.spDatosArticulosbyOrderId_sUP(OrderNo).Tables[3];
+            var dt = DALCorreos.spDatosArticulosbyOrderId_sUP(OrderNo).Tables[1];
             string urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
             string exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
             int cns = 1;
@@ -785,7 +785,7 @@ namespace ServicesManagement.Web.Correos
 
             #region Articulos
             StringBuilder tablaProductos = new StringBuilder("");
-            var dt = DALCorreos.spDatosArticulosbyOrderId_sUP(OrderNo).Tables[3];
+            var dt = DALCorreos.spDatosArticulosbyOrderId_sUP(OrderNo).Tables[1];
             string urlImg = System.Configuration.ConfigurationManager.AppSettings["api_ImgBuscadorCarrito"];
             string exteImg = System.Configuration.ConfigurationManager.AppSettings["api_ExtensionImgBuscadorCarrito"];
             int cns = 1;
