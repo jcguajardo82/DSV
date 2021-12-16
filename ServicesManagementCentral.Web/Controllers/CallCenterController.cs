@@ -735,11 +735,11 @@ namespace ServicesManagement.Web.Controllers
                 {
                     case 1:
                         // Sustituto
-                        Correos.Correos.Correo9(id.Id_cancelacion);
+                        //Correos.Correos.Correo9(id.Id_cancelacion);
                         break;
                     case 2:
                         // Reembolso
-                        Correos.Correos.Correo8(id.Id_cancelacion);
+                        Correos.Correos.Correo9A(id.Id_cancelacion);
                         break;
                     case 3:
                         // Cambio Fisico
