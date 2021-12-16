@@ -268,9 +268,6 @@ namespace ServicesManagement.Web.Controllers
 
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"], "", json2);
 
-                //Asignación de Proveedor
-                Correos.Correos.Correo12(int.Parse(OrderNo));
-
                 var result = new { Success = true, Message = "Alta exitosa" };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
