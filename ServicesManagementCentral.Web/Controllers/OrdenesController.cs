@@ -437,8 +437,6 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
-
-
                 if (index_orders == 1)
                 {
                     foreach (string value in array)
@@ -473,17 +471,6 @@ namespace ServicesManagement.Web.Controllers
                         o.Orden.NumeroTienda = Convert.ToInt32(store);
                         o.Expedidor.NombreExpedidor = trans;
                         o.Expedidor.NumeroTransaccion = tId;
-                        //o.Expedidor.MultipleOrdenes = true;
-
-                        //foreach (string no in OrderNo.Split(','))
-                        //{
-                        //    o.Expedidor.NumeroOrdenes.Add(no);
-
-                        //}
-                        //o.Expedidor.NumeroBolsas = 1;
-                        //o.Expedidor.NumeroContenedores = 1;
-                        //o.Expedidor.NumeroEnfriadores = 1;
-
 
                         string json2 = string.Empty;
                         JavaScriptSerializer js = new JavaScriptSerializer();
@@ -499,7 +486,9 @@ namespace ServicesManagement.Web.Controllers
                         Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarTrans"], "", json2);
 
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
-
+                        
+                        //Pedido Surtido Terminado
+                        Correos.Correos.Correo15(int.Parse(OrderNo));
 
                         #endregion
                     }
@@ -510,13 +499,6 @@ namespace ServicesManagement.Web.Controllers
                     {
                         #region MyRegion
 
-                        //foreach (DictionaryEntry de in listOrders)
-                        //{
-                        //    OrderNo = de.Key.ToString();
-                        //}
-
-
-                        //System.Data.DataSet d = DALServicesM.GetOrdersByOrderNo(OrderNo);
                         System.Data.DataSet d = DALServicesM.GetOrdersByOrderNo(array[0]);
                         //OrderNo = array[0];
                         foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
@@ -525,9 +507,7 @@ namespace ServicesManagement.Web.Controllers
                             status = r1["StatusUe"].ToString();
                             ue = r1["UeNo"].ToString();
                             store = r1["StoreNum"].ToString();
-
                         }
-
 
                         string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_FinalizarTrans"];
 
@@ -547,39 +527,19 @@ namespace ServicesManagement.Web.Controllers
                         o.Expedidor.MultipleOrdenes = true;
                         o.Expedidor.NumeroOrdenes = new List<string>();
                         o.Expedidor.NumeroTransaccion = tId;
-                        //foreach (string no in OrderNo.Split(','))
-                        //{
-                        //    if (string.IsNullOrEmpty(no)) { continue; }
-                        //    if (!OrderNo.Equals(no))
-                        //    {
-                        //        o.Expedidor.NumeroOrdenes.Add(no);
-                        //    }
-                        //}
 
                         foreach (string value in array)
                         {
                             if (!value.Equals(array[0]))
                             {
-
                                 d = DALServicesM.GetOrdersByOrderNo(value);
                                 //OrderNo = array[0];
                                 foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
                                 {
-
-
                                     o.Expedidor.NumeroOrdenes.Add(r1["OrderNo"].ToString());
                                 }
-
-
-
                             }
                         }
-
-
-                        //o.Expedidor.NumeroBolsas = 1;
-                        //o.Expedidor.NumeroContenedores = 1;
-                        //o.Expedidor.NumeroEnfriadores = 1;
-
 
                         string json2 = string.Empty;
                         JavaScriptSerializer js = new JavaScriptSerializer();
@@ -597,7 +557,8 @@ namespace ServicesManagement.Web.Controllers
 
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
 
-
+                        //Pedido Surtido Terminado falta validación DST
+                        Correos.Correos.Correo15(int.Parse(OrderNo));
                         #endregion
                     }
                 }
