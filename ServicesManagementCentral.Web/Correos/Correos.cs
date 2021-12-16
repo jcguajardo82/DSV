@@ -486,8 +486,8 @@ namespace ServicesManagement.Web.Correos
             PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
             DatosGrales(ref parameters, OrderNo);
             DatosArticulos(ref parameters, Id_cancelacion, 2);
-            TotalesImporteDevCanc(ref parameters, Id_cancelacion);
-            //TotalesImporteDev(ref parameters, Id_cancelacion);
+            //TotalesImporteDevCanc(ref parameters, Id_cancelacion);
+            TotalesImporteDev(ref parameters, Id_cancelacion);
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
@@ -587,8 +587,8 @@ namespace ServicesManagement.Web.Correos
             PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
             DatosGrales(ref parameters, OrderNo);
             DatosArticulos(ref parameters, Id_cancelacion, 2);
-            TotalesImporteDevCanc(ref parameters, Id_cancelacion);
-            //TotalesImporteDev(ref parameters, Id_cancelacion);
+            //TotalesImporteDevCanc(ref parameters, Id_cancelacion);
+            TotalesImporteDev(ref parameters, Id_cancelacion);
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
@@ -622,8 +622,8 @@ namespace ServicesManagement.Web.Correos
             PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
             DatosGrales(ref parameters, OrderNo);
             DatosArticulos(ref parameters, Id_cancelacion, 2);
-            TotalesImporteDevCanc(ref parameters, Id_cancelacion);
-            //TotalesImporteDev(ref parameters, Id_cancelacion);
+            //TotalesImporteDevCanc(ref parameters, Id_cancelacion);
+            TotalesImporteDev(ref parameters, Id_cancelacion);
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
