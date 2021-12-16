@@ -1898,10 +1898,11 @@ namespace ServicesManagement.Web.Controllers
             {
                 int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
 
+                #region Guias
+
                 List<string> folios = new List<string>();
                 foreach (PackageMeasure item in Paquetes)
                 {
-                    #region Guias
                     var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
                     folios.Add(FolioDisp);
                     string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
@@ -1973,7 +1974,6 @@ namespace ServicesManagement.Web.Controllers
                     item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
                     User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
 
-                    #endregion
                 }
 
                 //DESCOMENTAR
@@ -1986,6 +1986,12 @@ namespace ServicesManagement.Web.Controllers
                     }
 
                 }
+
+                // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
+                Correos.Correos.Correo7(OrderNo);
+
+                #endregion
+
 
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -2258,6 +2264,10 @@ namespace ServicesManagement.Web.Controllers
                      item.productId, item.barcode, "000000000", User.Identity.Name);
 
                     DALServicesM.UCCProcesada(item.ucc);
+
+                    // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
+                    Correos.Correos.Correo7(item.orderNo);
+
                     #endregion
                 }
 
@@ -2388,12 +2398,6 @@ namespace ServicesManagement.Web.Controllers
                 string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
                 List<string> lstCarriers = new List<string>(carriers);
 
-
-
-
-
-
-
                 //EliminarTarifasAnteriores(UeNo, OrderNo);
                 //foreach (var carrier in lstCarriers)
                 //{
@@ -2421,7 +2425,8 @@ namespace ServicesManagement.Web.Controllers
                 PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
                 User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, "").Tables[0].Rows[0][0];
 
-
+                // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
+                Correos.Correos.Correo7(OrderNo);
 
                 //var result = new { Success = true, resp = cabeceraGuia };
                 var result = new { Success = true, Message = "success" };
