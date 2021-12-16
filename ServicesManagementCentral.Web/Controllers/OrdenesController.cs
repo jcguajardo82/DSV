@@ -1484,6 +1484,8 @@ namespace ServicesManagement.Web.Controllers
                             DALServicesM.CancelaOrden_Uup2(int.Parse(OrderNo), motivoCancelacion, int.Parse(Id_Num_MotCan), UeNo, User.Identity.Name);
 
                             isSucces = true;
+                            //Cancelación de Productos SETC
+                            Correos.Correos.Correo8(int.Parse(OrderNo));
                         }
                     }
 
