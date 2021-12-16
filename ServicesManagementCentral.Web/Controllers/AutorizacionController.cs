@@ -4,6 +4,9 @@ using ServicesManagement.Web.Helpers;
 using ServicesManagement.Web.Models;
 using ServicesManagement.Web.Models.Autorizacion;
 using ServicesManagement.Web.Models.CallCenter;
+using ServicesManagement.Web.Controllers;
+using ServicesManagement.Web.Correos;
+using ServicesManagement.Web.DAL.Correos;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -72,13 +75,6 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-
-
-
-
-
-
-
                 var ds = DALAutorizacion.upCorpOms_Cns_OrdersByItems(OrderSF, accion);
                 var lst = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByItems>(ds.Tables[0]);
                 var item = DataTableToModel.ConvertTo<Header>(ds.Tables[1]).FirstOrDefault();
@@ -99,7 +95,6 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
-
 
         public List<Tbl_OrdenFotosRMA_sUp> lstImagen(DataTable dt)
         {
