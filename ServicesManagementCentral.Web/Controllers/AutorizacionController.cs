@@ -137,8 +137,24 @@ namespace ServicesManagement.Web.Controllers
                         throw new Exception(string.Format("El folio RMA {0} no puede ser cancelado ya que el cliente no ha subido evidencias fotográficas", Id_cancelacion));
                     }
                 }
-
-
+                else
+                {
+                    switch (IdProceso)
+                    {
+                        case 2:
+                            // Solicitud de Cancelación
+                            //Correos.Correos.Correo8A(Id_cancelacion, 2);
+                            break;
+                        case 3:
+                            // DSV, DST, CEDIS Duda: 9A y 9B
+                            //Correos.Correos.Correo9(Id_cancelacion);
+                            break;
+                        case 4:
+                            // Administrador Reembolso Duda; 10B
+                            Correos.Correos.Correo10B(Id_cancelacion);
+                            break;
+                    }
+                }
 
                 DALAutorizacion.BitacoraAutRma_iUp_v2(IdProceso, IdAccion, Comentario, Id_cancelacion, User.Identity.Name);
 
@@ -156,10 +172,27 @@ namespace ServicesManagement.Web.Controllers
 
                         Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "");
 
+                        switch (IdProceso)
+                        {
+                            case 2:
+                                // Solicitud de Cancelación
+                                Correos.Correos.Correo8A(Id_cancelacion, 2);
+                                break;
+                            case 3:
+                                // DSV, DST, CEDIS Duda: 9A y 9B
+                                Correos.Correos.Correo9B(Id_cancelacion);
+                                break;
+                            case 4:
+                                // Administrador Reembolso Duda; 10B
+                                Correos.Correos.Correo10A(Id_cancelacion);
+                                break;
+                        }
+
                         if (r.code != "00")
                         {
                             throw new Exception("Error al ejecutar el api PaymentsGetCancelacion "+r.message);
                         }
+
 
                     }
                 }

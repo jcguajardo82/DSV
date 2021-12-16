@@ -734,6 +734,22 @@ namespace ServicesManagement.Web.Controllers
                 switch (Operacion)
                 {
                     case 1:
+                        // Sustituto
+                        Correos.Correos.Correo9(id.Id_cancelacion);
+                        break;
+                    case 2:
+                        // Reembolso
+                        Correos.Correos.Correo8(id.Id_cancelacion);
+                        break;
+                    case 3:
+                        // Cambio Fisico
+                        Correos.Correos.Correo9(id.Id_cancelacion);
+                        break;
+                    case 4:
+                        // Reenvio
+                        //Correos.Correos.Correo8(id.Id_cancelacion);
+                        break;
+                    case 5:
                         // Solicitud de Cancelación
                         Correos.Correos.Correo8(id.Id_cancelacion);
                         break;
