@@ -532,7 +532,7 @@ namespace ServicesManagement.Web.Correos
 
 
             MailMessage requestMessage = new MailMessage();
-            requestMessage.LayoutId = 6;
+            requestMessage.LayoutId = 7;
             requestMessage.MailTo = CustomerEmail;
             requestMessage.Parameters = parameters;
 
