@@ -357,6 +357,15 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
 
+            if (parameters.ContainsKey("@total"))
+            {
+                parameters.Remove("@total");
+
+            }
+            parameters.Add("@total", "$" + (totalEnvio + subtotal).ToString());
+
+
+
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
             if (string.IsNullOrEmpty(CustomerEmail))
