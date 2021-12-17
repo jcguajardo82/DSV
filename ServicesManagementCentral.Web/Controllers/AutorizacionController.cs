@@ -260,6 +260,10 @@ namespace ServicesManagement.Web.Controllers
                             // DSV, DST, CEDIS Duda: 9A y 9B
                             Correos.Correos.Correo9(Id_cancelacion);
                             break;
+                        case 3:
+                            // DSV, DST, CEDIS Duda: 9A y 9B
+                            Correos.Correos.Correo9(Id_cancelacion);
+                            break;
                         case 4:
                             // Administrador Reembolso Duda; 10B
                             Correos.Correos.Correo10B(Id_cancelacion);

@@ -1385,8 +1385,8 @@ namespace ServicesManagement.Web.Correos
             Console.WriteLine(html);
 
             //este correo es de la persona que esta haciendo pruebas de parte de soriana
-            //requestMessage.MailTo = "josera@soriana.com";
-            requestMessage.MailTo = "agonzalez@itechdev.com.mx";
+            requestMessage.MailTo = "josera@soriana.com";
+            //requestMessage.MailTo = "agonzalez@itechdev.com.mx";
 
 
             var requestMail = JsonConvert.SerializeObject(requestMessage);
