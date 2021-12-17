@@ -734,7 +734,6 @@ namespace ServicesManagement.Web.Correos
             if (parameters.ContainsKey("@direccionEntrega"))
             {
                 parameters.Remove("@direccionEntrega");
-
             }
             parameters.Add("@direccionEntrega", dirEntrega);
             var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
@@ -792,9 +791,13 @@ namespace ServicesManagement.Web.Correos
 
             DatosGrales(ref parameters, OrderNo);
             DatosPago(ref parameters, OrderNo);
-            //DatosPago(ref parameters, OrderNo);
+            DatosEntrega(ref parameters, OrderNo);
 
             var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
+            if (parameters.ContainsKey("@direccionEntrega"))
+            {
+                parameters.Remove("@direccionEntrega");
+            }
             parameters.Add("@direccionEntrega", dirEntrega);
             var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
             parameters.Add("@horarioEntrega", horEntrega);
