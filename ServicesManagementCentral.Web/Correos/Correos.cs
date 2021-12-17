@@ -355,7 +355,14 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@subTotal", "$" + subtotal.ToString());
             parameters.Add("@envio", "$" + totalEnvio.ToString());
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
-            parameters.Add("@tot_arti", totArt.ToString());
+            parameters.Add("@tot_arti", totArt.ToString());
+
+            if (parameters.ContainsKey("@total"))
+            {
+                parameters.Remove("@total");
+
+            }
+            parameters.Add("@total", "$" + (totalEnvio + subtotal).ToString());
 
             if (parameters.ContainsKey("@total"))
             {
