@@ -236,104 +236,6 @@ namespace ServicesManagement.Web.Controllers
             {
 
                 string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_FinalizarSurtido"];
-                //using (HttpClient client = new HttpClient())
-                //{
-                //    client.BaseAddress = new Uri(apiUrl);
-                //    client.DefaultRequestHeaders.Accept.Clear();
-                //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-
-                //    var in_data = "{\"order-no\": {0},\"surtidor-orden\":{\"surtidor-id\":{1},\"surtidor-name\":\"{2}\"}}".Replace("{0}", OrderNo).Replace("{1}", tId).Replace("{2}", trans);
-
-                //                    var in_data2 = "{	\"order\":    {\"order-no\":\"{0}\",\"order\":\"\",\"store-num\":0,\"ue-no\":\"\",\"status-ue\":\"\",\"order-date\":\"\",\"order-delivery-date\":\"\",\"created-by\":\"\",\"delivery-type\":\"\",\"ue-type\":\"\",\"additionalPoints\":\"\",\"redeemedPoints\":\"\" "
-                //+"     ,\"ismanualpicking\":  "
-                //+ "	}  "
-                //+ "    ,\"payment\":{ \"method - payment\":\"\",\"card - number\":}             "
-                //+ "    ,\"customer\":{ \"customer - no\":\"\",\"customer - name\":\"\",\"phone\":\"\"}             "
-                //+ "    ,\"shipments\":{ \"address1\":\"\",\"address2\":\"\",\"city\":\"\",\"state - code\":\"\",\"postal - code\":\"\",\"reference\":\"\",\"name - receives\":\"\"}             "
-                //+ "	,\"product - lineitem - to - supply\":[]             "
-                //+ "	,\"product-lineitem-assorted\":[]             "
-                //+ "	,\"detail-payment\":{\"total\":0.0,\"num-points\":0,\"num-cashier\":0,\"num-pos\":0,\"transaction-id\":0}             "
-                //+ "	,\"shipper\":{\"shipper-name\":null,\"shipping-date\":null,\"transaction-no\":null,\"traking-no\":null,\"num-bags\":0,\"num-coolers\":0,\"num-containers\":0,\"terminal\":null}             "
-                //+ "	,\"delivery\":{\"delivery-date\":null,\"id-receive\":null,\"name-receive\":null,\"comments\":null}             "
-                //+ "	,\"orden-pos\":{             "
-                //+ "									\"order-status\":{\"order-no\":,\"store-num\":,\"order-status\":,\"order-status-desc\":\"\",\"order-date-mov\":\"\",\"order-rounding\":0}             "
-                //+ "									,\"products\":[]             "
-                //+ "									,\"method-payment\":{\"order-no\":,\"payment-method-id\":,\"payment-method-desc\":\"\",\"payment-method-account\":\"\",\"payment-method-amount\":0.00,\"payment-method-exp-date\":\"\",\"payment-method-bit-encrypted\":false,\"payment-method-encrypt-account\":\"\",\"payment-method-encrypt-exp-date\":\"\",\"payment-method-id-key\":\"\"}             "
-                //+ "									,\"client\":{             "
-                //+ "												\"order-no\":,\"customer-no\":,\"customer-first-name\":\"\",\"customer-lastname1\":\"\",\"customer-lastname2\":\"\",\"customer-personal-id\":\"\",\"customer-total-points\":0}             "
-                //+ "									,			\"promotions\":[{\"pos-barcode\":0,\"order-no\":{0},\"pos-additional-points\":0,\"pos-accum-points-exch\":0.0,\"pos-redemption-points\":0,\"pos-amount-exch\":0.0,\"pos-percent-applied\":0.0}]             "
-                //+ "								  }   "
-                //+ "	,\"surtidor-orden\":{\"surtidor-id\":{1},\"surtidor-name\":\"{2}\"}  "
-                //+ "}".Replace("{0}", OrderNo).Replace("{1}", tId).Replace("{2}", trans); 
-
-
-
-                //InformacionOrden o = new InformacionOrden();
-
-                //o.Orden = new InformacionDetalleOrden();
-                //o.Orden.NumeroOrden = OrderNo;
-                //o.Surtidor = new InformacionSurtidor();
-                //o.Surtidor.SurtidorID = Convert.ToInt32(tId);
-                //o.Surtidor.NombreSurtidor = trans;
-
-
-
-
-                //    HttpContent c = new StringContent(JsonConvert.SerializeObject(o).ToString(), System.Text.Encoding.UTF8, "application/json");
-
-
-                //    Soriana.FWK.Log.clsLogManagerFWK.WriteMessage_Loger(JsonConvert.SerializeObject(o).ToString());
-
-                //    //Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + in_data2, false, null);
-                //    //Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + JsonConvert.SerializeObject(o).ToString(), false, null);
-
-
-                //    Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Url: " + apiUrl, false, null);
-
-
-                //    //HttpResponseMessage response = await client.GetAsync(apiUrl);
-                //    Uri u = new Uri(apiUrl);
-
-                //    HttpRequestMessage request = new HttpRequestMessage
-                //    {
-                //        Method = HttpMethod.Post,
-                //        RequestUri = u,
-                //        Content = c
-                //    };
-
-                //    HttpResponseMessage resultApi = await client.SendAsync(request);
-
-
-                //    if (resultApi.IsSuccessStatusCode)
-                //    {
-                //        var data = await resultApi.Content.ReadAsStringAsync();
-
-                //        Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "IsSuccessStatusCode :" + data, false, null);
-
-                //        // var jsonResult = JsonConvert.DeserializeObject(data).ToString();
-
-                //        //var resp = JsonConvert.DeserializeObject<List<SupplierModel>>(data);
-
-
-
-                //        var result2 = new { Success = true };
-                //        return Json(result2, JsonRequestBehavior.AllowGet);
-                //    }
-                //    else //web api sent error response 
-                //    {
-                //        //log response status here..
-                //        Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "IsSuccessStatusCode False: " + resultApi.StatusCode, false, null);
-
-                //        var result1 = new { Success = false, Message = resultApi.StatusCode };
-                //        return Json(result1, JsonRequestBehavior.AllowGet);
-
-                //    }
-
-                //}
-
-
-
 
                 //metodo mio
                 InformacionOrden o = new InformacionOrden();
@@ -366,26 +268,8 @@ namespace ServicesManagement.Web.Controllers
 
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"], "", json2);
 
-                //Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestAzureMS(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"], "", json2);
-
-                //var r =RestClient_2.RestClient_2.RequestAzure(System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"].ToString(), json2);
-
-
-
-                //RestClient_2.Rest_3 r3 = new RestClient_2.Rest_3(f);
-
-
-
-                //var client = new  WebMvc.Content.RestClient();
-
-                //client.EndPoint = System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"];
-                //client.Method = HttpVerb.POST;
-                //client.PostData = json2;
-
-                //var json = client.MakeRequest();
-
-                //string respon = Newtonsoft.Json.JsonConvert.DeserializeObject<string>(json);
-
+                //Asignación de Proveedor
+                Correos.Correos.Correo12(int.Parse(OrderNo));
 
                 var result = new { Success = true, Message = "Alta exitosa" };
 
