@@ -6,112 +6,63 @@
 <h2>Autorizaciones RM</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Fecha Inicio</label>
+                    <input type="date" id="txtFecIni" class="form-control" />
+                    <div class="input-group date" id="datetimepicker1"></div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+                    Buscar
+                </button>
+            </div>
+        </div>
         <div style="width:99%;">
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                 <thead class="bg-danger-sor">
                     <tr>
-                        <th>ID transaccion</th>
-                        <th>Orden ID</th>
-                        <th>Carrito</th>
-                        <th>Fecha Creación</th>
-                        <th>Hora Creacón</th>
-                        <th>No. Afiliación</th>
-                        <th>Adquiriente</th>
-                        <th>Catálogo</th>
-                        <th>Tipo Entrega</th>
-                        <th>Tipo de almacen</th>
-                        <th>Tipo Entrega</th>
-                        <th>Tipo de Transporte</th>
-                        <th>sku articulo</th>
-                        <th>Nombre del Articulo</th>
-                        <th>Canal de Compra</th>
-                        <th>Forma de Pago</th>
-                        <th>Ordenes desicionadas por DM</th>
-                        <th>Ordenes desicionadas</th>
-                        <th>Fecha de decisio</th>
-                        <th>Comentarios de RM</th>
-                        <th>3D/safe key</th>
-                        <th>Estatus de Pago</th>
-                        <th>Monto Consignación</th>
-                        <th>Monto total de orden</th>
-                        <th>Banco</th>
-                        <th>Bin</th>
-                        <th>Sufijo</th>
+                        <th>Canal Compra</th>
                         <th>Tipo Tarjeta</th>
-                        <th>Marca</th>
-                        <th>No. Autorizacion</th>
-                        <th>Msi</th>
-                        <th>No. Afiliación</th>
-                        <th>Adquiriente</th>
-                        <th>Monto Orden</th>
-                        <th>Código Rechazo</th>
-                        <th>Descripción Rechazo</th>
-                        <th>SKU Cátalogo</th>
-                        <th>Nombre del Articulo</th>
-                        <th>Consignación ID</th>
-                        <th>No.Pzas Consignación</th>
-                        <th>codigo de respuesta</th>
-                        <th>detalle de respuesta</th>
-                        <th>Fecha Liquidación</th>
-                        <th>Hora liquidacion </th>
-                        <th>Monto Liquidación</th>
-                        <th>Total de la orden</th>
-                        <th>Puntos aplicados </th>
-                        <th>Promociones aplicadas </th>
-                        <th>Nombre persona registrada</th>
-                        <th>tarjeta de lealtad </th>
-                        <th>Correo</th>
-                        <th>Nombre Persona a Recibir</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>Teléfono</th>
-                        <th>Calle</th>
-                        <th>Colonia</th>
-                        <th>Ciudad</th>
-                        <th>Número</th>
-                        <th>Interior</th>
-                        <th>CP</th>
-                        <th>Estatus Orden</th>
-                        <th>No. RMA</th>
-                        <th>Cancelacion</th>
-                        <th>Nombre Quien Cancela</th>
-                        <th>Motivo Cancelación</th>
-                        <th>fecha cancelacion</th>
-                        <th>hora cancelacion</th>
-                        <th>monto de cancelacion </th>
-                        <th>fecha liberacion de saldo</th>
-                        <th>hora liberacion de saldo</th>
-                        <th>monto de salo liberado</th>
-                        <th>devolucion</th>
-                        <th>Costo Envio</th>
-                        <th>Monto Total Orden</th>
-                        <th>Puntos Aplicados</th>
-                        <th>Promociones Aplicadas</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>No Tarjeta Lealtad</th>
-                        <th>Método Envio</th>
-                        <th>Fecha Ingreso RMA</th>
-                        <th>Detalle de la Consignación ingresada (por sku)</th>
-                        <th>No. Piezas de la Consignación</th>
-                        <th>Fecha Decolución</th>
-                        <th>Hora Devolución</th>
-                        <th>Monto Devolución Consignación</th>
-                        <th>Fecha Reembolso</th>
-                        <th>Hora Reembolso</th>
-                        <th>Monto Reembolso</th>
-                        <th>detalle de la orden reenviada</th>
-                        <th>fecha de reenvio</th>
-
-
-
-
-
-
+                        <th>Total Ordenes</th>
+                        <th>Monto</th>
+                        <th>Ordenes Aprobadas</th>
+                        <th>Porcentaje Aprobacion</th>
+                        <th>Ordenes Rechazadas</th>
+                        <th>Porcentaje Rechazo</th>
 
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    @{
+                        if (Session["listaGrid"] != null)
+                        {
+                            var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.AprobacionesMarcas>>(Session["listaGrid"].ToString());
+
+                            foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.AprobacionesMarcas o in lista)
+                            {
+                                <tr>
+                                    <td>@o.canalCompra</td>
+                                    <td>@o.marca</td>
+                                    <td>@o.totalOrdenes</td>
+                                    <td>@o.monto</td>
+                                    <td>@o.ordenesAprobadas</td>
+                                    <td>@o.porcentajeAprobacion</td>
+                                    <td>@o.ordenesRechazadas</td>
+                                    <td>@o.porcentajeRechazo</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
             </table>
         </div>
     </div>
@@ -234,8 +185,74 @@
                     "scrollX": true
 
                 }
-            );            
+            );
         });
+
+         function GetHistorialRMA() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetParamDates", "ReportesPDP")',
+                data: {
+                        FecIni: _FecIni,
+                        FecFin: _FecFin,
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        debugger;
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable.clear().draw();
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            debugger;
+                            var rw = json.resp[i];
+
+                            var canalCompra = rw.canalCompra;
+                            var tipoTarjeta = rw.tipoTarjeta;
+                            var marca = rw.marca;
+                            var totalOrdenes = rw.totalOrdenes;
+                            var ordenesAprobadas = rw.ordenesAprobadas;
+                            var porcentajeAprobacion = rw.porcentajeAprobacion;
+                            var ordenesRechazadas = rw.ordenesRechazadas;
+                            var porcentajeRechazo = rw.porcentajeRechazo;
+                            var monto = rw.monto;
+
+                            myTable.row.add([
+                                canalCompra
+                                , tipoTarjeta
+                                , marca
+                                , totalOrdenes
+                                , ordenesAprobadas
+                                , porcentajeAprobacion
+                                , ordenesRechazadas
+                                , porcentajeRechazo
+                                , monto
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+            });
+        }
     </script>
 }
-

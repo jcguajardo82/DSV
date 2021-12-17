@@ -3,93 +3,158 @@
     ViewBag.Title = "Creditos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .container {
+        width: 30em;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+</style>
+
 <h2>Creditos</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-        <div style="width:99%;">
-            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Fecha Inicio</label>
+                    <input type="date" id="txtFecIni" class="form-control" />
+                    <div class="input-group date" id="datetimepicker1"></div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+        <div style="width: 99%; overflow-x: scroll; overflow-y: hidden;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer container">
                 <thead class="bg-danger-sor">
                     <tr>
-                       <th>Orden ID</th>
-                       <th>Carrito</th>
-                       <th>ID Transacción</th>
-                       <th>Fecha Creacion</th>
-                       <th>Forma Pago</th>
-                       <th>Monto Total Orden</th>
-                       <th>SKU Catálogo</th>
-                       <th>Nombre Articulo</th>
-                       <th>Canal Compra</th>
-                       <th>3D/Safe Key</th>
-                       <th>Estatus de Pago</th>
-                       <th>Tipo ALmacen</th>
-                       <th>Consignación ID</th>
-                       <th>No. Pzas Consignación</th>
-                       <th>Monto Consignación</th>
-                       <th>Costo Envio</th>
-                       <th>Banco</th>
-                       <th>Bin</th>
-                       <th>Sufijo</th>
-                       <th>Tipo Tarjeta</th>
-                       <th>Marca</th>
-                       <th>No. Autorización</th>
-                       <th>Nombre Persona Registrada</th>
-                       <th>Apellido P</th>
-                       <th>Apellido M</th>
-                       <th>No Tarjeta Lealtad</th>
-                       <th>Métdo de Envio</th>
-                       <th>Correo</th>
-                       <th>Nombre de Persona a Recibir</th>
-                       <th>Apellido P</th>
-                       <th>Apellido M</th>
-                       <th>Teléfono</th>
-                       <th>Calle</th>
-                       <th>Colonia</th>
-                       <th>Ciudad</th>
-                       <th>Número</th>
-                       <th>Interioe</th>
-                       <th>CP</th>
-                       <th>Estatus Orden</th>
-                       <th>Estatus ENvio</th>
-                       <th>Estatus Logistica Inversa</th>
-                       <th>No. RMA</th>
-                       <th>Nombre de quien Cancela</th>
-                       <th>Motivo Cancelacion</th>
-                       <th>Fecha Cancelación</th>
-                       <th>Hora Cancelación</th>
-                       <th>Monto Cancelación</th>
-                       <th>Consignacion ID Cancelada</th>
-                       <th>Monto Consignacion ID Cancelada</th>
-                       <th>No Piezas Consignación</th>
-                       <th>Fecha INgreso RMA</th>
-                       <th>Consignación ID Devolución</th>
-                       <th>Detalle de la Consignación Ingresada (SKU)</th>
-                       <th>No Pzas Consignación</th>
-                       <th>Fecha Devolución</th>
-                       <th>Hora Decolución</th>
-                       <th>Monto Devolución Consignación</th>
-                       <th>Fecha Reembolso</th>
-                       <th>Hora Reembolso</th>
-                       <th>Forma de Pago donde se aplico Rembolso</th>
-                       <th>BIN Tarjeta</th>
-                       <th>Sufijo Tarjeta</th>
-                       <th>Reembolso Manual</th>
-                       <th>Reembolso Automatico</th>
-                       <th>ID Transacción Reembolso</th>
-                       <th>No Tarjeta Lealtad</th>
-                       <th>Puntos</th>
-                       <th>Tipo de Reembolso Programa Lealtad</th>
+                        <th>Orden ID</th>
+                        <th>ID Transacción</th>
+                        <th>Fecha Creacion</th>
+                        <th>Catalogo</th>
+                        <th>Forma Pago</th>
+                        <th>Monto Total Orden</th>
+                        <th>Canal Compra</th>
+                        <th>3D/Safe Key</th>
+                        <th>Estatus de Pago</th>
+                        <th>Banco</th>
+                        <th>Bin</th>
+                        <th>Sufijo</th>
+                        <th>Tipo Tarjeta</th>
+                        <th>Marca</th>
+                        <th>No. Autorización</th>
+                        <th>MSI</th>
+                        <th>Nombre Persona Registrada</th>
+                        <th>Apellido P</th>
+                        <th>Apellido M</th>
+                        <th>No Tarjeta Lealtad</th>
+                        <th>Métdo de Envio</th>
+                        <th>Correo</th>
+                        <th>Nombre de quien Cancela</th>
+                        <th>Motivo Cancelacion</th>
+                        <th>Fecha Cancelación</th>
+                        <th>Hora Cancelación</th>
+                        <th>Monto Cancelación</th>
+                        <th>Consignacion ID Cancelada</th>
+                        <th>Monto Consignacion ID Cancelada</th>
+                        <th>No Piezas Consignación</th>
+                        <th>Fecha INgreso RMA</th>
+                        <th>Consignación ID Devolución</th>
+                        <th>Detalle de la Consignación Ingresada (SKU)</th>
+                        <th>No Pzas Consignación</th>
+                        <th>Fecha Devolución</th>
+                        <th>Hora Decolución</th>
+                        <th>Monto Devolución Consignación</th>
+                        <th>Fecha Reembolso</th>
+                        <th>Hora Reembolso</th>
+                        <th>Forma de Pago donde se aplico Rembolso</th>
+                        <th>BIN Tarjeta</th>
+                        <th>Sufijo Tarjeta</th>
+                        <th>Reembolso Manual</th>
+                        <th>Reembolso Automatico</th>
+                        <th>ID Transacción Reembolso</th>
+                        <th>No Tarjeta Lealtad</th>
+                        <th>Puntos</th>
+                        <th>Tipo de Reembolso Programa Lealtad</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @{
+                        if (Session["listaGrid"] != null)
+                        {
+                            var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase>>(Session["listaGrid"].ToString());
 
-
+                            foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase o in lista)
+                            {
+                                <tr>
+                                    <td>@o.OrderReferenceNumber</td>
+                                    <td>@o.TransactionReferenceID</td>
+                                    <td>@o.OrderDate</td>
+                                    <td>@o.Catalogo</td>
+                                    <td>@o.MethodPayment</td>
+                                    <td>@o.orderAmount</td>
+                                    <td>@o.OrderSaleChannel</td>
+                                    <td>@o.Apply3DS</td>
+                                    <td>@*Estatus de Pago*@</td>
+                                    <td>@o.Bank</td>
+                                    <td>@o.BinCode</td>
+                                    <td>@o.MaskCard</td>
+                                    <td>@o.TypeOfCard</td>
+                                    <td>@o.PaymentMethod</td>
+                                    <td>@o.TransactionAuthorizationId</td>
+                                    <td>@o.shippingPaymentInstallments</td>
+                                    <td>@o.ShippingFirstName</td>
+                                    <td>@o.ShippingLastName</td>
+                                    <td>@*Apellido M*@</td>
+                                    <td>@o.CustomerLoyaltyCardId</td>
+                                    <td>@o.shippingDeliveryDesc</td>
+                                    <td>@o.clientEmail</td>
+                                    <td>Nombre de quien Cancela</td>
+                                    <td>@o.Motivo</td>
+                                    <td>@o.FechaCancel</td>
+                                    <td>@o.HoraCancel</td>
+                                    <td>@o.MontoCancel</td>
+                                    <td>@o.ConsignacionIDCancelada</td>
+                                    <td>@o.MontoConsignacionIDCancelada</td>
+                                    <td>@o.NoPiezasConsignacionCancelacion</td>
+                                    <td>@o.FechaINgresoRMA</td>
+                                    <td>@*Consignación ID Devolución*@</td>
+                                    <td>@*Detalle de la Consignación Ingresada (SKU)*@</td>
+                                    <td>@o.NoPzasConsignacionDevolucion</td>
+                                    <td>@o.FechaDevolucion</td>
+                                    <td>@o.HoraDevolucion</td>
+                                    <td>@o.MontoDevolucionConsignacion</td>
+                                    <td>@*Fecha Reembolso*@</td>
+                                    <td>@*Hora Reembolso*@</td>
+                                    <td>@*Forma de Pago donde se aplico Rembolso*@</td>
+                                    <td>@o.Bin_Reembolso</td>
+                                    <td>@o.SufijoReembolso</td>
+                                    <td>@*Reembolso Manual*@</td>
+                                    <td>@*Reembolso Automatico*@</td>
+                                    <td>@*ID Transacción Reembolso*@</td>
+                                    <td>@o.CustomerLoyaltyCardId</td>
+                                    <td>@o.CustomerLoyaltyRedeemPoints</td>
+                                    <td>@*Tipo de Reembolso Programa Lealtad*@</td>
+                                </tr>
+                            }
+                        }
+                    }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 @section scripts {
-
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
         $(document).ready(function () {
@@ -149,6 +214,162 @@
                 }
             );
         });
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+
+        function GetHistorialRMA() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetParamDatesCreditos", "ReportesPDP")',
+                data: {
+                        FecIni: _FecIni,
+                        FecFin: _FecFin,
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        debugger;
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable.clear().draw();
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            debugger;
+                            var rw = json.resp[i];
+                            var OrderReferenceNumber = rw.OrderReferenceNumber;
+                            var TransactionReferenceID = rw.TransactionReferenceID;
+                            var fec_movto = rw.OrderDate;
+                            var Catalogo = rw.Catalogo
+                            var MethodPayment = rw.MethodPayment;
+                            var orderAmount = rw.orderAmount;
+                            var OrderSaleChannel = rw.OrderSaleChannel;
+                            var Apply3DS = rw.Apply3DS;
+                            var EstatusPago = "";
+                            var Bank = rw.Bank;
+                            var BinCode = rw.BinCode;
+                            var MaskCard = rw.MaskCard;
+                            var TypeOfCard = rw.TypeOfCard;
+                            var PaymentMethod = rw.PaymentMethod;
+                            var TransactionAuthorizationId = rw.TransactionAuthorizationId;
+                            var shippingPaymentInstallments = rw.shippingPaymentInstallments;
+                            var ShippingFirstName = rw.ShippingFirstName;
+                            var ShippingLastName = rw.ShippingLastName;
+                            var ApellidoM = "";
+                            var CustomerLoyaltyCardId = rw.CustomerLoyaltyCardId;
+                            var shippingDeliveryDesc = rw.shippingDeliveryDesc;
+                            var clientEmail = rw.clientEmail;
+                            var NombreCancela = "";
+                            var Motivo = rw.Motivo;
+                            var FechaCancel = rw.FechaCancel;
+                            var HoraCancel = rw.HoraCancel;
+                            var MontoCancel = rw.MontoCancel;
+                            var ConsignacionIDCancelada = rw.ConsignacionIDCancelada;
+                            var MontoConsignacionIDCancelada = rw.MontoConsignacionIDCancelada;
+                            var NoPiezasConsignacionCancelacion = rw.NoPiezasConsignacionCancelacion;
+                            var FechaINgresoRMA = rw.FechaINgresoRMA;
+                            var ConIDDev = "";
+                            var DetalleConIDDev = "";
+                            var NoPzasConsignacionDevolucion = rw.NoPzasConsignacionDevolucion;
+                            var FechaDevolucion = rw.FechaDevolucion;
+                            var HoraDevolucion = rw.HoraDevolucion;
+                            var MontoDevolucionConsignacion = rw.MontoDevolucionConsignacion;
+                            var FechaReembolso = "";
+                            var HoraReembolso = "";
+                            var FormaPagoRembolso = "";
+                            var Bin_Reembolso = rw.Bin_Reembolso;
+                            var SufijoReembolso = rw.SufijoReembolso;
+                            var ReembolsoManual = "";
+                            var ReembolsoAutomatico = "";
+                            var IDTransaccionReembolso = "";
+                            var CustomerLoyaltyCardId = rw.CustomerLoyaltyCardId;
+                            var CustomerLoyaltyRedeemPoints = rw.CustomerLoyaltyRedeemPoints;
+                            var TipoReembolsoProgramaLealtad = "";
+
+                            myTable.row.add([
+                             OrderReferenceNumber
+                             , TransactionReferenceID
+                             , fec_movto
+                             , Catalogo
+                             , MethodPayment
+                             , orderAmount
+                             , OrderSaleChannel
+                             , Apply3DS
+                             , EstatusPago
+                             , Bank
+                             , BinCode
+                             , MaskCard
+                             , TypeOfCard
+                             , PaymentMethod
+                             , TransactionAuthorizationId
+                             , shippingPaymentInstallments
+                             , ShippingFirstName
+                             , ShippingLastName
+                             , ApellidoM
+                             , CustomerLoyaltyCardId
+                             , shippingDeliveryDesc
+                             , clientEmail
+                             , NombreCancela
+                             , Motivo
+                             , FechaCancel
+                             , HoraCancel
+                             , MontoCancel
+                             , ConsignacionIDCancelada
+                             , MontoConsignacionIDCancelada
+                             , NoPiezasConsignacionCancelacion
+                             , FechaINgresoRMA
+                             , ConIDDev
+                             , DetalleConIDDev
+                             , NoPzasConsignacionDevolucion
+                             , FechaDevolucion
+                             , HoraDevolucion
+                             , MontoDevolucionConsignacion
+                             , FechaReembolso
+                             , HoraReembolso
+                             , FormaPagoRembolso
+                             , Bin_Reembolso
+                             , SufijoReembolso
+                             , ReembolsoManual
+                             , ReembolsoAutomatico
+                             , IDTransaccionReembolso
+                             , CustomerLoyaltyCardId
+                             , CustomerLoyaltyRedeemPoints
+                             , TipoReembolsoProgramaLealtad
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+            });
+        }
     </script>
 }
 

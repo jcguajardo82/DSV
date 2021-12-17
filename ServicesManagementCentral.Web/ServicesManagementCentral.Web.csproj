@@ -344,7 +344,10 @@
     <Compile Include="Models\NotificacionesSis\ImagenNotificacion.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrdersDetail.cs" />
+    <Compile Include="Models\ProcesadorPagosSoriana\AprobacionesMarcas.cs" />
+    <Compile Include="Models\ProcesadorPagosSoriana\CancellationModel.cs" />
     <Compile Include="Models\ProcesadorPagosSoriana\JsonRespoonseModel.cs" />
+    <Compile Include="Models\ProcesadorPagosSoriana\ParticipacionFormasPagoModel.cs" />
     <Compile Include="Models\ProcesadorPagosSoriana\ProcesadorPagosBase.cs" />
     <Compile Include="Models\ProcesoReciboDevoluciones\ProcesoReciboDevoluciones.cs" />
     <Compile Include="Models\ProcesoSurtido\Guias_por_OrderFact.cs" />
