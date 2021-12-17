@@ -26,6 +26,7 @@ using System.Data.SqlClient;
 using ServicesManagement.Web.Models.Cotizador;
 using ServicesManagement.Web.Models.ProcesoSurtido;
 using ServicesManagement.Web.DAL.ProcesoSurtido;
+using ServicesManagement.Web.DAL.Correos;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -488,9 +489,10 @@ namespace ServicesManagement.Web.Controllers
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
 
                         //Pedido Surtido Terminado
-                        if (d.Tables[0].Rows[0]["DeliveryType"].ToString() == "Entrega a domicilio")
+                        if (DALCorreos.GetMetodoEnvio_sUp(int.Parse(OrderNo)).Tables[0].Rows[0][0].ToString().Contains("domicilio"))
                         {
-                            Correos.Correos.Correo7(int.Parse(OrderNo));
+                            var s = ue.Split('-');
+                            Correos.Correos.Correo7(int.Parse(s[0]));
                         }
                         else
                         {
@@ -565,9 +567,10 @@ namespace ServicesManagement.Web.Controllers
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
 
                         //Pedido Surtido Terminado falta validación DST
-                        if (d.Tables[0].Rows[0]["DeliveryType"].ToString() == "Entrega a domicilio")
+                        if (DALCorreos.GetMetodoEnvio_sUp(int.Parse(OrderNo)).Tables[0].Rows[0][0].ToString().Contains("domicilio"))
                         {
-                            Correos.Correos.Correo7(int.Parse(OrderNo));
+                            var s = ue.Split('-');
+                            Correos.Correos.Correo7(int.Parse(s[0]));
                         }
                         else
                         {
@@ -1970,7 +1973,8 @@ namespace ServicesManagement.Web.Controllers
                 }
 
                 // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
-                Correos.Correos.Correo7(OrderNo);
+                var s = UeNo.Split('-');
+                Correos.Correos.Correo7(int.Parse(s[0]));
 
                 #endregion
 
@@ -2248,7 +2252,9 @@ namespace ServicesManagement.Web.Controllers
                     DALServicesM.UCCProcesada(item.ucc);
 
                     // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
-                    Correos.Correos.Correo7(item.orderNo);
+                    //Correos.Correos.Correo7(item.orderNo);
+                    var s = item.ueNo.Split('-');
+                    Correos.Correos.Correo7(int.Parse(s[0]));
 
                     #endregion
                 }
@@ -2408,7 +2414,9 @@ namespace ServicesManagement.Web.Controllers
                 User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, "").Tables[0].Rows[0][0];
 
                 // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
-                Correos.Correos.Correo7(OrderNo);
+                //Correos.Correos.Correo7(OrderNo);
+                var s = UeNo.Split('-');
+                Correos.Correos.Correo7(int.Parse(s[0]));
 
                 //var result = new { Success = true, resp = cabeceraGuia };
                 var result = new { Success = true, Message = "success" };
