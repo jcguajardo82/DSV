@@ -408,7 +408,7 @@ namespace ServicesManagement.Web.Correos
             int OrderNo = 0, OrderSF = 0;
 
 
-            if (Id_cancelacion == 1)
+            if (opcion == 1)
             {
                 PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
                 DatosArticulos(ref parameters, Id_cancelacion, 2);
