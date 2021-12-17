@@ -143,7 +143,7 @@ namespace ServicesManagement.Web.Controllers
                     {
                         case 0:
                             // Solicitud de Cancelación
-                            Correos.Correos.Correo8A(Id_cancelacion, 2);
+                            //Correos.Correos.Correo8A(Id_cancelacion, 2);
                             break;
                         case 2:
                             // DSV, DST, CEDIS Duda: 9A y 9B
@@ -179,9 +179,9 @@ namespace ServicesManagement.Web.Controllers
 
                             case 2:
                                 // Se autoriza Cancelación
-                                Correos.Correos.Correo8A(Id_cancelacion, 2);
+                                //Correos.Correos.Correo8A(Id_cancelacion, 2);
                                 // Se aprueba por Supervisor
-                                Correos.Correos.Correo9(Id_cancelacion);
+                                Correos.Correos.Correo9A(Id_cancelacion);
                                 break;
                             case 3:
                                 // DSV, DST, CEDIS Duda: Da entrada Almacen

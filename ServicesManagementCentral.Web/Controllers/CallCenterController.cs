@@ -781,11 +781,11 @@ namespace ServicesManagement.Web.Controllers
                         break;
                     case 2:
                         // Reembolso
-                        Correos.Correos.Correo9A(id.Id_cancelacion);
+                        Correos.Correos.Correo9B(id.Id_cancelacion);
                         break;
                     case 3:
                         // Cambio Fisico
-                        Correos.Correos.Correo9A(id.Id_cancelacion);
+                        Correos.Correos.Correo9B(id.Id_cancelacion);
                         break;
                     case 4:
                         // Reenvio
