@@ -737,13 +737,6 @@ namespace ServicesManagement.Web.Correos
             int cns = 1;
             foreach (DataRow item in dt.Rows)
             {
-                //var piezas = dt.Rows.Count > 1 ? "piezas" : "pieza";
-                //tablaProductos.Append("<tr>");
-                //tablaProductos.Append($"<td class='tg-oe15'> <img src='{item.UrlImage}' alt='Image' width='75' height='60'></td>");
-                //tablaProductos.Append($"<td class='tg-oe15'> {item.Descripcion} </td>");
-                //tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item.Piezas} {piezas} </td>");
-                //tablaProductos.Append($"<td class='tg-c1kk'>{item.Precio}</td>");
-                //tablaProductos.Append("</tr>");
                 tablaProductos.Append("<tr>");
 
                 tablaProductos.Append($"<td class='tg-8jgo'>{cns.ToString()}</td>");
@@ -802,13 +795,6 @@ namespace ServicesManagement.Web.Correos
             int cns = 1;
             foreach (DataRow item in dt.Rows)
             {
-                //var piezas = dt.Rows.Count > 1 ? "piezas" : "pieza";
-                //tablaProductos.Append("<tr>");
-                //tablaProductos.Append($"<td class='tg-oe15'> <img src='{item.UrlImage}' alt='Image' width='75' height='60'></td>");
-                //tablaProductos.Append($"<td class='tg-oe15'> {item.Descripcion} </td>");
-                //tablaProductos.Append($"<td class='tg-c1kk'>Cantidad: {item.Piezas} {piezas} </td>");
-                //tablaProductos.Append($"<td class='tg-c1kk'>{item.Precio}</td>");
-                //tablaProductos.Append("</tr>");
                 tablaProductos.Append("<tr>");
 
                 tablaProductos.Append($"<td class='tg-8jgo'>{cns.ToString()}</td>");
