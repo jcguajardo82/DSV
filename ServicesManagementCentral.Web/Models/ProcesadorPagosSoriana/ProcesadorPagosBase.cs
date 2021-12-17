@@ -106,6 +106,31 @@ namespace ServicesManagement.Web.Models.ProcesadorPagosSoriana
         public string CveReespuestaEmisor { get; set; } = "";
         public string DescReespuestaEmisor { get; set; } = "";
         public string Catalogo { get; set; } = "";
+
+        #region Cancelacion
+        public string NombreCancelacion { get; set; } = "";
+        public string FechaCancel { get; set; } = "";
+        public string HoraCancel { get; set; } = "";
+        public string MontoCancel { get; set; } = "";
+        public string ConsignacionIDCancelada { get; set; } = "";
+        public string MontoConsignacionIDCancelada { get; set; } = "";
+        public string NoPiezasConsignacionCancelacion { get; set; } = "";
+        public string FechaINgresoRMA { get; set; } = "";
+        public string ConsignaciónIDDevolucin { get; set; } = "";
+        public string DetalleConsignacionIngresada { get; set; } = "";
+        public string NoPzasConsignacionDevolucion { get; set; } = "";
+        public string FechaDevolucion { get; set; } = "";
+        public string HoraDevolucion { get; set; } = "";
+        public string MontoDevolucionConsignacion { get; set; } = "";
+        public string FechaReembolso { get; set; } = "";
+        public string HoraReembolso { get; set; } = "";
+        public string FormaPagoRembolso { get; set; } = "";
+        public string ReembolsoManual { get; set; } = "";
+        public string ReembolsoAutomatico { get; set; } = "";
+        public string IDTransaccionReembolso { get; set; } = "";
+        #endregion
+
+
         /*
                 public string OrderReferenceNumber { get; set; }        //Orden ID
 

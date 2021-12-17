@@ -6,103 +6,60 @@
 <h2>Forma de Pago</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Fecha Inicio</label>
+                    <input type="date" id="txtFecIni" class="form-control" />
+                    <div class="input-group date" id="datetimepicker1"></div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+                    Buscar
+                </button>
+            </div>
+        </div>
         <div style="width:99%;">
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                 <thead class="bg-danger-sor">
                     <tr>
-                        <th>Orden ID</th>
-                        <th>Carrito</th>
-                        <th>ID Transacción</th>
-                        <th>Relate Consigment</th>
-                        <th>Canal de Compra</th>
-                        <th>Tipo Mobile</th>
-                        <th>Mes Creación</th>
-                        <th>Fecha Creación</th>
-                        <th>Hora Creacón</th>
-                        <th>No. Afiliación</th>
-                        <th>Adquiriente</th>
-                        <th>Catálogo</th>
-                        <th>Tipo Entrega</th>
-                        <th>Tipo de Transporte</th>
-                        <th>Forma de Pago</th>
-                        <th>3D/safe key</th>
-                        <th>Estatus de Pago</th>
-                        <th>No. Afiliación</th>
-                        <th>Adquiriente</th>
-                        <th>Monto Orden</th>
-                        <th>Código Rechazo</th>
-                        <th>Descripción Rechazo</th>
-                        <th>SKU Cátalogo</th>
-                        <th>Nombre del Articulo</th>
-                        <th>Consignación ID</th>
-                        <th>No.Pzas Consignación</th>
-                        <th>Monto Consignación</th>
-                        <th>Costo Envio</th>
-                        <th>Monto Total Orden</th>
-                        <th>Banco</th>
-                        <th>Bin</th>
-                        <th>Sufijo</th>
-                        <th>Tipo Tarjeta</th>
-                        <th>Marca</th>
-                        <th>No. Autorizacion</th>
-                        <th>Msi</th>
-                        <th>Puntos Aplicados</th>
-                        <th>Promociones Aplicadas</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>No Tarjeta Lealtad</th>
-                        <th>Método Envio</th>
-                        <th>Correo</th>
-                        <th>Nombre Persona a Recibir</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>Teléfono</th>
-                        <th>Calle</th>
-                        <th>Colonia</th>
-                        <th>Ciudad</th>
-                        <th>Número</th>
-                        <th>Interior</th>
-                        <th>CP</th>
-                        <th>Estatus Orden</th>
-                        <th>Tipo Almacen</th>
-                        <th>Estatus Envio</th>
-                        <th>EStatus logistica Inversa</th>
-                        <th>No. RMA</th>
-                        <th>Nombre Quien Cancela</th>
-                        <th>Motivo Cancelación</th>
-                        <th>Monto de Cancelación</th>
-                        <th>Consignación ID Cancelada</th>
-                        <th>Monto Consignación Cancelada</th>
-                        <th>No. Pzas Consignación</th>
-                        <th>Fecha Liberación Saldo</th>
-                        <th>Hora Liberacion Saldo</th>
-                        <th>Monto de Saldo Liberado</th>
-                        <th>Fecha Ingreso RMA</th>
-                        <th>Consignación ID Devolución</th>
-                        <th>Detalle de la Consignación ingresada</th>
-                        <th>No. Piezas de la Consignación</th>
-                        <th>Fecha Decolución</th>
-                        <th>Hora Devolución</th>
-                        <th>Monto Devolución Consignación</th>
-                        <th>Consignación ID Reenviado</th>
-                        <th>No PIezas Consignación ID Reenviado</th>
-                        <th>Fecha Reembolso</th>
-                        <th>Hora Reembolso</th>
-                        <th>Monto Reembolso</th>
-                        <th>Forma de pago donde se aplico reembolso</th>
-                        <th>BIN Tarjeta</th>
-                        <th>Sufijo Tarjeta</th>
-                        <th>Consignación ID Reenviado</th>
-                        <th>No. de Piezas Consignación Reenviado</th>
-                        <th>Fecha Consignación</th>
-                        <th>Fecha Reembolso</th>
-                        <th>Hora Reembolso</th>
-                        <th>Forma de Pago donde se aplico el Reembolso</th>
-                        <th>BIN tarjeta</th>
-                        <th>Sufijo Tarjeta</th>           
+                        <th>Metodo Pago</th>
+                        <th>Fecha</th>
+                        <th>Mes</th>
+                        <th>Ordenes Cantidad</th>
+                        <th>Monto</th>
+                        <th>Clientes Cantidad</th>
+                        <th>Catalogo</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    @{
+                        if (Session["listaGrid"] != null)
+                        {
+                            var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.ParticipacionFormasPagoModel>>(Session["listaGrid"].ToString());
+
+                            foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.ParticipacionFormasPagoModel o in lista)
+                            {
+                                <tr>
+                                    <td>@o.metodoPago</td>
+                                    <td>@o.fecha</td>
+                                    <td>@o.mes</td>
+                                    <td>@o.ordenesCantidad</td>
+                                    <td>@o.monto</td>
+                                    <td>@o.clientesCantidad</td>
+                                    <td>@o.Catalogo</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
             </table>
         </div>
     </div>
@@ -225,8 +182,70 @@
                     "scrollX": true
 
                 }
-            );            
+            );
         });
+
+        function GetHistorialRMA() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetParamDatesFormaPago", "ReportesPDP")',
+                data: {
+                        FecIni: _FecIni,
+                        FecFin: _FecFin,
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        debugger;
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable.clear().draw();
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            debugger;
+                            var rw = json.resp[i];
+                            var metodoPago = rw.metodoPago;
+                            var fecha = rw.fecha;
+                            var mes = rw.mes;
+                            var ordenesCantidad = rw.ordenesCantidad;
+                            var monto = rw.monto;
+                            var clientesCantidad = rw.clientesCantidad
+                            var Catalogo = rw.Catalogo
+
+                            myTable.row.add([
+                                metodoPago
+                                , fecha
+                                , mes
+                                , ordenesCantidad
+                                , monto
+                                , clientesCantidad
+                                , Catalogo
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+            });
+        }
     </script>
 }
 

@@ -154,7 +154,7 @@ namespace ServicesManagement.Web.Controllers
     public class Emisor
     {
         public string id { get; set; }
-	    public string status { get; set; }
+        public string status { get; set; }
     }
 
     public class ApprovalCodeModel
@@ -185,12 +185,8 @@ namespace ServicesManagement.Web.Controllers
     public class ReportesPDPController : Controller
     {
         // GET: ReportesPDP
+        #region Reportes Procesador de Pagos
         #region FormaPago
-        public ActionResult FormaPago()
-        {
-            return View();
-        }
-
         public ActionResult GetFormaPago()
         {
             try
@@ -240,20 +236,60 @@ namespace ServicesManagement.Web.Controllers
             var result = new { Success = true, resp = autoriazionBancaria };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        
+
         #endregion
 
-        public ActionResult CanalPago()
+        #region Creditos
+        public ActionResult Creditos()
         {
-            var list = new List<ReportesPDP>();
-
-            ViewBag.Reporte = list;
-
+            Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetProcesadorPagosBase("", "", "Creditos"));
 
             return View();
         }
 
-      
+        public ActionResult GetParamDatesCreditos(string FecIni, string FecFin)
+        {
+            var Creditos = GetProcesadorPagosBase(FecIni, FecFin, "Creditos");
+
+            var result = new { Success = true, resp = Creditos };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region Participacion Formas Pago
+        public ActionResult FormaPago()
+        {
+            Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetParticipacionFormasPago("", ""));
+
+            return View();
+        }
+
+        public ActionResult GetParamDatesFormaPago(string FecIni, string FecFin)
+        {
+            var FormasPago = GetParticipacionFormasPago(FecIni, FecFin);
+
+            var result = new { Success = true, resp = FormasPago };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region Aprobaciones Marcas
+        public ActionResult CanalPago()
+        {
+            Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetAprobacionesMarcas());
+
+            return View();
+        }
+
+        public ActionResult AutRM()
+        {
+            Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetAprobacionesMarcas());
+
+            return View();
+        }
+        #endregion
+        #endregion
+
         public ActionResult CanalGenerarOrden()
         {
             var list = new List<ReportesPDP>();
@@ -274,15 +310,7 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-        public ActionResult Creditos()
-        {
-            var list = new List<ReportesPDP>();
 
-            ViewBag.Reporte = list;
-
-
-            return View();
-        }
 
         public ActionResult Liquidaciones()
         {
@@ -324,7 +352,7 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-       
+
 
         public ActionResult AutDM()
         {
@@ -336,15 +364,7 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-        public ActionResult AutRM()
-        {
-            var list = new List<ReportesPDP>();
 
-            ViewBag.Reporte = list;
-
-
-            return View();
-        }
 
         public ActionResult Validaciones()
         {
@@ -573,9 +593,9 @@ namespace ServicesManagement.Web.Controllers
             DataSet ds = new DataSet();
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
-            _ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             List<OrderPagoModels> lista = new List<OrderPagoModels>();
 
@@ -656,9 +676,9 @@ namespace ServicesManagement.Web.Controllers
             DataSet ds = new DataSet();
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
-            _ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             try
             {
@@ -975,14 +995,18 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+
+
         private List<ProcesadorPagosBase> GetProcesadorPagosBase(string FecIni, string FecFin, string Method)
         {
             DataSet ds = new DataSet();
             List<ProcesadorPagosBase> LstppsBase = new List<ProcesadorPagosBase>();
+
             string spName = string.Empty;
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
-            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             spName = "up_PPS_sel_PaymentTransactionRpt";
 
@@ -1021,8 +1045,6 @@ namespace ServicesManagement.Web.Controllers
                                 var fechaCreacion = row["OrderDate"].ToString();
                                 DateTime FecCreate = DateTime.Parse(fechaCreacion);
                                 ppsBase.OrderMonth = FecCreate.ToString("MMMM");
-
-
                                 ppsBase.OrderDate = row["OrderDate"].ToString().Substring(0, 10);                                //Fecha Creacion 
                                 ppsBase.OrderHour = fechaCreacion.Substring(10);
                                 ppsBase.OrderAmount = row["OrderAmount"].ToString();                            //Monto Total Orden
@@ -1066,7 +1088,7 @@ namespace ServicesManagement.Web.Controllers
                                     ppsBase.ShippingDeliveryDesc = "MG";
                                     ppsBase.Catalogo = "MG";
                                 }
-                                    ppsBase.ShippingDeliveryDesc = "MG";
+                                ppsBase.ShippingDeliveryDesc = "MG";
 
                                 ppsBase.CustomerLoyaltyRedeemPoints = row["CustomerLoyaltyRedeemPoints"].ToString(); //punto aplicados
                                 ppsBase.CustomerLoyaltyRedeemMoney = row["CustomerLoyaltyRedeemMoney"].ToString();  //efectivo disponble /dinero en efectivo                              
@@ -1074,36 +1096,75 @@ namespace ServicesManagement.Web.Controllers
                                 ppsBase.MethodPaymentShipment = row["MethodPaymentShipment"].ToString();
 
                                 #region Cancellation
-                                /*ppsBase.Id_cancelacion = row["Id_cancelacion"].ToString();                      //No. RMA
-                                ppsBase.clientEmail = row["clientEmail"].ToString();                            //Nombre de quien Cancela
-                                ppsBase.Motivo = row["Motivo"].ToString();                                      //Motivo Cancelacion
-                                //ppsBase.newProductQuantity = Cancel.newProductQuantity;                         //No Piezas Consignación Cancelada
-                                ppsBase.fec_movto = row["fec_movto"].ToString();                                //Fecha INgreso RMA
-                                //ppsBase.productId = Cancel.productId;                                           //Detalle de la Consignación Ingresada (SKU)
-                                ppsBase.fec_movto = row["fec_movto"].ToString();                                //Fecha Devolución
-                                ppsBase.fec_movto = row["fec_movto"].ToString();                                //Fecha Reembolso
-                                ppsBase.Bin_Reembolso = row["BinCode"].ToString();                              //BIN Tarjeta Reembolso
-                                ppsBase.SufijoReembolso = row["MaskCard"].ToString();                           //Sufijo Tarjeta Reembolso                                                           
-                                */
-                                #endregion
+                                if (Method == "Creditos")
+                                {
+                                    decimal TotalPrice = 0;
+                                    decimal TotalPiezas = 0;
+                                    string Consignacion = string.Empty;
 
-                                #region rpt_v2
-                                /*ppsBase.ofUE_StatusUE = row["StatusUE"].ToString();
-                                ppsBase.ofUE_DeliveryType = row["DeliveryType"].ToString();
-                                ppsBase.ofUE_UEType = row["UEType"].ToString();
-                                ppsBase.ofUE_IsPickingManual = row["IsPickingManual"].ToString();
-                                ppsBase.ofUE_CustomerNo = row["CustomerNo"].ToString();
-                                ppsBase.ofUE_CustomerName = row["CustomerName"].ToString();
-                                ppsBase.ofUE_Phone = row["Phone"].ToString();
-                                ppsBase.ofUE_Address1 = row["Address1"].ToString();
-                                ppsBase.ofUE_Address2 = row["Address2"].ToString();
-                                ppsBase.ofUE_City = row["City"].ToString();
-                                ppsBase.ofUE_StateCode = row["StateCode"].ToString();
-                                ppsBase.ofUE_PostalCode = row["PostalCode"].ToString();
-                                ppsBase.ofUE_Total = row["Total"].ToString();
-                                ppsBase.ofUE_MethodPayment = row["MethodPayment"].ToString();
-                                ppsBase.ofUE_OrderRMA = row["OrderRMA"].ToString();
-                                ppsBase.uSC_StatusDescription = row["StatusDescription"].ToString();*/
+                                    var Cancelacion = GetCancelDevolucion(ppsBase.OrderReferenceNumber);
+                                    var Productos = GetDatosArticuloCancelDev(ppsBase.OrderReferenceNumber);
+
+                                    foreach (var prod in Productos)
+                                    {
+                                        TotalPrice = decimal.Parse(prod.Price) + TotalPrice;
+                                        Consignacion = prod.ProductId + ", " + Consignacion;
+                                        TotalPiezas = TotalPiezas + 1;
+                                    }
+
+                                    ppsBase.NombreCancelacion = ppsBase.ShippingFirstName + " " + ppsBase.CustomerLastName;
+                                    ppsBase.Motivo = Cancelacion.Cancelacion.cancellationReason.Trim();
+
+                                    if (Cancelacion.Cancelacion.fec_movto == "")
+                                    {
+                                        ppsBase.FechaCancel = "";
+                                        ppsBase.HoraCancel = "";
+                                    }
+                                    else
+                                    {
+                                        var fechaCancel = Cancelacion.Cancelacion.fec_movto;
+                                        DateTime FecCancel = DateTime.Parse(fechaCancel);
+                                        ppsBase.FechaCancel = FecCancel.ToString("MMMM");
+                                        ppsBase.HoraCancel = fechaCancel.Substring(10);
+                                    }
+
+                                    ppsBase.MontoCancel = TotalPrice.ToString();
+                                    ppsBase.ConsignacionIDCancelada = Consignacion;
+                                    ppsBase.NoPiezasConsignacionCancelacion = TotalPiezas.ToString();
+                                    ppsBase.FechaINgresoRMA = Cancelacion.Cancelacion.fec_movto;
+
+                                    ppsBase.ConsignaciónIDDevolucin = Consignacion;
+                                    ppsBase.DetalleConsignacionIngresada = "";
+                                    ppsBase.NoPzasConsignacionDevolucion = TotalPiezas.ToString();
+
+                                    if (Cancelacion.Devolucion.fec_movto == "")
+                                    {
+                                        ppsBase.FechaDevolucion = "";
+                                        ppsBase.HoraDevolucion = "";
+                                    }
+                                    else
+                                    {
+                                        var fechaDevolucion = Cancelacion.Devolucion.fec_movto;
+                                        DateTime FecDev = DateTime.Parse(fechaDevolucion);
+
+                                        ppsBase.FechaDevolucion = FecDev.ToString("MMMM");
+                                        ppsBase.HoraDevolucion = fechaDevolucion.Substring(10);
+                                    }
+
+
+                                    ppsBase.FechaDevolucion = Cancelacion.Devolucion.fec_movto;
+
+                                    ppsBase.MontoDevolucionConsignacion = TotalPrice.ToString();
+
+                                    ppsBase.FechaReembolso = "";
+                                    ppsBase.HoraReembolso = "";
+                                    ppsBase.FormaPagoRembolso = "";
+                                    ppsBase.Bin_Reembolso = row["BinCode"].ToString();
+                                    ppsBase.SufijoReembolso = row["MaskCard"].ToString().Substring(15);
+                                    ppsBase.ReembolsoAutomatico = "";
+                                    ppsBase.ReembolsoManual = "";
+                                    ppsBase.IDTransaccionReembolso = "";
+                                }
                                 #endregion
 
                                 #region GetTrace
@@ -1129,14 +1190,13 @@ namespace ServicesManagement.Web.Controllers
                                         ppsBase.shippingItemId = DatosExtra.shipments[0].Items[0].shippingItemId;
                                         ppsBase.shippingItemName = DatosExtra.shipments[0].Items[0].shippingItemName;
                                         ppsBase.ShippingItemTotal = DatosExtra.shipments[0].Items[0].ShippingItemTotal;
-
                                     }
                                 }
                                 #endregion
 
-                                if(Method == "AuthBancaria")
+                                #region Emisor
+                                if (Method == "AuthBancaria")
                                 {
-                                    #region Emisor
                                     var EmisorResponse = GetDatosEmisor(ppsBase.OrderReferenceNumber);
 
                                     ppsBase.DecisionEmisor = EmisorResponse.DecisionEmisor;
@@ -1182,8 +1242,8 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             try
             {
@@ -1263,7 +1323,8 @@ namespace ServicesManagement.Web.Controllers
             string spName = string.Empty;
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
-            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             spName = "up_PPS_Sel_DecisionEmisor";
 
@@ -1307,7 +1368,7 @@ namespace ServicesManagement.Web.Controllers
                                 }
                                 else if (row["method"].ToString() == "ValidateAuthentication")
                                 {
-                                    if(row["ResponseJson"].ToString() != "")
+                                    if (row["ResponseJson"].ToString() != "")
                                     {
                                         EmisorRes = JsonConvert.DeserializeObject<Emisor>(row["ResponseJson"].ToString());
                                     }
@@ -1347,6 +1408,462 @@ namespace ServicesManagement.Web.Controllers
                 }
 
                 return ResponseEmisor;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<ParticipacionFormasPagoModel> GetParticipacionFormasPago(string FecIni, string FecFin)
+        {
+            ParticipacionFormasPagoModel Response = new ParticipacionFormasPagoModel();
+            List<ParticipacionFormasPagoModel> lstFormasPago = new List<ParticipacionFormasPagoModel>();
+            DataSet ds = new DataSet();
+            string spName = string.Empty;
+
+            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
+            spName = "up_PPS_Sel_Totales_MetodosPago";
+
+            try
+            {
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(spName, cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        if (FecIni != "" && FecFin != "")
+                        {
+                            System.Data.SqlClient.SqlParameter param;
+                            param = cmd.Parameters.Add("@fechaini", SqlDbType.VarChar);
+                            param.Value = FecIni;
+
+                            System.Data.SqlClient.SqlParameter param2;
+                            param2 = cmd.Parameters.Add("@fechafin", SqlDbType.VarChar);
+                            param2.Value = FecFin;
+                        }
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                ParticipacionFormasPagoModel FormaPago = new ParticipacionFormasPagoModel
+                                {
+                                    metodoPago = row["MethodPayment"].ToString(),
+                                    monto = row["Total"].ToString(),
+                                    Catalogo = row["UeType"].ToString(),
+                                    clientesCantidad = "",
+                                    ordenesCantidad = row["CantOrder"].ToString(),
+                                    fecha = "",
+                                    mes = ""
+                                };
+
+                                lstFormasPago.Add(FormaPago);
+                            }
+                        }
+                    }
+                }
+
+                return lstFormasPago;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<AprobacionesMarcas> GetAprobacionesMarcas()
+        {
+            #region Definiciones
+            DataSet ds = new DataSet();
+            List<Aprobaciones> LstAprobaciones = new List<Aprobaciones>();
+            List<AprobacionesMarcas> LstaprobacionesMarcas = new List<AprobacionesMarcas>();
+            string spName = string.Empty;
+            int contWebCard = 0;
+            decimal MontoWebCard = 0;
+            int contWebPOD = 0;
+            decimal MontoWebPOD = 0;
+            int contWebPIS = 0;
+            decimal MontoWebPIS = 0;
+            int contWebFa = 0;
+            decimal MontoWebFa = 0;
+
+            int contAppCard = 0;
+            decimal MontoAppCard = 0;
+            int contAppPOD = 0;
+            decimal MontoAppPOD = 0;
+            int contAppPIS = 0;
+            decimal MontoAppPIS = 0;
+            int contAppFa = 0;
+            decimal MontoAppFa = 0;
+            #endregion
+
+            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
+            spName = "up_PPS_Sel_AprobacionesMarcas";
+
+            try
+            {
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(spName, cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                Aprobaciones aprobaciones = new Aprobaciones();
+                                aprobaciones.id_num_apl = row["id_num_apl"].ToString();
+                                aprobaciones.id_num_formapago = row["id_num_formapago"].ToString();
+                                aprobaciones.Id_Num_Orden = row["Id_Num_Orden"].ToString();
+                                aprobaciones.nom_pagOrig = row["nom_pagOrig"].ToString();
+                                aprobaciones.tipoOrden = row["tipoOrden"].ToString();
+                                aprobaciones.imp_preciounit = row["imp_preciounit"].ToString();
+
+                                LstAprobaciones.Add(aprobaciones);
+                            }
+                        }
+
+                        //Mapeo Resultado
+                        foreach (var row in LstAprobaciones)
+                        {
+                            if (row.id_num_apl == "22")
+                            {
+                                #region web
+                                if (row.id_num_formapago == "1")
+                                {
+                                    contWebCard = contWebCard + 1;
+                                    MontoWebCard = decimal.Parse(row.imp_preciounit) + MontoWebCard;
+                                }
+
+                                if (row.id_num_formapago == "26")
+                                {
+                                    contWebPOD = contWebPOD + 1;
+                                    MontoWebPOD = decimal.Parse(row.imp_preciounit) + MontoWebPOD;
+                                }
+
+                                if (row.id_num_formapago == "4")
+                                {
+                                    contWebPIS = contWebPIS + 1;
+                                    MontoWebPIS = decimal.Parse(row.imp_preciounit) + MontoWebPIS;
+                                }
+
+                                if (row.id_num_formapago == "25")
+                                {
+                                    contWebFa = contWebFa + 1;
+                                    MontoWebFa = decimal.Parse(row.imp_preciounit) + MontoWebFa;
+                                }
+                                #endregion
+                            }
+                            else if ((row.id_num_apl == "23") || (row.id_num_apl == "24"))
+                            {
+                                #region Movil
+                                if (row.id_num_formapago == "1")
+                                {
+                                    contAppCard = contAppCard + 1;
+                                    MontoAppCard = decimal.Parse(row.imp_preciounit) + MontoAppCard;
+                                }
+
+                                if (row.id_num_formapago == "26")
+                                {
+                                    contAppPOD = contAppPOD + 1;
+                                    MontoAppPOD = decimal.Parse(row.imp_preciounit) + MontoAppPOD;
+                                }
+
+                                if (row.id_num_formapago == "4")
+                                {
+                                    contAppPIS = contAppPIS + 1;
+                                    MontoAppPIS = decimal.Parse(row.imp_preciounit) + MontoAppPIS;
+                                }
+
+                                if (row.id_num_formapago == "25")
+                                {
+                                    contAppFa = contAppFa + 1;
+                                    MontoAppFa = decimal.Parse(row.imp_preciounit) + MontoAppFa;
+                                }
+                                #endregion
+                            }
+                        }
+
+
+                        AprobacionesMarcas aprobacionesCard = new AprobacionesMarcas
+                        {
+                            canalCompra = "WEB",
+                            marca = "CARD",
+                            totalOrdenes = contWebCard.ToString(),
+                            monto = MontoWebCard.ToString()
+                        };
+                        AprobacionesMarcas aprobacionesPOD = new AprobacionesMarcas
+                        {
+                            canalCompra = "WEB",
+                            marca = "POD",
+                            totalOrdenes = contWebCard.ToString(),
+                            monto = MontoWebCard.ToString()
+                        };
+                        AprobacionesMarcas aprobacionesPIS = new AprobacionesMarcas
+                        {
+                            canalCompra = "WEB",
+                            marca = "PIS",
+                            totalOrdenes = contWebCard.ToString(),
+                            monto = MontoWebCard.ToString()
+                        };
+                        AprobacionesMarcas aprobacionesFa = new AprobacionesMarcas
+                        {
+                            canalCompra = "WEB",
+                            marca = "FALABELLA",
+                            totalOrdenes = contWebCard.ToString(),
+                            monto = MontoWebCard.ToString()
+                        };
+
+                        AprobacionesMarcas aprobacionesCard_app = new AprobacionesMarcas
+                        {
+                            canalCompra = "APP",
+                            marca = "CARD",
+                            totalOrdenes = contAppCard.ToString(),
+                            monto = MontoAppCard.ToString()
+                        };
+                        AprobacionesMarcas aprobacionesPOD_app = new AprobacionesMarcas
+                        {
+                            canalCompra = "APP",
+                            marca = "POD",
+                            totalOrdenes = contAppCard.ToString(),
+                            monto = MontoAppCard.ToString()
+                        };
+                        AprobacionesMarcas aprobacionesPIS_app = new AprobacionesMarcas
+                        {
+                            canalCompra = "APP",
+                            marca = "PIS",
+                            totalOrdenes = contAppCard.ToString(),
+                            monto = MontoAppCard.ToString()
+                        };
+                        AprobacionesMarcas aprobacionesFa_app = new AprobacionesMarcas
+                        {
+                            canalCompra = "APP",
+                            marca = "FALABELLA",
+                            totalOrdenes = contAppCard.ToString(),
+                            monto = MontoAppCard.ToString()
+                        };
+
+                        LstaprobacionesMarcas.Add(aprobacionesCard);
+                        LstaprobacionesMarcas.Add(aprobacionesPOD);
+                        LstaprobacionesMarcas.Add(aprobacionesPIS);
+                        LstaprobacionesMarcas.Add(aprobacionesFa);
+
+                        LstaprobacionesMarcas.Add(aprobacionesCard_app);
+                        LstaprobacionesMarcas.Add(aprobacionesPOD_app);
+                        LstaprobacionesMarcas.Add(aprobacionesPIS_app);
+                        LstaprobacionesMarcas.Add(aprobacionesFa_app);
+                    }
+                }
+
+                return LstaprobacionesMarcas;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private CancelDevolucionModel GetCancelDevolucion(string OrderReferenceNumber)
+        {
+            CancelDevolucionModel Response = new CancelDevolucionModel();
+            DataSet ds = new DataSet();
+            CancellationModel Cancelacion = new CancellationModel();
+            DevolucionModel devolucion = new DevolucionModel();
+
+            string spName = string.Empty;
+
+            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
+            spName = "up_PPS_Sel_Cancel_Devolucion";
+
+            try
+            {
+                #region Cancelacion
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(spName, cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        System.Data.SqlClient.SqlParameter param;
+                        param = cmd.Parameters.Add("@OrderReferenceNumber", SqlDbType.VarChar);
+                        param.Value = OrderReferenceNumber;
+
+                        param = cmd.Parameters.Add("@accion", SqlDbType.VarChar);
+                        param.Value = "cancelar";
+
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                Cancelacion.OrderId = row["OrderId"].ToString();
+                                Cancelacion.clientEmail = row["clientEmail"].ToString();
+                                Cancelacion.accion = row["accion"].ToString();
+                                Cancelacion.fec_movto = row["fec_movto"].ToString();
+                                Cancelacion.estatusRma = row["estatusRma"].ToString();
+                                Cancelacion.ProcesoAut = row["ProcesoAut"].ToString();
+                                Cancelacion.idProceso = row["idProceso"].ToString();
+                                Cancelacion.cancellationReason = row["cancellationReason"].ToString();
+
+                                break;
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                #region Devolucion
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(spName, cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        System.Data.SqlClient.SqlParameter param;
+                        param = cmd.Parameters.Add("@OrderReferenceNumber", SqlDbType.VarChar);
+                        param.Value = OrderReferenceNumber;
+
+                        param = cmd.Parameters.Add("@accion", SqlDbType.VarChar);
+                        param.Value = "retorno";
+
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                devolucion.OrderId = row["OrderId"].ToString();
+                                devolucion.clientEmail = row["clientEmail"].ToString();
+                                devolucion.accion = row["accion"].ToString();
+                                devolucion.fec_movto = row["fec_movto"].ToString();
+                                devolucion.estatusRma = row["estatusRma"].ToString();
+                                devolucion.ProcesoAut = row["ProcesoAut"].ToString();
+                                devolucion.idProceso = row["idProceso"].ToString();
+                                devolucion.cancellationReason = row["cancellationReason"].ToString();
+
+                                break;
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                Response.Cancelacion = Cancelacion;
+                Response.Devolucion = devolucion;
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<DetalleProducto> GetDatosArticuloCancelDev(string OrderReferenceNumber)
+        {
+            AprobacionesMarcas Response = new AprobacionesMarcas();
+            DataSet ds = new DataSet();
+            List<ProcesadorPagosBase> LstppsBase = new List<ProcesadorPagosBase>();
+            List<DetalleProducto> lstDetalleProd = new List<DetalleProducto>();
+            string spName = string.Empty;
+            string spName2 = string.Empty;
+            string OrderNo = OrderReferenceNumber;
+
+            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
+            spName = "spDatosSplitOrder_rpt_sUP";
+            spName2 = "spDatosArticulosbyOrderId_rpt_sUP";
+
+
+            try
+            {
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(spName, cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        System.Data.SqlClient.SqlParameter param;
+                        param = cmd.Parameters.Add("@OrderNo", SqlDbType.Int);
+                        param.Value = int.Parse(OrderNo);
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                OrderNo = row["OrderNo"].ToString();
+                            }
+                        }
+                    }
+                }
+                ds = new DataSet();
+
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(spName2, cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        System.Data.SqlClient.SqlParameter param;
+                        param = cmd.Parameters.Add("@OrderId", SqlDbType.Int);
+                        param.Value = int.Parse(OrderNo);
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            if (dt.TableName == "Table1")
+                            {
+                                foreach (DataRow row in dt.Rows)
+                                {
+                                    DetalleProducto prod = new DetalleProducto
+                                    {
+                                        CodeBarra = row["CodeBarra"].ToString(),
+                                        ProductName = row["ProductName"].ToString(),
+                                        Quantity = row["Quantity"].ToString(),
+                                        Price = "0", //row["Price"].ToString(),
+                                        ProductId = row["ProductId"].ToString()
+                                    };
+
+                                    lstDetalleProd.Add(prod);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+
+                return lstDetalleProd;
             }
             catch (Exception ex)
             {
