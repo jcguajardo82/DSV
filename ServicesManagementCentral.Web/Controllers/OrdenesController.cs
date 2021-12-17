@@ -844,6 +844,18 @@ namespace ServicesManagement.Web.Controllers
                     Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Finaliza_Entrega"], "", json2);
 
                     Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
+
+                    //if (d.Tables[0].Rows[0]["DeliveryType"].ToString() == "Entrega a domicilio")
+                    if (DALCorreos.GetMetodoEnvio_sUp(int.Parse(orderNo)).Tables[0].Rows[0][0].ToString().Contains("domicilio"))
+                    {
+                        //Confirmación de Entrega en domicilio DeliveryType == Entrega a domicilio
+                        Correos.Correos.Correo16A(int.Parse(orderNo));
+                    }
+                    else
+                    {
+                        //Confirmación de Entrega en Tienda DeliveryType != Entrega a domicilio
+                        Correos.Correos.Correo16(int.Parse(orderNo));
+                    }
                     #endregion
                 }
 

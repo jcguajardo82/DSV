@@ -35,8 +35,14 @@ namespace ServicesManagement.Web.Correos
             int OrderNo = int.Parse(shipments.Tables[0].Rows[0]["OrderNo"].ToString());
             DatosPago(ref parameters, OrderNo);
 
+
+            var tienda = DALCorreos.spDatosPago_sUP(OrderNo).Tables[0].Rows[0]["Desc_UN"].ToString();
+            var notienda = DALCorreos.spDatosPago_sUP(OrderNo).Tables[0].Rows[0]["StoreNum"].ToString();
+
             var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
             parameters.Add("@direccionEntrega", dirEntrega);
+            var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
+            parameters.Add("@horarioEntrega", horEntrega);
             int totArt = 0;
             decimal totalEnvio = 0, subtotal = 0;
             StringBuilder tablaProductos = new StringBuilder("");
@@ -58,12 +64,12 @@ namespace ServicesManagement.Web.Correos
                     tablaProductos.Append("<td class='tg-fkgn' rowspan='90'></td>");
                     tablaProductos.Append("</tr>");
                     tablaProductos.Append("<tr>");
-                    tablaProductos.Append($"<td class='tg-zv4m' colspan='2'><span style='font-weight:bold'> Tienda </span> <br/>{dirEntrega}</td>");
+                    tablaProductos.Append($"<td class='tg-zv4m' colspan='2'><span style='font-weight:bold'> Tienda </span> <br/>{notienda} - {tienda}</td>");
                     tablaProductos.Append("<td class='tg-zv4m'></td>");
                     tablaProductos.Append("<td class='tg-zv4m'></td>");
                     tablaProductos.Append("</tr>");
                     tablaProductos.Append("<tr>");
-                    tablaProductos.Append($"<td class='tg-oe15' colspan='2'><span style = 'font-weight:bold' > Horario </ span > <br/>{dirEntrega}</td>");
+                    tablaProductos.Append($"<td class='tg-oe15' colspan='2'><span style = 'font-weight:bold' > Horario </ span > <br/>{horEntrega}</td>");
                     tablaProductos.Append("</tr>");
                     tablaProductos.Append("<tr>");
                     tablaProductos.Append("<td class='tg-zv4m' colspan='4'></td>");
@@ -97,7 +103,7 @@ namespace ServicesManagement.Web.Correos
                     foreach (DataRow item in totales.Tables[0].Rows)
                     {
                         subtotal += decimal.Parse(item["subTotal"].ToString());
-                        totalEnvio = decimal.Parse(item["Flete"].ToString());
+                        totalEnvio += decimal.Parse(item["Flete"].ToString());
                     }
                     #endregion
                 }
@@ -105,6 +111,13 @@ namespace ServicesManagement.Web.Correos
 
             parameters.Add("@subtotal", "$" + subtotal.ToString());
             parameters.Add("@envio", "$" + totalEnvio.ToString());
+            if (parameters.ContainsKey("@total"))
+            {
+                parameters.Remove("@total");
+
+            }
+            parameters.Add("@total", "$" + (totalEnvio + subtotal).ToString());
+
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
 
@@ -131,8 +144,8 @@ namespace ServicesManagement.Web.Correos
         /// <summary>
         /// Confirmación de Pago en Tienda Entrega a Domicilio
         /// </summary>
-        /// <param name="OrderNo"></param>
-        public static void Correo6(int OrderNo)
+        /// <param name="OrderNo">Orden original,antes del split, sin los sufijo 10,20,30,N</param>
+        public static void Correo6(int CurrentOrderNo)
         {
             var parameters = new Dictionary<string, string>();
 
@@ -145,6 +158,8 @@ namespace ServicesManagement.Web.Correos
 
             var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
             parameters.Add("@direccionEntrega", dirEntrega);
+            var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
+            parameters.Add("@horarioEntrega", horEntrega);
             int totArt = 0;
             decimal totalEnvio = 0, subtotal = 0;
 
@@ -200,7 +215,7 @@ namespace ServicesManagement.Web.Correos
                     foreach (DataRow item in totales.Tables[0].Rows)
                     {
                         subtotal += decimal.Parse(item["subTotal"].ToString());
-                        totalEnvio = decimal.Parse(item["Flete"].ToString());
+                        totalEnvio += decimal.Parse(item["Flete"].ToString());
                     }
                     #endregion
                 }
@@ -212,6 +227,15 @@ namespace ServicesManagement.Web.Correos
 
             parameters.Add("@subtotal", "$" + subtotal.ToString());
             parameters.Add("@envio", "$" + totalEnvio.ToString());
+
+            if (parameters.ContainsKey("@total"))
+            {
+                parameters.Remove("@total");
+
+            }
+            parameters.Add("@total", "$" + (totalEnvio + subtotal).ToString());
+
+
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
 
@@ -332,6 +356,13 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@envio", "$" + totalEnvio.ToString());
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
+
+            if (parameters.ContainsKey("@total"))
+            {
+                parameters.Remove("@total");
+
+            }
+            parameters.Add("@total", "$" + (totalEnvio + subtotal).ToString());
 
             //DatosGrales(ref parameters, OrderNo);
             //DatosPago(ref parameters, OrderNo);
@@ -562,6 +593,7 @@ namespace ServicesManagement.Web.Correos
             PaymentsGetCancelacion(ref OrderNo, ref OrderSF, Id_cancelacion);
             DatosGrales(ref parameters, OrderNo);
             DatosArticulos(ref parameters, Id_cancelacion, 2);
+            //TotalesImporteDevCanc(ref parameters, Id_cancelacion);
             TotalesImporteDev(ref parameters, Id_cancelacion);
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
@@ -692,6 +724,17 @@ namespace ServicesManagement.Web.Correos
 
             DatosGrales(ref parameters, OrderNo);
             DatosPago(ref parameters, OrderNo);
+            DatosEntrega(ref parameters, OrderNo);
+
+            var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
+            if (parameters.ContainsKey("@direccionEntrega"))
+            {
+                parameters.Remove("@direccionEntrega");
+
+            }
+            parameters.Add("@direccionEntrega", dirEntrega);
+            var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
+            parameters.Add("@horarioEntrega", horEntrega);
 
 
             #region Articulos
@@ -754,6 +797,12 @@ namespace ServicesManagement.Web.Correos
 
             DatosGrales(ref parameters, OrderNo);
             DatosPago(ref parameters, OrderNo);
+            //DatosPago(ref parameters, OrderNo);
+
+            var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
+            parameters.Add("@direccionEntrega", dirEntrega);
+            var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
+            parameters.Add("@horarioEntrega", horEntrega);
 
 
             #region Articulos
@@ -872,6 +921,20 @@ namespace ServicesManagement.Web.Correos
         public static void Correo13(int OrderNo)
         {
             var parameters = new Dictionary<string, string>();
+
+            //parameters.Add("@pedido", CurrentOrderNo.ToString());
+            //var shipments = DALCorreos.spDatosSplitOrder_sUP(CurrentOrderNo);
+
+            //int OrderNo = int.Parse(shipments.Tables[0].Rows[0]["OrderNo"].ToString());
+            DatosPago(ref parameters, OrderNo);
+
+            var tienda = DALCorreos.spDatosPago_sUP(OrderNo).Tables[0].Rows[0]["Desc_UN"].ToString();
+            var notienda = DALCorreos.spDatosPago_sUP(OrderNo).Tables[0].Rows[0]["StoreNum"].ToString();
+
+            var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
+            parameters.Add("@direccionEntrega", dirEntrega);
+            var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
+            parameters.Add("@horarioEntrega", horEntrega);
 
 
             DatosGrales(ref parameters, OrderNo);
@@ -1306,7 +1369,18 @@ namespace ServicesManagement.Web.Correos
                 //correo.OrderSF = item["OrderSF"].ToString();
                 //correo.OrderNo = item["OrderNo"].ToString();
 
+            foreach (DataRow item in ds.Tables[0].Rows)
+            {
+                subtotal = decimal.Parse(item["subTotal"].ToString());
+                if (envio == 0)
+                {
+                    envio = decimal.Parse(item["Flete"].ToString());
+                }
+                total =  decimal.Parse(item["Total"].ToString());
             }
+            parameters.Add("@subTotal", "$" + subtotal);
+            parameters.Add("@envio", "$" + envio);
+            parameters.Add("@total", "$" + total);
         }
 
         //[Correo].[spTotalesImporteDevByOrder_sUp]
