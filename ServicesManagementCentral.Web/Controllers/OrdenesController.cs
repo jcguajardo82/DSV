@@ -486,9 +486,16 @@ namespace ServicesManagement.Web.Controllers
                         Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarTrans"], "", json2);
 
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
-                        
+
                         //Pedido Surtido Terminado
-                        Correos.Correos.Correo15(int.Parse(OrderNo));
+                        if (d.Tables[0].Rows[0]["DeliveryType"].ToString() == "Entrega a domicilio")
+                        {
+                            Correos.Correos.Correo7(int.Parse(OrderNo));
+                        }
+                        else
+                        {
+                            Correos.Correos.Correo15(int.Parse(OrderNo));
+                        }
 
                         #endregion
                     }
@@ -558,7 +565,15 @@ namespace ServicesManagement.Web.Controllers
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
 
                         //Pedido Surtido Terminado falta validación DST
-                        Correos.Correos.Correo15(int.Parse(OrderNo));
+                        if (d.Tables[0].Rows[0]["DeliveryType"].ToString() == "Entrega a domicilio")
+                        {
+                            Correos.Correos.Correo7(int.Parse(OrderNo));
+                        }
+                        else
+                        {
+                            Correos.Correos.Correo15(int.Parse(OrderNo));
+                        }
+                            
                         #endregion
                     }
                 }
