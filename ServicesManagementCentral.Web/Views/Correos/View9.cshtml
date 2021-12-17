@@ -1,0 +1,240 @@
+﻿@header
+<!-- Cancelacion de productos -->
+<div style="min-width: 600px; width: 72.5%; margin: 0 auto 16px; min-height: 400px; color: #666666;">
+    <p style="font-size: 25px; letter-spacing: 0px;">
+        <span style="font-size: 26px; font-weight: bold; letter-spacing: 0px; margin: 0 6px 20px 0;">¡Hola @customer_first_name,</span>
+        <br><br>
+        <span style="font-size: 18px;  margin: 0 6px 20px 0;">
+            Tu solicitud de devolución es <b><font color="BBBE2F">@idCancelacion</b></font>
+        </span>
+
+
+    <p style="font-size: 20px; letter-spacing: 0px;">
+        <span style="font-size: 18px; font-weight: bold; letter-spacing: 0px; margin: 0 6px 20px 0;">Para continuar con el preceso realizar los siguientes pasos</span>
+
+        <br><br>
+
+        <span style="font-size: 18px;  margin: 0 6px 20px 0;">
+            <b>1.</b> Por favor da clic  la siguiente loga para descargar e imprimir tu guía-pagada<font color="BBBE2F"><u> <a href="@linkCliente">Descargar Guía</a></u></font> y adhiérela al paquete. Recuperada que
+            todos los productos deben conservar accesorios, empaque y sellos originales sin daño alguno
+            <br><br>
+            Este folio de solicitud, procede exclusivamente para el siguiente listado de productos:
+        </span>
+        <br><br>
+
+
+        <style type="text/css">
+            .tg {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+                .tg td {
+                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg th {
+                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg .tg-zv4m {
+                    border-color: #ffffff;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-t0vf {
+                    border-color: #ffffff;
+                    font-size: 100%;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-8s30 {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    color: #c0c0c0;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-fkgn {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+            .tg {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+                .tg td {
+                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg th {
+                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+
+                .tg .tg-oe15 {
+                    background-color: #ffffff;
+                    border-color: #ffffff;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-4ez0 {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    font-weight: bold;
+                    text-align: center;
+                    vertical-align: top
+                }
+
+                .tg .tg-fkgn {
+                    background-color: #efefef;
+                    border-color: #efefef;
+                    text-align: left;
+                    vertical-align: top
+                }
+
+                .tg .tg-c1kk {
+                    background-color: #ffffff;
+                    border-color: #ffffff;
+                    text-align: right;
+                    vertical-align: top
+                }
+        </style>
+
+        <style type="text/css">
+            li {
+                list-style: none;
+            }
+
+                li:before {
+                    content: '\2022';
+                    For a square bullet content:'\25A0';
+                    display: block;
+                    position: relative;
+                    max-width: 0px;
+                    max-height: 0px;
+                    left: -20px;
+                    top: -10px;
+                    color: BBBE2F;
+                    font-size: 35px;
+                }
+        </style>
+
+        <table style="width:100%">
+            <tbody>
+                <tr>
+                    <td style="vertical-align:top; width:80%">
+                        <table class="tg" style="width:100%">
+                            <tr>
+                                <td class="tg-8s30" rowspan="6"></td>
+                                <td class="tg-fkgn" colspan="4"><b>Producto devuelto</b></td>
+                                <td class="tg-fkgn" rowspan="6"></td>
+                            </tr>
+
+                            @tabla_articulos <!-- Asta aqui -->
+
+                            <tr>
+                                <td class="tg-8s30" colspan="4"></td>
+                            </tr>
+                        </table>
+
+                    </td>
+                    <td valign=top>
+                        <!-- otra tabla -->
+                        <table class="tg">
+                            <thead>
+
+                                <tr>
+                                    <th class="tg-4ez0" colspan="4">Total de orden</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="tg-fkgn" rowspan="5"></td>
+                                    <td class="tg-oe15" rowspan="2">No. Artículos<br></td>
+                                    <td class="tg-c1kk" rowspan="2">@tot_arti</td>
+                                    <td class="tg-fkgn" rowspan="5"></td>
+                                </tr>
+                                <tr>
+                                </tr>
+                                <tr>
+                                    <td class="tg-oe15">Subtotal</td>
+                                    <td class="tg-c1kk">@subTotal</td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-oe15">Envio</td>
+                                    <td class="tg-c1kk">@envio</td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-oe15"><span style="font-weight:bold">Total a devolver</span><br></td>
+                                    <td class="tg-c1kk">@total</td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-fkgn" colspan="4"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <br><br><br>
+        <br><br><br>
+        <br><br><br>
+        <br><br>
+
+        <span style="font-size: 18px;  margin: 0 6px 20px 0;">
+            <b>2.</b> Comunícate al teléfono <b>01 800 378 2338</b> para confirmar la fecha en que una unidad de transporte pasara a tu domicilio para recolectar lo conocimientos en tu folio
+            <br><br>
+            <b>3.</b> El envío de la devolución a nuestro almacenes requieren un plazo que depende del tipo y tamaño de los productos a devolver (artículos No voluminosos
+            necesitan de 3-5 días hábiles y artículos voluminosos hasta 12 días hábiles) Estos tiempos se consideran a partir de recolectado el producto en tu domicilio.
+            <br><br>
+            <b>4.</b> Una vez recibimos lo productos, evaluaremos cumplan con nuestra <b><u> Política de Devoluciones.</b></u>
+            <br><br>
+            <b>5.</b> Al término de la evaluación de los productos; recibirás por correo electrónicos el resultado
+        </span>
+
+
+    </p>
+</div>
+@footer
+

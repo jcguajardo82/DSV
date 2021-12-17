@@ -36,7 +36,9 @@ namespace ServicesManagement.Web.Correos
             DatosPago(ref parameters, OrderNo);
 
             var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
-            parameters.Add("@direccionEntrega", dirEntrega);
+            parameters.Add("@direccionEntrega", dirEntrega);
+            var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
+            parameters.Add("@horarioEntrega", horEntrega);
             int totArt = 0;
             decimal totalEnvio = 0, subtotal = 0;
             StringBuilder tablaProductos = new StringBuilder("");
@@ -63,7 +65,7 @@ namespace ServicesManagement.Web.Correos
                     tablaProductos.Append("<td class='tg-zv4m'></td>");
                     tablaProductos.Append("</tr>");
                     tablaProductos.Append("<tr>");
-                    tablaProductos.Append($"<td class='tg-oe15' colspan='2'><span style = 'font-weight:bold' > Horario </ span > <br/>{dirEntrega}</td>");
+                    tablaProductos.Append($"<td class='tg-oe15' colspan='2'><span style = 'font-weight:bold' > Horario </ span > <br/>{horEntrega}</td>");
                     tablaProductos.Append("</tr>");
                     tablaProductos.Append("<tr>");
                     tablaProductos.Append("<td class='tg-zv4m' colspan='4'></td>");
@@ -151,7 +153,9 @@ namespace ServicesManagement.Web.Correos
             DatosPago(ref parameters, OrderNo);
 
             var dirEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DireccionEnvio"].ToString();
-            parameters.Add("@direccionEntrega", dirEntrega);
+            parameters.Add("@direccionEntrega", dirEntrega);
+            var horEntrega = DALCorreos.spDatosEntrega_sUP(OrderNo).Tables[0].Rows[0]["DeliveryDate"].ToString();
+            parameters.Add("@horarioEntrega", horEntrega);
             int totArt = 0;
             decimal totalEnvio = 0, subtotal = 0;
 
@@ -344,7 +348,7 @@ namespace ServicesManagement.Web.Correos
                 }
             }
 
-            parameters.Add("@subtotal", "$" + subtotal.ToString());
+            parameters.Add("@subTotal", "$" + subtotal.ToString());
             parameters.Add("@envio", "$" + totalEnvio.ToString());
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             parameters.Add("@tot_arti", totArt.ToString());
@@ -1444,12 +1448,12 @@ namespace ServicesManagement.Web.Correos
             Console.WriteLine(html);
 
             //este correo es de la persona que esta haciendo pruebas de parte de soriana
-            //requestMessage.MailTo = "josera@soriana.com";
+            requestMessage.MailTo = "josera@soriana.com";
 
 
-            //var requestMail = JsonConvert.SerializeObject(requestMessage);
+            var requestMail = JsonConvert.SerializeObject(requestMessage);
 
-            //SendMessage(requestMail);
+            SendMessage(requestMail);
 
 
 

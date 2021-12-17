@@ -1,0 +1,110 @@
+﻿@header
+<!-- confirmacion de la cancelacion -->
+<div style="min-width: 600px; width: 72.5%; margin: 0 auto 16px; min-height: 400px; color: #666666;">
+    <p style="font-size: 25px; letter-spacing: 0px;">
+        <span style="font-size: 26px; font-weight: bold; letter-spacing: 0px; margin: 0 6px 20px 0;">¡Hola @nombreProveedor</span>
+        <br>
+        <br>
+        <span style="font-size: 18px;  margin: 0 6px 20px 0;">
+            Contamos con el Pedido <b>ORDEN DE VENTA SORINA.COM</b> de uno de nuestros clientes de los productos que ingresaste información de tu inventario en nuestro sistema el cual te ha sido asignado.
+            <br><br>
+            El detalle de los artículos es el siguiente:
+        </span>
+
+
+        <br><br>
+
+        <style type="text/css">
+            .tg {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+                .tg td {
+                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    overflow: hidden;
+                    padding: 20px 20px;
+                    word-break: normal;
+                }
+
+                .tg th {
+                    border-color: black;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    padding: 20px 20px;
+                    word-break: normal;
+                }
+
+                .tg .tg-8jgo {
+                    border-color: #ffffff;
+                    text-align: center;
+                    vertical-align: top
+                }
+
+                .tg .tg-aw21 {
+                    border-color: #ffffff;
+                    font-weight: bold;
+                    text-align: center;
+                    vertical-align: top
+                }
+        </style>
+        <table class="tg" style="undefined;table-layout: fixed; width: 970px">
+            <colgroup>
+                <col style="width: 55px">
+                <col style="width: 96px">
+                <col style="width: 109px">
+                <col style="width: 502px">
+                <col style="width: 84px">
+                <col style="width: 124px">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="tg-8jgo"><span style="font-weight:bold">N°</span></th>
+                    <th class="tg-aw21">ID</th>
+                    <th class="tg-aw21">EAN</th>
+                    <th class="tg-8jgo"><span style="font-weight:bold">Descripcíon</span></th>
+                    <th class="tg-8jgo"><span style="font-weight:bold">Piezas</span></th>
+                    <th class="tg-aw21">Imagenes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @tabla_articulos
+            </tbody>
+        </table>
+
+        <span style="font-size: 15px;  margin: 0 6px 20px 0;">
+            Para continuar el proceso, es necesario que realices lo siguiente
+            <br><br>
+            1.- Revisar físicamente el inventario.
+            <br><br>
+            2. Revisa el estatus del Pedido
+            <ul>
+                <span style="font-size: 15px;  margin: 0 6px 20px 0;">
+                <li type="disc">
+                    Estatus "En espera de pago" o "En manual", en estos estatus no podrás realizar ningún acción en el sistemas.
+                    revisa continuamente hasta que el pedido tenga un cambio de estatus el cual deberá suceder en un máximo de 48 horas
+                </li>
+                <li>Estatus "Pago Autorizado" deberás aceptar el pedido oprimiendo en el sistema el botón de "Aceptar Consignación"</li>
+        </span></ul>
+        <br><br>
+        3. Una vez que oprimas el botón "Aceptar Consignación" se generara tu Orden de Compra relacionada con este Pedido, la cual te
+        llegará en un siguiente correo, con las indicaciones del proceso de Surtido.
+        <br><br>
+        4. En algunos casos el estatus del pedido podrá cambiar a "Cancelado", en este caso no deberías realizar ninguna acción y te llegara un correo
+        notificando la cancelación
+        <br><br>
+        Si tienes algún comentario, duda o requiere más información del proceso, consulta el <u><font color="BBBE2F"> Manuel de DropShipVendor</font></u>
+
+        </span>
+
+    </p>
+</div>
+@footer
