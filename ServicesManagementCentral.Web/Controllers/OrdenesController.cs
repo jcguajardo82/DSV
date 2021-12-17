@@ -644,7 +644,6 @@ namespace ServicesManagement.Web.Controllers
                         orderNo = r1["OrderNo"].ToString();
                     }
 
-
                     string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_Finaliza_Entrega"];
 
                     //metodo mio
@@ -652,7 +651,6 @@ namespace ServicesManagement.Web.Controllers
 
                     o.Orden = new InformacionDetalleOrden();
                     o.Orden.NumeroOrden = orderNo; // item.OrderNo;
-
 
                     o.Orden.EstatusUnidadEjecucion = status;
                     o.Orden.NumeroUnidadEjecucion = ue;
@@ -666,10 +664,6 @@ namespace ServicesManagement.Web.Controllers
                     o.Entrega.NombreQuienRecibe = item.nombre;
 
                     o.Entrega.OrdenEntregada = item.flagE.Equals("N") ? false : true;
-                    //o.Expedidor.NumeroBolsas = 1;
-                    //o.Expedidor.NumeroContenedores = 1;
-                    //o.Expedidor.NumeroEnfriadores = 1;
-
 
                     string json2 = string.Empty;
                     JavaScriptSerializer js = new JavaScriptSerializer();
@@ -679,7 +673,6 @@ namespace ServicesManagement.Web.Controllers
                     System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                     Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
-
 
                     Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
 
