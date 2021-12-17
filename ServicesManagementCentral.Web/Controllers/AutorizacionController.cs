@@ -141,9 +141,9 @@ namespace ServicesManagement.Web.Controllers
                 {
                     switch (IdProceso)
                     {
-                        case 0:
+                        case 1:
                             // Solicitud de Cancelación
-                            //Correos.Correos.Correo8A(Id_cancelacion, 2);
+                            Correos.Correos.Correo8A(Id_cancelacion, 2);
                             break;
                         case 2:
                             // DSV, DST, CEDIS Duda: 9A y 9B
