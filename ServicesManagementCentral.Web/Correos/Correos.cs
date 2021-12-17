@@ -1174,6 +1174,7 @@ namespace ServicesManagement.Web.Correos
 
             foreach (DataRow item in ds.Tables[0].Rows)
             {
+
                 //correo.UeNo = item["UeNo"].ToString();
                 //correo.OrderNo = item["OrderNo"].ToString();
                 parameters.Add("@pedido", item["OrderNo"].ToString());
@@ -1229,6 +1230,11 @@ namespace ServicesManagement.Web.Correos
 
             foreach (DataRow item in ds.Tables[0].Rows)
             {
+                if (parameters.ContainsKey("@direccionEntrega"))
+                {
+                    parameters.Remove("@direccionEntrega");
+                    parameters.Remove("@fechaEntrega");
+                }
                 parameters.Add("@fechaEntrega", item["DeliveryDate"].ToString());
                 parameters.Add("@direccionEntrega", item["DireccionEnvio"].ToString());
 
@@ -1379,7 +1385,8 @@ namespace ServicesManagement.Web.Correos
             Console.WriteLine(html);
 
             //este correo es de la persona que esta haciendo pruebas de parte de soriana
-            requestMessage.MailTo = "josera@soriana.com";
+            //requestMessage.MailTo = "josera@soriana.com";
+            requestMessage.MailTo = "agonzalez@itechdev.com.mx";
 
 
             var requestMail = JsonConvert.SerializeObject(requestMessage);
