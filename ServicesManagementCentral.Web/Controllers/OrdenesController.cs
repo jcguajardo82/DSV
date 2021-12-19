@@ -1360,7 +1360,7 @@ namespace ServicesManagement.Web.Controllers
 
                             isSucces = true;
                             //Cancelación de Productos SETC
-                            Correos.Correos.Correo8(int.Parse(OrderNo));
+                            Correos.Correos.Correo8A(int.Parse(OrderNo), 2);
                         }
                     }
 

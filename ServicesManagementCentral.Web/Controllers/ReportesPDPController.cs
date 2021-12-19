@@ -594,15 +594,13 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            // _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             List<OrderPagoModels> lista = new List<OrderPagoModels>();
 
             try
             {
-
-
 
                 using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
                 {
@@ -996,7 +994,6 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-
         private List<ProcesadorPagosBase> GetProcesadorPagosBase(string FecIni, string FecFin, string Method)
         {
             DataSet ds = new DataSet();
@@ -1006,8 +1003,8 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
             _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
 
             spName = "up_PPS_sel_PaymentTransactionRpt";
 
@@ -1040,6 +1037,7 @@ namespace ServicesManagement.Web.Controllers
                                 ProcesadorPagosBase ppsBase = new ProcesadorPagosBase();
 
                                 #region Mapping
+                                #region Datos Orden
                                 ppsBase.PaymentToken = row["PaymentToken"].ToString();
                                 ppsBase.OrderReferenceNumber = row["OrderReferenceNumber"].ToString();          //Orden ID
                                 ppsBase.PaymentTransactionID = row["PaymentTransactionID"].ToString();          //Transacción
@@ -1049,15 +1047,17 @@ namespace ServicesManagement.Web.Controllers
                                 ppsBase.OrderDate = row["OrderDate"].ToString().Substring(0, 10);                                //Fecha Creacion 
                                 ppsBase.OrderHour = fechaCreacion.Substring(10);
                                 ppsBase.OrderAmount = row["OrderAmount"].ToString();                            //Monto Total Orden
-                                ppsBase.Products = row["Products"].ToString();                                  //SKU Catálogo
+                                //ppsBase.Products = row["Products"].ToString();                                //SKU Catálogo
                                 ppsBase.OrderSaleChannel = row["OrderSaleChannel"].ToString();                  //Canal Compra
+                                #endregion
 
                                 #region Tokenizacion
-                                ppsBase.Bank = row["Bank"].ToString();                                          //Banco
+                                ppsBase.Bank = String.Empty;                                                    // Banco
+                                //ppsBase.Bank = row["Bank"].ToString();                                        // Banco
                                 ppsBase.BinCode = row["BinCode"].ToString();
-                                ppsBase.MaskCard = row["MaskCard"].ToString().Substring(15);                                  // Sufijo hay q recortar
-                                ppsBase.TypeOfCard = row["TypeOfCard"].ToString();                              //Tipo Tarjeta
-                                ppsBase.PaymentMethod = row["PaymentMethod"].ToString();                        //Marca
+                                ppsBase.MaskCard = row["MaskCard"].ToString().Substring(15);                    // Sufijo hay q recortar
+                                ppsBase.TypeOfCard = row["TypeOfCard"].ToString();                              // Tipo Tarjeta
+                                ppsBase.PaymentMethod = row["PaymentMethod"].ToString();                        // Marca
                                 ppsBase.CustomerFirstName = row["CustomerFirstName"].ToString();
                                 ppsBase.CustomerLastName = row["CustomerLastName"].ToString();
                                 #endregion
@@ -1073,10 +1073,10 @@ namespace ServicesManagement.Web.Controllers
                                 ppsBase.CustomerAddress = row["ShippingAddress"].ToString();                    //Calle
                                 ppsBase.CustomerCity = row["ShippingCity"].ToString();                          //Ciudad
                                 ppsBase.CustomerZipCode = row["CustomerZipCode"].ToString();                     //CP
-                                #endregion
 
-                                ppsBase.PaymentTransactionService = row["PaymentTransactionService"].ToString();                         //Estatus Orden
-                                ppsBase.TransactionStatus = row["TransactionStatus"].ToString();                //Estatus ENvio
+
+                                //ppsBase.PaymentTransactionService = row["PaymentTransactionService"].ToString();                         //Estatus Orden
+                                //ppsBase.TransactionStatus = row["TransactionStatus"].ToString();                //Estatus ENvio
 
                                 if (row["ShippingDeliveryDesc"].ToString() == "Envío - 1 - 1")
                                 {
@@ -1090,11 +1090,14 @@ namespace ServicesManagement.Web.Controllers
                                     ppsBase.Catalogo = "MG";
                                 }
                                 ppsBase.ShippingDeliveryDesc = "MG";
+                                #endregion
 
+                                #region Lealtad
                                 ppsBase.CustomerLoyaltyRedeemPoints = row["CustomerLoyaltyRedeemPoints"].ToString(); //punto aplicados
                                 ppsBase.CustomerLoyaltyRedeemMoney = row["CustomerLoyaltyRedeemMoney"].ToString();  //efectivo disponble /dinero en efectivo                              
                                 ppsBase.CustomerLoyaltyCardId = row["CustomerLoyaltyCardId"].ToString();
-                                ppsBase.MethodPaymentShipment = row["MethodPaymentShipment"].ToString();
+                                //ppsBase.MethodPaymentShipment = row["MethodPaymentShipment"].ToString();
+                                #endregion
 
                                 #region Cancellation
                                 if (Method == "Creditos")
@@ -1203,8 +1206,9 @@ namespace ServicesManagement.Web.Controllers
                                     ppsBase.DecisionEmisor = EmisorResponse.DecisionEmisor;
                                     ppsBase.CveReespuestaEmisor = EmisorResponse.CveReespuestaEmisor;
                                     ppsBase.DescReespuestaEmisor = EmisorResponse.DescReespuestaEmisor;
-                                    #endregion
+
                                 }
+                                #endregion
                                 #endregion
 
                                 LstppsBase.Add(ppsBase);
@@ -1244,6 +1248,8 @@ namespace ServicesManagement.Web.Controllers
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
             _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             try
@@ -1509,6 +1515,7 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
             _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioDB;Persist Security Info=False;User ID=sorianaprod_mrcr;Password=!#W3rCuR10;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
             spName = "up_PPS_Sel_AprobacionesMarcas";
@@ -1691,7 +1698,8 @@ namespace ServicesManagement.Web.Controllers
             string spName = string.Empty;
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
-            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            // _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
             _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             spName = "up_PPS_Sel_Cancel_Devolucion";
@@ -1842,7 +1850,8 @@ namespace ServicesManagement.Web.Controllers
 
                         foreach (DataTable dt in ds.Tables)
                         {
-                            if (dt.TableName == "Table1")
+
+                            if (dt.TableName == "Table")
                             {
                                 foreach (DataRow row in dt.Rows)
                                 {
@@ -1851,13 +1860,15 @@ namespace ServicesManagement.Web.Controllers
                                         CodeBarra = row["CodeBarra"].ToString(),
                                         ProductName = row["ProductName"].ToString(),
                                         Quantity = row["Quantity"].ToString(),
-                                        Price = "0", //row["Price"].ToString(),
+                                        Price = row["Price"].ToString(),
                                         ProductId = row["ProductId"].ToString()
                                     };
 
                                     lstDetalleProd.Add(prod);
                                 }
                             }
+
+
 
                         }
                     }
