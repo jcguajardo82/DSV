@@ -189,25 +189,11 @@ namespace ServicesManagement.Web.Controllers
                                 break;
                             case 3:
                                 // DSV, DST, CEDIS Duda: Da entrada Almacen
-                                switch (motivo)
-                                {
-                                    case "2":
-                                    case "3":
-                                        Correos.Correos.Correo10A(Id_cancelacion);
-                                        break;
-                                }
-                                
+                                Correos.Correos.Correo10A(Id_cancelacion);                          
                                 break;
                             case 4:
                                 // Administrador  Autoriza Gerencia
-   
-                                switch (motivo)
-                                {
-                                    case "2":
-                                    case "3":
-                                        Correos.Correos.Correo10A(Id_cancelacion);
-                                        break;
-                                }
+                                Correos.Correos.Correo10A(Id_cancelacion);
                                 break;
                         }
 
