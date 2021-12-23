@@ -652,8 +652,11 @@ namespace ServicesManagement.Web.Correos
         {
             var parameters = new Dictionary<string, string>();
 
+
+
             DatosGrales(ref parameters, OrderNo);
             DatosPago(ref parameters, OrderNo);
+
 
             #region Articulos
             StringBuilder tablaProductos = new StringBuilder("");
@@ -685,12 +688,14 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             #endregion
 
+
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
             if (string.IsNullOrEmpty(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
+
 
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 11;
@@ -746,12 +751,14 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             #endregion
 
+
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
             if (string.IsNullOrEmpty(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
+
 
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 12;
@@ -806,12 +813,14 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             #endregion
 
+
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
             if (string.IsNullOrEmpty(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
+
 
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 13;
@@ -833,6 +842,7 @@ namespace ServicesManagement.Web.Correos
 
 
             var DsvEmail = DatosProveedor(ref parameters, OrderNo);
+
 
             #region Articulos
             StringBuilder tablaProductos = new StringBuilder("");
@@ -872,6 +882,7 @@ namespace ServicesManagement.Web.Correos
                 throw new Exception("No se ha podido enviar el correo al proveedor, ya que no se cuenta con correo registrado.");
             }
 
+
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 14;
             requestMessage.MailTo = DsvEmail;
@@ -906,6 +917,7 @@ namespace ServicesManagement.Web.Correos
             DatosGrales(ref parameters, OrderNo);
             DatosProveedor(ref parameters, OrderNo);
 
+
             #region Articulos
             StringBuilder tablaProductos = new StringBuilder("");
             var dt = DALCorreos.spDatosArticulosbyOrderId_sUP(OrderNo).Tables[0];
@@ -930,12 +942,14 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             #endregion
 
+
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
             if (string.IsNullOrEmpty(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
+
 
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 15;
@@ -953,6 +967,7 @@ namespace ServicesManagement.Web.Correos
         public static void Correo14(int OrderNo)
         {
             var parameters = new Dictionary<string, string>();
+
 
             DatosGrales(ref parameters, OrderNo);
             DatosProveedor(ref parameters, OrderNo);
@@ -988,6 +1003,7 @@ namespace ServicesManagement.Web.Correos
             parameters.Add("@tabla_articulos", tablaProductos.ToString());
             #endregion
 
+
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
             if (string.IsNullOrEmpty(CustomerEmail))
@@ -995,8 +1011,9 @@ namespace ServicesManagement.Web.Correos
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
 
+
             MailMessage requestMessage = new MailMessage();
-            requestMessage.LayoutId = 16;
+            requestMessage.LayoutId = 12;
             requestMessage.MailTo = CustomerEmail;
             requestMessage.Parameters = parameters;
 
@@ -1377,8 +1394,8 @@ namespace ServicesManagement.Web.Correos
             Console.WriteLine(html);
 
             //este correo es de la persona que esta haciendo pruebas de parte de soriana
-            requestMessage.MailTo = "josera@soriana.com";
-            //requestMessage.MailTo = "agonzalez@itechdev.com.mx";
+            //requestMessage.MailTo = "josera@soriana.com";
+            requestMessage.MailTo = "agonzalez@itechdev.com.mx";
 
 
             var requestMail = JsonConvert.SerializeObject(requestMessage);
