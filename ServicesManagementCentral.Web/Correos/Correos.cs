@@ -473,7 +473,7 @@ namespace ServicesManagement.Web.Correos
         public static void Correo9(int Id_cancelacion)
         {
             //call_center_cliente
-            string urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();       
+            string urlbase = ConfigurationManager.AppSettings["call_center_cliente"].ToString();
             string cliente = string.Format("{0}/?order={1}", urlbase, Id_cancelacion);
 
             var parameters = new Dictionary<string, string>();
@@ -841,7 +841,7 @@ namespace ServicesManagement.Web.Correos
 
 
 
-            DatosProveedor(ref parameters, OrderNo);
+            var DsvEmail = DatosProveedor(ref parameters, OrderNo);
 
 
             #region Articulos
@@ -875,9 +875,9 @@ namespace ServicesManagement.Web.Correos
             #endregion
 
 
-            var CustomerEmail = DatosCte(ref parameters, OrderNo);
+            // var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(DsvEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -885,7 +885,7 @@ namespace ServicesManagement.Web.Correos
 
             MailMessage requestMessage = new MailMessage();
             requestMessage.LayoutId = 12;
-            requestMessage.MailTo = CustomerEmail;
+            requestMessage.MailTo = DsvEmail;
             requestMessage.Parameters = parameters;
 
             enviaCorreo(requestMessage);
@@ -1277,10 +1277,19 @@ namespace ServicesManagement.Web.Correos
             }
         }
 
-        public static void DatosProveedor(ref Dictionary<string, string> parameters, int OrderNo)
+        public static string DatosProveedor(ref Dictionary<string, string> parameters, int OrderNo)
         {
-            parameters.Add("@nombreProveedor", "nombre del proveedor");
+            string correo = string.Empty;
+            var ds = DALCorreos.DatosProveedor_sUp(OrderNo);
 
+            foreach (DataRow item in ds.Tables[0].Rows)
+            {
+                parameters.Add("@nombreProveedor", item["proveedor"].ToString());
+                parameters.Add("@orden", item["UeNo"].ToString());
+
+                correo = item["correo"].ToString();
+            }
+            return correo;
         }
 
         public static void TotalesImporteDev(ref Dictionary<string, string> parameters, int Id_cancelacion)
@@ -1309,7 +1318,7 @@ namespace ServicesManagement.Web.Correos
                 {
                     envio = decimal.Parse(item["Flete"].ToString());
                 }
-                total =  decimal.Parse(item["Total"].ToString());
+                total = decimal.Parse(item["Total"].ToString());
             }
             parameters.Add("@subTotal", "$" + subtotal);
             parameters.Add("@envio", "$" + envio);
