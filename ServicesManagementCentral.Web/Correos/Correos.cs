@@ -869,11 +869,11 @@ namespace ServicesManagement.Web.Correos
 
             if (string.IsNullOrEmpty(DsvEmail))
             {
-                throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
+                throw new Exception("No se ha podido enviar el correo al proveedor, ya que no se cuenta con correo registrado.");
             }
 
             MailMessage requestMessage = new MailMessage();
-            requestMessage.LayoutId = 12;
+            requestMessage.LayoutId = 14;
             requestMessage.MailTo = DsvEmail;
             requestMessage.Parameters = parameters;
 
