@@ -173,7 +173,7 @@ namespace ServicesManagement.Web.Controllers
 
     public class ProcessorInformation
     {
-        public string approvalCode { get; set; }
+        public string approvalCode { get; set; } = "";
     }
 
     public class ApprovalCodeJsonResponse
@@ -1836,12 +1836,14 @@ namespace ServicesManagement.Web.Controllers
                                     {
                                         aproval = JsonConvert.DeserializeObject<ApprovalCodeModel>((row["ResponseJson"].ToString()));
                                     }
-
-                                    if (aproval.ResponseObject.processorInformation != null)
-                                        ResponseEmisor.CveReespuestaEmisor = aproval.ResponseObject.processorInformation.approvalCode;
-
-                                    else
-                                        ResponseEmisor.CveReespuestaEmisor = "";
+                                    
+                                    if (aproval != null)
+                                    {
+                                        if (aproval.ResponseObject != null)
+                                            ResponseEmisor.CveReespuestaEmisor = aproval.ResponseObject.processorInformation.approvalCode;
+                                        else
+                                            ResponseEmisor.CveReespuestaEmisor = "";
+                                    }
 
                                     ResponseEmisor.DecisionEmisor = aproval.Status;
                                     ResponseEmisor.DescReespuestaEmisor = aproval.ReasonCodes;
