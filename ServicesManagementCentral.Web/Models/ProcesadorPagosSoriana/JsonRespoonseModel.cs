@@ -9,6 +9,7 @@ namespace ServicesManagement.Web.Models.ProcesadorPagosSoriana
 	{
 		public string orderReferenceNumber { get; set; }
 		public string orderAmount { get; set; }
+		public string orderDateTime { get; set; }
 		public string paymentType { get; set; }
 		public string paymentProcessor { get; set; }
 		public string TransactionAuthorizationId { get; set; }
@@ -18,6 +19,7 @@ namespace ServicesManagement.Web.Models.ProcesadorPagosSoriana
 		public string IsAuthorized { get; set; }
 		public string Apply3DS { get; set; }
 		public string MerchandiseType { get; set; }
+		public string paymentToken { get; set; }
 		public List<shipments> shipments { get; set; }
 
 	}
@@ -27,6 +29,7 @@ namespace ServicesManagement.Web.Models.ProcesadorPagosSoriana
 		public string shippingDeliveryDesc { get; set; }
 		public string shippingPaymentImport { get; set; }
 		public string shippingPaymentInstallments { get; set; }
+		public string shippingReferenceNumber { get; set; }
 		public List<items> Items { get; set; }
 	}
 

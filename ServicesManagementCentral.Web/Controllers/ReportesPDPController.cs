@@ -5,6 +5,7 @@ using ServicesManagement.Web.Models.ReportesPDP;
 using Soriana.ProcesadorPagosWeb;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Web;
@@ -154,7 +155,7 @@ namespace ServicesManagement.Web.Controllers
     public class Emisor
     {
         public string id { get; set; }
-        public string status { get; set; }
+	    public string status { get; set; }
     }
 
     public class ApprovalCodeModel
@@ -288,6 +289,24 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
         #endregion
+
+        #region Liquidaciones
+        public ActionResult Liquidaciones()
+        {
+            Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetProcesadorPagosBase("", "", "Liquidaciones"));
+
+            return View();
+        }
+        #endregion
+
+        #region Reversiones Saldo
+        public ActionResult ReservacionesSaldo()
+        {
+            Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetProcesadorPagosBase("", "", "Reversiones_Saldo"));
+
+            return View();
+        }
+        #endregion
         #endregion
 
         public ActionResult CanalGenerarOrden()
@@ -310,27 +329,11 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
+       
 
+       
 
-        public ActionResult Liquidaciones()
-        {
-            var list = new List<ReportesPDP>();
-
-            ViewBag.Reporte = list;
-
-
-            return View();
-        }
-
-        public ActionResult ReservacionesSaldo()
-        {
-            var list = new List<ReportesPDP>();
-
-            ViewBag.Reporte = list;
-
-
-            return View();
-        }
+        
 
         public ActionResult PagoTienda()
         {
@@ -352,7 +355,7 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-
+       
 
         public ActionResult AutDM()
         {
@@ -364,7 +367,7 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-
+      
 
         public ActionResult Validaciones()
         {
@@ -595,14 +598,12 @@ namespace ServicesManagement.Web.Controllers
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+           // _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             List<OrderPagoModels> lista = new List<OrderPagoModels>();
 
             try
             {
-
-
 
                 using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
                 {
@@ -996,17 +997,18 @@ namespace ServicesManagement.Web.Controllers
         }
 
 
-
         private List<ProcesadorPagosBase> GetProcesadorPagosBase(string FecIni, string FecFin, string Method)
         {
             DataSet ds = new DataSet();
             List<ProcesadorPagosBase> LstppsBase = new List<ProcesadorPagosBase>();
-
+            
             string spName = string.Empty;
 
-            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
-            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_PDP"].ToString(); //Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
 
             spName = "up_PPS_sel_PaymentTransactionRpt";
 
@@ -1039,22 +1041,22 @@ namespace ServicesManagement.Web.Controllers
                                 ProcesadorPagosBase ppsBase = new ProcesadorPagosBase();
 
                                 #region Mapping
+                                #region Datos Orden
                                 ppsBase.PaymentToken = row["PaymentToken"].ToString();
                                 ppsBase.OrderReferenceNumber = row["OrderReferenceNumber"].ToString();          //Orden ID
                                 ppsBase.PaymentTransactionID = row["PaymentTransactionID"].ToString();          //Transacción
                                 var fechaCreacion = row["OrderDate"].ToString();
                                 DateTime FecCreate = DateTime.Parse(fechaCreacion);
                                 ppsBase.OrderMonth = FecCreate.ToString("MMMM");
-                                ppsBase.OrderDate = row["OrderDate"].ToString().Substring(0, 10);                                //Fecha Creacion 
-                                ppsBase.OrderHour = fechaCreacion.Substring(10);
+                                
                                 ppsBase.OrderAmount = row["OrderAmount"].ToString();                            //Monto Total Orden
-                                ppsBase.Products = row["Products"].ToString();                                  //SKU Catálogo
                                 ppsBase.OrderSaleChannel = row["OrderSaleChannel"].ToString();                  //Canal Compra
+                                #endregion
 
                                 #region Tokenizacion
                                 ppsBase.Bank = row["Bank"].ToString();                                          //Banco
                                 ppsBase.BinCode = row["BinCode"].ToString();
-                                ppsBase.MaskCard = row["MaskCard"].ToString().Substring(15);                                  // Sufijo hay q recortar
+                                ppsBase.MaskCard = row["MaskCard"].ToString().Substring(15);                    // Sufijo hay q recortar
                                 ppsBase.TypeOfCard = row["TypeOfCard"].ToString();                              //Tipo Tarjeta
                                 ppsBase.PaymentMethod = row["PaymentMethod"].ToString();                        //Marca
                                 ppsBase.CustomerFirstName = row["CustomerFirstName"].ToString();
@@ -1072,12 +1074,8 @@ namespace ServicesManagement.Web.Controllers
                                 ppsBase.CustomerAddress = row["ShippingAddress"].ToString();                    //Calle
                                 ppsBase.CustomerCity = row["ShippingCity"].ToString();                          //Ciudad
                                 ppsBase.CustomerZipCode = row["CustomerZipCode"].ToString();                     //CP
-                                #endregion
-
-                                ppsBase.PaymentTransactionService = row["PaymentTransactionService"].ToString();                         //Estatus Orden
-                                ppsBase.TransactionStatus = row["TransactionStatus"].ToString();                //Estatus ENvio
-
-                                if (row["ShippingDeliveryDesc"].ToString() == "Envío - 1 - 1")
+                                
+                                if (row["ShippingReferenceNumber"].ToString() == "001-1")
                                 {
                                     ppsBase.ShippingDeliveryDesc = "SETC";
                                     ppsBase.Catalogo = "SETC";
@@ -1088,12 +1086,235 @@ namespace ServicesManagement.Web.Controllers
                                     ppsBase.ShippingDeliveryDesc = "MG";
                                     ppsBase.Catalogo = "MG";
                                 }
-                                ppsBase.ShippingDeliveryDesc = "MG";
+                                    ppsBase.ShippingDeliveryDesc = "MG";
+                                #endregion
 
+                                #region Lealtad
                                 ppsBase.CustomerLoyaltyRedeemPoints = row["CustomerLoyaltyRedeemPoints"].ToString(); //punto aplicados
                                 ppsBase.CustomerLoyaltyRedeemMoney = row["CustomerLoyaltyRedeemMoney"].ToString();  //efectivo disponble /dinero en efectivo                              
                                 ppsBase.CustomerLoyaltyCardId = row["CustomerLoyaltyCardId"].ToString();
-                                ppsBase.MethodPaymentShipment = row["MethodPaymentShipment"].ToString();
+                                #endregion
+
+                                #region Cancellation
+                                if (Method == "Creditos")
+                                {
+                                    decimal TotalPrice = 0;
+                                    decimal TotalPiezas = 0;
+                                    string Consignacion = string.Empty;
+
+                                    var Cancelacion = GetCancelDevolucion(ppsBase.OrderReferenceNumber);
+                                    var Productos = GetDatosArticuloCancelDev(ppsBase.OrderReferenceNumber);
+
+                                    foreach(var prod in Productos)
+                                    {
+                                        TotalPrice = decimal.Parse(prod.Price) + TotalPrice;
+                                        Consignacion = prod.ProductId + ", " + Consignacion;
+                                        TotalPiezas = TotalPiezas + 1;
+                                    }
+
+                                    ppsBase.NombreCancelacion = ppsBase.ShippingFirstName + " " + ppsBase.CustomerLastName;
+                                    ppsBase.Motivo = Cancelacion.Cancelacion.cancellationReason.Trim();
+
+                                    if(Cancelacion.Cancelacion.fec_movto == "")
+                                    {
+                                        ppsBase.FechaCancel = "";
+                                        ppsBase.HoraCancel = "";
+                                    }
+                                    else
+                                    {
+                                        var fechaCancel = Cancelacion.Cancelacion.fec_movto;
+                                        DateTime FecCancel = DateTime.Parse(fechaCancel);
+                                        ppsBase.FechaCancel = FecCancel.ToString("MMMM");
+                                        ppsBase.HoraCancel = fechaCancel.Substring(10);
+                                    }
+                                                                                                        
+                                    ppsBase.MontoCancel = TotalPrice.ToString();
+                                    ppsBase.ConsignacionIDCancelada = Consignacion;
+                                    ppsBase.NoPiezasConsignacionCancelacion = TotalPiezas.ToString();
+                                    ppsBase.FechaINgresoRMA = Cancelacion.Cancelacion.fec_movto;
+
+                                    ppsBase.ConsignaciónIDDevolucin = Consignacion;
+                                    ppsBase.DetalleConsignacionIngresada = "";
+                                    ppsBase.NoPzasConsignacionDevolucion = TotalPiezas.ToString();
+
+                                    if (Cancelacion.Devolucion.fec_movto == "")
+                                    {
+                                        ppsBase.FechaDevolucion = "";
+                                        ppsBase.HoraDevolucion = "";
+                                    }
+                                    else
+                                    {
+                                        var fechaDevolucion = Cancelacion.Devolucion.fec_movto;
+                                        DateTime FecDev = DateTime.Parse(fechaDevolucion);
+
+                                        ppsBase.FechaDevolucion = FecDev.ToString("MMMM");
+                                        ppsBase.HoraDevolucion = fechaDevolucion.Substring(10);
+                                    }
+
+                                  
+                                    ppsBase.FechaDevolucion = Cancelacion.Devolucion.fec_movto;
+                                   
+                                    ppsBase.MontoDevolucionConsignacion = TotalPrice.ToString();
+
+                                    ppsBase.FechaReembolso = "";
+                                    ppsBase.HoraReembolso = "";
+                                    ppsBase.FormaPagoRembolso = "";
+                                    ppsBase.Bin_Reembolso = row["BinCode"].ToString();
+                                    ppsBase.SufijoReembolso = row["MaskCard"].ToString().Substring(15);
+                                    ppsBase.ReembolsoAutomatico = "";
+                                    ppsBase.ReembolsoManual = "";
+                                    ppsBase.IDTransaccionReembolso = "";
+                                }
+                                #endregion
+
+                                #region GetTrace
+                                var DatosExtra = GetTracePayment(ppsBase.OrderReferenceNumber, ppsBase.Catalogo);
+
+                                if (DatosExtra.orderReferenceNumber != null)
+                                {
+                                    string FechaOrden = DatosExtra.orderDateTime.Substring(0,10);
+                                    string HoraOrden = DatosExtra.orderDateTime.Substring(11, 5);
+
+                                    ppsBase.OrderDate = FechaOrden;
+                                    ppsBase.OrderHour = HoraOrden;
+
+                                    ppsBase.orderAmount = DatosExtra.orderAmount;                                  
+                                    ppsBase.TransactionAuthorizationId = DatosExtra.TransactionAuthorizationId;
+                                    ppsBase.TransactionReferenceID = DatosExtra.TransactionReferenceID;
+                                    ppsBase.AffiliationType = DatosExtra.AffiliationType;
+                                    ppsBase.IsAuthenticated = DatosExtra.IsAuthenticated;
+                                    ppsBase.IsAuthorized = DatosExtra.IsAuthorized;
+                                    ppsBase.Apply3DS = DatosExtra.Apply3DS;
+                                    ppsBase.MerchandiseType = DatosExtra.MerchandiseType;
+
+                                    if(DatosExtra.paymentType == "WALLET")
+                                    {
+                                        ppsBase.paymentTypeJson = "PAYPAL";
+                                    }
+                                    else
+                                    {
+                                        bool flagOmonel = DatosExtra.paymentToken.Contains("OMONEL");
+
+                                        if (DatosExtra.paymentToken.Contains("OMONEL"))
+                                            ppsBase.paymentTypeJson = "OMONEL";
+                                        else
+                                            ppsBase.paymentTypeJson = DatosExtra.paymentType;
+                                    }
+                                        
+                                    if (DatosExtra.shipments.Count > 0)
+                                    {
+                                        ppsBase.shippingDeliveryDesc = DatosExtra.shipments[0].shippingDeliveryDesc;
+                                        ppsBase.shippingPaymentImport = DatosExtra.shipments[0].shippingPaymentImport;
+                                        ppsBase.shippingPaymentInstallments = DatosExtra.shipments[0].shippingPaymentInstallments;
+                                        ppsBase.shippingItemCategory = DatosExtra.shipments[0].Items[0].shippingItemCategory;
+                                        ppsBase.shippingItemId = DatosExtra.shipments[0].Items[0].shippingItemId;
+                                        ppsBase.shippingItemName = DatosExtra.shipments[0].Items[0].shippingItemName;
+                                        ppsBase.ShippingItemTotal = DatosExtra.shipments[0].Items[0].ShippingItemTotal;
+                                    }
+                                }
+                                #endregion
+
+                                #region Emisor
+                                if (Method == "AuthBancaria")
+                                {                                  
+                                    var EmisorResponse = GetDatosEmisor(ppsBase.OrderReferenceNumber);
+
+                                    ppsBase.DecisionEmisor = EmisorResponse.DecisionEmisor;
+                                    ppsBase.CveReespuestaEmisor = EmisorResponse.CveReespuestaEmisor;
+                                    ppsBase.DescReespuestaEmisor = EmisorResponse.DescReespuestaEmisor;
+                                    
+                                }
+                                #endregion
+                                #endregion
+
+                                LstppsBase.Add(ppsBase);
+                            }
+                        }
+                    }
+                }
+
+               /* var LstOmonel = GetProcesadorPagosBase_Omonel(FecIni, FecFin, Method);
+
+                foreach(var omonel in LstOmonel)
+                {
+                    LstppsBase.Add(omonel);
+                }*/
+
+                return LstppsBase;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        private List<ProcesadorPagosBase> GetProcesadorPagosBase_Omonel(string FecIni, string FecFin, string Method)
+        {
+            List<ProcesadorPagosBase> LstppsBase = new List<ProcesadorPagosBase>();
+            DataSet ds = new DataSet();
+
+            string spName = string.Empty;
+
+            var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_PDP"].ToString(); //Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+
+            spName = "up_PPS_sel_PaymentTransactionOmonelRpt";
+
+            try
+            {
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(spName, cnn))
+                    {
+                        if (FecIni != "" && FecFin != "")
+                        {
+                            System.Data.SqlClient.SqlParameter param;
+                            param = cmd.Parameters.Add("@fechaini", SqlDbType.VarChar);
+                            param.Value = FecIni;
+
+                            System.Data.SqlClient.SqlParameter param2;
+                            param2 = cmd.Parameters.Add("@fechafin", SqlDbType.VarChar);
+                            param2.Value = FecFin;
+                        }
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                ProcesadorPagosBase ppsBase = new ProcesadorPagosBase();
+
+                                #region Datos Orden
+                                ppsBase.PaymentToken = row["PaymentToken"].ToString();
+                                ppsBase.OrderReferenceNumber = row["OrderReferenceNumber"].ToString();          //Orden ID
+                                ppsBase.PaymentTransactionID = row["PaymentOrderID"].ToString();          //Transacción
+                                var fechaCreacion = row["OrderDate"].ToString();
+                                DateTime FecCreate = DateTime.Parse(fechaCreacion);
+                                ppsBase.OrderMonth = FecCreate.ToString("MMMM");
+                                ppsBase.OrderDate = row["OrderDate"].ToString().Substring(0, 10);                                //Fecha Creacion 
+                                ppsBase.OrderHour = fechaCreacion.Substring(10);                              
+                                //ppsBase.Products = row["Products"].ToString();                                  //SKU Catálogo
+                                ppsBase.OrderSaleChannel = row["OrderSaleChannel"].ToString();                  //Canal Compra
+                                #endregion
+
+                                #region Tokenizacion
+                                ppsBase.Bank = row["Bank"].ToString();                                          //Banco
+                                ppsBase.BinCode = row["BinCode"].ToString();
+                                ppsBase.MaskCard = row["MaskCard"].ToString().Substring(15);                    // Sufijo hay q recortar
+                                ppsBase.TypeOfCard = row["TypeOfCard"].ToString();                              //Tipo Tarjeta
+                                ppsBase.PaymentMethod = row["PaymentMethod"].ToString();                        //Marca
+                                ppsBase.CustomerFirstName = row["CustomerFirstName"].ToString();
+                                ppsBase.CustomerLastName = row["CustomerLastName"].ToString();
+                                #endregion
+
+                                #region Lealtad
+                                ppsBase.CustomerLoyaltyRedeemPoints = row["CustomerLoyaltyRedeemPoints"].ToString(); //punto aplicados
+                                ppsBase.CustomerLoyaltyRedeemMoney = row["CustomerLoyaltyRedeemMoney"].ToString();  //efectivo disponble /dinero en efectivo                              
+                                ppsBase.CustomerLoyaltyCardId = row["CustomerLoyaltyCardId"].ToString();
+                                //ppsBase.MethodPaymentShipment = row["MethodPaymentShipment"].ToString();
+                                #endregion
 
                                 #region Cancellation
                                 if (Method == "Creditos")
@@ -1167,65 +1388,237 @@ namespace ServicesManagement.Web.Controllers
                                 }
                                 #endregion
 
-                                #region GetTrace
-                                var DatosExtra = GetTracePayment(ppsBase.OrderReferenceNumber);
-
-                                if (DatosExtra.orderReferenceNumber != null)
-                                {
-                                    ppsBase.orderAmount = DatosExtra.orderAmount;
-                                    ppsBase.paymentTypeJson = DatosExtra.paymentType;
-                                    ppsBase.TransactionAuthorizationId = DatosExtra.TransactionAuthorizationId;
-                                    ppsBase.TransactionReferenceID = DatosExtra.TransactionReferenceID;
-                                    ppsBase.AffiliationType = DatosExtra.AffiliationType;
-                                    ppsBase.IsAuthenticated = DatosExtra.IsAuthenticated;
-                                    ppsBase.IsAuthorized = DatosExtra.IsAuthorized;
-                                    ppsBase.Apply3DS = DatosExtra.Apply3DS;
-                                    ppsBase.MerchandiseType = DatosExtra.MerchandiseType;
-                                    if (DatosExtra.shipments.Count > 0)
-                                    {
-                                        ppsBase.shippingDeliveryDesc = DatosExtra.shipments[0].shippingDeliveryDesc;
-                                        ppsBase.shippingPaymentImport = DatosExtra.shipments[0].shippingPaymentImport;
-                                        ppsBase.shippingPaymentInstallments = DatosExtra.shipments[0].shippingPaymentInstallments;
-                                        ppsBase.shippingItemCategory = DatosExtra.shipments[0].Items[0].shippingItemCategory;
-                                        ppsBase.shippingItemId = DatosExtra.shipments[0].Items[0].shippingItemId;
-                                        ppsBase.shippingItemName = DatosExtra.shipments[0].Items[0].shippingItemName;
-                                        ppsBase.ShippingItemTotal = DatosExtra.shipments[0].Items[0].ShippingItemTotal;
-                                    }
-                                }
-                                #endregion
-
                                 #region Emisor
-                                if (Method == "AuthBancaria")
+                                /*if (Method == "AuthBancaria")
                                 {
                                     var EmisorResponse = GetDatosEmisor(ppsBase.OrderReferenceNumber);
 
                                     ppsBase.DecisionEmisor = EmisorResponse.DecisionEmisor;
                                     ppsBase.CveReespuestaEmisor = EmisorResponse.CveReespuestaEmisor;
                                     ppsBase.DescReespuestaEmisor = EmisorResponse.DescReespuestaEmisor;
-                                    #endregion
-                                }
+
+                                }*/
                                 #endregion
 
-                                LstppsBase.Add(ppsBase);
+                                #region GetTrace Omonel
+                                var datosExtra = GetTracePaymentOmonel(ppsBase.OrderReferenceNumber);
+
+                                if (datosExtra.orderReferenceNumber != null)
+                                {
+                                    ppsBase.TransactionAuthorizationId = datosExtra.TransactionAuthorizationId;
+                                    ppsBase.TransactionReferenceID = datosExtra.TransactionReferenceID;
+                                    ppsBase.AffiliationType = datosExtra.AffiliationType;
+                                    ppsBase.IsAuthenticated = datosExtra.IsAuthenticated;
+                                    ppsBase.IsAuthorized = datosExtra.IsAuthorized;
+                                    ppsBase.Apply3DS = datosExtra.Apply3DS;
+                                    ppsBase.MerchandiseType = datosExtra.MerchandiseType;
+
+                                    if (datosExtra.paymentType == "WALLET")
+                                    {
+                                        ppsBase.paymentTypeJson = "PAYPAL";
+                                    }
+                                    else
+                                    {
+                                        bool flagOmonel = datosExtra.paymentToken.Contains("OMONEL");
+
+                                        if (datosExtra.paymentToken.Contains("OMONEL"))
+                                            ppsBase.paymentTypeJson = "OMONEL";
+                                        else
+                                            ppsBase.paymentTypeJson = datosExtra.paymentType;
+                                    }
+
+                                    if (datosExtra.shipments.Count > 0)
+                                    {
+                                        ppsBase.OrderAmount = datosExtra.shipments[0].shippingPaymentImport;
+                                        ppsBase.shippingDeliveryDesc = datosExtra.shipments[0].shippingDeliveryDesc;
+                                        ppsBase.shippingPaymentImport = datosExtra.shipments[0].shippingPaymentImport;
+                                        ppsBase.shippingPaymentInstallments = datosExtra.shipments[0].shippingPaymentInstallments;
+                                        ppsBase.shippingItemCategory = datosExtra.shipments[0].Items[0].shippingItemCategory;
+                                        ppsBase.shippingItemId = datosExtra.shipments[0].Items[0].shippingItemId;
+                                        ppsBase.shippingItemName = datosExtra.shipments[0].Items[0].shippingItemName;
+                                        ppsBase.ShippingItemTotal = datosExtra.shipments[0].Items[0].ShippingItemTotal;
+
+                                        LstppsBase.Add(ppsBase);
+                                    }
+
+                                    if (datosExtra.shipments.Count == 2)
+                                    {
+                                        ProcesadorPagosBase ppsBase1 = new ProcesadorPagosBase();
+
+                                        #region Datos Orden
+                                        ppsBase1.PaymentToken = row["PaymentToken"].ToString();
+                                        ppsBase1.OrderReferenceNumber = row["OrderReferenceNumber"].ToString();          //Orden ID
+                                        ppsBase1.PaymentTransactionID = row["PaymentOrderID"].ToString();          //Transacción
+                                        var fechaCreacion1 = row["OrderDate"].ToString();
+                                        
+                                        ppsBase1.OrderMonth = FecCreate.ToString("MMMM");
+                                        ppsBase1.OrderDate = row["OrderDate"].ToString().Substring(0, 10);                                //Fecha Creacion 
+                                        ppsBase1.OrderHour = fechaCreacion.Substring(10);
+                                        //ppsBase1.Products = row["Products"].ToString();                                  //SKU Catálogo
+                                        ppsBase1.OrderSaleChannel = row["OrderSaleChannel"].ToString();                  //Canal Compra
+                                        #endregion
+
+                                        #region Tokenizacion
+                                        ppsBase1.Bank = row["Bank"].ToString();                                          //Banco
+                                        ppsBase1.BinCode = row["BinCode"].ToString();
+                                        ppsBase1.MaskCard = row["MaskCard"].ToString().Substring(15);                    // Sufijo hay q recortar
+                                        ppsBase1.TypeOfCard = row["TypeOfCard"].ToString();                              //Tipo Tarjeta
+                                        ppsBase1.PaymentMethod = row["PaymentMethod"].ToString();                        //Marca
+                                        ppsBase1.CustomerFirstName = row["CustomerFirstName"].ToString();
+                                        ppsBase1.CustomerLastName = row["CustomerLastName"].ToString();
+                                        #endregion
+
+                                        #region Lealtad
+                                        ppsBase1.CustomerLoyaltyRedeemPoints = row["CustomerLoyaltyRedeemPoints"].ToString(); //punto aplicados
+                                        ppsBase1.CustomerLoyaltyRedeemMoney = row["CustomerLoyaltyRedeemMoney"].ToString();  //efectivo disponble /dinero en efectivo                              
+                                        ppsBase1.CustomerLoyaltyCardId = row["CustomerLoyaltyCardId"].ToString();
+                                        //ppsBase.MethodPaymentShipment = row["MethodPaymentShipment"].ToString();
+                                        #endregion
+
+                                        #region Cancellation
+                                        if (Method == "Creditos")
+                                        {
+                                            decimal TotalPrice = 0;
+                                            decimal TotalPiezas = 0;
+                                            string Consignacion = string.Empty;
+
+                                            var Cancelacion = GetCancelDevolucion(ppsBase.OrderReferenceNumber);
+                                            var Productos = GetDatosArticuloCancelDev(ppsBase.OrderReferenceNumber);
+
+                                            foreach (var prod in Productos)
+                                            {
+                                                TotalPrice = decimal.Parse(prod.Price) + TotalPrice;
+                                                Consignacion = prod.ProductId + ", " + Consignacion;
+                                                TotalPiezas = TotalPiezas + 1;
+                                            }
+
+                                            ppsBase.NombreCancelacion = ppsBase.ShippingFirstName + " " + ppsBase.CustomerLastName;
+                                            ppsBase.Motivo = Cancelacion.Cancelacion.cancellationReason.Trim();
+
+                                            if (Cancelacion.Cancelacion.fec_movto == "")
+                                            {
+                                                ppsBase.FechaCancel = "";
+                                                ppsBase.HoraCancel = "";
+                                            }
+                                            else
+                                            {
+                                                var fechaCancel = Cancelacion.Cancelacion.fec_movto;
+                                                DateTime FecCancel = DateTime.Parse(fechaCancel);
+                                                ppsBase.FechaCancel = FecCancel.ToString("MMMM");
+                                                ppsBase.HoraCancel = fechaCancel.Substring(10);
+                                            }
+
+                                            ppsBase.MontoCancel = TotalPrice.ToString();
+                                            ppsBase.ConsignacionIDCancelada = Consignacion;
+                                            ppsBase.NoPiezasConsignacionCancelacion = TotalPiezas.ToString();
+                                            ppsBase.FechaINgresoRMA = Cancelacion.Cancelacion.fec_movto;
+
+                                            ppsBase.ConsignaciónIDDevolucin = Consignacion;
+                                            ppsBase.DetalleConsignacionIngresada = "";
+                                            ppsBase.NoPzasConsignacionDevolucion = TotalPiezas.ToString();
+
+                                            if (Cancelacion.Devolucion.fec_movto == "")
+                                            {
+                                                ppsBase.FechaDevolucion = "";
+                                                ppsBase.HoraDevolucion = "";
+                                            }
+                                            else
+                                            {
+                                                var fechaDevolucion = Cancelacion.Devolucion.fec_movto;
+                                                DateTime FecDev = DateTime.Parse(fechaDevolucion);
+
+                                                ppsBase.FechaDevolucion = FecDev.ToString("MMMM");
+                                                ppsBase.HoraDevolucion = fechaDevolucion.Substring(10);
+                                            }
+
+
+                                            ppsBase.FechaDevolucion = Cancelacion.Devolucion.fec_movto;
+
+                                            ppsBase.MontoDevolucionConsignacion = TotalPrice.ToString();
+
+                                            ppsBase.FechaReembolso = "";
+                                            ppsBase.HoraReembolso = "";
+                                            ppsBase.FormaPagoRembolso = "";
+                                            ppsBase.Bin_Reembolso = row["BinCode"].ToString();
+                                            ppsBase.SufijoReembolso = row["MaskCard"].ToString().Substring(15);
+                                            ppsBase.ReembolsoAutomatico = "";
+                                            ppsBase.ReembolsoManual = "";
+                                            ppsBase.IDTransaccionReembolso = "";
+                                        }
+                                        #endregion
+
+                                        #region Emisor
+                                        /*if (Method == "AuthBancaria")
+                                        {
+                                            var EmisorResponse = GetDatosEmisor(ppsBase.OrderReferenceNumber);
+
+                                            ppsBase.DecisionEmisor = EmisorResponse.DecisionEmisor;
+                                            ppsBase.CveReespuestaEmisor = EmisorResponse.CveReespuestaEmisor;
+                                            ppsBase.DescReespuestaEmisor = EmisorResponse.DescReespuestaEmisor;
+
+                                        }*/
+                                        #endregion
+
+                                        #region Trace
+                                        ppsBase1.TransactionAuthorizationId = datosExtra.TransactionAuthorizationId;
+                                        ppsBase1.TransactionReferenceID = datosExtra.TransactionReferenceID;
+                                        ppsBase1.AffiliationType = datosExtra.AffiliationType;
+                                        ppsBase1.IsAuthenticated = datosExtra.IsAuthenticated;
+                                        ppsBase1.IsAuthorized = datosExtra.IsAuthorized;
+                                        ppsBase1.Apply3DS = datosExtra.Apply3DS;
+                                        ppsBase1.MerchandiseType = datosExtra.MerchandiseType;
+
+                                        if (datosExtra.paymentType == "WALLET")
+                                        {
+                                            ppsBase1.paymentTypeJson = "PAYPAL";
+                                        }
+                                        else
+                                        {
+                                            bool flagOmonel = datosExtra.paymentToken.Contains("OMONEL");
+
+                                            if (datosExtra.paymentToken.Contains("OMONEL"))
+                                                ppsBase1.paymentTypeJson = "OMONEL";
+                                            else
+                                                ppsBase1.paymentTypeJson = datosExtra.paymentType;
+                                        }
+                                        ppsBase1.OrderAmount = datosExtra.shipments[1].shippingPaymentImport;
+                                        ppsBase1.shippingDeliveryDesc = datosExtra.shipments[1].shippingDeliveryDesc;
+                                        ppsBase1.shippingPaymentImport = datosExtra.shipments[1].shippingPaymentImport;
+                                        ppsBase1.shippingPaymentInstallments = datosExtra.shipments[1].shippingPaymentInstallments;
+                                        ppsBase1.shippingItemCategory = datosExtra.shipments[1].Items[0].shippingItemCategory;
+                                        ppsBase1.shippingItemId = datosExtra.shipments[1].Items[0].shippingItemId;
+                                        ppsBase1.shippingItemName = datosExtra.shipments[1].Items[0].shippingItemName;
+                                        ppsBase1.ShippingItemTotal = datosExtra.shipments[1].Items[0].ShippingItemTotal;
+                                        #endregion
+
+                                        LstppsBase.Add(ppsBase1);
+                                    }
+                                }
+                                else
+                                {
+                                    LstppsBase.Add(ppsBase);
+                                }
+                                #endregion                             
                             }
                         }
                     }
                 }
-
-                return LstppsBase;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
+
+            return LstppsBase;
         }
 
-        private JsonRespoonseModel GetTracePayment(string OrderReferenceNumber)
+        private JsonRespoonseModel GetTracePayment(string OrderReferenceNumber, string Catalogo)
         {
             string ceros = "";
             DataSet ds = new DataSet();
             string JsonRequest = string.Empty;
+            string JsonRequest_SETC = string.Empty;
+            string JsonReques_MG = string.Empty;
             JsonRespoonseModel Response = new JsonRespoonseModel();
 
             var count = OrderReferenceNumber.Length;
@@ -1240,9 +1633,11 @@ namespace ServicesManagement.Web.Controllers
 
             OrderReferenceNumber = ceros + OrderReferenceNumber;
 
-            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_PDP"].ToString(); //Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
             //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             try
@@ -1265,13 +1660,30 @@ namespace ServicesManagement.Web.Controllers
                             foreach (DataRow row in dt.Rows)
                             {
                                 JsonRequest = row["RequestJson"].ToString();
+                                Response = JsonConvert.DeserializeObject<JsonRespoonseModel>(JsonRequest);
 
+                                foreach (var sh in Response.shipments)
+                                {
+                                    if(sh.shippingReferenceNumber == "001-1")
+                                    {
+                                        JsonRequest_SETC = JsonRequest;
+                                    }
+                                    else
+                                    {
+                                        JsonReques_MG = JsonRequest;
+                                    }
+                                }
+                                JsonRequest = string.Empty;
                             }
                         }
 
-                        if (JsonRequest != "")
+                        if(JsonRequest_SETC != "" || JsonReques_MG !="")
                         {
-                            Response = JsonConvert.DeserializeObject<JsonRespoonseModel>(JsonRequest);
+                            if (Catalogo == "SETC")
+                                Response = JsonConvert.DeserializeObject<JsonRespoonseModel>(JsonRequest_SETC);
+                            else if (Catalogo == "MG")
+                                Response = JsonConvert.DeserializeObject<JsonRespoonseModel>(JsonReques_MG);
+
                             shipments shipment = new shipments();
                             items item = new items();
                             List<items> lstItems = new List<items>();
@@ -1300,8 +1712,7 @@ namespace ServicesManagement.Web.Controllers
 
                             Response.shipments.Clear();
                             Response.shipments.Add(shipment);
-                        }
-
+                        }                      
                     }
                 }
 
@@ -1313,6 +1724,70 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+
+        private JsonRespoonseModel GetTracePaymentOmonel(string OrderReferenceNumber)
+        {
+            string ceros = "";
+            DataSet ds = new DataSet();
+            string JsonRequest = string.Empty;
+            string JsonRequest_SETC = string.Empty;
+            string JsonReques_MG = string.Empty;
+            JsonRespoonseModel Response = new JsonRespoonseModel();
+            List<JsonRespoonseModel> LstResponse = new List<JsonRespoonseModel>();
+
+            var count = OrderReferenceNumber.Length;
+
+            int ceros2 = 8 - count;
+
+
+            for (int x = 0; x < ceros2; x++)
+            {
+                ceros = "0" + ceros;
+            }
+
+            OrderReferenceNumber = ceros + OrderReferenceNumber;
+
+            var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_PDP"].ToString(); //Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
+            //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
+            try
+            {
+                using (System.Data.SqlClient.SqlConnection cnn = new System.Data.SqlClient.SqlConnection(_ConnectionString))
+                {
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand("up_PPS_sel_Trace_payments_Prov_Omonel", cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        System.Data.SqlClient.SqlParameter param;
+                        param = cmd.Parameters.Add("@OrderReferenceNumber", SqlDbType.VarChar);
+                        param.Value = "0000024638";//OrderReferenceNumber;
+
+                        using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
+                            dataAdapter.Fill(ds);
+
+                        foreach (DataTable dt in ds.Tables)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                JsonRequest = row["RequestJson"].ToString();
+                                Response = JsonConvert.DeserializeObject<JsonRespoonseModel>(JsonRequest);                              
+                            }
+                        }                                            
+                    }
+                }
+
+                return Response;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+       
         private ResponseEmisor GetDatosEmisor(string OrderReferenceNumber)
         {
             DataSet ds = new DataSet();
@@ -1322,8 +1797,8 @@ namespace ServicesManagement.Web.Controllers
             ApprovalCodeModel aproval = new ApprovalCodeModel();
             string spName = string.Empty;
 
-            var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
-            _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_PDP"].ToString();
+            //_ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             spName = "up_PPS_Sel_DecisionEmisor";
@@ -1368,7 +1843,7 @@ namespace ServicesManagement.Web.Controllers
                                 }
                                 else if (row["method"].ToString() == "ValidateAuthentication")
                                 {
-                                    if (row["ResponseJson"].ToString() != "")
+                                    if(row["ResponseJson"].ToString() != "")
                                     {
                                         EmisorRes = JsonConvert.DeserializeObject<Emisor>(row["ResponseJson"].ToString());
                                     }
@@ -1424,7 +1899,7 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioDB;Persist Security Info=False;User ID=sorianaprod_mrcr;Password=!#W3rCuR10;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
             spName = "up_PPS_Sel_Totales_MetodosPago";
 
@@ -1508,7 +1983,8 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioDB;Persist Security Info=False;User ID=sorianaprod_mrcr;Password=!#W3rCuR10;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
             spName = "up_PPS_Sel_AprobacionesMarcas";
 
@@ -1531,7 +2007,7 @@ namespace ServicesManagement.Web.Controllers
                                 Aprobaciones aprobaciones = new Aprobaciones();
                                 aprobaciones.id_num_apl = row["id_num_apl"].ToString();
                                 aprobaciones.id_num_formapago = row["id_num_formapago"].ToString();
-                                aprobaciones.Id_Num_Orden = row["Id_Num_Orden"].ToString();
+                                aprobaciones.Id_Num_Orden  = row["Id_Num_Orden"].ToString();
                                 aprobaciones.nom_pagOrig = row["nom_pagOrig"].ToString();
                                 aprobaciones.tipoOrden = row["tipoOrden"].ToString();
                                 aprobaciones.imp_preciounit = row["imp_preciounit"].ToString();
@@ -1541,9 +2017,9 @@ namespace ServicesManagement.Web.Controllers
                         }
 
                         //Mapeo Resultado
-                        foreach (var row in LstAprobaciones)
+                        foreach(var row in LstAprobaciones)
                         {
-                            if (row.id_num_apl == "22")
+                            if(row.id_num_apl == "22")
                             {
                                 #region web
                                 if (row.id_num_formapago == "1")
@@ -1560,18 +2036,18 @@ namespace ServicesManagement.Web.Controllers
 
                                 if (row.id_num_formapago == "4")
                                 {
-                                    contWebPIS = contWebPIS + 1;
+                                    contWebPIS= contWebPIS + 1;
                                     MontoWebPIS = decimal.Parse(row.imp_preciounit) + MontoWebPIS;
                                 }
 
                                 if (row.id_num_formapago == "25")
                                 {
-                                    contWebFa = contWebFa + 1;
+                                    contWebFa= contWebFa+ 1;
                                     MontoWebFa = decimal.Parse(row.imp_preciounit) + MontoWebFa;
                                 }
                                 #endregion
                             }
-                            else if ((row.id_num_apl == "23") || (row.id_num_apl == "24"))
+                            else if((row.id_num_apl == "23") || (row.id_num_apl == "24"))
                             {
                                 #region Movil
                                 if (row.id_num_formapago == "1")
@@ -1691,6 +2167,7 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
             //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             spName = "up_PPS_Sel_Cancel_Devolucion";
@@ -1778,7 +2255,7 @@ namespace ServicesManagement.Web.Controllers
 
                 return Response;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw ex;
             }
@@ -1796,7 +2273,7 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
+            //_ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioDB;Persist Security Info=False;User ID=sorianaprod_mrcr;Password=!#W3rCuR10;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
             spName = "spDatosSplitOrder_rpt_sUP";
             spName2 = "spDatosArticulosbyOrderId_rpt_sUP";
@@ -1841,7 +2318,8 @@ namespace ServicesManagement.Web.Controllers
 
                         foreach (DataTable dt in ds.Tables)
                         {
-                            if (dt.TableName == "Table1")
+
+                            if(dt.TableName == "Table")
                             {
                                 foreach (DataRow row in dt.Rows)
                                 {
@@ -1850,19 +2328,21 @@ namespace ServicesManagement.Web.Controllers
                                         CodeBarra = row["CodeBarra"].ToString(),
                                         ProductName = row["ProductName"].ToString(),
                                         Quantity = row["Quantity"].ToString(),
-                                        Price = "0", //row["Price"].ToString(),
+                                        Price = row["Price"].ToString(),
                                         ProductId = row["ProductId"].ToString()
                                     };
 
-                                    lstDetalleProd.Add(prod);
+                                    lstDetalleProd.Add(prod);                                
                                 }
                             }
+                            
+
 
                         }
                     }
                 }
 
-
+                
                 return lstDetalleProd;
             }
             catch (Exception ex)
