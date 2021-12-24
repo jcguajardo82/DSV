@@ -1,70 +1,112 @@
 ﻿
 @{
-    ViewBag.Title = "ReservacionesSaldo";
+    ViewBag.Title = "Reversiones Saldo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Reservaciones Saldo</h2>
+<h2>Reversiones Saldo</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-        <div style="width:99%;">
-            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
-                <thead class="bg-danger-sor">
-                    <tr>
-                        <th>Orden ID</th>
-                        <th>Carrito</th>
-                        <th>ID Transacción</th>
-                        <th>Fecha Creación</th>
-                        <th>Hora Creacón</th>
-                        <th>No. Afiliación</th>
-                        <th>Adquiriente</th>
-                        <th>Catálogo</th>
-                        <th>Tipo Entrega</th>
-                        <th>Tipo de Transporte</th>
-                        <th>Forma de Pago</th>
-                        <th>3D/safe key</th>
-                        <th>Estatus de Pago</th>
-                        <th>No. Afiliación</th>
-                        <th>SKU Cátalogo</th>
-                        <th>Nombre del Articulo</th>
-                        <th>canal de compra</th>
-                        <th>Forma pago</th>
-                        <th>Estatus de pago</th>
-                        <th>Tipo Almacen</th>
-                        <th>Estatus de Envio</th>
-                        <th>Consignación ID</th>
-                        <th>No.Pzas Consignación</th>
-                        <th>Monto Consignación</th>
-                        <th>Costo Envio</th>
-                        <th>Monto Total Orden</th>
-                        <th>Banco</th>
-                        <th>Bin</th>
-                        <th>Sufijo</th>
-                        <th>Tipo Tarjeta</th>
-                        <th>Marca</th>
-                        <th>No. Autorizacion</th>
-                        <th>Msi</th>
-                        <th>Correo</th>
-                        <th>Nombre Persona a Recibir</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>Teléfono</th>
-                        <th>Calle</th>
-                        <th>Colonia</th>
-                        <th>Ciudad</th>
-                        <th>Número</th>
-                        <th>Interior</th>
-                        <th>CP</th>
-                        <th>No. Piezas Consignación</th>
-                        <th>Fecha Reversion de  autorizacion</th>
-                        <th>Hora de reversion de autorizacion</th>
-                        <th>Monto de Reversion de autorizacion</th>
-                        <th>Liquidacion manual</th>
-                        <th>liquidacion automatica</th>
-                        <th>ID Transaccion Liquidacion</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Fecha Inicio</label>
+                    <input type="date" id="txtFecIni" class="form-control" />
+                    <div class="input-group date" id="datetimepicker1"></div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+                    Buscar
+                </button>
+            </div>
+            <div style="width:99%;">
+                <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                    <thead class="bg-danger-sor">
+                        <tr>
+                            <th>Orden ID</th>
+                            <th>ID transaccion</th>
+                            <th>Fecha de creación</th>
+                            <th>Hora de creación</th>
+                            <th>No. Afiliacion</th>
+                            <th>Adquirente</th>
+                            <th>Catálogo</th>
+                            <th>Tipo entrega</th>
+                            <th>Canal de compra</th>
+                            <th>Forma de pago</th>
+                            <th>Estatus de pago</th>
+                            <th>Tipo de almacen</th>
+                            <th>Estatus del envío</th>
+                            <th>Costo de envío</th>
+                            <th>Monto total de la orden</th>
+                            <th>Banco</th>
+                            <th>Bin</th>
+                            <th>Sufijo</th>
+                            <th>Tipo de tarjeta</th>
+                            <th>Marca</th>
+                            <th>No. Autorizacion</th>
+                            <th>MSI</th>
+                            <th>Correo</th>
+                            <th>Nombre de persona a recibir</th>
+                            <th>Apellido_P</th> 
+                            <th>Apellido_M</th>
+                            <th>Fecha reversión de autorización</th>
+                            <th>Hora  de reversión de  autorización</th>
+                            <th>Monto de reversi´´on de autorizción</th>
+                            <th>ID transaccion REVERSION DE LA AUTORIZACION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if (Session["listaGrid"] != null)
+                            {
+                                var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase>>(Session["listaGrid"].ToString());
+
+                                foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase o in lista)
+                                {
+                                                <tr>
+                                                    <td>@o.OrderReferenceNumber</td>
+                                                    <td>@o.PaymentTransactionID</td>
+                                                    <td>@o.OrderDate</td>
+                                                    <td>@o.OrderHour</td>
+                                                    <td>@*No. Afiliacion*@</td>
+                                                    <td>@*Adquirente*@</td>
+                                                    <td>@o.Catalogo</td>
+                                                    <td>@o.shippingDeliveryDesc</td>
+                                                    <td>@o.OrderSaleChannel</td>
+                                                    <td>@o.paymentTypeJson</td>
+                                                    <td>@*Estatus de pago*@</td>
+                                                    <td>@*Tipo de almacen*@</td>
+                                                    <td>@*Estatus del envío*@</td>
+                                                    <td>@o.ShippingItemTotal</td>
+                                                    <td>@o.orderAmount</td>
+                                                    <td>@o.Bank</td>
+                                                    <td>@o.BinCode</td>
+                                                    <td>@o.MaskCard</td>
+                                                    <td>@o.TypeOfCard</td>
+                                                    <td>@o.PaymentMethod</td>
+                                                    <td>@o.TransactionAuthorizationId</td>
+                                                    <td>@o.shippingPaymentInstallments</td>
+                                                    <td>@o.clientEmail</td>
+                                                    <td>@o.ShippingFirstName</td>
+                                                    <td>@o.ShippingLastName</td>
+                                                    <td>@*Apellido_M*@</td>
+                                                    <td>@*Fecha reversión de autorización*@</td>
+                                                    <td>@*Hora  de reversión de  autorización*@</td>
+                                                    <td>@*Monto de reversi´´on de autorizción*@</td>
+                                                    <td>@*ID transaccion REVERSION DE LA AUTORIZACION*@</td>
+                                                </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -188,7 +230,120 @@
                 }
             );
         });
+
+
+          function GetHistorialRMA() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetParamDatesCanalCompra", "ReportesPDP")',
+                data: {
+                        FecIni: _FecIni,
+                        FecFin: _FecFin,
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        debugger;
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable.clear().draw();
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            debugger;
+                            var rw = json.resp[i];
+                            var OrderReferenceNumber = rw.OrderReferenceNumber;
+                            var PaymentTransactionID = rw.PaymentTransactionID;
+                            var OrderDate = rw.OrderDate;
+                            var OrderHour = rw.OrderHour;
+                            var NoAfiliacion = "";
+                            var Adquirente = "";
+                            var Catalogo = rw.Catalogo;
+                            var shippingDeliveryDesc = rw.shippingDeliveryDesc;
+                            var OrderSaleChannel = rw.OrderSaleChannel;
+                            var FormaPago = "";
+                            var EstatusPago = "";
+                            var TipoAlmacen = "";
+                            var Estatusenvio = "";
+                            var ShippingItemTotal = rw.ShippingItemTotal;
+                            var orderAmount = rw.orderAmount;
+                            var Bank = rw.Bank;
+                            var BinCode = rw.BinCode;
+                            var MaskCard = rw.MaskCard;
+                            var PaymentMethod = rw.PaymentMethod;
+                            var TypeOfCard = rw.TypeOfCard;
+                            var TransactionAuthorizationId = rw.TransactionAuthorizationId;
+                            var shippingPaymentInstallments = rw.shippingPaymentInstallments;
+                            var clientEmail = rw.clientEmail;
+                            var ShippingFirstName = rw.ShippingFirstName;
+                            var ShippingLastName = rw.ShippingLastName
+
+                            var Apellido_M = "";
+                            var FechaLiquidacion = "";
+                            var HoraLiquidacion = "";
+                            var MontoLiquidacion = "";
+                            var LiquidacionManual = "";
+                            var LiquidacionAutomatica = "";
+                            var IDTransaccionLiquidacion = "";
+
+                            myTable.row.add([
+                                OrderReferenceNumber
+                             , PaymentTransactionID
+                             , OrderDate
+                             , OrderHour
+                             , NoAfiliacion
+                             , Adquirente
+                             , Catalogo
+                             , shippingDeliveryDesc
+                             , OrderSaleChannel
+                             , FormaPago
+                             , EstatusPago
+                             , TipoAlmacen
+                             , Estatusenvio
+                             , ShippingItemTotal
+                             , orderAmount
+                             , Bank
+                             , BinCode
+                             , MaskCard
+                             , PaymentMethod
+                             , TypeOfCard
+                             , TransactionAuthorizationId
+                             , shippingPaymentInstallments
+                             , clientEmail
+                             , ShippingFirstName
+                             , ShippingLastName
+                             , Apellido_M
+                             , FechaLiquidacion
+                             , HoraLiquidacion
+                             , MontoLiquidacion
+                             , LiquidacionManual
+                             , LiquidacionAutomatica
+                             , IDTransaccionLiquidacion
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+            });
+        }
     </script>
 }
-
 
