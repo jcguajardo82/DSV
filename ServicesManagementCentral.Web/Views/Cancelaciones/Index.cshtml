@@ -37,13 +37,13 @@
                     url: '@Url.Action("GetOrderDetalle", "Ordenes")',
                     data: {
                         order: noOrden,
-
+                        cancelacion:'SI'
                     },
                     datatype: "html",
                     success: function (json) {
                         if (json.Success) {
 
-                            window.location.href = json.message + "?order=" + document.getElementById("OrderSelected").value + "&Cancelacion=SI";
+                            window.location.href = json.message + "?order=" + document.getElementById("OrderSelected").value;
 
                             return false;
                         }

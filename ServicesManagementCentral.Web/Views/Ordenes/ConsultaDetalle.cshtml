@@ -53,7 +53,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td style="text-align: left; padding-left: 16px;">
-                                                        <div class="bg-warning p-xs b-r-sm">Status: @p["StatusDescription"]</div>
+                                                        <div id="divStatus" class="bg-warning p-xs b-r-sm">Status: @p["StatusDescription"]</div>
                                                     </td>
                                                     <td style="text-align: right;"></td>
                                                     <td style="text-align: right;">
@@ -730,13 +730,12 @@
     @*=======================================================CANCELACION DE ORDEN=======================================================*@
 <script>
         var _cancelacion = undefined;
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            _cancelacion = urlParams.get('Cancelacion');
-
-            if (_cancelacion != null)
+        _cancelacion = '@Session["ordenACancelar"]';
+        var _status = '@Session["OrderStatus"]';
+        
+        if (_cancelacion != '' && _status != 'Orden Cancelada')
                 $('#btnCancelacion').show();
             else
                 $('#btnCancelacion').hide();
@@ -744,7 +743,7 @@
         });
 
         function back() {
-            if (_cancelacion != null)
+            if (_cancelacion != '')
                 window.location.href = '@Url.Content("~/Cancelaciones/Index")';
             else
                 window.location.href = '@Url.Content("~/Ordenes/OrdenSeleccionada")';
