@@ -172,7 +172,7 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult OrdenDetalle(string order)
         {
-
+            Session["ordenACancelar"] = null;
             if (!string.IsNullOrEmpty(order) & Session["Id_Num_UN"] != null)
             {
                 DataSet ds;
@@ -200,30 +200,43 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
 
-        public ActionResult GetOrderDetalle(string order)
+        public ActionResult GetOrderDetalle(string order, string cancelacion)
         {
-            if (!string.IsNullOrEmpty(order))
+            try
             {
-                System.Data.DataSet ds = DALServicesM.GetOrdersByOrderNo(order);
-
-                Session["OrderSelected"] = ds;
-
-                if (ds.Tables[0].Rows.Count > 0)
+                if (!string.IsNullOrEmpty(order))
                 {
-                    var result = new { Success = true, message = Url.Action("ConsultaDetalle", "Ordenes") };
+                    System.Data.DataSet ds = DALServicesM.GetOrdersByOrderNo(order);
 
-                    return Json(result, JsonRequestBehavior.AllowGet);
+                    Session["OrderSelected"] = ds;
 
-                    //RedirectToAction("ConsultaDetalle", "Ordenes", new { order = order });
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+
+                        if (cancelacion != null)
+                            Session["ordenACancelar"] = order;
+                        else
+                            Session["ordenACancelar"] = null;
+
+                        var result = new { Success = true, message = Url.Action("ConsultaDetalle", "Ordenes") };
+
+                        return Json(result, JsonRequestBehavior.AllowGet);
+
+                        //RedirectToAction("ConsultaDetalle", "Ordenes", new { order = order });
+                    }
+                    else
+                    {
+                        var result = new { Success = false, Message = "Alta exitosa" };
+
+                        return Json(result, JsonRequestBehavior.AllowGet);
+                    }
+
                 }
-                else
-                {
-                    var result = new { Success = false, Message = "Alta exitosa" };
-
-                    return Json(result, JsonRequestBehavior.AllowGet);
-                }
-
-
+            }
+            catch
+            {
+                var result = new { Success = false, Message = "Error" };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
             return View();
 
@@ -719,14 +732,14 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult ConsultaDetalle(string order, string Cancelacion)
+        public ActionResult ConsultaDetalle(string order)
         {
 
             if (string.IsNullOrEmpty(order))
             {
                 return RedirectToAction("OrdenSeleccionada", "Ordenes");
             }
-            else if (Session["Id_Num_UN"] == null && Cancelacion != "SI")
+            else if (Session["Id_Num_UN"] == null && Session["ordenACancelar"] == null)
             {
                 return RedirectToAction("Index", "Ordenes");
             }
@@ -750,6 +763,7 @@ namespace ServicesManagement.Web.Controllers
 
                 ViewBag.MotCanCD = DataTableToModel.ConvertTo<OrderFacts_UE_CancelCauses>(DALProcesoSurtido.upCorpOms_Cns_UeCancelCauses(IdOwner).Tables[0]);
                 Session["OrderSelected"] = ds;
+                Session["OrderStatus"] = ds.Tables[0].Rows[0]["StatusDescription"].ToString();
 
             }
             return View();
