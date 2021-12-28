@@ -57,11 +57,11 @@
                                                     </td>
                                                     <td style="text-align: right;"></td>
                                                     <td style="text-align: right;">
-                                                        <a class="btn btn-danger" onclick="popUpCanOrden('@p["UeNo"]')">Cancela / Autoriza</a>
+                                                        <a class="btn btn-danger" id="btnCancelacion" onclick="popUpCanOrden('@p["UeNo"]')">Cancela / Autoriza</a>
                                                         @*<a class="btn btn-danger" href=CancelaOrden.asp?orden =101098126>Cancela / Autoriza</a>*@
                                                     </td>
                                                     <td style="text-align: left;">
-                                                        <a class="btn btn-primary" href=ordenes/OrdenSeleccionada>Regresar</a>
+                                                        <a class="btn btn-primary" onclick="back()" >Regresar</a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -728,7 +728,28 @@
 @Html.Partial("CancelacionOrden")
 @section scripts {
     @*=======================================================CANCELACION DE ORDEN=======================================================*@
-    <script>
+<script>
+        var _cancelacion = undefined;
+        $(document).ready(function () {
+
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            _cancelacion = urlParams.get('Cancelacion');
+
+            if (_cancelacion != null)
+                $('#btnCancelacion').show();
+            else
+                $('#btnCancelacion').hide();
+
+        });
+
+        function back() {
+            if (_cancelacion != null)
+                window.location.href = '@Url.Content("~/Cancelaciones/Index")';
+            else
+                window.location.href = '@Url.Content("~/Ordenes/OrdenSeleccionada")';
+        }
+
         function popUpCanOrden(OrderNo) {
             debugger;
             $("#txtPassCan").val("");
@@ -741,6 +762,7 @@
 
         }
         function CanOrden() {
+            debugger;
             var txtPassCan = $("#txtPassCan").val();
             var motCan = "0";
             var OrderNo = $("#OrderNo").val();
@@ -772,7 +794,7 @@
                         if (json.Success) {
 
                             //location.reload();
-                               window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                               window.location.href = '@Url.Content("~/Cancelaciones/Index")' + '?UeNo=' + _UeNo;
                         }
                         else {
                             debugger;
@@ -815,5 +837,5 @@
                 });
 
         }
-    </script>
+</script>
 }

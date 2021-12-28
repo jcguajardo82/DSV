@@ -1389,7 +1389,66 @@ namespace ServicesManagement.Web
             }
 
         }
+        public static DataSet GetPassCan2(int Id_Num_TipoClave, string UeNo)
 
+        {
+
+            DataSet ds = new DataSet();
+
+
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+
+            {
+
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+
+            }
+            try
+
+            {
+
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@Id_Num_TipoClave ", Id_Num_TipoClave);
+                parametros.Add("@UeNo ", UeNo);
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "cPwdCan_Sup2", false, parametros);
+
+
+
+                return ds;
+
+            }
+
+            catch (SqlException ex)
+
+            {
+
+
+
+                throw ex;
+
+            }
+
+            catch (System.Exception ex)
+
+            {
+
+
+
+                throw ex;
+
+            }
+
+        }
         public static DataSet UpdPassCan(int Id_Num_UN, string pwdnom, int Id_Num_TipoClave = 1)
 
         {

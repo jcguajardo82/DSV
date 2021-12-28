@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="col-lg-5">
+        <div class="input-group">
+            <input type="text" placeholder="Número de Orden a Cancelar" id="OrderSelected" class="form-control form-control-lg">
+            <div class="input-group-btn">
+                <button class="btn btn-lg btn-primary" type="submit" onclick="SearchOrder()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const _UeNo = urlParams.get('UeNo');
+
+            if (_UeNo != null)
+                alert('La Orden: ' + _UeNo + ' fue cancelada satisfactoriamente !!!')
+
+        });
+        function SearchOrder() {
+            var noOrden = document.getElementById("OrderSelected").value;
+            if (noOrden.length != 0) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("GetOrderDetalle", "Ordenes")',
+                    data: {
+                        order: noOrden,
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+
+                            window.location.href = json.message + "?order=" + document.getElementById("OrderSelected").value + "&Cancelacion=SI";
+
+                            return false;
+                        }
+                        else {
+                            alert("La orden seleccionada :" + document.getElementById("OrderSelected").value + " no existe, favor de revisar ")
+                            return false;
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+            } else {
+                $("#OrderSelected").focus();
+            }
+        }
+    </script>
+}
