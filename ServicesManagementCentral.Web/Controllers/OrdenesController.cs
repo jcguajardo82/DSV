@@ -448,14 +448,11 @@ namespace ServicesManagement.Web.Controllers
 
                         foreach (System.Data.DataRow r1 in d.Tables[0].Rows)
                         {
-
                             OrderNo = r1["OrderNo"].ToString();
                             status = r1["StatusUe"].ToString();
                             ue = r1["UeNo"].ToString();
                             store = r1["StoreNum"].ToString();
-
                         }
-
 
                         string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_FinalizarTrans"];
 
@@ -559,7 +556,6 @@ namespace ServicesManagement.Web.Controllers
 
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
 
-
                         Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
 
                         Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarTrans"], "", json2);
@@ -580,11 +576,6 @@ namespace ServicesManagement.Web.Controllers
                         #endregion
                     }
                 }
-
-
-
-
-
 
                 var result = new { Success = true, Message = "Alta exitosa" };
 
