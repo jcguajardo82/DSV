@@ -719,14 +719,14 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult ConsultaDetalle(string order)
+        public ActionResult ConsultaDetalle(string order, string Cancelacion)
         {
 
             if (string.IsNullOrEmpty(order))
             {
                 return RedirectToAction("OrdenSeleccionada", "Ordenes");
             }
-            else if (Session["Id_Num_UN"] == null)
+            else if (Session["Id_Num_UN"] == null && Cancelacion != "SI")
             {
                 return RedirectToAction("Index", "Ordenes");
             }
@@ -1339,9 +1339,9 @@ namespace ServicesManagement.Web.Controllers
             {
                 string msj = "Clave incorrecta";
                 bool isSucces = false;
-                if (Session["Id_Num_UN"] != null)
-                {
-                    DataSet ds = DALServicesM.GetPassCan(int.Parse(Session["Id_Num_UN"].ToString()));
+                //if (Session["Id_Num_UN"] != null)
+                //{
+                    DataSet ds = DALServicesM.GetPassCan2(1, UeNo);
 
                     if (ds.Tables[0].Rows.Count != 0)
                     {
@@ -1357,13 +1357,13 @@ namespace ServicesManagement.Web.Controllers
 
                     var result = new { Success = isSucces, Message = msj };
                     return Json(result, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    var result = new { Success = false, json = "Caduco la sesión" };
-                    RedirectToAction("Index", "Ordenes");
-                    return Json(result, JsonRequestBehavior.AllowGet);
-                }
+                //}
+                //else
+                //{
+                //    var result = new { Success = false, json = "Caduco la sesión" };
+                //    RedirectToAction("Index", "Ordenes");
+                //    return Json(result, JsonRequestBehavior.AllowGet);
+                //}
             }
 
             catch (Exception ex)
