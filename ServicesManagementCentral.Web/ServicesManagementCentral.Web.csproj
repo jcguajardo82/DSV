@@ -3926,6 +3926,8 @@
     <Content Include="Views\Correos\View13.cshtml" />
     <Content Include="Views\Cancelaciones\Index.cshtml" />
     <Content Include="Views\CancelacionSupervisor\Index.cshtml" />
+    <Content Include="Views\Ordenes\CancelacionSupervisor.cshtml" />
+    <Content Include="Views\Ordenes\ConsultaDetalleCancelacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
