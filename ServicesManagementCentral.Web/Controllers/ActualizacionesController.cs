@@ -28,7 +28,92 @@ namespace ServicesManagement.Web.Controllers
         {
             return View();
         }
+        public ActionResult ActualizacionesExcel()
+        {
+            // EXPORTACION A EXCEL
+            string excel = CrearExcel();
+            MemoryStream stream = null;
+
+            stream = ExcelTools.LoadAndConvertToMemStream(excel);
+            Response.Clear();
+            Response.Buffer = true;
+            Response.Charset = "";
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment;filename= DSV Macro v1.42.xlsm");
+
+            stream.WriteTo(Response.OutputStream);
+            Response.Flush();
+            Response.End();
+
+
+            if (System.IO.File.Exists(excel))
+                System.IO.File.Delete(excel);
+            return View();
+        }
         // GET: Actualizaciones
+        public string CrearExcel()
+        {
+
+            OfficeOpenXml.ExcelWorksheet xlsWorkSheet = null;
+            //     OfficeOpenXml.ExcelWorksheet xlsWorkSheetSumary = null;
+            OfficeOpenXml.ExcelWorkbook workBook = null;
+            OfficeOpenXml.ExcelPackage xlsApp = null;
+            string fileSavedPath = "fileName";
+
+            int fila = 2;
+            DataSet ds;
+            string templatePath = Server.MapPath("~/Files/");
+
+            // OSR SRI.356915 {
+            fileSavedPath = ExcelTools.OpenExcelTemplate(ref workBook, ref xlsApp, templatePath, "DSV Macro v1.42");
+            ExcelTools.SelectWorkSheet(ref workBook, ref xlsWorkSheet, "Datos");
+            xlsWorkSheet.Name = "Datos";
+
+            // ExcelTools.SelectWorkSheet(ref workBook, ref xlsWorkSheetSumary, "Resumen");
+
+            var prov = DALActualizaciones.SuppliersByUser(User.Identity.Name).Tables[0].Rows[0][0].ToString();
+
+            if (prov != "0")
+            {
+                ds = DALActualizaciones.InventarioPorProveedor(prov);
+
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+
+                    ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 1, row["Id_Num_CodBarra"].ToString(), false, 11, "Frutiger 45 Light", true,
+                               System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                               OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                    ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 2, row["LABST"].ToString(), false, 11, "Frutiger 45 Light", true,
+                                                   System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                                                   OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                    ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 3, row["Stock_Seguridad"].ToString(), false, 11, "Frutiger 45 Light", true,
+                                                   System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                                                   OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                    ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 4, prov, false, 11, "Frutiger 45 Light", true,
+                                                   System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                                                   OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                    ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 5, "1", false, 11, "Frutiger 45 Light", true,
+                                                   System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                                                   OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                    fila++;
+                }
+
+            }
+
+
+            if (xlsApp != null && xlsWorkSheet != null)
+            {
+                //string fileName = templateName + "_" + new Random().Next(0, 100000);
+                ExcelTools.SaveFile(ref workBook, ref xlsApp);
+            }
+
+            return fileSavedPath;
+        }
         public ActionResult ActualizacionesContenido()
         {
             return View();

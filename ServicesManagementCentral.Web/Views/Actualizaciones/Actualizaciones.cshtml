@@ -138,11 +138,33 @@
         });
 
         function popUpShowPDF(txtValor) {
-            var url2 = '@Url.Content("~/").ToString()' + "Files/DSV Macro v1.42.xlsm";
-            window.open(url2);
+            @*var url2 = '@Url.Content("~/").ToString()' + "Files/DSV Macro v1.42.xlsm";
+            window.open(url2);*@
+
+
+            @*$.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("ActualizacionesExcel", "Actualizaciones")',
+                    contentType: false,
+                    success: function (json) {
+                        debugger;
+                        if (json.Success) {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(jqXHR.responseText);
+                        location.reload();
+                    }
+
+                });*@
+
+
+          window.location.href = '@Url.Action("ActualizacionesExcel", "Actualizaciones")';
         }
         function Excel() {
-           
+
             window.location = window.location.origin + '/Actualizaciones/ExcelInventario';
         }
     </script>
