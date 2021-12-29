@@ -56,6 +56,10 @@
                                                         <div id="divStatus" class="bg-warning p-xs b-r-sm">Status: @p["StatusDescription"]</div>
                                                     </td>
                                                     <td style="text-align: right;"></td>
+                                                    <td style="text-align: right;">
+                                                        <a class="btn btn-danger" id="btnCancelacion" onclick="popUpCanOrden('@p["UeNo"]')">Cancela / Autoriza</a>
+                                                        @*<a class="btn btn-danger" href=CancelaOrden.asp?orden =101098126>Cancela / Autoriza</a>*@
+                                                    </td>
                                                     <td style="text-align: left;">
                                                         <a class="btn btn-primary" onclick="back()" >Regresar</a>
                                                     </td>

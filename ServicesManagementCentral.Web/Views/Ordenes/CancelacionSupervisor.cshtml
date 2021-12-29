@@ -1,0 +1,819 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "Búsqueda Orden";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    /*#table-scroll {
+        height: 300px;
+        overflow-y: auto;
+        margin-top: 20px;
+        width: 1200px;
+    }*/
+
+    .rowVerde {
+        color: white;
+        background-color: #008000;
+        border-color: #c3e6cb;
+        padding: 10px;
+        border: ridge;
+        /*font-size: 17px;*/
+    }
+
+    .rowAmarillo {
+        color: white;
+        background-color: #ffd11a;
+        border-color: #ffeeba;
+        padding: 10px;
+        border: ridge;
+        /*font-size: 17px;*/
+    }
+
+    .rowRojo {
+        color: white;
+        background-color: #ff0000;
+        border-color: #f5c6cb;
+        padding: 10px;
+        border: ridge;
+        /*font-size: 17px;*/
+    }
+
+    .rowInfo {
+        color: #000000;
+        background-color: white;
+        border-color: #bee5eb;
+        padding: 10px;
+        border: ridge;
+        /*font-size: 17px;*/
+    }
+
+    .rowMorado {
+        color: #0c5460;
+        background-color: #bf80ff;
+        border-color: #bee5eb;
+        padding: 10px;
+        border: ridge;
+        /*font-size: 17px;*/
+    }
+
+    .alingCenter {
+        text-align: center;
+    }
+</style>
+<style id="compiled-css" type="text/css">
+    /* Fix table head */
+    .tableFixHead {
+        overflow-y: auto;
+        height: 300px;
+    }
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+    /* Just common table stuff. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+
+    th {
+        background: #1AB394;
+        color: #ffffff;
+        font-weight: bold;
+    }
+</style>
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="col-lg-4">
+        @*<h2>Listado Orden</h2>*@
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="~/ordenes/Index">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+
+                <a href="~/ordenes/Index">Ordenes</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Listado de Ordenes</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-5">
+        <div class="input-group">
+            <input type="text" placeholder="Número de Orden" id="OrderSelected" class="form-control form-control-lg">
+            <div class="input-group-btn">
+                <button class="btn btn-lg btn-primary" type="submit" onclick="SearchOrder()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input id="Orders" name="Orders" value="0" style="visibility:hidden" />
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<h4 class="modal-title">Modal Header</h4>*@
+            </div>
+            <div class="modal-body">
+
+                @*<embed src="~/Content/Article List.pdf"
+                    frameborder="0" width="100%" height="400px">*@
+
+                <iframe id="viewrPDF" width="100%" height="400px" src=''></iframe>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@Html.Partial("Traspaso")
+@Html.Partial("reportes")
+@*@Html.Partial("etiquetas")*@
+@Html.Partial("CancelacionOrden")
+
+@section scripts {
+    <script type="text/javascript">
+        function showpdf(num_guia) {
+            //debugger;
+
+            $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("GetPdfGuia", "Ordenes")',
+            data: {
+            guia: num_guia
+            },
+            datatype: "html",
+            success: function (json) {
+            if (json.Success) {
+
+            document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+
+            $("#myModal").modal("show");
+
+            }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+
+            }
+            });
+
+        }
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "DD/MM/yyyy"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "DD/MM/yyyy"
+            });
+            $('#datetimepicker3').datetimepicker({
+                locale: 'es'
+                , format: "DD/MM/yyyy"
+            });
+        });
+
+
+        window.setInterval(function () {
+            var date = new Date();
+            //alert(date.getMinutes());
+            if ((date.getMinutes() % 5) == 0) {
+
+                location.reload();
+            }
+        }, 60000);
+
+        $(document).ready(function () {
+            //GetSuetidores();
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const _ueno = urlParams.get('Ueno');
+
+            if (_ueno != null) {
+                alert('La orden ' + _ueno + ' no es valida para ser consultada.');
+            }
+
+            var values = [];
+
+            $(".cbx").click(function () {
+                values = [];
+                $(".cbx").each(function () {
+                    if ($(this).is(":checked"))
+                        values.push($(this).val());
+                });
+
+                document.getElementById("Orders").value = values;
+                //alert(values);
+            });
+
+            window.setInterval(function () {
+                var date = new Date();
+                //alert(date.getMinutes());
+                if ((date.getMinutes() % 5) == 0) {
+
+                    location.reload();
+                }
+            }, 60000);
+
+        });
+
+        function consulta() {
+
+            debugger;
+            //$("input[type="checkbox"]:checked").each(function () {
+
+            //    // buscamos el td más cercano en el DOM hacia "arriba"
+            //    // luego encontramos los td adyacentes a este
+            //    $(this).closest('td').siblings().each(function () {
+
+            //        // obtenemos el texto del td
+            //        console.log($(this).text());
+            //    });
+            //});
+
+            //var toStore = {};
+            //var i = 0;
+            //$("input[type=\"checkbox\"]:checked").each(function(){
+            //    toStore[i] = {};
+            //    $(this).closest('td').siblings().each(function(){
+            //        $(this).find(':input').each(function() {
+            //            toStore[i][this.name] = this.value;
+            //        });
+            //        console.log($(this).text());
+            //    });
+            //    i++;
+            //});
+
+
+
+
+
+
+        }
+
+        function onchangeDropTrans(el) {
+
+            var id_categoria = $(el).attr('id');
+            var listaO = document.getElementById("Orders").value;
+            var tipolistaO = listaO.split("-");
+            debugger;
+            if (listaO != "0") {
+                if (tipolistaO[1] == "1")
+                    // || tipolistaO[1] == "2")
+                {
+                    if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
+                        //$('#ConfirmMessageResponse').val('Yes');
+                        debugger;
+                        FinalizaEmbarque(id_categoria, listaO, id_categoria);
+                    } else {
+                        //$('#ConfirmMessageResponse').val('No');
+                        return false;
+                    }
+                } else {
+                    alert("Orden seleccionada no es válida")
+                    return false;
+                }
+            } else {
+                alert("No hay ordenes seleccionadas");
+            }
+
+        }
+
+        function onchangeDropTransDST(el) {
+
+            var id_categoria = $(el).attr('id');
+            var listaO = document.getElementById("Orders").value;
+            var tipolistaO = listaO.split("-");
+            debugger;
+            if (listaO != "0") {
+                if (tipolistaO[1] == "2") {
+                    if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
+                        //$('#ConfirmMessageResponse').val('Yes');
+                        debugger;
+                        FinalizaEmbarqueDTS(id_categoria, listaO, id_categoria);
+                    } else {
+                        //$('#ConfirmMessageResponse').val('No');
+                        return false;
+                    }
+                }
+                else {
+                    alert("Orden seleccionada no válida");
+                    return false;
+                }
+            } else {
+                alert("No hay ordenes seleccionadas");
+            }
+
+        }
+
+        function onclickDropTransDTS() {
+
+            var id_categoria = "999"; //$(el).attr('id');
+            var listaO = document.getElementById("Orders").value;
+            var tipolistaO = listaO.split("-");
+            //var digito = listaO.replaceAll("-","");
+            var digito = listaO.replace(/-/g, "");
+            debugger;
+            if (listaO != "0") {
+                if (tipolistaO[1] == "2") {
+                    if (confirm('Seguro que desea signar el transportista a los pedidos seleccionados?')) {
+                        //$('#ConfirmMessageResponse').val('Yes');
+                        debugger;
+                        FinalizaEmbarqueDTS(id_categoria, listaO, id_categoria);
+                    } else {
+                        //$('#ConfirmMessageResponse').val('No');
+                        return false;
+                    }
+                }
+                else {
+                    alert("Orden seleccionada no válida");
+                    return false;
+                }
+            } else {
+                alert("No hay ordenes seleccionadas");
+            }
+
+        }
+
+        function FinalizaEmbarqueDTS(tran, listaO, tId) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("FinalizarTransportista", "Ordenes")',
+                    data: {
+                        OrderNo: listaO,
+                        trans: tran,
+                        tId: tId,
+                        ue: '',
+                        store: '',
+                        status: ''
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            location.reload();
+                            // window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+        }
+
+        function FinalizaEmbarque(tran, listaO, tId) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("FinalizarTransportista", "Ordenes")',
+                    data: {
+                        OrderNo: listaO,
+                        trans: tran,
+                        tId: tId
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            location.reload();
+                            // window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+        }
+
+        function ShowFilter() {
+            $("#filter").collapse('toggle');
+        };
+
+        function SearchOrder() {
+            var noOrden = document.getElementById("OrderSelected").value;
+            if (noOrden.length != 0) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("GetOrderDetalle", "Ordenes")',
+                    data: {
+                        order: noOrden,
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+
+                            window.location.href = json.message + "?order=" + document.getElementById("OrderSelected").value;
+
+                            return false;
+                        }
+                        else {
+                            alert("La orden seleccionada :" + document.getElementById("OrderSelected").value + " no existe, favor de revisar ")
+                            return false;
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+            } else {
+                $("#OrderSelected").focus();
+            }
+        }
+    </script>
+    @*=======================================================CANCELACION DE ORDEN=======================================================*@
+    <script>
+        function popUpCanOrden(OrderNo) {
+            $("#txtPassCan").val("");
+            $("#ddlMotivoCan").val("0");
+            $("#lblOrdenCan").text(OrderNo);
+            CatMotivoCan();
+            $("#dlgCancelacionOr").modal('toggle');
+
+        }
+        function CanOrden() {
+            var txtPassCan = $("#txtPassCan").val();
+            var motCan = $("#ddlMotivoCan").val();
+            var OrderNo = $("#lblOrdenCan").text();
+            var _motivoCancelacion ="";
+
+
+            $('#ddlMotivoCan').css('display', 'block');
+            $('#txtMotCan').css('display', 'none');
+
+            if (txtPassCan.length == 0) {
+                $("#txtPassCan").focus();
+                return;
+            }
+
+            if (ddlMotivoCan.length == 0) {
+                $("#ddlMotivoCan").focus();
+                return;
+            }
+
+         $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("CancelOrder", "Ordenes")',
+                    data: {
+                        OrderNo: OrderNo,
+                        pass: txtPassCan,
+                        Id_Num_MotCan:motCan
+                        , motivoCancelacion: _motivoCancelacion
+                    },
+                    datatype: "html",
+             success: function (json) {
+                 debugger;
+                        if (json.Success) {
+
+                            location.reload();
+                        }
+                        else {
+                            debugger;
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+
+        }
+
+        function CatMotivoCan() {
+
+
+         $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("CatMotivoCan", "Ordenes")',
+                    data: {
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            var sel = $("#ddlMotivoCan");
+                            sel.empty();
+                            for (var i = 0; i < json.json.length; i++) {
+                                sel.append('<option value="' + json.json[i].Id_Num_MotCan + '">' + json.json[i].Desc_MotCan + '</option>');
+                            }
+                        }
+                        else { alert(json.Message) }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+
+        }
+    </script>
+    @*=====================INI TRASPASO====================*@
+    <script type="text/javascript">
+
+        function GetTdasTrasp() {
+            $('#ddlOrdenTraspaso').attr('disabled', 'disabled');
+            $("#ddlOrdenTraspaso").empty();
+             $('#dlgTraspaso').modal('toggle');
+            debugger;
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetTdasTaspaso", "Ordenes")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        var sel = $("#ddlTdasTrasp");
+                        sel.empty();
+
+
+                        $('#ddlTdasTrasp').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                        for (var i = 0; i < json.json.length; i++) {
+                            sel.append('<option value="' + json.json[i].Id_Num_UN + '">' + json.json[i].Centros + '</option>');
+                        }
+                    }
+                    else {
+                        if (json.Message == 'OKSession') {
+                             window.location.href = '@Url.Content("~/ordenes/Index")';
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+
+                }
+            });
+        }
+
+        $("#ddlTdasTrasp").change(function () {
+            var _Id_Num_UN = this.value;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetOrdenesTraspaso", "Ordenes")',
+                data: {
+                Id_Num_UN: _Id_Num_UN
+                },
+                datatype: "html",
+                success: function (json) {
+                debugger;
+                if (json.Success) {
+                var sel = $("#ddlOrdenTraspaso");
+                sel.empty();
+
+
+                $('#ddlOrdenTraspaso').get(0).options[0] = new Option("--SELECCIONE--", "0");
+                for (var i = 0; i < json.json.length; i++) {
+                    sel.append('<option value="' + json.json[i].UeNo + '">' + json.json[i].UeNo + '</option>');
+                }
+                $('#ddlOrdenTraspaso').removeAttr('disabled');
+
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            bootbox.alert(errorThrown);
+
+            }
+            });
+
+
+
+        });
+
+        $("#ddlOrdenTraspaso").change(function () {
+            var _OrderNo = this.value;
+
+
+            debugger;
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetOrdenesByOrderNoTras", "Ordenes")',
+                data: {
+                    OrderNo: _OrderNo
+                },
+                datatype: "html",
+                success: function (json) {
+                debugger;
+                if (json.Success) {
+                    $('p#lblClienteTras').text(json.json.CustomerName);
+                    $('p#lblDireccionTras').text(json.json.Address1+" " + json.json.Address2);
+                    $('p#lblCPTras').text('C.P. ' + json.json.PostalCode);
+                    $('p#lblTelefonoTras').text('Télefono.-' + json.json.Phone);
+
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            bootbox.alert(errorThrown);
+
+            }
+            });
+
+
+        });
+
+
+        function TraspasaOrden() {
+
+
+            var _NumOrden = $('#ddlOrdenTraspaso').val();
+            var _NumUnNva = $('#ddlTdasTrasp').val();
+            var _pass = $('#txtPass').val();
+            // string  = "", string  = ""
+
+            if (_NumUnNva == "0") {
+                $('#ddlTdasTrasp').focus();
+                return;
+            }
+
+            if (_NumOrden == "0") {
+                $('#ddlOrdenTraspaso').focus();
+                return;
+            }
+
+
+
+            if (_pass.length == 0) {
+                $('#txtPass').focus();
+                return;
+            }
+
+
+
+            debugger;
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("TraspasoOrden", "Ordenes")',
+                data: {
+                      NumOrden: _NumOrden
+                    , NumUnNva: _NumUnNva
+                    , pass: _pass
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+
+                        if (!alert(json.Message)) { window.location.reload(); }
+                    }
+                    else {
+                      alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+        }
+    </script>
+    @*=======================================================REPORTES=======================================================*@
+    <script>
+        $("#dlgReportes").on('shown', function () {
+             $('#txtFecIni').val('');
+             $('#txtFecFin').val('');
+            $("#txtFecRptDia").val('');
+        });
+        function ReporteDiario() {
+            var fecreporte = $("#txtFecRptDia").val();
+
+            if (fecreporte.length != 0) {
+                window.open('@Url.Action("RptDiarioAct", "Ordenes")?fechaReporte=' + fecreporte);
+            } else {
+                $("#txtFecRptDia").focus();
+            }
+        }
+        function RptRangoFec() {
+            var entregadas = $('#chEntregadas').is(":checked");
+            var canceladas = $('#chCanceladas').is(":checked");
+            var tansito = $('#chTransito').is(":checked");
+            var penSurt = $('#chPenSur').is(":checked");
+            var penEnt = $('#chPenEnt').is(":checked");
+            var fecIni = $('#txtFecIni').val();
+            var fecFin = $('#txtFecFin').val();
+
+            if (fecIni.length == 0) {
+                $('#txtFecIni').focus();
+                return;
+            }
+            if (fecFin.length == 0) {
+                $('#txtFecFin').focus();
+                return;
+            }
+            //string fechaIni, string fechaFin
+            //, string isEntregadas, string isCanceladas, string isTransito, string isPensSur, string isPenEnt
+            var url = "?fechaIni=" + fecIni + "&fechaFin=" + fecFin + "&isEntregadas=" + entregadas
+                + "&isCanceladas=" + canceladas + "&isTransito=" + tansito + "&isPensSur=" + penSurt
+                + "&isPenEnt=" + penEnt;
+
+            window.open('@Url.Action("RptRangoFec", "Ordenes")' + url);
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#txtFiltroSurtir").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblConsulta_Surtido tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            $("#txtFiltroEmbarcar").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblConsulta_Embarcar tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+
+        });
+
+
+    </script>
+}
+
+@functions{
+    /**/
+
+    public string ColoresSemaforo(string numColor)
+
+    {
+
+        string estilo = string.Empty;
+
+        switch (numColor)
+
+        {
+
+            case "1":
+
+                estilo = "rowVerde";
+
+                break;
+
+            case "2":
+
+                estilo = "rowAmarillo";
+
+                break;
+
+            case "3":
+
+                estilo = "rowRojo";
+
+                break;
+
+
+
+            default:
+
+                estilo = "rowInfo";
+
+                break;
+
+        }
+
+        return estilo;
+
+    }
+
+}
