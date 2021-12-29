@@ -223,6 +223,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CallCenterController.cs" />
     <Compile Include="Controllers\CancelacionesController.cs" />
+    <Compile Include="Controllers\CancelacionSupervisorController.cs" />
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\CpanelController.cs" />
@@ -3924,8 +3925,7 @@
     <Content Include="Views\Correos\View6A.cshtml" />
     <Content Include="Views\Correos\View13.cshtml" />
     <Content Include="Views\Cancelaciones\Index.cshtml" />
-    <Content Include="Views\Ordenes\ConsultaDetalleCancelacion.cshtml" />
-    <Content Include="Views\Ordenes\OrdenSeleccionadaCancelacion.cshtml" />
+    <Content Include="Views\CancelacionSupervisor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
