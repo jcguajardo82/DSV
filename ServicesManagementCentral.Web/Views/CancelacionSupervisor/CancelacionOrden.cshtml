@@ -1,0 +1,60 @@
+﻿@using ServicesManagement.Web.Models.ProcesoSurtido;
+
+<div class="modal inmodal fade" id="dlgCancelacionOr" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Cancelación de Pedido</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <div class="row">
+                        <div class="col col-xs-12 col-md-12">
+                            <div class="form-group">
+                                <label>No. Pedido:</label>
+                                <h4 class="text-navy" id="lblOrdenCan"></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-xs-12 col-md-12">
+                            <div class="form-group">
+                                <label>Clave de Cancelación:</label>
+                                    <input type="password" id="txtPassCan" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="divDdlMotCan">
+                        <div class="col col-xs-12 col-md-12">
+                            <div class="form-group">
+                                <label>Motivo de Cancelación:</label>
+                                <select id="ddlMotCan" class="form-control">
+                                    @{
+                                        if (ViewBag.MotCanCD != null)
+                                        {
+                                            IEnumerable<OrderFacts_UE_CancelCauses> listCan = ViewBag.MotCanCD as IEnumerable<OrderFacts_UE_CancelCauses>;
+                                            foreach (OrderFacts_UE_CancelCauses item in listCan)
+                                            {
+                                                <option value="@item.IdCause">@item.Cause_Desc</option>
+
+                                            }
+                                            <option value="99">Otro</option>
+
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="CanOrden()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3930,6 +3930,8 @@
     <Content Include="Views\Ordenes\ConsultaDetalleCancelacion.cshtml" />
     <Content Include="Views\Ordenes\OrdenSeleccionadaCancelacion.cshtml" />
     <Content Include="Views\CancelacionSupervisor\Index.cshtml" />
+    <Content Include="Views\CancelacionSupervisor\ConsultaDetalleCancelacion.cshtml" />
+    <Content Include="Views\CancelacionSupervisor\CancelacionOrden.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

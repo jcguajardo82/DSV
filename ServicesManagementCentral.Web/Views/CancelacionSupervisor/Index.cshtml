@@ -1,8 +1,56 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Cancelación Supervisor";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="row">
+    <div class="col-lg-5">
+        <div class="input-group">
+            <input type="text" placeholder="Número de Orden" id="OrderSelected" class="form-control form-control-lg">
+            <div class="input-group-btn">
+                <button class="btn btn-lg btn-primary" type="submit" onclick="SearchOrder()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
+@section scripts {
+    <script>
+         function SearchOrder() {
+    var noOrden = document.getElementById("OrderSelected").value;
+    if (noOrden.length != 0) {
+    $.ajax({
+    async: false,
+    type: "POST",
+    url: '@Url.Action("GetOrderDetalle", "CancelacionSupervisor")',
+    data: {
+    order: noOrden,
+
+    },
+    datatype: "html",
+    success: function (json) {
+    if (json.Success) {
+
+        window.location.href = json.message + "?order=" + document.getElementById("OrderSelected").value;
+
+    return false;
+    }
+    else {
+    alert("La orden seleccionada :" + document.getElementById("OrderSelected").value + " no existe, favor de revisar ")
+    return false;
+    }
+    }
+    , error: function (jqXHR, textStatus, errorThrown) {
+    alert(errorThrown);
+
+    }
+    });
+    } else {
+    $("#OrderSelected").focus();
+    }
+    }
+    </script>
+}
