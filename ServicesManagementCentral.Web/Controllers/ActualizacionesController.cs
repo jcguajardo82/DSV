@@ -103,7 +103,8 @@ namespace ServicesManagement.Web.Controllers
                     fila++;
                 }
 
-            }
+            }else
+                ExcelOriginal(ref xlsApp, ref xlsWorkSheet);
 
 
             if (xlsApp != null && xlsWorkSheet != null)
@@ -113,6 +114,75 @@ namespace ServicesManagement.Web.Controllers
             }
 
             return fileSavedPath;
+        }
+        private void ExcelOriginal(ref OfficeOpenXml.ExcelPackage xlsApp, ref OfficeOpenXml.ExcelWorksheet xlsWorkSheet)
+        {
+            int fila = 2;
+            string proveedor = string.Empty, almacen = string.Empty;
+
+            while (fila < 13)
+            {
+                if(fila == 2)
+                {
+                    proveedor = "12699";
+                    almacen = "1";
+                }
+                else
+                {
+                    proveedor = null;
+                    almacen = null;
+                }
+                ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 1, BarCodeOriginal(fila), false, 11, "Frutiger 45 Light", true,
+                           System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                           OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 2, 200, false, 11, "Frutiger 45 Light", true,
+                                               System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                                               OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 3, 0, false, 11, "Frutiger 45 Light", true,
+                                               System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                                               OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 4, proveedor, false, 11, "Frutiger 45 Light", true,
+                                               System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                                               OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                ExcelTools.InsertCell2(ref xlsApp, ref xlsWorkSheet, fila, 5, almacen, false, 11, "Frutiger 45 Light", true,
+                                               System.Drawing.Color.White, System.Drawing.Color.Black, true, null, OfficeOpenXml.Style.ExcelBorderStyle.Dashed,
+                                               OfficeOpenXml.Style.ExcelHorizontalAlignment.Center);
+
+                fila++;
+            }
+        }
+
+        private string BarCodeOriginal(int fila)
+        {
+            string barcode = string.Empty;
+            if (fila == 2)
+                barcode= "7501192151264";
+            if (fila == 3)
+                barcode = "7501192136728";
+            if (fila == 4)
+                barcode = "7501192143634";
+            if (fila == 5)
+                barcode = "7501192151387";
+            if (fila == 6)
+                barcode = "70896261168";
+            if (fila == 7)
+                barcode = "70896271969";
+            if (fila == 8)
+                barcode = "70896699701";
+            if (fila == 9)
+                barcode = "70896271983";
+            if (fila == 10)
+                barcode = "7501192151202";
+            if (fila == 11)
+                barcode = "70896700667";
+            if (fila == 12)
+                barcode = "7501192151226";
+
+            return barcode;
         }
         public ActionResult ActualizacionesContenido()
         {
