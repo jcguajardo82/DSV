@@ -222,7 +222,6 @@
     <Compile Include="Controllers\AutorizacionesRMA.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CallCenterController.cs" />
-    <Compile Include="Controllers\CancelacionesController.cs" />
     <Compile Include="Controllers\CancelacionSupervisorController.cs" />
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
