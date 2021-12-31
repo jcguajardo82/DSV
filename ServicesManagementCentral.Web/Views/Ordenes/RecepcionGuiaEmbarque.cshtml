@@ -276,7 +276,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <button class="btn btn-primary" type="button" onclick="FinalizaEmbarque2(@dt.Rows.Count)">FINALIZAR!</button>
+                                                    <button class="btn btn-primary" id="btnFinalizaEmbarque" type="button" onclick="FinalizaEmbarque2(@dt.Rows.Count)">FINALIZAR!</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -835,6 +835,7 @@
 
         function FinalizaEmbarque2(NoReg) {
 
+            $("#btnFinalizaEmbarque").attr("disabled", true);
             var guias = new Array();
 
             debugger;
@@ -856,21 +857,25 @@
 
                     if (guia.nombre.length == 0) {
                         $("#nombre_" + i).focus();
+                        $("#btnFinalizaEmbarque").attr("disabled", false);
                         break;
                     }
 
                     if (guia.fechaE.length == 0) {
                         $("#fechaE_" + i).focus();
+                        $("#btnFinalizaEmbarque").attr("disabled", false);
                         break;
                     }
 
                     if (guia.timeD.length == 0) {
                         $("#timeD_" + i).focus();
+                        $("#btnFinalizaEmbarque").attr("disabled", false);
                         break;
                     }
 
                     if (guia.comentarios.length == 0) {
                         $("#comentarios_" + i).focus();
+                        $("#btnFinalizaEmbarque").attr("disabled", false);
                         break;
                     }
 
@@ -884,6 +889,7 @@
             var a = "";
 
             if (guias.length == 0) {
+                $("#btnFinalizaEmbarque").attr("disabled", false);
                 return;
             } else {
 
