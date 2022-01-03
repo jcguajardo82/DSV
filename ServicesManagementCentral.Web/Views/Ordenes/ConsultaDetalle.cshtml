@@ -700,11 +700,16 @@
 
         _cancelacion = '@Session["ordenACancelar"]';
         var _status = '@Session["OrderStatus"]';
-        
-        if (_cancelacion != '' && _status != 'Orden Cancelada')
-                $('#btnCancelacion').show();
-            else
-                $('#btnCancelacion').hide();
+
+        // 2022-01-03 - se activo temporalmente
+        $('#btnCancelacion').show();
+
+
+        // 2022-01-03 - se inactivo temporalmente
+        //if (_cancelacion != '' && _status != 'Orden Cancelada')
+        //        $('#btnCancelacion').show();
+        //    else
+        //        $('#btnCancelacion').hide();
 
         });
 
