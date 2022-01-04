@@ -52,7 +52,7 @@
 
                 var tipoEntrega = p["UeType"].ToString();
                 var FlagLocal = p["FlagLocal"].ToString();
-
+                var status = p["StatusUe"].ToString();
                 // SECCION DE DROP SHIP TIENDA
                 if ((tipoEntrega == "DST") && (FlagLocal == "0"))
                 {
@@ -276,7 +276,15 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <button class="btn btn-primary" id="btnFinalizaEmbarque" type="button" onclick="FinalizaEmbarque2(@dt.Rows.Count)">FINALIZAR!</button>
+                                                    @if (status == "6")
+                                                    {
+                                                        <button class="btn btn-primary" id="btnFinalizaEmbarque" disabled type="button" onclick="FinalizaEmbarque2(@dt.Rows.Count)">FINALIZAR!</button>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <button class="btn btn-primary" id="btnFinalizaEmbarque" type="button" onclick="FinalizaEmbarque2(@dt.Rows.Count)">FINALIZAR!</button>
+                                                    }
                                                 </div>
                                             </div>
                                         </form>
@@ -906,7 +914,7 @@
                             //location.reload();
                             window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
                         } else {
-
+                            $("#btnFinalizaEmbarque").attr("disabled", false);
                             debugger;
                             //if (alert(json.Message))
                             //{
