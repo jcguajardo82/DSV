@@ -3927,8 +3927,6 @@
     <Content Include="Views\Correos\View6A.cshtml" />
     <Content Include="Views\Correos\View13.cshtml" />
     <Content Include="Views\Cancelaciones\Index.cshtml" />
-    <Content Include="Views\Ordenes\ConsultaDetalleCancelacion.cshtml" />
-    <Content Include="Views\Ordenes\OrdenSeleccionadaCancelacion.cshtml" />
     <Content Include="Views\CancelacionSupervisor\Index.cshtml" />
     <Content Include="Views\CancelacionSupervisor\ConsultaDetalleCancelacion.cshtml" />
     <Content Include="Views\CancelacionSupervisor\CancelacionOrden.cshtml" />
