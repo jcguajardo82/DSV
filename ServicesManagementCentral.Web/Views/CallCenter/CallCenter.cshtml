@@ -2317,11 +2317,11 @@
 
             if (_factorConversion != 0 && _UnitConv=="pza")
             {
-                 _total = (parseFloat(_cantidad) / parseFloat(_factorConversion).toFixed(2)) * _precioO;
+                _total = (parseFloat(_cantidad) / parseFloat(_factorConversion).toFixed(2)) * parseFloat(_precioO.replace(/,/g, ''));
             }
             else
             {
-                _total=  _cantidad * _precioO;
+                _total = parseFloat(_cantidad) * parseFloat(_precioO.replace(/,/g, ''));
             }
 
 
@@ -2423,7 +2423,8 @@
                     "$" + _jsonProductsSelected[i].precioO,
                     "<div id='divUSC-" + _jsonProductsSelected[i].barcode+"'>"+ inp+"</div>",//"<input onkeypress='return event.charCode >= 48' min='1' type='number' onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='productCant-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].quantity + "' class='form-control input-sm'  /> ",
                     _salesUnite,
-                    "$" + totaArt,
+                    //"$" + totaArt,
+                    "$" + parseFloat(totaArt).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
                     "<input type='text'  onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' id='comment-" + _jsonProductsSelected[i].barcode + "' value='" + _jsonProductsSelected[i].comment + "' class='form-control input-sm'  /> ",
                     "<select onchange='Change(\"" + _jsonProductsSelected[i].barcode + "\")' name='ddlDustituto' class='form-control' id='cSustituto-"+ _jsonProductsSelected[i].barcode +"'>"
                     + _sustitutoSelecetd
@@ -2465,10 +2466,10 @@
             $("#lblDescuento").empty();
             $("#lblDescuento").append("Ahorro: $" + descuento);
             $("#lblTotal").empty();
-            $("#lblTotal").append("Total a Pagar: $" + tot);
+            $("#lblTotal").append("Total a Pagar: $" + parseFloat(tot).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
             $("#TotalOrden").val(tot);
             $("#lblTotalFormaP").empty();
-            $("#lblTotalFormaP").append("Total a Pagar: $" + tot);
+            $("#lblTotalFormaP").append("Total a Pagar: $" + parseFloat(tot).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
 
 
 
@@ -2504,7 +2505,7 @@
             }
 
             $("#lblTotalR").empty();
-            $("#lblTotalR").append("Costo Total de la Orden: $" + tot);
+            $("#lblTotalR").append("Costo Total de la Orden: $" + parseFloat(tot).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
 
             $("#lblDescuentoR").empty();
             $("#lblDescuentoR").append("Ahorro Total de la Orden: $" + descuento);
