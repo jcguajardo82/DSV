@@ -3092,7 +3092,7 @@
                 success: function (json) {
 
                     if (json.Success) {
-                        LlenaDatosCte(json.resp);
+                        LlenaDatosCte(json.resp, json.resp.Id_Cnsc_DirCTe);
                         $('#divVerificaCliente').hide();
                         $('#divBuscaCliente').hide();
                         $('#divResultClient').show();
