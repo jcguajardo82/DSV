@@ -55,7 +55,26 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="2" style="text-align: left; padding-left: 16px; padding-top: 16px;"><p>Sucursal:  @p["NomTienda"]</p></td>
+                                                    @{ 
+                                                        if (@p["UETYPE"].ToString() == "CEDIS" || @p["UETYPE"].ToString() == "DSV")
+                                                        {
+                                                            if (dt4.Rows.Count > 0)
+                                                            {
+                                                                if (@p["UETYPE"].ToString() == "CEDIS")
+                                                                {
+                                                                    <td colspan="2" style="text-align: left; padding-left: 16px; padding-top: 16px;"><p>Sucursal: @p["UETYPE"].ToString().</p></td>
+                                                                }
+                                                                else
+                                                                { 
+                                                                    <td colspan="2" style="text-align: left; padding-left: 16px; padding-top: 16px;"><p>Sucursal: @dt4.Rows[0]["SupplierName"].ToString().</p></td>
+                                                                }                                                                
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td colspan="2" style="text-align: left; padding-left: 16px; padding-top: 16px;"><p>Sucursal:  @p["NomTienda"]</p></td>
+                                                        }
+                                                     }
                                                     <td colspan="2" style="text-align: left; padding-left: 16px; padding-top: 16px;">
 
                                                 </tr>
