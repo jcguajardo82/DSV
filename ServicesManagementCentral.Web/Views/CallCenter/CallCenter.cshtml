@@ -3672,7 +3672,13 @@
                 var val = parseFloat(obj.value).toFixed(2);
                 if (val.includes("e+")) { obj.value = "0.00"; }
                 else {
-                    obj.value = parseFloat(obj.value).toFixed(2);
+
+                    if (val > 99999) {
+                        alert("El monto máximo de $99,999.00")
+                        obj.value = "0.00";
+                    } else {
+                        obj.value = parseFloat(obj.value).toFixed(2);
+                    }
                 }
             }
         }
