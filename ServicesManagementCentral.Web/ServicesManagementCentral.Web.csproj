@@ -309,6 +309,7 @@
     <Compile Include="Models\CallCenter\CostoFlete.cs" />
     <Compile Include="Models\CallCenter\Edos.cs" />
     <Compile Include="Models\CallCenter\GetClient.cs" />
+    <Compile Include="Models\CallCenter\Timeslots.cs" />
     <Compile Include="Models\CallCenter\Historial.cs" />
     <Compile Include="Models\CallCenter\HistorialOrden.cs" />
     <Compile Include="Models\CallCenter\MotivosRMAById.cs" />

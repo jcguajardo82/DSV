@@ -4,9 +4,6 @@ using RestSharp;
 using ServicesManagement.Web.DAL.Autorizacion;
 using ServicesManagement.Web.DAL.CallCenter;
 using ServicesManagement.Web.DAL.DALHistorialRMA;
-using ServicesManagement.Web.Controllers;
-using ServicesManagement.Web.Correos;
-using ServicesManagement.Web.DAL.Correos;
 using ServicesManagement.Web.Helpers;
 using ServicesManagement.Web.Models.Autorizacion;
 using ServicesManagement.Web.Models.CallCenter;
@@ -20,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using static ServicesManagement.Web.Controllers.OrderFacts_UEModel;
 
 
@@ -1266,12 +1264,12 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult BuscarCliente2(string Criterio = "")
         {
             //logistica datatable
-            var draw = Request.Form.GetValues("draw").FirstOrDefault();
-            var start = Request.Form.GetValues("start").FirstOrDefault();
-            var length = Request.Form.GetValues("length").FirstOrDefault();
-            var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
-            var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
-            var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault().ToLower();
+            string draw = Request.Form.GetValues("draw").FirstOrDefault();
+            string start = Request.Form.GetValues("start").FirstOrDefault();
+            string length = Request.Form.GetValues("length").FirstOrDefault();
+            string sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+            string sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+            string searchValue = Request.Form.GetValues("search[value]").FirstOrDefault().ToLower();
 
             bool existe = false;
 
@@ -1281,18 +1279,18 @@ namespace ServicesManagement.Web.Controllers
 
 
 
-            List<GetClient> query = new List<GetClient>() ;
+            List<GetClient> query = new List<GetClient>();
 
             foreach (DataRow item in DALCallCenter.GetClientByPhoneEmail(Criterio).Tables[0].Rows)
             {
                 query.Add(
                     new GetClient
                     {
-                        Nom_Cte=item["NomCompleto"].ToString(),
+                        Nom_Cte = item["NomCompleto"].ToString(),
                         Id_Email = item["Id_Email"].ToString(),
                         Direccion = item["Direccion"].ToString(),
                         Telefono = item["Telefono"].ToString(),
-                        Id_Cnsc_DirCTe= item["Id_Cnsc_DirCTe"].ToString()
+                        Id_Cnsc_DirCTe = item["Id_Cnsc_DirCTe"].ToString()
                     }
                     );
             }
@@ -1318,12 +1316,14 @@ namespace ServicesManagement.Web.Controllers
 
 
             if (searchValue != "")
+            {
                 query = query.Where(d => d.Nom_Cte.ToLower().Contains(searchValue)
                 || d.Id_Email.ToString().ToLower().Contains(searchValue)
                 || d.Direccion.ToString().ToLower().Contains(searchValue)
                 || d.Telefono.ToString().ToLower().Contains(searchValue)
 
                 ).ToList();
+            }
 
 
             //{ data: "Nom_Cte" },
@@ -1348,7 +1348,12 @@ namespace ServicesManagement.Web.Controllers
 
 
             List<GetClient> data = query.Skip(skip).Take(pageSize).ToList();
-            return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data,
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = recordsTotal,
+                recordsTotal = recordsTotal,
+                data = data,
                 Success = true
                     ,
                 existe = existe
@@ -1485,6 +1490,184 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+
+
+        #region timeslots
+
+
+
+        public ActionResult GetDiasSlot(int tda)
+        {
+            try
+            {
+
+
+                #region Llamado al APi
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_checkout"];
+
+                var request = new
+                {
+                    action = "getTimeslots",
+
+                    storeId = tda,
+
+                    shipmentId = "mmm-2",
+
+                    shippingType = ""
+                };
+                List<Dias> dias = new List<Dias>();
+                List<Dias> horas = new List<Dias>();
+                // Serializar el mensaje en formato Json
+                string jsonString = JsonConvert.SerializeObject(request);
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", jsonString);
+
+                if (r.code != "00")
+                {
+                    throw new Exception(r.message);
+                }
+                else
+                {
+
+                    var jsResponse = JsonConvert.SerializeObject(r.message.Replace("\"", "'"));
+
+                    JavaScriptSerializer jss = new JavaScriptSerializer();
+                    ResponseTimeSlot slots = jss.Deserialize<ResponseTimeSlot>(jsResponse.ToString().Replace('"', ' '));
+                    //var slots = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseTimeSlot>(jsResponse);
+
+                    foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays)
+                    {
+                        Dias dia = new Dias();
+
+                        dia.NombeDia = item.SlotDayName;
+                        dia.fecha = Convert.ToDateTime(item.Slots[0].SlotDateTime).ToString("yyyy/MM/dd");
+                        dias.Add(dia);
+                    }
+
+                    foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays[0].Slots)
+                    {
+                        if (item.slotEnabled.ToString().ToLower() != "false") {
+                            horas.Add(new Dias
+                            {
+                                NombeDia=item.SlotName,
+                                fecha=Convert.ToDateTime(item.SlotDateTime).ToString("HH:mm:ss")
+                        });
+                        }
+                    }
+                }
+                #endregion
+
+                var result = new { Success = true, json = dias , horas = horas };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult GetHorasEntregaSlot(int tda,string fecEnt)
+        {
+
+            try
+            {
+                #region Llamado al APi
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["api_checkout"];
+
+                var request = new
+                {
+                    action = "getTimeslots",
+
+                    storeId = tda,
+
+                    shipmentId = "mmm-2",
+
+                    shippingType = ""
+                };
+                List<Dias> dias = new List<Dias>();
+                List<Dias> horas = new List<Dias>();
+                // Serializar el mensaje en formato Json
+                string jsonString = JsonConvert.SerializeObject(request);
+
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", jsonString);
+
+                if (r.code != "00")
+                {
+                    throw new Exception(r.message);
+                }
+                else
+                {
+
+                    var jsResponse = JsonConvert.SerializeObject(r.message.Replace("\"", "'"));
+
+                    JavaScriptSerializer jss = new JavaScriptSerializer();
+                    ResponseTimeSlot slots = jss.Deserialize<ResponseTimeSlot>(jsResponse.ToString().Replace('"', ' '));
+                    //var slots = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseTimeSlot>(jsResponse);
+
+                    foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays) {
+                        if (item.SlotDayName == fecEnt) {
+                            foreach (var i in item.Slots)
+                            {
+                                if (i.slotEnabled.ToString().ToLower() != "false")
+                                {
+                                    horas.Add(new Dias
+                                    {
+                                        NombeDia = i.SlotName,
+                                        fecha = Convert.ToDateTime(i.SlotDateTime).ToString("HH:mm:ss")
+                                    });
+                                }
+                            }
+                        }
+                    }
+
+
+
+                    //foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays)
+                    //{
+                    //    Dias dia = new Dias();
+
+                        //    dia.NombeDia = item.SlotDayName;
+                        //    dia.fecha = Convert.ToDateTime(item.Slots[0].SlotDateTime).ToString("yyyy/MM/dd");
+                        //    dias.Add(dia);
+                        //}
+
+                        //foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays[0].Slots)
+                        //{
+                        //    if (item.slotEnabled.ToString().ToLower() != "false")
+                        //    {
+                        //        horas.Add(new Dias
+                        //        {
+                        //            NombeDia = item.SlotName,
+                        //            fecha = Convert.ToDateTime(item.SlotDateTime).ToString("HH:mm:ss")
+                        //        });
+                        //    }
+                        //}
+                }
+                #endregion
+
+                var result = new { Success = true, json = horas };
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        #endregion
+
         public ActionResult GetDias(string fechaOriginal = "")
         {
             try
@@ -1541,7 +1724,7 @@ namespace ServicesManagement.Web.Controllers
             if (fechaOriginal == fechaSelec)
             {
                 //var fec = Convert.ToDateTime(fechaOriginal).ToString("dd/MM/yyyy") + " " + DateTime.Now.AddHours(-5).Hour.ToString() + ":00";
-               // string fec = DateTime.Now.AddHours(-5).ToString();
+                // string fec = DateTime.Now.AddHours(-5).ToString();
                 string fec = DateTime.Now.AddHours(-5).ToString();
                 hora = Convert.ToDateTime(fec).AddHours(4).Hour;
 
@@ -1568,11 +1751,11 @@ namespace ServicesManagement.Web.Controllers
 
             try
             {
-                var fecActual = DateTime.Now.AddHours(-5).ToString("yyyy/MM/dd");
+                string fecActual = DateTime.Now.AddHours(-5).ToString("yyyy/MM/dd");
 
 
                 List<Dias> dias = HoraEntrga(fecActual, fechaSelec);
-                var result = new { Success = true, json = dias, fecAct= fecActual,fechaSelec=fechaSelec };
+                var result = new { Success = true, json = dias, fecAct = fecActual, fechaSelec = fechaSelec };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
 

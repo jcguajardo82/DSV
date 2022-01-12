@@ -49,7 +49,8 @@
     </div>
     <div class="col-xs-2 col-md-2 col-lg-2">
         <div class="text-right">
-            @*<button type="button" class="btn btn-primary" onclick="popBuscador();">Buscador de Productos</button>*@
+
+           @* <button type="button" class="btn btn-primary" onclick="calendario();">SLOT CALENDARIO</button>*@
         </div>
     </div>
 </div>
@@ -1380,13 +1381,15 @@
                         }
 
                         var t = Date.now();
-
+                        var _tienda = $("#ddlTdas").val();
                          $.ajax({
                             async: false,
                             type: "GET",
-                            url: '@Url.Action("GetDias", "CallCenter")',
+                            //url: '@Url.Action("GetDias", "CallCenter")',
+                            url: '@Url.Action("GetDiasSlot", "CallCenter")',
                             data: {
                                 //fechaOriginal: t
+                                tda: _tienda
                             },
                             datatype: "html",
                             success: function (json) {
@@ -1685,6 +1688,37 @@
                 "order": []
             });
         });
+
+        function calendario() {
+
+            var _tienda = $("#ddlTdas").val();
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetDiasSlot", "CallCenter")',
+                data: {
+                    tda: _tienda
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success)
+                    {
+                        alert("ok");
+                        //var sel = $("#ddlHoras");
+                        //sel.empty();
+
+                        //for (var i = 0; i < json.json.length; i++) {
+                        //    sel.append('<option value="' + json.json[i].fecha + '">' + json.json[i].NombeDia + '</option>');
+                        //}
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+                }});
+
+        }
 
         function ddlSustito(obj) {
             alert(obj.value);
@@ -3134,7 +3168,7 @@
 
         }
 
-        function onchangeDias() {
+        @*function onchangeDias() {
 
             var _fechaOriginal = Date.now();
             var _fecha = $("#ddlDias").val(); //$("[id='ddlDias'] option:selected").text();
@@ -3163,8 +3197,42 @@
 
             }
             });
+        }*@
+            function onchangeDias() {
+
+            var _tienda = $("#ddlTdas").val();
+           // var _fecha = $("#ddlDias").val(); //$("[id='ddlDias'] option:selected").text();
+            var _fecha = $("[id='ddlDias'] option:selected").text();
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetHorasEntregaSlot", "CallCenter")',
+                data: {
+                    fecEnt: _fecha,
+                    tda:_tienda
+
+                },
+                datatype: "html",
+                success: function (json) {
+
+                    if (json.Success)
+                    {
+                        var sel = $("#ddlHoras");
+                        sel.empty();
+
+                        for (var i = 0; i < json.json.length; i++) {
+                            sel.append('<option value="' + json.json[i].fecha + '">' + json.json[i].NombeDia + '</option>');
+                        }
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            bootbox.alert(errorThrown);
+
+            }
+            });
         }
 
+        //GetHorasEntregaSlot
         function GetDirCteIdNumCte() {
 
               var _Id_Num_Cte = $("#hddIdCliente").val();
