@@ -263,7 +263,7 @@
                     _obj.ueNo = $(this).val().split('/')[3];
                     _obj.orderNo = $(this).val().split('/')[4];
                     _obj.ucc = $(this).val().split('/')[5];
-
+                    
                     _obj.cuenta = $(row)[0].cells[0].innerText;
                     _obj.piezas = $(row)[0].cells[1].innerText;
                     _obj.referencia = $(row)[0].cells[2].innerText;
@@ -322,6 +322,7 @@
         }
 
         function Confirmar() {
+            console.log(_json);
             var jsonCopy = _json;
             var jsonConfirm = [];
             var count = 0;
@@ -348,6 +349,7 @@
                 _obj.peso = $("#peso" + x).val();
                 jsonConfirm.push(_obj);
             }
+            console.log(jsonConfirm);
             if (jsonCopy.length == count) {
                 //alert('Guardarrr');
                 $('#btnSolicitar').attr('disabled', true);
@@ -465,6 +467,7 @@
                 _obj.barcode = jsonCopy[x].barcode;
                 _obj.referencia = jsonCopy[x].referencia;
                 _obj.pk = jsonCopy[x].pk;
+                _obj.piezas = jsonCopy[x].piezas;
                 _obj.porcentaje = 0;
                 
                 if (jsonCopy[x].idShip == idShip && jsonCopy[x].cuenta == cuenta) {
