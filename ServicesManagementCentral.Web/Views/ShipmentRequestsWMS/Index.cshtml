@@ -215,6 +215,8 @@
                         myTableR
                             .clear()
                             .draw();
+                        _jsonOrdenes = json.json;
+
                         for (var i = 0; i < json.json.length; i++) {
                             myTableR.row.add([
                                 json.json[i].Cuenta,
@@ -228,7 +230,7 @@
                                 json.json[i].telefono,
                                 json.json[i].contacto,
                                 json.json[i].ucc,
-                                "<input class='form - check - input' type='checkbox' value='" + json.json[i].idShipmentWMS + "/" + json.json[i].ProductId + "/" + json.json[i].Barcode + "/" + json.json[i].UeNo + "/" + json.json[i].OrderNo + "/" + json.json[i].ucc + "' id='chkSel_" + json.json[i].idShipmentWMS + "' />"
+                                "<input class='form - check - input' type='checkbox' onChange='SeleccionarUCC(\"" + json.json[i].ucc + "\")' value='" + json.json[i].idShipmentWMS + "/" + json.json[i].ProductId + "/" + json.json[i].Barcode + "/" + json.json[i].UeNo + "/" + json.json[i].OrderNo + "/" + json.json[i].ucc + "' id='chkSel_" + json.json[i].idShipmentWMS + "' />"
                             ]).draw();
 
                         }
@@ -245,76 +247,134 @@
             //LimpiaModal();
             //Disabled();
         });
+        function SeleccionarUCC(_ucc) {
+            //alert('OnChange ' + _ucc);
+            var item = undefined;
+
+            if (_json != undefined)
+                item = _json.find(x => x.ucc === _ucc);
+            else
+                _json = [];
+
+            if (item != undefined) {
+                let _index = _json.indexOf(item);
+                if (_index > -1) {
+                    _json.splice(_index, 1);
+                }
+            } else {
+                var itemO = _jsonOrdenes.find(x => x.ucc === _ucc);
+                let _obj = {};
+                _obj.idShip = itemO.idShipmentWMS;
+                _obj.productId = itemO.ProductId;
+                _obj.barcode = itemO.Barcode;
+                _obj.ueNo = itemO.UeNo;
+                _obj.orderNo = itemO.OrderNo;
+                _obj.ucc = itemO.ucc;
+
+                _obj.cuenta = itemO.Cuenta;
+                _obj.piezas = itemO.cantidad;
+                _obj.referencia = itemO.referencia2;
+                _obj.pk = itemO.ucc;
+                _obj.tipoEmpaque = '';
+                _obj.porcentaje = 0;
+                _obj.ancho = 0;
+                _obj.largo = 0;
+                _obj.alto = 0;
+                _obj.peso = 0;
+                _obj.selectedValue = '';
+
+                _json.push(_obj);
+            }
+            //console.log(_json);
+        }
 
         function SolicitudGuia() {
-            var selProd = 0;
-            _json = [];
-
-            $('input[type=checkbox][id*=chkSel_]').each(function () {
-                if ($(this).is(":checked") && $(this).is(":disabled") == false) {
-                    selProd++
-                    row = $(this).closest("tr");
-                    //alert($(this).val());
-                    let _obj = {};
-                    _obj.idShip = $(this).val().split('/')[0];
-                    _obj.productId = $(this).val().split('/')[1];
-                    _obj.barcode = $(this).val().split('/')[2];
-                    _obj.ueNo = $(this).val().split('/')[3];
-                    _obj.orderNo = $(this).val().split('/')[4];
-                    _obj.ucc = $(this).val().split('/')[5];
+            var selProd = _json.length;
+            
+            //$('input[type=checkbox][id*=chkSel_]').each(function () {
+            //    if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+            //        selProd++
+            //        row = $(this).closest("tr");
+            //        //alert($(this).val());
+            //        let _obj = {};
+            //        _obj.idShip = $(this).val().split('/')[0];
+            //        _obj.productId = $(this).val().split('/')[1];
+            //        _obj.barcode = $(this).val().split('/')[2];
+            //        _obj.ueNo = $(this).val().split('/')[3];
+            //        _obj.orderNo = $(this).val().split('/')[4];
+            //        _obj.ucc = $(this).val().split('/')[5];
                     
-                    _obj.cuenta = $(row)[0].cells[0].innerText;
-                    _obj.piezas = $(row)[0].cells[1].innerText;
-                    _obj.referencia = $(row)[0].cells[2].innerText;
-                    _obj.pk = $(row)[0].cells[10].innerText;
-                    _obj.tipoEmpaque = '';
-                    _obj.porcentaje = 0;
-                    _obj.ancho = 0;
-                    _obj.largo = 0;
-                    _obj.alto = 0;
-                    _obj.peso = 0;
-                    _obj.selectedValue = '';
-                    _json.push(_obj);
-                }
-            });
+            //        _obj.cuenta = $(row)[0].cells[0].innerText;
+            //        _obj.piezas = $(row)[0].cells[1].innerText;
+            //        _obj.referencia = $(row)[0].cells[2].innerText;
+            //        _obj.pk = $(row)[0].cells[10].innerText;
+            //        _obj.tipoEmpaque = '';
+            //        _obj.porcentaje = 0;
+            //        _obj.ancho = 0;
+            //        _obj.largo = 0;
+            //        _obj.alto = 0;
+            //        _obj.peso = 0;
+            //        _obj.selectedValue = '';
+            //        _json.push(_obj);
+            //    }
+            //});
             
             if (selProd > 0) {
                 $('#dlgCreateServicios').modal('show');
-                console.log(_json);
+                //console.log(_json);
 
-                $("#tblSolicitud tbody").remove();
-                $("#tblSolicitud tr").remove();
-                trTh = $('<tr/>');
-                trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' width='100px' colspan='1'>Referencia</th>");
-                trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' width='100px' colspan='1'>PK</th>");
-                trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='120px' rowspan='1'>Tipo de Empaque</th>");
-                trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='60px' rowspan='1' colspan='1'>Porcentaje</th>");
-                trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='50px' rowspan='1' colspan='1'>Ancho</th>");
-                trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Largo</th>");
-                trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Alto</th>");
-                trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Peso</th>");
-                $('#tblSolicitud').append(trTh);
-                //var tr;
-                //console.log(json);
-                //Append each row to html table
-                for (var i = 0; i < _json.length; i++) {
-                    tr = $('<tr/>');
-                    //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                    tr.append("<td>" + _json[i].referencia + "</td>");
-                    tr.append("<td>" + _json[i].pk + "</td>");
-                    //tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i +"'> "
-                    //    + "  <option value = 'CJA'> CJA</option><option value='STC'>STC</option><option value='SBR'>SBR</option><option value='EMB'>EMB</option></select > </td>");
-                    tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
-                        + _optionsPackings +  "</select></td>");
+                //$("#tblSolicitud tbody").remove();
+                //$("#tblSolicitud tr").remove();
+                //trTh = $('<tr/>');
+                //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' width='100px' colspan='1'>Referencia</th>");
+                //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' width='100px' colspan='1'>PK</th>");
+                //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='120px' rowspan='1'>Tipo de Empaque</th>");
+                //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='60px' rowspan='1' colspan='1'>Porcentaje</th>");
+                //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='50px' rowspan='1' colspan='1'>Ancho</th>");
+                //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Largo</th>");
+                //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Alto</th>");
+                //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Peso</th>");
+                //$('#tblSolicitud').append(trTh);
+                ////var tr;
+                ////console.log(json);
+                ////Append each row to html table
+                //for (var i = 0; i < _json.length; i++) {
+                //    tr = $('<tr/>');
+                //    //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+                //    tr.append("<td>" + _json[i].referencia + "</td>");
+                //    tr.append("<td>" + _json[i].pk + "</td>");
+                //    //tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i +"'> "
+                //    //    + "  <option value = 'CJA'> CJA</option><option value='STC'>STC</option><option value='SBR'>SBR</option><option value='EMB'>EMB</option></select > </td>");
+                //    tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
+                //        + _optionsPackings + "</select></td>");
 
-                    tr.append("<td><input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' /></td>");
-                    tr.append("<td><input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' /></td>");
-                    tr.append("<td><input type='text' readonly id='largo" + i+ "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' /></td>");
-                    tr.append("<td><input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px'/></td>");
-                    tr.append("<td><input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' /></td>");
-                    $('#tblSolicitud').append(tr);
+                //    tr.append("<td><input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' /></td>");
+                //    tr.append("<td><input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' /></td>");
+                //    tr.append("<td><input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' /></td>");
+                //    tr.append("<td><input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px'/></td>");
+                //    tr.append("<td><input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' /></td>");
+                //    $('#tblSolicitud').append(tr);
 
-                    $("#ddlCodigo_" + i).val('');
+                //    $("#ddlCodigo_" + i).val('');
+                //}
+                var myTable4 = $('#tblSolicitud').DataTable();
+                    myTable4
+                        .clear()
+                        .draw();
+                    for (var i = 0; i < _json.length; i++) {
+                        myTable4.row.add([
+                            _json[i].referencia,
+                            _json[i].pk,
+                            "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
+                                + _optionsPackings +  "</select>",
+                            "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
+                            "<input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' />",
+                            "<input type='text' readonly id='largo" + i+ "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' />",
+                            "<input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px' />",
+                            "<input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' />"
+                        ]).draw();
+
+                        $("#ddlCodigo_" + i).val('');
                 }
             }
         }
@@ -489,42 +549,62 @@
             }
 
 
-            $("#tblSolicitud tbody").remove();
-            $("#tblSolicitud tr").remove();
-            trTh = $('<tr/>');
-            trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' width='100px' colspan='1'>Referencia</th>");
-            trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' width='100px' colspan='1'>PK</th>");
-            trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='120px' rowspan='1'>Tipo de Empaque</th>");
-            trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='60px' rowspan='1' colspan='1'>Porcentaje</th>");
-            trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='50px' rowspan='1' colspan='1'>Ancho</th>");
-            trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Largo</th>");
-            trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Alto</th>");
-            trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Peso</th>");
-            $('#tblSolicitud').append(trTh);
-            //var tr;
-            //console.log(json);
-            //Append each row to html table
+            //$("#tblSolicitud tbody").remove();
+            //$("#tblSolicitud tr").remove();
+            //trTh = $('<tr/>');
+            //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' width='100px' colspan='1'>Referencia</th>");
+            //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' width='100px' colspan='1'>PK</th>");
+            //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='120px' rowspan='1'>Tipo de Empaque</th>");
+            //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='60px' rowspan='1' colspan='1'>Porcentaje</th>");
+            //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' width='50px' rowspan='1' colspan='1'>Ancho</th>");
+            //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Largo</th>");
+            //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Alto</th>");
+            //trTh.append("<th class='sorting' tabindex='0' aria-controls='tblConsulta' rowspan='1' colspan='1'>Peso</th>");
+            //$('#tblSolicitud').append(trTh);
+            ////var tr;
+            ////console.log(json);
+            ////Append each row to html table
+            //for (var i = 0; i < _json.length; i++) {
+            //    tr = $('<tr/>');
+            //    tr.append("<td>" + _json[i].referencia + "</td>");
+            //    tr.append("<td>" + _json[i].pk + "</td>");
+
+            //    tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
+            //        + _optionsPackings + "</select></td>");
+
+            //    if (_json[i].tipoEmpaque == 'EMB') {
+            //        tr.append("<td><input type='text' id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' /></td>");
+            //    }
+            //    else {
+            //        tr.append("<td><input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' /></td>");
+            //    }
+
+            //    tr.append("<td><input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' /></td>");
+            //    tr.append("<td><input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' /></td>");
+            //    tr.append("<td><input readonly type='text' id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px'/></td>");
+            //    tr.append("<td><input readonly type='text' id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' /></td>");
+
+            //    $('#tblSolicitud').append(tr);
+
+            //    $("#ddlCodigo_" + i).val(_json[i].selectedValue);
+            //}
+
+            var myTable4 = $('#tblSolicitud').DataTable();
+            myTable4
+                .clear()
+                .draw();
             for (var i = 0; i < _json.length; i++) {
-                tr = $('<tr/>');
-                tr.append("<td>" + _json[i].referencia + "</td>");
-                tr.append("<td>" + _json[i].pk + "</td>");
-
-                tr.append("<td> <select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
-                    + _optionsPackings + "</select></td>");
-
-                if (_json[i].tipoEmpaque == 'EMB') {
-                    tr.append("<td><input type='text' id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' /></td>");
-                }
-                else {
-                    tr.append("<td><input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' /></td>");
-                }
-
-                tr.append("<td><input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' /></td>");
-                tr.append("<td><input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' /></td>");
-                tr.append("<td><input readonly type='text' id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px'/></td>");
-                tr.append("<td><input readonly type='text' id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' /></td>");
-
-                $('#tblSolicitud').append(tr);
+                myTable4.row.add([
+                    _json[i].referencia,
+                    _json[i].pk,
+                    "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
+                    + _optionsPackings + "</select>",
+                    "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
+                    "<input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' />",
+                    "<input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' />",
+                    "<input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px' />",
+                    "<input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' />"
+                ]).draw();
 
                 $("#ddlCodigo_" + i).val(_json[i].selectedValue);
             }
