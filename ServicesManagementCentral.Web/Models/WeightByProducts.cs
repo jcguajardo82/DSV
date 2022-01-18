@@ -13,5 +13,9 @@ namespace ServicesManagement.Web.Models
         public decimal Width { get; set; }
         public decimal Lenght { get; set; }
         public decimal Height { get; set; }
+        public string Cve_CategSAP { get; set; }
+        public string Cve_GciaCategSAP { get; set; }
+        public string Cve_GpoCategSAP { get; set; }
+        public string Desc_CategSAP { get; set; }
     }
 }

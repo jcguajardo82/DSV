@@ -1899,6 +1899,7 @@ namespace ServicesManagement.Web.Controllers
             string productsAll = string.Empty;
             bool bigTicket = false;
             decimal sumPeso = 0, width = 0, length = 0, heigth = 0;
+            DataTable dt = DALServicesM.GetTableProducts();
 
             foreach (var p in Products)
             {
@@ -1918,6 +1919,8 @@ namespace ServicesManagement.Web.Controllers
                     width += item.Width;
                     length += item.Lenght;
                     heigth += item.Height;
+
+                    dt.Rows.Add(item.Product, item.PesoVol, item.Cve_CategSAP, item.Cve_GciaCategSAP, item.Cve_GpoCategSAP, item.Desc_CategSAP);
                 }
                 else
                 {
@@ -1929,8 +1932,11 @@ namespace ServicesManagement.Web.Controllers
                     width += item.Width;
                     length += item.Lenght;
                     heigth += item.Height;
+
+                    dt.Rows.Add(item.Product, item.Peso, item.Cve_CategSAP, item.Cve_GciaCategSAP, item.Cve_GpoCategSAP, item.Desc_CategSAP);
                 }
 
+                
             }
 
             if (sumPeso < 1)
@@ -1956,54 +1962,8 @@ namespace ServicesManagement.Web.Controllers
 
             Session["SumPeso"] = sumPeso;
 
-            DALServicesM.GuardarTarifasLogyt(orderNo, sumPeso, bigTicket);
+            DALServicesM.GuardarTarifasLogyt(orderNo, sumPeso, bigTicket, dt);
 
-        }
-        private string SeleccionarPaqueteria(List<ProductEmbalaje> Products, int orderNo)
-        {
-            string productsAll = string.Empty;
-            bool bigTicket = false;
-            decimal sumPeso = 0;
-
-            foreach (var p in Products)
-            {
-                productsAll += p.ProductId.ToString() + ",";
-            }
-            List<WeightByProducts> lstPesos = DataTableToModel.ConvertTo<WeightByProducts>(DALServicesM.GetDimensionsByProducts(productsAll).Tables[0]);
-
-            foreach (var item in lstPesos)
-            {
-                if (item.PesoVol > item.Peso)
-                {
-                    if (item.PesoVol > 70)
-                        bigTicket = true;
-
-                    var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
-                    sumPeso = sumPeso + (item.PesoVol * piezas);
-                }
-                else
-                {
-                    if (item.Peso > 70)
-                        bigTicket = true;
-
-                    var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
-                    sumPeso = sumPeso + (item.Peso * piezas);
-                }
-
-            }
-
-            if (sumPeso < 1)
-                sumPeso = 1;
-
-            Session["SumPeso"] = sumPeso;
-
-            DALServicesM.GuardarTarifasLogyt(orderNo, sumPeso, bigTicket);
-
-            DataSet ds = DALServicesM.OrdersLogistics(orderNo, sumPeso, bigTicket);
-
-
-
-            return ds.Tables[0].Rows[0][1].ToString();
         }
         public ActionResult AddEmbalajePendiente(List<ShipmentToTrackingModel> Paquetes)
         {
@@ -2179,7 +2139,7 @@ namespace ServicesManagement.Web.Controllers
             string productsAll = string.Empty;
             bool bigTicket = false;
             decimal sumPeso = 0;
-
+            DataTable dt = DALServicesM.GetTableProducts();
 
             productsAll = Paquete.productId.ToString();
 
@@ -2194,6 +2154,7 @@ namespace ServicesManagement.Web.Controllers
 
                     var piezas = Paquete.piezas;
                     sumPeso = sumPeso + (item.PesoVol * piezas);
+                    dt.Rows.Add(item.Product, item.PesoVol, item.Cve_CategSAP, item.Cve_GciaCategSAP, item.Cve_GpoCategSAP, item.Desc_CategSAP);
                 }
                 else
                 {
@@ -2202,6 +2163,7 @@ namespace ServicesManagement.Web.Controllers
 
                     var piezas = Paquete.piezas;
                     sumPeso = sumPeso + (item.Peso * piezas);
+                    dt.Rows.Add(item.Product, item.Peso, item.Cve_CategSAP, item.Cve_GciaCategSAP, item.Cve_GpoCategSAP, item.Desc_CategSAP);
                 }
 
             }
@@ -2211,7 +2173,7 @@ namespace ServicesManagement.Web.Controllers
             Session["SumPeso"] = sumPeso;
 
             //DataSet ds = DALServicesM.OrdersLogistics(Paquete.orderNo, sumPeso, bigTicket);
-            DALServicesM.GuardarTarifasLogyt(Paquete.orderNo, sumPeso, bigTicket);
+            DALServicesM.GuardarTarifasLogyt(Paquete.orderNo, sumPeso, bigTicket, dt);
         }
         //Cabeceras y productos
         public ActionResult LstCabecerasGuiasProds(string UeNo, int OrderNo)
