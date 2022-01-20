@@ -58,6 +58,12 @@
                         <th>Estatus de la Guia de Devolucion</th>
                         <th>Guia de reenvio</th>
                         <th>Estatus de Guía de Reenvio</th>
+                        <th>Destinatario</th>
+                        <th>Surtido</th>
+                        <th>Salida Almacen</th>
+                        <th>Total De Guias</th>
+                        <th>Fecha Punto de Venta</th>
+                        <th>Estatus Extranet</th>
                         @*<th>Motivo de no recolección</th>*@
                         @*<th name='accion'></th>*@
                     </tr>
@@ -305,7 +311,13 @@
                                 json.resp[i].GuiaDevolNro,
                                 json.resp[i].GuiaDevolStatus,
                                 json.resp[i].GuiaReenvioNro,
-                                json.resp[i].GuiaReenvioStatus
+                                json.resp[i].GuiaReenvioStatus,
+                                json.resp[i].Destinatario,
+                                json.resp[i].Surtido,
+                                json.resp[i].SalidaAlmacen,
+                                json.resp[i].Guias,
+                                json.resp[i].FechaPuntoDeVenta,
+                                json.resp[i].StatusExtranet
 
                             ]).draw();
                         }
