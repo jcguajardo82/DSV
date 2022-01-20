@@ -56,6 +56,9 @@ namespace ServicesManagement.Web.Models.Consignaciones
 
         public string FechaSolicitudGuia { get; set; }
         public string PuntoDeVenta { get; set; }
+        public string Destinatario { get; set; }
+        public string Surtido { get; set; }
+        public string SalidaAlmacen { get; set; }
 
         ////[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         //public string FechaStock { get; set; }

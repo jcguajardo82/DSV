@@ -69,6 +69,9 @@
                         <th>Cantidad de Productos</th>
                         <th>Precio de Producto</th>
                         <th>Costo de la Consignación</th>
+                        <th>Destinatario</th>
+                        <th>Surtido</th>
+                        <th>Salida Almacen</th>
                         @* <th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
                         @* <th>Guia de devolucion</th>*@
                         @*<th>Estatus de la Guia de Devolucion</th>*@
@@ -310,7 +313,10 @@
                                 "<div style='width: 200px'>" + json.resp[i].Categoria + "</div>",
                                 json.resp[i].Quantity,
                                 json.resp[i].Price,
-                                json.resp[i].CostoConsignacion
+                                json.resp[i].CostoConsignacion,
+                                json.resp[i].Destinatario,
+                                json.resp[i].Surtido,
+                                json.resp[i].SalidaAlmacen
                                 
                             ]).draw();
                         }
