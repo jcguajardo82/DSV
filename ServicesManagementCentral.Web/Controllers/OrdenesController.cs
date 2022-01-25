@@ -1796,9 +1796,6 @@ namespace ServicesManagement.Web.Controllers
                 {
                     var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
                     folios.Add(FolioDisp);
-                    string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
-                    //string[] carriers = {"fedex" };
-                    List<string> lstCarriers = new List<string>(carriers);
                     List<CarrierRequest> lstCarrierRequests = new List<CarrierRequest>();
 
                     EliminarTarifasAnteriores(UeNo, OrderNo);
@@ -1806,9 +1803,10 @@ namespace ServicesManagement.Web.Controllers
 
                     if (enviaCom == 1)
                     {
-                        foreach (var carrier in lstCarriers)
+                        DataSet dsCarriers = DALServicesM.CarriersPorTransportista("envia.com");
+                        foreach (DataRow row in dsCarriers.Tables[0].Rows)
                         {
-                            var tarifaCarrier = CreateGuiaCotizador(UeNo, OrderNo, 1, carrier);
+                            var tarifaCarrier = CreateGuiaCotizador(UeNo, OrderNo, 1, row["Carrier"].ToString());
 
                             if (tarifaCarrier.Carrier != null)
                             {
