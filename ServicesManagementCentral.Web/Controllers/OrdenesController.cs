@@ -1877,8 +1877,9 @@ namespace ServicesManagement.Web.Controllers
                 }
 
                 // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
-                var s = UeNo.Split('-');
-                Correos.Correos.Correo7(int.Parse(s[0]));
+                //var s = UeNo.Split('-');
+                //Correos.Correos.Correo7(int.Parse(s[0]));
+                Correos.Correos.Correo7(OrderNo);
 
                 #endregion
 
@@ -2116,9 +2117,9 @@ namespace ServicesManagement.Web.Controllers
                     DALServicesM.UCCProcesada(item.ucc);
 
                     // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
-                    //Correos.Correos.Correo7(item.orderNo);
-                    var s = item.ueNo.Split('-');
-                    Correos.Correos.Correo7(int.Parse(s[0]));
+                    Correos.Correos.Correo7(item.orderNo);
+                    //var s = item.ueNo.Split('-');
+                    //Correos.Correos.Correo7(int.Parse(s[0]));
 
                     #endregion
                 }
