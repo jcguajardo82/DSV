@@ -19,6 +19,7 @@
 
             @*<label>Tiena</label>*@
             <select class="form-control m-b" id="ddlTdas">
+                <option value="0">--SELECCIONAR TIENDA--</option>
                 @{
                     DataSet ds = (DataSet)ViewBag.tdas;
 
@@ -1373,6 +1374,16 @@
                     //busqueda de cliente
                     if (currentIndex == 0 )
                     {
+                        var _tienda = $("#ddlTdas").val();
+
+
+                        if (_tienda == '0') {
+                            alert("Debe seleccionar la tienda");
+                           
+                            return false;
+
+                        }
+
                         //alert('Index ' + currentIndex);
                         var id = $("#hddIdCliente").val();
                         //var id = 1;
@@ -1383,7 +1394,7 @@
                         }
 
                         var t = Date.now();
-                        var _tienda = $("#ddlTdas").val();
+           
                          $.ajax({
                             async: false,
                             type: "GET",
