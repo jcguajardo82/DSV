@@ -52,9 +52,26 @@ namespace ServicesManagement.Web.Helpers
 
 
 
-            if (context.Exception.Data.Count == 0)
+            //if (context.Exception.Data.Count == 0)
+            //{
+
+
+            //    var ExceptionMessage = context.Exception.Message;
+            //    var ExceptionStackTrack = context.Exception.StackTrace;
+            //    var ControllerName = context.RouteData.Values["controller"].ToString();
+            //    var ActionName = context.RouteData.Values["action"].ToString();
+            //    var ExceptionLogTime = DateTime.Now;
+
+            //    message = GetMessage(ControllerName, ActionName);
+
+
+
+            //    LogError(ExceptionMessage, ExceptionStackTrack, ControllerName, ActionName, ExceptionLogTime);
+
+            //}
+
+            if (!context.Exception.Data.Contains("negocio"))
             {
-               
 
                 var ExceptionMessage = context.Exception.Message;
                 var ExceptionStackTrack = context.Exception.StackTrace;
@@ -63,12 +80,9 @@ namespace ServicesManagement.Web.Helpers
                 var ExceptionLogTime = DateTime.Now;
 
                 message = GetMessage(ControllerName, ActionName);
-
-           
-
                 LogError(ExceptionMessage, ExceptionStackTrack, ControllerName, ActionName, ExceptionLogTime);
-               
             }
+
 
             string json = string.Empty;// TODO: Json(new { success = false, message = message, status = status });
             context.ExceptionHandled = true;
