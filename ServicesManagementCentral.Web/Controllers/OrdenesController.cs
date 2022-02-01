@@ -2067,7 +2067,8 @@ namespace ServicesManagement.Web.Controllers
                     //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
                     paqueteria = dsCarrier.Tables[0].Rows[0][0].ToString();
                     service = dsCarrier.Tables[0].Rows[0][1].ToString();
-                    decimal decimalRound = decimal.Round(item.peso);
+                    decimal decimalPeso = decimal.Round(decimal.Parse(Session["SumPeso"].ToString()));
+                    decimal decimalRound = decimal.Round(decimalPeso);
                     if (decimalRound == 0)
                         decimalRound = 1;
 
