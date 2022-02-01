@@ -22,8 +22,7 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult EnvioCorreo(int Orden,int id)
         {
-            try
-            {
+            
                 switch (id)
                 {
                     //1   Confirmación de Pago en Tienda Entrega en Tienda    6A
@@ -86,60 +85,53 @@ namespace ServicesManagement.Web.Controllers
                     
                 };
                 return Json(result, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception x)
-            {
-                var result = new { Success = false, Message = x.Message };
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
+            
+          
         }
         [HttpPost]
         [CustomExceptionHandlerFilter]
         public ActionResult ReglaNegocio()
         {
-    
             try
             {
-                
-
-                throw new Exception("ESta es una regla de negocio");
-                var result = new
+                bool hasError = true;
+                if (hasError)
                 {
-                    Success = true
+                    var exn= new Exception("test error");
+                    exn.Data.Add("negocio", "negocio");
+                    throw exn;
+                }
+                else
+                {
+                    var result = new
+                    {
+                        Success = true
 
-                };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                    };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
             }
-            catch (Exception x)
+            catch (Exception)
             {
 
-                var result = new { Success = false, Message = x.Message };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                throw;
             }
+           
         }
 
 
 
         public ActionResult FallaSistema()
         {
-            try
+            int a = 1, b = 0;
+
+            int div = (a / b);
+            var result = new
             {
+                Success = true
 
-                int a = 1, b = 0;
-
-                int div =(a/b);
-                var result = new
-                {
-                    Success = true
-
-                };
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception x)
-            {
-                var result = new { Success = false, Message = x.Message };
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

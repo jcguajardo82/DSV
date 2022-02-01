@@ -51,8 +51,12 @@
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert("errorThrown");
+                    if (jqXHR.responseText != "") {
+                        alert(jqXHR.responseText);
+                    }
+                    else {
+                        alert("Ha ocurrido un error inesperado");
+                    }
                 }
 
             });
@@ -76,10 +80,22 @@
                     else {
                         alert(json.Message);
                     }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert(errorThrown);
+                },
+              error: function (xhr, status, error) {
+                    if (xhr.responseText != "") {
+                        //var err = JSON.parse(xhr.responseText);
+                        //if (err.status == 440) {
+                        //    alert("Session expired");
+                        //}
+                        //else {
+                        //    alert(err.message);
+                        //}
+
+                        alert(xhr.responseText);
+                    }
+                    else {
+                        alert("Ha ocurrido un error inesperado");
+                    }
                 }
 
             });
@@ -103,10 +119,22 @@
                     else {
                         alert(json.Message);
                     }
-                }
-                , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert(errorThrown);
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.responseText != "") {
+                        //var err = JSON.parse(xhr.responseText);
+                        //if (err.status == 440) {
+                        //    alert("Session expired");
+                        //}
+                        //else {
+                        //    alert(err.message);
+                        //}
+
+                        alert(xhr.responseText);
+                    }
+                    else {
+                        alert("Ha ocurrido un error inesperado");
+                    }
                 }
 
             });
