@@ -3,6 +3,8 @@ using System.Net;
 using System;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Data;
+using System.Configuration;
 
 namespace ServicesManagement.Web.Helpers
 {
@@ -52,7 +54,7 @@ namespace ServicesManagement.Web.Helpers
 
             if (context.Exception.Data.Count == 0)
             {
-                message = "Error personalizado";
+               
 
                 var ExceptionMessage = context.Exception.Message;
                 var ExceptionStackTrack = context.Exception.StackTrace;
@@ -60,11 +62,12 @@ namespace ServicesManagement.Web.Helpers
                 var ActionName = context.RouteData.Values["action"].ToString();
                 var ExceptionLogTime = DateTime.Now;
 
+                message = GetMessage(ControllerName, ActionName);
 
+           
 
-                //Consulto diccionario de errores mandado contolador y accion, obtendria el mensaje perzonalizado
-
-                //guardo en log
+                LogError(ExceptionMessage, ExceptionStackTrack, ControllerName, ActionName, ExceptionLogTime);
+               
             }
 
             string json = string.Empty;// TODO: Json(new { success = false, message = message, status = status });
@@ -82,6 +85,88 @@ namespace ServicesManagement.Web.Helpers
             //TODO: Remove generic from database
 
             return "DataBase Error see log";
+        }
+
+
+        private string GetMessage(string Controlador, string Accion)
+        {
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@Controlador", Controlador);
+                parametros.Add("@Accion", Accion);
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[config].[CatalogoErrores_sUp]", false, parametros);
+
+                return ds.Tables[0].Rows[0][0].ToString();
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        //[config].LogErrors_iUp
+
+        private void LogError(
+            string Message, string StackTrace,
+            string ControllerName, string ActionName,DateTime ExceptionLogTime
+            )
+        {
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@Message", Message);
+                parametros.Add("@StackTrace", StackTrace);
+                parametros.Add("@ControllerName", ControllerName);
+                parametros.Add("@ActionName", ActionName);
+                parametros.Add("@ExceptionLogTime", ExceptionLogTime);
+
+
+                 Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[config].[LogErrors_iUp]", false, parametros);
+
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
     }
 }
