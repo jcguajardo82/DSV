@@ -1967,8 +1967,8 @@ namespace ServicesManagement.Web.Controllers
         public ActionResult AddEmbalajePendiente(List<ShipmentToTrackingModel> Paquetes)
         {
             string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty, service = string.Empty, trackUrl = string.Empty;
-            try
-            {
+            //try
+            //{
                 int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
                 foreach (ShipmentToTrackingModel item in Paquetes)
                 {
@@ -2127,12 +2127,12 @@ namespace ServicesManagement.Web.Controllers
 
                 var result = new { Success = true };
                 return Json(result, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception x)
-            {
-                var result = new { Success = false, Message = x.Message };
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
+            //}
+            //catch (Exception x)
+            //{
+            //    var result = new { Success = false, Message = x.Message };
+            //    return Json(result, JsonRequestBehavior.AllowGet);
+            //}
         }
         private void CrearCotizacionesLogytPendiente(ShipmentToTrackingModel Paquete)
         {
