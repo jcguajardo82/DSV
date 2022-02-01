@@ -1,4 +1,5 @@
 ﻿using ServicesManagement.Web.DAL.Correos;
+using ServicesManagement.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,8 @@ namespace ServicesManagement.Web.Controllers
         // GET: EnvioCorreos
         public ActionResult Index()
         {
-          ViewBag.Plantillas =  DALCorreos.EmailLayoutAll_sUp().Tables[0];
+            
+            ViewBag.Plantillas =  DALCorreos.EmailLayoutAll_sUp().Tables[0];
    
             return View();
         }
@@ -82,6 +84,54 @@ namespace ServicesManagement.Web.Controllers
                 {
                     Success = true
                     
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpPost]
+        [CustomExceptionHandlerFilter]
+        public ActionResult ReglaNegocio()
+        {
+    
+            try
+            {
+                
+
+                throw new Exception("ESta es una regla de negocio");
+                var result = new
+                {
+                    Success = true
+
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
+        public ActionResult FallaSistema()
+        {
+            try
+            {
+
+                int a = 1, b = 0;
+
+                int div =(a/b);
+                var result = new
+                {
+                    Success = true
+
                 };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

@@ -291,6 +291,7 @@
     <Compile Include="DAL\TotalOrdenes\DALTotalOrdenes.cs" />
     <Compile Include="DAL\Vehiculos\DALVehiculos.cs" />
     <Compile Include="ExcelTools.cs" />
+    <Compile Include="Helpers\CustomFilter.cs" />
     <Compile Include="Helpers\DataTableToModel.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\OrdersToXML.cs" />

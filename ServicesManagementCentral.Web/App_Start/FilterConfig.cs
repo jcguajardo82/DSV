@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using ServicesManagement.Web.Helpers;
+using System.Web;
 using System.Web.Mvc;
 
 namespace ServicesManagement.Web
@@ -14,7 +15,8 @@ namespace ServicesManagement.Web
         /// <param name="filters">GlobalFilterCollection object</param>
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            //filters.Add(new HandleErrorAttribute());
+            filters.Add(new CustomExceptionHandlerFilter());
         }
     }
 }

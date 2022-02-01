@@ -15,12 +15,14 @@
     </select>
     <input type="text" class="form-control" id="txtOrden">
     <button type="button" class="btn btn-default" onclick="Correos()">Enviar Correo</button>
+    <button type="button" class="btn btn-default" onclick="Regla()">Regla de Negocio</button>
+    <button type="button" class="btn btn-default" onclick="Error()">Error de sistema</button>
 </div>
 @section scripts {
    
     <link href="~/Content/plugins/zoomy/zoomy.css" rel="stylesheet" />
     <script>
-       
+
         function Correos() {
             var orden = $("#txtOrden").val();
             var id = $("#ddlPlantillas").val();
@@ -56,7 +58,59 @@
             });
         }
 
-   
+        function Regla() {
+
+            $.ajax({
+                
+                type: "POST",
+                url: '@Url.Action("ReglaNegocio", "EnvioCorreos")',
+
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                       alert("ok regla")
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert(errorThrown);
+                }
+
+            });
+        }
+
+        function Error() {
+
+            $.ajax({
+              
+                type: "POST",
+                url: '@Url.Action("FallaSistema", "EnvioCorreos")',
+
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                       alert("ok regla")
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert(errorThrown);
+                }
+
+            });
+        }
 
     </script>
 }
