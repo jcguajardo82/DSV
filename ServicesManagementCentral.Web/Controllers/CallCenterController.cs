@@ -672,22 +672,31 @@ namespace ServicesManagement.Web.Controllers
 
                 string status = string.Empty;
                 string txtCombo = string.Empty;
+
+                //CEDIS
                 switch (status.ToLower())
                 {
-                    case "orden nueva":
-
+                    case "En Split": 
+                        txtCombo = "Cancelacion";
+                        break;
+                    case "En Surtido":
+                        txtCombo = "Pedido en Proceso";
+                        break;
+                    case "En Cobro":
+                    case "En Documentacion":
+                    case "En Transportista":
+                    case "":
+                    case "En Entrega":
+                    case "Orden Cancelada":
+                        txtCombo = "Devolucion";
+                        break;
                 }
-
-                // Reviso el status con un case y devuelvo el texto del combo
-
-
-
 
                 decimal tot = list.Sum(x => x.SubTotal);
 
                 string cliente = string.Format("{0}/?order={1}", urlbase, OrderId);
 
-                var result = new { Success = true, resp = list, total = tot, url = cliente };
+                var result = new { Success = true, resp = list, total = tot, url = cliente, opCombo = txtCombo };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
