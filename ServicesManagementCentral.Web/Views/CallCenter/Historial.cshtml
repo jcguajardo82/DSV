@@ -671,6 +671,8 @@
                             GetMotivos(1);
                         }
 
+                        $('#cmbServicio option[value=5]').text(json.opCombo);
+
                         $('#dlgRma').modal('toggle');
                     }
                     else {
@@ -757,7 +759,7 @@
             var _desc = $("#cancelReason option:selected").text();
             var _IdTmovimiento = $("#cancelReason").val();
             var _IdTSolicitud = $("#cmbServicio").val();
-
+            var _DescSolicitud = $("#cmbServicio option:selected").text();
             var list = new Array();
             var table = document.getElementById("tblDetalle");
             var checkboxes = table.querySelectorAll('input[type=checkbox]');
@@ -795,7 +797,8 @@
                         Products: list,
                         UeType: _UeType,
                         IdTSolicitud: _IdTSolicitud,
-                        IdTmovimiento: _IdTmovimiento
+                       IdTmovimiento: _IdTmovimiento,
+                        DescSolicitud: _DescSolicitud
                    }),
 
                 contentType: "application/json; charset=utf-8",

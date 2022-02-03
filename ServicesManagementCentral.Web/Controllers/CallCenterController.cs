@@ -708,7 +708,7 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult FinalizarRma(int OrderId, int Operacion
             , string Desc, List<OrderDetailCap> Products, string UeType
-            , int? IdTSolicitud, int? IdTmovimiento)
+            , int? IdTSolicitud, int? IdTmovimiento,string DescSolicitud)
         {
             string cliente = string.Empty;
             try
@@ -738,10 +738,15 @@ namespace ServicesManagement.Web.Controllers
                 if (string.IsNullOrEmpty(orden.Clientphone))
                 { orden.Clientphone = string.Empty; }
 
+                bool isDev = false;
+
+                if (DescSolicitud.ToLower().Trim() != "cancelacion")
+                { isDev = true; }
+
                 AutorizacionShow id = DataTableToModel.ConvertTo<AutorizacionShow>(
                     DALCallCenter.up_Corp_ins_tbl_OrdenCancelada(
                         orden.Orderid, accion, "Call Center", orden.Clientid, orden.Clientemail, orden.Clientphone
-                        , EstatusRma, ProcesoAut, IdTSolicitud, IdTmovimiento).Tables[0]).FirstOrDefault();
+                        , EstatusRma, ProcesoAut, IdTSolicitud, IdTmovimiento, isDev).Tables[0]).FirstOrDefault();
                 if (id.foto)
                 {
                     cliente = string.Format("{0}/?order={1}", urlbase, id.Id_cancelacion);
