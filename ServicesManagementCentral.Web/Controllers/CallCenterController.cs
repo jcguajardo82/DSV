@@ -670,6 +670,19 @@ namespace ServicesManagement.Web.Controllers
                 List<upCorpOms_Cns_OrdersByHistorical> list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
                     DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
 
+                string status = string.Empty;
+                string txtCombo = string.Empty;
+                switch (status.ToLower())
+                {
+                    case "orden nueva":
+
+                }
+
+                // Reviso el status con un case y devuelvo el texto del combo
+
+
+
+
                 decimal tot = list.Sum(x => x.SubTotal);
 
                 string cliente = string.Format("{0}/?order={1}", urlbase, OrderId);
