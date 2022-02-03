@@ -670,24 +670,24 @@ namespace ServicesManagement.Web.Controllers
                 List<upCorpOms_Cns_OrdersByHistorical> list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
                     DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
 
-                string status = string.Empty;
+                string status = list.FirstOrDefault().StatusDescriptionUE;
                 string txtCombo = string.Empty;
 
                 //CEDIS
                 switch (status.ToLower())
                 {
-                    case "En Split": 
+                    case "en split": 
                         txtCombo = "Cancelacion";
                         break;
-                    case "En Surtido":
+                    case "en surtido":
                         txtCombo = "Pedido en Proceso";
                         break;
-                    case "En Cobro":
-                    case "En Documentacion":
-                    case "En Transportista":
+                    case "en cobro":
+                    case "en documentacion":
+                    case "en transportista":
                     case "":
-                    case "En Entrega":
-                    case "Orden Cancelada":
+                    case "en entrega":
+                    case "orden cancelada":
                         txtCombo = "Devolucion";
                         break;
                 }
