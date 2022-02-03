@@ -670,27 +670,38 @@ namespace ServicesManagement.Web.Controllers
                 List<upCorpOms_Cns_OrdersByHistorical> list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
                     DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
 
-                string status = list.FirstOrDefault().StatusDescriptionUE;
+                string status = string.Empty;
                 string txtCombo = string.Empty;
 
-                //CEDIS
-                switch (status.ToLower())
+                if (list.Count > 0)
                 {
-                    case "en split": 
-                        txtCombo = "Cancelacion";
-                        break;
-                    case "en surtido":
-                        txtCombo = "Pedido en Proceso";
-                        break;
-                    case "en cobro":
-                    case "en documentacion":
-                    case "en transportista":
-                    case "":
-                    case "en entrega":
-                    case "orden cancelada":
-                        txtCombo = "Devolucion";
-                        break;
+
+                    status = list.FirstOrDefault().StatusDescriptionUE;
+
+                    //CEDIS
+                    switch (status.ToLower())
+                    {
+                        case "en split":
+                            txtCombo = "Cancelacion";
+                            break;
+                        case "en surtido":
+                            txtCombo = "Pedido en Proceso";
+                            break;
+                        case "en cobro":
+                        case "en documentacion":
+                        case "en transportista":
+                        case "":
+                        case "en entrega":
+                        case "orden cancelada":
+                            txtCombo = "Devolucion";
+                            break;
+                    }
                 }
+                else {
+                    txtCombo = "Cancelacion";
+                }
+
+               
 
                 decimal tot = list.Sum(x => x.SubTotal);
 
@@ -708,7 +719,7 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult FinalizarRma(int OrderId, int Operacion
             , string Desc, List<OrderDetailCap> Products, string UeType
-            , int? IdTSolicitud, int? IdTmovimiento,string DescSolicitud)
+            , int? IdTSolicitud, int? IdTmovimiento, string DescSolicitud)
         {
             string cliente = string.Empty;
             try
@@ -1576,18 +1587,19 @@ namespace ServicesManagement.Web.Controllers
 
                     foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays[0].Slots)
                     {
-                        if (item.slotEnabled.ToString().ToLower() != "false") {
+                        if (item.slotEnabled.ToString().ToLower() != "false")
+                        {
                             horas.Add(new Dias
                             {
-                                NombeDia=item.SlotName,
-                                fecha=Convert.ToDateTime(item.SlotDateTime).ToString("HH:mm:ss")
-                        });
+                                NombeDia = item.SlotName,
+                                fecha = Convert.ToDateTime(item.SlotDateTime).ToString("HH:mm:ss")
+                            });
                         }
                     }
                 }
                 #endregion
 
-                var result = new { Success = true, json = dias , horas = horas };
+                var result = new { Success = true, json = dias, horas = horas };
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             }
@@ -1598,7 +1610,7 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
-        public ActionResult GetHorasEntregaSlot(int tda,string fecEnt)
+        public ActionResult GetHorasEntregaSlot(int tda, string fecEnt)
         {
 
             try
@@ -1639,8 +1651,10 @@ namespace ServicesManagement.Web.Controllers
                     ResponseTimeSlot slots = jss.Deserialize<ResponseTimeSlot>(jsResponse.ToString().Replace('"', ' '));
                     //var slots = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseTimeSlot>(jsResponse);
 
-                    foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays) {
-                        if (item.SlotDayName == fecEnt) {
+                    foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays)
+                    {
+                        if (item.SlotDayName == fecEnt)
+                        {
                             foreach (var i in item.Slots)
                             {
                                 if (i.slotEnabled.ToString().ToLower() != "false")
@@ -1661,22 +1675,22 @@ namespace ServicesManagement.Web.Controllers
                     //{
                     //    Dias dia = new Dias();
 
-                        //    dia.NombeDia = item.SlotDayName;
-                        //    dia.fecha = Convert.ToDateTime(item.Slots[0].SlotDateTime).ToString("yyyy/MM/dd");
-                        //    dias.Add(dia);
-                        //}
+                    //    dia.NombeDia = item.SlotDayName;
+                    //    dia.fecha = Convert.ToDateTime(item.Slots[0].SlotDateTime).ToString("yyyy/MM/dd");
+                    //    dias.Add(dia);
+                    //}
 
-                        //foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays[0].Slots)
-                        //{
-                        //    if (item.slotEnabled.ToString().ToLower() != "false")
-                        //    {
-                        //        horas.Add(new Dias
-                        //        {
-                        //            NombeDia = item.SlotName,
-                        //            fecha = Convert.ToDateTime(item.SlotDateTime).ToString("HH:mm:ss")
-                        //        });
-                        //    }
-                        //}
+                    //foreach (var item in slots.Timeslots.SlotWeeks[0].SlotsDays[0].Slots)
+                    //{
+                    //    if (item.slotEnabled.ToString().ToLower() != "false")
+                    //    {
+                    //        horas.Add(new Dias
+                    //        {
+                    //            NombeDia = item.SlotName,
+                    //            fecha = Convert.ToDateTime(item.SlotDateTime).ToString("HH:mm:ss")
+                    //        });
+                    //    }
+                    //}
                 }
                 #endregion
 
