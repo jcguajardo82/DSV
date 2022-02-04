@@ -146,6 +146,31 @@
 
                 }
             );
+            table1 = $("#tblSolicitud").DataTable(
+                {
+                    processing: false,
+                    searching: false,
+                    ordering: false,
+                    filter: false,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    //Paggin
+
+                    paging: false,
+                    
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: [],
+                    //fixedHeader: {
+                    //    header: true
+                    //},
+                    "scrollX": true
+                }
+            );
             Get();
             GetPackings();
         });
@@ -358,21 +383,21 @@
                 //    $("#ddlCodigo_" + i).val('');
                 //}
                 var myTable4 = $('#tblSolicitud').DataTable();
-                    myTable4
-                        .clear()
-                        .draw();
-                    for (var i = 0; i < _json.length; i++) {
-                        myTable4.row.add([
-                            _json[i].referencia,
-                            _json[i].pk,
-                            "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
-                                + _optionsPackings +  "</select>",
-                            "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
-                            "<input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' />",
-                            "<input type='text' readonly id='largo" + i+ "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' />",
-                            "<input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px' />",
-                            "<input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' />"
-                        ]).draw();
+                myTable4
+                    .clear()
+                    .draw();
+                for (var i = 0; i < _json.length; i++) {
+                    myTable4.row.add([
+                        _json[i].referencia,
+                        _json[i].pk,
+                        "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
+                        + _optionsPackings + "</select>",
+                        "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
+                        "<input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' />",
+                        "<input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' />",
+                        "<input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px' />",
+                        "<input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' />"
+                    ]).draw();
 
                         $("#ddlCodigo_" + i).val('');
                 }
