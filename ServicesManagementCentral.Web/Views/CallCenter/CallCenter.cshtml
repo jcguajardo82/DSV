@@ -766,7 +766,7 @@
 
                                                 </select>
                                             </td>*@
-                                        <td><input class="form-control" type="number" min="1" max="99999" placeholder="C&oacute;digo Postal" value="" id="txtCp"></td>
+                                        <td><input class="form-control" type="number" min="1" max="99999" placeholder="C&oacute;digo Postal" value="" id="f"></td>
                                         <td>
                                             <button type="button" id="btnTienda" class="btn btn-primary" onclick="cargaTdas();">
                                                 Tienda
@@ -1225,9 +1225,23 @@
             GetEstados();
 
             $("#txtCteCp").keydown(function (event) {	// Allow backspace and delete
-                if (event.keyCode == 46 || event.keyCode == 8) { } else {	   // Ensure that it is a number
-                    if (event.keyCode < 48 || event.keyCode > 57) { event.preventDefault(); }
+                //if (event.keyCode == 46 || event.keyCode == 8) { } else {	   // Ensure that it is a number
+                //    if (event.keyCode < 48 || event.keyCode > 57 ) { event.preventDefault(); }
+                //}
+
+                if (event.shiftKey || event.ctrlKey || event.altKey) {
+                    event.preventDefault();
+                } else {
+                    var key = event.keyCode;
+                    //alert(key)
+                    if (!((key == 8) || (key == 46) ||
+                        (key >= 35 && key <= 40)
+                        || (key >= 48 && key <= 57)
+                        || (key >= 96 && key <= 105))) {
+                        event.preventDefault();
+                    }
                 }
+
             });
             $('#txtCteCp').keypress(function () {
                 var maxLength = $(this).val().length;
