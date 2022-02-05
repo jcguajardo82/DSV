@@ -51,7 +51,8 @@
                     <tr>
                         <th name="accion"> </th>
                         <th>Orden</th>
-                        <th>Estatus</th>
+                        <th>Estatus del Pedido</th>
+                        <th>Estatus del pedido Surtido</th>
                         <th>Almacen</th>
                         <th>Fec Entrega</th>
                         <th>Tipo Entrega</th>
@@ -335,6 +336,7 @@
                                 "<button onclick='GenerarRma(" + json.resp[i].OrderNo + ",\"" + json.resp[i].UeType+ "\")' type='button' class='btn btn-danger btn btn-xs'  title='Click para generar RMA a la orden'> Casos de Cliente</button>",
                                 "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].OrderNo + "</u>",
                                 json.resp[i].StatusDescriptionUE,
+                                json.resp[i].StatusDescription,
                                 json.resp[i].UeType,
                                 json.resp[i].DeliveryDate,
                                 json.resp[i].DeliveryType,
