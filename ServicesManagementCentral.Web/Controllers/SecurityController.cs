@@ -179,7 +179,9 @@ namespace ServicesManagement.Web.Controllers
 
                 js = null;
 
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => { return true; };
+
 
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Grupos"], "", json2);
 
