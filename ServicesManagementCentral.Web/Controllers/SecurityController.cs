@@ -221,7 +221,7 @@ namespace ServicesManagement.Web.Controllers
                     var dt = DALServicesM.upCorpOms_Cns_UNbyID(int.Parse(tienda)).Tables[0];
                     foreach (DataRow item in dt.Rows)
                     {
-                        Session["UnPerm_Info"] = item["UnPerm_Info"].ToString();
+                        Session["UnPerm_Info"] = item["tiendaActiva"].ToString();
                     }
 
                 }
