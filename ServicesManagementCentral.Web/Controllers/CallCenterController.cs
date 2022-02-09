@@ -683,10 +683,8 @@ namespace ServicesManagement.Web.Controllers
                     {
                         case "en split":
                             txtCombo = "Cancelacion";
-                            break;
+                            break;                        
                         case "en surtido":
-                            txtCombo = "Pedido en Proceso";
-                            break;
                         case "en cobro":
                         case "en documentacion":
                         case "en transportista":
