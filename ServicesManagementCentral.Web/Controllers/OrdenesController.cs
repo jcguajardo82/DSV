@@ -2024,9 +2024,9 @@ namespace ServicesManagement.Web.Controllers
                     //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
                     //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
 
-                    if (paqueteria.Equals("Logyt"))
-                    {
-                        guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
+                if (paqueteria.Contains("Logyt"))
+                {
+                    guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
 
                         servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
                     }
@@ -2034,18 +2034,18 @@ namespace ServicesManagement.Web.Controllers
                     {
                         guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
 
-                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
-                    }
-                    if (!paqueteria.Equals("Estafeta") && !paqueteria.Equals("Logyt"))
-                    {
-                        var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
-                        guia = CreateGuiaEnvia(request, service);
-                        servicioPaq = "Envia-" + paqueteria;
-                        trackUrl = guia.Split(',')[2];
-                    }
-                    string GuiaEstatus = "CREADA";
-                    //TarifaModel tarifaSeleccionada = new TarifaModel();
-                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
+                    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                }
+                if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
+                {
+                    var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
+                    guia = CreateGuiaEnvia(request, service);
+                    servicioPaq = "Envia-" + paqueteria;
+                    trackUrl = guia.Split(',')[2];
+                }
+                string GuiaEstatus = "CREADA";
+                //TarifaModel tarifaSeleccionada = new TarifaModel();
+                //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
 
                     //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
                     //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
