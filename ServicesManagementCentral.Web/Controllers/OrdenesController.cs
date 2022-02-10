@@ -2034,7 +2034,7 @@ namespace ServicesManagement.Web.Controllers
                 //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
                 //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
 
-                if (paqueteria.Equals("Logyt"))
+                if (paqueteria.Contains("Logyt"))
                 {
                     guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
 
@@ -2046,7 +2046,7 @@ namespace ServicesManagement.Web.Controllers
 
                     servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
                 }
-                if (!paqueteria.Equals("Estafeta") && !paqueteria.Equals("Logyt"))
+                if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
                 {
                     var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
                     guia = CreateGuiaEnvia(request, service);
