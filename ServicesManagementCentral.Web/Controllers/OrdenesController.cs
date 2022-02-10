@@ -1822,7 +1822,7 @@ namespace ServicesManagement.Web.Controllers
                     //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
                     //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
 
-                    if (paqueteria.Equals("Logyt"))
+                    if (paqueteria.Contains("Logyt"))
                     {
                         guia = CreateGuiaLogyt(UeNo, OrderNo, peso, type);
 
@@ -1834,7 +1834,7 @@ namespace ServicesManagement.Web.Controllers
 
                         servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
                     }
-                    if (!paqueteria.Equals("Estafeta") && !paqueteria.Equals("Logyt"))
+                    if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
                     {
                         var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
                         guia = CreateGuiaEnvia(request, service);
@@ -1959,27 +1959,14 @@ namespace ServicesManagement.Web.Controllers
             string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty, service = string.Empty, trackUrl = string.Empty;
             try
             {
-                int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
-                foreach (ShipmentToTrackingModel item in Paquetes)
-                {
-                    #region Guias
-                    //List<string> folios = new List<string>();
-                    var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
-                    //folios.Add(FolioDisp);
-                    string[] carriers = { "redpack", "carssa", "sendex", "noventa9minutos" };
-                    //string[] carriers = { "fedex" };
-                    List<string> lstCarriers = new List<string>(carriers);
-
-                    //EliminarTarifasAnteriores(item.ueNo, item.orderNo);
-                    //foreach (var carrier in lstCarriers)
-                    //{
-                    //    //tarifa = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, carrier);
-
-                    //    if (!tarifa.Equals("error"))
-                    //        GuardarTarifas(item.ueNo, item.orderNo, tarifa);
-                    //}
-                    //LO NUEVO
-                    List<CarrierRequest> lstCarrierRequests = new List<CarrierRequest>();
+            int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
+            foreach (ShipmentToTrackingModel item in Paquetes)
+            {
+                #region Guias
+                //List<string> folios = new List<string>();
+                var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
+                
+                List<CarrierRequest> lstCarrierRequests = new List<CarrierRequest>();
 
                     EliminarTarifasAnteriores(item.ueNo, item.orderNo);
                     CrearCotizacionesLogytPendiente(item);
@@ -2003,56 +1990,26 @@ namespace ServicesManagement.Web.Controllers
                         Session["SumHeigth"] = 1;
 
 
-                    if (enviaCom == 1)
+                if (enviaCom == 1)
+                {
+                    DataSet dsCarriers = DALServicesM.CarriersPorTransportista("envia.com");
+                    foreach (DataRow row in dsCarriers.Tables[0].Rows)
                     {
-                        foreach (var carrier in lstCarriers)
-                        {
-                            var tarifaCarrier = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, carrier);
+                        var tarifaCarrier = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, row["Carrier"].ToString());
 
-                            if (tarifaCarrier.Carrier != null)
-                            {
-                                GuardarTarifas(item.ueNo, item.orderNo, tarifaCarrier.msj);
-                                lstCarrierRequests.Add(tarifaCarrier);
-                            }
+                        if (tarifaCarrier.Carrier != null)
+                        {
+                            GuardarTarifas(item.ueNo, item.orderNo, tarifaCarrier.msj);
+                            lstCarrierRequests.Add(tarifaCarrier);
                         }
                     }
-
-
-                    int type = 1;
+                }
+                int type = 1;
 
                     if (item.tipoEmpaque.Equals("CJA") || item.tipoEmpaque.Equals("EMB") || item.tipoEmpaque.Equals("STC"))
                         type = 4;
 
-                    //guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
-
-                    //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                    //paqueteria = SeleccionarPaqueteriaPendiente(item);
-
-                    //    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
-                    //}
-
-                    //    servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                    //}
-                    //else
-                    //{
-                    //    guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
-
-                    //    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
-                    //}
-
-                    //string GuiaEstatus = "CREADA";
-                    //TarifaModel tarifaSeleccionada = new TarifaModel();
-                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
-
-                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
-                    //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-                    //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
-                    //--------------
-                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
-                    //item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
-                    //User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc).Tables[0].Rows[0][0];
-
-                    DataSet dsCarrier = DALServicesM.CarrierSelected(item.orderNo);
+                DataSet dsCarrier = DALServicesM.CarrierSelected(item.orderNo);
 
                     //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
                     paqueteria = dsCarrier.Tables[0].Rows[0][0].ToString();
@@ -2115,8 +2072,8 @@ namespace ServicesManagement.Web.Controllers
                     #endregion
                 }
 
-                var result = new { Success = true };
-                return Json(result, JsonRequestBehavior.AllowGet);
+            var result = new { Success = true };
+            return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
             {
@@ -2364,9 +2321,10 @@ namespace ServicesManagement.Web.Controllers
 
         public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
         {
-            var ServiceTypeId = 1;
-            DataSet ds = new DataSet();
-            DataSet dsO = new DataSet();
+
+                var ServiceTypeId = 1;
+                DataSet ds = new DataSet();
+                DataSet dsO = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -2392,20 +2350,9 @@ namespace ServicesManagement.Web.Controllers
 
 
                 dsO = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoOriginInfo]", false, parametros2);
-
-            }
-            catch (SqlException ex)
-            {
-                return "ERRSQL";
-            }
-            catch (System.Exception ex)
-            {
-                return "ERR";
-            }
-
-            EstafetaRequestModel m = new EstafetaRequestModel();
-            foreach (DataRow r in dsO.Tables[0].Rows)
-            {
+                EstafetaRequestModel m = new EstafetaRequestModel();
+                foreach (DataRow r in dsO.Tables[0].Rows)
+                {
 
 
                 m.OriginInfo = new AddressModel();
@@ -2492,9 +2439,15 @@ namespace ServicesManagement.Web.Controllers
                 //return re.Guia + "," + re.pdf;
                 return re.Guia + "," + pdfcadena2;
 
-            }
 
-            return string.Empty;
+                }
+                return string.Empty;
+            }
+           
+            catch (System.Exception ex)
+            {
+                throw new Exception("La generacion de la Guia por Estafeta Fallo. " + ex.Message);
+            }
 
         }
         public string CreateGuiaLogyt(string UeNo, int OrderNo, int weight, int typeId)
@@ -2528,48 +2481,38 @@ namespace ServicesManagement.Web.Controllers
 
                 dsO = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_UeNoOriginInfo]", false, parametros2);
 
-            }
-            catch (SqlException ex)
-            {
-                return "ERRSQL";
-            }
-            catch (System.Exception ex)
-            {
-                return "ERR";
-            }
-
-            LogytRequestModel m = new LogytRequestModel();
-            foreach (DataRow r in dsO.Tables[0].Rows)
-            {
-
-
-                m.Origin = new LogytAddressModel();
-
-                m.Origin.Address1 = r["address1"].ToString();
-                m.Origin.Address2 = r["address2"].ToString();
-                m.Origin.City = r["city"].ToString();
-                m.Origin.ContactName = r["contactName"].ToString();
-                m.Origin.CorporateName = r["corporateName"].ToString();
-                m.Origin.CustomerNumber = r["customerNumber"].ToString();
-                m.Origin.Neighborhood = r["neighborhood"].ToString();
-                m.Origin.PhoneNumber = r["phone"].ToString();
-                m.Origin.State = r["state"].ToString();
-                m.Origin.ZipCode = r["zipCode"].ToString();
-
-            }
-
-            foreach (DataRow r in ds.Tables[0].Rows)
-            {
-
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-                //m.ServiceType = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
-                m.ServiceType = r["ServiceType"].ToString();
-                if (weight >= 70)
+                LogytRequestModel m = new LogytRequestModel();
+                foreach (DataRow r in dsO.Tables[0].Rows)
                 {
-                    m.ServiceType = "L0";
+
+
+                    m.Origin = new LogytAddressModel();
+
+                    m.Origin.Address1 = r["address1"].ToString();
+                    m.Origin.Address2 = r["address2"].ToString();
+                    m.Origin.City = r["city"].ToString();
+                    m.Origin.ContactName = r["contactName"].ToString();
+                    m.Origin.CorporateName = r["corporateName"].ToString();
+                    m.Origin.CustomerNumber = r["customerNumber"].ToString();
+                    m.Origin.Neighborhood = r["neighborhood"].ToString();
+                    m.Origin.PhoneNumber = r["phone"].ToString();
+                    m.Origin.State = r["state"].ToString();
+                    m.Origin.ZipCode = r["zipCode"].ToString();
+
                 }
-                
+
+                foreach (DataRow r in ds.Tables[0].Rows)
+                {
+
+                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                    //m.ServiceType = System.Configuration.ConfigurationManager.AppSettings["val_serviceTypeId"];
+                    m.ServiceType = r["ServiceType"].ToString();
+                    if (weight >= 70)
+                    {
+                        m.ServiceType = "L0";
+                    }
+
 
                     m.Destination = new LogytAddressModel();
 
@@ -2584,61 +2527,72 @@ namespace ServicesManagement.Web.Controllers
                     m.Destination.PhoneNumber = r["Phone"].ToString();
                     m.Destination.State = r["StateCode"].ToString();
                     m.Destination.ZipCode = r["PostalCode"].ToString();
-                    
+
                     m.Reference = r["Reference"].ToString();
                     //m.originZipCodeForRouting = r["PostalCode"].ToString();
                     m.Weight = weight; // lo capturado en el modal
-                    m.Volume = weight;  
-                
-                string json2 = JsonConvert.SerializeObject(m);
+                    m.Volume = weight;
 
-                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Logyt_Guia"], "", json2);
+                    string json2 = JsonConvert.SerializeObject(m);
 
-                string msg = r2.message;
-                string pdfcadena2 = string.Empty;
+                    Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Logyt_Guia"], "", json2);
 
-                LogytResponseModels re = JsonConvert.DeserializeObject<LogytResponseModels>(r2.message);
+                    string msg = r2.message;
+                    string pdfcadena2 = string.Empty;
+
+                    LogytResponseModels re = JsonConvert.DeserializeObject<LogytResponseModels>(r2.message);
 
 
-                if (!Convert.ToBoolean(re.Error))
-                    pdfcadena2 = Convert.ToBase64String(re.Labels[0].PDF, Base64FormattingOptions.None);
-                else
-                {
-                    string msgDetail = string.Empty;
-                    foreach(var itemMsg in re.Messages)
+                    if (!Convert.ToBoolean(re.Error))
+                        pdfcadena2 = Convert.ToBase64String(re.Labels[0].PDF, Base64FormattingOptions.None);
+                    else
                     {
-                        msgDetail += itemMsg + ". ";
+                        string msgDetail = string.Empty;
+                        foreach (var itemMsg in re.Messages)
+                        {
+                            msgDetail += itemMsg + ". ";
+                        }
+                        throw new Exception(msgDetail);
                     }
-                    throw new Exception(msgDetail);
+                    //return re.Guia + "," + re.pdf;
+                    return re.Labels[0].Folios[0] + "," + pdfcadena2;
+
                 }
-                //return re.Guia + "," + re.pdf;
-                return re.Labels[0].Folios[0] + "," + pdfcadena2;
+
+                return string.Empty;
 
             }
-
-            return string.Empty;
-
+            catch (System.Exception ex)
+            {
+                throw new Exception("La generacion de la Guia por Logyt Fallo. " + ex.Message);
+            }
         }
         public string CreateGuiaEnvia(CotizadorRequestModel request, string service)
         {
+            try
+            {  
+                request.shipment.service = service;
 
-            request.shipment.service = service;
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                string json2 = JsonConvert.SerializeObject(request);
 
-            string json2 = JsonConvert.SerializeObject(request);
+                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Envia_Guia"], "", json2);
 
-            Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Envia_Guia"], "", json2);
+                string msg = r2.message;
 
-            string msg = r2.message;
-
-            //string msg = "{ 'meta': 'generate', 'data': [{'carrier': 'fedex','service': 'express','trackingNumber': '794693403268','trackUrl': 'https://test.envia.com/rastreo?label=794693403268&cntry_code=mx', 'label': 'https://s3.us-east-2.amazonaws.com/envia-staging/uploads/fedex/79469340326840461b0130d92379.pdf', 'additionalFiles': [],'totalPrice': 434,'currentBalance': 1580, 'currency': 'MXN'} ]}";
-
-
-            EnviaResponseModel re = JsonConvert.DeserializeObject<EnviaResponseModel>(msg);
+                //string msg = "{ 'meta': 'generate', 'data': [{'carrier': 'fedex','service': 'express','trackingNumber': '794693403268','trackUrl': 'https://test.envia.com/rastreo?label=794693403268&cntry_code=mx', 'label': 'https://s3.us-east-2.amazonaws.com/envia-staging/uploads/fedex/79469340326840461b0130d92379.pdf', 'additionalFiles': [],'totalPrice': 434,'currentBalance': 1580, 'currency': 'MXN'} ]}";
 
 
-            return re.data[0].trackingNumber + "," + re.data[0].label + "," + re.data[0].trackUrl;
+                EnviaResponseModel re = JsonConvert.DeserializeObject<EnviaResponseModel>(msg);
+
+
+                return re.data[0].trackingNumber + "," + re.data[0].label + "," + re.data[0].trackUrl;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception("La generacion de la Guia por Envia.Com Fallo. " + ex.Message);
+            }
         }
         //public string CreateGuiaLogyt(string UeNo, int OrderNo, int weight, int typeId)
         //{
