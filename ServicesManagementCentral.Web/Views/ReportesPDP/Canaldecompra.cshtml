@@ -79,45 +79,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @{
-                        if (Session["listaGrid"] != null)
-                        {
-                            var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase>>(Session["listaGrid"].ToString());
-
-                            foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase o in lista)
-                            {
-                                <tr>
-                                    <td>@o.OrderSaleChannel</td>
-                                    <td>@*Tipo de mobile*@</td>
-                                    <td>@o.OrderReferenceNumber</td>
-                                    <td>@o.PaymentTransactionID</td>
-                                    <td>@o.OrderDate</td>
-                                    <td>@o.OrderHour</td>
-                                    <td>@o.AffiliationType</td>
-                                    <td>@o.Bank</td>
-                                    <td>@o.Catalogo</td>
-                                    <td>@o.DeliveryType</td>
-                                    <td>@o.TipoAlmacen</td>
-                                    <td>@o.paymentTypeJson</td>
-                                    <td>@o.Apply3DS</td>
-                                    <td>@o.EstatusEnvio</td>
-                                    <td>@o.orderAmount</td>
-                                    <td>@o.Bank</td>
-                                    <td>@o.BinCode</td>
-                                    <td>@o.MaskCard</td>
-                                    <td>@o.TypeOfCard</td>
-                                    <td>@o.PaymentMethod</td>
-                                    <td>@o.TransactionAuthorizationId</td>
-                                    <td>@o.shippingPaymentInstallments</td>
-                                    <td>@o.CustomerLoyaltyRedeemPoints</td>
-                                    <td>@*Promociones aplicadas*@</td>
-                                    <td>@o.ShippingFirstName</td>
-                                    <td>@o.clientEmail </td>
-                                    <td>@o.TransactionStatus</td>
-                                </tr>
-                            }
-                        }
-                    }
+                   
                 </tbody>
             </table>
         </div>
