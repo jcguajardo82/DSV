@@ -1,91 +1,196 @@
 ﻿
 @{
-    ViewBag.Title = "Pago en tienda";
+    ViewBag.Title = "Pago en Tienda";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Pago en tienda</h2>
+<h2>Pago en Tienda</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-        <div style="width:99%;">
-            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
-                <thead class="bg-danger-sor">
-                    <tr>
-                        <th>Orden ID</th>
-                        <th>Carrito</th>
-                        <th>ID Transacción</th>
-                        <th>Fecha Creación</th>
-                        <th>Hora Creacón</th>
-                        <th>No. Afiliación</th>
-                        <th>Adquiriente</th>
-                        <th>Catálogo</th>
-                        <th>Tipo Entrega</th>
-                        <th>Tipo de Transporte</th>
-                        <th>SKU Cátalogo</th>
-                        <th>Nombre del Articulo</th>
-                        <th>Canal de Compra</th>
-                        <th>Forma de pago </th>
-                        <th>PK </th>
-                        <th>STORE </th>
-                        <th>CASHIER</th>
-                        <th>CREATION_DATE</th>
-                        <th>CREATION_TIME</th>
-                        <th>MONTO_PAGADO</th>
-                        <th>PRECIO_TOTAL_DE_LA_ORDEN</th>
-                        <th>Fecha de pago</th>
-                        <th>Medio de pago </th>
-                        <th>BIN</th>
-                        <th>Sufijo</th>
-                        <th>Tipo Tarjeta</th>
-                        <th>Marca</th>
-                        <th>Nombre Tienda </th>
-                        <th>Idformato</th>
-                        <th>Formato </th>
-                        <th>poblacion</th>
-                        <th>Estatus pago</th>
-                        <th>Consignación ID</th>
-                        <th>No.Piezas Consignación</th>
-                        <th>Monto Consignación</th>
-                        <th>Costo Envio</th>
-                        <th>Monto Total de la  Orden</th>
-                        <th>Banco</th>
-                        <th>Bin</th>
-                        <th>Sufijo</th>
-                        <th>Tipo Tarjeta</th>
-                        <th>Marca</th>
-                        <th>No. Autorizacion</th>
-                        <th>Msi</th>
-                        <th>Puntos Aplicados</th>
-                        <th>Promociones Aplicadas</th>
-                        <th>Nombre de persona registrada</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>No Tarjeta Lealtad</th>
-                        <th>Método Envio</th>
-                        <th>Correo</th>
-                        <th>Nombre Persona a Recibir</th>
-                        <th>Apellido P</th>
-                        <th>Apellido M</th>
-                        <th>Teléfono</th>
-                        <th>Calle</th>
-                        <th>Colonia</th>
-                        <th>Ciudad</th>
-                        <th>Número</th>
-                        <th>Interior</th>
-                        <th>CP</th>
-                        <th>Estatus Orden</th>
-                        <th>Estatus Envio</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Fecha Inicio</label>
+                    <input type="date" id="txtFecIni" class="form-control" />
+                    <div class="input-group date" id="datetimepicker1"></div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+                    Buscar
+                </button>
+            </div>
+            <div style="width:99%;">
+                <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                    <thead class="bg-danger-sor">
+                        <tr>
+                            <th>Orden ID</th>
+                            <th>ID transaccion</th>
+                            <th>Fecha de creación</th>
+                            <th>Hora de creación</th>
+                            <th>No. Afiliacion</th>
+                            <th>Adquirente</th>
+                            <th>Catálogo</th>
+                            <th>Tipo entrega</th>
+                            <th>Canal de compra</th>
+                            <th>Forma de pago</th>
+                            <th>No. Tienda </th>
+                            <th>Nombre tienda </th>
+                            <th>no. Cajero</th>
+                            <th>fecha creacion de la orden</th>
+                            <th>hora de creacion de la orden</th>
+                            <th>monto pagado </th>
+                            <th>precio total de la orden</th>
+                            <th>fecha del pago </th>
+                            <th>forma de pago</th>
+                            <th>Banco </th>
+                            <th>No. Autorizacion</th>
+                            <th>BIN	</th>
+                            <th>Sufijo</th>
+                            <th>Tipo de tarjeta	</th>
+                            <th>Marca</th>
+                            <th>formato</th>
+                            <th>ciudad</th>
+                            <th>Estatus de pago</th>
+                            <th>Costo de envío</th>
+                            <th>MSI</th>
+                            <th>Puntos Aplicados</th>
+                            <th>Promociones aplicadas</th>
+                            <th>Nombre persona registrada </th>
+                            <th>Apellido_P</th>
+                            <th>Apellido_M</th>
+                            <th>No tarjeta de lealtad</th>
+                            <th>Correo</th>
+                            <th>Estatus de la orden</th>
+                            <th>Estatus del envío</th>
+                            <th>almacen que surtio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if (Session["listaGrid"] != null)
+                            {
+                                var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.PaymentStoreModelResponse>>(Session["listaGrid"].ToString());
 
-
-                </tbody>
-            </table>
+                                foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.PaymentStoreModelResponse o in lista)
+                                {
+                                                <tr>
+                                                    <td>@o.OrdenID</td>
+                                                    <td>@o.IDtransaccion</td>
+                                                    <td>@o.FechaCreacion</td>
+                                                    <td>@o.HoraCreacion</td>
+                                                    <td>@o.NoAfiliacion</td>
+                                                    <td>@o.Adquirente</td>
+                                                    <td>@o.Catalogo</td>
+                                                    <td>@o.TipoEntrega</td>
+                                                    <td>@o.CanalCompra</td>
+                                                    <td>@o.FormaPago</td>
+                                                    <td>@o.NoTienda </td>
+                                                    <td>@o.NombreTienda </td>
+                                                    <td>@o.noCajero</td>
+                                                    <td>@o.CreteOrderStore</td>
+                                                    <td>@o.HoraOrderStore</td>
+                                                    <td>@o.montoPagado </td>
+                                                    <td>@o.precioTotalOrden</td>
+                                                    <td>@o.fechaPago </td>
+                                                    <td>@o.formaPago</td>
+                                                    <td>@o.Banco </td>
+                                                    <td>@o.NoAutorizacion</td>
+                                                    <td>@o.BIN	</td>
+                                                    <td>@o.Sufijo</td>
+                                                    <td>@o.TipoTarjeta	</td>
+                                                    <td>@o.Marca</td>
+                                                    <td>@*formato*@</td>
+                                                    <td>@o.ciudadEstatusPago</td>
+                                                    <td>@o.EstatusOrden</td>
+                                                    <td>@o.CostoEnvio</td>
+                                                    <td>@o.MSI</td>
+                                                    <td>@o.PuntosAplicados</td>
+                                                    <td>@*Promociones aplicadas*@</td>
+                                                    <td>@o.NombrePersonaRegistrada </td>
+                                                    <td>@o.Apellido_P</td>
+                                                    <td>@*Apellido_M*@</td>
+                                                    <td>@o.loyalty</td>
+                                                    <td>@o.Correo</td>
+                                                    <td>@o.EstatusOrden</td>
+                                                    <td>@o.EstatusEnvío</td>
+                                                    <td>@o.almacenSurtio</td>
+                                                </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 @section scripts {
+    <script>
+        $(document).ready(function () {
+            //GetReporte();
+        });
 
+        function GetReporte() {
+
+            //var _Id_Num_UN = $("#hddTda").val();
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetFormaPago", "ReportesPDP")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        $('#tblConsulta tbody').empty();
+                        //var tr;
+                        debugger;
+                        //Append each row to html table
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+
+
+                            tr.append("<td>" + json.resp[i].NoOrden + "</td>");
+                            tr.append("<td>" + json.resp[i].Fecha + "</td>");
+                            tr.append("<td>" + json.resp[i].NoConsignacion + "</td>");
+                            tr.append("<td>" + json.resp[i].Monto + "</td>");
+                            tr.append("<td>" + json.resp[i].TipoPAgo + "</td>");
+                            tr.append("<td>" + json.resp[i].Origen + "</td>");
+                            tr.append("<td>" + json.resp[i].FecEntrega + "</td>");
+
+
+                            $('#tblConsulta').append(tr);
+                        }
+
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+
+        }
+
+    </script>
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
         $(document).ready(function () {
@@ -145,6 +250,120 @@
                 }
             );
         });
+
+
+          function GetHistorialRMA() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            debugger;
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetParamDatesCanalCompra", "ReportesPDP")',
+                data: {
+                        FecIni: _FecIni,
+                        FecFin: _FecFin,
+                },
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        debugger;
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable.clear().draw();
+
+                        for (var i = 0; i < json.resp.length; i++) {
+                            debugger;
+                            var rw = json.resp[i];
+                            var OrderReferenceNumber = rw.OrderReferenceNumber;
+                            var PaymentTransactionID = rw.PaymentTransactionID;
+                            var OrderDate = rw.OrderDate;
+                            var OrderHour = rw.OrderHour;
+                            var NoAfiliacion = "";
+                            var Adquirente = "";
+                            var Catalogo = rw.Catalogo;
+                            var shippingDeliveryDesc = rw.shippingDeliveryDesc;
+                            var OrderSaleChannel = rw.OrderSaleChannel;
+                            var FormaPago = "";
+                            var EstatusPago = "";
+                            var TipoAlmacen = "";
+                            var Estatusenvio = "";
+                            var ShippingItemTotal = rw.ShippingItemTotal;
+                            var orderAmount = rw.orderAmount;
+                            var Bank = rw.Bank;
+                            var BinCode = rw.BinCode;
+                            var MaskCard = rw.MaskCard;
+                            var PaymentMethod = rw.PaymentMethod;
+                            var TypeOfCard = rw.TypeOfCard;
+                            var TransactionAuthorizationId = rw.TransactionAuthorizationId;
+                            var shippingPaymentInstallments = rw.shippingPaymentInstallments;
+                            var clientEmail = rw.clientEmail;
+                            var ShippingFirstName = rw.ShippingFirstName;
+                            var ShippingLastName = rw.ShippingLastName
+
+                            var Apellido_M = "";
+                            var FechaLiquidacion = "";
+                            var HoraLiquidacion = "";
+                            var MontoLiquidacion = "";
+                            var LiquidacionManual = "";
+                            var LiquidacionAutomatica = "";
+                            var IDTransaccionLiquidacion = "";
+
+                            myTable.row.add([
+                                OrderReferenceNumber
+                             , PaymentTransactionID
+                             , OrderDate
+                             , OrderHour
+                             , NoAfiliacion
+                             , Adquirente
+                             , Catalogo
+                             , shippingDeliveryDesc
+                             , OrderSaleChannel
+                             , FormaPago
+                             , EstatusPago
+                             , TipoAlmacen
+                             , Estatusenvio
+                             , ShippingItemTotal
+                             , orderAmount
+                             , Bank
+                             , BinCode
+                             , MaskCard
+                             , PaymentMethod
+                             , TypeOfCard
+                             , TransactionAuthorizationId
+                             , shippingPaymentInstallments
+                             , clientEmail
+                             , ShippingFirstName
+                             , ShippingLastName
+                             , Apellido_M
+                             , FechaLiquidacion
+                             , HoraLiquidacion
+                             , MontoLiquidacion
+                             , LiquidacionManual
+                             , LiquidacionAutomatica
+                             , IDTransaccionLiquidacion
+                            ]).draw();
+                        }
+                        table.columns.adjust().draw();
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+            });
+        }
     </script>
 }
 

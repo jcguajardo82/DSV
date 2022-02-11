@@ -111,6 +111,9 @@
       <HintPath>..\packages\NPOI.2.5.3\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="Renci.SshNet, Version=2020.0.1.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2020.0.1\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=105.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.0.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
@@ -364,6 +367,7 @@
     <Compile Include="Models\ProcesadorPagosSoriana\CancellationModel.cs" />
     <Compile Include="Models\ProcesadorPagosSoriana\JsonRespoonseModel.cs" />
     <Compile Include="Models\ProcesadorPagosSoriana\ParticipacionFormasPagoModel.cs" />
+    <Compile Include="Models\ProcesadorPagosSoriana\PaymentStoreModel.cs" />
     <Compile Include="Models\ProcesadorPagosSoriana\ProcesadorPagosBase.cs" />
     <Compile Include="Models\ProcesoReciboDevoluciones\ProcesoReciboDevoluciones.cs" />
     <Compile Include="Models\ProcesoSurtido\Guias_por_OrderFact.cs" />
