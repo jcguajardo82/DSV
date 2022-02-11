@@ -100,19 +100,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @{
-                        if (Session["listaGrid"] != null)
-                        {
-                            var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase>>(Session["listaGrid"].ToString());
-
-                            foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase o in lista)
-                            {
-                                <tr>
-                                    
-                                </tr>
-                            }
-                        }
-                    }
+                   
                 </tbody>
             </table>
         </div>
