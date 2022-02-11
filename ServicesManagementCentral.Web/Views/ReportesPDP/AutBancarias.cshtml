@@ -17,19 +17,38 @@
         <div class="row">
             <div class="col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                    <label>Fecha Inicio</label>
+                    <label>Fecha</label>
                     <input type="date" id="txtFecIni" class="form-control" />
                     <div class="input-group date" id="datetimepicker1"></div>
                 </div>
             </div>
             <div class="col-sm-3 col-md-3 col-lg-3">
-                <label>Fecha Fin</label>
+                @*<label>Fecha Fin</label>
                 <input type="date" id="txtFecFin" class="form-control" />
-                <div class="input-group date" id="datetimepicker2"></div>
+                <div class="input-group date" id="datetimepicker2"></div>*@
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
                 <label>&nbsp;</label>
-                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetReporteAutBancarias()">
+                    Descargar Reporte
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Numero Orden</label>
+                    <input type="text" id="txtOrder" class="form-control" />
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                @*<label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>*@
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetAutorizacionesbyOrder()">
                     Buscar
                 </button>
             </div>
@@ -102,7 +121,7 @@
 </div>
 @section scripts {
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
-    <script>
+<script>
         $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(1) th').each(function (i) {
@@ -173,17 +192,19 @@
 
         });
 
-        function GetHistorialRMA() {
+        function GetReporteAutBancarias() {
+            debugger;
             var _FecIni = $("#txtFecIni").val();
-            var _FecFin = $("#txtFecFin").val();
 
-            if (_FecIni.length == 0) {
-                $("#txtFecIni").focus();
-                return;
-            }
+            window.location = window.location.origin + '/ReportesPDP/ProcesaArchivos?NombreArchivo=AutorizacionesBancarias&Fecha=' + _FecIni;
+        }
 
-            if (_FecFin.length == 0) {
-                $("#txtFecFin").focus();
+        function GetAutorizacionesbyOrder() {
+            var _OrderReferenceNumber = $("#txtOrder").val();
+
+
+            if (_OrderReferenceNumber.length == 0) {
+                $("#txtOrder").focus();
                 return;
             }
 
@@ -192,10 +213,10 @@
             $.ajax({
                 async: false,
                 type: "GET",
-                url: '@Url.Action("GetParamDates", "ReportesPDP")',
+                url: '@Url.Action("AutorizacionesBancariasbyOrder", "ReportesPDP")',
                 data: {
-                        FecIni: _FecIni,
-                        FecFin: _FecFin,
+                        OrderReferenceNumber: _OrderReferenceNumber,
+
                 },
                 datatype: "json",
                 success: function (json) {
@@ -212,11 +233,11 @@
                             var PaymentTransactionID = rw.PaymentTransactionID;
                             var OrderDate = rw.OrderDate;
                             var OrderHour = rw.OrderHour;
-                            var OrderAmount = rw.OrderAmount;
+                            var OrderAmount = rw.orderAmount;
                             var Bank = rw.Bank;
                             var BinCode = rw.BinCode;
                             var MaskCard = rw.MaskCard;
-                            var TypeOfCard =rw.TypeOfCard;
+                            var TypeOfCard = rw.TypeOfCard;
                             var PaymentMethod = rw.PaymentMethod;
                             var TransactionAuthorizationId = rw.TransactionAuthorizationId;
                             var shippingPaymentInstallments = rw.shippingPaymentInstallments;
@@ -229,28 +250,29 @@
                             var Apply3DS = rw.Apply3DS;
                             var PaymentTransactionService = rw.PaymentTransactionService;
 
+
                             myTable.row.add([
-                                OrderReferenceNumber,
-                                PaymentTransactionID,
-                                OrderDate,
-                                OrderHour,
-                                OrderAmount,
-                                Bank,
-                                BinCode,
-                                MaskCard,
-                                TypeOfCard,
-                                PaymentMethod,
-                                TransactionAuthorizationId,
-                                shippingPaymentInstallments,
-                                DecisionEmisor,
-                                CveReespuestaEmisor,
-                                DescReespuestaEmisor,
-                                Catalogo,
-                                OrderSaleChannel,
-                                paymentTypeJson,
-                                Apply3DS,
-                                Apply3DS,
-                                PaymentTransactionService,
+                                OrderReferenceNumber
+                                , PaymentTransactionID
+                                , OrderDate
+                                , OrderHour
+                                , OrderAmount
+                                , Bank
+                                , BinCode
+                                , MaskCard
+                                , TypeOfCard
+                                , PaymentMethod
+                                , TransactionAuthorizationId
+                                , shippingPaymentInstallments
+                                , DecisionEmisor
+                                , CveReespuestaEmisor
+                                , DescReespuestaEmisor
+                                , Catalogo
+                                , OrderSaleChannel
+                                , paymentTypeJson
+                                , Apply3DS
+                                , Apply3DS
+                                , PaymentTransactionService
                             ]).draw();
                         }
                         table.columns.adjust().draw();
@@ -261,6 +283,6 @@
                 }
             });
         }
-    </script>
+</script>
 }
 

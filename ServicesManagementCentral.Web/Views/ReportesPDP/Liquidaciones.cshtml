@@ -9,109 +9,129 @@
         <div class="row">
             <div class="col-sm-3 col-md-3 col-lg-3">
                 <div class="form-group">
-                    <label>Fecha Inicio</label>
+                    <label>Fecha</label>
                     <input type="date" id="txtFecIni" class="form-control" />
                     <div class="input-group date" id="datetimepicker1"></div>
                 </div>
             </div>
             <div class="col-sm-3 col-md-3 col-lg-3">
-                <label>Fecha Fin</label>
+                @*<label>Fecha Fin</label>
                 <input type="date" id="txtFecFin" class="form-control" />
-                <div class="input-group date" id="datetimepicker2"></div>
+                <div class="input-group date" id="datetimepicker2"></div>*@
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
                 <label>&nbsp;</label>
-                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetReporteLiquidacion()">
+                    Descargar Reporte
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Numero Orden</label>
+                    <input type="text" id="txtOrder" class="form-control" />
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                @*<label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>*@
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetLiquidacionesbyOrder()">
                     Buscar
                 </button>
             </div>
-            <div style="width:99%;">
-                <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
-                    <thead class="bg-danger-sor">
-                        <tr>
-                            <th>Orden ID</th>
-                            <th>ID transaccion</th>
-                            <th>Fecha de creación</th>
-                            <th>Hora de creación</th>
-                            <th>No. Afiliacion</th>
-                            <th>Adquirente</th>
-                            <th>Catálogo</th>
-                            <th>Tipo entrega</th>
-                            <th>Canal de compra</th>
-                            <th>Forma de pago</th>
-                            <th>Estatus de pago</th>
-                            <th>Tipo de almacen</th>
-                            <th>Estatus del envío</th>
-                            <th>Costo de envío</th>
-                            <th>Monto total de la orden</th>
-                            <th>Banco</th>
-                            <th>Bin</th>
-                            <th>Sufijo</th>
-                            <th>Tipo de tarjeta</th>
-                            <th>Marca</th>
-                            <th>No. Autorizacion</th>
-                            <th>MSI</th>	
-                            <th>Correo</th>
-                            <th>Nombre de persona a recibir</th>
-                            <th>Apellido_P</th>
-                            <th>Apellido_M</th>
-                            <th>Fecha liquidación</th>
-                            <th>Hora  de liquidación</th>
-                            <th>Monto de liquidación</th>
-                            <th>Liquidación Manual</th>
-                            <th>Liquidación autómatica</th>
-                            <th>ID transaccion Liquidación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            if (Session["listaGrid"] != null)
-                            {
-                                var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase>>(Session["listaGrid"].ToString());
+        </div>
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th>Orden ID</th>
+                        <th>ID transaccion</th>
+                        <th>Fecha de creación</th>
+                        <th>Hora de creación</th>
+                        <th>No. Afiliacion</th>
+                        <th>Adquirente</th>
+                        <th>Catálogo</th>
+                        <th>Tipo entrega</th>
+                        <th>Canal de compra</th>
+                        <th>Forma de pago</th>
+                        <th>Estatus de pago</th>
+                        <th>Tipo de almacen</th>
+                        <th>Estatus del envío</th>
+                        <th>Costo de envío</th>
+                        <th>Monto total de la orden</th>
+                        <th>Banco</th>
+                        <th>Bin</th>
+                        <th>Sufijo</th>
+                        <th>Tipo de tarjeta</th>
+                        <th>Marca</th>
+                        <th>No. Autorizacion</th>
+                        <th>MSI</th>
+                        <th>Correo</th>
+                        <th>Nombre de persona a recibir</th>
+                        <th>Apellido_P</th>
+                        <th>Apellido_M</th>
+                        <th>Fecha liquidación</th>
+                        <th>Hora de liquidación</th>
+                        <th>Monto de liquidación</th>
+                        <th>Liquidación Manual</th>
+                        <th>Liquidación autómatica</th>
+                        <th>ID transaccion Liquidación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Session["listaGrid"] != null)
+                        {
+                            var lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase>>(Session["listaGrid"].ToString());
 
-                                foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase o in lista)
-                                {
-                                                <tr>
-                                                    <td>@o.OrderReferenceNumber</td>
-                                                    <td>@o.PaymentTransactionID</td>
-                                                    <td>@o.OrderDate</td>
-                                                    <td>@o.OrderHour</td>
-                                                    <td>@*No. Afiliacion*@</td>
-                                                    <td>@*Adquierente*@</td>
-                                                    <td>@o.Catalogo</td>
-                                                    <td>@o.shippingDeliveryDesc</td>
-                                                    <td>@o.OrderSaleChannel</td>
-                                                    <td>@o.paymentTypeJson</td>
-                                                    <td>@*Estatus de pago*@</td>
-                                                    <td>@*Tipo de almacen*@</td>
-                                                    <td>@*Estatus del envío*@</td>
-                                                    <td>@o.ShippingItemTotal</td>
-                                                    <td>@o.orderAmount</td>
-                                                    <td>@o.Bank</td>
-                                                    <td>@o.BinCode</td>
-                                                    <td>@o.MaskCard</td>
-                                                    <td>@o.PaymentMethod</td>
-                                                    <td>@o.TypeOfCard</td>
-                                                    <td>@o.TransactionAuthorizationId</td>
-                                                    <td>@o.shippingPaymentInstallments</td>
-                                                    <td>@o.clientEmail</td>
-                                                    <td>@o.ShippingFirstName</td>
-                                                    <td>@o.ShippingLastName</td>
-                                                    <td>@*Apellido_M*@</td>
-                                                    <td>@*Fecha liquidación*@</td>
-                                                    <td>@*Hora de liquidación*@</td>
-                                                    <td>@*Monto de liquidación*@</td>
-                                                    <td>@*Liquidación Manual*@</td>
-                                                    <td>@*Liquidación autómatica*@</td>
-                                                    <td>@*ID transaccion Liquidación*@</td>
-                                                </tr>
-                                }
+                            foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.ProcesadorPagosBase o in lista)
+                            {
+                                <tr>
+                                    <td>@o.OrderReferenceNumber</td>
+                                    <td>@o.PaymentTransactionID</td>
+                                    <td>@o.OrderDate</td>
+                                    <td>@o.OrderHour</td>
+                                    <td>@o.AffiliationType</td>
+                                    <td>@o.Adquirente</td>
+                                    <td>@o.Catalogo</td>
+                                    <td>@o.DeliveryType</td>
+                                    <td>@o.OrderSaleChannel</td>
+                                    <td>@o.paymentTypeJson</td>
+                                    <td>@o.TransactionStatus</td>
+                                    <td>@o.TipoAlmacen</td>
+                                    <td>@o.EstatusEnvio</td>
+                                    <td>@o.ShippingItemTotal</td>
+                                    <td>@o.orderAmount</td>
+                                    <td>@o.Bank</td>
+                                    <td>@o.BinCode</td>
+                                    <td>@o.MaskCard</td>
+                                    <td>@o.PaymentMethod</td>
+                                    <td>@o.TypeOfCard</td>
+                                    <td>@o.TransactionAuthorizationId</td>
+                                    <td>@o.shippingPaymentInstallments</td>
+                                    <td>@o.clientEmail</td>
+                                    <td>@o.ShippingFirstName</td>
+                                    <td>@o.ShippingLastName</td>
+                                    <td>@*Apellido_M*@</td>
+                                    <td>@o.FechaLiquidacion</td>
+                                    <td>@o.HoraLiquidacion</td>
+                                    <td>@o.MontoLiquidacion</td>
+                                    <td>@o.LiquidacionManual</td>
+                                    <td>@o.LiquidacionAutomatica</td>
+                                    <td>@o.IDTransaccionLiquidacion</td>
+                                </tr>
                             }
                         }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
+    </div>
     </div>
 </div>
     @section scripts {
@@ -176,6 +196,7 @@
 
         </script>
         @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+
         <script>
         $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
@@ -235,18 +256,19 @@
             );
         });
 
+          function GetReporteLiquidacion() {
+              debugger;
+              var _FecIni = $("#txtFecIni").val();
 
-          function GetHistorialRMA() {
-            var _FecIni = $("#txtFecIni").val();
-            var _FecFin = $("#txtFecFin").val();
-
-            if (_FecIni.length == 0) {
-                $("#txtFecIni").focus();
-                return;
+              window.location = window.location.origin + '/ReportesPDP/ProcesaArchivos?NombreArchivo=Liquidaciones&Fecha=' + _FecIni;
             }
 
-            if (_FecFin.length == 0) {
-                $("#txtFecFin").focus();
+          function GetLiquidacionesbyOrder() {
+            var _OrderReferenceNumber = $("#txtOrder").val();
+
+
+            if (_OrderReferenceNumber.length == 0) {
+                $("#txtOrder").focus();
                 return;
             }
 
@@ -255,10 +277,10 @@
             $.ajax({
                 async: false,
                 type: "GET",
-                url: '@Url.Action("GetParamDatesCanalCompra", "ReportesPDP")',
+                url: '@Url.Action("LiquidacionesbyOrder", "ReportesPDP")',
                 data: {
-                        FecIni: _FecIni,
-                        FecFin: _FecFin,
+                        OrderReferenceNumber: _OrderReferenceNumber,
+
                 },
                 datatype: "json",
                 success: function (json) {
@@ -275,15 +297,15 @@
                             var PaymentTransactionID = rw.PaymentTransactionID;
                             var OrderDate = rw.OrderDate;
                             var OrderHour = rw.OrderHour;
-                            var NoAfiliacion = "";
-                            var Adquirente = "";
+                            var NoAfiliacion = rw.AffiliationType;
+                            var Adquirente = rw.Adquirente;
                             var Catalogo = rw.Catalogo;
                             var shippingDeliveryDesc = rw.shippingDeliveryDesc;
                             var OrderSaleChannel = rw.OrderSaleChannel;
-                            var FormaPago = "";
-                            var EstatusPago = "";
-                            var TipoAlmacen = "";
-                            var Estatusenvio = "";
+                            var FormaPago = rw.paymentTypeJson;
+                            var EstatusPago = rw.TransactionStatus;
+                            var TipoAlmacen = rw.TipoAlmacen;
+                            var Estatusenvio = rw.EstatusEnvio;
                             var ShippingItemTotal = rw.ShippingItemTotal;
                             var orderAmount = rw.orderAmount;
                             var Bank = rw.Bank;
@@ -296,47 +318,47 @@
                             var clientEmail = rw.clientEmail;
                             var ShippingFirstName = rw.ShippingFirstName;
                             var ShippingLastName = rw.ShippingLastName
-
                             var Apellido_M = "";
-                            var FechaLiquidacion = "";
-                            var HoraLiquidacion = "";
-                            var MontoLiquidacion = "";
-                            var LiquidacionManual = "";
-                            var LiquidacionAutomatica = "";
-                            var IDTransaccionLiquidacion = "";
+                            var FechaLiquidacion = rw.FechaLiquidacion;
+                            var HoraLiquidacion = rw.HoraLiquidacion;
+                            var MontoLiquidacion = rw.MontoLiquidacion;
+                            var LiquidacionManual = rw.LiquidacionManual;
+                            var LiquidacionAutomatica = rw.LiquidacionAutomatica;
+                            var IDTransaccionLiquidacion = rw.IDTransaccionLiquidacion;
+
 
                             myTable.row.add([
-                                OrderReferenceNumber  
-                             , PaymentTransactionID  
-                             , OrderDate  
-                             , OrderHour  
-                             , NoAfiliacion 
-                             , Adquirente 
-                             , Catalogo  
-                             , shippingDeliveryDesc  
-                             , OrderSaleChannel  
-                             , FormaPago 
-                             , EstatusPago 
-                             , TipoAlmacen 
-                             , Estatusenvio 
-                             , ShippingItemTotal  
-                             , orderAmount  
-                             , Bank  
-                             , BinCode  
-                             , MaskCard  
-                             , PaymentMethod  
-                             , TypeOfCard  
-                             , TransactionAuthorizationId  
-                             , shippingPaymentInstallments  
-                             , clientEmail  
-                             , ShippingFirstName  
-                             , ShippingLastName  
-                             , Apellido_M 
-                             , FechaLiquidacion 
-                             , HoraLiquidacion 
-                             , MontoLiquidacion 
-                             , LiquidacionManual 
-                             , LiquidacionAutomatica 
+                                OrderReferenceNumber
+                             , PaymentTransactionID
+                             , OrderDate
+                             , OrderHour
+                             , NoAfiliacion
+                             , Adquirente
+                             , Catalogo
+                             , shippingDeliveryDesc
+                             , OrderSaleChannel
+                             , FormaPago
+                             , EstatusPago
+                             , TipoAlmacen
+                             , Estatusenvio
+                             , ShippingItemTotal
+                             , orderAmount
+                             , Bank
+                             , BinCode
+                             , MaskCard
+                             , PaymentMethod
+                             , TypeOfCard
+                             , TransactionAuthorizationId
+                             , shippingPaymentInstallments
+                             , clientEmail
+                             , ShippingFirstName
+                             , ShippingLastName
+                             , Apellido_M
+                             , FechaLiquidacion
+                             , HoraLiquidacion
+                             , MontoLiquidacion
+                             , LiquidacionManual
+                             , LiquidacionAutomatica
                              , IDTransaccionLiquidacion
                             ]).draw();
                         }

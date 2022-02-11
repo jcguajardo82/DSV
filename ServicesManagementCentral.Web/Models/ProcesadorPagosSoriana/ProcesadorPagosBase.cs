@@ -66,10 +66,63 @@ namespace ServicesManagement.Web.Models.ProcesadorPagosSoriana
         public string shippingItemName { get; set; } = "";
         public string ShippingItemTotal { get; set; } = "";
         public string shippingPaymentInstallments { get; set; } = "";
+        public string Adquirente { get; set; } = "";
+        public string MethodPaymentShipment { get; set; } = "";
+        public string uSC_StatusDescription { get; set; } = "";
+        public string paymentTypeJson { get; set; } = "";
 
 
-        public string MethodPaymentShipment { get; set; } = ""; //--pm.PaymentMethodDesc --No aparece info
-        public string ofUE_StatusUE { get; set; } = "";
+        public string TipoAlmacen { get; set; }
+        public string EstatusEnvio { get; set; }
+
+        public string DecisionEmisor { get; set; } = "";
+        public string CveReespuestaEmisor { get; set; } = "";
+        public string DescReespuestaEmisor { get; set; } = "";
+        public string Catalogo { get; set; } = "";
+        public string DeliveryType { get; set; } = "";
+
+        #region Cancelacion
+        public string NombreCancelacion { get; set; } = "";
+        public string FechaCancel { get; set; } = "";
+        public string HoraCancel { get; set; } = "";
+        public string MontoCancel { get; set; } = "";
+        public string ConsignacionIDCancelada { get; set; } = "";
+        public string MontoConsignacionIDCancelada { get; set; } = "";
+        public string NoPiezasConsignacionCancelacion { get; set; } = "";
+        public string FechaINgresoRMA { get; set; } = "";
+        public string ConsignaciónIDDevolucin { get; set; } = "";
+        public string DetalleConsignacionIngresada { get; set; } = "";
+        public string NoPzasConsignacionDevolucion { get; set; } = "";
+        public string FechaDevolucion { get; set; } = "";
+        public string HoraDevolucion { get; set; } = "";
+        public string MontoDevolucionConsignacion { get; set; } = "";
+        public string FechaReembolso { get; set; } = "";
+        public string HoraReembolso { get; set; } = "";
+        public string FormaPagoRembolso { get; set; } = "";
+        public string ReembolsoManual { get; set; } = "";
+        public string ReembolsoAutomatico { get; set; } = "";
+        public string IDTransaccionReembolso { get; set; } = "";
+        #endregion
+
+
+        #region Liquidacion 
+        public string FechaLiquidacion { get; set; } = "";
+        public string HoraLiquidacion { get; set; } = "";
+        public string MontoLiquidacion { get; set; } = "";
+        public string LiquidacionManual { get; set; } = "";
+        public string LiquidacionAutomatica { get; set; } = "";
+        public string IDTransaccionLiquidacion { get; set; } = "";
+        #endregion
+
+        #region Reverso
+        public string FechaReversoAutorizacion { get; set; } = "";
+        public string HoraReversoAutorizacion { get; set; } = "";
+        public string MontoReverso { get; set; } = "";
+        public string IDTransaccionReverso { get; set; } = "";
+        #endregion
+
+
+        /*public string ofUE_StatusUE { get; set; } = "";
 
         public string ofUE_DeliveryType { get; set; } = "";
 
@@ -97,117 +150,10 @@ namespace ServicesManagement.Web.Models.ProcesadorPagosSoriana
 
         public string ofUE_MethodPayment { get; set; } = "";
 
-        public string ofUE_OrderRMA { get; set; } = "";
-
-        public string uSC_StatusDescription { get; set; } = "";
-        public string paymentTypeJson { get; set; } = "";
-
-        public string DecisionEmisor { get; set; } = "";
-        public string CveReespuestaEmisor { get; set; } = "";
-        public string DescReespuestaEmisor { get; set; } = "";
-        public string Catalogo { get; set; } = "";
-
-        #region Cancelacion
-        public string NombreCancelacion { get; set; } = "";
-        public string FechaCancel { get; set; } = "";
-        public string HoraCancel { get; set; } = "";
-        public string MontoCancel { get; set; } = "";
-        public string ConsignacionIDCancelada { get; set; } = "";
-        public string MontoConsignacionIDCancelada { get; set; } = "";
-        public string NoPiezasConsignacionCancelacion { get; set; } = "";
-        public string FechaINgresoRMA { get; set; } = "";
-        public string ConsignaciónIDDevolucin { get; set; } = "";
-        public string DetalleConsignacionIngresada { get; set; } = "";
-        public string NoPzasConsignacionDevolucion { get; set; } = "";
-        public string FechaDevolucion { get; set; } = "";
-        public string HoraDevolucion { get; set; } = "";
-        public string MontoDevolucionConsignacion { get; set; } = "";
-        public string FechaReembolso { get; set; } = "";
-        public string HoraReembolso { get; set; } = "";
-        public string FormaPagoRembolso { get; set; } = "";
-        public string ReembolsoManual { get; set; } = "";
-        public string ReembolsoAutomatico { get; set; } = "";
-        public string IDTransaccionReembolso { get; set; } = "";
-        #endregion
+        public string ofUE_OrderRMA { get; set; } = "";*/
 
 
-        /*
-                public string OrderReferenceNumber { get; set; }        //Orden ID
 
-                public string PaymentTransactionID { get; set; }        //Transacción
-                public string OrderDate { get; set; }                   //Fecha Creacion 
 
-                                                                        //Forma Pago
-
-                public string OrderAmount { get; set; }                 //Monto Total Orden
-                public string skus { get; set; }                        //SKU Catálogo
-                public string DescSkus { get; set; }                    //Nombre Articulo
-                public string OrderSaleChannel { get; set; }            //Canal Compra
-                                                                        //3D/Safe Key
-                                                                        //Estatus de Pago
-                public string shippingStoreId { get; set; }             //Tipo ALmacen
-                public string ShippingReferenceNumber { get; set; }     //Consignación ID
-                                                                        //No.Pzas Consignación
-                public string ShippingPaymentImport { get; set; }       //Monto Consignación
-                                                                        //Costo Envio ShippingPaymentImport
-                public string Bank { get; set; }                        //Banco
-                public string BinCode { get; set; }
-                public string MaskCard { get; set; }                    // Sufijo hay q recortar
-                public string TypeOfCard { get; set; }                  //Tipo Tarjeta
-                public string PaymentMethod { get; set; }               //Marca
-                                                                        //No.Autorización
-                public string CustomerFirstName { get; set; }           //Nombre de Persona a Recibir
-               public string CustomerLastName { get; set; }             //Apellido P 
-                                                                        //Apellido M
-                public string CustomerContact { get; set; }             //Teléfono
-                public string CustomerAddress { get; set; }             //Calle
-                                                                        //Colonia
-                public string CustomerCity { get; set; }                //Ciudad
-                                                                        //Número
-                public string CustomerZipCode { get; set; }             //CP
-                                                                        //Estatus Orden
-                                                                        //Estatus ENvio
-                                                                        //Estatus Logistica Inversa
-                                                                        //No. RMA
-                public string clientEmail { get; set; }                 //Nombre de quien Cancela
-                public string cancellationReason { get; set; }          //Motivo Cancelacion
-                                                                        //Monto Cancelación
-                                                                        //Consignacion ID Cancelada
-                                                                        //Monto Consignacion Cancelada
-                public string newProductQuantity { get; set; }          //No Piezas Consignación Cancelada
-                                                                        //Fecha INgreso RMA
-                                                                        //Detalle de la Consignación Ingresada (SKU)
-                                                                        //Fecha Devolución
-                                                                        //Hora Decolución
-                                                                        //Monto Devolución Consignación
-                                                                        //Fecha Reembolso
-                                                                        //Hora Reembolso
-                                                                        //Forma de Pago donde se aplico Rembolso
-                                                                        //BIN Tarjeta Reembolso
-                                                                        //Sufijo Tarjeta Reembolso
-                                                                        //No Afiliación
-                                                                        //Adquiriente
-                                                                        //Catálogo
-                 public string ShippingDeliveryDesc { get; set; }       //Tipo Entrega
-                                                                        //Estatus del Envio
-                                                                        //Tipo de Transporte
-                                                                        //promocion
-                                                                        //MSI
-                public string CustomerLoyaltyRedeemPoints { get; set; }  //punto aplicados
-                public string CustomerLoyaltyRedeemMoney { get; set; }  //efectivo disponble /dinero en efectivo
-                public string PaymentToken { get; set; }
-                public string CustomerLoyaltyCardId { get; set; }
-                public string ShippingFirstName { get; set; }
-                public string ShippingLastName { get; set; }
-                public string ShippingAddress { get; set; }
-                public string ShippingCity { get; set; }
-               // public string clientEmail { get; set; }
-                public string fec_movto { get; set; }
-                //public string cancellationReason { get; set; }
-                //public string newProductQuantity { get; set; }
-                public string productId { get; set; }
-                public string Id_cancelacion { get; set; }
-                public string Bin_Reembolso { get; set; }
-                public string SufijoReembolso { get; set; }*/
     }
 }
