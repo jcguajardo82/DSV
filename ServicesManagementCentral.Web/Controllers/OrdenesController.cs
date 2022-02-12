@@ -2029,10 +2029,10 @@ namespace ServicesManagement.Web.Controllers
                     guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
 
                         servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                    }
-                    if (paqueteria.Equals("Estafeta"))
-                    {
-                        guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+                }
+               if (paqueteria.Equals("Estafeta"))
+                {
+                    guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
 
                     servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
                 }
