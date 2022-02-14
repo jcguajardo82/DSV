@@ -316,11 +316,23 @@
             });
         }
 
+        function popAut( orderId,Id_cancelacion,op) {
+                //<input type="hidden" id="hddIdOrden"/>
+                //<input type="hidden" id="hddIdCancelacion"/>
+
+            $("#txtMotCan").val('');
+            $("#hddIdOrden").val(orderId);
+            $("#hddOp").val(op);
+            $("#hddIdCancelacion").val(Id_cancelacion);
+            $("#dlgMod").modal('show');
+        }
+
+
         function SaveAut() {
             var _Comentario = $("#txtMotCan").val();
             var _IdEstatusAut = $("#hddOp").val();
             var _Id_cancelacion = $("#hddIdCancelacion").val();
-
+       
             if (_Comentario.length == 0) {
                 $("#txtMotCan").focus();
                 return;
@@ -329,7 +341,7 @@
             $("#btnAceptar").attr("disabled", true);
 
             $.ajax({
-
+         
                 type: "get",
                 url: '@Url.Action("SetAut", "Autorizacion")',
                 data: {
@@ -368,16 +380,6 @@
             });
         }
 
-        function popAut( orderId,Id_cancelacion,op) {
-                //<input type="hidden" id="hddIdOrden"/>
-                //<input type="hidden" id="hddIdCancelacion"/>
-
-            $("#txtMotCan").val('');
-            $("#hddIdOrden").val(orderId);
-            $("#hddOp").val(op);
-            $("#hddIdCancelacion").val(Id_cancelacion);
-            $("#dlgMod").modal('show');
-        }
 
         $(document).ready(function () {
 
