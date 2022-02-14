@@ -702,14 +702,14 @@
         var _status = '@Session["OrderStatus"]';
 
         // 2022-01-03 - se activo temporalmente
-        $('#btnCancelacion').show();
+        //$('#btnCancelacion').show();
 
 
         // 2022-01-03 - se inactivo temporalmente
-        //if (_cancelacion != '' && _status != 'Orden Cancelada')
-        //        $('#btnCancelacion').show();
-        //    else
-        //        $('#btnCancelacion').hide();
+        if (_cancelacion != '' && _status != 'Orden Cancelada')
+                $('#btnCancelacion').show();
+            else
+                $('#btnCancelacion').hide();
 
         });
 
