@@ -353,6 +353,8 @@
     <Compile Include="Models\EmpleadoModels.cs" />
     <Compile Include="Models\EnviaResponseModel.cs" />
     <Compile Include="Models\EstafetaRequestModel.cs" />
+    <Compile Include="Models\EstafetaRequest\RequestEstafetaLtlModel.cs" />
+    <Compile Include="Models\EstafetaRequest\RequestEstafetaModel.cs" />
     <Compile Include="Models\EstatusGuiasEnvio\EstatusGuiasEnvio.cs" />
     <Compile Include="Models\EstatusReenvioMcia\DetalleEstatusReenvioMcia.cs" />
     <Compile Include="Models\EstatusReenvioMcia\EstatusReenvioMcia.cs" />
