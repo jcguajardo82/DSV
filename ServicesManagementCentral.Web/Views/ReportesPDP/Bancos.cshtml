@@ -1,51 +1,38 @@
 ﻿
 @{
-    ViewBag.Title = "Bancos";
+    ViewBag.Title = "Reporte Pago TC";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Bancos</h2>
+<h2>Reporte Banco TC</h2>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <input type="date" id="txtFecIni" class="form-control" />
+                    <div class="input-group date" id="datetimepicker1"></div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                @*<label>Fecha Fin</label>
+                <input type="date" id="txtFecFin" class="form-control" />
+                <div class="input-group date" id="datetimepicker2"></div>*@
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+                <label>&nbsp;</label>
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetReportePagosTC()">
+                    Descargar Reporte
+                </button>
+            </div>
+        </div>
         <div style="width:99%;">
             <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
                 <thead class="bg-danger-sor">
                     <tr>
-                        <th>BIN</th>
-                        <th>Id Institución</th>
-                        <th>Institución</th>
-                        <th>Producto</th>
-                        <th>Naturaleza</th>
-                        <th>Marca</th>
-                        <th>Tarjeta Chip</th>
-                        <th>BIN Virtual</th>
-                        <th>Ac Manual</th>
-                        <th>Ac TPV</th>
-                        <th>Ac Cashback</th>
-                        <th>AcATMs</th>
-                        <th>Ac Ecommerce</th>
-                        <th>Ac Cargos Pe</th>
-                        <th>Ac Ventas X</th>
-                        <th>Ac Sucursal</th>
-                        <th>Ac Pagos en el Interca,bio</th>
-                        <th>Ac 3D Secure</th>
-                        <th>NFC</th>
-                        <th>MST</th>
-                        <th>Wallet</th>
-                        <th>PAN Din</th>
-                        <th>CVV/CVC Din</th>
-                        <th>NIP</th>
-                        <th>Tokenización</th>
-                        <th>Vale</th>
-                        <th>Fecha ALta</th>
-                        <th>Procesador</th>
-                        <th>Mes de Actualización</th>
-                        <th>Año de Actualización</th>
-                        <th>Año fecha de Actualización</th>
                     </tr>
                 </thead>
                 <tbody>
-
-
                 </tbody>
             </table>
         </div>
@@ -112,6 +99,14 @@
                 }
             );
         });
+
+
+        function GetReportePagosTC() {
+            debugger;
+            var _FecIni = $("#txtFecIni").val();
+
+            window.location = window.location.origin + '/ReportesPDP/ProcesaArchivos?NombreArchivo=ReportePagoTC&Fecha=' + _FecIni;
+        }
     </script>
 }
 
