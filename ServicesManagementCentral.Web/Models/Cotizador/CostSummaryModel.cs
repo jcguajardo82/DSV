@@ -8,11 +8,11 @@ namespace ServicesManagement.Web.Models.Cotizador
     public class CostSummaryModel
     {
         public int quantity { get; set; }
-        public int basedPrice { get; set; }
+        public decimal basedPrice { get; set; }
         public int extendedFare { get; set; }
         public int insurance { get; set; }
         public int additionalServices { get; set; }
-        public int totalPrice { get; set; }
+        public decimal totalPrice { get; set; }
         public string currency { get; set; }
         public bool customKey { get; set; }
         public int cashOnDeliveryCommission { get; set; }
