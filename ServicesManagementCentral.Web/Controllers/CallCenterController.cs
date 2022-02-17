@@ -672,6 +672,37 @@ namespace ServicesManagement.Web.Controllers
                 List<upCorpOms_Cns_OrdersByHistorical> list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
                     DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
 
+                string status = string.Empty;
+                string txtCombo = string.Empty;
+
+                if (list.Count > 0)
+                {
+
+                    status = list.FirstOrDefault().StatusDescriptionUE;
+
+                    //CEDIS
+                    switch (status.ToLower())
+                    {
+                        case "en split":
+                            txtCombo = "Cancelacion";
+                            break;                        
+                        case "en surtido":
+                        case "en cobro":
+                        case "en documentacion":
+                        case "en transportista":
+                        case "":
+                        case "en entrega":
+                        case "orden cancelada":
+                            txtCombo = "Devolucion";
+                            break;
+                    }
+                }
+                else {
+                    txtCombo = "Cancelacion";
+                }
+
+               
+
                 decimal tot = list.Sum(x => x.SubTotal);
 
                 string cliente = string.Format("{0}/?order={1}", urlbase, OrderId);
