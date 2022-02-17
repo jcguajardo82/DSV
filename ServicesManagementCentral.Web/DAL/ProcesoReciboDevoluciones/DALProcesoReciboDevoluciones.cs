@@ -148,7 +148,7 @@ namespace ServicesManagement.Web.DAL.ProcesoReciboDevoluciones
             }
 
         }
-        public static DataSet upCorpOMS_Cns_UeNoDevolDetail(string UeNo)
+        public static DataSet upCorpOMS_Cns_UeNoDevolDetail(int Id_cancelacion)
         {
 
             DataSet ds = new DataSet();
@@ -165,7 +165,7 @@ namespace ServicesManagement.Web.DAL.ProcesoReciboDevoluciones
                 Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@Id_cancelacion", Id_cancelacion);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_UeNoDevolDetail]", false, parametros);
 

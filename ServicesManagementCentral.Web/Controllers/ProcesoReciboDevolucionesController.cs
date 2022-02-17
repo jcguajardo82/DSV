@@ -216,7 +216,7 @@ namespace ServicesManagement.Web.Controllers
         }
 
         //listar productos de  consignación
-        public ActionResult LstProdPaquete(string UeNo)
+        public ActionResult LstProdPaquete(int Id_cancelacion)
         {
             try
             {
@@ -239,7 +239,7 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
-                var listaProd = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoDevolDetail>(DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolDetail(UeNo).Tables[0]);
+                var listaProd = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoDevolDetail>(DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolDetail(Id_cancelacion).Tables[0]);
                 var listCond = DataTableToModel.ConvertTo<upCorpOms_Cns_UeCondCauses>(DALProcesoReciboDevoluciones.upCorpOms_Cns_UeCondCauses(idOwner).Tables[0]);
                 var listDev = DataTableToModel.ConvertTo<upCorpOms_Cns_UeDevolCauses>(DALProcesoReciboDevoluciones.upCorpOms_Cns_UeDevolCauses(idOwner).Tables[0]);
                 var result = new { Success = true, resp = listaProd, lstCond = listCond, lstDev = listDev };
