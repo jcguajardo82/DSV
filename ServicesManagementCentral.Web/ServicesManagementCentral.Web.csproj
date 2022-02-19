@@ -243,6 +243,7 @@
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\CpanelController.cs" />
+    <Compile Include="Controllers\DescargaOrdenesController.cs" />
     <Compile Include="Controllers\DevolucionesController.cs" />
     <Compile Include="Controllers\EnvioCorreosController.cs" />
     <Compile Include="Controllers\Estatus_guia_envioController.cs" />
@@ -3950,6 +3951,7 @@
     <Content Include="Views\CancelacionSupervisor\Index.cshtml" />
     <Content Include="Views\CancelacionSupervisor\ConsultaDetalleCancelacion.cshtml" />
     <Content Include="Views\CancelacionSupervisor\CancelacionOrden.cshtml" />
+    <Content Include="Views\DescargaOrdenes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
