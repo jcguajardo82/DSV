@@ -24,6 +24,8 @@ namespace ServicesManagement.Web.Models.ProcesoReciboDevoluciones
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public decimal Quantity { get; set; }
+        public string SolicitudRMA { get; set; }
+        public string MotivoRMA { get; set; }
         public string IdTrackingService { get; set; }
         public string PackageCondition { get; set; }
         public string Cause_Desc { get; set; }
