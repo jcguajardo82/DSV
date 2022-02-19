@@ -1836,7 +1836,7 @@ namespace ServicesManagement.Web.Controllers
                     }
                     if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
                     {
-                        var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
+                        var request = lstCarrierRequests.Where(x => x.Carrier.ToLower() == paqueteria.ToLower()).FirstOrDefault().request;
                         guia = CreateGuiaEnvia(request, service);
                         servicioPaq = "Envia-" + paqueteria;
                         trackUrl = guia.Split(',')[2];

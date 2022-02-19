@@ -15,19 +15,19 @@ namespace ServicesManagement.Web.Models.Cotizador
         public DeliveryDateModel deliveryDate { get; set; }
         public int quantity { get; set; }
         public decimal basedPrice { get; set; }
-        public int extendedFare { get; set; }
-        public int insurance { get; set; }
-        public int additionalServices { get; set; }
+        public decimal extendedFare { get; set; }
+        public decimal insurance { get; set; }
+        public decimal additionalServices { get; set; }
         public decimal totalPrice { get; set; }
         public string currency { get; set; }
         public bool customKey { get; set; }
-        public int importFree { get; set; }
-        public int taxes { get; set; }
-        public int cashOnDeliveryCommission { get; set; }
-        public int cashOnDeliveryAmount { get; set; }
-        public int customKeyCost { get; set; }
-        public int smsCost { get; set; }
-        public int whatsappCost { get; set; }
+        public decimal importFree { get; set; }
+        public decimal taxes { get; set; }
+        public decimal cashOnDeliveryCommission { get; set; }
+        public decimal cashOnDeliveryAmount { get; set; }
+        public decimal customKeyCost { get; set; }
+        public decimal smsCost { get; set; }
+        public decimal whatsappCost { get; set; }
         public List<CostSummaryModel> costSummary { get; set; }
     }
 }
