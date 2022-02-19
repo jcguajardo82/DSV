@@ -18,8 +18,8 @@ namespace ServicesManagement.Web.Models
         public string trackUrl { get; set; }
         public string label { get; set; }
         public string[] additionalFiles { get; set; }
-        public int totalPrice { get; set; }
-        public int currentBalance { get; set; }
+        public decimal totalPrice { get; set; }
+        public decimal currentBalance { get; set; }
         public string currency { get; set; }
     }
 }

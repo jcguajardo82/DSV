@@ -18,6 +18,10 @@ namespace ServicesManagement.Web.Models.CallCenter
         public string ArticuloFoto { get; set; }
 
 
+        public int StatusUe { get; set; }
+        public string StatusDescriptionUE { get; set; }
+        public string StatusDescription { get; set; }
+        public byte StatusId { get; set; }
 
     }
 }
