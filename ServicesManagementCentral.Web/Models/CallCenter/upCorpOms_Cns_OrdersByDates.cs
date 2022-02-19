@@ -9,6 +9,10 @@ namespace ServicesManagement.Web.Models.CallCenter
     {
         public string OrderNo { get; set; }
         public string UeNo { get; set; }
+        public string StatusDescriptionUE { get; set; }
+        public string StatusDescription { get; set; }
+        public string StatusId { get; set; }
+
         public string DeliveryDate { get; set; }
         public string DeliveryType { get; set; }
         public string StoreNum { get; set; }

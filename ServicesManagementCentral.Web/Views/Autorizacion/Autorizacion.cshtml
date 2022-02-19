@@ -3,7 +3,9 @@
     ViewBag.Title = "Autorización RMA";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<div id="spinner">
+    <img src="~/Content/images/spinner-icon-gif-24.gif" style="display:none;" id="imgSpiner" />
+</div>
 @using (Html.BeginForm())
 {
     <div class="row">
@@ -142,6 +144,46 @@
 @section scripts {
     <script src="~/Content/plugins/zoomy/zoomy.js"></script>
     <link href="~/Content/plugins/zoomy/zoomy.css" rel="stylesheet" />
+    <style>
+        /* (A) FULL SCREEN WRAPPER */
+        #spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            width: 100vw;
+            height: 100vh;
+            /*background: rgba(0, 0, 0, 0);*/
+            transition: opacity 0.2s;
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+            /* (B) CENTER LOADING SPINNER */
+            #spinner img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%);
+            }
+
+        /* (C) SHOW & HIDE */
+        #spinner {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+            #spinner.show {
+                visibility: visible;
+                opacity: 1;
+            }
+        /*        .required {
+            position: absolute;
+            margin-left: -10px;
+            color: #FB0000;
+            font-size: 15px;
+        }*/
+    </style>
     <script>
         //var urls = [
         //    'https://source.unsplash.com/h0s58n-8R6w/600x350',
@@ -253,7 +295,7 @@
                         $('#el').empty();
                         var urls = [];
                         for (var i = 0; i < json.imgs.length; i++) {
-                         
+
                             urls.push(json.imgs[i].FotoURL);
                         }
 
@@ -314,8 +356,10 @@
                 $("#txtMotCan").focus();
                 return;
             }
+
+            $("#btnAceptar").attr("disabled", true);
                   $.ajax({
-                async: false,
+  
                 type: "get",
                 url: '@Url.Action("SetAut", "Autorizacion")',
                 data: {
@@ -328,18 +372,29 @@
                             //    , string IdAccion, int Id_cancelacion)
 
                 },
+                beforeSend: function () {
+                    $("#imgSpiner").css("display", "block");
+                    document.getElementById("spinner").classList.add("show");
+                },
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
 
+               },
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
                         location.reload();
                     }
                     else {
+                        $("#btnAceptar").attr("disabled", false);
                         alert(json.Message);
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
+                    $("#btnAceptar").attr("disabled", false);
+                    document.getElementById("spinner").classList.remove("show");
+                    $("#imgSpiner").css("display", "none");
                     alert("errorThrown");
                 }
 

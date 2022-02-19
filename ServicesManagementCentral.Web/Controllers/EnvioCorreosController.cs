@@ -1,4 +1,5 @@
 ﻿using ServicesManagement.Web.DAL.Correos;
+using ServicesManagement.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,15 +14,15 @@ namespace ServicesManagement.Web.Controllers
         // GET: EnvioCorreos
         public ActionResult Index()
         {
-          ViewBag.Plantillas =  DALCorreos.EmailLayoutAll_sUp().Tables[0];
+            
+            ViewBag.Plantillas =  DALCorreos.EmailLayoutAll_sUp().Tables[0];
    
             return View();
         }
 
         public ActionResult EnvioCorreo(int Orden,int id)
         {
-            try
-            {
+            
                 switch (id)
                 {
                     //1   Confirmación de Pago en Tienda Entrega en Tienda    6A
@@ -84,12 +85,53 @@ namespace ServicesManagement.Web.Controllers
                     
                 };
                 return Json(result, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception x)
+            
+          
+        }
+        [HttpPost]
+        [CustomExceptionHandlerFilter]
+        public ActionResult ReglaNegocio()
+        {
+            try
             {
-                var result = new { Success = false, Message = x.Message };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                bool hasError = true;
+                if (hasError)
+                {
+                    var exn= new Exception("test error");
+                    exn.Data.Add("negocio", "negocio");
+                    throw exn;
+                }
+                else
+                {
+                    var result = new
+                    {
+                        Success = true
+
+                    };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
+        }
+
+
+
+        public ActionResult FallaSistema()
+        {
+            int a = 1, b = 0;
+
+            int div = (a / b);
+            var result = new
+            {
+                Success = true
+
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

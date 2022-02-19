@@ -15,12 +15,14 @@
     </select>
     <input type="text" class="form-control" id="txtOrden">
     <button type="button" class="btn btn-default" onclick="Correos()">Enviar Correo</button>
+    <button type="button" class="btn btn-default" onclick="Regla()">Regla de Negocio</button>
+    <button type="button" class="btn btn-default" onclick="Error()">Error de sistema</button>
 </div>
 @section scripts {
    
     <link href="~/Content/plugins/zoomy/zoomy.css" rel="stylesheet" />
     <script>
-       
+
         function Correos() {
             var orden = $("#txtOrden").val();
             var id = $("#ddlPlantillas").val();
@@ -49,14 +51,94 @@
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
-                    //bootbox.alert(errorThrown);
-                    alert("errorThrown");
+                    if (jqXHR.responseText != "") {
+                        alert(jqXHR.responseText);
+                    }
+                    else {
+                        alert("Ha ocurrido un error inesperado");
+                    }
                 }
 
             });
         }
 
-   
+        function Regla() {
+
+            $.ajax({
+                
+                type: "POST",
+                url: '@Url.Action("ReglaNegocio", "EnvioCorreos")',
+
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                       alert("ok regla")
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                },
+              error: function (xhr, status, error) {
+                    if (xhr.responseText != "") {
+                        //var err = JSON.parse(xhr.responseText);
+                        //if (err.status == 440) {
+                        //    alert("Session expired");
+                        //}
+                        //else {
+                        //    alert(err.message);
+                        //}
+
+                        alert(xhr.responseText);
+                    }
+                    else {
+                        alert("Ha ocurrido un error inesperado");
+                    }
+                }
+
+            });
+        }
+
+        function Error() {
+
+            $.ajax({
+              
+                type: "POST",
+                url: '@Url.Action("FallaSistema", "EnvioCorreos")',
+
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                       alert("ok regla")
+
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.responseText != "") {
+                        //var err = JSON.parse(xhr.responseText);
+                        //if (err.status == 440) {
+                        //    alert("Session expired");
+                        //}
+                        //else {
+                        //    alert(err.message);
+                        //}
+
+                        alert(xhr.responseText);
+                    }
+                    else {
+                        alert("Ha ocurrido un error inesperado");
+                    }
+                }
+
+            });
+        }
 
     </script>
 }
