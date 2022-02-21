@@ -1352,7 +1352,7 @@ namespace ServicesManagement.Web.DAL.CallCenter
 
         public static DataSet up_Corp_ins_tbl_OrdenCancelada(string orderId
             , string accion, string origen, int clientId, string clientEmail, string clientPhone, int? EstatusRma, int? ProcesoAut
-            , int? IdTSolicitud, int? IdTmovimiento, string jsonRequest = "")
+            , int? IdTSolicitud, int? IdTmovimiento, bool IsDev, string jsonRequest = "")
         {
 
             DataSet ds = new DataSet();
@@ -1382,7 +1382,8 @@ namespace ServicesManagement.Web.DAL.CallCenter
                 if (IdTSolicitud != null)
                     parametros.Add("@IdTSolicitud", IdTSolicitud);
                 if (IdTmovimiento != null)
-                    parametros.Add("@IdTmovimiento", IdTmovimiento);
+                    parametros.Add("@IdTmovimiento", IdTmovimiento);
+                parametros.Add("@IsDev", IsDev);
 
 
 
