@@ -672,7 +672,7 @@ namespace ServicesManagement.Web.Controllers
                 List<upCorpOms_Cns_OrdersByHistorical> list = DataTableToModel.ConvertTo<upCorpOms_Cns_OrdersByHistorical>(
                     DALCallCenter.upCorpOms_Cns_OrdersByHistorical(OrderId).Tables[0]);
 
-                string status = string.Empty;
+                string status = list.FirstOrDefault().StatusDescriptionUE;
                 string txtCombo = string.Empty;
 
                 if (list.Count > 0)
