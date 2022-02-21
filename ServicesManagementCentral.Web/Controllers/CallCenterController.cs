@@ -707,7 +707,7 @@ namespace ServicesManagement.Web.Controllers
 
                 string cliente = string.Format("{0}/?order={1}", urlbase, OrderId);
 
-                var result = new { Success = true, resp = list, total = tot, url = cliente };
+                var result = new { Success = true, resp = list, total = tot, url = cliente, opCombo = txtCombo };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
