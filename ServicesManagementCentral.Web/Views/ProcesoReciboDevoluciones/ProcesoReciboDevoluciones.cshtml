@@ -88,7 +88,7 @@
                                 GuiasPaqEstatusDesc = "";
                                 <tr>
                                     <td style="text-align:center;">
-                                        <a id="@p["Idcancelacion"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["UeNo"], @p["Recibido"])"
+                                        <a id="@p["Idcancelacion"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, '@p["UeNo"]', @p["Recibido"])"
                                            title="Click para ver la lista de productos asociados al pedido" class="link"><u>@p["UeNo"].ToString()</u></a>
                                     </td>
                                     <td style="text-align:right">@p["UeType"] </td>
@@ -406,9 +406,9 @@
             });
         }
 
-        function popUpLstProds(el, UeNo, bitRecibido) {
+        function popUpLstProds(el, tmpUeNo, bitRecibido) {
             var Id_cancelacion = $(el).attr('id');
-            $('#selUeNo').val(UeNo);
+            $('#selUeNo').val(tmpUeNo);
             $('#selOrderNo').val($(el).attr('name'));
             $('#selRecibido').val(bitRecibido);
 
@@ -513,7 +513,7 @@
                         datatype: "html",
                         success: function (json) {
                             if (json.Success) {
-                                //alert(json.resp);
+                                alert(json.resp);
                             }
                             else {
                                 alert(json.Message);
