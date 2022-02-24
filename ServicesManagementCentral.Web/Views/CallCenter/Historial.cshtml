@@ -332,13 +332,11 @@
 
 
                             myTable.row.add([
-                     
-                                "<button onclick='GenerarRma(" + json.resp[i].OrderNo + ",\"" + json.resp[i].UeType+ "\")' type='button' class='btn btn-danger btn btn-xs'  title='Click para generar RMA a la orden'> Casos de Cliente</button>",
+
+                                "<button onclick='GenerarRma(" + json.resp[i].OrderNo + ",\"" + json.resp[i].UeType + "\")' type='button' class='btn btn-danger btn btn-xs' title='Click para generar RMA a la orden'> Casos de Cliente</button>",
                                 "<a href='CallCenter/ConsultaDetalle?order=" + json.resp[i].OrderNo + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].OrderNo + "</u>",
                                 json.resp[i].StatusDescriptionUE,
                                 json.resp[i].StatusDescription,
-                                json.resp[i].UeType,
-                                json.resp[i].StatusDescriptionUE,
                                 json.resp[i].UeType,
                                 json.resp[i].DeliveryDate,
                                 json.resp[i].DeliveryType,
@@ -353,7 +351,9 @@
                                 json.resp[i].CustomerName,
                                 json.resp[i].CustomerEmail
 
-                             
+
+
+
 
                             ]).draw();
                         }
