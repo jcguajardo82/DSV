@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ServicesManagement.Web.Models.EstafetaRequest
+namespace ServicesManagement.Web.Models.Estafeta
 {
     public class RequestEstafetaModel
     {
-        public Identification identification { get; set; }
         public LabelDefinition labelDefinition { get; set; }
-        public SystemInformation systemInformation { get; set; }
     }
     public class Identification
     {
@@ -17,34 +15,66 @@ namespace ServicesManagement.Web.Models.EstafetaRequest
         public string suscriberId { get; set; }
     }
 
+    public class Merchandise
+    {
+        public double merchandiseValue { get; set; }
+        public string currency { get; set; }
+        public string productServiceCode { get; set; }
+        public double merchandiseQuantity { get; set; }
+        public string measurementUnitCode { get; set; }
+        public string tariffFraction { get; set; }
+        public string UUIDExteriorTrade { get; set; }
+        public bool isInternational { get; set; }
+        public bool isImport { get; set; }
+        public bool isHazardousMaterial { get; set; }
+        public string hazardousMaterialCode { get; set; }
+        public string packagingCode { get; set; }
+    }
+
+    public class Merchandises
+    {
+        public decimal totalGrossWeight { get; set; }
+        public string weightUnitCode { get; set; }
+        public List<Merchandise> merchandise { get; set; }
+    }
+
     public class ItemDescription
     {
+        public int parcelId { get; set; }
+        public decimal weight { get; set; }
         public int height { get; set; }
         public int length { get; set; }
-        public int parcelId { get; set; }
-        public double weight { get; set; }
         public int width { get; set; }
+        public Merchandises merchandises { get; set; }
     }
 
     public class Address
     {
+        public bool bUsedCode { get; set; }
+        public string roadTypeCode { get; set; }
+        public string roadTypeAbbName { get; set; }
+        public string roadName { get; set; }
+        public string townshipCode { get; set; }
+        public string townshipName { get; set; }
+        public string settlementTypeCode { get; set; }
+        public string settlementTypeAbbName { get; set; }
+        public string settlementName { get; set; }
+        public string stateCode { get; set; }
+        public string stateAbbName { get; set; }
+        public string zipCode { get; set; }
+        public string countryCode { get; set; }
+        public string countryName { get; set; }
         public string addressReference { get; set; }
         public string betweenRoadName1 { get; set; }
         public string betweenRoadName2 { get; set; }
-        public string countryCode { get; set; }
-        public int externalNum { get; set; }
+        public string latitude { get; set; }
+        public string longitude { get; set; }
+        public string externalNum { get; set; }
         public string indoorInformation { get; set; }
-        public double latitude { get; set; }
-        public double longitude { get; set; }
         public string nave { get; set; }
         public string platform { get; set; }
-        public string roadName { get; set; }
-        public string roadTypeCode { get; set; }
-        public string settlementName { get; set; }
-        public string settlementTypeCode { get; set; }
-        public string stateCode { get; set; }
-        public string townshipCode { get; set; }
-        public string zipCode { get; set; }
+        public string localityCode { get; set; }
+        public string localityName { get; set; }
     }
 
     public class Contact
@@ -69,6 +99,18 @@ namespace ServicesManagement.Web.Models.EstafetaRequest
         public HomeAddress homeAddress { get; set; }
         public bool isDeliveryToPUDO { get; set; }
     }
+    public class Residence
+    {
+        public Contact contact { get; set; }
+        public Address address { get; set; }
+    }
+
+    public class Notified
+    {
+        public string notifiedTaxIdCode { get; set; }
+        public string notifiedTaxCountry { get; set; }
+        public Residence residence { get; set; }
+    }
 
     public class Origin
     {
@@ -78,9 +120,10 @@ namespace ServicesManagement.Web.Models.EstafetaRequest
 
     public class Location
     {
-        public Destination destination { get; set; }
         public bool isDRAAlternative { get; set; }
         public Origin origin { get; set; }
+        public Destination destination { get; set; }
+        public Notified notified { get; set; }
     }
 
     public class Insurance
@@ -89,16 +132,23 @@ namespace ServicesManagement.Web.Models.EstafetaRequest
         public double declaredValue { get; set; }
     }
 
+    public class ReturnDocument
+    {
+        public string type { get; set; }
+        public string serviceId { get; set; }
+    }
+
     public class ServiceConfiguration
     {
-        public string effectiveDate { get; set; }
-        public Insurance insurance { get; set; }
-        public bool isInsurance { get; set; }
-        public bool isReturnDocument { get; set; }
-        public string originZipCodeForRouting { get; set; }
         public int quantityOfLabels { get; set; }
-        public string salesOrganization { get; set; }
         public string serviceTypeId { get; set; }
+        public string salesOrganization { get; set; }
+        public string effectiveDate { get; set; }
+        public string originZipCodeForRouting { get; set; }
+        public bool isInsurance { get; set; }
+        public Insurance insurance { get; set; }
+        public bool isReturnDocument { get; set; }
+        public ReturnDocument returnDocument { get; set; }
     }
 
     public class WayBillDocument

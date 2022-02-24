@@ -27,6 +27,7 @@ using ServicesManagement.Web.Models.Cotizador;
 using ServicesManagement.Web.Models.ProcesoSurtido;
 using ServicesManagement.Web.DAL.ProcesoSurtido;
 using ServicesManagement.Web.DAL.Correos;
+using ServicesManagement.Web.Models.Estafeta;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -2159,7 +2160,8 @@ namespace ServicesManagement.Web.Controllers
                     }
                     if (paqueteria.Equals("Estafeta"))
                     {
-                        guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+                        //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+                        guia = CreateGuiaEstafetaAPI(OrderNo, decimalPeso, Products, dsCarrier, null);
 
                         servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
                     }
@@ -2288,14 +2290,14 @@ namespace ServicesManagement.Web.Controllers
             string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty, service = string.Empty, trackUrl = string.Empty;
             try
             {
-            int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
-            foreach (ShipmentToTrackingModel item in Paquetes)
-            {
-                #region Guias
-                //List<string> folios = new List<string>();
-                var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
-                
-                List<CarrierRequest> lstCarrierRequests = new List<CarrierRequest>();
+                int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
+                foreach (ShipmentToTrackingModel item in Paquetes)
+                {
+                    #region Guias
+                    //List<string> folios = new List<string>();
+                    var FolioDisp = DALEmbarques.upCorpOms_Cns_NextTracking().Tables[0].Rows[0]["NextTracking"].ToString();
+
+                    List<CarrierRequest> lstCarrierRequests = new List<CarrierRequest>();
 
                     EliminarTarifasAnteriores(item.ueNo, item.orderNo);
                     CrearCotizacionesLogytPendiente(item);
@@ -2312,33 +2314,33 @@ namespace ServicesManagement.Web.Controllers
                     else
                         Session["SumLength"] = 1;
 
-                    var heightRound = decimal.Round(item.largo);
+                    var heightRound = decimal.Round(item.alto);
                     if (heightRound > 1)
                         Session["SumHeigth"] = decimal.ToInt32(heightRound);
                     else
                         Session["SumHeigth"] = 1;
 
 
-                if (enviaCom == 1)
-                {
-                    DataSet dsCarriers = DALServicesM.CarriersPorTransportista("envia.com");
-                    foreach (DataRow row in dsCarriers.Tables[0].Rows)
+                    if (enviaCom == 1)
                     {
-                        var tarifaCarrier = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, row["Carrier"].ToString());
-
-                        if (tarifaCarrier.Carrier != null)
+                        DataSet dsCarriers = DALServicesM.CarriersPorTransportista("envia.com");
+                        foreach (DataRow row in dsCarriers.Tables[0].Rows)
                         {
-                            GuardarTarifas(item.ueNo, item.orderNo, tarifaCarrier.msj);
-                            lstCarrierRequests.Add(tarifaCarrier);
+                            var tarifaCarrier = CreateGuiaCotizador(item.ueNo, item.orderNo, 1, row["Carrier"].ToString());
+
+                            if (tarifaCarrier.Carrier != null)
+                            {
+                                GuardarTarifas(item.ueNo, item.orderNo, tarifaCarrier.msj);
+                                lstCarrierRequests.Add(tarifaCarrier);
+                            }
                         }
                     }
-                }
-                int type = 1;
+                    int type = 1;
 
                     if (item.tipoEmpaque.Equals("CJA") || item.tipoEmpaque.Equals("EMB") || item.tipoEmpaque.Equals("STC"))
                         type = 4;
 
-                DataSet dsCarrier = DALServicesM.CarrierSelected(item.orderNo);
+                    DataSet dsCarrier = DALServicesM.CarrierSelected(item.orderNo);
 
                     //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
                     paqueteria = dsCarrier.Tables[0].Rows[0][0].ToString();
@@ -2353,28 +2355,29 @@ namespace ServicesManagement.Web.Controllers
                     //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
                     //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
 
-                if (paqueteria.Contains("Logyt"))
-                {
-                    guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
+                    if (paqueteria.Contains("Logyt"))
+                    {
+                        guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
 
                         servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                }
-               if (paqueteria.Equals("Estafeta"))
-                {
-                    guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+                    }
+                    if (paqueteria.Equals("Estafeta"))
+                    {
+                        //guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+                        guia = CreateGuiaEstafetaAPI(item.orderNo, decimalPeso, null, dsCarrier, item);
 
-                    servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
-                }
-                if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
-                {
-                    var request = lstCarrierRequests.Where(x => x.Carrier.ToLower() == paqueteria.ToLower()).FirstOrDefault().request;
-                    guia = CreateGuiaEnvia(request, service);
-                    servicioPaq = "Envia-" + paqueteria;
-                    trackUrl = guia.Split(',')[2];
-                }
-                string GuiaEstatus = "CREADA";
-                //TarifaModel tarifaSeleccionada = new TarifaModel();
-                //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
+                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                    }
+                    if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
+                    {
+                        var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
+                        guia = CreateGuiaEnvia(request, service);
+                        servicioPaq = "Envia-" + paqueteria;
+                        trackUrl = guia.Split(',')[2];
+                    }
+                    string GuiaEstatus = "CREADA";
+                    //TarifaModel tarifaSeleccionada = new TarifaModel();
+                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
 
                     //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
                     //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
@@ -2384,14 +2387,14 @@ namespace ServicesManagement.Web.Controllers
                     //item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
                     //User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
 
-                    var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
-                     item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
-                     User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc,trackUrl).Tables[0].Rows[0][0];
+                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                    // item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
+                    // User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc, trackUrl).Tables[0].Rows[0][0];
 
-                    DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
-                     item.productId, item.barcode, "000000000", User.Identity.Name);
+                    //DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                    // item.productId, item.barcode, "000000000", User.Identity.Name);
 
-                    DALServicesM.UCCProcesada(item.ucc);
+                    //DALServicesM.UCCProcesada(item.ucc);
 
                     // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
                     Correos.Correos.Correo7(item.orderNo);
@@ -2401,8 +2404,8 @@ namespace ServicesManagement.Web.Controllers
                     #endregion
                 }
 
-            var result = new { Success = true };
-            return Json(result, JsonRequestBehavior.AllowGet);
+                var result = new { Success = true };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
             {
@@ -2648,6 +2651,616 @@ namespace ServicesManagement.Web.Controllers
             return tarifa;
         }
 
+        private string RequestEstafeta(DataSet ds, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
+        {
+            string json = string.Empty;
+
+            RequestEstafetaModel model = new RequestEstafetaModel();
+            LabelDefinition label = new LabelDefinition();
+
+            WayBillDocument wayBill = new WayBillDocument();
+            wayBill.aditionalInfo = "Mercancias Generales";
+            wayBill.content = "Mercancias Generales";
+            wayBill.costCenter = "SPMXA12345";
+            wayBill.customerShipmentId = null;
+            wayBill.referenceNumber = ds.Tables[1].Rows[0]["CustomerNo"].ToString();
+            wayBill.groupShipmentId = null;
+
+            label.wayBillDocument = wayBill;
+
+            ItemDescription itemDescription = new ItemDescription();
+            itemDescription.parcelId = 1;
+            itemDescription.weight = weight;
+            itemDescription.height = int.Parse(Session["SumHeigth"].ToString());
+            itemDescription.length = int.Parse(Session["SumLength"].ToString());
+            itemDescription.width = int.Parse(Session["SumWidth"].ToString());
+            
+            Merchandises merchandises = new Merchandises();
+            merchandises.totalGrossWeight = weight;
+            merchandises.weightUnitCode = "KGM";
+
+            List<Merchandise> lstMerchandises = new List<Merchandise>();
+
+            if (Products != null)
+            {
+                foreach (var product in Products)
+                {
+                    var total = 0.0;
+                    var quantity = 0.0;
+
+                    Merchandise merchandise = new Merchandise();
+
+                    foreach (DataRow r in ds.Tables[2].Rows)
+                    {
+                        if (r["PosBarCode"].ToString().Equals(product.Barcode.ToString()))
+                        {
+                            total = double.Parse(r["Total"].ToString());
+                            quantity = double.Parse(r["PosBarCode"].ToString());
+
+                        }
+                    }
+                    merchandise.merchandiseValue = total;
+                    merchandise.currency = "MXN";
+                    merchandise.productServiceCode = "01010101";
+                    merchandise.merchandiseQuantity = product.Pieces;
+                    merchandise.measurementUnitCode = "H87";
+                    merchandise.tariffFraction = "12345678";
+                    merchandise.UUIDExteriorTrade = "ABCDed02-a12A-B34B-c56C-c5abcdef61F2";
+                    merchandise.isInternational = false;
+                    merchandise.isImport = false;
+                    merchandise.isHazardousMaterial = false;
+                    merchandise.hazardousMaterialCode = "M0035";
+                    merchandise.packagingCode = "4A";
+
+                    lstMerchandises.Add(merchandise);
+                }
+            }else
+            {
+                var total = 0.0;
+                var quantity = 0.0;
+
+                Merchandise merchandise = new Merchandise();
+
+                foreach (DataRow r in ds.Tables[2].Rows)
+                {
+                    if (r["PosBarCode"].ToString().Equals(packageCEDIS.barcode.ToString()))
+                    {
+                        total = double.Parse(r["Total"].ToString());
+                        quantity = double.Parse(r["PosBarCode"].ToString());
+
+                    }
+                }
+                merchandise.merchandiseValue = total;
+                merchandise.currency = "MXN";
+                merchandise.productServiceCode = "01010101";
+                merchandise.merchandiseQuantity = packageCEDIS.piezas;
+                merchandise.measurementUnitCode = "H87";
+                merchandise.tariffFraction = "12345678";
+                merchandise.UUIDExteriorTrade = "ABCDed02-a12A-B34B-c56C-c5abcdef61F2";
+                merchandise.isInternational = false;
+                merchandise.isImport = false;
+                merchandise.isHazardousMaterial = false;
+                merchandise.hazardousMaterialCode = "M0035";
+                merchandise.packagingCode = "4A";
+
+                lstMerchandises.Add(merchandise);
+            }
+        
+            merchandises.merchandise = lstMerchandises;
+            itemDescription.merchandises = merchandises;
+
+            label.itemDescription = itemDescription;
+
+            ServiceConfiguration serviceConfiguration = new ServiceConfiguration();
+            serviceConfiguration.quantityOfLabels = 1;
+            serviceConfiguration.serviceTypeId = "70";
+            serviceConfiguration.salesOrganization = "112";
+            serviceConfiguration.effectiveDate = ds.Tables[1].Rows[0]["effectiveDate"].ToString();
+            serviceConfiguration.originZipCodeForRouting = ds.Tables[1].Rows[0]["PostalCode"].ToString();
+            // validar si tiene seguro---------------
+            if (double.Parse(dsCarrier.Tables[0].Rows[0][3].ToString()) > 0)
+            {
+                serviceConfiguration.isInsurance = true;
+
+                Insurance insurance = new Insurance();
+                insurance.contentDescription = "Mercancias Generales";
+                insurance.declaredValue = double.Parse(dsCarrier.Tables[0].Rows[0][3].ToString());
+
+                serviceConfiguration.insurance = insurance;
+
+            }
+            else
+                serviceConfiguration.isInsurance = false;
+
+
+            serviceConfiguration.isReturnDocument = false;
+            ReturnDocument returnDocument = new ReturnDocument();
+            returnDocument.serviceId = "60";
+            returnDocument.type = "DRFZ";
+
+            serviceConfiguration.returnDocument = returnDocument;
+
+            label.serviceConfiguration = serviceConfiguration;
+
+            Location location = new Location();
+            location.isDRAAlternative = false;
+
+            Origin origin = new Origin();
+            Contact contact = new Contact();
+            contact.corporateName = ds.Tables[0].Rows[0]["supplierName"].ToString();
+            contact.contactName = ds.Tables[0].Rows[0]["commInfoName"].ToString();
+            contact.cellPhone = ds.Tables[0].Rows[0]["commInfoPhone"].ToString();
+            contact.telephone = ds.Tables[0].Rows[0]["commInfoPhone"].ToString();
+            contact.phoneExt = ds.Tables[0].Rows[0]["commInfoExt"].ToString();
+            contact.email = ds.Tables[0].Rows[0]["commInfoEmail"].ToString();
+
+            origin.contact = contact;
+
+            Address address = new Address();
+            address.bUsedCode = false;
+            address.roadTypeCode = "001";
+            address.roadTypeAbbName = "RUTA1";
+            address.roadName = ds.Tables[0].Rows[0]["addressStreet"].ToString();
+            address.townshipCode = "08-019";
+            address.townshipName = ds.Tables[0].Rows[0]["addressCity"].ToString();
+            address.settlementTypeCode = "001";
+            address.settlementTypeAbbName = ds.Tables[0].Rows[0]["addressCol"].ToString().Substring(0, 4);
+            address.settlementName = ds.Tables[0].Rows[0]["addressCol"].ToString();
+            address.stateCode = "02";
+            address.stateAbbName = ds.Tables[0].Rows[0]["Abrev_Estado"].ToString();
+            address.zipCode = ds.Tables[0].Rows[0]["addressPostalCode"].ToString();
+            address.countryCode = "484";
+            address.countryName = "MEX";
+            address.addressReference = ds.Tables[0].Rows[0]["addressReference1"].ToString();
+            address.betweenRoadName1 = ds.Tables[0].Rows[0]["addressReference2"].ToString();
+            address.betweenRoadName2 = " ";
+            address.latitude = ds.Tables[0].Rows[0]["Latitude"].ToString();
+            address.longitude = ds.Tables[0].Rows[0]["Longitude"].ToString();
+            address.externalNum = ds.Tables[0].Rows[0]["addressNumberExt"].ToString();
+            address.indoorInformation = ds.Tables[0].Rows[0]["addressNumberInt"].ToString();
+            address.nave = " ";
+            address.platform = " ";
+            address.localityCode = "02";
+            address.localityName = ds.Tables[0].Rows[0]["addressCity"].ToString();
+
+            origin.address = address;
+
+            location.origin = origin;
+
+
+            Destination destination = new Destination();
+            destination.isDeliveryToPUDO = false;
+            destination.deliveryPUDOCode = "";
+
+            HomeAddress homeAddress = new HomeAddress();
+            Contact contactD = new Contact();
+            contactD.corporateName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+            contactD.contactName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+            contactD.cellPhone = ds.Tables[1].Rows[0]["Phone"].ToString();
+            contactD.telephone = ds.Tables[1].Rows[0]["Phone"].ToString();
+            contactD.phoneExt = "";//ds.Tables[1].Rows[0]["commInfoExt"].ToString();
+            contactD.email = ds.Tables[1].Rows[0]["Email"].ToString();
+
+            homeAddress.contact = contactD;
+
+            Address addressD = new Address();
+            addressD.bUsedCode = false;
+            addressD.roadTypeCode = "001";
+            addressD.roadTypeAbbName = "RUTA1";
+            addressD.roadName = ds.Tables[1].Rows[0]["Address1"].ToString();
+            addressD.townshipCode = "08-019";
+            addressD.townshipName = ds.Tables[1].Rows[0]["City"].ToString();
+            addressD.settlementTypeCode = "001";
+            addressD.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4);
+            addressD.settlementName = ds.Tables[1].Rows[0]["Address2"].ToString();
+            addressD.stateCode = "02";
+            addressD.stateAbbName = ds.Tables[1].Rows[0]["Abrev_Estado"].ToString();
+            addressD.zipCode = ds.Tables[1].Rows[0]["PostalCode"].ToString();
+            addressD.countryCode = "484";
+            addressD.countryName = "MEX";
+            addressD.addressReference = ds.Tables[1].Rows[0]["Reference"].ToString();
+            addressD.betweenRoadName1 = " ";
+            addressD.betweenRoadName2 = " ";
+            addressD.latitude = ds.Tables[1].Rows[0]["Latitude"].ToString();
+            addressD.longitude = ds.Tables[1].Rows[0]["Longitude"].ToString();
+            addressD.externalNum = " ";
+            addressD.indoorInformation = " ";
+            addressD.nave = " ";
+            addressD.platform = " ";
+            addressD.localityCode = "02";
+            addressD.localityName = ds.Tables[1].Rows[0]["City"].ToString();
+
+            homeAddress.address = addressD;
+
+            destination.homeAddress = homeAddress;
+            location.destination = destination;
+
+            Notified notified = new Notified();
+            notified.notifiedTaxIdCode = "notifiedTaxCode";
+            notified.notifiedTaxCountry = "MEX";
+            Residence residence = new Residence();
+            Contact contactN = new Contact();
+            contactN.corporateName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+            contactN.contactName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+            contactN.cellPhone = ds.Tables[1].Rows[0]["Phone"].ToString();
+            contactN.telephone = ds.Tables[1].Rows[0]["Phone"].ToString();
+            contactN.phoneExt = "";//ds.Tables[1].Rows[0]["commInfoExt"].ToString();
+            contactN.email = ds.Tables[1].Rows[0]["Email"].ToString();
+
+            residence.contact = contactN;
+
+            Address addressN = new Address();
+            addressN.bUsedCode = false;
+            addressN.roadTypeCode = "001";
+            addressN.roadTypeAbbName = "RUTA1";
+            addressN.roadName = ds.Tables[1].Rows[0]["Address1"].ToString();
+            addressN.townshipCode = "08-019";
+            addressN.townshipName = ds.Tables[1].Rows[0]["City"].ToString();
+            addressN.settlementTypeCode = "001";
+            addressN.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4);
+            addressN.settlementName = ds.Tables[1].Rows[0]["Address2"].ToString();
+            addressN.stateCode = "02";
+            addressN.stateAbbName = ds.Tables[1].Rows[0]["Abrev_Estado"].ToString();
+            addressN.zipCode = ds.Tables[1].Rows[0]["PostalCode"].ToString();
+            addressN.countryCode = "484";
+            addressN.countryName = "MEX";
+            addressN.addressReference = ds.Tables[1].Rows[0]["Reference"].ToString();
+            addressN.betweenRoadName1 = " ";
+            addressN.betweenRoadName2 = " ";
+            addressN.latitude = ds.Tables[1].Rows[0]["Latitude"].ToString();
+            addressN.longitude = ds.Tables[1].Rows[0]["Longitude"].ToString();
+            addressN.externalNum = " ";
+            addressN.indoorInformation = " ";
+            addressN.nave = " ";
+            addressN.platform = " ";
+            addressN.localityCode = "02";
+            addressN.localityName = ds.Tables[1].Rows[0]["City"].ToString();
+
+            residence.address = addressN;
+
+            notified.residence = residence;
+
+            location.notified = notified;
+            label.location = location;
+
+            model.labelDefinition = label;
+            
+            json = JsonConvert.SerializeObject(model);
+
+            return json;
+        }
+        private string RequestEstafetaLTL(DataSet ds, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
+        {
+            string json = string.Empty;
+
+            RequestEstafetaLtlModel model = new RequestEstafetaLtlModel();
+            LabelDefinitionLtl label = new LabelDefinitionLtl();
+
+            WayBillDocumentLtl wayBill = new WayBillDocumentLtl();
+            wayBill.aditionalInfo = "Mercancias Generales";
+            wayBill.content = "Mercancias Generales";
+            wayBill.costCenter = "SPMXA12345";
+            wayBill.customerShipmentId = null;
+            wayBill.referenceNumber = ds.Tables[1].Rows[0]["CustomerNo"].ToString();
+            wayBill.groupShipmentId = null;
+            Pallet pallet = new Pallet();
+            pallet.merchandise = "NATIONAL";
+            pallet.genericContent = "Content";
+            pallet.type = "SIMPLE";
+            wayBill.pallet = pallet;
+            label.wayBillDocument = wayBill;
+
+            ItemDescription itemDescription = new ItemDescription();
+            itemDescription.parcelId = 5;
+            itemDescription.weight = weight;
+            itemDescription.height = int.Parse(Session["SumHeigth"].ToString());
+            itemDescription.length = int.Parse(Session["SumLength"].ToString());
+            itemDescription.width = int.Parse(Session["SumWidth"].ToString());
+
+            Merchandises merchandises = new Merchandises();
+            merchandises.totalGrossWeight = weight;
+            merchandises.weightUnitCode = "KGM";
+
+            List<Merchandise> lstMerchandises = new List<Merchandise>();
+
+            if (Products != null)
+            {
+                foreach (var product in Products)
+                {
+                    var total = 0.0;
+                    var quantity = 0.0;
+
+                    Merchandise merchandise = new Merchandise();
+
+                    foreach (DataRow r in ds.Tables[2].Rows)
+                    {
+                        if (r["PosBarCode"].ToString().Equals(product.Barcode.ToString()))
+                        {
+                            total = double.Parse(r["Total"].ToString());
+                            quantity = double.Parse(r["PosBarCode"].ToString());
+
+                        }
+                    }
+                    merchandise.merchandiseValue = total;
+                    merchandise.currency = "MXN";
+                    merchandise.productServiceCode = "01010101";
+                    merchandise.merchandiseQuantity = product.Pieces;
+                    merchandise.measurementUnitCode = "H87";
+                    merchandise.tariffFraction = "12345678";
+                    merchandise.UUIDExteriorTrade = "ABCDed02-a12A-B34B-c56C-c5abcdef61F2";
+                    merchandise.isInternational = false;
+                    merchandise.isImport = false;
+                    merchandise.isHazardousMaterial = false;
+                    merchandise.hazardousMaterialCode = "M0035";
+                    merchandise.packagingCode = "4A";
+
+                    lstMerchandises.Add(merchandise);
+                }
+            }
+            else
+            {
+                var total = 0.0;
+                var quantity = 0.0;
+
+                Merchandise merchandise = new Merchandise();
+
+                foreach (DataRow r in ds.Tables[2].Rows)
+                {
+                    if (r["PosBarCode"].ToString().Equals(packageCEDIS.barcode.ToString()))
+                    {
+                        total = double.Parse(r["Total"].ToString());
+                        quantity = double.Parse(r["PosBarCode"].ToString());
+
+                    }
+                }
+                merchandise.merchandiseValue = total;
+                merchandise.currency = "MXN";
+                merchandise.productServiceCode = "01010101";
+                merchandise.merchandiseQuantity = packageCEDIS.piezas;
+                merchandise.measurementUnitCode = "H87";
+                merchandise.tariffFraction = "12345678";
+                merchandise.UUIDExteriorTrade = "ABCDed02-a12A-B34B-c56C-c5abcdef61F2";
+                merchandise.isInternational = false;
+                merchandise.isImport = false;
+                merchandise.isHazardousMaterial = false;
+                merchandise.hazardousMaterialCode = "M0035";
+                merchandise.packagingCode = "4A";
+
+                lstMerchandises.Add(merchandise);
+            }
+            merchandises.merchandise = lstMerchandises;
+            itemDescription.merchandises = merchandises;
+
+            label.itemDescription = itemDescription;
+
+            ServiceConfiguration serviceConfiguration = new ServiceConfiguration();
+            serviceConfiguration.quantityOfLabels = 1;
+            serviceConfiguration.serviceTypeId = "L0";
+            serviceConfiguration.salesOrganization = "112";
+            serviceConfiguration.effectiveDate = ds.Tables[1].Rows[0]["effectiveDate"].ToString();
+            serviceConfiguration.originZipCodeForRouting = ds.Tables[1].Rows[0]["PostalCode"].ToString();
+            // validar si tiene seguro---------------
+            if (double.Parse(dsCarrier.Tables[0].Rows[0][3].ToString()) > 0)
+            {
+                serviceConfiguration.isInsurance = true;
+
+                Insurance insurance = new Insurance();
+                insurance.contentDescription = "Mercancias Generales";
+                insurance.declaredValue = double.Parse(dsCarrier.Tables[0].Rows[0][3].ToString());
+
+                serviceConfiguration.insurance = insurance;
+
+            }
+            else
+                serviceConfiguration.isInsurance = false;
+
+            serviceConfiguration.isReturnDocument = false;
+            ReturnDocument returnDocument = new ReturnDocument();
+            returnDocument.serviceId = "60";
+            returnDocument.type = "DRFZ";
+
+            serviceConfiguration.returnDocument = returnDocument;
+
+            label.serviceConfiguration = serviceConfiguration;
+
+            Location location = new Location();
+            location.isDRAAlternative = false;
+
+            Origin origin = new Origin();
+            Contact contact = new Contact();
+            contact.corporateName = ds.Tables[0].Rows[0]["supplierName"].ToString();
+            contact.contactName = ds.Tables[0].Rows[0]["commInfoName"].ToString();
+            contact.cellPhone = ds.Tables[0].Rows[0]["commInfoPhone"].ToString();
+            contact.telephone = ds.Tables[0].Rows[0]["commInfoPhone"].ToString();
+            contact.phoneExt = ds.Tables[0].Rows[0]["commInfoExt"].ToString();
+            contact.email = ds.Tables[0].Rows[0]["commInfoEmail"].ToString();
+
+            origin.contact = contact;
+
+            Address address = new Address();
+            address.bUsedCode = false;
+            address.roadTypeCode = "001";
+            address.roadTypeAbbName = "RUTA1";
+            address.roadName = ds.Tables[0].Rows[0]["addressStreet"].ToString();
+            address.townshipCode = "08-019";
+            address.townshipName = ds.Tables[0].Rows[0]["addressCity"].ToString();
+            address.settlementTypeCode = "001";
+            address.settlementTypeAbbName = ds.Tables[0].Rows[0]["addressCol"].ToString().Substring(0, 4);
+            address.settlementName = ds.Tables[0].Rows[0]["addressCol"].ToString();
+            address.stateCode = "02";
+            address.stateAbbName = ds.Tables[0].Rows[0]["Abrev_Estado"].ToString();
+            address.zipCode = ds.Tables[0].Rows[0]["addressPostalCode"].ToString();
+            address.countryCode = "484";
+            address.countryName = "MEX";
+            address.addressReference = ds.Tables[0].Rows[0]["addressReference1"].ToString();
+            address.betweenRoadName1 = ds.Tables[0].Rows[0]["addressReference2"].ToString();
+            address.betweenRoadName2 = " ";
+            address.latitude = ds.Tables[0].Rows[0]["Latitude"].ToString();
+            address.longitude = ds.Tables[0].Rows[0]["Longitude"].ToString();
+            address.externalNum = ds.Tables[0].Rows[0]["addressNumberExt"].ToString();
+            address.indoorInformation = ds.Tables[0].Rows[0]["addressNumberInt"].ToString();
+            address.nave = " ";
+            address.platform = " ";
+            address.localityCode = "02";
+            address.localityName = ds.Tables[0].Rows[0]["addressCity"].ToString();
+
+            origin.address = address;
+
+            location.origin = origin;
+
+
+            Destination destination = new Destination();
+            destination.isDeliveryToPUDO = false;
+            destination.deliveryPUDOCode = "";
+
+            HomeAddress homeAddress = new HomeAddress();
+            Contact contactD = new Contact();
+            contactD.corporateName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+            contactD.contactName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+            contactD.cellPhone = ds.Tables[1].Rows[0]["Phone"].ToString();
+            contactD.telephone = ds.Tables[1].Rows[0]["Phone"].ToString();
+            contactD.phoneExt = "";//ds.Tables[1].Rows[0]["commInfoExt"].ToString();
+            contactD.email = ds.Tables[1].Rows[0]["Email"].ToString();
+
+            homeAddress.contact = contactD;
+
+            Address addressD = new Address();
+            addressD.bUsedCode = false;
+            addressD.roadTypeCode = "001";
+            addressD.roadTypeAbbName = "RUTA1";
+            addressD.roadName = ds.Tables[1].Rows[0]["Address1"].ToString();
+            addressD.townshipCode = "08-019";
+            addressD.townshipName = ds.Tables[1].Rows[0]["City"].ToString();
+            addressD.settlementTypeCode = "001";
+            addressD.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4);
+            addressD.settlementName = ds.Tables[1].Rows[0]["Address2"].ToString();
+            addressD.stateCode = "02";
+            addressD.stateAbbName = ds.Tables[1].Rows[0]["Abrev_Estado"].ToString();
+            addressD.zipCode = ds.Tables[1].Rows[0]["PostalCode"].ToString();
+            addressD.countryCode = "484";
+            addressD.countryName = "MEX";
+            addressD.addressReference = ds.Tables[1].Rows[0]["Reference"].ToString();
+            addressD.betweenRoadName1 = " ";
+            addressD.betweenRoadName2 = " ";
+            addressD.latitude = ds.Tables[1].Rows[0]["Latitude"].ToString();
+            addressD.longitude = ds.Tables[1].Rows[0]["Longitude"].ToString();
+            addressD.externalNum = " ";
+            addressD.indoorInformation = " ";
+            addressD.nave = " ";
+            addressD.platform = " ";
+            addressD.localityCode = "02";
+            addressD.localityName = ds.Tables[1].Rows[0]["City"].ToString();
+
+            homeAddress.address = addressD;
+
+            destination.homeAddress = homeAddress;
+            location.destination = destination;
+
+            Notified notified = new Notified();
+            notified.notifiedTaxIdCode = "notifiedTaxCode";
+            notified.notifiedTaxCountry = "MEX";
+            Residence residence = new Residence();
+            Contact contactN = new Contact();
+            contactN.corporateName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+            contactN.contactName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+            contactN.cellPhone = ds.Tables[1].Rows[0]["Phone"].ToString();
+            contactN.telephone = ds.Tables[1].Rows[0]["Phone"].ToString();
+            contactN.phoneExt = "";//ds.Tables[1].Rows[0]["commInfoExt"].ToString();
+            contactN.email = ds.Tables[1].Rows[0]["Email"].ToString();
+
+            residence.contact = contactN;
+
+            Address addressN = new Address();
+            addressN.bUsedCode = false;
+            addressN.roadTypeCode = "001";
+            addressN.roadTypeAbbName = "RUTA1";
+            addressN.roadName = ds.Tables[1].Rows[0]["Address1"].ToString();
+            addressN.townshipCode = "08-019";
+            addressN.townshipName = ds.Tables[1].Rows[0]["City"].ToString();
+            addressN.settlementTypeCode = "001";
+            addressN.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4);
+            addressN.settlementName = ds.Tables[1].Rows[0]["Address2"].ToString();
+            addressN.stateCode = "02";
+            addressN.stateAbbName = ds.Tables[1].Rows[0]["Abrev_Estado"].ToString();
+            addressN.zipCode = ds.Tables[1].Rows[0]["PostalCode"].ToString();
+            addressN.countryCode = "484";
+            addressN.countryName = "MEX";
+            addressN.addressReference = ds.Tables[1].Rows[0]["Reference"].ToString();
+            addressN.betweenRoadName1 = " ";
+            addressN.betweenRoadName2 = " ";
+            addressN.latitude = ds.Tables[1].Rows[0]["Latitude"].ToString();
+            addressN.longitude = ds.Tables[1].Rows[0]["Longitude"].ToString();
+            addressN.externalNum = " ";
+            addressN.indoorInformation = " ";
+            addressN.nave = " ";
+            addressN.platform = " ";
+            addressN.localityCode = "02";
+            addressN.localityName = ds.Tables[1].Rows[0]["City"].ToString();
+
+            residence.address = addressN;
+
+            notified.residence = residence;
+
+            location.notified = notified;
+            label.location = location;
+
+            model.labelDefinition = label;
+
+            json = JsonConvert.SerializeObject(model);
+
+            return json;
+        }
+        public string CreateGuiaEstafetaAPI(int OrderNo, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
+        {
+
+            string json = string.Empty, url = string.Empty;
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@OrderNo", OrderNo);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_EstafetaInfo]", false, parametros);
+                
+                if (weight <= 70)
+                {
+                    json = RequestEstafeta(ds, weight, Products, dsCarrier, packageCEDIS);
+                    url = System.Configuration.ConfigurationSettings.AppSettings["Estafeta_API"];
+                }
+                else
+                {
+                    json = RequestEstafetaLTL(ds, weight, Products, dsCarrier, packageCEDIS);
+                    url = System.Configuration.ConfigurationSettings.AppSettings["EstafetaLTL_API"];
+                }
+                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, url, "", json);
+
+                string msg = r2.message;
+
+                ResponseEstafetaModel re = JsonConvert.DeserializeObject<ResponseEstafetaModel>(r2.message);
+
+                string pdfcadena2 = Convert.ToBase64String(re.data, Base64FormattingOptions.None);
+
+                //return re.Guia + "," + re.pdf;
+                return re.labelPetitionResult.result.description + "," + pdfcadena2;
+
+            }
+
+            catch (System.Exception ex)
+            {
+                throw new Exception("La generacion de la Guia por Estafeta Fallo. " + ex.Message);
+            }
+
+        }
         public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
         {
 
