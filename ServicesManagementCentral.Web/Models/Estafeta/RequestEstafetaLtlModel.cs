@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ServicesManagement.Web.Models.EstafetaRequest
+namespace ServicesManagement.Web.Models.Estafeta
 {
     public class RequestEstafetaLtlModel
     {
-        public Identification identification { get; set; }
-        public SystemInformation systemInformation { get; set; }
         public LabelDefinitionLtl labelDefinition { get; set; }
     }
     public class Pallet
