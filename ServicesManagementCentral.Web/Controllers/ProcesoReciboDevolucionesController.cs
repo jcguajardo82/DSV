@@ -122,7 +122,14 @@ namespace ServicesManagement.Web.Controllers
                     rol.idRol = item["rol"].ToString();
                     rol.nombreRol = item["nombreRol"].ToString();
                     Session["UserRol"] = rol;
-                    idOwner = 4;
+                    if (item["idOwner"].ToString() != "")
+                    {
+                        idOwner = int.Parse(item["idOwner"].ToString());
+                    }
+                    else
+                    {
+                        idOwner = 4;
+                    }
                 }
             }
 
