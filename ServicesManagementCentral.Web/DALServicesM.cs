@@ -3600,7 +3600,7 @@ namespace ServicesManagement.Web
             }
 
         }
-        public static DataSet CarrierSelected(int orderNo)
+        public static DataSet CarrierRates(int orderNo)
         {
 
             DataSet ds = new DataSet();
@@ -3616,8 +3616,42 @@ namespace ServicesManagement.Web
 
                 System.Collections.Hashtable parametros = new System.Collections.Hashtable();
                 parametros.Add("@orderNo", orderNo);
-                
-                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_CarrierSelected]", false, parametros);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_CarrierRates]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public static DataSet CarrierSelected(int orderNo, long cotizeId)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@orderNo", orderNo);
+                parametros.Add("@CotizeId", cotizeId);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Upd_CarrierSelected]", false, parametros);
 
                 return ds;
             }
