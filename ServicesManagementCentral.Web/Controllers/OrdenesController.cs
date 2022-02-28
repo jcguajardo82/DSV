@@ -1818,53 +1818,55 @@ namespace ServicesManagement.Web.Controllers
                     }
                     int type = 1;
 
+                    long cotizeId = 0;
                     if (item.Tipo.Equals("CJA") || item.Tipo.Equals("EMB") || item.Tipo.Equals("STC"))
                         type = 4;
-
-                    DataSet dsCarrier = DALServicesM.CarrierSelected(OrderNo);
-
-                    //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
-                    paqueteria = dsCarrier.Tables[0].Rows[0][0].ToString();
-                    service = dsCarrier.Tables[0].Rows[0][1].ToString();
                     decimal decimalPeso = decimal.Round(decimal.Parse(Session["SumPeso"].ToString()));
                     int peso = decimal.ToInt32(decimalPeso);
+                    DataSet dsCarrier = DALServicesM.CarrierRates(OrderNo);
 
-                    //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
-                    //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-
-                    if (paqueteria.Contains("Logyt"))
+                    foreach (DataRow row in dsCarrier.Tables[0].Rows)
                     {
-                        guia = CreateGuiaLogyt(UeNo, OrderNo, peso, type);
+                        paqueteria = row["Carrier"].ToString();
+                        service = row["Service"].ToString();
+                        cotizeId = long.Parse(row["cotizeId"].ToString());
 
-                        servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                    }
-                    if (paqueteria.Equals("Estafeta"))
-                    {
-                        //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
-                        guia = CreateGuiaEstafetaAPI(OrderNo, decimalPeso, Products, dsCarrier, null);
+                        if (paqueteria.Contains("Logyt"))
+                        {
+                            guia = CreateGuiaLogyt(UeNo, OrderNo, peso, type);
 
-                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                            servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                        }
+                        if (paqueteria.Equals("Estafeta"))
+                        {
+                            //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
+                            guia = CreateGuiaEstafetaAPI(OrderNo, decimalPeso, Products, dsCarrier, null);
+
+                            servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                        }
+                        if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
+                        {
+                            var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
+                            guia = CreateGuiaEnvia(request, service);
+                            if (guia != "ERROR")
+                            {
+                                servicioPaq = "Envia-" + paqueteria;
+                                trackUrl = guia.Split(',')[2];
+                            }
+                        }
+                        if (guia != "ERROR")
+                            break;
                     }
-                    if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
-                    {
-                        var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
-                        guia = CreateGuiaEnvia(request, service);
-                        servicioPaq = "Envia-" + paqueteria;
-                        trackUrl = guia.Split(',')[2];
-                    }
+
+                    if(guia == "ERROR")
+                        throw new Exception("No se pudo generar la guia con ninguna de las paqueterias. ");
+
                     string GuiaEstatus = "CREADA";
-                    //TarifaModel tarifaSeleccionada = new TarifaModel();
-                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
-
-                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
-                    //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-                    //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
-
-                    //DESCOMENTAR
+                    
                     var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
                     item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
                     User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
-
+                    DALServicesM.CarrierSelected(OrderNo, cotizeId);
                 }
 
                 //DESCOMENTAR
@@ -2016,73 +2018,85 @@ namespace ServicesManagement.Web.Controllers
                             }
                         }
                     }
+                    long cotizeId = 0;
                     int type = 1;
 
                     if (item.tipoEmpaque.Equals("CJA") || item.tipoEmpaque.Equals("EMB") || item.tipoEmpaque.Equals("STC"))
                         type = 4;
 
-                    DataSet dsCarrier = DALServicesM.CarrierSelected(item.orderNo);
-
-                    //paqueteria = SeleccionarPaqueteria(Products, OrderNo);
-                    paqueteria = dsCarrier.Tables[0].Rows[0][0].ToString();
-                    service = dsCarrier.Tables[0].Rows[0][1].ToString();
                     decimal decimalPeso = decimal.Round(decimal.Parse(Session["SumPeso"].ToString()));
                     decimal decimalRound = decimal.Round(decimalPeso);
                     if (decimalRound == 0)
                         decimalRound = 1;
 
-                    int peso = decimal.ToInt32(decimalRound);
+                    int peso = decimal.ToInt32(decimalPeso);
+                    DataSet dsCarrier = DALServicesM.CarrierRates(item.orderNo);
 
-                    //guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
-                    //servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-
-                    if (paqueteria.Contains("Logyt"))
+                    foreach (DataRow row in dsCarrier.Tables[0].Rows)
                     {
-                        guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
+                        paqueteria = row["Carrier"].ToString();
+                        service = row["Service"].ToString();
+                        cotizeId = long.Parse(row["cotizeId"].ToString());
 
-                        servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
-                    }
-                    if (paqueteria.Equals("Estafeta"))
-                    {
-                        //guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
-                        guia = CreateGuiaEstafetaAPI(item.orderNo, decimalPeso, null, dsCarrier, item);
+                        if (paqueteria.Contains("Logyt"))
+                        {
+                            guia = CreateGuiaLogyt(item.ueNo, item.orderNo, peso, type);
 
-                        servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                            servicioPaq = "Logyt-Estafeta"; //esta variable sera dinamica
+                        }
+                        if (paqueteria.Equals("Estafeta"))
+                        {
+                            //guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
+                            guia = CreateGuiaEstafetaAPI(item.orderNo, decimalPeso, null, dsCarrier, item);
+
+                            servicioPaq = "Soriana-Estafeta"; //esta variable sera dinamica
+                        }
+                        if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
+                        {
+                            var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
+                            guia = CreateGuiaEnvia(request, service);
+                            if (guia != "ERROR")
+                            {
+                                servicioPaq = "Envia-" + paqueteria;
+                                trackUrl = guia.Split(',')[2];
+                            }
+                        }
+                        if (guia != "ERROR")
+                            break;
                     }
-                    if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
-                    {
-                        var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
-                        guia = CreateGuiaEnvia(request, service);
-                        servicioPaq = "Envia-" + paqueteria;
-                        trackUrl = guia.Split(',')[2];
-                    }
+
+                    if (guia == "ERROR")
+                        throw new Exception("No se pudo generar la guia de la orden " + item.orderNo + " con ninguna de las paqueterias.");
+
+
                     string GuiaEstatus = "CREADA";
-                    //TarifaModel tarifaSeleccionada = new TarifaModel();
-                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
+                        //TarifaModel tarifaSeleccionada = new TarifaModel();
+                        //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
 
-                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
-                    //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-                    //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
+                        //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
+                        //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                        //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
 
-                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
-                    //item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
-                    //User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
+                        //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
+                        //item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
+                        //User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
 
-                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
-                    // item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
-                    // User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc, trackUrl).Tables[0].Rows[0][0];
+                        var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                         item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
+                         User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc, trackUrl).Tables[0].Rows[0][0];
 
-                    //DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
-                    // item.productId, item.barcode, "000000000", User.Identity.Name);
+                        DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                         item.productId, item.barcode, "000000000", User.Identity.Name);
 
-                    //DALServicesM.UCCProcesada(item.ucc);
+                        DALServicesM.UCCProcesada(item.ucc);
+                        DALServicesM.CarrierSelected(item.orderNo, cotizeId);
+                        // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
+                        Correos.Correos.Correo7(item.orderNo);
+                        //var s = item.ueNo.Split('-');
+                        //Correos.Correos.Correo7(int.Parse(s[0]));
 
-                    // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
-                    Correos.Correos.Correo7(item.orderNo);
-                    //var s = item.ueNo.Split('-');
-                    //Correos.Correos.Correo7(int.Parse(s[0]));
-
-                    #endregion
+                        #endregion
+                    
                 }
 
                 var result = new { Success = true };
@@ -2893,7 +2907,7 @@ namespace ServicesManagement.Web.Controllers
         }
         public string CreateGuiaEstafetaAPI(int OrderNo, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
         {
-
+            string result = string.Empty;
             string json = string.Empty, url = string.Empty;
             DataSet ds = new DataSet();
 
@@ -2932,15 +2946,17 @@ namespace ServicesManagement.Web.Controllers
                 string pdfcadena2 = Convert.ToBase64String(re.data, Base64FormattingOptions.None);
 
                 //return re.Guia + "," + re.pdf;
-                return re.labelPetitionResult.result.description + "," + pdfcadena2;
+                result = re.labelPetitionResult.result.description + "," + pdfcadena2;
 
             }
 
-            catch (System.Exception ex)
+            catch
             {
-                throw new Exception("La generacion de la Guia por Estafeta Fallo. " + ex.Message);
+                //throw new Exception("La generacion de la Guia por Estafeta Fallo. " + ex.Message);
+                result = "ERROR";
             }
 
+            return result;
         }
         public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
         {
@@ -3075,6 +3091,7 @@ namespace ServicesManagement.Web.Controllers
         }
         public string CreateGuiaLogyt(string UeNo, int OrderNo, int weight, int typeId)
         {
+            string result = string.Empty;
             var ServiceTypeId = 1;
             DataSet ds = new DataSet();
             DataSet dsO = new DataSet();
@@ -3178,20 +3195,21 @@ namespace ServicesManagement.Web.Controllers
                         throw new Exception(msgDetail);
                     }
                     //return re.Guia + "," + re.pdf;
-                    return re.Labels[0].Folios[0] + "," + pdfcadena2;
+                    result = re.Labels[0].Folios[0] + "," + pdfcadena2;
 
                 }
 
-                return string.Empty;
-
             }
-            catch (System.Exception ex)
+            catch
             {
-                throw new Exception("La generacion de la Guia por Logyt Fallo. " + ex.Message);
+                //throw new Exception("La generacion de la Guia por Logyt Fallo. " + ex.Message);
+                result = "ERROR";
             }
+            return result;
         }
         public string CreateGuiaEnvia(CotizadorRequestModel request, string service)
         {
+            string result = string.Empty;
             try
             {  
                 request.shipment.service = service;
@@ -3210,12 +3228,15 @@ namespace ServicesManagement.Web.Controllers
                 EnviaResponseModel re = JsonConvert.DeserializeObject<EnviaResponseModel>(msg);
 
 
-                return re.data[0].trackingNumber + "," + re.data[0].label + "," + re.data[0].trackUrl;
+                result = re.data[0].trackingNumber + "," + re.data[0].label + "," + re.data[0].trackUrl;
             }
-            catch (System.Exception ex)
+            catch 
             {
-                throw new Exception("La generacion de la Guia por Envia.Com Fallo. " + ex.Message);
+                //throw new Exception("La generacion de la Guia por Envia.Com Fallo. " + ex.Message);
+                result = "ERROR";
             }
+
+            return result;
         }
         //public string CreateGuiaLogyt(string UeNo, int OrderNo, int weight, int typeId)
         //{
