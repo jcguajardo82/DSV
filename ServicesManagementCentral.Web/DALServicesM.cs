@@ -1055,6 +1055,87 @@ namespace ServicesManagement.Web
         }
         #endregion
 
+        #region Monitor Ordenes
+        public static DataSet GetListaEmbarcarM(string TipoAlmacen, int idSupplierWH, int vista)
+        {
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@TipoAlmacen", TipoAlmacen);
+                parametros.Add("@idSupplierWH", idSupplierWH);
+                parametros.Add("@vista", vista);
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "upCorpOms_Cns_MonitorEmbarque", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static DataSet GetListaSurtirM(string TipoAlmacen, int idSupplierWH, int vista)
+        {
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@TipoAlmacen", TipoAlmacen);
+                parametros.Add("@idSupplierWH", idSupplierWH);
+                parametros.Add("@vista", vista);
+
+
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "upCorpOms_Cns_MonitorSurtido", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        #endregion
+
         #region Embarque
 
         public static DataSet GetListaEmbarcar(string Id_Num_UN, string Id_Num_Apl = "2")

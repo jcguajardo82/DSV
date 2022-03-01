@@ -146,6 +146,25 @@ namespace ServicesManagement.Web.Controllers
 
         }
 
+        public ActionResult MonitorOrden()
+        {
+            if (Session["Id_Num_UN"] != null)
+            {
+
+                string un = Session["Id_Num_UN"].ToString();
+
+                Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("CEDIS", int.Parse(un), 1);
+                Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("CEDIS", int.Parse(un), 1);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Ordenes");
+            }
+
+            return View();
+
+        }
+
         public ActionResult OrdenSeleccionada()
         {
             if (Session["Id_Num_UN"] != null)
