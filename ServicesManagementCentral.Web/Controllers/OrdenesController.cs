@@ -177,8 +177,7 @@ namespace ServicesManagement.Web.Controllers
                             case 4: 
                                 tipoAlmacen = "DSV";
                                 break;
-                        }
-                            
+                        }                            
                     }
                     else
                     {
@@ -200,6 +199,278 @@ namespace ServicesManagement.Web.Controllers
             }
             Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM(tipoAlmacen, un, vista);
             Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM(tipoAlmacen, un, vista);
+
+            return View();
+        }
+        public ActionResult MonitorOrdenDST()
+        {
+            var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+            int idOwner = 0;
+            string tipoAlmacen = null;
+            int un = 0;
+            int vista = 1;
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    UserRolModel rol = new UserRolModel();
+                    rol.idRol = item["rol"].ToString();
+                    rol.nombreRol = item["nombreRol"].ToString();
+                    Session["UserRol"] = rol;
+                    if (item["idOwner"].ToString() != "")
+                    {
+                        idOwner = int.Parse(item["idOwner"].ToString());
+                        vista = 2;
+                        switch (idOwner)
+                        {
+                            case 2:
+                                tipoAlmacen = "DST";
+                                break;
+                            case 3:
+                                tipoAlmacen = "CEDIS";
+                                break;
+                            case 4:
+                                tipoAlmacen = "DSV";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        idOwner = 0;
+                        vista = 1;
+                        tipoAlmacen = "";
+                    }
+                    if (item["idTienda"].ToString() != "")
+                    {
+                        un = int.Parse(item["idTienda"].ToString());
+                        vista = 2;
+                    }
+                    else
+                    {
+                        un = 0;
+                        vista = 1;
+                    }
+                }
+            }
+
+            if (Session["Id_Num_UN"] != null)
+            {
+                un = int.Parse(Session["Id_Num_UN"].ToString());
+                Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("DST", un, 2);
+                Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("DST", un, 2);
+            }
+            else
+            {
+                //un = int.Parse(Session["Id_Num_UN"].ToString());
+                //Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("DST", un, vista);
+                //Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("DST", un, vista);
+                return RedirectToAction("Index", "Ordenes");
+            }
+
+            return View();
+        }
+        public ActionResult MonitorOrdenDSV()
+        {
+            var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+            int idOwner = 0;
+            string tipoAlmacen = null;
+            int un = 0;
+            int vista = 1;
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    UserRolModel rol = new UserRolModel();
+                    rol.idRol = item["rol"].ToString();
+                    rol.nombreRol = item["nombreRol"].ToString();
+                    Session["UserRol"] = rol;
+                    if (item["idOwner"].ToString() != "")
+                    {
+                        idOwner = int.Parse(item["idOwner"].ToString());
+                        vista = 2;
+                        switch (idOwner)
+                        {
+                            case 2:
+                                tipoAlmacen = "DST";
+                                break;
+                            case 3:
+                                tipoAlmacen = "CEDIS";
+                                break;
+                            case 4:
+                                tipoAlmacen = "DSV";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        idOwner = 0;
+                        vista = 1;
+                        tipoAlmacen = "";
+                    }
+                    if (item["idTienda"].ToString() != "")
+                    {
+                        un = int.Parse(item["idTienda"].ToString());
+                        vista = 2;
+                    }
+                    else
+                    {
+                        un = 0;
+                        vista = 1;
+                    }
+                }
+            }
+
+            //if (Session["Id_Num_UN"] != null)
+            //{
+            //    un = int.Parse(Session["Id_Num_UN"].ToString());
+            Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("DSV", un, vista);
+            Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("DSV", un, vista);
+            //}
+            //else
+            //{
+            //    //un = int.Parse(Session["Id_Num_UN"].ToString());
+            //    Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("DSV", un, vista);
+            //    Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("DSV", un, vista);
+            //    //return RedirectToAction("Index", "Ordenes");
+            //}
+
+            return View();
+        }
+        public ActionResult MonitorOrdenCEDIS()
+        {
+            var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+            int idOwner = 0;
+            string tipoAlmacen = null;
+            int un = 0;
+            int vista = 1;
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    UserRolModel rol = new UserRolModel();
+                    rol.idRol = item["rol"].ToString();
+                    rol.nombreRol = item["nombreRol"].ToString();
+                    Session["UserRol"] = rol;
+                    if (item["idOwner"].ToString() != "")
+                    {
+                        idOwner = int.Parse(item["idOwner"].ToString());
+                        vista = 2;
+                        switch (idOwner)
+                        {
+                            case 2:
+                                tipoAlmacen = "DST";
+                                break;
+                            case 3:
+                                tipoAlmacen = "CEDIS";
+                                break;
+                            case 4:
+                                tipoAlmacen = "DSV";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        idOwner = 0;
+                        vista = 1;
+                        tipoAlmacen = "";
+                    }
+                    if (item["idTienda"].ToString() != "")
+                    {
+                        un = int.Parse(item["idTienda"].ToString());
+                        vista = 2;
+                    }
+                    else
+                    {
+                        un = 0;
+                        vista = 1;
+                    }
+                }
+            }
+
+            //if (Session["Id_Num_UN"] != null)
+            //{
+            //    un = int.Parse(Session["Id_Num_UN"].ToString());
+                Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("CEDIS", un, vista);
+                Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("CEDIS", un, vista);
+            //}
+            //else
+            //{
+            //    //un = int.Parse(Session["Id_Num_UN"].ToString());
+            //    Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("CEDIS", un, vista);
+            //    Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("CEDIS", un, vista);
+            //    //return RedirectToAction("Index", "Ordenes");
+            //}
+
+            return View();
+        }
+        public ActionResult MonitorOrdenADMIN()
+        {
+            //var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+            //int idOwner = 0;
+            //string tipoAlmacen = null;
+            //int un = 0;
+            //int vista = 1;
+
+            //if (ds.Tables[0].Rows.Count > 0)
+            //{
+            //    foreach (DataRow item in ds.Tables[0].Rows)
+            //    {
+            //        UserRolModel rol = new UserRolModel();
+            //        rol.idRol = item["rol"].ToString();
+            //        rol.nombreRol = item["nombreRol"].ToString();
+            //        Session["UserRol"] = rol;
+            //        if (item["idOwner"].ToString() != "")
+            //        {
+            //            idOwner = int.Parse(item["idOwner"].ToString());
+            //            vista = 2;
+            //            switch (idOwner)
+            //            {
+            //                case 2:
+            //                    tipoAlmacen = "DST";
+            //                    break;
+            //                case 3:
+            //                    tipoAlmacen = "CEDIS";
+            //                    break;
+            //                case 4:
+            //                    tipoAlmacen = "DSV";
+            //                    break;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            idOwner = 0;
+            //            vista = 1;
+            //            tipoAlmacen = "";
+            //        }
+            //        if (item["idTienda"].ToString() != "")
+            //        {
+            //            un = int.Parse(item["idTienda"].ToString());
+            //            vista = 2;
+            //        }
+            //        else
+            //        {
+            //            un = 0;
+            //            vista = 1;
+            //        }
+            //    }
+            //}
+
+            //if (Session["Id_Num_UN"] != null)
+            //{
+            //    un = int.Parse(Session["Id_Num_UN"].ToString());
+                Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirMADMIN("ADMIN", 0, 1);
+                Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarMADMIN("ADMIN", 0, 1);
+            //}
+            //else
+            //{
+            //    //un = int.Parse(Session["Id_Num_UN"].ToString());
+            //    Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("ADMIN", 0, 1);
+            //    Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("ADMIN", 0, 1);
+            //    //return RedirectToAction("Index", "Ordenes");
+            //}
 
             return View();
         }
