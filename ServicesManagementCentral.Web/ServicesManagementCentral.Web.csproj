@@ -3951,6 +3951,10 @@
     <Content Include="Views\CancelacionSupervisor\CancelacionOrden.cshtml" />
     <Content Include="Views\DescargaOrdenes\Index.cshtml" />
     <Content Include="Views\Ordenes\MonitorOrden.cshtml" />
+    <Content Include="Views\Ordenes\MonitorOrdenADMIN.cshtml" />
+    <Content Include="Views\Ordenes\MonitorOrdenCEDIS.cshtml" />
+    <Content Include="Views\Ordenes\MonitorOrdenDST.cshtml" />
+    <Content Include="Views\Ordenes\MonitorOrdenDSV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
