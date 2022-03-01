@@ -148,21 +148,60 @@ namespace ServicesManagement.Web.Controllers
 
         public ActionResult MonitorOrden()
         {
-            if (Session["Id_Num_UN"] != null)
-            {
+            var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+            int idOwner = 0;
+            string tipoAlmacen = null;
+            int un = 0;
+            int vista = 1;
 
-                string un = Session["Id_Num_UN"].ToString();
-
-                Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("CEDIS", int.Parse(un), 1);
-                Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("CEDIS", int.Parse(un), 1);
-            }
-            else
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                return RedirectToAction("Index", "Ordenes");
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    UserRolModel rol = new UserRolModel();
+                    rol.idRol = item["rol"].ToString();
+                    rol.nombreRol = item["nombreRol"].ToString();
+                    Session["UserRol"] = rol;
+                    if (item["idOwner"].ToString() != "")
+                    {
+                        idOwner = int.Parse(item["idOwner"].ToString());
+                        vista = 2;
+                        switch (idOwner)
+                        {
+                            case 2: 
+                                tipoAlmacen = "DST";
+                                break;
+                            case 3: 
+                                tipoAlmacen = "CEDIS";
+                                break;
+                            case 4: 
+                                tipoAlmacen = "DSV";
+                                break;
+                        }
+                            
+                    }
+                    else
+                    {
+                        idOwner = 0;
+                        vista = 1;
+                        tipoAlmacen = "";
+                    }
+                    if (item["idTienda"].ToString() != "")
+                    {
+                        un = int.Parse(item["idTienda"].ToString());
+                        vista = 2;
+                    }
+                    else
+                    {
+                        un = 0;
+                        vista = 1;
+                    }
+                }
             }
+            Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM(tipoAlmacen, un, vista);
+            Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM(tipoAlmacen, un, vista);
 
             return View();
-
         }
 
         public ActionResult OrdenSeleccionada()
