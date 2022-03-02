@@ -168,11 +168,18 @@
                                                 <td style="text-align:center;">@p["supplierName"]</td>
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
-                                                <td style="text-align:center;">
-                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
-                                                        @p["UeNo"]
-                                                    </a>
-                                                </td>
+                                                @if (@p["idOwner"].ToString() == "4")
+                                                {
+                                                    <td style="text-align:center;">
+                                                        <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
+                                                            @p["UeNo"]
+                                                        </a>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="text-align:center;">@p["UeNo"]</td>
+                                                }
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
@@ -248,10 +255,17 @@
                                                 <td style="text-align:center;">@p["supplierName"]</td>
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
-                                                <td style="text-align:center;">
-                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })"
-                                                       title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
-                                                </td>                                                
+                                                @if (@p["idOwner"].ToString() == "4")
+                                                {
+                                                    <td style="text-align:center;">
+                                                        <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })"
+                                                           title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
+                                                    </td>   
+                                                }
+                                                else 
+                                                { 
+                                                    <td style="text-align:center;">@p["UeNo"]</td>
+                                                }
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
                                                 {
