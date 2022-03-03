@@ -169,7 +169,14 @@ namespace ServicesManagement.Web.Controllers
                         rol.idRol = item["rol"].ToString();
                         rol.nombreRol = item["nombreRol"].ToString();
                         Session["UserRol"] = rol;
-                        idOwner = 4;
+                        if (item["idOwner"].ToString() != "")
+                        {
+                            idOwner = int.Parse(item["idOwner"].ToString());
+                        }
+                        else
+                        {
+                            idOwner = 4;
+                        }
                     }
                 }
 
@@ -206,9 +213,17 @@ namespace ServicesManagement.Web.Controllers
                         rol.idRol = item["rol"].ToString();
                         rol.nombreRol = item["nombreRol"].ToString();
                         Session["UserRol"] = rol;
-                        idOwner = 4;
+                        if (item["idOwner"].ToString() != "")
+                        {
+                            idOwner = int.Parse(item["idOwner"].ToString());
+                        }
+                        else
+                        {
+                            idOwner = 4;
+                        }
                     }
                 }
+
                 var list = DataTableToModel.ConvertTo<upCorpOms_Cns_UeDevolCauses>(DALProcesoReciboDevoluciones.upCorpOms_Cns_UeDevolCauses(idOwner).Tables[0]);
 
                 var result = new { Success = true, resp = list };
@@ -242,7 +257,14 @@ namespace ServicesManagement.Web.Controllers
                         rol.idRol = item["rol"].ToString();
                         rol.nombreRol = item["nombreRol"].ToString();
                         Session["UserRol"] = rol;
-                        idOwner = 3;
+                        if (item["idOwner"].ToString() != "")
+                        {
+                            idOwner = int.Parse(item["idOwner"].ToString());
+                        }
+                        else
+                        {
+                            idOwner = 4;
+                        }
                     }
                 }
 
@@ -280,7 +302,14 @@ namespace ServicesManagement.Web.Controllers
                         rol.idRol = item["rol"].ToString();
                         rol.nombreRol = item["nombreRol"].ToString();
                         Session["UserRol"] = rol;
-                        idOwner = 3;
+                        if (item["idOwner"].ToString() != "")
+                        {
+                            idOwner = int.Parse(item["idOwner"].ToString());
+                        }
+                        else
+                        {
+                            idOwner = 4;
+                        }
                     }
                 }
 
