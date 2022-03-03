@@ -346,6 +346,7 @@
     <Compile Include="Models\Cotizador\SettingsModel.cs" />
     <Compile Include="Models\Cotizador\ShipmentModel.cs" />
     <Compile Include="Models\Cotizador\TarifaModel.cs" />
+    <Compile Include="Models\DescargaOrdenes\DescargaOrdenesResponse.cs" />
     <Compile Include="Models\DTO_StockProveedor\ProductStock.cs" />
     <Compile Include="Models\DTO_StockProveedor\SupplierStockDto.cs" />
     <Compile Include="Models\EmpleadoModels.cs" />
