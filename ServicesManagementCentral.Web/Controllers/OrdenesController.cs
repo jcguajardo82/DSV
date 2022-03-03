@@ -393,8 +393,8 @@ namespace ServicesManagement.Web.Controllers
             //if (Session["Id_Num_UN"] != null)
             //{
             //    un = int.Parse(Session["Id_Num_UN"].ToString());
-                Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("CEDIS", un, vista);
-                Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("CEDIS", un, vista);
+                Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirMCEDIS("CEDIS", un, vista);
+                Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarMCEDIS("CEDIS", un, vista);
             //}
             //else
             //{

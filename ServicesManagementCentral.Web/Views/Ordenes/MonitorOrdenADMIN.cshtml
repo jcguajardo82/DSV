@@ -168,11 +168,18 @@
                                                 <td style="text-align:center;">@p["supplierName"]</td>
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
-                                                <td style="text-align:center;">
-                                                    <a href="@Url.Action("OrdenDetalle", "Ordenes", new { order = @p["UeNo"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
-                                                        @p["UeNo"]
-                                                    </a>
-                                                </td>
+                                                @if (@p["idOwner"].ToString() == "4")
+                                                {
+                                                    <td style="text-align:center;">
+                                                        <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
+                                                            @p["UeNo"]
+                                                        </a>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="text-align:center;">@p["UeNo"]</td>
+                                                }
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
@@ -248,10 +255,17 @@
                                                 <td style="text-align:center;">@p["supplierName"]</td>
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
-                                                <td style="text-align:center;">
-                                                    <a href="@Url.Action("ConsultaDetalle", "Ordenes", new { order = @p["UeNo"] })"
-                                                       title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
-                                                </td>                                                
+                                                @if (@p["idOwner"].ToString() == "4")
+                                                {
+                                                    <td style="text-align:center;">
+                                                        <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })"
+                                                           title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
+                                                    </td>   
+                                                }
+                                                else 
+                                                { 
+                                                    <td style="text-align:center;">@p["UeNo"]</td>
+                                                }
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
                                                 {
@@ -274,7 +288,6 @@
                                                     IdGuia = p1["IdGuias"].ToString();
                                                     IdGuiaPaq = p1["IdGuiaPaq"].ToString();
                                                     GuiaPaqEstatusDesc = p1["GuiaPaqEstatusDesc"].ToString();
-                                                    Transportista = p1["TrackingServiceName"].ToString();
                                                     string ordUeNo = p["UeNo"].ToString();
                                                     string embUeNo = p1["UeNo"].ToString();
                                                     if (ordUeNo == embUeNo)
@@ -284,12 +297,14 @@
                                                             IdGuias = IdGuia;
                                                             IdGuiasPaq = IdGuiaPaq;
                                                             GuiasPaqEstatusDesc = GuiaPaqEstatusDesc;
+                                                            Transportista = p1["TrackingServiceName"].ToString();
                                                         }
                                                         else
                                                         {
                                                             IdGuias = IdGuias + "," + IdGuia;
                                                             IdGuiasPaq +=  "," + IdGuiaPaq;
                                                             GuiasPaqEstatusDesc = GuiasPaqEstatusDesc + "," + GuiaPaqEstatusDesc;
+                                                            Transportista = p1["TrackingServiceName"].ToString();
                                                         }
                                                     }
                                                 }
@@ -377,7 +392,10 @@
             success: function (json) {
             if (json.Success) {
 
-            document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+                if (json.pdf != 'url')
+                    document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+                else
+                    document.getElementById("viewrPDF").setAttribute('src', json.url);
 
             $("#myModal").modal("show");
 
