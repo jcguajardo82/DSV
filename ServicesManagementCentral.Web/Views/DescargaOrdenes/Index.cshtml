@@ -268,8 +268,6 @@
         background-color: #fff;
     }
 </style>
-@using (Html.BeginForm())
-{
     <div class="row">
         <div class="col-4"></div>
         <div class="col-4"><h2>Descarga de Ordenes Almacenes</h2></div>
@@ -295,16 +293,15 @@
             <div class="form-group">
                 <label>Mes</label>
                 <select class="form-control m-b" id="ddlMes" name="ddlMes" multiple size="3">
-                    <option value="0">--TODOS--</option>
-                    <option value="1">Enero</option>
-                    <option value="2">Febrero</option>
-                    <option value="3">Marzo</option>
-                    <option value="4">Abril</option>
-                    <option value="5">Mayo</option>
-                    <option value="6">Junio</option>
-                    <option value="7">Julio</option>
-                    <option value="8">Agosto</option>
-                    <option value="9">Septiembre</option>
+                    <option value="01">Enero</option>
+                    <option value="02">Febrero</option>
+                    <option value="03">Marzo</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Mayo</option>
+                    <option value="06">Junio</option>
+                    <option value="07">Julio</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Septiembre</option>
                     <option value="10">Octubre</option>
                     <option value="11">Noviembre</option>
                     <option value="12">Diciembre</option>
@@ -314,13 +311,29 @@
         <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
             <label>&nbsp;</label>
             @*<input class="btn btn-primary" id="btnBuscar" onclick="Busqueda()" type="button" value="Buscar" />*@
-            <button class="btn btn-lg btn-block btn-primary mt-auto" type="button" onclick="Busqueda()">
-                Descargar
+            <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="Descargar()">
+                Buscar
             </button>
 
         </div>
     </div>
-}
+    <div class="modal inmodal fade" id="dlgMenus" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header pt-3 pb-1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Descarga de Archivo</h4>
+                </div>
+                <div class="modal-body">
+                    <a id="link" style="font-size:18px" >Click aqui para Descargar el Archivo</a>.
+                    <h4>Este Vinculo tendrá una vigencia de 24 Hrs.</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @section scripts {
 
 
@@ -333,45 +346,92 @@
 
     <script src="~/Content/plugins/multiselect/vanillaSelectBox.js?v0.72"></script>
     <script>
-            $(document).ready(function () {
+        $(document).ready(function () {
 
-                init("ddlMes");
+            init("ddlMes");
+        });
+        function Descargar() {
+            var count = 1;
+            var values = getValues('ddlMes');
+            var _meses = '';
+            var _json = '{ "meses":[';
+
+            if ($("#ddlAnio").val() == "0") {
+                alert('Seleccione un Año');
+                return;
+            }
+
+            values.forEach(x => {
+
+                _json += '{ "mes": "' + $("#ddlAnio").val() + x + '" },'
+                count++;
             });
 
-            //function empty() {
-            //    if (selectBox2 != null) {
-            //        selectBox2.empty();
-            //    }
-            //}
-            //function doDestroy(id) {
-
-            //    if (id == "ddlMes" && selectBox2 != null) {
-            //        selectBox2.destroy();
-
-
-            //    }
-            //}
-            function init(id) {
-                if (id == "ddlMes") {
-
-                    selectBox2 = new vanillaSelectBox("#ddlMes", { "disableSelectAll": true, "maxHeight": 200, "search": false, "translations": { "all": "All", "items": "Seleccionados", "selectAll": "Check All", "clearAll": "Clear All" } });
+            if (count == 1) {
+                alert('Seleccione por lo menos un Mes');
+                return;
+            } else {
+                _json += '] }';
+            }
+            //alert(_json);
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("GenerarLink", "DescargaOrdenes")',
+                data: {
+                    json: _json
+                },
+                datatype: "html",
+                success: function (json) {
+                    debugger;
+                    if (json.Success) {
+                        $('#link').attr('href', json.link);
+                        $("#dlgMenus").modal('toggle');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
 
                 }
+            });
+        }
+        //function empty() {
+        //    if (selectBox2 != null) {
+        //        selectBox2.empty();
+        //    }
+        //}
+        //function doDestroy(id) {
+
+        //    if (id == "ddlMes" && selectBox2 != null) {
+        //        selectBox2.destroy();
+
+
+        //    }
+        //}
+        function init(id) {
+            if (id == "ddlMes") {
+
+                selectBox2 = new vanillaSelectBox("#ddlMes", { "disableSelectAll": false, "maxHeight": 200, "search": false, "translations": { "all": "All", "items": "Seleccionados", "selectAll": "Check All", "clearAll": "Clear All" } });
+
             }
-            //function setValues(value) {
-            //    if (selectBox2 != null) {
-            //        selectBox2.setValue(value);
-            //    }
-            //}
-            //function getValues(id) {
-            //    let result = [];
-            //    let collection = document.querySelectorAll("#" + id + " option");
-            //    collection.forEach(function (x) {
-            //        if (x.selected) {
-            //            result.push(x.value);
-            //        }
-            //    });
-            //    return result;
-            //}
+        }
+        //function setValues(value) {
+        //    if (selectBox2 != null) {
+        //        selectBox2.setValue(value);
+        //    }
+        //}
+        function getValues(id) {
+            let result = [];
+            let collection = document.querySelectorAll("#" + id + " option");
+            collection.forEach(function (x) {
+                if (x.selected) {
+                    result.push(x.value);
+                }
+            });
+            return result;
+        }
     </script>
 }
