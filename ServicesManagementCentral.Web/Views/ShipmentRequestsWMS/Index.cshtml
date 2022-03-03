@@ -452,25 +452,29 @@
                             success: function (json) {
                                 if (json.Success)
                                     location.reload();
-                                else
-                                    alert(json.Message);
-                            }
-                            , error: function (xhr, status, error) {
-                                if (xhr.responseText != "") {
-                                    //var err = JSON.parse(xhr.responseText);
-                                    //if (err.status == 440) {
-                                    //    alert("Session expired");
-                                    //}
-                                    //else {
-                                    //    alert(err.message);
-                                    //}
-
-                                    alert(xhr.responseText);
-                                }
                                 else {
-                                    alert("Ha ocurrido un error inesperado");
+                                    _json = [];
+                                    Get();
+                                    $('#dlgCreateServicios').modal('hide');
+                                    alert(json.Message);
                                 }
                             }
+                            //, error: function (xhr, status, error) {
+                            //    if (xhr.responseText != "") {
+                            //        //var err = JSON.parse(xhr.responseText);
+                            //        //if (err.status == 440) {
+                            //        //    alert("Session expired");
+                            //        //}
+                            //        //else {
+                            //        //    alert(err.message);
+                            //        //}
+
+                            //        alert(xhr.responseText);
+                            //    }
+                            //    else {
+                            //        alert("Ha ocurrido un error inesperado");
+                            //    }
+                            //}
                         });
                 
             }
