@@ -126,7 +126,7 @@ namespace ServicesManagement.Web.Correos
             //DatosEntrega(ref parameters, OrderNo);
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -239,7 +239,7 @@ namespace ServicesManagement.Web.Correos
             //DatosEntrega(ref parameters, OrderNo);
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -359,7 +359,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -400,7 +400,7 @@ namespace ServicesManagement.Web.Correos
             DatosGrales(ref parameters, OrderNo);
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -430,7 +430,7 @@ namespace ServicesManagement.Web.Correos
             TotalesImporteDev(ref parameters, Id_cancelacion);
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -468,7 +468,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -501,7 +501,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -533,7 +533,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -566,7 +566,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -600,7 +600,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -656,7 +656,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -716,7 +716,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -776,7 +776,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -896,7 +896,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -954,7 +954,7 @@ namespace ServicesManagement.Web.Correos
 
             var CustomerEmail = DatosCte(ref parameters, OrderNo);
 
-            if (string.IsNullOrEmpty(CustomerEmail))
+            if (string.IsNullOrEmpty(CustomerEmail) || !IsValidEmail(CustomerEmail))
             {
                 throw new Exception("No se ha podido enviar el correo al cliente, ya que no se cuenta con correo registrado.");
             }
@@ -1350,9 +1350,26 @@ namespace ServicesManagement.Web.Correos
 
 
         }
+        public static bool IsValidEmail(string email)
+        {
+            var trimmedEmail = email.Trim();
 
+            if (trimmedEmail.EndsWith("."))
+            {
+                return false; // suggested by @TK-421
+            }
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == trimmedEmail;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
-
+   
     public class MailMessage
     {
         public int LayoutId { get; set; }
