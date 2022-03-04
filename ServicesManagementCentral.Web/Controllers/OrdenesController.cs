@@ -374,7 +374,7 @@ namespace ServicesManagement.Web.Controllers
                     else
                     {
                         idOwner = 0;
-                        vista = 1;
+                        vista = 2;
                         tipoAlmacen = "";
                     }
                     if (item["idTienda"].ToString() != "")
@@ -385,7 +385,7 @@ namespace ServicesManagement.Web.Controllers
                     else
                     {
                         un = 0;
-                        vista = 1;
+                        vista = 2;
                     }
                 }
             }
