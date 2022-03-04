@@ -243,6 +243,7 @@
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\CpanelController.cs" />
+    <Compile Include="Controllers\DescargaOrdenesController.cs" />
     <Compile Include="Controllers\DevolucionesController.cs" />
     <Compile Include="Controllers\EnvioCorreosController.cs" />
     <Compile Include="Controllers\Estatus_guia_envioController.cs" />
@@ -346,6 +347,7 @@
     <Compile Include="Models\Cotizador\SettingsModel.cs" />
     <Compile Include="Models\Cotizador\ShipmentModel.cs" />
     <Compile Include="Models\Cotizador\TarifaModel.cs" />
+    <Compile Include="Models\DescargaOrdenes\DescargaOrdenesResponse.cs" />
     <Compile Include="Models\DTO_StockProveedor\ProductStock.cs" />
     <Compile Include="Models\DTO_StockProveedor\SupplierStockDto.cs" />
     <Compile Include="Models\EmpleadoModels.cs" />
