@@ -243,6 +243,7 @@
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\CpanelController.cs" />
+    <Compile Include="Controllers\DescargaOrdenesController.cs" />
     <Compile Include="Controllers\DevolucionesController.cs" />
     <Compile Include="Controllers\EnvioCorreosController.cs" />
     <Compile Include="Controllers\Estatus_guia_envioController.cs" />
