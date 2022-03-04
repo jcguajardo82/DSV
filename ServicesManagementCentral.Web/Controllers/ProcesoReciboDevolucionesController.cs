@@ -313,7 +313,7 @@ namespace ServicesManagement.Web.Controllers
                 {
                     byte[] data = (byte[])(item["Evidence"]);
                     string base64String = Convert.ToBase64String(data);
-                    listaImagenes[x].Evidence = data;
+                    //listaImagenes[x].Evidence = data;
                     listaImagenes[x].strImg = base64String;
                     x += 1;
                 }

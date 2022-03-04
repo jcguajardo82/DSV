@@ -293,6 +293,7 @@
 
 @section scripts {
     <script type="text/javascript">
+
         $('.custom-file-input').on('change', function () {
             let fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
@@ -540,38 +541,46 @@
                             var PackageCondition = $(row)[0].cells[6].childNodes[0][i].innerText;
                         }
                     }
-                    var MotivoDevol = $(row)[0].cells[8].children[0].value;
-                    $.ajax({
-                        async: false,
-                        type: "GET",
-                        url: '@Url.Action("AceptarDevolucion", "ProcesoReciboDevoluciones")',
-                        data: {
-                            UeNo: _UeNo,
-                            OrderNo: _OrderNo,
-                            IdTrackingService: _IdTrackingService,
-                            TrackingType: _TrackingType,
-                            ProductId: ProductId,
-                            Barcode: Barcode,
-                            ProductName: ProductName,
-                            CreationId: CreationId,
-                            PackageCondition: PackageCondition,
-                            MotivoDevol: MotivoDevol
-                        },
-                        datatype: "html",
-                        success: function (json) {
-                            if (json.Success) {
-                                //alert(json.resp);
+                    var MotivoDevol = $(row)[0].cells[7].innerText;
+                    var Comentarios = $(row)[0].cells[8].childNodes[0].value;
+                    if ($(this).is(":disabled")) {
+                        alert("Ese artículo ya fue confirmado su devolución con anterioridad.");
+                        return;
+                    }
+                    else {
+                        $.ajax({
+                            async: false,
+                            type: "GET",
+                            url: '@Url.Action("AceptarDevolucion", "ProcesoReciboDevoluciones")',
+                            data: {
+                                UeNo: _UeNo,
+                                OrderNo: _OrderNo,
+                                IdTrackingService: _IdTrackingService,
+                                TrackingType: _TrackingType,
+                                ProductId: ProductId,
+                                Barcode: Barcode,
+                                ProductName: ProductName,
+                                CreationId: CreationId,
+                                PackageCondition: PackageCondition,
+                                MotivoDevol: MotivoDevol,
+                                ReturnedComment: Comentarios
+                            },
+                            datatype: "html",
+                            success: function (json) {
+                                if (json.Success) {
+                                    alert(json.resp);
+                                }
+                                else {
+                                    alert(json.Message);
+                                }
                             }
-                            else {
-                                alert(json.Message);
+                            , error: function (jqXHR, textStatus, errorThrown) {
+                                alert(jqXHR.responseText);
+
                             }
-                        }
-                        , error: function (jqXHR, textStatus, errorThrown) {
-                            alert(jqXHR.responseText);
 
-                        }
-
-                    });
+                        });
+                    }
                 }
                 i++;
             });
@@ -612,6 +621,7 @@
 
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
+
         $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(0) th').each(function (i) {
@@ -670,6 +680,7 @@
             );
 
         });
+
         function showpdf(num_guia) {
             //debugger;
 
@@ -697,5 +708,6 @@
             });
 
         }
+
     </script>
 }
