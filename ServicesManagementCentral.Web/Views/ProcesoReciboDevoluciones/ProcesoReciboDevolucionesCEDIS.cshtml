@@ -1,0 +1,664 @@
+﻿@{
+    ViewBag.Title = "ProcesoReciboDevoluciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Devolución Autorizada (RMA)</h2>
+<div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <div class="form-group">
+            <label>Fecha Inicio</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker1">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecIni"
+                       type="text" value="@ViewBag.FecIni">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Fecha Fin</label>
+        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+        <div class="input-group date" id="datetimepicker2">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input class="form-control datepicker" id="txtFecFin"
+                   type="text" value="@ViewBag.FecFin">
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="Busqueda()">
+            Buscar
+        </button>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div style="width:99%;">
+            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                <thead class="bg-danger-sor">
+                    <tr>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Consignación</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Tipo Almacen</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">No. Proveedor</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Nombre Proveedor</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">No. Almacen</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Fecha de creación</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Solicitud RMA</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Motivo RMA</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Paqueteria</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Guia de devolución</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Estatus Guía</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Fecha de entrega al almacen</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Recibido por</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Estatus Devolución</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Fecha Estatus Devolución</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Id Material</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">EAN</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Descripción</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Piezas</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1">Abrir</th>
+                        <th tabindex="0" aria-controls="tblConsultas" rowspan="1" colspan="1" style="visibility:hidden"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Session["ListaConsignaciones"] != null)
+                        {
+                            System.Data.DataSet ds = (System.Data.DataSet)Session["ListaConsignaciones"];
+
+                            var dt = ds.Tables[0];
+
+                            var dt1 = ds.Tables[1];
+
+                            int index = 0;
+                            string IdGuia = string.Empty;
+                            string IdGuiaPaq = string.Empty;
+                            string GuiaPaqEstatusDesc = string.Empty;
+                            var IdGuias = "";
+                            var IdGuiasPaq = "";
+                            var GuiasPaqEstatusDesc = "";
+
+
+                            foreach (System.Data.DataRow p in dt.Rows)
+                            {
+                                IdGuias = "";
+                                IdGuiasPaq = "";
+                                GuiasPaqEstatusDesc = "";
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <a id="@p["Idcancelacion"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, '@p["UeNo"]', @p["Recibido"])"
+                                           title="Click para ver la lista de productos asociados al pedido" class="link"><u>@p["UeNo"].ToString()</u></a>
+                                    </td>
+                                    <td style="text-align:right">@p["UeType"] </td>
+                                    <td style="text-align:right">@p["idSupplierWH"] </td>
+                                    <td style="text-align:right">@p["SupplierName"] </td>
+                                    <td style="text-align:center">@p["idSupplierWHCode"]</td>
+                                    <td style="text-align:right">@p["OrderDate"] </td>
+                                    <td style="text-align:center">@p["SolicitudRMA"]</td>
+                                    <td style="text-align:center">@p["MotivoRMA"]</td>
+                                    @*<td style="text-align:center">@p["ConsigmentType"]</td>*@
+                                    @*<td style="text-align:center">@p["TrackingType"]</td>*@
+                                    <td style="text-align:center"> @p["TrackingServiceName"]</td>
+                                    <td style="text-align:center">@p["IdTrackingService"]</td>
+                                    <td style="text-align:center"> @p["TrackingServiceStatus"]</td>
+                                    <td style="text-align:center"> @p["TrackingDeliveryDate"]</td>
+                                    <td style="text-align:center">@p["TrackingDeliveredTo"]</td>
+                                    <td style="text-align:center">@p["EstatusDevolucion"]</td>
+                                    <td style="text-align:center">@p["EstatusFechaDevolucion"]</td>
+                                    <td style="text-align:center">@p["SKU"]</td>
+                                    <td style="text-align:center">@p["CodigoBarras"]</td>
+                                    <td style="text-align:center">@p["Descripcion"]</td>
+                                    <td style="text-align:center">@p["Cantidad"]</td>
+                                    <td style="text-align:center;">
+                                        <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstImagenes(this, @p["Recibido"])"
+                                           title="Click para ver la lista de imagenes de los productos asociados al pedido" class="link"><u>Ver Imagenes</u></a>
+                                    </td>
+                                    <td style="visibility:hidden"> @p["Recibido"]</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgShowProdcut" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pt-lg-5 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Recibo de Devoluciones</p>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12 col-md-12">
+                    <form id="frmShowServicios">
+                        <table id="tblShowProduct" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" style="width:100%">
+                            <thead class="bg-danger-sor">
+                                <tr role="row">
+                                    <th style="width: 50px;">RMA</th>
+                                    <th style="width: 100px;">EAN</th>
+                                    <th style="width: 80px;">ID</th>
+                                    <th style="width: 100px;">Descripción</th>
+                                    <th style="width: 50px;">Piezas</th>
+                                    <th style="width: 50px;">Guía</th>
+                                    <th style="width: 100px;">Condiciones</th>
+                                    <th style="width: 70px;">Motivo</th>
+                                    <th style="width: 100px;">Comentario</th>
+                                    <th style="width: 50px;">Recibo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <button type="button" class="btn btn-white" onclick="Confirmar()">Confirmar Devolución</button>
+                <table style="width:100%;padding-top:50px;">
+                    <!-- cambio -->
+                    <tr>
+                        <td style="text-align:left;padding-left:50px;">
+                            <div class="col-sm-8">
+                                <br />
+                                <div class="custom-file">
+                                    <input id="FileUpload1" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                    <label for="FileUpload1" class="custom-file-label">Seleccionar Archivo...</label>
+                                </div>
+                                <input type="button" class="btn btn-success btn-file" id="btnUpload" value="Subir Archivo" />
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="dlgShowImages" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pt-lg-5 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Lista de Imagenes</p>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12 col-md-12">
+                    <form id="frmShowServicios">
+                        <table id="tblShowImagenes" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" style="width:100%">
+                            <thead class="bg-danger-sor">
+                                <tr role="row">
+                                    <th style="width: 50px;">No. de Pedido</th>
+                                    <th style="width: 100px;"># UE</th>
+                                    <th style="width: 80px;">Imagen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<h4 class="modal-title">Modal Header</h4>*@
+            </div>
+            <div class="modal-body">
+
+                @*<embed src="~/Content/Article List.pdf"
+                    frameborder="0" width="100%" height="400px">*@
+
+                <iframe id="viewrPDF" width="100%" height="400px" src=''></iframe>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<input id="selUeNo" name="selUeNo" value="" style="visibility:hidden" />
+<input id="selOrderNo" name="selOrderNo" value="" style="visibility:hidden" />
+<input id="selTrackingType" name="selTrackingType" value="" style="visibility:hidden" />
+<input id="selRecibido" name="selRecibido" value="" style="visibility:hidden" />
+<select class="form-control m-b" style="visibility:hidden" id="ddlCauses"></select>
+
+@section scripts {
+    <script type="text/javascript">
+
+        $('.custom-file-input').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+        $(document).ready(function () {
+            $('#btnUpload').click(function () {
+
+                var _idselUeNo = $("#selUeNo").val();
+                var _idselOrderNo = $("#selOrderNo").val();
+
+                // Checking whether FormData is available in browser
+                if (window.FormData !== undefined) {
+
+                    var servername = window.location.origin;
+                    var fileUpload = $("#FileUpload1").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                        var nameext = files[i].name.split(".");
+                        if (nameext[1] != "png" & nameext[1] != "jpg")
+                        {
+                            alert("Extensión no válida");
+                            return;
+                        }
+
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('idUeNo', _idselUeNo);
+                    fileData.append('idOrderNo', _idselOrderNo);
+                    fileData.append('servername', servername);
+
+
+
+                    $.ajax({
+                        // url: '/ManualesOperativos/UploadFiles',
+                        url: '@Url.Action("UploadFiles", "ProcesoReciboDevoluciones")',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (result) {
+                            alert(result);
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+                } else {
+                    alert("FormData is not supported.");
+                }
+            });
+        });
+
+        function ListDevoluciones() {
+
+            $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("ListDevoluciones", "ProcesoReciboDevoluciones")',
+            data: {
+                idOwner: 3
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    var sel = $("#ddlCauses");
+                    sel.empty();
+
+                   sel.get(0).options[0] = new Option("--SELECCIONE--", "0");
+                    for (var i = 0; i < json.resp.length; i++) {
+                        sel.append('<option value="' + json.resp[i].IdCause + '">' + json.resp[i].Cause_Desc + '</option>');
+                    }
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.responseText);
+
+            }
+        });
+    }
+
+        function ListCondiciones() {
+            $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("ListCondiciones", "ProcesoReciboDevoluciones")',
+            data: {
+                idOwner: 3
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    var sel = $("#ddlMotivos"); 
+                    sel.empty();
+
+                    sel.get(0).options[0] = new Option("--SELECCIONE--", "0");
+                    for (var i = 0; i < json.resp.length; i++) {
+                        sel.append('<option value="' + json.resp[i].IdCause + '">' + json.resp[i].Cause_Desc + '</option>');
+                    }
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.responseText);
+
+            }
+        });
+    }
+
+        function popUpLstImagenes(el, bitRecibido) {
+            var _UeNo = $(el).attr('id');
+            $('#selUeNo').val($(el).attr('id'));
+            $('#selOrderNo').val($(el).attr('name'));
+            $('#selRecibido').val(bitRecibido);
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("LstProdImagenes", "ProcesoReciboDevoluciones")',
+                data: {
+                    UeNo: _UeNo
+                },
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        $("#tblShowImagenes tbody").empty();
+
+                        //$("#tblShowProduct tbody").remove();
+                        //var tr;
+                        //Append each row to html table
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+                            tr.append("<td>" + json.resp[i].OrderNo + "</td>");
+                            tr.append("<td>" + json.resp[i].UeNo + "</td>");
+                            tr.append("<td><img class = 'image' width='240' height='160' src='data:image/jpeg;base64," + json.resp[i].strImg + "'></td>");
+                            $('#tblShowImagenes').append(tr);
+                        }
+                        $('#dlgShowImages').modal('show');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR.responseText);
+
+                }
+
+            });
+        }
+
+        function popUpLstProds(el, tmpUeNo, bitRecibido) {
+            var Id_cancelacion = $(el).attr('id');
+            $('#selUeNo').val(tmpUeNo);
+            $('#selOrderNo').val($(el).attr('name'));
+            $('#selRecibido').val(bitRecibido);
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("LstProdPaquete", "ProcesoReciboDevoluciones")',
+                data: {
+                    Id_cancelacion: Id_cancelacion
+                },
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        $("#tblShowProduct tbody").empty();
+                        //ListDevoluciones();
+                        //ListCondiciones();
+                        var causesSelect = $("<select class='form-control m-b' ></select>");
+                        $.each(json.lstCond, function (index, causes) {
+                            $("<option>").val(causes.IdCause).text(causes.Cause_Desc).appendTo(causesSelect);
+                        });
+                        //$("#tblShowProduct tbody").remove();
+                        //var tr;
+                        //Append each row to html table
+                        for (var i = 0; i < json.resp.length; i++) {
+                            tr = $('<tr/>');
+                            tr.append("<td>" + json.resp[i].idRMA + "</td>");
+                            tr.append("<td>" + json.resp[i].BarCode + "</td>");
+                            tr.append("<td>" + json.resp[i].ProductId + "</td>");
+                            tr.append("<td>" + json.resp[i].ProductName + "</td>");
+                            tr.append("<td>" + json.resp[i].Quantity + "</td>");
+                            tr.append("<td>" + json.resp[i].IdTrackingService + "</td>");
+                            $('#selTrackingType').val(json.resp[i].TrackingType);
+                            if ($('#selRecibido').val() == 0) {
+                                tr.append("<td>" + causesSelect[0].outerHTML + "</td>");
+                                tr.append("<td>" + json.resp[i].MotivoRMA + "</td>");
+                                tr.append("<td><input type='text' class='form-control' name='txtMotivo' /></td>");
+                                tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' id=chkSel_" + json.resp[i].BarCode + " /></td>");
+                            }
+                            else {
+                                tr.append("<td>" + json.resp[i].SolicitudRMA + "</td>");
+                                tr.append("<td>" + json.resp[i].MotivoRMA + "</td>");
+                                tr.append("<td>" + json.resp[i].ReturnedComment + "</td>");
+                                tr.append("<td class='text-center sorting'><input class='form-check-input' name='chElegible' type='checkbox' checked='checked' disabled='disabled' id='chkSel_" + json.resp[i].BarCode + " value='1' /></td>");
+                            }
+                            //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                            //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                            $('#tblShowProduct').append(tr);
+
+                        }
+                        $('#dlgShowProdcut').modal('show');
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR.responseText);
+
+                }
+
+            });
+        }
+
+        function Confirmar() {
+            var _UeNo = $("#selUeNo").val();
+            var _OrderNo = $("#selOrderNo").val();
+            var _TrackingType = $('#selTrackingType').val();
+            var CreationId = 'web';
+            var i = 0;
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked")) {
+                    row = $(this).closest("tr");
+                    var Barcode = $(row)[0].cells[1].innerText;
+                    var ProductId = $(row)[0].cells[2].innerText;
+                    var ProductName = $(row)[0].cells[3].innerText;
+                    var Piezas = $(row)[0].cells[4].innerText;
+                    var _IdTrackingService = $(row)[0].cells[5].innerText;
+                    for (var i = 0; i < $(row)[0].cells[6].childNodes[0].childElementCount; i++) {
+                        if ($(row)[0].cells[6].childNodes[0][i].selected == true) {
+                            var PackageCondition = $(row)[0].cells[6].childNodes[0][i].innerText;
+                        }
+                    }
+                    var MotivoDevol = $(row)[0].cells[7].innerText;
+                    var Comentarios = $(row)[0].cells[8].childNodes[0].value;
+                    if ($(this).is(":disabled")) {
+                        alert("Ese artículo ya fue confirmado su devolución con anterioridad.");
+                        return;
+                    }
+                    else {
+                        $.ajax({
+                            async: false,
+                            type: "GET",
+                            url: '@Url.Action("AceptarDevolucion", "ProcesoReciboDevoluciones")',
+                            data: {
+                                UeNo: _UeNo,
+                                OrderNo: _OrderNo,
+                                IdTrackingService: _IdTrackingService,
+                                TrackingType: _TrackingType,
+                                ProductId: ProductId,
+                                Barcode: Barcode,
+                                ProductName: ProductName,
+                                CreationId: CreationId,
+                                PackageCondition: PackageCondition,
+                                MotivoDevol: MotivoDevol,
+                                ReturnedComment: Comentarios
+                            },
+                            datatype: "html",
+                            success: function (json) {
+                                if (json.Success) {
+                                    alert(json.resp);
+                                }
+                                else {
+                                    alert(json.Message);
+                                }
+                            }
+                            , error: function (jqXHR, textStatus, errorThrown) {
+                                alert(jqXHR.responseText);
+
+                            }
+
+                        });
+                    }
+                }
+                i++;
+            });
+            location.reload();
+        }
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'es'
+                , format: "yyyy/MM/DD"
+            });
+
+        });
+
+        function Busqueda() {
+            var _FecIni = $("#txtFecIni").val();
+            var _FecFin = $("#txtFecFin").val();
+
+            if (_FecIni.length == 0) {
+                $("#txtFecIni").focus();
+                return;
+            }
+
+
+            if (_FecFin.length == 0) {
+                $("#txtFecFin").focus();
+                return;
+            }
+
+            window.location.href = "ProcesoReciboDevoluciones/ProcesoReciboDevolucionesCEDIS?FecIni=" + _FecIni+"&FecFin="+_FecFin;
+        }
+
+    </script>
+
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+
+        $(document).ready(function () {
+            $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
+            $('#tblConsulta thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblConsulta").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: false,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    //destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+        });
+
+        function showpdf(num_guia) {
+            //debugger;
+
+            $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("GetPdfGuia", "Ordenes")',
+            data: {
+            guia: num_guia
+            },
+            datatype: "html",
+            success: function (json) {
+            if (json.Success) {
+
+            document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+
+            $("#myModal").modal("show");
+
+            }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+
+            }
+            });
+
+        }
+
+    </script>
+}
