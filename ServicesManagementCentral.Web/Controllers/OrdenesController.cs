@@ -2138,7 +2138,7 @@ namespace ServicesManagement.Web.Controllers
                     decimal decimalPeso = decimal.Round(decimal.Parse(Session["SumPeso"].ToString()));
                     int peso = decimal.ToInt32(decimalPeso);
 
-                    if (enviaCom == 1)
+                    if (enviaCom == 1 && peso <= 70)
                     {
                         DataSet dsCarriers = DALServicesM.CarriersPorTransportista("envia.com");
                         foreach (DataRow row in dsCarriers.Tables[0].Rows)
@@ -2356,7 +2356,7 @@ namespace ServicesManagement.Web.Controllers
 
                     int peso = decimal.ToInt32(decimalPeso);
 
-                    if (enviaCom == 1)
+                    if (enviaCom == 1 && peso <= 70)
                     {
                         DataSet dsCarriers = DALServicesM.CarriersPorTransportista("envia.com");
                         foreach (DataRow row in dsCarriers.Tables[0].Rows)
