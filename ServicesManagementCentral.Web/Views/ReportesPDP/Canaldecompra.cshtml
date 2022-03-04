@@ -246,7 +246,7 @@
                             debugger;
                             var rw = json.resp[i];
                             var OrderSaleChannel = rw.OrderSaleChannel;
-                            var TipoMobile = "";      
+                            var TipoMobile = rw.TipoMobile;
                             var OrderReferenceNumber = rw.OrderReferenceNumber;
                             var PaymentTransactionID = rw.PaymentTransactionID;
                             var OrderDate = rw.OrderDate;
@@ -275,7 +275,7 @@
 
                             myTable.row.add([
                                  OrderSaleChannel
-                                , ""
+                                , TipoMobile
                                 , OrderReferenceNumber
                                 , PaymentTransactionID
                                 , OrderDate

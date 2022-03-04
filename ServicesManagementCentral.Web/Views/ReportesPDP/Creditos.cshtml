@@ -81,7 +81,7 @@
                         <th>No Piezas Consignación</th>
                         <th>Fecha INgreso RMA</th>
                         <th>Consignación ID Devolución</th>
-                        <th>Detalle de la Consignación Ingresada (SKU)</th>
+                        <th>Detalle de la Consignación Ingresada <th>
                         <th>No Pzas Consignación</th>
                         <th>Fecha Devolución</th>
                         <th>Hora Decolución</th>
@@ -297,7 +297,7 @@
                             var MontoConsignacionIDCancelada = rw.MontoConsignacionIDCancelada;
                             var NoPiezasConsignacionCancelacion = rw.NoPiezasConsignacionCancelacion;
                             var FechaINgresoRMA = rw.FechaINgresoRMA;
-                            var ConsignacionIdDev = "";
+                            var ConsignacionIdDev = rw.MontoConsignacionIDCancelada;
                             var DetalleConsignacionIdDev = "";
                             var NoPzasConsignacionDevolucion = rw.NoPzasConsignacionDevolucion;
                             var FechaDevolucion = rw.FechaDevolucion;
@@ -313,7 +313,7 @@
                             var IdTransaccionReembolso = "";
                             var CustomerLoyaltyCardId = rw.CustomerLoyaltyCardId;
                             var CustomerLoyaltyRedeemPoints = rw.CustomerLoyaltyRedeemPoints;
-                            var ReembolsoLealtad = "";
+                            var ReembolsoLealtad = "0";
 
                             myTable.row.add([
                                 OrderReferenceNumber
@@ -361,9 +361,10 @@
                                 , ReembolsoManual
                                 , ReembolsoAutomatico
                                 , IdTransaccionReembolso
+                                ,""
                                 , CustomerLoyaltyCardId
                                 , CustomerLoyaltyRedeemPoints
-                                , ReembolsoLealtad
+                                , ""
                             ]).draw();
                         }
                         table.columns.adjust().draw();
