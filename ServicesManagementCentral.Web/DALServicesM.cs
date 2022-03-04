@@ -2980,6 +2980,20 @@ namespace ServicesManagement.Web
 
             return table;
         }
+        public static DataTable GetTableDeliveredStatus()
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add("UeNo", typeof(string));
+            table.Columns.Add("StoreNum", typeof(int));
+
+            table.Columns.Add("ShipperName", typeof(string));
+            table.Columns.Add("DeliveryDate", typeof(string));
+            table.Columns.Add("IdReceive", typeof(string));
+            table.Columns.Add("NameReceive", typeof(string));
+            table.Columns.Add("Comments", typeof(string));
+
+            return table;
+        }
         #endregion
 
         #region Actualiza fecha Entrega
@@ -3395,6 +3409,40 @@ namespace ServicesManagement.Web
             }
 
         }
+        public static DataSet EstafetaActive()
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_EstafetaActive]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         public static DataSet GetDimensionsByProduct(string ProductId)
         {
 
@@ -3713,6 +3761,60 @@ namespace ServicesManagement.Web
                         sqlComm.Parameters.Add(param);
 
                         
+                        con.Open();
+                        //sqlComm.ExecuteReader();
+
+
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(sqlComm);
+                        adapter.Fill(ds);
+
+
+
+                    }
+                }
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public static DataSet OrdersToDeliveredStatus(DataTable dt)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+            try
+            {
+                
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString))
+                {
+                    using (SqlCommand sqlComm = new SqlCommand("dbo.upCorpOms_upd_OrdersToDeliveredStatus", con))
+                    {
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+
+                        SqlParameter param = new SqlParameter("@OrderClosingType", SqlDbType.Structured)
+                        {
+                            TypeName = "dbo.OrderClosingTableType",
+                            Value = dt
+                        };
+                        sqlComm.Parameters.Add(param);
+                        sqlComm.Parameters.AddWithValue("@Accion", 1);
+
                         con.Open();
                         //sqlComm.ExecuteReader();
 
