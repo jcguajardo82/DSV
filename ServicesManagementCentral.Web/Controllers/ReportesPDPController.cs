@@ -2050,7 +2050,7 @@ namespace ServicesManagement.Web.Controllers
             string spName = string.Empty;
 
             //var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_PDP"].ToString(); //Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
-            var _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_PDP"].ToString();
 
             spName = "up_PPS_sel_PaymentTransactionOmonelRpt_byOrder";
 
