@@ -249,7 +249,7 @@ namespace ServicesManagement.Web.Controllers
                     else
                     {
                         un = 0;
-                        vista = 1;
+                        vista = 2;
                     }
                 }
             }
@@ -317,7 +317,7 @@ namespace ServicesManagement.Web.Controllers
                     else
                     {
                         un = 0;
-                        vista = 1;
+                        vista = 2;
                     }
                 }
             }
