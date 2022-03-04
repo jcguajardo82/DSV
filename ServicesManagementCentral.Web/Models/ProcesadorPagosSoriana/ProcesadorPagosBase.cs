@@ -80,6 +80,7 @@ namespace ServicesManagement.Web.Models.ProcesadorPagosSoriana
         public string DescReespuestaEmisor { get; set; } = "";
         public string Catalogo { get; set; } = "";
         public string DeliveryType { get; set; } = "";
+        public string TipoMobile { get; set; } = "";
 
         #region Cancelacion
         public string NombreCancelacion { get; set; } = "";
