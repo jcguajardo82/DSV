@@ -1026,24 +1026,24 @@ namespace ServicesManagement.Web.Controllers
 
                     o.Entrega.OrdenEntregada = item.flagE.Equals("N") ? false : true;
 
-                    //DataTable dt = DALServicesM.GetTableProducts();
-                    //dt.Rows.Add(ue, store, item.ShipperName, item.fechaE + " " + item.timeD, item.nombre, item.nombre, item.comentarios);
-                    //DALServicesM.OrdersToDeliveredStatus(dt);
+                    DataTable dt = DALServicesM.GetTableProducts();
+                    dt.Rows.Add(ue, store, item.ShipperName, item.fechaE + " " + item.timeD, item.nombre, item.nombre, item.comentarios);
+                    DALServicesM.OrdersToDeliveredStatus(dt);
 
-                    string json2 = string.Empty;
-                    JavaScriptSerializer js = new JavaScriptSerializer();
-                    //json2 = js.Serialize(o);
-                    js = null;
-                    json2 = JsonConvert.SerializeObject(o);
-                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                    //string json2 = string.Empty;
+                    //JavaScriptSerializer js = new JavaScriptSerializer();
+                    ////json2 = js.Serialize(o);
+                    //js = null;
+                    //json2 = JsonConvert.SerializeObject(o);
+                    //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                    Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
+                    //Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
 
-                    Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+                    //Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
 
-                    Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Finaliza_Entrega"], "", json2);
+                    //Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Finaliza_Entrega"], "", json2);
 
-                    Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
+                    //Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Response : " + r.code + "-Message : " + r.message, false, null);
 
                     if (d.Tables[0].Rows[0]["DeliveryType"].ToString() == "Entrega a domicilio")
                         if (DALCorreos.GetMetodoEnvio_sUp(int.Parse(orderNo)).Tables[0].Rows[0][0].ToString().Contains("domicilio"))
