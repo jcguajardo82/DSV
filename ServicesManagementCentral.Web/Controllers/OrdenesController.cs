@@ -3304,7 +3304,7 @@ namespace ServicesManagement.Web.Controllers
         }
         public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
         {
-
+                string result = string.Empty;
                 var ServiceTypeId = 1;
                 DataSet ds = new DataSet();
                 DataSet dsO = new DataSet();
@@ -3424,14 +3424,15 @@ namespace ServicesManagement.Web.Controllers
 
 
                 }
-                return string.Empty;
+                
             }
            
-            catch (System.Exception ex)
+            catch 
             {
-                throw new Exception("La generacion de la Guia por Estafeta Fallo. " + ex.Message);
+                //throw new Exception("La generacion de la Guia por Estafeta Fallo. " + ex.Message);
+                result = "ERROR";
             }
-
+            return result;
         }
         public string CreateGuiaLogyt(string UeNo, int OrderNo, int weight, int typeId)
         {
