@@ -961,7 +961,7 @@ namespace ServicesManagement.Web.Controllers
                     try
                     {
                         var input = Convert.ToDateTime(item.fechaE + " " + item.timeD);
-                        var maxDate = DateTime.Now.AddHours(-5);
+                        var maxDate = DateTime.Now.AddMinutes(-5);
                         var minDate = Convert.ToDateTime(item.fechaAsigTrans); ;
 
 
@@ -1026,7 +1026,7 @@ namespace ServicesManagement.Web.Controllers
 
                     o.Entrega.OrdenEntregada = item.flagE.Equals("N") ? false : true;
 
-                    DataTable dt = DALServicesM.GetTableProducts();
+                    DataTable dt = DALServicesM.GetTableDeliveredStatus();
                     dt.Rows.Add(ue, store, item.ShipperName, item.fechaE + " " + item.timeD, item.nombre, item.nombre, item.comentarios);
                     DALServicesM.OrdersToDeliveredStatus(dt);
 
