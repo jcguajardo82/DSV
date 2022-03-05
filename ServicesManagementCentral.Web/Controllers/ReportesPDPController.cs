@@ -149,7 +149,7 @@ namespace ServicesManagement.Web.Controllers
     public class RefoundRev
     {
         public string ResponseJson { get; set; }
-        public string idPayment { get; set; }  
+        public string idPayment { get; set; }
         public string fec_movto { get; set; }
     }
 
@@ -161,7 +161,7 @@ namespace ServicesManagement.Web.Controllers
     public class RefoundDetails
     {
         public string refundAmount { get; set; }
-		public string currency { get; set; }
+        public string currency { get; set; }
     }
 
     public class ReverseModel
@@ -189,7 +189,7 @@ namespace ServicesManagement.Web.Controllers
     public class Emisor
     {
         public string id { get; set; }
-	    public string status { get; set; }
+        public string status { get; set; }
     }
 
     public class ApprovalCodeModel
@@ -350,9 +350,9 @@ namespace ServicesManagement.Web.Controllers
         #region Liquidaciones
         public ActionResult Liquidaciones()
         {
-        //    //var a = ProcesaArchivos();
+            //    //var a = ProcesaArchivos();
 
-        //    //Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetLiquidaciones("", "", "Liquidaciones"));
+            //    //Session["listaGrid"] = Newtonsoft.Json.JsonConvert.SerializeObject(GetLiquidaciones("", "", "Liquidaciones"));
 
             return View();
         }
@@ -412,8 +412,8 @@ namespace ServicesManagement.Web.Controllers
 
 
             return View();
-        }     
-    
+        }
+
         public ActionResult PagoLealtad()
         {
             var list = new List<ReportesPDP>();
@@ -662,7 +662,7 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             //_ConnectionString = "Server=tcp:srvsqlmercurio.database.windows.net,1433;Initial Catalog=MercurioDesaDB;Persist Security Info=False;User ID=t_eliseogr;Password=El1530%.*314;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-           // _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            // _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=PaymentOrderProcess;Min Pool Size=0;Max Pool Size=5;Pooling=true;";
 
             List<OrderPagoModels> lista = new List<OrderPagoModels>();
@@ -1067,7 +1067,7 @@ namespace ServicesManagement.Web.Controllers
         {
             DataSet ds = new DataSet();
             List<ProcesadorPagosBase> LstppsBase = new List<ProcesadorPagosBase>();
-       
+
             try
             {
                 ds = GetConcentradoDatosBase(OrderReferenceNumber);
@@ -1207,7 +1207,7 @@ namespace ServicesManagement.Web.Controllers
                 {
                     var LstOmonel = GetProcesadorPagosBase_Omonel(OrderReferenceNumber, "CanalCompra");
 
-                    if(LstOmonel.Count > 0)
+                    if (LstOmonel.Count > 0)
                     {
                         foreach (var omonel in LstOmonel)
                         {
@@ -1217,8 +1217,8 @@ namespace ServicesManagement.Web.Controllers
                     else
                     {
                         //TODO: APP
-                    }          
-               }
+                    }
+                }
 
                 return LstppsBase;
             }
@@ -1334,7 +1334,7 @@ namespace ServicesManagement.Web.Controllers
                                         FechaOrden = fec.Substring(0, 8);
                                         HoraOrden = fec.Substring(9, 5);
                                     }
-                                  
+
                                     ppsBase.OrderDate = FechaOrden;
                                     ppsBase.OrderHour = HoraOrden;
                                     ppsBase.orderAmount = DatosExtra.orderAmount;
@@ -1370,7 +1370,7 @@ namespace ServicesManagement.Web.Controllers
                                 }
                             }
                             #endregion
-                    
+
                             #region Estatus Shipment
                             var estatusShipment = GetEstatusShipment(row["OrderReferenceNumber"].ToString());
 
@@ -1496,7 +1496,7 @@ namespace ServicesManagement.Web.Controllers
                             {
                                 if (DatosExtra.orderReferenceNumber != null)
                                 {
-                                    if(oue.Id_Num_Apl == "22")
+                                    if (oue.Id_Num_Apl == "22")
                                     {
                                         FechaOrden = DatosExtra.orderDateTime.Substring(0, 10);
                                         HoraOrden = DatosExtra.orderDateTime.Substring(11, 5);
@@ -1563,7 +1563,7 @@ namespace ServicesManagement.Web.Controllers
                             }
 
                             #endregion
-                        
+
                             #region Estatus Shipment
                             var estatusShipment = GetEstatusShipment(row["OrderReferenceNumber"].ToString());
 
@@ -1600,7 +1600,7 @@ namespace ServicesManagement.Web.Controllers
             DataSet ds = new DataSet();
             List<ProcesadorPagosBase> LstppsBase = new List<ProcesadorPagosBase>();
             string FechaOrden = string.Empty;
-            string HoraOrden = string.Empty; 
+            string HoraOrden = string.Empty;
 
             try
             {
@@ -1762,7 +1762,7 @@ namespace ServicesManagement.Web.Controllers
                             ppsBase.MontoReverso = reverso.MontoRverso;
                             ppsBase.IDTransaccionReverso = reverso.IDReverso;
                             #endregion
-                      
+
                             #region Estatus Shipment
                             var estatusShipment = GetEstatusShipment(row["OrderReferenceNumber"].ToString());
 
@@ -1855,7 +1855,7 @@ namespace ServicesManagement.Web.Controllers
                             ppsBase.CustomerLoyaltyRedeemMoney = row["CustomerLoyaltyRedeemMoney"].ToString();  //efectivo disponble /dinero en efectivo                              
                             ppsBase.CustomerLoyaltyCardId = row["CustomerLoyaltyCardId"].ToString();
                             #endregion
-                        
+
                             #region GetTrace
                             var DatosExtra = GetTracePayment(ppsBase.OrderReferenceNumber, ppsBase.Catalogo);
 
@@ -2004,7 +2004,7 @@ namespace ServicesManagement.Web.Controllers
                                 ppsBase.TipoMobile = oue.CreatedBy;
                             }
 
-  
+
                             ppsBase.DeliveryType = oue.DeliveryType;
                             #endregion
 
@@ -2049,8 +2049,8 @@ namespace ServicesManagement.Web.Controllers
 
             string spName = string.Empty;
 
-            //var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_PDP"].ToString(); //Environment.GetEnvironmentVariable("ConnectionStrings:MercurioDB");
             var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_PDP"].ToString();
+            //var _ConnectionString = "Server=tcp:srvsqlmercurioprod.database.windows.net,1433;Initial Catalog=MercurioPDPProdDB;Persist Security Info=False;User ID=ProcesadorPago;Password=W3rcur10PDP!#$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
             spName = "up_PPS_sel_PaymentTransactionOmonelRpt_byOrder";
 
@@ -2082,7 +2082,7 @@ namespace ServicesManagement.Web.Controllers
                         #region Datos Orden
                         ppsBase.PaymentToken = row["PaymentToken"].ToString();
                         ppsBase.OrderReferenceNumber = row["OrderReferenceNumber"].ToString();          //Orden ID
-                         #endregion
+                        #endregion
 
                         #region Tokenizacion
                         ppsBase.Bank = row["Bank"].ToString();                                          //Banco
@@ -2240,7 +2240,7 @@ namespace ServicesManagement.Web.Controllers
 
                         if (datosExtra.orderReferenceNumber != null)
                         {
-                            if(Method == "Creditos")
+                            if (Method == "Creditos")
                             {
                                 ppsBase.OrderDate = FechaOrden;
                                 ppsBase.OrderHour = HoraOrden;
@@ -2264,7 +2264,7 @@ namespace ServicesManagement.Web.Controllers
                                     ppsBase.OrderHour = HoraOrden;
                                 }
                             }
-                                                    
+
                             ppsBase.TransactionReferenceID = datosExtra.TransactionReferenceID;
                             ppsBase.AffiliationType = datosExtra.AffiliationType;
                             ppsBase.IsAuthenticated = datosExtra.IsAuthenticated;
@@ -2347,7 +2347,7 @@ namespace ServicesManagement.Web.Controllers
                             }
                         }
                         #endregion
-                    
+
                         #region Estatus Shipment
                         var estatusShipment = GetEstatusShipment(row["OrderReferenceNumber"].ToString());
 
@@ -2399,7 +2399,7 @@ namespace ServicesManagement.Web.Controllers
 
                 return ds;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -2430,7 +2430,7 @@ namespace ServicesManagement.Web.Controllers
                         param.Value = OrderReferenceNumber;
 
                         using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
-                            dataAdapter.Fill(ds);                                       
+                            dataAdapter.Fill(ds);
                     }
                 }
 
@@ -2522,17 +2522,17 @@ namespace ServicesManagement.Web.Controllers
             List<PaymentStoreModel> lstPaymentStore = new List<PaymentStoreModel>();
             List<PaymentStoreModelResponse> lstPaymentStoreResponse = new List<PaymentStoreModelResponse>();
 
-            string spName = string.Empty; 
+            string spName = string.Empty;
             string JsonResponse = string.Empty;
             string paymentTypeJson = string.Empty;
             string ShippingDeliveryDesc = string.Empty;
             string Catalogo = string.Empty;
             string AffiliationType = string.Empty;
             string CostoEnvtio = string.Empty;
-            string Banco = string.Empty; 
-            string BIN = string.Empty; 
-            string Sufijo = string.Empty; 
-            string TipoTarjeta = string.Empty; 
+            string Banco = string.Empty;
+            string BIN = string.Empty;
+            string Sufijo = string.Empty;
+            string TipoTarjeta = string.Empty;
             string Marca = string.Empty;
             string paymentToken = string.Empty;
 
@@ -2553,14 +2553,14 @@ namespace ServicesManagement.Web.Controllers
                         using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
                             dataAdapter.Fill(ds);
 
-                        foreach(DataTable dt in ds.Tables)
+                        foreach (DataTable dt in ds.Tables)
                         {
-                            foreach(DataRow row in dt.Rows)
+                            foreach (DataRow row in dt.Rows)
                             {
                                 PaymentStoreModel payment = new PaymentStoreModel();
 
                                 payment.OrderReferenceNumber = row["OrderReferenceNumber"].ToString();
-                                payment.OrderAmount  = row["OrderAmount"].ToString();
+                                payment.OrderAmount = row["OrderAmount"].ToString();
                                 payment.LineaCaptura = row["LineaCaptura"].ToString();
                                 payment.Estatus = row["Estatus"].ToString();
                                 payment.CreatedDate = row["CreatedDate"].ToString();
@@ -2570,7 +2570,7 @@ namespace ServicesManagement.Web.Controllers
                         }
                     }
                 }
-             
+
                 foreach (var payment in lstPaymentStore)
                 {
                     ds = new DataSet();
@@ -2596,11 +2596,11 @@ namespace ServicesManagement.Web.Controllers
                         {
                             JsonResponse = row["RequestJson"].ToString();
 
-                            if(JsonResponse != "")
+                            if (JsonResponse != "")
                             {
                                 var RequestPaymentStore = JsonConvert.DeserializeObject<JsonRespoonseModel>(JsonResponse);
 
-                                if(RequestPaymentStore.paymentType == "INSTORE")
+                                if (RequestPaymentStore.paymentType == "INSTORE")
                                 {
                                     #region Mapeo
                                     PaymentStoreModelResponse PaymentStore = new PaymentStoreModelResponse();
@@ -2672,7 +2672,7 @@ namespace ServicesManagement.Web.Controllers
                                                 TipoTarjeta = row["TypeOfCard"].ToString();
                                                 Marca = row["PaymentMethod"].ToString();
                                             }
-                                        }                                      
+                                        }
                                     }
 
                                     #region Mapeo
@@ -2773,7 +2773,7 @@ namespace ServicesManagement.Web.Controllers
                         }
                     }
                 }
-                                 
+
                 return lstPaymentStoreResponse;
             }
             catch (Exception ex)
@@ -2791,7 +2791,7 @@ namespace ServicesManagement.Web.Controllers
 
             var _ConnectionString = ConfigurationManager.ConnectionStrings["Connection_DEV"].ToString();
             //var _ConnectionString = "Server=tcp:srvsqlmercurioqa.database.windows.net,1433;Initial Catalog=MercurioQaDB;Persist Security Info=False;User ID=t_eliseogr;Password=W3rcur10!QA;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            
+
             spName = "up_PPS_Sel_Totales_MetodosPago";
 
             try
@@ -2887,7 +2887,7 @@ namespace ServicesManagement.Web.Controllers
 
 
                         using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
-                            dataAdapter.Fill(ds);                     
+                            dataAdapter.Fill(ds);
                     }
                 }
 
@@ -3080,9 +3080,9 @@ namespace ServicesManagement.Web.Controllers
                             foreach (DataRow row in dt.Rows)
                             {
                                 JsonRequest = row["RequestJson"].ToString();
-                                Response = JsonConvert.DeserializeObject<JsonRespoonseModel>(JsonRequest);                              
+                                Response = JsonConvert.DeserializeObject<JsonRespoonseModel>(JsonRequest);
                             }
-                        }                                            
+                        }
                     }
                 }
 
@@ -3093,7 +3093,7 @@ namespace ServicesManagement.Web.Controllers
                 throw ex;
             }
         }
-       
+
         private ResponseEmisor GetDatosEmisor(string OrderReferenceNumber)
         {
             DataSet ds = new DataSet();
@@ -3118,7 +3118,7 @@ namespace ServicesManagement.Web.Controllers
                         param.Value = OrderReferenceNumber;
 
                         using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
-                            dataAdapter.Fill(ds);                      
+                            dataAdapter.Fill(ds);
                     }
                 }
 
@@ -3190,10 +3190,10 @@ namespace ServicesManagement.Web.Controllers
 
                 return ApprovalCode;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
-            }           
+            }
         }
 
         private ReverseModel GetDatosRefound(string OrderReferenceNumber)
@@ -3225,9 +3225,9 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
-                foreach(DataTable dt in ds.Tables)
+                foreach (DataTable dt in ds.Tables)
                 {
-                    foreach(DataRow row in dt.Rows)
+                    foreach (DataRow row in dt.Rows)
                     {
                         rev.ResponseJson = row["ResponseJson"].ToString();
                         rev.idPayment = row["idPayment"].ToString();
@@ -3235,7 +3235,7 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
-                if(rev.ResponseJson != null)
+                if (rev.ResponseJson != null)
                 {
                     RefoundJson refound = JsonConvert.DeserializeObject<RefoundJson>(rev.ResponseJson.ToString());
 
@@ -3278,7 +3278,7 @@ namespace ServicesManagement.Web.Controllers
                         param.Value = OrderReferenceNumber;
 
                         using (System.Data.SqlClient.SqlDataAdapter dataAdapter = new System.Data.SqlClient.SqlDataAdapter(cmd))
-                            dataAdapter.Fill(ds);                       
+                            dataAdapter.Fill(ds);
                     }
                 }
 
@@ -3296,7 +3296,7 @@ namespace ServicesManagement.Web.Controllers
 
                 return Estatus;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -3398,7 +3398,7 @@ namespace ServicesManagement.Web.Controllers
 
                 return Response;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -3460,7 +3460,7 @@ namespace ServicesManagement.Web.Controllers
                         foreach (DataTable dt in ds.Tables)
                         {
 
-                            if(dt.TableName == "Table1")
+                            if (dt.TableName == "Table1")
                             {
                                 foreach (DataRow row in dt.Rows)
                                 {
@@ -3473,16 +3473,16 @@ namespace ServicesManagement.Web.Controllers
                                         ProductId = row["ProductId"].ToString()
                                     };
 
-                                    lstDetalleProd.Add(prod);                                
+                                    lstDetalleProd.Add(prod);
                                 }
                             }
-                            
+
 
 
                         }
                     }
                 }
-               
+
                 return lstDetalleProd;
             }
             catch (Exception ex)
@@ -3906,7 +3906,7 @@ namespace ServicesManagement.Web.Controllers
 
                 return Response;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -3916,11 +3916,11 @@ namespace ServicesManagement.Web.Controllers
         #region Ftp
         public FileContentResult ProcesaArchivos(string NombreArchivo, string Fecha)
         {
-            string host = ConfigurationManager.AppSettings["server"];                 
-            string username = ConfigurationManager.AppSettings["userName"];       
-            string password = ConfigurationManager.AppSettings["password"];             
-            string remoteDirectory = ConfigurationManager.AppSettings["pathUpload"];               
-            int port = int.Parse(ConfigurationManager.AppSettings["puerto"].ToString());         
+            string host = ConfigurationManager.AppSettings["server"];
+            string username = ConfigurationManager.AppSettings["userName"];
+            string password = ConfigurationManager.AppSettings["password"];
+            string remoteDirectory = ConfigurationManager.AppSettings["pathUpload"];
+            int port = int.Parse(ConfigurationManager.AppSettings["puerto"].ToString());
 
             string year = Fecha.Substring(0, 4);
             string month = Fecha.Substring(5, 2);
@@ -3944,9 +3944,9 @@ namespace ServicesManagement.Web.Controllers
                     {
                         string filePath = file.FullName;
 
-                        var cont = filePath.Contains(NombreArchivo);
+                        var cont = filePath.Contains(NombreArchivo + ".xls");
 
-                        if(cont == true)
+                        if (cont == true)
                         {
                             using (Renci.SshNet.Sftp.SftpFileStream remoteFileStream = sftp.OpenRead(filePath))
                             {
@@ -3958,18 +3958,18 @@ namespace ServicesManagement.Web.Controllers
                                         reader.BaseStream.CopyTo(memstream);
                                         bytes = memstream.ToArray();
                                     }
-                                    
+
                                     return new FileContentResult(bytes, "application/vnd.ms-excel") { FileDownloadName = NombreArchivo + ".xls" };
                                 }
                             }
                         }
-                        else
-                        {
-                            byte[] bytes = { 0, 0, 0, 25 };
-                            NombreArchivo = "Error Descarga";
+                        //else
+                        //{
+                        //    byte[] bytes = { 0, 0, 0, 25 };
+                        //    NombreArchivo = "Error Descarga";
 
-                            return new FileContentResult(bytes, "application/vnd.txt") { FileDownloadName = NombreArchivo + ".txt" };
-                        }
+                        //    return new FileContentResult(bytes, "application/vnd.txt") { FileDownloadName = NombreArchivo + ".txt" };
+                        //}
                     }
 
                     sftp.Disconnect();
@@ -3978,7 +3978,10 @@ namespace ServicesManagement.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                    byte[] bytes = { 0, 0, 0, 25 };
+                    NombreArchivo = "Error Descarga";
+
+                    return new FileContentResult(bytes, "application/vnd.txt") { FileDownloadName = NombreArchivo + ".txt" };
                 }
             }
         }
@@ -4032,13 +4035,13 @@ namespace ServicesManagement.Web.Controllers
                                 }
                             }
                         }
-                        else
-                        {
-                            byte[] bytes = { 0, 0, 0, 25 };
-                            NombreArchivo = "Error Descarga";
+                        //else
+                        //{
+                        //    byte[] bytes = { 0, 0, 0, 25 };
+                        //    NombreArchivo = "Error Descarga";
 
-                            return new FileContentResult(bytes, "application/vnd.txt") { FileDownloadName = NombreArchivo + ".txt" };
-                        }
+                        //    return new FileContentResult(bytes, "application/vnd.txt") { FileDownloadName = NombreArchivo + ".txt" };
+                        //}
                     }
 
                     sftp.Disconnect();
@@ -4047,7 +4050,10 @@ namespace ServicesManagement.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                    byte[] bytes = { 0, 0, 0, 25 };
+                    NombreArchivo = "Error Descarga";
+
+                    return new FileContentResult(bytes, "application/vnd.txt") { FileDownloadName = NombreArchivo + ".txt" };
                 }
             }
         }
