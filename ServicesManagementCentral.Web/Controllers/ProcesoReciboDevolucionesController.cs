@@ -194,6 +194,50 @@ namespace ServicesManagement.Web.Controllers
             return View();
         }
         // GET: ProcesoReciboDevoluciones
+        public ActionResult ProcesoReciboDevolucionesDST()
+        {
+            var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
+            int idOwner = 2;
+
+            //if (ds.Tables[0].Rows.Count == 0)
+            //{
+            //    idOwner = 2;
+            //}
+            //else
+            //{
+            //    foreach (DataRow item in ds.Tables[0].Rows)
+            //    {
+            //        UserRolModel rol = new UserRolModel();
+            //        rol.idRol = item["rol"].ToString();
+            //        rol.nombreRol = item["nombreRol"].ToString();
+            //        Session["UserRol"] = rol;
+            //        if (item["idOwner"].ToString() != "")
+            //        {
+            //            idOwner = int.Parse(item["idOwner"].ToString());
+            //        }
+            //        else
+            //        {
+            //            idOwner = 4;
+            //        }
+            //    }
+            //}
+
+            var FecIni = DateTime.Now.AddDays(-7);
+            var FecFin = DateTime.Now;
+
+            ViewBag.FecIni = FecIni.ToString("yyyy/MM/dd");
+            ViewBag.FecFin = FecFin.ToString("yyyy/MM/dd");
+
+            if (Request.QueryString["FecIni"] != null && Request.QueryString["FecFin"] != null)
+            {
+                FecIni = Convert.ToDateTime(Request.QueryString["FecIni"].ToString());
+                FecFin = Convert.ToDateTime(Request.QueryString["FecFin"].ToString());
+            }
+
+            Session["ListaConsignaciones"] =
+                DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolProcess(idOwner, User.Identity.Name, FecIni, FecFin);
+            return View();
+        }
         public ActionResult ProcesoReciboDevolucionesDSV()
         {
             var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
