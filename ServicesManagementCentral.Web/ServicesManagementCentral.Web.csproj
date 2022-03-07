@@ -3966,6 +3966,7 @@
     <Content Include="Views\Ordenes\MonitorOrdenDSV.cshtml" />
     <Content Include="Views\ProcesoReciboDevoluciones\ProcesoReciboDevolucionesCEDIS.cshtml" />
     <Content Include="Views\ProcesoReciboDevoluciones\ProcesoReciboDevolucionesDSV.cshtml" />
+    <Content Include="Views\ProcesoReciboDevoluciones\ProcesoReciboDevolucionesDST.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
