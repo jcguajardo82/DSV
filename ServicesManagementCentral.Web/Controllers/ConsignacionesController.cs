@@ -52,7 +52,37 @@ namespace ServicesManagement.Web.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+        public ActionResult GetConsignacionesByOrderAdm(int ViewType, int Seccion, string Ueno)
+        {
+            try
+            {
+                DataSet ds = DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentByOrder(ViewType, Seccion, User.Identity.Name, Ueno);
+                var list = DataTableToModel.ConvertTo<ConsignacionesAdm>(
+                    ds.Tables[0]);
+                var listGuias = DataTableToModel.ConvertTo<ConsignacionesGuias>(
+                    ds.Tables[1]);
 
+                List<ConsignacionesAdm> listF = new List<ConsignacionesAdm>();
+
+                foreach (var item in list)
+                {
+                    var dsC = DALConsignacionesProveedor.GetCategoryByProduct(item.ProductId);
+
+                    item.Categoria = dsC.Tables[0].Rows[0][3].ToString();
+
+                    listF.Add(item);
+                }
+
+
+                var result = new { Success = true, resp = listF, guias = listGuias };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [HttpPost]
         public ActionResult GetDetalleConsignacionAdm(string consignacion)
@@ -141,6 +171,37 @@ namespace ServicesManagement.Web.Controllers
 
 
                 var result = new { Success = true, resp = listF, guias =listGuias};
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult GetConsignacionesByOrder(int ViewType, int Seccion, string Ueno)
+        {
+            try
+            {
+                DataSet ds = DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentByOrder(ViewType,Seccion, User.Identity.Name, Ueno);
+                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(
+                    ds.Tables[0]);
+                var listGuias = DataTableToModel.ConvertTo<ConsignacionesGuias>(
+                    ds.Tables[1]);
+
+                List<ConsignacionesProveedor> listF = new List<ConsignacionesProveedor>();
+
+                foreach (var item in list)
+                {
+                    var dsC = DALConsignacionesProveedor.GetCategoryByProduct(item.ProductId);
+
+                    item.Categoria = dsC.Tables[0].Rows[0][3].ToString();
+
+                    listF.Add(item);
+                }
+
+
+                var result = new { Success = true, resp = listF, guias = listGuias };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
@@ -274,6 +335,23 @@ namespace ServicesManagement.Web.Controllers
             {
                 var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(
                     DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentsProveedorConcluido(User.Identity.Name,FecIni,FecFin).Tables[0]);
+                var result = new { Success = true, resp = list };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult GetConsignacionesByOrderConcluido(int ViewType, int Seccion, string Ueno)
+        {
+            try
+            {
+                DataSet ds = DALConsignacionesProveedor.upCorpAlmacen_Cns_ConsigmentByOrder(ViewType, Seccion, User.Identity.Name, Ueno);
+                var list = DataTableToModel.ConvertTo<ConsignacionesProveedor>(
+                    ds.Tables[0]);
+                
                 var result = new { Success = true, resp = list };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

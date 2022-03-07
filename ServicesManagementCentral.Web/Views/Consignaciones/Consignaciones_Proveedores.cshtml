@@ -5,184 +5,202 @@
 <h2>Envio de Pedidos Pendientes</h2>
 <div class="row">
     <div class="col-sm-3 col-md-3 col-lg-3">
-        <div class="form-group">
-            <label>Fecha Inicio</label>
-            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
-            <div class="input-group date" id="datetimepicker1">
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                <input class="form-control datepicker" id="txtFecIni"
-                       type="text" value="@ViewBag.FecIni">
+        <span></span>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="input-group">
+            <input type="text" placeholder="Número de Orden" id="txtUeno" class="form-control form-control-lg">
+            <div class="input-group-btn">
+                <button class="btn btn-lg btn-primary" type="submit" onclick="SearchOrder()">
+                    Buscar
+                </button>
             </div>
         </div>
     </div>
     <div class="col-sm-3 col-md-3 col-lg-3">
-        <label>Fecha Fin</label>
-        @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
-        <div class="input-group date" id="datetimepicker2">
-            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-            <input class="form-control datepicker" id="txtFecFin"
-                   type="text" value="@ViewBag.FecFin">
-        </div>
-    </div>
-    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
-        <label>&nbsp;</label>
-        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetconsignacionesProveedor()">
-            Buscar
-        </button>
-
+        <span></span>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12">
-        <div style="width:99%;">
-            <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
-                <thead class="bg-danger-sor">
-                    <tr>
-                        <th>Número Almacen</th>
-                        <th>Nombre Almacen</th>
-                        <th>Numero de Pedido</th>
-                        @* <th>Total importe del Pedido</th>*@
-                        @*<th>Tipo Almacen </th>*@
-                        <th>Fecha creacion del pedido</th>
-                        <th>Hora creacion de pedido</th>
-                        <th>Fecha Pago Autorizado</th>
-                        <th>Fecha Limite Entrega a la Paqueteria</th>
-                        <th>Nombre del cliente</th>
-                        @*<th>Estatus de la orden</th>*@
-                        <th>Estatus del Pedido Surtido</th>
-                        <th>Estatus del Pedido Envio</th>
-                        <th>No. de orden de compra (DSV)</th>
-                        <th>Estatus de Orden de Compra (DSV)</th>
-                        <th>No. Guía</th>
-                        <th>Vigencia Guía</th>
-                        <th>Fecha Recolección</th>
-                        <th>Fecha Solicitud de Guía</th>
-                        <th>Punto de Venta</th>
-                        <th>Costo Total del Pedido</th>
-                        <th>Codigo de Producto</th>
-                        <th>Codigo de Barras</th>
-                        <th style="width:700px">Nombre del Producto</th>
-                        <th style="width:200px">Categoria del Producto</th>
-                        <th>Cantidad de Productos</th>
-                        <th>Precio de Producto</th>
-                        <th>Costo de la Consignación</th>
-
-                        @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
-                        @*<th>Guia de devolucion</th>*@
-                        @*<th>Estatus de la Guia de Devolucion</th>*@
-                        @*<th>Guia de reenvio</th>*@
-                        @*<th>Estatus de Guía de Reenvio</th>*@
-                        @*<th class="sorting">Motivo de no recolección</th>*@
-                        @*<th name='accion'></th>*@
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<div class="modal inmodal fade" id="dlgInventarios" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header pt-3 pb-1">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Almacen - Inventario </h4>
-            </div>
-            <div class="modal-body">
-                <form id="frm">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-12">
-                            <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
-                                <thead class="bg-danger-sor">
-                                    <tr>
-                                        <th>EAN/Codigo de barras</th>
-                                        <th>id</th>
-                                        <th>Descripción</th>
-                                        <th>Piezas</th>
-                                        <th>Costo Unitario</th>
-                                        <th>Peso volumetrico Unitario</th>
-                                        <th>Surtido/Dias transcurridos desde la cración</th>
-                                        <th>Surtido/Dias transcurridos desde la autorización</th>
-                                        <th>Fecha de envio</th>
-                                        <th>Hora de envio</th>
-                                        <th>RMA</th>
-                                        <th>Estatus del RMA</th>
-
-                                    </tr>
-
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                @*<button type="button" onclick="Save()" class="btn btn-primary">Guardar</button>*@
-                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal inmodal fade" id="dlgDesHabilitar" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header pt-3 pb-1">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Almacen - Autorización</h4>
-                <input type="hidden" id="hddNoProveedor" />
-                <input type="hidden" id="HddNoAlmacen" />
-
-            </div>
-            <div class="modal-body">
-                <form id="frmCreateServicios">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-12">
-                            <div class="form-group">
-                                <label>Motivo por el cual se Inhabilita: </label>
-                                <textarea class="form-control m-b" id="txtMotCan" rows="6" maxlength="250"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                <button type="button" onclick="Inhabilitar()" class="btn btn-primary">Inhabilitar</button>
-                @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                @*<h4 class="modal-title">Modal Header</h4>*@
-            </div>
-            <div class="modal-body">
-
-                @*<embed src="~/Content/Article List.pdf"
-                    frameborder="0" width="100%" height="400px">*@
-
-                <iframe id="viewrPDF" width="100%" height="400px" src=''></iframe>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <div class="row">
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <div class="form-group">
+                <label>Fecha Inicio</label>
+                @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+                <div class="input-group date" id="datetimepicker1">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control datepicker" id="txtFecIni"
+                           type="text" value="@ViewBag.FecIni">
                 </div>
             </div>
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <label>Fecha Fin</label>
+            @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
+            <div class="input-group date" id="datetimepicker2">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" id="txtFecFin"
+                       type="text" value="@ViewBag.FecFin">
+            </div>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+            <label>&nbsp;</label>
+            <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetconsignacionesProveedor()">
+                Buscar
+            </button>
 
         </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div style="width:99%;">
+                <table id="tblConsulta" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer ">
+                    <thead class="bg-danger-sor">
+                        <tr>
+                            <th>Número Almacen</th>
+                            <th>Nombre Almacen</th>
+                            <th>Numero de Pedido</th>
+                            @* <th>Total importe del Pedido</th>*@
+                            @*<th>Tipo Almacen </th>*@
+                            <th>Fecha creacion del pedido</th>
+                            <th>Hora creacion de pedido</th>
+                            <th>Fecha Pago Autorizado</th>
+                            <th>Fecha Limite Entrega a la Paqueteria</th>
+                            <th>Nombre del cliente</th>
+                            @*<th>Estatus de la orden</th>*@
+                            <th>Estatus del Pedido Surtido</th>
+                            <th>Estatus del Pedido Envio</th>
+                            <th>No. de orden de compra (DSV)</th>
+                            <th>Estatus de Orden de Compra (DSV)</th>
+                            <th>No. Guía</th>
+                            <th>Vigencia Guía</th>
+                            <th>Fecha Recolección</th>
+                            <th>Fecha Solicitud de Guía</th>
+                            <th>Punto de Venta</th>
+                            <th>Costo Total del Pedido</th>
+                            <th>Codigo de Producto</th>
+                            <th>Codigo de Barras</th>
+                            <th style="width:700px">Nombre del Producto</th>
+                            <th style="width:200px">Categoria del Producto</th>
+                            <th>Cantidad de Productos</th>
+                            <th>Precio de Producto</th>
+                            <th>Costo de la Consignación</th>
 
-@section scripts {
-    <script>
+                            @*<th>Consignacion de Reenvio/Sustituto/Cambio Fisico</th>*@
+                            @*<th>Guia de devolucion</th>*@
+                            @*<th>Estatus de la Guia de Devolucion</th>*@
+                            @*<th>Guia de reenvio</th>*@
+                            @*<th>Estatus de Guía de Reenvio</th>*@
+                            @*<th class="sorting">Motivo de no recolección</th>*@
+                            @*<th name='accion'></th>*@
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal fade" id="dlgInventarios" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header pt-3 pb-1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Almacen - Inventario </h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frm">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <table id="tblInventarios" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer " role="grid" style="width: 555px;">
+                                    <thead class="bg-danger-sor">
+                                        <tr>
+                                            <th>EAN/Codigo de barras</th>
+                                            <th>id</th>
+                                            <th>Descripción</th>
+                                            <th>Piezas</th>
+                                            <th>Costo Unitario</th>
+                                            <th>Peso volumetrico Unitario</th>
+                                            <th>Surtido/Dias transcurridos desde la cración</th>
+                                            <th>Surtido/Dias transcurridos desde la autorización</th>
+                                            <th>Fecha de envio</th>
+                                            <th>Hora de envio</th>
+                                            <th>RMA</th>
+                                            <th>Estatus del RMA</th>
+
+                                        </tr>
+
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    @*<button type="button" onclick="Save()" class="btn btn-primary">Guardar</button>*@
+                    @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal fade" id="dlgDesHabilitar" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header pt-3 pb-1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Almacen - Autorización</h4>
+                    <input type="hidden" id="hddNoProveedor" />
+                    <input type="hidden" id="HddNoAlmacen" />
+
+                </div>
+                <div class="modal-body">
+                    <form id="frmCreateServicios">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group">
+                                    <label>Motivo por el cual se Inhabilita: </label>
+                                    <textarea class="form-control m-b" id="txtMotCan" rows="6" maxlength="250"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="Inhabilitar()" class="btn btn-primary">Inhabilitar</button>
+                    @*<button type="button" onclick="addSurtidores()" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    @*<h4 class="modal-title">Modal Header</h4>*@
+                </div>
+                <div class="modal-body">
+
+                    @*<embed src="~/Content/Article List.pdf"
+                        frameborder="0" width="100%" height="400px">*@
+
+                    <iframe id="viewrPDF" width="100%" height="400px" src=''></iframe>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @section scripts {
+        <script>
 
         $(function () {
             $('#datetimepicker1').datetimepicker({
@@ -195,6 +213,84 @@
             });
 
         });
+
+            function SearchOrder() {
+                var _Ueno = $("#txtUeno").val();
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetConsignacionesByOrder", "consignaciones")',
+                data: {
+                    ViewType: 1,
+                    Seccion: 0,
+                    Ueno: _Ueno
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+
+
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+                            var urlGuia = '';
+                            for (var x = 0; x < json.guias.length; x++) {
+                                if (json.resp[i].OrdenCompra == json.guias[x].Id_Num_Orden && json.resp[i].Consignacion == json.guias[x].UeNo)
+                                {
+                                    if (urlGuia == '')
+                                        urlGuia = '<a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '_</a>'
+                                    else
+                                        urlGuia += '<br/> <a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '_</a>'
+                                }
+                            }
+
+                            myTable.row.add([
+                                json.resp[i].NroAlmacen,
+                                json.resp[i].NombreAlmacen,
+                               "<a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
+                                json.resp[i].FechaCreacion,
+                                json.resp[i].HoraCreacion,
+                                json.resp[i].FechaPago,
+                                json.resp[i].FechaLimite,
+                                json.resp[i].NombreCliente,
+                                json.resp[i].EstatusConsignacionAlmacen,
+                                json.resp[i].EstatusConsignacionEntrega,
+                                json.resp[i].NroOrdenCompra,
+                                json.resp[i].EstatusOrdenCompra,
+                                urlGuia,//json.resp[i].GuiaEnvio,
+                                json.resp[i].GuiaVig,
+                                json.resp[i].FechaProg,
+                                json.resp[i].FechaSolicitudGuia,
+                                json.resp[i].PuntoDeVenta,
+                                json.resp[i].TotalConsignacion,
+                                json.resp[i].ProductId,
+                                json.resp[i].Barcode,
+                                "<div style='width: 700px'>" + json.resp[i].ProductName + "</div>",
+                                "<div style='width: 200px'>" + json.resp[i].Categoria + "</div>",
+                                json.resp[i].Quantity,
+                                json.resp[i].Price,
+                                json.resp[i].CostoConsignacion
+
+                            ]).draw();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+            }
 
         function GetconsignacionesProveedor() {
 
@@ -290,9 +386,9 @@
 
         }
 
-    </script>
-    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
-    <script>
+        </script>
+        @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+        <script>
         $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(0) th').each(function (i) {
@@ -319,7 +415,7 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
                     processing: true,
-                    searching: true,
+                    searching: false,
                     ordering: true,
                     order: [[1, 'asc']],
                     filter: true,
@@ -448,5 +544,5 @@
             });
 
         }
-    </script>
-}
+        </script>
+    }

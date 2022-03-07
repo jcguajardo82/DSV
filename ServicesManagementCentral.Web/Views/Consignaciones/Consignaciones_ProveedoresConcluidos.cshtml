@@ -6,6 +6,24 @@
 <h2>Envio de Pedidos Concluidos</h2>
 <div class="row">
     <div class="col-sm-3 col-md-3 col-lg-3">
+        <span></span>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="input-group">
+            <input type="text" placeholder="Número de Orden" id="txtUeno" class="form-control form-control-lg">
+            <div class="input-group-btn">
+                <button class="btn btn-lg btn-primary" type="submit" onclick="SearchOrder()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <span></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
         <div class="form-group">
             <label>Fecha Inicio</label>
             @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
@@ -251,6 +269,67 @@
 
             });
         }*@
+         function SearchOrder() {
+                var _Ueno = $("#txtUeno").val();
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetConsignacionesByOrderConcluido", "consignaciones")',
+                data: {
+                    ViewType: 1,
+                    Seccion: 1,
+                    Ueno: _Ueno
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+
+
+
+                        var myTable = $('#tblConsulta').DataTable();
+                        myTable
+                            .clear()
+                            .draw();
+                        for (var i = 0; i < json.resp.length; i++) {
+
+
+                            myTable.row.add([
+                                json.resp[i].NroAlmacen,
+                                json.resp[i].NombreAlmacen,
+                                "<a href='ProcesoSurtido/ProcesoSurtido?OrderNo=" + json.resp[i].OrdenCompra + "&UeNo=" + json.resp[i].Consignacion + "' title='Click para ir al proveedor' class='link-primary' ><u>" + json.resp[i].Consignacion + "</u>",
+                                json.resp[i].FechaCreacion,
+                                json.resp[i].HoraCreacion,
+                                json.resp[i].NombreCliente,
+                                json.resp[i].EstatusConsignacionAlmacen,
+                                json.resp[i].EstatusConsignacionEntrega,
+                                json.resp[i].NroOrdenCompra,
+                                json.resp[i].EstatusOrdenCompra,
+                                json.resp[i].TipoGuia,
+                                json.resp[i].Paqueteria,
+                                json.resp[i].GuiaEnvio,
+                                json.resp[i].GuiaStatus,
+                                json.resp[i].FechaEntrega,
+                                json.resp[i].HoraEntrega,
+                                json.resp[i].QuienRecibio,
+                                json.resp[i].FechaSolicitudGuia,
+                                json.resp[i].PuntoDeVenta
+
+                            ]).draw();
+                        }
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    //bootbox.alert(errorThrown);
+                    alert("errorThrown");
+                }
+
+            });
+            }
         function GetconsignacionesProveedor() {
 
             var _FecIni = $("#txtFecIni").val();
@@ -311,7 +390,7 @@
                                 json.resp[i].QuienRecibio,
                                 json.resp[i].FechaSolicitudGuia,
                                 json.resp[i].PuntoDeVenta
-                       
+
                             ]).draw();
                         }
                     }
@@ -405,7 +484,7 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
                     processing: true,
-                    searching: true,
+                    searching: false,
                     ordering: true,
                     order: [[1, 'asc']],
                     filter: true,

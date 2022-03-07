@@ -7,6 +7,25 @@
 <h2>Envio de Pedidos</h2>
 <div class="row">
     <div class="col-sm-3 col-md-3 col-lg-3">
+        <span></span>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="input-group">
+            <input type="text" placeholder="Número de Orden" id="txtUeno" class="form-control form-control-lg">
+            <div class="input-group-btn">
+                <button class="btn btn-lg btn-primary" type="submit" onclick="SearchOrder()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <span></span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
         <div class="form-group">
             <label>Fecha Inicio</label>
             @*<input type="date" id="txtFecIniTarifa" class="form-control" />*@
@@ -239,7 +258,88 @@
 
             });
         }
+        function SearchOrder() {
+                var _Ueno = $("#txtUeno").val();
+                        $.ajax({
+                            async: false,
+                            type: "GET",
+                            url: '@Url.Action("GetConsignacionesByOrderAdm", "consignaciones")',
+                            data: {
+                                ViewType: 3,
+                                Seccion: 0,
+                                Ueno: _Ueno
+                            },
 
+                            datatype: "json",
+                            success: function (json) {
+                                if (json.Success) {
+
+
+
+
+                                    var myTable = $('#tblConsulta').DataTable();
+                                    myTable
+                                        .clear()
+                                        .draw();
+                                    for (var i = 0; i < json.resp.length; i++) {
+                                        var urlGuia = '';
+                                        for (var x = 0; x < json.guias.length; x++) {
+                                            if (json.resp[i].OrdenCompra == json.guias[x].Id_Num_Orden && json.resp[i].Consignacion == json.guias[x].UeNo) {
+                                                if (urlGuia == '')
+                                                    urlGuia = '<a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '_</a>'
+                                                else
+                                                    urlGuia += '<br/> <a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '_</a>'
+                                            }
+                                        }
+
+
+                                        myTable.row.add([
+                                            "<a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(\"" + json.resp[i].Consignacion + "\")'><u>" + json.resp[i].Consignacion + "</u></a>",
+                                            json.resp[i].NroProveedor,
+                                            json.resp[i].NombreProveedor,
+                                            json.resp[i].NroAlmacen,
+                                            json.resp[i].NombreAlmacen,
+                                            json.resp[i].TipoAlmacen,
+                                            json.resp[i].FechaCreacion,
+                                            json.resp[i].HoraCreacion,
+                                            json.resp[i].FechaPago,
+                                            json.resp[i].FechaLimite,
+                                            json.resp[i].NombreCliente,
+                                            json.resp[i].EstatusEnvio,
+                                            json.resp[i].EstatusConsignacionAlmacen,
+                                            json.resp[i].EstatusConsignacionEntrega,
+                                            json.resp[i].NroOrdenCompra,
+                                            json.resp[i].EstatusOrdenCompra,
+                                            json.resp[i].Transportista,
+                                            urlGuia,
+                                            json.resp[i].GuiaVig,
+                                            json.resp[i].FechaSolicitudGuia,
+                                            json.resp[i].PuntoDeVenta,
+                                            json.resp[i].ProductId,
+                                            json.resp[i].Barcode,
+                                            "<div style='width: 700px'>" + json.resp[i].ProductName + "</div>",
+                                            "<div style='width: 200px'>" + json.resp[i].Categoria + "</div>",
+                                            json.resp[i].Quantity,
+                                            json.resp[i].Price,
+                                            json.resp[i].CostoConsignacion,
+                                            json.resp[i].Destinatario,
+                                            json.resp[i].Surtido,
+                                            json.resp[i].SalidaAlmacen
+
+                                        ]).draw();
+                                    }
+                                }
+                                else {
+                                    alert(json.Message);
+                                }
+                            }
+                            , error: function (jqXHR, textStatus, errorThrown) {
+                                //bootbox.alert(errorThrown);
+                                alert("errorThrown");
+                            }
+
+                        });
+            }
         function GetconsignacionesAdm() {
 
             var _FecIni = $("#txtFecIni").val();
@@ -283,8 +383,8 @@
                                         urlGuia += '<br/> <a onclick="showpdf(\'' + json.guias[x].IdGuiasPaq + '\');return false;" href="#" title="Click para ver el pdf de la guia" class="btn btn-link">' + json.guias[x].IdGuiasPaq + '_</a>'
                                 }
                             }
-                            
-                        
+
+
                             myTable.row.add([
                                 "<a  title='Click para ver el detalle' class='link-primary' onclick='PopDetlleC(\"" + json.resp[i].Consignacion + "\")'><u>" + json.resp[i].Consignacion + "</u></a>",
                                 json.resp[i].NroProveedor,
@@ -317,7 +417,7 @@
                                 json.resp[i].Destinatario,
                                 json.resp[i].Surtido,
                                 json.resp[i].SalidaAlmacen
-                                
+
                             ]).draw();
                         }
 
@@ -365,7 +465,7 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
                     processing: true,
-                    searching: true,
+                    searching: false,
                     ordering: true,
                     order: [[1, 'asc']],
                     filter: true,
@@ -471,7 +571,7 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
                     processing: true,
-                    searching: true,
+                    searching: false,
                     ordering: true,
                     order: [[1, 'asc']],
                     filter: true,
