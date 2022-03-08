@@ -128,7 +128,7 @@ namespace ServicesManagement.Web.Controllers
                     }
                     else
                     {
-                        idOwner = 4;
+                        idOwner = 0;
                     }
                 }
             }
