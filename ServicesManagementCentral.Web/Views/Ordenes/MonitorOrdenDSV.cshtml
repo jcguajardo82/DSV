@@ -146,9 +146,12 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 70px;">No. Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;">Nombre Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">No. Pedido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">No. Orden de Compra</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Fecha Creación</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 120px;">Fecha Límite</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Fecha Inicio</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Estatus del Pedido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Proceso Pendiente</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -173,6 +176,7 @@
                                                         @p["UeNo"]
                                                     </a>
                                                 </td>
+                                                <td style="text-align:center">@p["OrderNo"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
@@ -190,6 +194,8 @@
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Surtido"].ToString())" style="text-align:center">@p["FechaSurtido"]</td>
                                                 }
+                                                <td style="text-align:center">@p["StatusDescriptionUE"]</td>
+                                                <td style="text-align:center">@p["StatusDescription"]</td>
                                             </tr>
                                         }
                                     }
@@ -211,6 +217,7 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 115px;">No. Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 115px;">Nombre Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">No. Pedido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">No. Orden de Compra</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Fecha Creación</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 124px;">Fecha Solicitud</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Fecha Limite</th>
@@ -252,6 +259,7 @@
                                                     <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })"
                                                        title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
                                                 </td>                                                
+                                                <td style="text-align:center">@p["OrderNo"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
                                                 {
