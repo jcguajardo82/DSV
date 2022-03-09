@@ -27,7 +27,9 @@ namespace ServicesManagement.Web.Controllers
                 DataSet ds = DALServicesM.upCorpOms_Sel_ShipmentProcessedFromWMS();
                 List<upCorpOms_Sel_ShipmentProcessedFromWMSModel> listC = DataTableToModel.ConvertTo<upCorpOms_Sel_ShipmentProcessedFromWMSModel>(ds.Tables[0]);
                 var result = new { Success = true, json = listC };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                //return Json(result, JsonRequestBehavior.AllowGet);
+                return new JsonResult { Data = result, MaxJsonLength = Int32.MaxValue, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                
             }
             catch (Exception ex)
             {
