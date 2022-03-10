@@ -147,8 +147,12 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;">Nombre Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">No. Pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Fecha Creación</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Fecha Autorización</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">Tipo Pago</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 120px;">Fecha Límite</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Fecha Inicio</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Fecha Surtido WMS</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Estatus del Pedido</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -170,6 +174,8 @@
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
                                                 <td style="text-align:center;">@p["UeNo"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
+                                                <td style="text-align:center">@p["FechaAutorizacion"]</td>
+                                                <td style="text-align:center;">@p["TipoPago"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Limite"].ToString())" style="text-align:center">@p["FechaLimite"]</td>
@@ -186,6 +192,8 @@
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Surtido"].ToString())" style="text-align:center">@p["FechaSurtido"]</td>
                                                 }
+                                                <td style="text-align:center">@p["FechaSurtidoWMS"]</td>
+                                                <td style="text-align:center;">@p["StatusDescriptionUE"]</td>
                                             </tr>
                                         }
                                     }
@@ -208,11 +216,15 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 115px;">Nombre Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">No. Pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Fecha Creación</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Fecha Autorización</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">Tipo Pago</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Fecha Surtido WMS</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 124px;">Fecha Solicitud</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 126px;">Fecha Limite</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">No. Guía</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">Transportista</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">Estatus del pedido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">Tipo Envio</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 90px;">Estatus de la guía</th>
                                 </tr>
                             </thead>
@@ -246,6 +258,9 @@
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
                                                 <td style="text-align:center;">@p["UeNo"]</td>                                                
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
+                                                <td style="text-align:center">@p["FechaAutorizacion"]</td>
+                                                <td style="text-align:center;">@p["TipoPago"]</td>
+                                                <td style="text-align:center">@p["FechaSurtidoWMS"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_SolGuia"].ToString())" style="text-align:center;">@p["FechaSolGuia"]</td>
@@ -308,6 +323,7 @@
                                                 </td>
                                                 <td>@Transportista</td>
                                                 <td>@p["EstatusPedido"]</td>
+                                                <td style="text-align:center;">@p["TipoEnvio"]</td>
                                                 <td>@GuiasPaqEstatusDesc</td>
                                             </tr>
                                         }
