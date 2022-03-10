@@ -3842,5 +3842,47 @@ namespace ServicesManagement.Web
             }
 
         }
+        public static DataSet GuardarPickUp(string UeNo, int OrderNo, string IdTracking, string json, string user, string carrier, string date, string postalCode)
+        {
+
+            DataSet ds = new DataSet();
+            string result = string.Empty;
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+                parametros.Add("@UeNo", UeNo);
+                parametros.Add("@OrderNo", OrderNo);
+                parametros.Add("@IdTracking", IdTracking);
+                parametros.Add("@json", json);
+                parametros.Add("@createdUser", user);
+                if(!string.IsNullOrEmpty(carrier))
+                    parametros.Add("@carrier", carrier);
+                if (!string.IsNullOrEmpty(date))
+                    parametros.Add("@date", date);
+                if(!string.IsNullOrEmpty(postalCode))
+                    parametros.Add("@postalCode", postalCode);
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoPickUp]", false, parametros);
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+
+            return ds;
+        }
     }
 }

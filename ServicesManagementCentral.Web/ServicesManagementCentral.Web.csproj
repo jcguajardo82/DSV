@@ -348,7 +348,9 @@
     <Compile Include="Models\Cotizador\DimensionsModel.cs" />
     <Compile Include="Models\Cotizador\PackageModel.cs" />
     <Compile Include="Models\Cotizador\Pickup.cs" />
+    <Compile Include="Models\Cotizador\RecoleccionRequestModel.cs" />
     <Compile Include="Models\Cotizador\SettingsModel.cs" />
+    <Compile Include="Models\Cotizador\SettingsRecoleccionModel.cs" />
     <Compile Include="Models\Cotizador\ShipmentLTLModel.cs" />
     <Compile Include="Models\Cotizador\ShipmentModel.cs" />
     <Compile Include="Models\Cotizador\TarifaModel.cs" />

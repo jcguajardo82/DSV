@@ -9,7 +9,7 @@ namespace ServicesManagement.Web.Models
     public class CarrierRequest
     {
         public string Carrier { get; set; }
-        public string request { get; set; }
+        public string[] requests { get; set; }
         public string msj { get; set; }
     }
 }

@@ -2118,7 +2118,7 @@ namespace ServicesManagement.Web.Controllers
         [HttpPost]
         public ActionResult AddEmbalaje(List<PackageMeasure> Paquetes, string UeNo, int OrderNo, List<ProductEmbalaje> Products, string TrackingType = "Normal")
         {
-            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty, service = string.Empty, trackUrl = string.Empty;
+            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty, service = string.Empty, trackUrl = string.Empty, requestRecoleccion = string.Empty;
             try
             {
                 int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
@@ -2191,12 +2191,13 @@ namespace ServicesManagement.Web.Controllers
                         }
                         if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
                         {
-                            var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
+                            var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().requests[0];
                             guia = CreateGuiaEnvia(request, service, peso);
                             if (guia != "ERROR")
                             {
                                 servicioPaq = "Envia-" + paqueteria;
                                 trackUrl = guia.Split(',')[2];
+                                requestRecoleccion = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().requests[1];
                             }
                         }
                         if (guia != "ERROR")
@@ -2212,6 +2213,19 @@ namespace ServicesManagement.Web.Controllers
                     item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
                     User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
                     DALServicesM.CarrierSelected(OrderNo, cotizeId);
+
+                    if (!string.IsNullOrEmpty(requestRecoleccion))
+                    {
+                        var responseRecoleccion = RecoleccionEnvia(requestRecoleccion);
+                        
+                        if(responseRecoleccion.Contains("carrier"))
+                            DALServicesM.GuardarPickUp(UeNo, OrderNo, FolioDisp, responseRecoleccion, User.Identity.Name, null, null, null);
+                        else
+                        {
+                            RecoleccionRequestModel request = JsonConvert.DeserializeObject<RecoleccionRequestModel>(requestRecoleccion);
+                            DALServicesM.GuardarPickUp(UeNo, OrderNo, FolioDisp, "--", User.Identity.Name, paqueteria, request.shipment.pickup.date, request.origin.postalCode);
+                        }
+                    }
                 }
 
                 //DESCOMENTAR
@@ -2315,7 +2329,7 @@ namespace ServicesManagement.Web.Controllers
         }
         public ActionResult AddEmbalajePendiente(List<ShipmentToTrackingModel> Paquetes)
         {
-            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty, service = string.Empty, trackUrl = string.Empty;
+            string tarifa = string.Empty, paqueteria = string.Empty, guia = string.Empty, servicioPaq = string.Empty, service = string.Empty, trackUrl = string.Empty, requestRecoleccion = string.Empty;
             try
             {
                 int enviaCom = int.Parse(DALServicesM.ActiveEnviaCom().Tables[0].Rows[0][0].ToString());
@@ -2407,12 +2421,13 @@ namespace ServicesManagement.Web.Controllers
                         }
                         if (!paqueteria.Equals("Estafeta") && !paqueteria.Contains("Logyt"))
                         {
-                            var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().request;
+                            var request = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().requests[0];
                             guia = CreateGuiaEnvia(request, service, peso);
                             if (guia != "ERROR")
                             {
                                 servicioPaq = "Envia-" + paqueteria;
                                 trackUrl = guia.Split(',')[2];
+                                requestRecoleccion = lstCarrierRequests.Where(x => x.Carrier == paqueteria).FirstOrDefault().requests[1];
                             }
                         }
                         if (guia != "ERROR")
@@ -2444,8 +2459,21 @@ namespace ServicesManagement.Web.Controllers
 
                         DALServicesM.UCCProcesada(item.ucc);
                         DALServicesM.CarrierSelected(item.orderNo, cotizeId);
-                        // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
-                        Correos.Correos.Correo7(item.orderNo);
+
+                        if (!string.IsNullOrEmpty(requestRecoleccion))
+                        {
+                            var responseRecoleccion = RecoleccionEnvia(requestRecoleccion);
+
+                            if (responseRecoleccion.Contains("carrier"))
+                                DALServicesM.GuardarPickUp(item.ueNo, item.orderNo, FolioDisp, responseRecoleccion, User.Identity.Name, null, null, null);
+                            else
+                            {
+                                RecoleccionRequestModel request = JsonConvert.DeserializeObject<RecoleccionRequestModel>(requestRecoleccion);
+                                DALServicesM.GuardarPickUp(item.ueNo, item.orderNo, FolioDisp, "--", User.Identity.Name, paqueteria, request.shipment.pickup.date, request.origin.postalCode);
+                            }
+                        }
+                    // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
+                    Correos.Correos.Correo7(item.orderNo);
                         //var s = item.ueNo.Split('-');
                         //Correos.Correos.Correo7(int.Parse(s[0]));
 
@@ -3618,6 +3646,26 @@ namespace ServicesManagement.Web.Controllers
 
             return result;
         }
+        public string RecoleccionEnvia(string request)
+        {
+            string result = string.Empty;
+            try
+            {
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Envia_Recoleccion"], "", request);
+
+                result = r2.message;
+
+            }
+            catch
+            {
+                //throw new Exception("La generacion de la Guia por Envia.Com Fallo. " + ex.Message);
+                result = "ERROR";
+            }
+
+            return result;
+        }
         //public string CreateGuiaLogyt(string UeNo, int OrderNo, int weight, int typeId)
         //{
         //    var ServiceTypeId = 1;
@@ -3889,11 +3937,13 @@ namespace ServicesManagement.Web.Controllers
 
             return _json;
         }
-        private string RequestCotizador(DataSet ds)
+        private string[] RequestCotizador(DataSet ds)
         {
-            string _json = string.Empty;
+            string _json = string.Empty, _jsonRecoleccion = string.Empty;
+            string[] result = new string[2];
 
             CotizadorRequestModel requestCotizador = new CotizadorRequestModel();
+            RecoleccionRequestModel requestRecoleccion = new RecoleccionRequestModel();
 
             foreach (DataRow r in ds.Tables[0].Rows)
             {
@@ -3911,6 +3961,8 @@ namespace ServicesManagement.Web.Controllers
                 origin.reference = r["reference"].ToString();
                 origin.state = r["state"].ToString();
                 origin.street = r["street"].ToString();
+
+                requestRecoleccion.origin = origin;
 
                 CoordinatesModel coordinates = new CoordinatesModel();
                 coordinates.latitudde = r["latitude"].ToString();
@@ -3947,6 +3999,27 @@ namespace ServicesManagement.Web.Controllers
                 requestCotizador.destination = destination;
             }
 
+            foreach (DataRow r in ds.Tables[2].Rows)
+            {
+                ShipmentLTLModel shipment = new ShipmentLTLModel();
+
+                shipment.carrier = r["carrier"].ToString();
+                shipment.type = 1;
+
+                Pickup pickup = new Pickup();
+                pickup.timeFrom = "9";
+                pickup.timeTo = "14";
+                var today = DateTime.Today;
+                var tomorrow = today.AddDays(1);
+                pickup.date = tomorrow.ToString("yyyy") + "-" + tomorrow.ToString("MM") + "-" + tomorrow.ToString("dd");
+                pickup.instructions = "Recolectar en direccion indicada";
+                pickup.totalPackages = 1;
+                pickup.totalWeight = decimal.Round(Convert.ToDecimal(Session["SumPeso"].ToString()));
+
+                shipment.pickup = pickup;
+
+                requestRecoleccion.shipment = shipment;
+            }
 
             PackageModel packages = new PackageModel();
             packages.amount = 1;
@@ -3992,15 +4065,22 @@ namespace ServicesManagement.Web.Controllers
 
                 requestCotizador.settings = settings;
             }
+            SettingsRecoleccionModel settingsRecoleccionModel = new SettingsRecoleccionModel();
+            settingsRecoleccionModel.currency = "MXN";
+            settingsRecoleccionModel.labelFormat = "pdf";
+
+            requestRecoleccion.settings = settingsRecoleccionModel;
 
             _json = JsonConvert.SerializeObject(requestCotizador);
+            result[0] = _json;
+            _jsonRecoleccion = JsonConvert.SerializeObject(requestRecoleccion);
+            result[1] = _jsonRecoleccion;
 
-
-            return _json;
+            return result;
         }
         public CarrierRequest CreateGuiaCotizador(string UeNo, int OrderNo, int type, string carrier, int weight)
         {
-            string _json = string.Empty;
+            string[] _json = new string[2];
             DataSet ds = new DataSet();
             CarrierRequest carrierRequest = new CarrierRequest();
 
@@ -4032,15 +4112,15 @@ namespace ServicesManagement.Web.Controllers
                 return carrierRequest;
             }
 
-            if (weight > 70)
-                _json = RequestLTLCotizador(ds);
-            else
-                _json = RequestCotizador(ds);
+            //if (weight > 70)
+            //    _json = RequestLTLCotizador(ds);
+            //else
+            _json = RequestCotizador(ds);
 
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             
-            Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Cotizador_Guia"], "", _json);
+            Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Cotizador_Guia"], "", _json[0]);
 
             string msg = r2.message;
 
@@ -4048,7 +4128,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 CotizadorResponseModel re = JsonConvert.DeserializeObject<CotizadorResponseModel>(r2.message);
                 carrierRequest.Carrier = carrier;
-                carrierRequest.request = _json;
+                carrierRequest.requests = _json;
                 carrierRequest.msj = msg;
             }
 
