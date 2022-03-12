@@ -105,7 +105,7 @@
                                     <td style="text-align:center">@p["idSupplierWHCode"]</td>
                                     <td style="text-align:center">@p["SupplierWHName"]</td>
                                     <td style="text-align:center;">
-                                        <a id="@p["UeNo"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, @p["Recibido"])"
+                                        <a id="@p["Idcancelacion"]" name="@p["OrderNo"]" onclick="popUpLstProds(this, '@p["UeNo"]', @p["Recibido"])"
                                            title="Click para ver la lista de productos asociados al pedido" class="link"><u>@p["UeNo"].ToString()</u></a>
                                     </td>
                                     <td style="text-align:right">@p["OrderDate"] </td>
@@ -457,9 +457,9 @@
             });
         }
 
-        function popUpLstProds(el, bitRecibido) {
-            var _UeNo = $(el).attr('id');
-            $('#selUeNo').val($(el).attr('id'));
+        function popUpLstProds(el, tmpUeNo, bitRecibido) {
+            var Id_cancelacion = $(el).attr('id');
+            $('#selUeNo').val(tmpUeNo);
             $('#selOrderNo').val($(el).attr('name'));
             $('#selRecibido').val(bitRecibido);
 
@@ -543,36 +543,27 @@
                     }
                     var MotivoDevol = $(row)[0].cells[7].innerText;
                     var Comentarios = $(row)[0].cells[8].childNodes[0].value;
-                    if ($(this).is(":disabled")) {
-                        alert("Ese artículo ya fue confirmado su devolución con anterioridad.");
-                        return;
-                    }
-                    else {
-                        $.ajax({
-                            async: false,
-                            type: "GET",
-                            url: '@Url.Action("AceptarDevolucion", "ProcesoReciboDevoluciones")',
-                            data: {
-                                UeNo: _UeNo,
-                                OrderNo: _OrderNo,
-                                IdTrackingService: _IdTrackingService,
-                                TrackingType: _TrackingType,
-                                ProductId: ProductId,
-                                Barcode: Barcode,
-                                ProductName: ProductName,
-                                CreationId: CreationId,
-                                PackageCondition: PackageCondition,
-                                MotivoDevol: MotivoDevol,
-                                ReturnedComment: Comentarios
-                            },
-                            datatype: "html",
-                            success: function (json) {
-                                if (json.Success) {
-                                    alert(json.resp);
-                                }
-                                else {
-                                    alert(json.Message);
-                                }
+                    $.ajax({
+                        async: false,
+                        type: "GET",
+                        url: '@Url.Action("AceptarDevolucion", "ProcesoReciboDevoluciones")',
+                        data: {
+                            UeNo: _UeNo,
+                            OrderNo: _OrderNo,
+                            IdTrackingService: _IdTrackingService,
+                            TrackingType: _TrackingType,
+                            ProductId: ProductId,
+                            Barcode: Barcode,
+                            ProductName: ProductName,
+                            CreationId: CreationId,
+                            PackageCondition: PackageCondition,
+                            MotivoDevol: MotivoDevol,
+                            ReturnedComment: Comentarios
+                        },
+                        datatype: "html",
+                        success: function (json) {
+                            if (json.Success) {
+                                alert(json.resp);
                             }
                             , error: function (jqXHR, textStatus, errorThrown) {
                                 alert(jqXHR.responseText);
