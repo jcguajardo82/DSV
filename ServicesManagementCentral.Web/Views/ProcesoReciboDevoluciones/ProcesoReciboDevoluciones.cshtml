@@ -543,27 +543,36 @@
                     }
                     var MotivoDevol = $(row)[0].cells[7].innerText;
                     var Comentarios = $(row)[0].cells[8].childNodes[0].value;
-                    $.ajax({
-                        async: false,
-                        type: "GET",
-                        url: '@Url.Action("AceptarDevolucion", "ProcesoReciboDevoluciones")',
-                        data: {
-                            UeNo: _UeNo,
-                            OrderNo: _OrderNo,
-                            IdTrackingService: _IdTrackingService,
-                            TrackingType: _TrackingType,
-                            ProductId: ProductId,
-                            Barcode: Barcode,
-                            ProductName: ProductName,
-                            CreationId: CreationId,
-                            PackageCondition: PackageCondition,
-                            MotivoDevol: MotivoDevol,
-                            ReturnedComment: Comentarios
-                        },
-                        datatype: "html",
-                        success: function (json) {
-                            if (json.Success) {
-                                alert(json.resp);
+                    if ($(this).is(":disabled")) {
+                        alert("Ese artículo ya fue confirmado su devolución con anterioridad.");
+                        return;
+                    }
+                    else {
+                        $.ajax({
+                            async: false,
+                            type: "GET",
+                            url: '@Url.Action("AceptarDevolucion", "ProcesoReciboDevoluciones")',
+                            data: {
+                                UeNo: _UeNo,
+                                OrderNo: _OrderNo,
+                                IdTrackingService: _IdTrackingService,
+                                TrackingType: _TrackingType,
+                                ProductId: ProductId,
+                                Barcode: Barcode,
+                                ProductName: ProductName,
+                                CreationId: CreationId,
+                                PackageCondition: PackageCondition,
+                                MotivoDevol: MotivoDevol,
+                                ReturnedComment: Comentarios
+                            },
+                            datatype: "html",
+                            success: function (json) {
+                                if (json.Success) {
+                                    alert(json.resp);
+                                }
+                                else {
+                                    alert(json.Message);
+                                }
                             }
                             , error: function (jqXHR, textStatus, errorThrown) {
                                 alert(jqXHR.responseText);
