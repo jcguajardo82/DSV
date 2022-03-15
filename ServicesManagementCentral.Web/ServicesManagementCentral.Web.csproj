@@ -255,6 +255,7 @@
     <Compile Include="Controllers\OperacionesController.cs" />
     <Compile Include="Controllers\OrdenesCompraController.cs" />
     <Compile Include="Controllers\OrdenesDSTController.cs" />
+    <Compile Include="Controllers\PrioridadInventarioController.cs" />
     <Compile Include="Controllers\ProcesoReciboDevolucionesController.cs" />
     <Compile Include="Controllers\RenviodeMercanciaController.cs" />
     <Compile Include="Controllers\ProcesoSurtido.cs" />
@@ -287,6 +288,7 @@
     <Compile Include="DAL\NotificacionesSis\DALNotificacionesSis.cs" />
     <Compile Include="DAL\OrdenesCompra\DALOrdenesCompra.cs" />
     <Compile Include="DAL\Ordenes\DALEmbarques.cs" />
+    <Compile Include="DAL\PriorizacionInventario\DALPriorizacionInventario.cs" />
     <Compile Include="DAL\ProcesoReciboDevoluciones\DALProcesoReciboDevoluciones.cs" />
     <Compile Include="DAL\ProcesoSurtido\DALProcesoSurtido.cs" />
     <Compile Include="DAL\ReenvioMcia\DALReenvioMciaCEDIS.cs" />
@@ -375,6 +377,7 @@
     <Compile Include="Models\NotificacionesSis\ImagenNotificacion.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrders.cs" />
     <Compile Include="Models\OrdenesCompra\upCorpOMS_Cns_UeNoShoppingOrdersDetail.cs" />
+    <Compile Include="Models\PriorizacionInventario\PriorizacionInventarioModel.cs" />
     <Compile Include="Models\ProcesadorPagosSoriana\AprobacionesMarcas.cs" />
     <Compile Include="Models\ProcesadorPagosSoriana\CancellationModel.cs" />
     <Compile Include="Models\ProcesadorPagosSoriana\JsonRespoonseModel.cs" />
@@ -3969,6 +3972,7 @@
     <Content Include="Views\ProcesoReciboDevoluciones\ProcesoReciboDevolucionesCEDIS.cshtml" />
     <Content Include="Views\ProcesoReciboDevoluciones\ProcesoReciboDevolucionesDSV.cshtml" />
     <Content Include="Views\ProcesoReciboDevoluciones\ProcesoReciboDevolucionesDST.cshtml" />
+    <Content Include="Views\PrioridadInventario\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

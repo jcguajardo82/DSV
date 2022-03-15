@@ -1,0 +1,220 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4"><h2>Prioridad de Inventario</h2></div>
+    <div class="col-4"></div>
+
+</div>
+<div id="myDiv"></div>
+
+@*<div class="row">
+    <div class="col-sm-2 col-md-3 col-lg-2">
+        <div class="form-group">
+            <label>Prioridad de Surtido 1</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-3 col-lg-2">
+        <div class="form-group">
+            <select class="form-control m-b" id="ddlPrioridad1">
+                <option value="2">DST</option>
+                <option value="3">CEDIS</option>
+                <option value="4">DSV</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-2 col-md-3 col-lg-2">
+        <div class="form-group">
+            <label>Prioridad de Surtido 2</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-3 col-lg-2">
+        <div class="form-group">
+            <select class="form-control m-b" id="ddlPrioridad2">
+                <option value="2">DST</option>
+                <option value="3">CEDIS</option>
+                <option value="4">DSV</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-2 col-md-3 col-lg-2">
+        <div class="form-group">
+            <label>Prioridad de Surtido 3</label>
+        </div>
+    </div>
+    <div class="col-sm-2 col-md-3 col-lg-2">
+        <div class="form-group">
+            <select class="form-control m-b" id="ddlPrioridad3">
+                <option value="2">DST</option>
+                <option value="3">CEDIS</option>
+                <option value="4">DSV</option>
+            </select>
+        </div>
+    </div>
+</div>*@
+<div class="row">
+    <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
+        <label>&nbsp;</label>
+        <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="Guardar()">
+            Guardar
+        </button>
+
+    </div>
+</div>
+@section scripts {
+
+    <script>
+        var countCEDIS = 0;
+        var countDST = 0;
+        var countDSV = 0;
+        var countPrioridad = 0;
+        $(document).ready(function () {
+
+            Load();
+        });
+        function SelectedOption(idOwner) {
+
+            if (idOwner == 2)
+                return "<option selected value='2'>DST</option><option value='3'>CEDIS</option><option value='4'>DSV</option>";
+            if (idOwner == 3)
+                return "<option value='2'>DST</option><option selected value='3'>CEDIS</option><option value='4'>DSV</option>";
+            if (idOwner == 4)
+                return "<option value='2'>DST</option><option value='3'>CEDIS</option><option selected value='4'>DSV</option>";
+        }
+        function Load() {
+            //var json = [];
+            //let _obj = {};
+            //_obj.IdOwner = 2;
+            //_obj.Prioridad = 1;
+            //json.push(_obj);
+            //let _obj1 = {};
+            //_obj1.IdOwner = 3;
+            //_obj1.Prioridad = 2;
+            //json.push(_obj1);
+            //let _obj2 = {};
+            //_obj2.IdOwner = 4;
+            //_obj2.Prioridad = 3;
+            //json.push(_obj2);
+
+
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetPrioridadInventario", "PrioridadInventario")',
+                    datatype: "html",
+                    success: function (json) {
+                        debugger;
+                        if (json.Success) {
+                            var textHtml = "";
+                            for (var i = 0; i < json.json.length; i++) {
+                                textHtml += "<div class='row'><div class='col-sm-2 col-md-3 col-lg-2' ><div class='form-group'><label>Prioridad de Surtido " + json.json[i].Prioridad + "</label ></div ></div > " +
+                                    "<div class='col-sm-2 col-md-3 col-lg-2'> <div class='form-group'>" +
+                                    "<select class='form-control m-b' id='ddlPrioridad_" + json.json[i].Prioridad + "'>" + SelectedOption(json.json[i].IdOwner) +
+                                    "</select></div></div></div>";
+                                countPrioridad++;
+                            }
+
+
+                            $("#myDiv").html(textHtml);
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(errorThrown);
+
+                    }
+                });
+
+            //var textHtml = "";
+            //for (var i = 0; i < json.length; i++) {
+            //    textHtml += "<div class='row'><div class='col-sm-2 col-md-3 col-lg-2' ><div class='form-group'><label>Prioridad de Surtido " + json[i].Prioridad + "</label ></div ></div > " +
+            //        "<div class='col-sm-2 col-md-3 col-lg-2'> <div class='form-group'>" +
+            //        "<select class='form-control m-b' id='ddlPrioridad_" + json[i].Prioridad + "'>" + SelectedOption(json[i].IdOwner) +
+            //        "</select></div></div></div>";
+            //    countPrioridad++;
+            //}
+
+
+            //$("#myDiv").html(textHtml);
+        }
+        function Contador(value) {
+            if (value == '2')
+                countDST++;
+            if (value == '3')
+                countCEDIS++;
+            if (value == '4')
+                countDSV++;
+        }
+        function Guardar() {
+            var _json = [];
+
+            for (var i = 1; i <= countPrioridad; i++) {
+                Contador($("#ddlPrioridad_" + i).val());
+                let _obj = {};
+                _obj.IdOwner = $("#ddlPrioridad_" + i).val();
+                _obj.Prioridad = i;
+                _json.push(_obj);
+
+            }
+
+            if (countCEDIS == 1 && countDST == 1 && countDSV == 1) {
+                var result = JSON.stringify(_json);
+
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("PrioridadInventario", "PrioridadInventario")',
+                    data: {
+                        json: result
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        debugger;
+                        if (json.Success) {
+                            countCEDIS = 0;
+                            countDST = 0;
+                            countDSV = 0;
+                            alert('Cambios Guardados Correctamente');
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(errorThrown);
+
+                    }
+                });
+
+            } else {
+                alert('Se esta repitiendo una Prioridad en varios Almacenes');
+                return;
+            }
+
+            values.forEach(x => {
+
+                _json += '{ "mes": "' + $("#ddlAnio").val() + x + '" },'
+                count++;
+            });
+
+            if (count == 1) {
+                alert('Seleccione por lo menos un Mes');
+                return;
+            } else {
+                _json += '] }';
+            }
+            //alert(_json);
+
+        }
+
+    </script>
+}
