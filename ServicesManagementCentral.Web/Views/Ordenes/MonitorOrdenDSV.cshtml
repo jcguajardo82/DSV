@@ -176,7 +176,7 @@
                                                         @p["UeNo"]
                                                     </a>
                                                 </td>
-                                                <td style="text-align:center">@p["OrderNo"]</td>
+                                                <td style="text-align:center">@p["OrdenCompra"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
@@ -195,7 +195,11 @@
                                                     <td class="@ColoresSemaforo(@p["Color_Surtido"].ToString())" style="text-align:center">@p["FechaSurtido"]</td>
                                                 }
                                                 <td style="text-align:center">@p["StatusDescriptionUE"]</td>
-                                                <td style="text-align:center">@p["StatusDescription"]</td>
+                                                <td style="text-align:center">
+                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para procesar el surtido" class="btn btn-link">
+                                                        Procesar Surtido
+                                                    </a>
+                                                </td>
                                             </tr>
                                         }
                                     }
@@ -259,7 +263,7 @@
                                                     <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })"
                                                        title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
                                                 </td>                                                
-                                                <td style="text-align:center">@p["OrderNo"]</td>
+                                                <td style="text-align:center">@p["OrdenCompra"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
                                                 {

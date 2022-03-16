@@ -174,10 +174,10 @@
                                                 <td style="text-align:center;">@p["supplierName"]</td>
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
-                                                @if (@p["idOwner"].ToString() == "4")
+                                                @if (@p["idOwner"].ToString() != "1")
                                                 {
                                                     <td style="text-align:center;">
-                                                        <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
+                                                        <a href="@Url.Action("ConsultaDetalleMonitor", "Ordenes", new { order = @p["OrderNo"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
                                                             @p["UeNo"]
                                                         </a>
                                                     </td>
@@ -207,8 +207,12 @@
                                                 }
                                                 <td style="text-align:center">@p["FechaSurtidoWMS"]</td>
                                                 <td style="text-align:center;">@p["StatusDescriptionUE"]</td>
-                                                <td style="text-align:center">@p["OrderNo"]</td>
-                                                <td style="text-align:center">@p["StatusDescription"]</td>
+                                                <td style="text-align:center">@p["OrdenCompra"]</td>
+                                                <td style="text-align:center">
+                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para procesar el surtido" class="btn btn-link">
+                                                        Procesar Surtido
+                                                    </a>
+                                                </td>
                                             </tr>
                                         }
                                     }
@@ -275,10 +279,10 @@
                                                 <td style="text-align:center;">@p["supplierName"]</td>
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
-                                                @if (@p["idOwner"].ToString() == "4")
+                                                @if (@p["idOwner"].ToString() != "1")
                                                 {
                                                     <td style="text-align:center;">
-                                                        <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })"
+                                                        <a href="@Url.Action("ConsultaDetalleMonitor", "Ordenes", new { order = @p["OrderNo"] })"
                                                            title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
                                                     </td>   
                                                 }
@@ -286,7 +290,7 @@
                                                 { 
                                                     <td style="text-align:center;">@p["UeNo"]</td>
                                                 }                                                
-                                                <td style="text-align:center">@p["OrderNo"]</td>
+                                                <td style="text-align:center">@p["OrdenCompra"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
                                                 {
@@ -357,7 +361,11 @@
                                                 <td style="text-align:center">@p["FechaSurtidoWMS"]</td>
                                                 <td></td>
                                                 <td style="text-align:center;">@p["TipoEnvio"]</td>
-                                                <td></td>
+                                                <td>
+                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para procesar el surtido" class="btn btn-link">
+                                                        Solicitar guía
+                                                    </a>
+                                                </td>
                                             </tr>
                                         }
                                     }

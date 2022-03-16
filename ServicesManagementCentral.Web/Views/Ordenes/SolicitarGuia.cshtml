@@ -1,0 +1,36 @@
+﻿@using ServicesManagement.Web.Models.ProcesoSurtido;
+
+<div class="modal inmodal fade" id="dlgMotivoSol" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Solicitud de Guía</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <div class="row" id="divDdlMotSol">
+                        <div class="col col-xs-12 col-md-12">
+                            <div class="form-group">
+                                <label>Motivo de Solicitud:</label>
+                                <select id="ddlMotSol" class="form-control">
+                                    <option value="0">--Seleccione</option>
+                                    <option value="1">Error en Sistema No se puede solicitar guía</option>
+                                    <option value="2">Error en Sistema Tipo de Guía incorrecta</option>
+                                    <option value="3">Vencimiento de guía</option>
+                                    <option value="4">Faltó solicitar Guía para el pedido</option>
+                                    <option value="5">Reenvío de Pedido</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="AceptarSol()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
