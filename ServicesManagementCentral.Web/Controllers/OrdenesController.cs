@@ -1075,6 +1075,46 @@ namespace ServicesManagement.Web.Controllers
             }
         }
 
+        public ActionResult ConsultaDetalleMonitor(string order)
+        {
+
+            if (string.IsNullOrEmpty(order))
+            {
+                return RedirectToAction("OrdenSeleccionada", "Ordenes");
+            }
+            //else if (Session["Id_Num_UN"] == null && Session["ordenACancelar"] == null)
+            //{
+            //    return RedirectToAction("Index", "Ordenes");
+            //}
+            else
+
+            {
+                DataSet ds;
+
+                ds = DALServicesM.GetOrdersByOrderNo(order);
+
+                var ueType = ds.Tables[0].Rows[0]["UeType"].ToString();
+
+                int IdOwner = 0;
+
+                if (ueType.Equals("SETC"))
+                    IdOwner = 1;
+                if (ueType.Equals("DST"))
+                    IdOwner = 2;
+                if (ueType.Equals("CEDIS"))
+                    IdOwner = 3;
+                if (ueType.Equals("DSV"))
+                    IdOwner = 4;
+
+                ViewBag.MotCanCD = DataTableToModel.ConvertTo<OrderFacts_UE_CancelCauses>(DALProcesoSurtido.upCorpOms_Cns_UeCancelCauses(IdOwner).Tables[0]);
+                Session["OrderSelected"] = ds;
+                Session["OrderStatus"] = ds.Tables[0].Rows[0]["StatusDescription"].ToString();
+
+            }
+            return View();
+
+        }
+
         public ActionResult ConsultaDetalle(string order)
         {
 

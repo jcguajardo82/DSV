@@ -3972,6 +3972,11 @@
     <Content Include="Views\ProcesoReciboDevoluciones\ProcesoReciboDevolucionesDSV.cshtml" />
     <Content Include="Views\ProcesoReciboDevoluciones\ProcesoReciboDevolucionesDST.cshtml" />
     <Content Include="Views\PrioridadInventario\Index.cshtml" />
+    <Content Include="Views\Ordenes\ConsultaDetalleMonitor.cshtml" />
+    <Content Include="Views\ProcesoSurtido\ProcesoSurtidoCEDIS.cshtml" />
+    <Content Include="Views\ProcesoSurtido\ProcesoSurtidoDST.cshtml" />
+    <Content Include="Views\ProcesoSurtido\ProcesoSurtidoDSV.cshtml" />
+    <Content Include="Views\Ordenes\SolicitarGuia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
