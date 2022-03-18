@@ -2698,8 +2698,8 @@ namespace ServicesManagement.Web.Controllers
             LabelDefinition label = new LabelDefinition();
 
             WayBillDocument wayBill = new WayBillDocument();
-            wayBill.aditionalInfo = "Contenido";
-            wayBill.content = "Informacion Adicional";
+            wayBill.aditionalInfo = "Informacion Adicional";
+            wayBill.content = "Contenido";
             wayBill.costCenter = "SPMXA12345";
             wayBill.customerShipmentId = null;
             var reference = ds.Tables[0].Rows[0]["addressReference1"].ToString() + " " + ds.Tables[0].Rows[0]["addressReference2"].ToString();
@@ -2978,8 +2978,8 @@ namespace ServicesManagement.Web.Controllers
             LabelDefinitionLtl label = new LabelDefinitionLtl();
 
             WayBillDocumentLtl wayBill = new WayBillDocumentLtl();
-            wayBill.aditionalInfo = "Contenido";
-            wayBill.content = "Informacion Adicional";
+            wayBill.aditionalInfo = "Informacion Adicional";
+            wayBill.content = "Contenido";
             wayBill.costCenter = "SPMXA12345";
             wayBill.customerShipmentId = null;
             var reference = ds.Tables[0].Rows[0]["addressReference1"].ToString() + " " + ds.Tables[0].Rows[0]["addressReference2"].ToString();
