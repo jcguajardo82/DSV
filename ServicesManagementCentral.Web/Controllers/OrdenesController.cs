@@ -2793,7 +2793,8 @@ namespace ServicesManagement.Web.Controllers
             ServiceConfiguration serviceConfiguration = new ServiceConfiguration();
             serviceConfiguration.quantityOfLabels = 1;
             serviceConfiguration.serviceTypeId = "70";
-            serviceConfiguration.salesOrganization = "112";
+            // serviceConfiguration.salesOrganization = "112"; // para Qas
+            serviceConfiguration.salesOrganization = "61A"; // para PROD
             serviceConfiguration.effectiveDate = ds.Tables[1].Rows[0]["effectiveDate"].ToString();
             serviceConfiguration.originZipCodeForRouting = ds.Tables[1].Rows[0]["PostalCode"].ToString();
             // validar si tiene seguro---------------
@@ -2843,7 +2844,7 @@ namespace ServicesManagement.Web.Controllers
             address.townshipCode = "08-019";
             address.townshipName = ds.Tables[0].Rows[0]["addressCity"].ToString();
             address.settlementTypeCode = "001";
-            address.settlementTypeAbbName = ds.Tables[0].Rows[0]["addressCol"].ToString().Substring(0, 4);
+            address.settlementTypeAbbName = ds.Tables[0].Rows[0]["addressCol"].ToString().Length > 5 ? ds.Tables[0].Rows[0]["addressCol"].ToString().Substring(0, 4) : ds.Tables[0].Rows[0]["addressCol"].ToString();
             address.settlementName = ds.Tables[0].Rows[0]["addressCol"].ToString();
             address.stateCode = "02";
             address.stateAbbName = ds.Tables[0].Rows[0]["Abrev_Estado"].ToString();
@@ -2890,7 +2891,7 @@ namespace ServicesManagement.Web.Controllers
             addressD.townshipCode = "08-019";
             addressD.townshipName = ds.Tables[1].Rows[0]["City"].ToString();
             addressD.settlementTypeCode = "001";
-            addressD.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4);
+            addressD.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Length > 5 ? ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4) : ds.Tables[1].Rows[0]["Address2"].ToString();
             addressD.settlementName = ds.Tables[1].Rows[0]["Address2"].ToString();
             addressD.stateCode = "02";
             addressD.stateAbbName = ds.Tables[1].Rows[0]["Abrev_Estado"].ToString();
@@ -2936,7 +2937,7 @@ namespace ServicesManagement.Web.Controllers
             addressN.townshipCode = "08-019";
             addressN.townshipName = ds.Tables[1].Rows[0]["City"].ToString();
             addressN.settlementTypeCode = "001";
-            addressN.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4);
+            addressN.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Length > 5 ? ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4) : ds.Tables[1].Rows[0]["Address2"].ToString();
             addressN.settlementName = ds.Tables[1].Rows[0]["Address2"].ToString();
             addressN.stateCode = "02";
             addressN.stateAbbName = ds.Tables[1].Rows[0]["Abrev_Estado"].ToString();
@@ -2984,7 +2985,7 @@ namespace ServicesManagement.Web.Controllers
             wayBill.groupShipmentId = null;
             Pallet pallet = new Pallet();
             pallet.merchandise = "NATIONAL";
-            pallet.genericContent = "Content";
+            pallet.genericContent = "Mercancias Generales";
             pallet.type = "SIMPLE";
             wayBill.pallet = pallet;
             label.wayBillDocument = wayBill;
@@ -3075,7 +3076,8 @@ namespace ServicesManagement.Web.Controllers
             ServiceConfiguration serviceConfiguration = new ServiceConfiguration();
             serviceConfiguration.quantityOfLabels = 1;
             serviceConfiguration.serviceTypeId = "L0";
-            serviceConfiguration.salesOrganization = "112";
+            // serviceConfiguration.salesOrganization = "112"; // parqa Qas
+            serviceConfiguration.salesOrganization = "61A"; // para PROD
             serviceConfiguration.effectiveDate = ds.Tables[1].Rows[0]["effectiveDate"].ToString();
             serviceConfiguration.originZipCodeForRouting = ds.Tables[1].Rows[0]["PostalCode"].ToString();
             // validar si tiene seguro---------------
@@ -3124,7 +3126,7 @@ namespace ServicesManagement.Web.Controllers
             address.townshipCode = "08-019";
             address.townshipName = ds.Tables[0].Rows[0]["addressCity"].ToString();
             address.settlementTypeCode = "001";
-            address.settlementTypeAbbName = ds.Tables[0].Rows[0]["addressCol"].ToString().Substring(0, 4);
+            address.settlementTypeAbbName = ds.Tables[0].Rows[0]["addressCol"].ToString().Length > 5 ? ds.Tables[0].Rows[0]["addressCol"].ToString().Substring(0, 4) : ds.Tables[0].Rows[0]["addressCol"].ToString();
             address.settlementName = ds.Tables[0].Rows[0]["addressCol"].ToString();
             address.stateCode = "02";
             address.stateAbbName = ds.Tables[0].Rows[0]["Abrev_Estado"].ToString();
@@ -3171,7 +3173,7 @@ namespace ServicesManagement.Web.Controllers
             addressD.townshipCode = "08-019";
             addressD.townshipName = ds.Tables[1].Rows[0]["City"].ToString();
             addressD.settlementTypeCode = "001";
-            addressD.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4);
+            addressD.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Length > 5 ? ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4) : ds.Tables[1].Rows[0]["Address2"].ToString();
             addressD.settlementName = ds.Tables[1].Rows[0]["Address2"].ToString();
             addressD.stateCode = "02";
             addressD.stateAbbName = ds.Tables[1].Rows[0]["Abrev_Estado"].ToString();
@@ -3217,7 +3219,7 @@ namespace ServicesManagement.Web.Controllers
             addressN.townshipCode = "08-019";
             addressN.townshipName = ds.Tables[1].Rows[0]["City"].ToString();
             addressN.settlementTypeCode = "001";
-            addressN.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4);
+            addressN.settlementTypeAbbName = ds.Tables[1].Rows[0]["Address2"].ToString().Length > 5 ? ds.Tables[1].Rows[0]["Address2"].ToString().Substring(0, 4) : ds.Tables[1].Rows[0]["Address2"].ToString();
             addressN.settlementName = ds.Tables[1].Rows[0]["Address2"].ToString();
             addressN.stateCode = "02";
             addressN.stateAbbName = ds.Tables[1].Rows[0]["Abrev_Estado"].ToString();
