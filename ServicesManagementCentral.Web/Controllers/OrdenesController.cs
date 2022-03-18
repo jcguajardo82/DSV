@@ -323,19 +323,8 @@ namespace ServicesManagement.Web.Controllers
                 }
             }
 
-            //if (Session["Id_Num_UN"] != null)
-            //{
-            //    un = int.Parse(Session["Id_Num_UN"].ToString());
             Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("DSV", un, vista);
             Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("DSV", un, vista);
-            //}
-            //else
-            //{
-            //    //un = int.Parse(Session["Id_Num_UN"].ToString());
-            //    Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("DSV", un, vista);
-            //    Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("DSV", un, vista);
-            //    //return RedirectToAction("Index", "Ordenes");
-            //}
 
             return View();
         }
@@ -1068,12 +1057,7 @@ namespace ServicesManagement.Web.Controllers
             {
                 return RedirectToAction("OrdenSeleccionada", "Ordenes");
             }
-            //else if (Session["Id_Num_UN"] == null && Session["ordenACancelar"] == null)
-            //{
-            //    return RedirectToAction("Index", "Ordenes");
-            //}
             else
-
             {
                 DataSet ds;
 

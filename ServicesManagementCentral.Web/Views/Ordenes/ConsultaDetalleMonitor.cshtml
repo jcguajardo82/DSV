@@ -681,10 +681,11 @@
     </div>
 </div>
 @Html.Partial("SolicitarGuia")
+@Html.Partial("~/ShipmentRequestWMS/SolicitarGuiaMonitor")
 @Html.Partial("CancelacionOrden")
 @section scripts {
     @*=======================================================CANCELACION DE ORDEN=======================================================*@
-<script>
+    <script>
     var _json = undefined;
     var _cancelacion = undefined;
     $(document).ready(function () {
@@ -833,6 +834,10 @@
              });
 
             console.log(_jsonPackings, _optionsPackings);
+    }
+
+        function ReasignarOrden() {
+            alert('ReasignarOrden');
         }
 
         function GenerarOrden() {
@@ -865,6 +870,7 @@
             if (confirm('Desea solicitar una Guía Manual?')) {
                 //validación de cobertura
                 SeleccionarUCC();
+                SolicitudGuia();
                 if (confirm('El pedido no cuenta con cobertura, desea cancelarlo?')) {
                     popUpCanOrden($('#UeNo').val());
                 }
@@ -1207,5 +1213,5 @@
                 });
 
         }
-</script>
+    </script>
 }
