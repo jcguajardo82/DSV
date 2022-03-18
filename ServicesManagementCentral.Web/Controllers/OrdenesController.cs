@@ -2190,7 +2190,7 @@ namespace ServicesManagement.Web.Controllers
                                 if(dsEstafeta.Tables[0].Rows[0][1].ToString().ToLower().Equals("estafeta"))
                                     guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
                                 else
-                                    guia = CreateGuiaEstafetaAPI(OrderNo, decimalPeso, Products, dsCarrier, null);
+                                    guia = CreateGuiaEstafetaAPI(UeNo ,OrderNo, decimalPeso, Products, dsCarrier, null);
                             }
                             else
                                 throw new Exception("No hay Canal de Estafeta");
@@ -2422,7 +2422,7 @@ namespace ServicesManagement.Web.Controllers
                                 if (dsEstafeta.Tables[0].Rows[0][1].ToString().ToLower().Equals("estafeta"))
                                     guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
                                 else
-                                    guia = CreateGuiaEstafetaAPI(item.orderNo, decimalPeso, null, dsCarrier, item);
+                                    guia = CreateGuiaEstafetaAPI(item.ueNo,item.orderNo, decimalPeso, null, dsCarrier, item);
                             }
                             else
                                 throw new Exception("No hay Canal de Estafeta");
@@ -2738,7 +2738,7 @@ namespace ServicesManagement.Web.Controllers
             return tarifa;
         }
 
-        private string RequestEstafeta(DataSet ds, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
+        private string RequestEstafeta(DataSet ds, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS, string UeNo)
         {
             string json = string.Empty;
 
@@ -2746,11 +2746,12 @@ namespace ServicesManagement.Web.Controllers
             LabelDefinition label = new LabelDefinition();
 
             WayBillDocument wayBill = new WayBillDocument();
-            wayBill.aditionalInfo = "Mercancias Generales";
-            wayBill.content = "Mercancias Generales";
+            wayBill.aditionalInfo = "Contenido";
+            wayBill.content = "Informacion Adicional";
             wayBill.costCenter = "SPMXA12345";
             wayBill.customerShipmentId = null;
-            wayBill.referenceNumber = ds.Tables[1].Rows[0]["CustomerNo"].ToString();
+            var reference = ds.Tables[0].Rows[0]["addressReference1"].ToString() + " " + ds.Tables[0].Rows[0]["addressReference2"].ToString();
+            wayBill.referenceNumber = reference.Length > 30 ? reference.Substring(0,29) : reference;
             wayBill.groupShipmentId = null;
 
             label.wayBillDocument = wayBill;
@@ -2758,9 +2759,9 @@ namespace ServicesManagement.Web.Controllers
             ItemDescription itemDescription = new ItemDescription();
             itemDescription.parcelId = 1;
             itemDescription.weight = weight;
-            itemDescription.height = int.Parse(Session["SumHeigth"].ToString());
-            itemDescription.length = int.Parse(Session["SumLength"].ToString());
-            itemDescription.width = int.Parse(Session["SumWidth"].ToString());
+            itemDescription.height = int.Parse(Session["SumHeigth"].ToString()) > 190 ? 190 : int.Parse(Session["SumHeigth"].ToString());
+            itemDescription.length = int.Parse(Session["SumLength"].ToString()) > 240 ? 240 : int.Parse(Session["SumLength"].ToString());
+            itemDescription.width = int.Parse(Session["SumWidth"].ToString()) > 120 ? 120 : int.Parse(Session["SumWidth"].ToString());
             
             Merchandises merchandises = new Merchandises();
             merchandises.totalGrossWeight = weight;
@@ -2922,7 +2923,7 @@ namespace ServicesManagement.Web.Controllers
 
             HomeAddress homeAddress = new HomeAddress();
             Contact contactD = new Contact();
-            contactD.corporateName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+            contactD.corporateName = UeNo;
             contactD.contactName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
             contactD.cellPhone = ds.Tables[1].Rows[0]["Phone"].ToString();
             contactD.telephone = ds.Tables[1].Rows[0]["Phone"].ToString();
@@ -3017,7 +3018,7 @@ namespace ServicesManagement.Web.Controllers
 
             return json;
         }
-        private string RequestEstafetaLTL(DataSet ds, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
+        private string RequestEstafetaLTL(DataSet ds, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS, string UeNo)
         {
             string json = string.Empty;
 
@@ -3025,11 +3026,12 @@ namespace ServicesManagement.Web.Controllers
             LabelDefinitionLtl label = new LabelDefinitionLtl();
 
             WayBillDocumentLtl wayBill = new WayBillDocumentLtl();
-            wayBill.aditionalInfo = "Mercancias Generales";
-            wayBill.content = "Mercancias Generales";
+            wayBill.aditionalInfo = "Contenido";
+            wayBill.content = "Informacion Adicional";
             wayBill.costCenter = "SPMXA12345";
             wayBill.customerShipmentId = null;
-            wayBill.referenceNumber = ds.Tables[1].Rows[0]["CustomerNo"].ToString();
+            var reference = ds.Tables[0].Rows[0]["addressReference1"].ToString() + " " + ds.Tables[0].Rows[0]["addressReference2"].ToString();
+            wayBill.referenceNumber = reference.Length > 30 ? reference.Substring(0, 29) : reference;
             wayBill.groupShipmentId = null;
             Pallet pallet = new Pallet();
             pallet.merchandise = "NATIONAL";
@@ -3041,10 +3043,10 @@ namespace ServicesManagement.Web.Controllers
             ItemDescription itemDescription = new ItemDescription();
             itemDescription.parcelId = 5;
             itemDescription.weight = weight;
-            itemDescription.height = int.Parse(Session["SumHeigth"].ToString());
-            itemDescription.length = int.Parse(Session["SumLength"].ToString());
-            itemDescription.width = int.Parse(Session["SumWidth"].ToString());
-
+            itemDescription.height = int.Parse(Session["SumHeigth"].ToString()) > 190 ? 190 : int.Parse(Session["SumHeigth"].ToString());
+            itemDescription.length = int.Parse(Session["SumLength"].ToString()) > 120 ? 120 : int.Parse(Session["SumLength"].ToString());
+            itemDescription.width = int.Parse(Session["SumWidth"].ToString()) > 105 ? 105 : int.Parse(Session["SumWidth"].ToString());
+            
             Merchandises merchandises = new Merchandises();
             merchandises.totalGrossWeight = weight;
             merchandises.weightUnitCode = "KGM";
@@ -3299,7 +3301,7 @@ namespace ServicesManagement.Web.Controllers
 
             return json;
         }
-        public string CreateGuiaEstafetaAPI(int OrderNo, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
+        public string CreateGuiaEstafetaAPI(string UeNo,int OrderNo, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
         {
             string result = string.Empty;
             string json = string.Empty, url = string.Empty;
@@ -3323,12 +3325,12 @@ namespace ServicesManagement.Web.Controllers
                 
                 if (weight <= 70)
                 {
-                    json = RequestEstafeta(ds, weight, Products, dsCarrier, packageCEDIS);
+                    json = RequestEstafeta(ds, weight, Products, dsCarrier, packageCEDIS, UeNo);
                     url = System.Configuration.ConfigurationSettings.AppSettings["Estafeta_API"];
                 }
                 else
                 {
-                    json = RequestEstafetaLTL(ds, weight, Products, dsCarrier, packageCEDIS);
+                    json = RequestEstafetaLTL(ds, weight, Products, dsCarrier, packageCEDIS, UeNo);
                     url = System.Configuration.ConfigurationSettings.AppSettings["EstafetaLTL_API"];
                 }
                 Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, url, "", json);
