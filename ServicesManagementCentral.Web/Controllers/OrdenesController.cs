@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Gma.QrCodeNet.Encoding;
 using Gma.QrCodeNet.Encoding.Windows.Render;
 using ServicesManagement.Web.Models;
@@ -408,71 +409,56 @@ namespace ServicesManagement.Web.Controllers
         }
         public ActionResult MonitorOrdenADMIN()
         {
-            //var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
-            //int idOwner = 0;
-            //string tipoAlmacen = null;
-            //int un = 0;
-            //int vista = 1;
-
-            //if (ds.Tables[0].Rows.Count > 0)
-            //{
-            //    foreach (DataRow item in ds.Tables[0].Rows)
-            //    {
-            //        UserRolModel rol = new UserRolModel();
-            //        rol.idRol = item["rol"].ToString();
-            //        rol.nombreRol = item["nombreRol"].ToString();
-            //        Session["UserRol"] = rol;
-            //        if (item["idOwner"].ToString() != "")
-            //        {
-            //            idOwner = int.Parse(item["idOwner"].ToString());
-            //            vista = 2;
-            //            switch (idOwner)
-            //            {
-            //                case 2:
-            //                    tipoAlmacen = "DST";
-            //                    break;
-            //                case 3:
-            //                    tipoAlmacen = "CEDIS";
-            //                    break;
-            //                case 4:
-            //                    tipoAlmacen = "DSV";
-            //                    break;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            idOwner = 0;
-            //            vista = 1;
-            //            tipoAlmacen = "";
-            //        }
-            //        if (item["idTienda"].ToString() != "")
-            //        {
-            //            un = int.Parse(item["idTienda"].ToString());
-            //            vista = 2;
-            //        }
-            //        else
-            //        {
-            //            un = 0;
-            //            vista = 1;
-            //        }
-            //    }
-            //}
-
-            //if (Session["Id_Num_UN"] != null)
-            //{
-            //    un = int.Parse(Session["Id_Num_UN"].ToString());
-                Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirMADMIN("ADMIN", 0, 1);
-                Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarMADMIN("ADMIN", 0, 1);
-            //}
-            //else
-            //{
-            //    //un = int.Parse(Session["Id_Num_UN"].ToString());
-            //    Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("ADMIN", 0, 1);
-            //    Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("ADMIN", 0, 1);
-            //    //return RedirectToAction("Index", "Ordenes");
-            //}
+            Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirMADMIN("ADMIN", 0, 1);
+            Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarMADMIN("ADMIN", 0, 1);
 
             return View();
+        }
+
+        public ActionResult GenerarNvaOrden(string OrderId)
+        {
+            try
+            {
+                string apiUrl = System.Configuration.ConfigurationManager.AppSettings["GeneracionNvaOrden_API"]; var req = new { OrderID = OrderId.ToString() };
+
+                string json2 = JsonConvert.SerializeObject(new { OrderID = OrderId.ToString() });
+                string PPSRequest = JsonConvert.SerializeObject(req);
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
+
+                JObject json = JObject.Parse(r.message);
+                if (json.TryGetValue("errorCode", out JToken v1))
+                {
+                    if (((Newtonsoft.Json.Linq.JValue)v1).Value.ToString() == "99")
+                    {
+                        throw new Exception(r.message);
+                    }
+                }
+
+                //if (json.TryGetValue("statusCode", out JToken v2))
+                //{
+                //    if (((Newtonsoft.Json.Linq.JValue)v2).Value.ToString() == "200")
+                //    {
+                //        throw new Exception(r.message);
+                //    }
+                //}
+
+                if (r.code != "00")
+                {
+                    throw new Exception(r.message);
+                }
+
+                var result = new { Success = true };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message, urlRedirect = "" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult OrdenSeleccionada()

@@ -30,9 +30,15 @@
                             string OrderMovementDate = string.Empty;
                             if (dt4.Rows.Count > 0)
                             {
-
                                 OrderMovementDate = dt4.Rows[0]["OrderMovementDate"].ToString();
+                            }
 
+                            string Barcode = string.Empty;
+                            string ProductId = string.Empty;
+                            if (dt5.Rows.Count > 0)
+                            {
+                                Barcode = dt5.Rows[0]["Barcode"].ToString();
+                                ProductId = dt5.Rows[0]["ProductId"].ToString();
                             }
 
                             int index = 1;
@@ -64,7 +70,7 @@
                                                         <a class="btn btn-primary" id="btnReasignar" onclick="ReasignarOrden()">Reasignar Orden</a>
                                                     </td>
                                                     <td style="text-align: left;">
-                                                        <a class="btn btn-primary" id="btnGenerar" onclick="GenerarOrden()">Generar Orden de compra</a>
+                                                        <a class="btn btn-primary" id="btnGenerar" onclick="GenerarOrden()">Generar Nueva Orden de compra</a>
                                                     </td>
                                                     <td style="text-align: left;">
                                                         <a class="btn btn-primary" id="btnSolicitar" onclick="SolicitarGuia()">Solicitar Guía Manual</a>
@@ -84,46 +90,46 @@
                                                                 <p>
                                                                     Siguiente movimiento:
                                                                     @*@if (p["StatusDescription"].ToString()!= "Entregando orden")
-                                                                    {*@
-                                                                        @if (p["OrderStatus"].ToString().Trim().Equals("9"))
+                                                                        {*@
+                                                                    @if (p["OrderStatus"].ToString().Trim().Equals("9"))
+                                                                    {
+                                                                        if (p["UeType"].ToString().Trim().Equals("SETC"))
                                                                         {
-                                                                            if (p["UeType"].ToString().Trim().Equals("SETC")) 
+                                                                            <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new {​​​​ guia = @p["TrackingNo"] }​​​​)" title="Click para confirmar" class="btn btn-link"> Confirma entrega (Captura de datos finales de entrega de pedido.)</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (p["FlagLocal"].ToString().Equals("1"))
                                                                             {
                                                                                 <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new {​​​​ guia = @p["TrackingNo"] }​​​​)" title="Click para confirmar" class="btn btn-link"> Confirma entrega (Captura de datos finales de entrega de pedido.)</a>
                                                                             }
                                                                             else
                                                                             {
-                                                                                if (p["FlagLocal"].ToString().Equals("1"))
-                                                                                {
-                                                                                    <a href="@Url.Action("RecepcionGuiaEmbarque", "Ordenes", new {​​​​ guia = @p["TrackingNo"] }​​​​)" title="Click para confirmar" class="btn btn-link"> Confirma entrega (Captura de datos finales de entrega de pedido.)</a>
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    <i>En Espera de cierre de embarque (Guia de Paqueteria)</i>
-                                                                                }
+                                                                                <i>En Espera de cierre de embarque (Guia de Paqueteria)</i>
                                                                             }
+                                                                        }
 
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (p["UeType"].ToString().Trim().Equals("SETC"))
+                                                                        {
+                                                                            <a href="@Url.Action("EmbarqueSETC", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
                                                                         }
                                                                         else
                                                                         {
-                                                                            if (p["UeType"].ToString().Trim().Equals("SETC"))
+                                                                            if (p["FlagLocal"].ToString().Equals("1"))
                                                                             {
-                                                                             <a href="@Url.Action("EmbarqueSETC", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
+                                                                                <a href="@Url.Action("EmbarqueSETC", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
                                                                             }
                                                                             else
                                                                             {
-                                                                                if (p["FlagLocal"].ToString().Equals("1"))
-                                                                                {
-                                                                                    <a href="@Url.Action("EmbarqueSETC", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de contenedores (Captura numero de contenedores a utilizar.)</a>
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    <a href="@Url.Action("Embarque", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de paquetes (Captura numero de paquetes a utilizar.)</a>
-                                                                                }
-
+                                                                                <a href="@Url.Action("Embarque", "Ordenes", new {​​​​ order = @p["UeNo"] }​​​​)" title="Click para capturar contenedores" class="btn btn-link">N&uacute;mero de paquetes (Captura numero de paquetes a utilizar.)</a>
                                                                             }
+
                                                                         }
-@*                                                                    }*@
+                                                                    }
+                                                                    @*                                                                    }*@
                                                                 </p>
 
                                                             }
@@ -137,610 +143,551 @@
                                 </div>
 
                                 <input id="OrderNo" name="OrderNo" value="@p["OrderNo"]" style="visibility:hidden" />
+                                <input id="OrderSF" name="OrderSF" value="@p["OrderSF"]" style="visibility:hidden" />
                                 <input id="UeNo" name="UeNo" value="@p["UeNo"]" style="visibility:hidden" />
                                 <input id="StoreNum" name="StoreNum" value="@p["StoreNum"]" style="visibility:hidden" />
                                 <input id="OrderStatus" name="OrderStatus" value="@p["StatusUe"]" style="visibility:hidden" />
                                 <input id="UeType" name="UeType" value="@p["UeType"]" style="visibility:hidden" />
+                                //para llenar campos faltantes
+                                <input id="ProductId" name="ProductId" value="@ProductId" style="visibility:hidden" />
+                                <input id="Barcode" name="Barcode" value="@Barcode" style="visibility:hidden" />
                                 UeType = @p["UeType"].ToString();
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="ibox ">
-                            <div class="ibox-title">
-                                <h5>Datos generales </h5>
-                                <hr style="margin-top: 0; margin-bottom: 0;" />
-                            </div>
-                            <div class="ibox-content">
-                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Datos generales </h5>
+                                                <hr style="margin-top: 0; margin-bottom: 0;" />
+                                            </div>
+                                            <div class="ibox-content">
+                                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <h5>Nombre:</h5>
+                                                                <small>@p["CustomerName"]</small>
+                                                            </td>
+                                                            <td>
+                                                                <h5>Dirección:</h5>
+                                                                <small>
+
+                                                                    @p["Address1"]
+                                                                    @p["Address2"]
+                                                                    @p["City"],
+                                                                    @p["StateCode"],
+                                                                    @p["PostalCode"]
+                                                                    <abbr title="Phone">T:</abbr> @p["Phone"]
+                                                                </small>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <h5>Teléfono:</h5>
+                                                                <small>@p["Phone"] </small>
+                                                            </td>
+                                                        </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table style="width: 100%;">
+                                            <tr>
+                                                <td style="vertical-align:top">
+                                                    <!-- Información de Entrega-->
+                                                    <div class="ibox ">
+                                                        <div class="ibox-title">
+                                                            <h5>Información de Entrega </h5>
+                                                            <hr style="margin-top: 0; margin-bottom: 0;" />
+                                                        </div>
+                                                        <div class="ibox-content">
+                                                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Tipo de servicio:</h5>
+                                                                            <small>
+                                                                                @p["DeliveryType"]
+                                                                            </small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Dirección:</h5>
+                                                                            <small>@p["DeliveryAddress"] </small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Teléfono:</h5>
+                                                                            <small>@p["Phone"] </small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr rowspan="2">
+                                                                        <td>
+                                                                            <h5>Forma de pago:</h5>
+                                                                            <small>
+                                                                                <FONT face=verdana,arial,helvetica size=2>@p["MethodPayment"] </FONT>
+                                                                                @switch (@p["MethodPaymentID"].ToString())
+                                                                                {
+
+                                                                                    case "2":
+                                                                                    case "5":
+                                                                                    case "6":
+                                                                                        <p>Efectivo: $@p["CashPay"].ToString() -- Vales:  $@p["VouchersPay"].ToString() </p>
+                                                                                        break;
+
+                                                                                }
+
+                                                                            </small>
+                                                                        </td>
+                                                                    </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="vertical-align:top">
+                                                    <!-- Fechas-->
+                                                    <div class="ibox ">
+                                                        <div class="ibox-title">
+                                                            <h5>Fechas </h5>
+                                                            <hr style="margin-top: 0; margin-bottom: 0;" />
+                                                        </div>
+                                                        <div class="ibox-content">
+                                                            <table width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Registro:</h5>
+                                                                            <small>@p["OrderDate"] </small>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Compromiso entrega:</h5>
+                                                                        </td>
+                                                                        <td style="text-align: left;">
+                                                                            @if (p["UeType"].ToString().Equals("DST"))
+                                                                            {
+                                                                                <small>
+                                                                                    <b>@p["DeliveryOptionName"].ToString()</b>
+
+                                                                                </small>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <small>
+                                                                                    <b>@p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()</b>
+
+                                                                                </small>
+                                                                            }
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Inicio surtido:</h5>
+                                                                        </td>
+                                                                        <td style="text-align: left;"><small>@p["PickingDateStart"] </small></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Orden surtida:</h5>
+                                                                        </td>
+                                                                        <td style="text-align: left;"><small>@p["PickingDate"]</small></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Orden pagada:</h5>
+                                                                        </td>
+                                                                        <td style="text-align: left;"><small>@p["PaymentDate"]</small></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Embarque:</h5>
+                                                                        </td>
+                                                                        <td style="text-align: left;"><small>@p["CarrierDate"].ToString()</small></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Entrega:</h5>
+                                                                        </td>
+                                                                        <td style="text-align: left;"><small>@p["DeliveryDate"].ToString() </small></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="vertical-align:top">
+                                                    <!-- Procesamiento de orden-->
+                                                    <div class="ibox ">
+                                                        <div class="ibox-title">
+                                                            <h5>Procesamiento de pedido </h5>
+                                                            <hr style="margin-top: 0; margin-bottom: 0;" />
+                                                        </div>
+                                                        <div class="ibox-content">
+                                                            <table width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Carrito virtual:</h5>
+                                                                            <small>@p["ShoppingCart"]</small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Surtió:</h5>
+                                                                            @*Supplier_Name*@
+                                                                            <small>
+                                                                                @p["Supplier_Name"].ToString()
+                                                                            </small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Contenedores:</h5>
+                                                                            <small>
+                                                                                @if (int.Parse(@p["NumContainers"].ToString()) > 0)
+                                                                                {
+                                                                                    @p["NumContainers"].ToString()
+                                                                                }
+                                                                            </small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Guia embarque:</h5>
+                                                                            <small>@p["TrackingNo"]</small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Entregó</h5>
+                                                                            <small>@p["ShipperName"]</small>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="vertical-align:top">
+                                                    <!-- Entrega y observaciones-->
+                                                    <div class="ibox ">
+                                                        <div class="ibox-title">
+                                                            <h5>Entrega y observaciones </h5>
+                                                            <hr style="margin-top: 0; margin-bottom: 0;" />
+                                                        </div>
+                                                        <div class="ibox-content">
+                                                            <table width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Identificación del cliente:</h5>
+                                                                            <small>
+                                                                                @*@p["IdReceive"]*@
+                                                                                @p["NameReceive"]
+                                                                            </small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Observaciones:</h5>
+                                                                            <small>
+                                                                                @p["Comments"]
+                                                                            </small>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h5>Coordenadas de la Entrega:</h5>
+                                                                            <small>
+                                                                                @p["Coordenadas"]
+                                                                            </small>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            }
+
+                            //foreach (System.Data.DataRow p in dt5.Rows)
+                            {
+                                <!--Artículos NO surtidos-->
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ibox ">
+                                            <div class="ibox-title-grid">
+                                                <h4 style="padding: 5px;" class="bg-danger p-xs b-r-sm">Artículos NO surtidos</h4>
+                                                <hr style="margin-top: 0; margin-bottom: 0;" />
+                                            </div>
+                                            <div class="ibox-content">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Num</small></th>
+                                                            <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">SKU/Código</small></th>
+                                                            <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Descripción</small></th>
+                                                            <th style="padding: 0; text-space-collapse: collapse">
+                                                                <small style="font-weight: bold">
+                                                                    Cantidad
+                                                                </small>
+                                                                <br />
+                                                                <small>Pedida</small>
+                                                                <br />
+                                                                <small>Surtida</small>
+                                                                <br />
+                                                                <small>Cobrada</small>
+                                                            </th>
+                                                            <th style="padding: 0; text-space-collapse: collapse">
+                                                                <small style="font-weight: bold">
+                                                                    Precio
+                                                                </small>
+                                                                <br />
+                                                                <small>Normal</small><br />
+                                                                <small>Oferta</small><br />
+                                                                <small>Cobrado</small>
+                                                            </th>
+                                                            <th style="padding: 0; text-space-collapse: collapse">
+                                                                <small style="font-weight: bold">
+                                                                    Total
+                                                                </small>
+                                                                <br />
+                                                                <small>Pedido</small><br />
+                                                                <small>Surtido</small><br />
+                                                                <small>Cobrado</small>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (System.Data.DataRow p5 in dt6.Rows)
+                                                        {
+                                                            <tr>
+                                                                <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["CnscOrder"]</small></th>
+                                                                <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductId"] <br />@p5["Barcode"]</small></th>
+                                                                <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductName"]</small></th>
+                                                                <th style="padding: 0; text-space-collapse: collapse">
+
+
+                                                                    <small>@p5["pe_Quantity"] @p5["UnitMeasure"]</small>
+                                                                    <br />
+                                                                    <small>@p5["e_Quantity"] @p5["UnitMeasure"]</small>
+                                                                    <br />
+                                                                    <small>@p5["c_Quantity"] @p5["UnitMeasure"]</small>
+                                                                </th>
+                                                                <th style="padding: 0; text-space-collapse: collapse">
+                                                                    <small>@p5["pe_price"]</small>
+                                                                    <br />
+                                                                    <small>@p5["e_price"]</small>
+                                                                    <br />
+                                                                    <small>@p5["c_price"]</small>
+                                                                </th>
+                                                                <th style="padding: 0; text-space-collapse: collapse">
+                                                                    <small>@p5["pe_tot"]</small>
+                                                                    <br />
+                                                                    <small>@p5["e_tot"]</small>
+                                                                    <br />
+                                                                    <small>@p5["c_tot"]</small>
+                                                                </th>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            //detalle de la orden
+                            @*detalle*@
+
+                            <div class="table-responsive m-t">
+                                <table class="table invoice-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Num</th>
+                                            <th>Codigo</th>
+                                            <th>Descripcion</th>
+                                            <th>Cantidad pedida</th>
+                                            <th>Precio Internet</th>
+                                            <th>Cantidad Surtida</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <h5>Nombre:</h5>
-                                                <small>@p["CustomerName"]</small>
-                                            </td>
-                                            <td>
-                                                <h5>Dirección:</h5>
-                                                <small>
-                                               
-                                                    @p["Address1"]
-                                                    @p["Address2"]
-                                                    @p["City"],
-                                                    @p["StateCode"],
-                                                    @p["PostalCode"]
-                                                    <abbr title="Phone">T:</abbr> @p["Phone"]
-                                                </small>
-                                            </td>
-                                        </tr>
-                                       
-                                        <tr>
-                                            <td>
-                                                <h5>Teléfono:</h5>
-                                                <small>@p["Phone"] </small>
-                                            </td>
-                                        </tr>
+
+                                        @foreach (System.Data.DataRow p in dt2.Rows)
+                                        {
+
+                                        }
+
+
+                                    </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <table style="width: 100%;">
-                                    <tr>
-                                        <td style="vertical-align:top">
-                                            <!-- Información de Entrega-->
-                                            <div class="ibox ">
-                                                <div class="ibox-title">
-                                                    <h5>Información de Entrega </h5>
-                                                    <hr style="margin-top: 0; margin-bottom: 0;" />
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Tipo de servicio:</h5>
-                                                                    <small>
-                                                                        @p["DeliveryType"]
-                                                                    </small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Dirección:</h5>
-                                                                    <small>@p["DeliveryAddress"] </small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Teléfono:</h5>
-                                                                    <small>@p["Phone"] </small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr rowspan="2">
-                                                                <td>
-                                                                    <h5>Forma de pago:</h5>
-                                                                    <small>
-                                                                        <FONT face=verdana,arial,helvetica size=2>@p["MethodPayment"] </FONT>
-                                                                        @switch (@p["MethodPaymentID"].ToString())
-                                                                        {
-
-                                                                            case "2":
-                                                                            case "5":
-                                                                            case "6":
-                                                                                <p>Efectivo: $@p["CashPay"].ToString() -- Vales:  $@p["VouchersPay"].ToString() </p>
-                                                                                break;
-
-                                                                        }
-
-                                                                    </small>
-                                                                </td>
-                                                            </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="vertical-align:top">
-                                            <!-- Fechas-->
-                                            <div class="ibox ">
-                                                <div class="ibox-title">
-                                                    <h5>Fechas </h5>
-                                                    <hr style="margin-top: 0; margin-bottom: 0;" />
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <table width="100%">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Registro:</h5>
-                                                                    <small>@p["OrderDate"] </small>
-
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Compromiso entrega:</h5>
-                                                                </td>
-                                                                <td style="text-align: left;">
-                                                                    @if (p["UeType"].ToString().Equals("DST"))
-                                                                    {
-                                                                        <small>
-                                                                            <b>@p["DeliveryOptionName"].ToString()</b>
-
-                                                                        </small>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <small>
-                                                                            <b>@p["OrderDeliveryDate"].ToString().ToUpperInvariant() a @Convert.ToDateTime(@p["OrderDeliveryDate"].ToString()).AddHours(1).ToString("dd/MMM/yyyy hh:mm tt").ToUpperInvariant()</b>
-
-                                                                        </small>
-                                                                    }
-
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Inicio surtido:</h5>
-                                                                </td>
-                                                                <td style="text-align: left;"><small>@p["PickingDateStart"] </small></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Orden surtida:</h5>
-                                                                </td>
-                                                                <td style="text-align: left;"><small>@p["PickingDate"]</small></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Orden pagada:</h5>
-                                                                </td>
-                                                                <td style="text-align: left;"><small>@p["PaymentDate"]</small></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Embarque:</h5>
-                                                                </td>
-                                                                <td style="text-align: left;"><small>@p["CarrierDate"].ToString()</small></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Entrega:</h5>
-                                                                </td>
-                                                                <td style="text-align: left;"><small>@p["DeliveryDate"].ToString() </small></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="vertical-align:top">
-                                            <!-- Procesamiento de orden-->
-                                            <div class="ibox ">
-                                                <div class="ibox-title">
-                                                    <h5>Procesamiento de pedido </h5>
-                                                    <hr style="margin-top: 0; margin-bottom: 0;" />
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <table width="100%">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Carrito virtual:</h5>
-                                                                    <small>@p["ShoppingCart"]</small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Surtió:</h5>
-                                                                    @*Supplier_Name*@
-                                                                    <small>
-                                                                        @p["Supplier_Name"].ToString()
-                                                                    </small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Contenedores:</h5>
-                                                                    <small>
-                                                                        @if (int.Parse(@p["NumContainers"].ToString()) > 0)
-                                                                        {
-                                                                            @p["NumContainers"].ToString()
-                                                                        }
-                                                                    </small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Guia embarque:</h5>
-                                                                    <small>@p["TrackingNo"]</small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Entregó</h5>
-                                                                    <small>@p["ShipperName"]</small>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="vertical-align:top">
-                                            <!-- Entrega y observaciones-->
-                                            <div class="ibox ">
-                                                <div class="ibox-title">
-                                                    <h5>Entrega y observaciones </h5>
-                                                    <hr style="margin-top: 0; margin-bottom: 0;" />
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <table width="100%">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Identificación del cliente:</h5>
-                                                                    <small>
-                                                                        @*@p["IdReceive"]*@
-                                                                        @p["NameReceive"]
-                                                                    </small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Observaciones:</h5>
-                                                                    <small>
-                                                                        @p["Comments"]
-                                                                    </small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <h5>Coordenadas de la Entrega:</h5>
-                                                                    <small>
-                                                                        @p["Coordenadas"]
-                                                                    </small>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-
-                        }
-
-                        //foreach (System.Data.DataRow p in dt5.Rows)
-                        {
-                        <!--Artículos NO surtidos-->
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox ">
-                                    <div class="ibox-title-grid">
-                                        <h4 style="padding: 5px;" class="bg-danger p-xs b-r-sm">Artículos NO surtidos</h4>
-                                        <hr style="margin-top: 0; margin-bottom: 0;" />
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Num</small></th>
-                                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">SKU/Código</small></th>
-                                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Descripción</small></th>
-                                                    <th style="padding: 0; text-space-collapse: collapse">
-                                                        <small style="font-weight: bold">
-                                                            Cantidad
-                                                        </small>
-                                                        <br />
-                                                        <small>Pedida</small>
-                                                        <br />
-                                                        <small>Surtida</small>
-                                                        <br />
-                                                        <small>Cobrada</small>
-                                                    </th>
-                                                    <th style="padding: 0; text-space-collapse: collapse">
-                                                        <small style="font-weight: bold">
-                                                            Precio
-                                                        </small>
-                                                        <br />
-                                                        <small>Normal</small><br />
-                                                        <small>Oferta</small><br />
-                                                        <small>Cobrado</small>
-                                                    </th>
-                                                    <th style="padding: 0; text-space-collapse: collapse">
-                                                        <small style="font-weight: bold">
-                                                            Total
-                                                        </small>
-                                                        <br />
-                                                        <small>Pedido</small><br />
-                                                        <small>Surtido</small><br />
-                                                        <small>Cobrado</small>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                @foreach (System.Data.DataRow p5 in dt6.Rows)
-                                                {
+                            <!--Contenido de la orden-->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox ">
+                                        <div class="ibox-title-grid">
+                                            <h4 style="padding: 5px;" class="bg-primary p-xs b-r-sm">Contenido de la orden</h4>
+                                            <hr style="margin-top: 0; margin-bottom: 0;" />
+                                        </div>
+                                        <div class="ibox-content">
+                                            <table class="table table-striped">
+                                                <thead>
                                                     <tr>
-                                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["CnscOrder"]</small></th>
-                                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductId"] <br />@p5["Barcode"]</small></th>
-                                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductName"]</small></th>
+                                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Num</small></th>
+                                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">SKU/Código</small></th>
+                                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Descripción</small></th>
                                                         <th style="padding: 0; text-space-collapse: collapse">
-
-
-                                                            <small>@p5["pe_Quantity"] @p5["UnitMeasure"]</small>
+                                                            <small style="font-weight: bold">
+                                                                Cantidad
+                                                            </small>
                                                             <br />
-                                                            <small>@p5["e_Quantity"] @p5["UnitMeasure"]</small>
+                                                            <small>Pedida</small>
                                                             <br />
-                                                            <small>@p5["c_Quantity"] @p5["UnitMeasure"]</small>
+                                                            <small>Surtida</small>
+                                                            <br />
+                                                            <small>Cobrada</small>
                                                         </th>
                                                         <th style="padding: 0; text-space-collapse: collapse">
-                                                            <small>@p5["pe_price"]</small>
+                                                            <small style="font-weight: bold">
+                                                                Precio
+                                                            </small>
                                                             <br />
-                                                            <small>@p5["e_price"]</small>
-                                                            <br />
-                                                            <small>@p5["c_price"]</small>
+                                                            <small>Normal</small><br />
+                                                            <small>Oferta</small><br />
+                                                            <small>Cobrado</small>
                                                         </th>
                                                         <th style="padding: 0; text-space-collapse: collapse">
-                                                            <small>@p5["pe_tot"]</small>
+                                                            <small style="font-weight: bold">
+                                                                Total
+                                                            </small>
                                                             <br />
-                                                            <small>@p5["e_tot"]</small>
-                                                            <br />
-                                                            <small>@p5["c_tot"]</small>
+                                                            <small>Pedido</small><br />
+                                                            <small>Surtido</small><br />
+                                                            <small>Cobrado</small>
                                                         </th>
                                                     </tr>
-                                                }
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (System.Data.DataRow p5 in dt5.Rows)
+                                                    {
+                                                        <tr>
+                                                            <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["CnscOrder"]</small></th>
+                                                            <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductId"] <br />@p5["Barcode"]</small></th>
+                                                            <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductName"]</small></th>
+                                                            <th style="padding: 0; text-space-collapse: collapse">
+                                                                <small>@p5["pe_Quantity"] @p5["UnitMeasure"]</small>
+                                                                <br />
+                                                                <small>@p5["e_Quantity"] @p5["UnitMeasure"]</small>
+                                                                <br />
+                                                                <small>@p5["c_Quantity"] @p5["UnitMeasure"]</small>
+                                                            </th>
+                                                            <th style="padding: 0; text-space-collapse: collapse">
+                                                                <small>@p5["pe_price"]</small>
+                                                                <br />
+                                                                <small>@p5["e_price"]</small>
+                                                                <br />
+                                                                <small>@p5["c_price"]</small>
+                                                            </th>
+                                                            <th style="padding: 0; text-space-collapse: collapse">
+                                                                <small>@p5["pe_tot"]</small>
+                                                                <br />
+                                                                <small>@p5["e_tot"]</small>
+                                                                <br />
+                                                                <small>@p5["c_tot"]</small>
+                                                            </th>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                                <tfoot>
+                                                    @foreach (System.Data.DataRow p5 in dt7.Rows)
+                                                    {
+
+                                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                                            <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                                            <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio normal en soriana.com</small></td>
+                                                            <td style="padding: 0; text-space-collapse: collapse">$@p5["TotNormal"]</td>
+                                                        </tr>
+                                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                                            <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                                            <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio oferta en soriana.com</small></td>
+                                                            <td style="padding: 0; text-space-collapse: collapse">$@p5["TotOferta"]</td>
+                                                        </tr>
+                                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                                            <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                                            <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio normal al surtir</small></td>
+                                                            <td style="padding: 0; text-space-collapse: collapse">$@p5["TotNormalSurtido"]</td>
+                                                        </tr>
+                                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                                            <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                                            <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio oferta al surtir</small></td>
+                                                            <td style="padding: 0; text-space-collapse: collapse">$@p5["TotOfertaSurtido"]</td>
+                                                        </tr>
+                                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                                            <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                                            <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total en POS</small></td>
+                                                            <td style="padding: 0; text-space-collapse: collapse">$@p5["TotPOS"]</td>
+                                                        </tr>
+                                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                                            <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                                            <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total pagado</small></td>
+                                                            <td style="padding: 0; text-space-collapse: collapse">$@p5["TotPagado"]</td>
+                                                        </tr>
+                                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                                            <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                                            <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Ahorro</small></td>
+                                                            <td style="padding: 0; text-space-collapse: collapse">$@p5["Ahorro"]</td>
+                                                        </tr>
+                                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                                            <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                                            <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Puntos ganados</small></td>
+                                                            <td style="padding: 0; text-space-collapse: collapse">$@p5["PuntosGanados"]</td>
+                                                        </tr>
+                                                        <tr style="padding: 0; text-space-collapse: collapse">
+                                                            <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
+                                                            <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Puntos acumulados</small></td>
+                                                            <td style="padding: 0; text-space-collapse: collapse">$@p5["PuntosAcumulados"]</td>
+                                                        </tr>
+                                                    }
+                                                </tfoot>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         }
-
-                        //detalle de la orden
-                        @*detalle*@
-
-                        <div class="table-responsive m-t">
-                            <table class="table invoice-table">
-                                <thead>
-                                    <tr>
-                                        <th>Num</th>
-                                        <th>Codigo</th>
-                                        <th>Descripcion</th>
-                                        <th>Cantidad pedida</th>
-                                        <th>Precio Internet</th>
-                                        <th>Cantidad Surtida</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    @foreach (System.Data.DataRow p in dt2.Rows)
-                                    {
-
-                                    }
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--Contenido de la orden-->
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox ">
-                                    <div class="ibox-title-grid">
-                                        <h4 style="padding: 5px;" class="bg-primary p-xs b-r-sm">Contenido de la orden</h4>
-                                        <hr style="margin-top: 0; margin-bottom: 0;" />
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Num</small></th>
-                                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">SKU/Código</small></th>
-                                                    <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Descripción</small></th>
-                                                    <th style="padding: 0; text-space-collapse: collapse">
-                                                        <small style="font-weight: bold">
-                                                            Cantidad
-                                                        </small>
-                                                        <br />
-                                                        <small>Pedida</small>
-                                                        <br />
-                                                        <small>Surtida</small>
-                                                        <br />
-                                                        <small>Cobrada</small>
-                                                    </th>
-                                                    <th style="padding: 0; text-space-collapse: collapse">
-                                                        <small style="font-weight: bold">
-                                                            Precio
-                                                        </small>
-                                                        <br />
-                                                        <small>Normal</small><br />
-                                                        <small>Oferta</small><br />
-                                                        <small>Cobrado</small>
-                                                    </th>
-                                                    <th style="padding: 0; text-space-collapse: collapse">
-                                                        <small style="font-weight: bold">
-                                                            Total
-                                                        </small>
-                                                        <br />
-                                                        <small>Pedido</small><br />
-                                                        <small>Surtido</small><br />
-                                                        <small>Cobrado</small>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (System.Data.DataRow p5 in dt5.Rows)
-                                                {
-                                                    <tr>
-                                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["CnscOrder"]</small></th>
-                                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductId"] <br />@p5["Barcode"]</small></th>
-                                                        <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductName"]</small></th>
-                                                        <th style="padding: 0; text-space-collapse: collapse">
-
-
-                                                            <small>@p5["pe_Quantity"] @p5["UnitMeasure"]</small>
-                                                            <br />
-                                                            <small>@p5["e_Quantity"] @p5["UnitMeasure"]</small>
-                                                            <br />
-                                                            <small>@p5["c_Quantity"] @p5["UnitMeasure"]</small>
-                                                        </th>
-                                                        <th style="padding: 0; text-space-collapse: collapse">
-                                                            <small>@p5["pe_price"]</small>
-                                                            <br />
-                                                            <small>@p5["e_price"]</small>
-                                                            <br />
-                                                            <small>@p5["c_price"]</small>
-                                                        </th>
-                                                        <th style="padding: 0; text-space-collapse: collapse">
-                                                            <small>@p5["pe_tot"]</small>
-                                                            <br />
-                                                            <small>@p5["e_tot"]</small>
-                                                            <br />
-                                                            <small>@p5["c_tot"]</small>
-                                                        </th>
-                                                    </tr>
-                                                }
-
-
-                                                @*<tr style="padding: 0; text-space-collapse: collapse">
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>1</small></td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                            <small>
-                                                303917<br>
-                                                230570000005
-                                            </small>
-                                        </td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>CUERO CERDO KG                                                                                                                                                                                                                                                 </small></td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                            <small>
-                                                0.3 Kg   <br>0.3 Kg   <br><b>0.3 Kg   </b>
-                                            </small>
-                                        </td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                            <small>
-                                                $44.90<br>$44.90<br><b>$38.90</b>
-                                            </small>
-
-                                        </td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                            <small>
-                                                $13.47<br>$13.47<br><b>$13.47</b>
-                                            </small>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>2</small></td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                            <small>
-                                                676018<br>
-                                                7501198350104
-                                            </small>
-                                        </td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>AGUA MINERAL CANADA DRY 1 LT PET                                                                                                                                                                                                                               </small></td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                            <small>
-                                                2 Pza  <br>1 Pza  <br><b>1 Pza  </b>
-                                            </small>
-                                        </td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                            <small>
-                                                $14.00<br>$14.00<br><b>$14.00</b>
-                                            </small>
-
-                                        </td>
-                                        <td style="text-align: left; padding: 0; text-space-collapse: collapse">
-                                            <small>
-                                                $28.00<br>$14.00<br><b>$14.00</b>
-                                            </small>
-
-                                        </td>
-                                    </tr>*@
-
-                                            </tbody>
-                                            <tfoot>
-
-
-
-
-                                                @foreach (System.Data.DataRow p5 in dt7.Rows)
-                                                {
-
-                                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                                        <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
-                                                        <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio normal en soriana.com</small></td>
-                                                        <td style="padding: 0; text-space-collapse: collapse">$@p5["TotNormal"]</td>
-                                                    </tr>
-                                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                                        <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
-                                                        <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio oferta en soriana.com</small></td>
-                                                        <td style="padding: 0; text-space-collapse: collapse">$@p5["TotOferta"]</td>
-                                                    </tr>
-                                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                                        <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
-                                                        <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio normal al surtir</small></td>
-                                                        <td style="padding: 0; text-space-collapse: collapse">$@p5["TotNormalSurtido"]</td>
-                                                    </tr>
-                                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                                        <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
-                                                        <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total precio oferta al surtir</small></td>
-                                                        <td style="padding: 0; text-space-collapse: collapse">$@p5["TotOfertaSurtido"]</td>
-                                                    </tr>
-                                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                                        <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
-                                                        <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total en POS</small></td>
-                                                        <td style="padding: 0; text-space-collapse: collapse">$@p5["TotPOS"]</td>
-                                                    </tr>
-                                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                                        <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
-                                                        <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Total pagado</small></td>
-                                                        <td style="padding: 0; text-space-collapse: collapse">$@p5["TotPagado"]</td>
-                                                    </tr>
-                                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                                        <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
-                                                        <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Ahorro</small></td>
-                                                        <td style="padding: 0; text-space-collapse: collapse">$@p5["Ahorro"]</td>
-                                                    </tr>
-                                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                                        <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
-                                                        <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Puntos ganados</small></td>
-                                                        <td style="padding: 0; text-space-collapse: collapse">$@p5["PuntosGanados"]</td>
-                                                    </tr>
-                                                    <tr style="padding: 0; text-space-collapse: collapse">
-                                                        <td colspan="3" style="text-align: left; padding: 0; text-space-collapse: collapse"></td>
-                                                        <td colspan="2" style="text-align: left; padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">Puntos acumulados</small></td>
-                                                        <td style="padding: 0; text-space-collapse: collapse">$@p5["PuntosAcumulados"]</td>
-                                                    </tr>
-                                                }
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        }
-                        }
-                    </div>
-
+                    }
                 </div>
+
+            </div>
         </div>
     </div>
 </div>
 @Html.Partial("SolicitarGuia")
+@Html.Partial("CancelacionOrden")
 @section scripts {
     @*=======================================================CANCELACION DE ORDEN=======================================================*@
 <script>
-     var _cancelacion = undefined;
+    var _json = undefined;
+    var _cancelacion = undefined;
     $(document).ready(function () {
-
         _cancelacion = '@Session["ordenACancelar"]';
         var _status = '@Session["OrderStatus"]';
 
@@ -764,17 +711,162 @@
         else {
             $('#btnGenerar').hide();
         }
+
+        $('#btnSolicitar').attr('disabled', true);
+        table1 = $("#tblSolicitud").DataTable(
+            {
+                processing: false,
+                searching: false,
+                ordering: false,
+                filter: false,
+                info: false,
+                stateSave: false,
+                select: false,
+                //Paggin
+
+                paging: false,
+
+                // destroy: true, //destruye automaticamente la referencia a la tabla
+                //Ajax
+                //serverSide: true,
+                //bServerSide: true,
+                //sServerMethod: "GET",
+                buttons: [],
+                //fixedHeader: {
+                //    header: true
+                //},
+                "scrollX": true
+            }
+        );
+
+        GetPackings();
     });
 
         function back() {
             window.location.href = '@Url.Content("~/Ordenes/MonitorOrdenADMIN")';
+    }
+
+        function Get() {
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetShipmentRequestsFromWMS", "ShipmentRequestsWMS")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        var myTableR = $('#tblConsulta').DataTable();
+                        myTableR
+                            .clear()
+                            .draw();
+                        _jsonOrdenes = json.json;
+
+                        for (var i = 0; i < json.json.length; i++) {
+                            myTableR.row.add([
+                                json.json[i].Cuenta,
+                                json.json[i].cantidad,
+                                json.json[i].referencia2,
+                                json.json[i].siglasCliente,
+                                json.json[i].direccion,
+                                json.json[i].colonia,
+                                json.json[i].poblacion,
+                                json.json[i].codigoPostal,
+                                json.json[i].telefono,
+                                json.json[i].contacto,
+                                json.json[i].ucc,
+                                "<input class='form - check - input' type='checkbox' onChange='SeleccionarUCC(\"" + json.json[i].ucc + "\")' value='"
+                                + json.json[i].idShipmentWMS + "/" + json.json[i].ProductId + "/" + json.json[i].Barcode + "/" + json.json[i].UeNo + "/"
+                                + json.json[i].OrderNo + "/" + json.json[i].ucc + "' id='chkSel_" + json.json[i].idShipmentWMS + "' />"
+                            ]).draw();
+
+                        }
+
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+            });
+        }
+
+        function GetPackings() {
+            _jsonPackings = [];
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetShipmentPackingWMS", "Catalogo")',
+
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        console.log(json);
+                        for (var i = 0; i < json.json.length; i++) {
+                            let _obj = {};
+                            _obj.id = json.json[i].idCnscPacking + '-' + json.json[i].IdPackingCode;
+                            _obj.text = json.json[i].IdPackingType;
+                            _obj.ancho = json.json[i].PackageWidth;
+                            _obj.largo = json.json[i].PackageLength;
+                            _obj.alto = json.json[i].PackageHeight;
+                            _obj.peso = json.json[i].PackageWeight;
+
+                            //alert('Insert');
+                            _jsonPackings.push(_obj);
+
+                            if (i == 0) {
+                                _optionsPackings = "<option value=" + _obj.id + " >" + _obj.text + "</option>"
+                            }
+                            else
+                                _optionsPackings += "<option value=" + _obj.id + " >" + _obj.text + "</option>"
+                        }
+
+
+
+
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+             });
+
+            console.log(_jsonPackings, _optionsPackings);
+        }
+
+        function GenerarOrden() {
+            var OrderId = $('#OrderSF').val();
+            if (confirm('Desea solicitar una nueva orden de compra para este pedido?')) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GenerarNvaOrden", "Ordenes")',
+                    data: {
+                        OrderId: OrderId
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            alert('Se envió la petición para la generación de nueva orden de compra para la orden actual: ' + $('#OrderSF').val() + '. Favor de esperar para la actualización.');
+                        }
+                        else {
+                            alert('La petición para la generación de nueva orden de compra de la orden actual: ' + $('#OrderSF').val() + ' fue errónea.' + json.Message);
+                         }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            }
         }
 
         function SolicitarGuia() {
             if (confirm('Desea solicitar una Guía Manual?')) {
                 //validación de cobertura
+                SeleccionarUCC();
                 if (confirm('El pedido no cuenta con cobertura, desea cancelarlo?')) {
-                    alert('Pedido cancelado');
+                    popUpCanOrden($('#UeNo').val());
                 }
                 else {
                     var causesSelect = $("<select class='form-control m-b' ></select>");
@@ -791,6 +883,240 @@
             else {
                 alert('Se cancela solicitud de una Guía Manual');
             }
+        }
+
+        function AceptarSol() {
+            if ($('#ddlMotSol').val() != "0") {
+                alert('Solicitud aceptada');
+                location.reload();
+            }
+            else {
+                alert('Seleccione un motivo');
+            }
+        }
+
+        function SolicitudGuia() {
+        var selProd = _json.length;
+
+            if (selProd > 0) {
+                $('#btnSolicitar').attr('disabled', false);
+                $('#dlgCreateServicios').modal('show');
+
+                var myTable4 = $('#tblSolicitud').DataTable();
+                myTable4
+                    .clear()
+                    .draw();
+                for (var i = 0; i < _json.length; i++) {
+                    myTable4.row.add([
+                        _json[i].referencia,
+                        _json[i].pk,
+                        "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
+                        + _optionsPackings + "</select>",
+                        "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
+                        "<input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' />",
+                        "<input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' />",
+                        "<input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px' />",
+                        "<input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' />"
+                    ]).draw();
+
+                    $("#ddlCodigo_" + i).val('');
+                }
+            }
+        }
+
+        function SeleccionarUCC() {
+            _json = [];
+            let _obj = {};
+            _obj.idShip = 1; //itemO.idShipmentWMS; de dónde se saca?
+            _obj.productId = $('#ProductId').val();
+            _obj.barcode = $('#Barcode').val();
+            _obj.ueNo = $('#UeNo').val();
+            _obj.orderNo = $('#OrderNo').val();
+            _obj.ucc = 1; //itemO.ucc; de dónde se saca?
+
+            _obj.cuenta = 1; //itemO.Cuenta; de dónde se saca?
+            _obj.piezas = 1; //itemO.cantidad; de dónde se saca?
+            _obj.referencia = $('#UeNo').val(); //itemO.referencia2;
+            _obj.pk = 1; //itemO.ucc; de dónde se saca?
+            _obj.tipoEmpaque = '';
+            _obj.porcentaje = 0;
+            _obj.ancho = 0;
+            _obj.largo = 0;
+            _obj.alto = 0;
+            _obj.peso = 0;
+            _obj.selectedValue = '';
+
+            _json.push(_obj);
+        }
+
+        function Confirmar() {
+            console.log(_json);
+            var jsonCopy = _json;
+            var jsonConfirm = [];
+            var count = 0;
+            for (var x = 0; x < jsonCopy.length; x++) {
+                let _obj = {};
+                _obj.idShip = jsonCopy[x].idShip;
+                _obj.productId = jsonCopy[x].productId;
+                _obj.ueNo = jsonCopy[x].ueNo;
+                _obj.orderNo = jsonCopy[x].orderNo;
+                _obj.ucc = jsonCopy[x].ucc;
+                _obj.barcode = jsonCopy[x].barcode;
+                _obj.cuenta = jsonCopy[x].cuenta;
+                _obj.referencia = jsonCopy[x].referencia;
+                _obj.pk = jsonCopy[x].pk;
+                _obj.piezas = jsonCopy[x].piezas;
+                _obj.porcentaje = $("#porcentaje" + x).val();
+                if (jsonCopy[x].tipoEmpaque != '')
+                    count++;
+
+                _obj.tipoEmpaque = jsonCopy[x].tipoEmpaque;
+                _obj.ancho = $("#ancho" + x).val();
+                _obj.largo = $("#largo" + x).val();
+                _obj.alto = $("#alto" + x).val();
+                _obj.peso = $("#peso" + x).val();
+                jsonConfirm.push(_obj);
+            }
+            console.log(jsonConfirm);
+            if (jsonCopy.length == count) {
+                //alert('Guardarrr');
+                $('#btnSolicitar').attr('disabled', true);
+                console.log(jsonConfirm);
+                    //Send the JSON array to Controller using AJAX.
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("AddEmbalajePendiente", "Ordenes")',
+                            data: JSON.stringify({
+                                Paquetes: jsonConfirm
+
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (json) {
+                                if (json.Success)
+                                    location.reload();
+                                else {
+                                    _json = [];
+                                    Get();
+                                    $('#dlgCreateServicios').modal('hide');
+                                    alert(json.Message);
+                                }
+                            }
+                        });
+
+            }
+            else
+                alert('Los datos estan Incompletos');
+        }
+
+        function Rebind(idShip, cuenta, index, productId) {
+            var selectVal = $("#ddlCodigo_" + index).val();
+            console.log('entra', idShip, cuenta, index, selectVal);
+            var jsonCopy = _json;
+            var _code = selectVal.split('-')[1];
+            var _ancho;
+            var _largo;
+            var _alto;
+            var _peso;
+            _json = [];
+
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetShipmentPackingWMSByCode", "ShipmentRequestsWMS")',
+                    data: {
+                        code: _code,
+                        productId: productId
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            if(_code == 'EMB' || _code == 'STC') {
+                                _ancho = json.json[0].ANCHO;
+                                _largo = json.json[0].LARGO;
+                                _alto = json.json[0].ALTO;
+                                _peso = json.json[0].PESO;
+                            }
+                            else {
+                                var valores = _jsonPackings.find(x => x.id == selectVal);
+                                _ancho = valores.ancho;
+                                _largo = valores.largo;
+                                _alto = valores.alto;
+                                _peso = json.json[0].PESO;
+                            }
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(errorThrown);
+                    }
+                });
+
+            for (var x = 0; x < jsonCopy.length; x++) {
+                let _obj = {};
+                _obj.idShip = jsonCopy[x].idShip;
+                _obj.cuenta = jsonCopy[x].cuenta;
+                _obj.productId = jsonCopy[x].productId;
+                _obj.ueNo = jsonCopy[x].ueNo;
+                _obj.orderNo = jsonCopy[x].orderNo;
+                _obj.ucc = jsonCopy[x].ucc;
+                _obj.barcode = jsonCopy[x].barcode;
+                _obj.referencia = jsonCopy[x].referencia;
+                _obj.pk = jsonCopy[x].pk;
+                _obj.piezas = jsonCopy[x].piezas;
+                _obj.porcentaje = 0;
+
+                if (jsonCopy[x].idShip == idShip && jsonCopy[x].cuenta == cuenta) {
+                    _obj.tipoEmpaque = _code;
+                    _obj.ancho = _ancho;
+                    _obj.largo = _largo;
+                    _obj.alto = _alto;
+                    _obj.peso = _peso;
+                    _obj.selectedValue = selectVal;
+                }
+                else {
+                    _obj.tipoEmpaque = jsonCopy[x].tipoEmpaque;
+                    _obj.ancho = jsonCopy[x].ancho;
+                    _obj.largo = jsonCopy[x].largo;
+                    _obj.alto = jsonCopy[x].alto;
+                    _obj.peso = jsonCopy[x].peso;
+                    _obj.selectedValue = jsonCopy[x].selectedValue;
+                }
+                //alert('Insert');
+                _json.push(_obj);
+            }
+
+            var myTable4 = $('#tblSolicitud').DataTable();
+            myTable4
+                .clear()
+                .draw();
+            for (var i = 0; i < _json.length; i++) {
+                myTable4.row.add([
+                    _json[i].referencia,
+                    _json[i].pk,
+                    "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
+                    + _optionsPackings + "</select>",
+                    "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
+                    "<input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' />",
+                    "<input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' />",
+                    "<input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px' />",
+                    "<input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' />"
+                ]).draw();
+
+                $("#ddlCodigo_" + i).val(_json[i].selectedValue);
+            }
+
+        }
+
+        function LimpiaModal() {
+            $("#ddlCodigo").val('');
+            $("#tipoEmpaque").val('');
+            $("#largo").val('');
+            $("#ancho").val('');
+            $("#alto").val('');
+            $("#peso").val('');
+
+            $("#ddlEstatus").val("1");
+            $("#idCnscPacking").val(0);
         }
 
         function popUpCanOrden(OrderNo) {
