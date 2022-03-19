@@ -447,8 +447,22 @@ namespace ServicesManagement.Web.Controllers
                     }
                 }
 
+                //List<Colaborador_BE> listaColaborador = oColaborador_SD.Listar(pColaborador_BE);
+                //var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                //serializer.MaxJsonLength = 500000000;
+
+
+                //var json = Json(listaColaborador, JsonRequestBehavior.AllowGet);
+                //json.MaxJsonLength = 500000000;
+                //return json;
+
                 var listaImagenes = DataTableToModel.ConvertTo<upCorpOMS_Cns_UeNoDevolEvidencia>(DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolEvidencia(UeNo).Tables[0]);
                 var lstImagenes = DALProcesoReciboDevoluciones.upCorpOMS_Cns_UeNoDevolEvidencia(UeNo).Tables[0];
+                //json tamaño
+                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                serializer.MaxJsonLength = 500000000;
+                //json tamaño
+
                 var x = 0;
                 foreach (DataRow item in lstImagenes.Rows)
                 {
@@ -460,7 +474,12 @@ namespace ServicesManagement.Web.Controllers
                 }
 
                 var result = new { Success = true, resp = listaImagenes };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                //json tamaño
+                var json = Json(result, JsonRequestBehavior.AllowGet);
+                json.MaxJsonLength = 500000000;
+                return json;
+                //json tamaño
+                //return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
             {
