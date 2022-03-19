@@ -40,6 +40,11 @@
                                 Barcode = dt5.Rows[0]["Barcode"].ToString();
                                 ProductId = dt5.Rows[0]["ProductId"].ToString();
                             }
+                            if (dt6.Rows.Count > 0)
+                            {
+                                Barcode = dt6.Rows[0]["Barcode"].ToString();
+                                ProductId = dt6.Rows[0]["ProductId"].ToString();
+                            }
 
                             int index = 1;
                             foreach (System.Data.DataRow p in dt.Rows)
@@ -681,11 +686,11 @@
     </div>
 </div>
 @Html.Partial("SolicitarGuia")
-@Html.Partial("~/ShipmentRequestWMS/SolicitarGuiaMonitor")
+@Html.Partial("SolicitarGuiaMonitor")
 @Html.Partial("CancelacionOrden")
 @section scripts {
     @*=======================================================CANCELACION DE ORDEN=======================================================*@
-    <script>
+<script>
     var _json = undefined;
     var _cancelacion = undefined;
     $(document).ready(function () {
@@ -870,20 +875,19 @@
             if (confirm('Desea solicitar una Guía Manual?')) {
                 //validación de cobertura
                 SeleccionarUCC();
-                SolicitudGuia();
                 if (confirm('El pedido no cuenta con cobertura, desea cancelarlo?')) {
                     popUpCanOrden($('#UeNo').val());
                 }
                 else {
-                    var causesSelect = $("<select class='form-control m-b' ></select>");
-                    $("<option>").val("0").text("--Seleccione--").appendTo(causesSelect);
-                    $("<option>").val("1").text("Error en Sistema No se puede solicitar guía").appendTo(causesSelect);
-                    $("<option>").val("2").text("Error en Sistema Tipo de Guía incorrecta").appendTo(causesSelect);
-                    $("<option>").val("3").text("Vencimiento de guía").appendTo(causesSelect);
-                    $("<option>").val("4").text("Faltó solicitar Guía para el pedido").appendTo(causesSelect);
-                    $("<option>").val("5").text("Reenvío de Pedido").appendTo(causesSelect);
-                    //alert("<td>" + causesSelect[0].outerHTML + "</td>");
-                    $("#dlgMotivoSol").modal('toggle');
+                    //var causesSelect = $("<select class='form-control m-b' ></select>");
+                    //$("<option>").val("0").text("--Seleccione--").appendTo(causesSelect);
+                    //$("<option>").val("1").text("Error en Sistema No se puede solicitar guía").appendTo(causesSelect);
+                    //$("<option>").val("2").text("Error en Sistema Tipo de Guía incorrecta").appendTo(causesSelect);
+                    //$("<option>").val("3").text("Vencimiento de guía").appendTo(causesSelect);
+                    //$("<option>").val("4").text("Faltó solicitar Guía para el pedido").appendTo(causesSelect);
+                    //$("<option>").val("5").text("Reenvío de Pedido").appendTo(causesSelect);
+                    ////alert("<td>" + causesSelect[0].outerHTML + "</td>");
+                    $("#dlgMotivoSol").modal('show');
                 }
             }
             else {
@@ -893,8 +897,8 @@
 
         function AceptarSol() {
             if ($('#ddlMotSol').val() != "0") {
-                alert('Solicitud aceptada');
-                location.reload();
+                $('#dlgMotivoSol').modal('hide');
+                SolicitudGuia();
             }
             else {
                 alert('Seleccione un motivo');
@@ -915,7 +919,6 @@
                 for (var i = 0; i < _json.length; i++) {
                     myTable4.row.add([
                         _json[i].referencia,
-                        _json[i].pk,
                         "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
                         + _optionsPackings + "</select>",
                         "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
@@ -957,58 +960,108 @@
 
         function Confirmar() {
             console.log(_json);
+            var _UeNo = $('#UeNo').val();
+            var _OrderNo = $('#OrderNo').val();
             var jsonCopy = _json;
             var jsonConfirm = [];
+            var items = new Array();
+            var products = new Array();
             var count = 0;
             for (var x = 0; x < jsonCopy.length; x++) {
                 let _obj = {};
+                var item = {};
+                var product = {};
                 _obj.idShip = jsonCopy[x].idShip;
                 _obj.productId = jsonCopy[x].productId;
                 _obj.ueNo = jsonCopy[x].ueNo;
                 _obj.orderNo = jsonCopy[x].orderNo;
-                _obj.ucc = jsonCopy[x].ucc;
+                //_obj.ucc = jsonCopy[x].ucc;
                 _obj.barcode = jsonCopy[x].barcode;
                 _obj.cuenta = jsonCopy[x].cuenta;
                 _obj.referencia = jsonCopy[x].referencia;
-                _obj.pk = jsonCopy[x].pk;
+                //_obj.pk = jsonCopy[x].pk;
                 _obj.piezas = jsonCopy[x].piezas;
                 _obj.porcentaje = $("#porcentaje" + x).val();
                 if (jsonCopy[x].tipoEmpaque != '')
                     count++;
-
                 _obj.tipoEmpaque = jsonCopy[x].tipoEmpaque;
                 _obj.ancho = $("#ancho" + x).val();
                 _obj.largo = $("#largo" + x).val();
                 _obj.alto = $("#alto" + x).val();
                 _obj.peso = $("#peso" + x).val();
                 jsonConfirm.push(_obj);
+
+                item.Tipo = jsonCopy[x].tipoEmpaque;
+                item.Peso = $("#peso" + x).val();
+                item.Largo = $("#largo" + x).val();
+                item.Ancho = $("#ancho" + x).val();
+                var alto = $("#alto" + x).val();
+                item.Alto = alto == "" ? 0 : alto;
+                items.push(item);
+
+                product.Barcode = jsonCopy[x].barcode;
+                product.ProductId = jsonCopy[x].productId;
+                product.ProductName = jsonCopy[x].productId; //falta traerse el productname
+                product.Pieces = jsonCopy[x].piezas;
+                product.product = {};
+                products.push(product);
             }
             console.log(jsonConfirm);
             if (jsonCopy.length == count) {
-                //alert('Guardarrr');
                 $('#btnSolicitar').attr('disabled', true);
                 console.log(jsonConfirm);
+                if ($('#UeType').val() == "CEDIS") {
                     //Send the JSON array to Controller using AJAX.
-                        $.ajax({
-                            type: "POST",
-                            url: '@Url.Action("AddEmbalajePendiente", "Ordenes")',
-                            data: JSON.stringify({
-                                Paquetes: jsonConfirm
-
-                            }),
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            success: function (json) {
-                                if (json.Success)
-                                    location.reload();
-                                else {
-                                    _json = [];
-                                    Get();
-                                    $('#dlgCreateServicios').modal('hide');
-                                    alert(json.Message);
-                                }
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("AddEmbalajePendiente", "Ordenes")',
+                        data: JSON.stringify({
+                            Paquetes: jsonConfirm
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (json) {
+                            if (json.Success) {
+                                alert('Solicitud aceptada');
+                                location.reload();
                             }
-                        });
+                            else {
+                                _json = [];
+                                Get();
+                                $('#dlgCreateServicios').modal('hide');
+                                alert(json.Message);
+                            }
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        url: '@Url.Action("AddEmbalaje", "Ordenes")',
+                        data: JSON.stringify({
+                            Paquetes: items,
+                            UeNo: _UeNo,
+                            OrderNo: _OrderNo,
+                            Products: products,
+                            TrackingType:'Normal'
+                        }),
+                        success: function (json) {
+                            if (json.Success) {
+                                alert('Solicitud aceptada');
+                                location.reload();
+                            }
+                            else {
+                                alert(json.Message);
+                            }
+                        }
+                        , error: function (jqXHR, textStatus, errorThrown) {
+                            alert(errorThrown);
+
+                        }
+                    });
+                }
 
             }
             else
@@ -1098,7 +1151,6 @@
             for (var i = 0; i < _json.length; i++) {
                 myTable4.row.add([
                     _json[i].referencia,
-                    _json[i].pk,
                     "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
                     + _optionsPackings + "</select>",
                     "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
@@ -1213,5 +1265,5 @@
                 });
 
         }
-    </script>
+</script>
 }
