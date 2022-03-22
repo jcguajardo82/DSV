@@ -2201,7 +2201,7 @@ namespace ServicesManagement.Web.Controllers
                     string GuiaEstatus = "CREADA";
                     
                     var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
-                    item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
+                    item.Tipo, item.Largo, item.Ancho, item.Alto, peso,
                     User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
                     DALServicesM.CarrierSelected(OrderNo, cotizeId);
 
@@ -2441,7 +2441,7 @@ namespace ServicesManagement.Web.Controllers
                         //User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
 
                         var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
-                         item.tipoEmpaque, item.largo, item.ancho, item.alto, item.peso,
+                         item.tipoEmpaque, item.largo, item.ancho, item.alto, peso,
                          User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc, trackUrl).Tables[0].Rows[0][0];
 
                         DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
