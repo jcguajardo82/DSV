@@ -17,5 +17,8 @@ namespace ServicesManagement.Web.Models
         public string Cve_GciaCategSAP { get; set; }
         public string Cve_GpoCategSAP { get; set; }
         public string Desc_CategSAP { get; set; }
+        public string SAT_IdProdServ { get; set; }
+        public string SAT_UniMedProd { get; set; }
+        public string SAT_UniMedProdNombre { get; set; }
     }
 }
