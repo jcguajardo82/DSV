@@ -211,6 +211,14 @@ namespace ServicesManagement.Web.DAL.Embarques
                     parametros.Add("@labelUrl", pdfstring);
                     parametros.Add("@trackUrl", trackUrl);
                 }
+                if (PackageWeight <= 70)
+                {
+                    parametros.Add("@serviceId", "60");
+                }
+                else
+                {
+                    parametros.Add("@serviceId", "L0");
+                }
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoTracking]", false, parametros);
 
                 return ds;
