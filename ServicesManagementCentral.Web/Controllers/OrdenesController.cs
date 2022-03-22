@@ -2822,8 +2822,7 @@ namespace ServicesManagement.Web.Controllers
             ServiceConfiguration serviceConfiguration = new ServiceConfiguration();
             serviceConfiguration.quantityOfLabels = 1;
             serviceConfiguration.serviceTypeId = "70";
-            // serviceConfiguration.salesOrganization = "112"; // para Qas
-            serviceConfiguration.salesOrganization = "61A"; // para PROD
+            serviceConfiguration.salesOrganization = System.Configuration.ConfigurationManager.AppSettings["salesOrganization"];
             serviceConfiguration.effectiveDate = ds.Tables[1].Rows[0]["effectiveDate"].ToString();
             serviceConfiguration.originZipCodeForRouting = ds.Tables[1].Rows[0]["PostalCode"].ToString();
             // validar si tiene seguro---------------
@@ -3110,8 +3109,7 @@ namespace ServicesManagement.Web.Controllers
             ServiceConfiguration serviceConfiguration = new ServiceConfiguration();
             serviceConfiguration.quantityOfLabels = 1;
             serviceConfiguration.serviceTypeId = "L0";
-            // serviceConfiguration.salesOrganization = "112"; // parqa Qas
-            serviceConfiguration.salesOrganization = "61A"; // para PROD
+            serviceConfiguration.salesOrganization = System.Configuration.ConfigurationManager.AppSettings["salesOrganization"];
             serviceConfiguration.effectiveDate = ds.Tables[1].Rows[0]["effectiveDate"].ToString();
             serviceConfiguration.originZipCodeForRouting = ds.Tables[1].Rows[0]["PostalCode"].ToString();
             // validar si tiene seguro---------------
