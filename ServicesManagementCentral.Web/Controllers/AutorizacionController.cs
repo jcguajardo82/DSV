@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -164,10 +165,11 @@ namespace ServicesManagement.Web.Controllers
 
                 if (IdAccion.Equals("1"))
                 {
-                  var ds=  DALCallCenter.PaymentsGetCancelacion_sUp(Id_cancelacion);
-                    if (Convert.ToBoolean(ds.Tables[0].Rows[0]["isCancelacion"])) {
+                    var ds = DALCallCenter.PaymentsGetCancelacion_sUp(Id_cancelacion);
+                    if (Convert.ToBoolean(ds.Tables[0].Rows[0]["isCancelacion"]) && ds.Tables[0].Rows[0]["UeType"].ToString().ToUpper() == "SETC")
+                    {
 
-                      
+
                         string apiUrl = System.Configuration.ConfigurationManager.AppSettings["Rma_PaymentsGetCancelacion"];
 
                         apiUrl = string.Format("{0}?order={1}&amount={2}", apiUrl, ds.Tables[0].Rows[0]["OrderSF"].ToString(), ds.Tables[0].Rows[0]["TotalAmount"].ToString());
@@ -189,7 +191,7 @@ namespace ServicesManagement.Web.Controllers
                                 break;
                             case 3:
                                 // DSV, DST, CEDIS Duda: Da entrada Almacen
-                                Correos.Correos.Correo10A(Id_cancelacion);                          
+                                Correos.Correos.Correo10A(Id_cancelacion);
                                 break;
                             case 4:
                                 // Administrador  Autoriza Gerencia
@@ -199,10 +201,38 @@ namespace ServicesManagement.Web.Controllers
 
                         if (r.code != "00")
                         {
-                            throw new Exception("Error al ejecutar el api PaymentsGetCancelacion "+r.message);
+                            throw new Exception("Error al ejecutar el api PaymentsGetCancelacion " + r.message);
                         }
+                    }
+                    else if (Convert.ToBoolean(ds.Tables[0].Rows[0]["isCancelacion"]) && ds.Tables[0].Rows[0]["UeType"].ToString().ToUpper() != "SETC")
+                    {
+                        var DevModel = new RequestDevolucionModel();
+                        DevModel.No_order = ds.Tables[0].Rows[0]["OrderNo"].ToString();
+                        DevModel.No_order_UE = ds.Tables[0].Rows[0]["UeNo"].ToString();
+                        var DevModelItems = new List<ItemModels>();
+                        foreach (DataRow item in ds.Tables[1].Rows)
+                        {
+                            DevModelItems.Add(new ItemModels
+                            {
+                                codigo = item["Barcode"].ToString(),
+                                cantidad = item["returnquantity"].ToString(),
+                                precio = item["regularprice"].ToString(),
+                                itemTotal = item["offerprice"].ToString(),
+                            });
+                        }
+                        DevModel.items = DevModelItems;
 
+                        string apiUrl = System.Configuration.ConfigurationManager.AppSettings["Rma_Devoluciones"];
+                        
+                        string json2 = JsonConvert.SerializeObject(DevModel);
+                        
+                        System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                        Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl, "", json2);
 
+                        if (r.code != "00")
+                        {
+                            throw new Exception("Error al ejecutar el api PaymentsGetCancelacion " + r.message);
+                        }
                     }
                 }
 
