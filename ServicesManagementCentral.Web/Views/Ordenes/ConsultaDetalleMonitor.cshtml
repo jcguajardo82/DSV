@@ -95,7 +95,7 @@
                                                                 <p>
                                                                     Siguiente movimiento:
                                                                     @*@if (p["StatusDescription"].ToString()!= "Entregando orden")
-                                                                        {*@
+                                                        {*@
                                                                     @if (p["OrderStatus"].ToString().Trim().Equals("9"))
                                                                     {
                                                                         if (p["UeType"].ToString().Trim().Equals("SETC"))
@@ -618,8 +618,7 @@
                                                                 <small>@p5["c_tot"]</small>
                                                             </th>
                                                         </tr>
-                                                    }
-
+                                                     }
                                                 </tbody>
                                                 <tfoot>
                                                     @foreach (System.Data.DataRow p5 in dt7.Rows)
@@ -677,8 +676,47 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal inmodal fade" id="dlgCreateServicios" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-md">
+                                    <div class="modal-content" style="width: 900px">
+                                        <div class="modal-header pt-3 pb-1">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <h4 class="modal-title">Solicitar Guia</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col col-xs-12 col-md-12">
+                                                    <table id="tblSolicitud" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 900px">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Referencia</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 120px" rowspan="1">Tipo de Empaque</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 40px" rowspan="1" colspan="1">Porcentaje</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Ancho</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Largo</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Alto</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Peso</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (System.Data.DataRow p5 in dt5.Rows)
+                                                            {
+                                                            }
+                                                            </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                                            @*<button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+                                            <button type="button" id="btnSolicitar" onclick="Confirmar()" class="btn btn-primary">Solicitar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         }
-                    }
+                }
                 </div>
 
             </div>
@@ -935,27 +973,51 @@
 
         function SeleccionarUCC() {
             _json = [];
-            let _obj = {};
-            _obj.idShip = 1; //itemO.idShipmentWMS; de dónde se saca?
-            _obj.productId = $('#ProductId').val();
-            _obj.barcode = $('#Barcode').val();
-            _obj.ueNo = $('#UeNo').val();
-            _obj.orderNo = $('#OrderNo').val();
-            _obj.ucc = 1; //itemO.ucc; de dónde se saca?
+            var OrderNo = $('#OrderNo').val();
+            $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ConsultaDetalleMonitorJson", "Ordenes")',
+                    data: JSON.stringify({
+                        order: OrderNo
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (json) {
+                        if (json.Success) {
+                            //crear ciclo
+                            for (var i = 0; i < json.items.length; i++) {
+                                let _obj = {};
+                                _obj.idShip = 1; //itemO.idShipmentWMS; de dónde se saca?
+                                _obj.productId = json.items[i].ProductId;
+                                _obj.productName = json.items[i].ProductName;
+                                _obj.barcode = json.items[i].Barcode;
+                                _obj.ueNo = $('#UeNo').val();
+                                _obj.orderNo = $('#OrderNo').val();
+                                _obj.ucc = 1; //itemO.ucc; de dónde se saca?
 
-            _obj.cuenta = 1; //itemO.Cuenta; de dónde se saca?
-            _obj.piezas = 1; //itemO.cantidad; de dónde se saca?
-            _obj.referencia = $('#UeNo').val(); //itemO.referencia2;
-            _obj.pk = 1; //itemO.ucc; de dónde se saca?
-            _obj.tipoEmpaque = '';
-            _obj.porcentaje = 0;
-            _obj.ancho = 0;
-            _obj.largo = 0;
-            _obj.alto = 0;
-            _obj.peso = 0;
-            _obj.selectedValue = '';
+                                _obj.cuenta = 1; //itemO.Cuenta; de dónde se saca?
+                                _obj.piezas = 1; //itemO.cantidad; de dónde se saca?
+                                _obj.referencia = $('#UeNo').val(); //itemO.referencia2;
+                                _obj.pk = 1; //itemO.ucc; de dónde se saca?
+                                _obj.tipoEmpaque = '';
+                                _obj.porcentaje = 0;
+                                _obj.ancho = 0;
+                                _obj.largo = 0;
+                                _obj.alto = 0;
+                                _obj.peso = 0;
+                                _obj.selectedValue = '';
 
-            _json.push(_obj);
+                                _json.push(_obj);
+                            }
+                            console.log(_json);
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+            });
+
+            
         }
 
         function Confirmar() {
@@ -973,6 +1035,7 @@
                 var product = {};
                 _obj.idShip = jsonCopy[x].idShip;
                 _obj.productId = jsonCopy[x].productId;
+                _obj.productName = jsonCopy[x].productName;
                 _obj.ueNo = jsonCopy[x].ueNo;
                 _obj.orderNo = jsonCopy[x].orderNo;
                 //_obj.ucc = jsonCopy[x].ucc;
@@ -1001,7 +1064,7 @@
 
                 product.Barcode = jsonCopy[x].barcode;
                 product.ProductId = jsonCopy[x].productId;
-                product.ProductName = jsonCopy[x].productId; //falta traerse el productname
+                product.ProductName = jsonCopy[x].productName; //falta traerse el productname
                 product.Pieces = jsonCopy[x].piezas;
                 product.product = {};
                 products.push(product);
@@ -1115,6 +1178,7 @@
                 _obj.idShip = jsonCopy[x].idShip;
                 _obj.cuenta = jsonCopy[x].cuenta;
                 _obj.productId = jsonCopy[x].productId;
+                _obj.productName = jsonCopy[x].productName;
                 _obj.ueNo = jsonCopy[x].ueNo;
                 _obj.orderNo = jsonCopy[x].orderNo;
                 _obj.ucc = jsonCopy[x].ucc;

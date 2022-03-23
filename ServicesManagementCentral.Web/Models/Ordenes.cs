@@ -44,4 +44,13 @@ namespace ServicesManagement.Web.Models
         public decimal ProductId { get; set; }
         public string ProductName { get; set; }
     }
+
+    public class ItemsGuia
+    {
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string Barcode { get; set; }
+        public string UeNo { get; set; }
+        public string OrderNo { get; set; }
+    }
 }
