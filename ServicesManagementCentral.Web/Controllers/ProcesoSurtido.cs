@@ -272,8 +272,8 @@ namespace ServicesManagement.Web.Controllers
         {
             try
             {
-
-                DALProcesoSurtido.upCorpOms_Del_UeNoSupplyProcess(OrderNo, Cause_Desc, int.Parse(IdCause), UeNo);
+                string UserCreate = User.Identity.Name;
+                DALProcesoSurtido.upCorpOms_Del_UeNoSupplyProcess(OrderNo, Cause_Desc, int.Parse(IdCause), UeNo, UserCreate);
 
                 Correos.Correos.Correo8A(OrderNo, 2);
                 var result = new
