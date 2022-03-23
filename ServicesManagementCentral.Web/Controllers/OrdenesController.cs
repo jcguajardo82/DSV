@@ -3022,7 +3022,7 @@ namespace ServicesManagement.Web.Controllers
 
             Pallet pallet = new Pallet();
             pallet.merchandise = "NATIONAL";
-            pallet.genericContent = "Mercancias Generales";
+            pallet.genericContent = "Mercancias Generales (" + UeNo +")";
             if (itemDescription.length <= 120 && itemDescription.width <= 105)
                 pallet.type = "SIMPLE";
             else
