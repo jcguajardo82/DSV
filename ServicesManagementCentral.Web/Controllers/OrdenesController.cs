@@ -2985,20 +2985,24 @@ namespace ServicesManagement.Web.Controllers
             var reference = ds.Tables[0].Rows[0]["addressReference1"].ToString() + " " + ds.Tables[0].Rows[0]["addressReference2"].ToString();
             wayBill.referenceNumber = reference.Length > 30 ? reference.Substring(0, 29) : reference;
             wayBill.groupShipmentId = null;
-            Pallet pallet = new Pallet();
-            pallet.merchandise = "NATIONAL";
-            pallet.genericContent = "Mercancias Generales";
-            pallet.type = "SIMPLE";
-            wayBill.pallet = pallet;
-            label.wayBillDocument = wayBill;
 
             ItemDescription itemDescription = new ItemDescription();
             itemDescription.parcelId = 5;
             itemDescription.weight = weight;
-            itemDescription.height = int.Parse(Session["SumHeigth"].ToString()) > 190 ? 190 : int.Parse(Session["SumHeigth"].ToString());
-            itemDescription.length = int.Parse(Session["SumLength"].ToString()) > 120 ? 120 : int.Parse(Session["SumLength"].ToString());
-            itemDescription.width = int.Parse(Session["SumWidth"].ToString()) > 105 ? 105 : int.Parse(Session["SumWidth"].ToString());
-            
+            itemDescription.height = int.Parse(Session["SumHeigth"].ToString());
+            itemDescription.length = int.Parse(Session["SumLength"].ToString());
+            itemDescription.width = int.Parse(Session["SumWidth"].ToString());
+
+            Pallet pallet = new Pallet();
+            pallet.merchandise = "NATIONAL";
+            pallet.genericContent = "Mercancias Generales";
+            if (itemDescription.length <= 120 && itemDescription.width <= 105)
+                pallet.type = "SIMPLE";
+            else
+                pallet.type = "DOUBLE";
+            wayBill.pallet = pallet;
+            label.wayBillDocument = wayBill;
+
             Merchandises merchandises = new Merchandises();
             merchandises.totalGrossWeight = weight;
             merchandises.weightUnitCode = "KGM";
