@@ -724,6 +724,7 @@
     </div>
 </div>
 @Html.Partial("SolicitarGuia")
+@Html.Partial("ReasignarOrden")
 @Html.Partial("SolicitarGuiaMonitor")
 @Html.Partial("CancelacionOrden")
 @section scripts {
@@ -865,10 +866,6 @@
                             else
                                 _optionsPackings += "<option value=" + _obj.id + " >" + _obj.text + "</option>"
                         }
-
-
-
-
                     }
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
@@ -880,7 +877,47 @@
     }
 
         function ReasignarOrden() {
-            alert('ReasignarOrden');
+            if (confirm('Desea Reasignar la Orden?')) {
+                $('#ddlopReasignar').val("0");
+                $('#dlgReasigOrden').modal('show');
+            }
+            else {
+                alert('Reasignación de Orden Cancelada');
+            }
+        }
+
+        function ReasignarOrd() {
+            if ($('#ddlopReasignar').val() != "0") {
+                $('#dlgReasigOrden').modal('hide');
+                var opReasignar = $('#ddlopReasignar').val();
+                var OrderNo = $('#OrderNo').val();
+                var UeNo = $('#UeNo').val()
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("ReasignarOrden", "Ordenes")',
+                    data: {
+                        OrderNo: OrderNo,
+                        UeNo: UeNo,
+                        opReasignar: opReasignar
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            alert('Se reordena a: ' + json.Reasignado);
+                        }
+                        else {
+                            alert(json.Message);
+                         }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            }
+            else {
+                alert('Seleccione un motivo');
+            }
         }
 
         function GenerarOrden() {
@@ -917,14 +954,7 @@
                     popUpCanOrden($('#UeNo').val());
                 }
                 else {
-                    //var causesSelect = $("<select class='form-control m-b' ></select>");
-                    //$("<option>").val("0").text("--Seleccione--").appendTo(causesSelect);
-                    //$("<option>").val("1").text("Error en Sistema No se puede solicitar guía").appendTo(causesSelect);
-                    //$("<option>").val("2").text("Error en Sistema Tipo de Guía incorrecta").appendTo(causesSelect);
-                    //$("<option>").val("3").text("Vencimiento de guía").appendTo(causesSelect);
-                    //$("<option>").val("4").text("Faltó solicitar Guía para el pedido").appendTo(causesSelect);
-                    //$("<option>").val("5").text("Reenvío de Pedido").appendTo(causesSelect);
-                    ////alert("<td>" + causesSelect[0].outerHTML + "</td>");
+                    $('#ddlMotSol').val("0");
                     $("#dlgMotivoSol").modal('show');
                 }
             }
@@ -1016,8 +1046,6 @@
                         }
                     }
             });
-
-            
         }
 
         function Confirmar() {
@@ -1125,7 +1153,6 @@
                         }
                     });
                 }
-
             }
             else
                 alert('Los datos estan Incompletos');

@@ -11,7 +11,45 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
     public class DALProcesoSurtido
     {
         #region Monitor
-        public static DataSet upCorpDM_Cns_InvDispSupplierWH(int ProductId, int Quantity)
+
+        public static DataSet upCorpOMS_Cns_DistanciaClienteProveedor(int OrderNo, string ProveedorId, string PostalCodeCliente)
+        {
+
+            DataSet ds = new DataSet();
+
+            string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
+            if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
+            {
+                conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
+            }
+
+            try
+            {
+                Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
+
+                System.Collections.Hashtable parametros = new System.Collections.Hashtable();
+
+                parametros.Add("@OrderNo", OrderNo);
+                parametros.Add("@ProveedorId", ProveedorId);
+                parametros.Add("@PostalCodeCliente", PostalCodeCliente);
+
+                ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOMS_Cns_DistanciaClienteProveedor]", false, parametros);
+
+                return ds;
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public static DataSet upCorpDM_Cns_InvDispSupplierWH(int ProductId, decimal Quantity)
         {
 
             DataSet ds = new DataSet();
@@ -48,7 +86,7 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
 
         }
 
-        public static DataSet upCorpDM_Cns_InvDispCEDISNum(int ProductId, int Quantity)
+        public static DataSet upCorpDM_Cns_InvDispCEDISNum(int ProductId, decimal Quantity)
         {
 
             DataSet ds = new DataSet();
@@ -85,7 +123,7 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
 
         }
 
-        public static DataSet upCorpDM_Cns_InvDispStoreNum(int ProductId, int Quantity)
+        public static DataSet upCorpDM_Cns_InvDispStoreNum(int ProductId, decimal Quantity)
         {
 
             DataSet ds = new DataSet();
@@ -168,7 +206,6 @@ namespace ServicesManagement.Web.DAL.ProcesoSurtido
             {
                 conection = Soriana.FWK.FmkTools.Seguridad.Desencriptar(ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]]);
             }
-
 
             try
             {
