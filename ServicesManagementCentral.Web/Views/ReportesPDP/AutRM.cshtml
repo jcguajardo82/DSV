@@ -15,14 +15,14 @@
                 </div>
             </div>
             <div class="col-sm-3 col-md-3 col-lg-3">
-                <label>Fecha Fin</label>
+                @*<label>Fecha Fin</label>
                 <input type="date" id="txtFecFin" class="form-control" />
-                <div class="input-group date" id="datetimepicker2"></div>
+                <div class="input-group date" id="datetimepicker2"></div>*@
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
                 <label>&nbsp;</label>
-                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
-                    Buscar
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetReporteAprobacionMarcas()">
+                    Descargar Reporte
                 </button>
             </div>
         </div>
@@ -49,16 +49,16 @@
 
                             foreach (ServicesManagement.Web.Models.ProcesadorPagosSoriana.AprobacionesMarcas o in lista)
                             {
-                                <tr>
-                                    <td>@o.canalCompra</td>
-                                    <td>@o.marca</td>
-                                    <td>@o.totalOrdenes</td>
-                                    <td>@o.monto</td>
-                                    <td>@o.ordenesAprobadas</td>
-                                    <td>@o.porcentajeAprobacion</td>
-                                    <td>@o.ordenesRechazadas</td>
-                                    <td>@o.porcentajeRechazo</td>
-                                </tr>
+                                        <tr>
+                                            <td>@o.canalCompra</td>
+                                            <td>@o.marca</td>
+                                            <td>@o.totalOrdenes</td>
+                                            <td>@o.monto</td>
+                                            <td>@o.ordenesAprobadas</td>
+                                            <td>@o.porcentajeAprobacion</td>
+                                            <td>@o.ordenesRechazadas</td>
+                                            <td>@o.porcentajeRechazo</td>
+                                        </tr>
                             }
                         }
                     }
@@ -129,7 +129,7 @@
 
     </script>
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
-    <script>
+<script>
         $(document).ready(function () {
             $('#tblConsulta thead tr').clone(true).appendTo('#tblConsulta thead');
             $('#tblConsulta thead tr:eq(1) th').each(function (i) {
@@ -177,7 +177,7 @@
                     //serverSide: true,
                     //bServerSide: true,
                     //sServerMethod: "GET",
-                    buttons: ['csv', 'excel'],
+                    buttons: [],
                     orderCellsTop: false,
                     fixedHeader: {
                         header: true
@@ -235,14 +235,14 @@
                             var monto = rw.monto;
 
                             myTable.row.add([
-                                canalCompra
-                                , tipoTarjeta
-                                , marca
-                                , totalOrdenes
-                                , ordenesAprobadas
-                                , porcentajeAprobacion
-                                , ordenesRechazadas
-                                , porcentajeRechazo
+                                canalCompra 
+                                , tipoTarjeta 
+                                , marca 
+                                , totalOrdenes 
+                                , ordenesAprobadas 
+                                , porcentajeAprobacion 
+                                , ordenesRechazadas 
+                                , porcentajeRechazo 
                                 , monto
                             ]).draw();
                         }
@@ -254,5 +254,13 @@
                 }
             });
         }
-    </script>
+
+    function GetReporteAprobacionMarcas() {
+        debugger;
+        var _FecIni = $("#txtFecIni").val();
+
+        window.location = window.location.origin + '/ReportesPDP/ProcesaArchivos?NombreArchivo=AprobacionesMarcas&Fecha=' + _FecIni;
+    }
+</script>
 }
+
