@@ -1128,6 +1128,7 @@ namespace ServicesManagement.Web.Controllers
                     int IdOwner = int.Parse(opReasignar);
                     string proveedorGanador = string.Empty;
                     string postalCodeCliente = string.Empty;
+                    int articulosTot = 0;
 
                     DataSet ds, ds1, ds2, ds3, ds4;
                     ds = DALProcesoSurtido.valida_Punto_de_Venta(int.Parse(OrderNo));
@@ -1136,14 +1137,27 @@ namespace ServicesManagement.Web.Controllers
                     if (esValid)
                     {
                         var proveedorLst = new List<NuevoProveedorReasignado>();
+                        var productosLst = new List<ProductEmbalaje>();
                         //2.- Inventario Disponible
                         ds1 = DALProcesoSurtido.upCorpOMS_Cns_ItemsToSupply(int.Parse(OrderNo));
+                        articulosTot = ds1.Tables[0].Rows.Count;
                         postalCodeCliente = ds1.Tables[0].Rows[0]["PostalCode"].ToString();
                         for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
                         {
                             int productId = int.Parse(ds1.Tables[0].Rows[i]["ProductId"].ToString());
                             string productName = ds1.Tables[0].Rows[i]["ProductName"].ToString();
-                            decimal quantity = decimal.Parse(ds1.Tables[0].Rows[i]["Quantity"].ToString());
+                            long barcode = long.Parse(ds1.Tables[0].Rows[i]["ProductId"].ToString());
+                            decimal quantity = decimal.Parse(ds1.Tables[0].Rows[i]["Quantity"].ToString());                            
+                            int pieces = Decimal.ToInt32(quantity); 
+                            productosLst.Add(
+                                new ProductEmbalaje
+                                {
+                                    ProductId = productId,
+                                    ProductName = productName,
+                                    Barcode = barcode,
+                                    Pieces = pieces
+                                }
+                                );
                             switch (IdOwner)
                             {
                                 case 2:
@@ -1153,34 +1167,32 @@ namespace ServicesManagement.Web.Controllers
                                         //Centro_WERKS Material_MATNR
                                         for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
                                         {
-                                            var productoLst = new List<productosProveedor>();
-                                            productoLst.Add(
-                                                new productosProveedor
+                                            //proveedorLst.Find(item => item.Proveedor == ds2.Tables[0].Rows[j]["Centro_WERKS"].ToString());
+                                            if (i == 0)
+                                            {
+                                                proveedorLst.Add(
+                                                  new NuevoProveedorReasignado
+                                                  {
+                                                      Proveedor = ds2.Tables[0].Rows[j]["Centro_WERKS"].ToString(),
+                                                      productosTot = 1,
+                                                      Distancia = 0
+                                                  }
+                                                  );
+                                            }
+                                            else
+                                            {
+                                                var encontrado2 = proveedorLst.Where(item => item.Proveedor == ds2.Tables[0].Rows[j]["Centro_WERKS"].ToString()).ToList();
+                                                if (encontrado2.Count > 0)
                                                 {
-                                                    Producto = productId.ToString(),
-                                                    Cantidad = quantity,
-                                                    Costo = decimal.Parse(ds1.Tables[0].Rows[i]["Quantity"].ToString()) * decimal.Parse(ds1.Tables[0].Rows[i]["Price"].ToString()),
-                                                    Peso = 0,
-                                                    Volumen = 0
+                                                    encontrado2[0].productosTot += 1;
+                                                    proveedorLst.Add(encontrado2[0]);
                                                 }
-                                                    );
-                                            proveedorLst.Add(
-                                                new NuevoProveedorReasignado
-                                                {
-                                                    Proveedor = ds2.Tables[0].Rows[j]["Centro_WERKS"].ToString(),
-                                                    Distancia = 0,
-                                                    productosTot = productoLst.Count,
-                                                    Productos = productoLst,
-                                                    PesoTot = 0,
-                                                    VolumenTot = 0,
-                                                    CostoTot = 0
-                                                }
-                                                );
+                                            }                                            
                                         }
                                     }
                                     else
                                     {
-                                        throw new Exception("No se cuenta con inventario disponible para el producto: " + productId.ToString() + " " + productName + " .");
+                                        throw new Exception("No se cuenta con inventario disponible.");
                                     }
                                     break;
                                 case 3:
@@ -1190,34 +1202,30 @@ namespace ServicesManagement.Web.Controllers
                                         //Centro_WERKS Material_MATNR
                                         for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
                                         {
-                                            var productoLst = new List<productosProveedor>();
-                                            productoLst.Add(
-                                                new productosProveedor
-                                                {
-                                                    Producto = productId.ToString(),
-                                                    Cantidad = quantity,
-                                                    Costo = decimal.Parse(ds1.Tables[0].Rows[i]["Quantity"].ToString()) * decimal.Parse(ds1.Tables[0].Rows[i]["Price"].ToString()),
-                                                    Peso = 0,
-                                                    Volumen = 0
-                                                }
-                                                );
-                                            proveedorLst.Add(
+                                            if (i == 0)
+                                            {
+                                                proveedorLst.Add(
                                                 new NuevoProveedorReasignado
                                                 {
                                                     Proveedor = ds2.Tables[0].Rows[j]["Centro_WERKS"].ToString(),
-                                                    Distancia = 0,
-                                                    productosTot = productoLst.Count,
-                                                    Productos = productoLst,
-                                                    PesoTot = 0,
-                                                    VolumenTot = 0,
-                                                    CostoTot = 0
+                                                    Distancia = 0
                                                 }
                                                 );
+                                            }
+                                            else
+                                            {
+                                                var encontrado3 = proveedorLst.Where(item => item.Proveedor == ds2.Tables[0].Rows[j]["Centro_WERKS"].ToString()).ToList();
+                                                if (encontrado3.Count > 0)
+                                                {
+                                                    encontrado3[0].productosTot += 1;
+                                                    proveedorLst.Add(encontrado3[0]);
+                                                }
+                                            }
                                         }
                                     }
                                     else
                                     {
-                                        throw new Exception("No se cuenta con inventario disponible para el producto: " + productId.ToString() + " " + productName + " .");
+                                        throw new Exception("No se cuenta con inventario disponible.");
                                     }
                                     break;
                                 case 4:
@@ -1227,78 +1235,83 @@ namespace ServicesManagement.Web.Controllers
                                         //NumProv_LIFNR Material_MATNR
                                         for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
                                         {
-                                            var productoLst = new List<productosProveedor>();
-                                            productoLst.Add(
-                                                new productosProveedor
+                                            if (i == 0)
+                                            {
+                                                proveedorLst.Add(
+                                                    new NuevoProveedorReasignado
+                                                    {
+                                                        Proveedor = ds2.Tables[0].Rows[j]["NumProv_LIFNR"].ToString(),
+                                                        Distancia = 0
+                                                    }
+                                                    );
+                                            }
+                                            else
+                                            {
+                                                var encontrado4 = proveedorLst.Where(item => item.Proveedor == ds2.Tables[0].Rows[j]["NumProv_LIFNR"].ToString()).ToList();
+                                                if (encontrado4.Count > 0)
                                                 {
-                                                    Producto = productId.ToString(),
-                                                    Cantidad = quantity,
-                                                    Costo = decimal.Parse(ds1.Tables[0].Rows[i]["Quantity"].ToString()) * decimal.Parse(ds1.Tables[0].Rows[i]["Price"].ToString()),
-                                                    Peso = 0,
-                                                    Volumen = 0
+                                                    encontrado4[0].productosTot += 1;
+                                                    proveedorLst.Add(encontrado4[0]);
                                                 }
-                                                );
-                                            proveedorLst.Add(
-                                                new NuevoProveedorReasignado
-                                                {
-                                                    Proveedor = ds2.Tables[0].Rows[j]["NumProv_LIFNR"].ToString(),
-                                                    Distancia = 0,
-                                                    productosTot = productoLst.Count,
-                                                    Productos = productoLst,
-                                                    PesoTot = 0,
-                                                    VolumenTot = 0,
-                                                    CostoTot = 0
-                                                }
-                                                );
+                                            }
                                         }
                                     }
                                     else
                                     {
-                                        throw new Exception("No se cuenta con inventario disponible para el producto: " + productId.ToString() + " " + productName + " .");
+                                        throw new Exception("No se cuenta con inventario disponible.");
                                     }
                                     break;
                             }
                         }
+                        if (proveedorLst.Count == 0) {
+                            throw new Exception("No se cuenta con inventario disponible.");
+                        }
                         //3.- Menor distancia
                         decimal distancia = 0;
-                        for (int k = 0; k < proveedorLst.Count; k++)
+                        var encontrado = proveedorLst.Where(item => item.productosTot == articulosTot).ToList();
+                        for (int k = 0; k < encontrado.Count; k++)
                         {
                             //Llamado a SP que calcula la distancia
-                            ds3 = DALProcesoSurtido.upCorpOMS_Cns_DistanciaClienteProveedor(int.Parse(OrderNo), proveedorLst[k].Proveedor, postalCodeCliente);
+                            ds3 = DALProcesoSurtido.upCorpOMS_Cns_DistanciaClienteProveedor(int.Parse(OrderNo), encontrado[k].Proveedor, postalCodeCliente);
                             if (ds3.Tables[0].Rows[0]["Distancia"].ToString() == "")
                             {
-                                proveedorLst.RemoveAt(k);
+                                encontrado.RemoveAt(k);
                             }
                             else
                             {
-                                proveedorLst[k].Distancia = decimal.Parse(ds3.Tables[0].Rows[0]["Distancia"].ToString());
-                                proveedorLst[k].CodigoPostal = ds3.Tables[0].Rows[0]["CodigoPostal"].ToString();
-                                //4.- Cobertura
-                                for (int h = 0; h < proveedorLst[k].Productos.Count; h++)
+                                encontrado[k].Distancia = decimal.Parse(ds3.Tables[0].Rows[0]["Distancia"].ToString());
+                                encontrado[k].CodigoPostal = ds3.Tables[0].Rows[0]["CodigoPostal"].ToString();
+                                if (encontrado[k].Distancia < distancia || distancia == 0)
                                 {
-                                    string productReenviar = proveedorLst[k].Productos[h].Producto;
-                                    ds4 = DALServicesM.GetDimensionsByProducts(productReenviar);
-                                    if (ds4.Tables[0].Rows.Count > 0)
-                                    {
-                                        proveedorLst[k].Productos[h].Peso = decimal.Parse(ds4.Tables[0].Rows[0]["Peso"].ToString()) * proveedorLst[k].Productos[h].Cantidad;
-                                        proveedorLst[k].Productos[h].Volumen = decimal.Parse(ds4.Tables[0].Rows[0]["PesoVol"].ToString()) * proveedorLst[k].Productos[h].Cantidad;
-                                        proveedorLst[k].PesoTot = proveedorLst[k].PesoTot + proveedorLst[k].Productos[h].Peso;
-                                        proveedorLst[k].VolumenTot = proveedorLst[k].VolumenTot + proveedorLst[k].Productos[h].Volumen;
-                                        proveedorLst[k].CostoTot = proveedorLst[k].CostoTot + proveedorLst[k].Productos[h].Costo;
-                                    }
-                                    else
-                                    {
-                                        throw new Exception("No se encuentra el producto: " + proveedorLst[k].Productos[h].Producto + " .");
-                                    }
-
-                                    if (proveedorLst[k].Distancia > distancia)
-                                    {
-                                        proveedorGanador = proveedorLst[k].Proveedor;
-                                        distancia = proveedorLst[k].Distancia;
-                                    }
+                                    proveedorGanador = encontrado[k].Proveedor;
+                                    distancia = encontrado[k].Distancia;
                                 }
                             }
-                        }                     
+                            
+                        }
+                        if (encontrado.Count == 0 || proveedorGanador == "")
+                        {
+                            throw new Exception("No se cuenta con Proveedor disponible.");
+                        }
+                        //4.- Cobertura
+                        decimal PesoTot = 0;
+                        decimal Peso = 0;
+                        for (int h = 0; h < productosLst.Count; h++)
+                            {
+                                string productReenviar = productosLst[h].ProductId.ToString();
+                                ds4 = DALServicesM.GetDimensionsByProducts(productReenviar);
+                                if (ds4.Tables[0].Rows.Count > 0)
+                                {
+                                    Peso = decimal.Parse(ds4.Tables[0].Rows[0]["Peso"].ToString()) * productosLst[h].Pieces;
+                                    PesoTot += Peso;
+                                }
+                                else
+                                {
+                                    throw new Exception("No se encuentra el producto: " + productosLst[h].ProductId + " .");
+                                }
+                            }
+
+                        CrearCotizacionesLogyt(productosLst, int.Parse(OrderNo));
                     }
 
                     //var result = new { Success = true, items = itemLst };

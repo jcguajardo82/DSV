@@ -69,8 +69,10 @@ namespace ServicesManagement.Web.Models
 
     public class productosProveedor
     {
-        public string Producto { get; set; }
-        public decimal Cantidad { get; set; }
+        public long Barcode { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public int Pieces { get; set; }
         public decimal Costo { get; set; }
         public decimal Peso { get; set; }
         public decimal Volumen { get; set; }
