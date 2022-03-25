@@ -15,14 +15,14 @@
                 </div>
             </div>
             <div class="col-sm-3 col-md-3 col-lg-3">
-                <label>Fecha Fin</label>
+                @*<label>Fecha Fin</label>
                 <input type="date" id="txtFecFin" class="form-control" />
-                <div class="input-group date" id="datetimepicker2"></div>
+                <div class="input-group date" id="datetimepicker2"></div>*@
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2" style="vertical-align:bottom;">
                 <label>&nbsp;</label>
-                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetHistorialRMA()">
-                    Buscar
+                <button class="btn btn-lg btn-block btn-primary mt-auto" type="submit" onclick="GetReportePaymentStore()">
+                    Descargar Reporte
                 </button>
             </div>
             <div style="width:99%;">
@@ -240,7 +240,7 @@
                     //serverSide: true,
                     //bServerSide: true,
                     //sServerMethod: "GET",
-                    buttons: ['csv', 'excel'],
+                    buttons: [],
                     orderCellsTop: false,
                     fixedHeader: {
                         header: true
@@ -252,7 +252,15 @@
         });
 
 
-          function GetHistorialRMA() {
+        function GetReportePaymentStore() {
+            debugger;
+
+            var _FecIni = $("#txtFecIni").val();
+
+            window.location = window.location.origin + '/ReportesPDP/ProcesaArchivos?NombreArchivo=PagoTienda&Fecha=' + _FecIni;
+        }
+
+        function GetHistorialRMA() {
             var _FecIni = $("#txtFecIni").val();
             var _FecFin = $("#txtFecFin").val();
 
