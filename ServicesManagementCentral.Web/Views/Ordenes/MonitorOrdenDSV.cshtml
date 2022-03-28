@@ -212,6 +212,13 @@
             <hr />
 
             <div class="row">
+                <div class="col-xs-10 col-md-10 col-lg-10">
+                    <div class="col col-xs-3 col col-md-3 col col-lg-3">
+                        <input id="txtFiltroEmbarcar" class="form-control" type="search" placeholder="Search..">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-12">
                     <div class="tableFixHead table-responsive m-t">
                         <table id="tblConsulta_Embarcar" class="table table-striped table-bordered table-hover">
@@ -262,7 +269,7 @@
                                                 <td style="text-align:center;">
                                                     <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })"
                                                        title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
-                                                </td>                                                
+                                                </td>
                                                 <td style="text-align:center">@p["OrdenCompra"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
@@ -272,7 +279,7 @@
                                                 else
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_SolGuia"].ToString())" style="text-align:center;">@p["FechaSolGuia"]</td>
-                                                } 
+                                                }
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Limite"].ToString())" style="text-align:center;">@p["FechaLimite"]</td>
@@ -280,7 +287,7 @@
                                                 else
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Limite"].ToString())" style="text-align:center;">@p["FechaLimite"]</td>
-                                                }                                               
+                                                }
                                                 @foreach (System.Data.DataRow p1 in dt1.Rows)
                                                 {
                                                     IdGuia = p1["IdGuias"].ToString();
@@ -300,7 +307,7 @@
                                                         else
                                                         {
                                                             IdGuias = IdGuias + "," + IdGuia;
-                                                            IdGuiasPaq +=  "," + IdGuiaPaq;
+                                                            IdGuiasPaq += "," + IdGuiaPaq;
                                                             GuiasPaqEstatusDesc = GuiasPaqEstatusDesc + "," + GuiaPaqEstatusDesc;
                                                             Transportista = p1["TrackingServiceName"].ToString();
                                                         }

@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-    /*#table-scroll {
+    #table-scroll {
         height: 300px;
         overflow-y: auto;
         margin-top: 20px;
         width: 1200px;
-    }*/
+    }
 
     .rowVerde {
         color: white;
@@ -204,7 +204,13 @@
                 </div>
             </div>
             <hr />
-
+            <div class="row">
+                <div class="col-xs-10 col-md-10 col-lg-10">
+                    <div class="col col-xs-3 col col-md-3 col col-lg-3">
+                        <input id="txtFiltroEmbarcar" class="form-control" type="search" placeholder="Search..">
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="tableFixHead table-responsive m-t">
@@ -256,7 +262,7 @@
                                                 <td style="text-align:center;">@p["supplierName"]</td>
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
-                                                <td style="text-align:center;">@p["UeNo"]</td>                                                
+                                                <td style="text-align:center;">@p["UeNo"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 <td style="text-align:center">@p["FechaAutorizacion"]</td>
                                                 <td style="text-align:center;">@p["TipoPago"]</td>
@@ -268,7 +274,7 @@
                                                 else
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_SolGuia"].ToString())" style="text-align:center;">@p["FechaSolGuia"]</td>
-                                                } 
+                                                }
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Limite"].ToString())" style="text-align:center;">@p["FechaLimite"]</td>
@@ -276,7 +282,7 @@
                                                 else
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Limite"].ToString())" style="text-align:center;">@p["FechaLimite"]</td>
-                                                }                                               
+                                                }
                                                 @foreach (System.Data.DataRow p1 in dt1.Rows)
                                                 {
                                                     IdGuia = p1["IdGuias"].ToString();
@@ -296,7 +302,7 @@
                                                         else
                                                         {
                                                             IdGuias = IdGuias + "," + IdGuia;
-                                                            IdGuiasPaq +=  "," + IdGuiaPaq;
+                                                            IdGuiasPaq += "," + IdGuiaPaq;
                                                             GuiasPaqEstatusDesc = GuiasPaqEstatusDesc + "," + GuiaPaqEstatusDesc;
                                                             Transportista = p1["TrackingServiceName"].ToString();
                                                         }
