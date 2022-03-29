@@ -20,4 +20,10 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
         public string FecMvo { get; set; }
         public bool Bit_deleted { get; set; }
     }
+
+    public class upCorpOms_cns_MonitorPSCarriers
+    {
+        public int IdCarrier { get; set; }
+        public string Nombre { get; set; }
+    }
 }

@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var EsVehiculo = false;
+    string TieneGuia = string.Empty;
 }
 
 <div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
@@ -32,6 +33,9 @@
                         <input type="hidden" id="hddIdOwner" value="@list.IdOwner" />
 
                         EsVehiculo = list.bitVehicles;
+                        if (@list.TieneGuia.ToUpper().Equals("SI")) {
+                            TieneGuia = "disabled";
+                        }
                     }
                 </div>
             </div>
@@ -44,8 +48,8 @@
                         <div class="tabs-container">
                             <ul class="nav nav-tabs" role="tablist" id="myTabs">
                                 <li><a class="nav-link active" data-toggle="tab" href="#tab-1">Aceptar Pedido</a></li>
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-2">Solicitud de Guía</a></li>
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>
+                                <li><a class="nav-link" data-toggle="tab" href="#tab-2">Proceso de Envío</a></li>
+                                @*<li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>*@
                                 @{
                                     if (EsVehiculo)
                                     {
@@ -138,157 +142,44 @@
                                 <div role="tabpanel" id="tab-2" class="tab-pane">
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div class="col-sm-10 col-md-10 col-lg-10">
-                                                <table id="tblSolicitutGuia" class="table table-stripedtblSolicitutGuia table-bordered table-hover table-responsive-md expand dataTable no-footer">
-                                                    <thead class="bg-danger-sor">
-                                                        <tr>
-                                                            <th style="text-align:center;">EAN</th>
-                                                            <th style="text-align:center;">Descripción</th>
-                                                            <th style="text-align:center;">Piezas</th>
-                                                            <th style="text-align:center;">Artículo en guía</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @{
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <button type="button" class="btn btn-primary block full-width m-b" id="btnConfirmar" @TieneGuia onclick="ConfirmarOrden()">
+                                                    Confirmar Orden Surtida y Empacada
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <button type="button" class="btn btn-primary block full-width m-b" id="btnIniciar" onclick="IniciarProceso()">
+                                                    Inicia proceso de Embarque
+                                                </button>
 
-                                                            IEnumerable<upCorpOms_Cns_UeNoSupplyProcessSel> listP = ViewBag.PorProcesar as IEnumerable<upCorpOms_Cns_UeNoSupplyProcessSel>;
-
-                                                        }
-
-                                                        @if (listP.Count() == 0)
+                                                Transportista:
+                                                <select id="ddlPSCarriers" class="form-control">
+                                                    @{
+                                                        if (ViewBag.PSCarriers != null)
                                                         {
-                                                            <tr>
-                                                                <td colspan="4">No Existen Artículos disponibles</td>
-                                                            </tr>
-                                                        }
-                                                        else
-                                                        {
-                                                            foreach (upCorpOms_Cns_UeNoSupplyProcessSel item in listP)
+                                                            IEnumerable<upCorpOms_cns_MonitorPSCarriers> listCar = ViewBag.PSCarriers as IEnumerable<upCorpOms_cns_MonitorPSCarriers>;
+                                                            foreach (upCorpOms_cns_MonitorPSCarriers item in listCar)
                                                             {
-                                                                <tr>
-                                                                    <td>@item.EAN<br />@item.SKU</td>
-                                                                    <td style="text-align:left;">@item.Descripcion</td>
-                                                                    <td style="text-align:right;">@item.Piezas</td>
-
-                                                                    @if (item.ConGuia == 1)
-                                                                    {
-                                                                        <td style="text-align:center;">x</td>
-                                                                        @*<td style="text-align:center;"><input type="checkbox" name="chbConsig" value="@item.EAN" class="checkbox" id="flexCheckDefault" checked disabled="disabled"></td>*@
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <td style="text-align:center;"><input type="checkbox" value="@item.SKU" class="checkbox" id="chkSel_@item.EAN.ToString()"></td>
-                                                                    }
-                                                                </tr>
-
-
+                                                                <option value="@item.IdCarrier">@item.Nombre</option>
 
                                                             }
                                                         }
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="col-sm-2 col-md-2 col-lg-2">
-                                                <button type="button" class="btn btn-primary block full-width m-b" onclick="popEmbalaje()">
-                                                    Agregar Paquete
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-9 right" style="text-align:right;"></div>
-                                            <div class="col-lg-3 right" style="text-align:right;">
-                                                <a class="btn btn-primary block full-width m-b" onclick="FinalizaEmbarqueDST()">Finalizar Guías</a>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <table id="tblEmbalaje" class="table table-stripedtblSolicitutGuia table-bordered table-hover table-responsive-md expand dataTable no-footer">
-                                                <thead class="bg-danger-sor">
-                                                    <tr role="row">
-                                                        @*<th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TIPO PAQUETE</b><br /></th>
-                                                            <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO X PAQUETE</b><br />Peso max. 1000kg</th>
-                                                            <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>DIMENSIONES X PAQUETE</b><br />L X AN X AL (cm)</th>
-                                                            <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>GUIA DE EMBARQUE</b><br /></th>
-                                                            <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>ACCIÓN</b><br /></th>*@
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>NO. GUIA</b><br /></th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>ALTO</b><br /></th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>LARGO</b><br /></th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>ANCHO</b><br /></th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO</b><br /></th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>PESO REAL</b><br /></th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TIPO ENVIO</b><br /></th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 118px;"><b>TOTAL ARTICULOS EN GUIA</b><br /></th>
-                                                        <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 110px;"><b>ACCIÓN</b><br /></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if (Session["OrderTrackings"] != null)
-                                                    {
-                                                        var lst = (List<UenoTracking>)Session["OrderTrackings"];
-
-                                                        foreach (var op in lst)
-                                                        {
-                                                            <tr>
-                                                                <td>@op.IdTrackingService</td>
-                                                                <td>@op.PackageHeight</td>
-                                                                <td>@op.PackageLength</td>
-                                                                <td>@op.PackageWidth</td>
-                                                                <td>@op.PackageWeight</td>
-                                                                <td>@op.PesoReal</td>
-                                                                <td>@op.ShippingMethod</td>
-                                                                <td>@op.Quantity</td>
-
-                                                                <td style="text-align:center;"><button type='button' onclick='DeletePaquete("@op.IdTracking")' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td>
-                                                            </tr>
-                                                        }
-
                                                     }
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                                <div role="tabpanel" id="tab-3" class="tab-pane">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                                <table id="tblGuias" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
-                                                    <thead class="bg-danger-sor">
-                                                        <tr>
-                                                            <th style="text-align:center;">No. Guia</th>
-                                                            <th style="text-align:center;">Peso Real</th>
-                                                            <th style="text-align:center;">Tipo de Envio</th>
-                                                            <th style="width:250px" name="accion">Acciones</th>
-                                                        </tr>
-                                                    </thead>
+                                                </select>
+                                                <table class="table">
                                                     <tbody>
-                                                        @{
-
-                                                            IEnumerable<Guias_por_OrderFact> listG = ViewBag.Guias as IEnumerable<Guias_por_OrderFact>;
-
-                                                        }
-                                                        @foreach (Guias_por_OrderFact itemG in listG)
-                                                        {
-                                                            <tr>
-
-                                                                <td>@itemG.IdTrackingService</td>
-                                                                <td style="text-align:right;">@itemG.PackageWeight</td>
-                                                                <td style="text-align:left;">@itemG.PackageType</td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-primary" onclick="showpdf('@itemG.IdTrackingService');">Descargar Guía</button>
-                                                                    <button type="button" class="btn btn-primary" onclick="showDetails('@itemG.IdTrackingService');">Ver Detalle de Guía</button>
-                                                                </td>
-
-                                                            </tr>
-
-
-
-                                                        }
+                                                        <tr>
+                                                            <td>No. Guía/Referencia de envío:</td>
+                                                            <td><input type="text" id="txtGuia" class="form-control-sm" value="" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Estatus de la guía:</td>
+                                                            <td><input type="text" id="txtEstatus" class="form-control-sm" value="Enviada" disabled /></td>
+                                                        </tr>
                                                     </tbody>
-                                                </table>
+                                                </table>                                                        
                                             </div>
                                         </div>
                                     </div>
@@ -410,10 +301,7 @@
                                                                         <td style="text-align:left;">@item.BrandId</td>
                                                                         <td style="text-align:left;">@item.CylinderCapacityId</td>
                                                                     </tr>
-
-
-
-                                                                }
+                                                                 }
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -421,95 +309,7 @@
                                             </div>
                                         </div>
                                     }
-                                }
-                                @*<div role="tabpanel" id="tab-3" class="tab-pane">
-                                        <div class="panel-body">
-                                            <div class="tableFixHead table-responsive m-t">
-                                                <table id="tblDescargaGuia" class="table invoice-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="text-align:center;">No. Guía</th>
-
-                                                            <th style="text-align:center;">ID</th>
-                                                            <th style="text-align:center;">Descripción</th>
-
-                                                            <th style="text-align:center;">Peso Real</th>
-                                                            <th style="text-align:center;">Tipo Envío</th>
-
-                                                            <th> </th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-
-                                                            <td style="text-align:left;">Licon Caballero</td>
-
-                                                            <td style="text-align:left;">Paquetería</td>
-
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td><a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align:center;">4562734567898230000000</td>
-                                                            <td style="text-align:center;">1234567</td>
-                                                            <td style="text-align:left;">Licon Caballero</td>
-                                                            <td style="text-align:left;">Paquetería</td>
-                                                            <td> <a href="" id="btnAceptConsig" class="btn btn-primary block full-width m-b" download="">Descargar Archivo</a> </td>
-                                                            <td> <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="clickLogin()">  Ver Detalles de Guia </button></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="row">
-                                                <table>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>*@
+                                 }
                             </div>
                         </div>
                     }
@@ -531,8 +331,6 @@
         </div>
     </div>
 </div>
-
-
 
 <div class="modal inmodal fade" id="dlgCancel" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -607,22 +405,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!--<tr>
-                                <td><input type="radio" checked="" value="Sobre" class="js-rate-type" id="optionsRadios1" name="optionsRadios"> Sobre</td>
-                                <td><input type="radio" value="Paquete" id="optionsRadios2" name="optionsRadios"> Paquete</td>
-
-                                <td><input type="text" class="form-control input-sm" placeholder="KG" id="txtKG" /></td>
-
-                                <td><input type="text" class="form-control input-sm" placeholder="Largo" id="txtLg" /></td>
-
-                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" id="txtAn" /></td>-->
-                            @*<td><input type="text" class="form-control input-sm" placeholder="Largo" style="display:none" id="txtLargo" /></td>
-
-                                <td><input type="text" class="form-control input-sm" placeholder="Ancho" style="display:none" id="txtAncho" /></td>*@
-
-                            @*<td><input type="text" class="form-control input-sm" placeholder="Alto" style="display:none" id="txtAltura" /></td>*@
-                            <!--<td><input type="text" class="form-control input-sm" placeholder="Alto" value="N/A" id="txtAltura" /></td>
-                            </tr>-->
                         </tbody>
                         <tfoot>
                             <tr>
@@ -742,12 +524,14 @@
                 locale: 'es'
                 , format: "yyy/MM/DD"
             });
-
         });
 
-
         $(document).ready(function () {
+            $("#btnIniciar").prop("disabled", true);
+            $("#txtGuia").prop("disabled", true);
+            $("#ddlPSCarriers").prop("disabled", true);
             //GetSolicitarGuia();
+
             $("input[name=optionsRadios]").change(function () {
                 var sobreType = $('.js-rate-type')[0];
                 var paqueteType = $("input[name=optionsRadios]")[1].checked;
@@ -760,11 +544,76 @@
                     $('#txtAltura').show();
                 }
             }).change()
-
         });
+        //ConfirmarOrden IniciaProceso
 
-            function popUpLstProds(idTracking) {
+        function ConfirmarOrden() {
+        //var TrackingType = "Normal";
+        var _OrderNo = $("#hddOrderNo").val();
 
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("ConfirmarOrden", "ProcesoSurtido")',
+            data: {
+                OrderNo: _OrderNo
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    $("#btnIniciar").prop("disabled", false);
+                    $("#btnConfirmar").prop("disabled", true);
+                    $("#txtGuia").prop("disabled", false);
+                    $("#ddlPSCarriers").prop("disabled", false);
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+        });
+        }
+
+        function IniciarProceso() {
+        //var TrackingType = "Normal";
+        var _OrderNo = $("#hddOrderNo").val();
+            var _TrackingServiceName = $("#ddlPSCarriers option:selected").text(); //$("#ddlPSCarriers").val();
+            var _IdTrackingService = $("#txtGuia").val();
+            var _TrackingServiceStatus = $("#txtEstatus").val();
+
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("IniciarProceso", "ProcesoSurtido")',
+            data: {
+                OrderNo: _OrderNo,
+                TrackingServiceName: _TrackingServiceName,
+                IdTrackingService: _IdTrackingService,
+                TrackingServiceStatus: _TrackingServiceStatus
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    $("#btnIniciar").prop("disabled", true);
+                    $("#btnConfirmar").prop("disabled", true);
+                    $("#txtGuia").prop("disabled", true);
+                    $("#ddlPSCarriers").prop("disabled", true);
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+        });
+        }
+
+        function popUpLstProds(idTracking) {
         //var TrackingType = "Normal";
                 var _UeNo = $("#hddUeNo").val();
                 var _OrderNo = $("#hddOrderNo").val();
@@ -808,23 +657,15 @@
                 alert(errorThrown);
 
             }
-
         });
-                //$('#myTabs a[href="#tab-3"]').tab('show');
-
-
-    }
+        }
 
         function tab2() {
             //$('[href="#menu3"]').tab('show');
             $('[href="#tab-2"]').tab('show')
         }
+
         function GetSolicitarGuia() {
-
-            //var _Id_Num_UN = $("#hddTda").val();
-
-
-
             $.ajax({
                 async: false,
                 type: "POST",
@@ -836,19 +677,6 @@
                 datatype: "json",
                 success: function (json) {
                     if (json.Success) {
-
-
-
-                        //$("#tblSolicitutGuia tbody").empty();
-
-                        //debugger;
-                        //if (json.Message.mensaje.length != 0) {
-                        //    tr = $('<tr/>');
-                        //    //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
-                        //    tr.append("<td colpan='4'>" + json.Message[i].mensaje + "</td>");
-
-                        //    $('#tblSolicitutGuia').append(tr);
-                        //}
 
                         var table = $('#tblSolicitutGuia').DataTable();
 
@@ -1208,7 +1036,6 @@
                 var _NombreSurtidor = $("#hddSupplierName").val();
                 var _SurtidorID = $("#hddIdSupplierWH").val();
 
-
                  $.ajax({
                     async: false,
                     type: "POST",
@@ -1269,7 +1096,6 @@
 
         });
         }
-
 
         function GuardarVehiculo() {
 
@@ -1477,6 +1303,7 @@
                 }
             );
         }
+
         $("body").on("click", "#btnAdd", function () {
             //Reference the Name and Country TextBoxes.
             var txtKG = $("#txtKG");
@@ -1563,6 +1390,7 @@
                 table.deleteRow(row[0].rowIndex);
             }
         };
+
          function AddEmbalaje2() {
             //Loop through the Table rows and build a JSON array.
             var items = new Array();
@@ -1653,8 +1481,9 @@
             });
 
 
-    }
-    function showpdf(num_guia) {
+        }
+
+        function showpdf(num_guia) {
             //debugger;
 
             $.ajax({
@@ -1684,7 +1513,8 @@
             });
 
         }
-    function showDetails(num_guia) {
+
+        function showDetails(num_guia) {
             //debugger;
 
             $.ajax({
