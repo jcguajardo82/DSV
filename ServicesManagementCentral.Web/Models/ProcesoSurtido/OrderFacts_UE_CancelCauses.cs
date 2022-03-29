@@ -21,4 +21,10 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
         public int IdCarrier { get; set; }
         public string Nombre { get; set; }
     }
+
+    public class upCorpOms_cns_MonitorPSCarriers
+    {
+        public int IdCarrier { get; set; }
+        public string Nombre { get; set; }
+    }
 }

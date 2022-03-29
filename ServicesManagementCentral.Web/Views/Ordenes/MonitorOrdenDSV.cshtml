@@ -270,8 +270,7 @@
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
                                                 <td style="text-align:center;">
-                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })"
-                                                       title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
+                                                    @p["UeNo"]
                                                 </td>
                                                 <td style="text-align:center">@p["OrdenCompra"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
