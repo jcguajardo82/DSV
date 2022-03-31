@@ -158,6 +158,7 @@
                                 <input id="Barcode" name="Barcode" value="@Barcode" style="visibility:hidden" />
                                 <input id="ReasigStoreNum" name="ReasigStoreNum" value="@p["StoreNum"]" style="visibility:hidden" />
                                 <input id="ReasigUeType" name="ReasigUeType" value="@p["UeType"]" style="visibility:hidden" />
+                                <input id="TieneCobertura" name="TieneCobertura" value="0" style="visibility:hidden" />
                                 UeType = @p["UeType"].ToString();
 
                                 <div class="row">
@@ -738,6 +739,7 @@
     $(document).ready(function () {
         _cancelacion = '@Session["ordenACancelar"]';
         var _status = '@Session["OrderStatus"]';
+        SeleccionarUCC();
 
         if (_cancelacion != '' && _status != 'Orden Cancelada')
             $('#btnCancelacion').show();
@@ -994,19 +996,66 @@
         function SolicitarGuia() {
             if (confirm('Desea solicitar una Guía Manual?')) {
                 //validación de cobertura
-                SeleccionarUCC();
-                if (confirm('El pedido no cuenta con cobertura, desea cancelarlo?')) {
-                    popUpCanOrden($('#UeNo').val());
-                }
-                else {
+                //SeleccionarUCC();
+                BuscarCobertura();
+                if ($("#TieneCobertura").val() == "1") {
                     $('#ddlMotSol').val("0");
                     $("#ddlMotSol option:selected").index(0);
                     $("#ddlMotSol option:selected").val("--Seleccione");
                     $("#dlgMotivoSol").modal('show');
                 }
+                else {
+                    if (confirm('El pedido no cuenta con cobertura, desea cancelarlo?')) {
+                        popUpCanOrden($('#UeNo').val());
+                    }
+                }
             }
             else {
                 alert('Se cancela solicitud de una Guía Manual');
+            }
+        }
+
+        function BuscarCobertura() {
+            var OrderNo = $('#OrderNo').val();
+            var jsonCopy = _json;
+            var jsonConfirm = [];
+            var products = new Array();
+            var count = 0;
+            for (var x = 0; x < jsonCopy.length; x++) {
+                var product = {};
+                product.Barcode = jsonCopy[x].barcode;
+                product.ProductId = jsonCopy[x].productId;
+                product.ProductName = jsonCopy[x].productName; //falta traerse el productname
+                product.Pieces = jsonCopy[x].piezas;
+                product.product = {};
+                products.push(product);
+            }
+            if (jsonCopy.length > 0) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("BuscarCotizacionesLogytMonitor", "Ordenes")',
+                    data: {
+                        OrderNo: OrderNo,
+                        Products: products
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            $("#TieneCobertura").val("1");
+                        }
+                        else {
+                            $("TieneCobertura").val("0");
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            }
+            else {
+                alert('La orden no tiene productos');
             }
         }
 
