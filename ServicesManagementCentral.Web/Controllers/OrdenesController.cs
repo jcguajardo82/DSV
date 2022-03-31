@@ -1076,6 +1076,7 @@ namespace ServicesManagement.Web.Controllers
                 if (ueType.Equals("DSV"))
                     IdOwner = 4;
 
+                ViewBag.MotSol = DataTableToModel.ConvertTo<MotivosSolicitud>(DALProcesoSurtido.MotivosSolicitud_Sup().Tables[0]);
                 ViewBag.MotCanCD = DataTableToModel.ConvertTo<OrderFacts_UE_CancelCauses>(DALProcesoSurtido.upCorpOms_Cns_UeCancelCauses(IdOwner).Tables[0]);
                 Session["OrderSelected"] = ds;
                 Session["OrderStatus"] = ds.Tables[0].Rows[0]["StatusDescription"].ToString();

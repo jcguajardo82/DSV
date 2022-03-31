@@ -1000,6 +1000,8 @@
                 }
                 else {
                     $('#ddlMotSol').val("0");
+                    $("#ddlMotSol option:selected").index(0);
+                    $("#ddlMotSol option:selected").val("--Seleccione");
                     $("#dlgMotivoSol").modal('show');
                 }
             }
@@ -1009,7 +1011,7 @@
         }
 
         function AceptarSol() {
-            if ($('#ddlMotSol').val() != "0") {
+            if ($("#ddlMotSol option:selected").text() != "--Seleccione") {
                 $('#dlgMotivoSol').modal('hide');
                 SolicitudGuia();
             }

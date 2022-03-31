@@ -16,9 +16,9 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
     public class MotivosSolicitud
     {
         public int IdCause { get; set; }
-        public string Cause_Desc { get; set; }
-        public string FecMvo { get; set; }
-        public bool Bit_deleted { get; set; }
+        public string Desc_Motivo { get; set; }
+        public string Fec_Movto { get; set; }
+        //public bool Bit_deleted { get; set; }
     }
 
     public class upCorpOms_cns_MonitorPSCarriers
