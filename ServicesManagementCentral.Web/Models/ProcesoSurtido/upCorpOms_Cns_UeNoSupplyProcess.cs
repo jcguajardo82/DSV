@@ -39,8 +39,8 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
         public string StatusUe { get; set; }
         public int IdSupplierWHCode { get; set; }
         public bool bitVehicles { get; set; }
-
         public int IdOwner { get; set; }
+        public string TieneGuia { get; set; }
 
     }
 

@@ -20,6 +20,131 @@ namespace ServicesManagement.Web.Controllers
     public class ProcesoSurtidoController : Controller
     {
         // GET: SolicitudGuiasReenvio 
+        public ActionResult ProcesoSurtidoDSV()
+        {
+            int Tipoenvio = 0;
+            int OrderNo = 0;
+            string UeNo = string.Empty;
+
+            if (Request.QueryString["Tipoenvio"] != null) {
+                Tipoenvio = int.Parse(Request.QueryString["Tipoenvio"].ToString());
+            }
+
+            if (Request.QueryString["OrderNo"] != null && Request.QueryString["UeNo"] != null)
+            {
+                OrderNo = int.Parse(Request.QueryString["OrderNo"].ToString());
+                UeNo = Request.QueryString["UeNo"].ToString();
+            }
+            else
+            {
+                var msj = new msj();
+                msj.mensaje = "No existe la consignacion.";
+
+                ViewBag.Mensaje = msj;
+
+                return View();
+            }
+
+            Session["lstGuiasDetalle"] = null;
+            var ds = DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcess(UeNo, OrderNo);
+            ViewBag.OrderNo = OrderNo;
+            ViewBag.UeNo = UeNo;
+
+            ViewBag.PSCarriers = DataTableToModel.ConvertTo<upCorpOms_cns_MonitorPSCarriers>(DALProcesoSurtido.upCorpOms_cns_MonitorPSCarriers().Tables[0]);
+            ViewBag.MotCan = DataTableToModel.ConvertTo<OrderFacts_UE_CancelCauses>(DALProcesoSurtido.upCorpOms_Cns_UeCancelCauses(4).Tables[0]);
+            var enc = DataTableToModel.ConvertTo<Encabezado>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcessHeader(UeNo, OrderNo).Tables[0]).FirstOrDefault();
+            ViewBag.Header = enc;
+            ViewBag.PorProcesar = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcessSel>(DALProcesoSurtido.upCorpOms_Cns_UeNoSupplyProcessSel(UeNo, OrderNo).Tables[0]);
+            ViewBag.Vehiculos = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoConsigmentsVehicles>(DALProcesoSurtido.upCorpOms_Cns_UeNoConsigmentsVehicles(UeNo, OrderNo, enc.idSupplierWH, enc.IdSupplierWHCode).Tables[0]);
+
+            if (ds.Tables.Count == 1)
+            {
+                ViewBag.Mensaje = DataTableToModel.ConvertTo<msj>(ds.Tables[0]).FirstOrDefault();
+            }
+            else
+            {
+                var list = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[0]);
+
+                var totSup = list.Where(x => x.Suplido == true).ToList();
+
+
+                if (list.Count == totSup.Count)
+                {
+                    ViewBag.ArtSup = true;
+                }
+
+                ViewBag.UeNoSupplyProcess = list;
+                ViewBag.Encabezado = DataTableToModel.ConvertTo<upCorpOms_Cns_UeNoSupplyProcess>(ds.Tables[2]);
+
+                if (ds.Tables.Count == 3)
+                    ViewBag.Guias = GetGuias(ds.Tables[1], UeNo);
+
+                var lstTracking = DataTableToModel.ConvertTo<UenoTracking>(DALEmbarques.upCorpOms_Cns_UeNoTracking(UeNo, OrderNo).Tables[0]);
+                List<UenoTracking> lstTrackingF = new List<UenoTracking>();
+                foreach (var item in lstTracking)
+                {
+                    UenoTracking newItem = new UenoTracking();
+                    newItem.declaredValue = item.declaredValue;
+                    newItem.IdTrackingService = item.IdTrackingService;
+                    newItem.PackageHeight = item.PackageHeight;
+                    newItem.PackageLength = item.PackageLength;
+                    newItem.PackageWeight = item.PackageWeight;
+                    newItem.PackageWidth = item.PackageWidth;
+                    newItem.Quantity = item.Quantity;
+                    newItem.ShippingMethod = item.ShippingMethod;
+                    newItem.IdTracking = item.IdTracking;
+                    newItem.PesoReal = GetPesoReal(item.IdTrackingService);
+
+                    lstTrackingF.Add(newItem);
+                }
+
+                Session["OrderTrackings"] = lstTrackingF;
+            }
+
+            return View();
+        }
+        public ActionResult ConfirmarOrden(int OrderNo)
+        {
+            try
+            {
+                //string UserCreate = User.Identity.Name;
+                DALProcesoSurtido.upCorpOms_upd_MonitorPSSurtidoEmpaque(OrderNo, 1);
+
+                var result = new
+                {
+                    Success = true
+                };
+
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult IniciarProceso(int OrderNo, string TrackingServiceName, string IdTrackingService, string TrackingServiceStatus)
+        {
+            try
+            {
+                //string UserCreate = User.Identity.Name;
+                DALProcesoSurtido.upCorpOms_upd_MonitorPSEmbarque(OrderNo, TrackingServiceName, IdTrackingService, TrackingServiceStatus);
+
+                var result = new
+                {
+                    Success = true
+                };
+
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                var result = new { Success = false, Message = x.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
         public ActionResult ProcesoSurtido()
         {
 
