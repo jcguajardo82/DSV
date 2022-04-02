@@ -147,12 +147,12 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">No. Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Nombre Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">No. Pedido</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Creación</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora de creación del pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Autorización</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Tipo Pago</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Límite</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora límite de solicitud de la guía</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Inicio</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Surtido WMS</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora Fin de Surtido”</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Estatus del Pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">No. Orden de Compra</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Proceso Pendiente</th>
@@ -242,17 +242,17 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Nombre Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">No. Pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">No. Orden de Compra</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Creación</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Solicitud</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Limite</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora de creación del pedido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora límite de solicitud de la guía</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora de solicitud de guía</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">No. Guía</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Transportista</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Estatus del pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Estatus de la guía</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Límite Entrega</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Autorización Pago</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora limite de entrega al cliente</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y Hora de Autorización de Pago</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Tipo Pago</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Surtido WMS</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora Fin de Surtido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Solicitud</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Tipo Envio</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Proceso Pendiente</th>
@@ -300,14 +300,6 @@
                                                 }
                                                 <td style="text-align:center">@p["OrdenCompra"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
-                                                @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
-                                                {
-                                                    <td class="@ColoresSemaforo(@p["Color_SolGuia"].ToString())" style="text-align:center;">@p["FechaSolGuia"]</td>
-                                                }
-                                                else
-                                                {
-                                                    <td class="@ColoresSemaforo(@p["Color_SolGuia"].ToString())" style="text-align:center;">@p["FechaSolGuia"]</td>
-                                                }
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Limite"].ToString())" style="text-align:center;">@p["FechaLimite"]</td>
@@ -315,6 +307,14 @@
                                                 else
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Limite"].ToString())" style="text-align:center;">@p["FechaLimite"]</td>
+                                                }
+                                                @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
+                                                {
+                                                    <td class="@ColoresSemaforo(@p["Color_SolGuia"].ToString())" style="text-align:center;">@p["FechaSolGuia"]</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="@ColoresSemaforo(@p["Color_SolGuia"].ToString())" style="text-align:center;">@p["FechaSolGuia"]</td>
                                                 }
                                                 @foreach (System.Data.DataRow p1 in dt1.Rows)
                                                 {
@@ -362,9 +362,9 @@
                                                 </td>
                                                 <td>@Transportista</td>
                                                 <td>@p["EstatusPedido"]</td>
-                                                <td></td>
-                                                <td></td>
                                                 <td>@GuiasPaqEstatusDesc</td>
+                                                <td>@p["FechaLimiteEntrega"]</td>
+                                                <td>@p["FechaAutorizacion"]</td>
                                                 <td style="text-align:center;">@p["TipoPago"]</td>
                                                 <td style="text-align:center">@p["FechaSurtidoWMS"]</td>
                                                 <td></td>
