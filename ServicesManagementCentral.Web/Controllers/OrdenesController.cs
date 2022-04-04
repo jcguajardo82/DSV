@@ -323,6 +323,7 @@ namespace ServicesManagement.Web.Controllers
                 }
             }
 
+            Session["listaTipoEnvio"] = DALServicesM.upCorpOms_Cns_MonitorUsuarioConfig(User.Identity.Name);
             Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirM("DSV", un, vista);
             Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarM("DSV", un, vista);
 
