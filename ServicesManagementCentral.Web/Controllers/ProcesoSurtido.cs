@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ServicesManagement.Web.DAL.Embarques;
 using ServicesManagement.Web.DAL.ProcesoSurtido;
 using ServicesManagement.Web.Helpers;
@@ -470,25 +471,38 @@ namespace ServicesManagement.Web.Controllers
                     o.ProductosSuministrados.Add(a);
                 }
 
-
-
                 string json2 = string.Empty;
                 JavaScriptSerializer js = new JavaScriptSerializer();
                 //json2 = js.Serialize(o);
 
-
                 json2 = JsonConvert.SerializeObject(o);
-
                 js = null;
-
                 Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json2, false, null);
-
                 Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl, false, null);
-
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
                 //Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"], "", json2);
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtidoDSV"], "", json2);
+
+                //Llamado Generar Nueva orden
+                string apiUrl2 = System.Configuration.ConfigurationManager.AppSettings["GeneracionNvaOrden_API"]; 
+                var req = new { OrderID = UeNo.ToString() };
+
+                string json3 = JsonConvert.SerializeObject(new { OrderID = UeNo.ToString() });
+                string PPSRequest = JsonConvert.SerializeObject(req);
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json3, false, null);
+                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl2, false, null);
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl2, "", json3);
+
+                JObject json = JObject.Parse(r2.message);
+                if (json.TryGetValue("errorCode", out JToken v1))
+                {
+                    if (((Newtonsoft.Json.Linq.JValue)v1).Value.ToString() == "99")
+                    {
+                        throw new Exception(r.message);
+                    }
+                }
+                //fin
 
 
                 var result = new { Success = true, Message = "Alta exitosa" };
