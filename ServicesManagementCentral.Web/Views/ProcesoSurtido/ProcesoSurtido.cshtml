@@ -1209,7 +1209,7 @@
                 var _NombreSurtidor = $("#hddSupplierName").val();
                 var _SurtidorID = $("#hddIdSupplierWH").val();
                 $.ajax({
-                    async: false,
+                    //async: false,
                     type: "POST",
                     url: '@Url.Action("Consignacion", "ProcesoSurtido")',
                     beforeSend: function () {
