@@ -85,6 +85,7 @@ namespace ServicesManagement.Web.Models.Estafeta
         public string email { get; set; }
         public object phoneExt { get; set; }
         public string telephone { get; set; }
+        public string taxPayerCode { get; set; }
     }
 
     public class HomeAddress

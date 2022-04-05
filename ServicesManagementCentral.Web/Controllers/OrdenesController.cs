@@ -29,6 +29,7 @@ using ServicesManagement.Web.Models.ProcesoSurtido;
 using ServicesManagement.Web.DAL.ProcesoSurtido;
 using ServicesManagement.Web.DAL.Correos;
 using ServicesManagement.Web.Models.Estafeta;
+using System.Text.RegularExpressions;
 
 namespace ServicesManagement.Web.Controllers
 {
@@ -3001,6 +3002,24 @@ namespace ServicesManagement.Web.Controllers
             DALServicesM.GuardarTarifasLogyt(Paquete.orderNo, sumPeso, bigTicket, dt);
         }
         //Cabeceras y productos
+        public static bool IsValidEmail(string email)
+        {
+            var trimmedEmail = email.Trim();
+
+            if (trimmedEmail.EndsWith("."))
+            {
+                return false; // suggested by @TK-421
+            }
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == trimmedEmail;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public ActionResult LstCabecerasGuiasProds(string UeNo, int OrderNo)
         {
             try
@@ -3340,7 +3359,9 @@ namespace ServicesManagement.Web.Controllers
             contact.cellPhone = ds.Tables[0].Rows[0]["commInfoPhone"].ToString();
             contact.telephone = ds.Tables[0].Rows[0]["commInfoPhone"].ToString();
             contact.phoneExt = ds.Tables[0].Rows[0]["commInfoExt"].ToString();
-            contact.email = ds.Tables[0].Rows[0]["commInfoEmail"].ToString();
+            if (!string.IsNullOrEmpty(ds.Tables[0].Rows[0]["commInfoEmail"].ToString()) && IsValidEmail(ds.Tables[0].Rows[0]["commInfoEmail"].ToString()))
+                contact.email = ds.Tables[0].Rows[0]["commInfoEmail"].ToString().Trim();
+            contact.taxPayerCode = "XAXX010101000";
 
             origin.contact = contact;
 
@@ -3360,7 +3381,7 @@ namespace ServicesManagement.Web.Controllers
             address.countryCode = "484";
             address.countryName = "MEX";
             address.addressReference = ds.Tables[0].Rows[0]["addressReference1"].ToString();
-            address.betweenRoadName1 = ds.Tables[0].Rows[0]["addressReference2"].ToString();
+            address.betweenRoadName1 = Regex.Replace(ds.Tables[0].Rows[0]["addressReference2"].ToString(), @"[^\w\.@-]", "");
             address.betweenRoadName2 = " ";
             address.latitude = ds.Tables[0].Rows[0]["Latitude"].ToString();
             address.longitude = ds.Tables[0].Rows[0]["Longitude"].ToString();
@@ -3387,7 +3408,9 @@ namespace ServicesManagement.Web.Controllers
             contactD.cellPhone = ds.Tables[1].Rows[0]["Phone"].ToString();
             contactD.telephone = ds.Tables[1].Rows[0]["Phone"].ToString();
             contactD.phoneExt = "";//ds.Tables[1].Rows[0]["commInfoExt"].ToString();
-            contactD.email = ds.Tables[1].Rows[0]["Email"].ToString();
+            if (!string.IsNullOrEmpty(ds.Tables[1].Rows[0]["Email"].ToString()) && IsValidEmail(ds.Tables[1].Rows[0]["Email"].ToString()))
+                contactD.email = ds.Tables[1].Rows[0]["Email"].ToString().Trim();
+            contactD.taxPayerCode = "XAXX010101000";
 
             homeAddress.contact = contactD;
 
@@ -3433,7 +3456,9 @@ namespace ServicesManagement.Web.Controllers
             contactN.cellPhone = ds.Tables[1].Rows[0]["Phone"].ToString();
             contactN.telephone = ds.Tables[1].Rows[0]["Phone"].ToString();
             contactN.phoneExt = "";//ds.Tables[1].Rows[0]["commInfoExt"].ToString();
-            contactN.email = ds.Tables[1].Rows[0]["Email"].ToString();
+            if (!string.IsNullOrEmpty(ds.Tables[1].Rows[0]["Email"].ToString()) && IsValidEmail(ds.Tables[1].Rows[0]["Email"].ToString()))
+                contactN.email = ds.Tables[1].Rows[0]["Email"].ToString().Trim();
+            contactN.taxPayerCode = "XAXX010101000";
 
             residence.contact = contactN;
 
@@ -3502,7 +3527,7 @@ namespace ServicesManagement.Web.Controllers
 
             Pallet pallet = new Pallet();
             pallet.merchandise = "NATIONAL";
-            pallet.genericContent = "Mercancias Generales (" + UeNo +")";
+            pallet.genericContent = "Mercancias Generales (" + UeNo + ")";
             if (itemDescription.length <= 120 && itemDescription.width <= 105)
                 pallet.type = "SIMPLE";
             else
@@ -3626,7 +3651,9 @@ namespace ServicesManagement.Web.Controllers
             contact.cellPhone = ds.Tables[0].Rows[0]["commInfoPhone"].ToString();
             contact.telephone = ds.Tables[0].Rows[0]["commInfoPhone"].ToString();
             contact.phoneExt = ds.Tables[0].Rows[0]["commInfoExt"].ToString();
-            contact.email = ds.Tables[0].Rows[0]["commInfoEmail"].ToString();
+            if (!string.IsNullOrEmpty(ds.Tables[0].Rows[0]["commInfoEmail"].ToString()) && IsValidEmail(ds.Tables[0].Rows[0]["commInfoEmail"].ToString()))
+                contact.email = ds.Tables[0].Rows[0]["commInfoEmail"].ToString().Trim();
+            contact.taxPayerCode = "XAXX010101000"; 
 
             origin.contact = contact;
 
@@ -3646,7 +3673,7 @@ namespace ServicesManagement.Web.Controllers
             address.countryCode = "484";
             address.countryName = "MEX";
             address.addressReference = ds.Tables[0].Rows[0]["addressReference1"].ToString();
-            address.betweenRoadName1 = ds.Tables[0].Rows[0]["addressReference2"].ToString();
+            address.betweenRoadName1 = Regex.Replace(ds.Tables[0].Rows[0]["addressReference2"].ToString(), @"[^\w\.@-]", "");
             address.betweenRoadName2 = " ";
             address.latitude = ds.Tables[0].Rows[0]["Latitude"].ToString();
             address.longitude = ds.Tables[0].Rows[0]["Longitude"].ToString();
@@ -3673,7 +3700,9 @@ namespace ServicesManagement.Web.Controllers
             contactD.cellPhone = ds.Tables[1].Rows[0]["Phone"].ToString();
             contactD.telephone = ds.Tables[1].Rows[0]["Phone"].ToString();
             contactD.phoneExt = "";//ds.Tables[1].Rows[0]["commInfoExt"].ToString();
-            contactD.email = ds.Tables[1].Rows[0]["Email"].ToString();
+            if (!string.IsNullOrEmpty(ds.Tables[1].Rows[0]["Email"].ToString()) && IsValidEmail(ds.Tables[1].Rows[0]["Email"].ToString()))
+                contactD.email = ds.Tables[1].Rows[0]["Email"].ToString().Trim();
+            contactD.taxPayerCode = "XAXX010101000";
 
             homeAddress.contact = contactD;
 
@@ -3719,7 +3748,9 @@ namespace ServicesManagement.Web.Controllers
             contactN.cellPhone = ds.Tables[1].Rows[0]["Phone"].ToString();
             contactN.telephone = ds.Tables[1].Rows[0]["Phone"].ToString();
             contactN.phoneExt = "";//ds.Tables[1].Rows[0]["commInfoExt"].ToString();
-            contactN.email = ds.Tables[1].Rows[0]["Email"].ToString();
+            if (!string.IsNullOrEmpty(ds.Tables[1].Rows[0]["Email"].ToString()) && IsValidEmail(ds.Tables[1].Rows[0]["Email"].ToString()))
+                contactN.email = ds.Tables[1].Rows[0]["Email"].ToString().Trim();
+            contactN.taxPayerCode = "XAXX010101000";
 
             residence.contact = contactN;
 
