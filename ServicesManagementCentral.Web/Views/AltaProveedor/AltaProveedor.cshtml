@@ -588,7 +588,7 @@
                     success: function (json) {
                         debugger;
                         if (json.Success) {
-                            if (_edit == null) 
+                            if (_edit == null)
                                 $("#txtNumAlmacen").val(json.resp[0].idSupplierWHCode);
 
                             $("#txtNomPro").val(json.resp[0].supplierName);
@@ -598,7 +598,7 @@
 
                             }
                             else {
-                             
+
                                 const _from = urlParams.get('from');
 
                                 window.location.href = "AltaProveedor/AltaProveedor?from=" + _from + "&idSupplierWH=" + noProveedor + "&idSupplierWHCode=" + noAlmacenprev + "&Nuevo=" + 1 + "&PROCESSED=true";
@@ -679,7 +679,6 @@
             var _bitVehicles = "false";
                //string idOperType, string idShipType, string bitVehicles
 
-
             if (_txtNumPro.length == 0) {
                 $("#txtNumPro").focus();
                 return;
@@ -748,12 +747,14 @@
                 $("#txtTelContCom").focus();
                 return;
             }
-            if (_txtEmailO.length == 0) {
+            if (_txtEmailO.length == 0 || !validarCorreo(_txtEmailO)) {
                 $("#txtEmailO").focus();
+                alert('El Dato de Correo Electronico No Tiene el formato adecuado');
                 return;
             }
-            if (_txtEmailC.length == 0) {
+            if (_txtEmailC.length == 0 || !validarCorreo(_txtEmailC)) {
                 $("#txtEmailC").focus();
+                alert('El Dato de Correo Electronico No Tiene el formato adecuado');
                 return;
             }
             //if (_txtExtO.length == 0) {
@@ -819,6 +820,17 @@
 
                 }
             });
+        }
+
+        function validarCorreo(correo)
+        {
+            var expReg = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+            if (expReg.test(correo)) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
 
         function validaNumericos1() {
