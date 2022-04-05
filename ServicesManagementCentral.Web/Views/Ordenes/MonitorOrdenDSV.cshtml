@@ -271,7 +271,7 @@
                                             System.Data.DataSet dsTE = (System.Data.DataSet)Session["listaTipoEnvio"];
 
                                             var dtTE = dsTE.Tables[0];
-                                            if (dtTE.Rows[0]["Tipoenvio"].ToString() == "2") 
+                                            if (dtTE.Rows[0]["Tipoenvio"].ToString() != "1") 
                                             { 
                                                 <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Tipo Envio</th>
                                                 <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Proceso Pendiente</th>
@@ -381,7 +381,7 @@
                                                     System.Data.DataSet dsTE = (System.Data.DataSet)Session["listaTipoEnvio"];
 
                                                     var dtTE = dsTE.Tables[0];
-                                                    if (dtTE.Rows[0]["Tipoenvio"].ToString() == "2") 
+                                                    if (dtTE.Rows[0]["Tipoenvio"].ToString() != "1") 
                                                     { 
                                                         <td style="text-align:center;">@p["TipoEnvio"]</td>
                                                         <td>

@@ -1035,8 +1035,8 @@
                 var _OrderNo = $("#hddOrderNo").val();
                 var _NombreSurtidor = $("#hddSupplierName").val();
                 var _SurtidorID = $("#hddIdSupplierWH").val();
-                $('#btnAceptConsig').attr('disabled', true);
-                 $.ajax({
+                $("#btnAceptConsig").prop("disabled", true);
+                $.ajax({
                     async: false,
                     type: "POST",
                     url: '@Url.Action("Consignacion", "ProcesoSurtido")',
@@ -1051,11 +1051,11 @@
                     success: function (json) {
                         if (json.Success) {
                             location.reload();
-                            $('#btnAceptConsig').attr('disabled', false);
+                            $("#btnAceptConsig").prop("disabled", false);
                             // window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
                         }
                         else {
-                            $('#btnAceptConsig').attr('disabled', false);
+                            $("#btnAceptConsig").prop("disabled", false);
                         }
                     }
                     , error: function (jqXHR, textStatus, errorThrown) {

@@ -400,6 +400,8 @@ namespace ServicesManagement.Web.Controllers
         }
         public ActionResult MonitorOrdenADMIN()
         {
+
+            Session["listaTipoEnvio"] = DALServicesM.upCorpOms_Cns_MonitorUsuarioConfig(User.Identity.Name);
             Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirMADMIN("ADMIN", 0, 1);
             Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarMADMIN("ADMIN", 0, 1);
 

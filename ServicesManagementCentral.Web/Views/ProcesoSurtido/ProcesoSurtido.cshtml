@@ -6,7 +6,11 @@
     var EsVehiculo = false;
 }
 
-<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+<div id="spinner">
+    <img src="~/Content/images/spinner-icon-gif-24.gif" style="display:none;" id="imgSpiner" />
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;" id="divContent">
     <div class="dataTables_wrapper dt-bootstrap4 no-footer">
         <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
@@ -532,8 +536,6 @@
     </div>
 </div>
 
-
-
 <div class="modal inmodal fade" id="dlgCancel" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -745,7 +747,6 @@
 
         });
 
-
         $(document).ready(function () {
             //GetSolicitarGuia();
             $("input[name=optionsRadios]").change(function () {
@@ -763,7 +764,7 @@
 
         });
 
-            function popUpLstProds(idTracking) {
+        function popUpLstProds(idTracking) {
 
         //var TrackingType = "Normal";
                 var _UeNo = $("#hddUeNo").val();
@@ -819,6 +820,7 @@
             //$('[href="#menu3"]').tab('show');
             $('[href="#tab-2"]').tab('show')
         }
+
         function GetSolicitarGuia() {
 
             //var _Id_Num_UN = $("#hddTda").val();
@@ -1194,24 +1196,31 @@
         function Consignacion() {
             var values = [];
             var markedCheckbox = document.getElementsByName('chbConsig');
-            debugger;
             for (var checkbox of markedCheckbox) {
-                debugger;
                 if (checkbox.checked)
                     values.push(checkbox.value);
-                   // document.body.append(checkbox.value + ' ');
             }
          //public ActionResult Consignacion(List<string> items, string UeNo, string OrderNo, string NombreExpedidor, string NumeroTransaccion)
             if (values.length != 0) {
+                $("#btnAceptConsig").prop("disabled", true);
+                document.getElementById("spinner").classList.add("show");
                 var _UeNo = $("#hddUeNo").val();
                 var _OrderNo = $("#hddOrderNo").val();
                 var _NombreSurtidor = $("#hddSupplierName").val();
                 var _SurtidorID = $("#hddIdSupplierWH").val();
-                $('#btnAceptConsig').attr('disabled', true);
-                 $.ajax({
+                $.ajax({
                     async: false,
                     type: "POST",
                     url: '@Url.Action("Consignacion", "ProcesoSurtido")',
+                    beforeSend: function () {
+                        $("#imgSpiner").css("display", "block");
+                        document.getElementById("spinner").classList.add("show");
+                    },
+                    complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                        document.getElementById("spinner").classList.remove("show");
+                        $("#imgSpiner").css("display", "none");
+
+                    },
                     data: {
                         items: values
                         , UeNo: _UeNo
@@ -1223,18 +1232,21 @@
                     success: function (json) {
                         if (json.Success) {
                             location.reload();
-                            $('#btnAceptConsig').attr('disabled', false);
+                            $("#btnAceptConsig").prop("disabled", false);
                             // window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
                         }
                         else {
-                            $('#btnAceptConsig').attr('disabled', false);
+                            $("#btnAceptConsig").prop("disabled", false);
+                            document.getElementById("spinner").classList.remove("show");
+                            $("#imgSpiner").css("display", "none");
                         }
                     }
                     , error: function (jqXHR, textStatus, errorThrown) {
+                        document.getElementById("spinner").classList.remove("show");
+                        $("#imgSpiner").css("display", "none");
                         alert(errorThrown);
                     }
                 });
-
             }
         }
 
@@ -1335,6 +1347,65 @@
         });
         }
     </script>
+
+    <script>
+        document.onreadystatechange = function () {
+            if (document.readyState !== "complete") {
+                document.getElementById(
+                    "divContent").style.visibility = "hidden";
+                //$("#imgSpiner").css("display", "block");
+                //document.getElementById("spinner").classList.add("show");
+            } else {
+                //document.getElementById("spinner").classList.remove("show");
+                //$("#imgSpiner").css("display", "none");
+                document.getElementById(
+                    "divContent").style.visibility = "visible";
+            }
+        };
+
+
+    </script>
+
+    <style>
+        /* (A) FULL SCREEN WRAPPER */
+        #spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            width: 100vw;
+            height: 100vh;
+            /*background: rgba(0, 0, 0, 0);*/
+            transition: opacity 0.2s;
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+            /* (B) CENTER LOADING SPINNER */
+            #spinner img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%);
+            }
+
+        /* (C) SHOW & HIDE */
+        #spinner {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+            #spinner.show {
+                visibility: visible;
+                opacity: 1;
+            }
+        /*        .required {
+            position: absolute;
+            margin-left: -10px;
+            color: #FB0000;
+            font-size: 15px;
+        }*/
+    </style>
 
     @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
     <script>
