@@ -84,8 +84,10 @@
                                                                 <p>
                                                                     Siguiente movimiento:
                                                                     @*@if (p["StatusDescription"].ToString()!= "Entregando orden")
-                                                                    {*@
-                                                                        @if (p["OrderStatus"].ToString().Trim().Equals("9"))
+                                                        {*@
+                                                                    @if (p["OrderStatus"].ToString().Trim().Equals("9"))
+                                                                    {
+                                                                        if (p["UeType"].ToString().Trim().Equals("SETC"))
                                                                         {
                                                                             if (p["UeType"].ToString().Trim().Equals("SETC")) 
                                                                             {
@@ -606,8 +608,41 @@
                                                             <small>@p5["c_tot"]</small>
                                                         </th>
                                                     </tr>
-                                                }
-
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (System.Data.DataRow p5 in dt5.Rows)
+                                                    {
+                                                        <tr>
+                                                            <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["CnscOrder"]</small></th>
+                                                            <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductId"] <br />@p5["Barcode"]</small></th>
+                                                            <th style="padding: 0; text-space-collapse: collapse"><small style="font-weight: bold">@p5["ProductName"]</small></th>
+                                                            <th style="padding: 0; text-space-collapse: collapse">
+                                                                <small>@p5["pe_Quantity"] @p5["UnitMeasure"]</small>
+                                                                <br />
+                                                                <small>@p5["e_Quantity"] @p5["UnitMeasure"]</small>
+                                                                <br />
+                                                                <small>@p5["c_Quantity"] @p5["UnitMeasure"]</small>
+                                                            </th>
+                                                            <th style="padding: 0; text-space-collapse: collapse">
+                                                                <small>@p5["pe_price"]</small>
+                                                                <br />
+                                                                <small>@p5["e_price"]</small>
+                                                                <br />
+                                                                <small>@p5["c_price"]</small>
+                                                            </th>
+                                                            <th style="padding: 0; text-space-collapse: collapse">
+                                                                <small>@p5["pe_tot"]</small>
+                                                                <br />
+                                                                <small>@p5["e_tot"]</small>
+                                                                <br />
+                                                                <small>@p5["c_tot"]</small>
+                                                            </th>
+                                                        </tr>
+                                                     }
+                                                </tbody>
+                                                <tfoot>
+                                                    @foreach (System.Data.DataRow p5 in dt7.Rows)
+                                                    {
 
                                                 @*<tr style="padding: 0; text-space-collapse: collapse">
                                         <td style="text-align: left; padding: 0; text-space-collapse: collapse"><small>1</small></td>
@@ -725,10 +760,48 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="modal inmodal fade" id="dlgCreateServicios" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-md">
+                                    <div class="modal-content" style="width: 900px">
+                                        <div class="modal-header pt-3 pb-1">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <h4 class="modal-title">Solicitar Guia</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col col-xs-12 col-md-12">
+                                                    <table id="tblSolicitud" class="display table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer" role="grid" style="width: 900px">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Referencia</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 120px" rowspan="1">Tipo de Empaque</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 40px" rowspan="1" colspan="1">Porcentaje</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Ancho</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Largo</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Alto</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="tblConsulta" style="width: 60px" rowspan="1" colspan="1">Peso</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (System.Data.DataRow p5 in dt5.Rows)
+                                                            {
+                                                            }
+                                                            </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                                            @*<button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>*@
+                                            <button type="button" id="btnSolicitar" onclick="Confirmar()" class="btn btn-primary">Solicitar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         }
-                        }
-                    </div>
+                }
+                </div>
 
                 </div>
         </div>
@@ -791,6 +864,314 @@
             else {
                 alert('Se cancela solicitud de una Guía Manual');
             }
+        }
+
+        function AceptarSol() {
+            if ($('#ddlMotSol').val() != "0") {
+                $('#dlgMotivoSol').modal('hide');
+                SolicitudGuia();
+            }
+            else {
+                alert('Seleccione un motivo');
+            }
+        }
+
+        function SolicitudGuia() {
+        var selProd = _json.length;
+
+            if (selProd > 0) {
+                $('#btnSolicitar').attr('disabled', false);
+                $('#dlgCreateServicios').modal('show');
+
+                var myTable4 = $('#tblSolicitud').DataTable();
+                myTable4
+                    .clear()
+                    .draw();
+                for (var i = 0; i < _json.length; i++) {
+                    myTable4.row.add([
+                        _json[i].referencia,
+                        "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
+                        + _optionsPackings + "</select>",
+                        "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
+                        "<input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' />",
+                        "<input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' />",
+                        "<input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px' />",
+                        "<input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' />"
+                    ]).draw();
+
+                    $("#ddlCodigo_" + i).val('');
+                }
+            }
+        }
+
+        function SeleccionarUCC() {
+            _json = [];
+            var OrderNo = $('#OrderNo').val();
+            $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ConsultaDetalleMonitorJson", "Ordenes")',
+                    data: JSON.stringify({
+                        order: OrderNo
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (json) {
+                        if (json.Success) {
+                            //crear ciclo
+                            for (var i = 0; i < json.items.length; i++) {
+                                let _obj = {};
+                                _obj.idShip = 1; //itemO.idShipmentWMS; de dónde se saca?
+                                _obj.productId = json.items[i].ProductId;
+                                _obj.productName = json.items[i].ProductName;
+                                _obj.barcode = json.items[i].Barcode;
+                                _obj.ueNo = $('#UeNo').val();
+                                _obj.orderNo = $('#OrderNo').val();
+                                _obj.ucc = 1; //itemO.ucc; de dónde se saca?
+
+                                _obj.cuenta = 1; //itemO.Cuenta; de dónde se saca?
+                                _obj.piezas = 1; //itemO.cantidad; de dónde se saca?
+                                _obj.referencia = $('#UeNo').val(); //itemO.referencia2;
+                                _obj.pk = 1; //itemO.ucc; de dónde se saca?
+                                _obj.tipoEmpaque = '';
+                                _obj.porcentaje = 0;
+                                _obj.ancho = 0;
+                                _obj.largo = 0;
+                                _obj.alto = 0;
+                                _obj.peso = 0;
+                                _obj.selectedValue = '';
+
+                                _json.push(_obj);
+                            }
+                            console.log(_json);
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+            });
+
+            
+        }
+
+        function Confirmar() {
+            console.log(_json);
+            var _UeNo = $('#UeNo').val();
+            var _OrderNo = $('#OrderNo').val();
+            var jsonCopy = _json;
+            var jsonConfirm = [];
+            var items = new Array();
+            var products = new Array();
+            var count = 0;
+            for (var x = 0; x < jsonCopy.length; x++) {
+                let _obj = {};
+                var item = {};
+                var product = {};
+                _obj.idShip = jsonCopy[x].idShip;
+                _obj.productId = jsonCopy[x].productId;
+                _obj.productName = jsonCopy[x].productName;
+                _obj.ueNo = jsonCopy[x].ueNo;
+                _obj.orderNo = jsonCopy[x].orderNo;
+                //_obj.ucc = jsonCopy[x].ucc;
+                _obj.barcode = jsonCopy[x].barcode;
+                _obj.cuenta = jsonCopy[x].cuenta;
+                _obj.referencia = jsonCopy[x].referencia;
+                //_obj.pk = jsonCopy[x].pk;
+                _obj.piezas = jsonCopy[x].piezas;
+                _obj.porcentaje = $("#porcentaje" + x).val();
+                if (jsonCopy[x].tipoEmpaque != '')
+                    count++;
+                _obj.tipoEmpaque = jsonCopy[x].tipoEmpaque;
+                _obj.ancho = $("#ancho" + x).val();
+                _obj.largo = $("#largo" + x).val();
+                _obj.alto = $("#alto" + x).val();
+                _obj.peso = $("#peso" + x).val();
+                jsonConfirm.push(_obj);
+
+                item.Tipo = jsonCopy[x].tipoEmpaque;
+                item.Peso = $("#peso" + x).val();
+                item.Largo = $("#largo" + x).val();
+                item.Ancho = $("#ancho" + x).val();
+                var alto = $("#alto" + x).val();
+                item.Alto = alto == "" ? 0 : alto;
+                items.push(item);
+
+                product.Barcode = jsonCopy[x].barcode;
+                product.ProductId = jsonCopy[x].productId;
+                product.ProductName = jsonCopy[x].productName; //falta traerse el productname
+                product.Pieces = jsonCopy[x].piezas;
+                product.product = {};
+                products.push(product);
+            }
+            console.log(jsonConfirm);
+            if (jsonCopy.length == count) {
+                $('#btnSolicitar').attr('disabled', true);
+                console.log(jsonConfirm);
+                if ($('#UeType').val() == "CEDIS") {
+                    //Send the JSON array to Controller using AJAX.
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("AddEmbalajePendiente", "Ordenes")',
+                        data: JSON.stringify({
+                            Paquetes: jsonConfirm
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (json) {
+                            if (json.Success) {
+                                alert('Solicitud aceptada');
+                                location.reload();
+                            }
+                            else {
+                                _json = [];
+                                Get();
+                                $('#dlgCreateServicios').modal('hide');
+                                alert(json.Message);
+                            }
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        url: '@Url.Action("AddEmbalaje", "Ordenes")',
+                        data: JSON.stringify({
+                            Paquetes: items,
+                            UeNo: _UeNo,
+                            OrderNo: _OrderNo,
+                            Products: products,
+                            TrackingType:'Normal'
+                        }),
+                        success: function (json) {
+                            if (json.Success) {
+                                alert('Solicitud aceptada');
+                                location.reload();
+                            }
+                            else {
+                                alert(json.Message);
+                            }
+                        }
+                        , error: function (jqXHR, textStatus, errorThrown) {
+                            alert(errorThrown);
+
+                        }
+                    });
+                }
+
+            }
+            else
+                alert('Los datos estan Incompletos');
+        }
+
+        function Rebind(idShip, cuenta, index, productId) {
+            var selectVal = $("#ddlCodigo_" + index).val();
+            console.log('entra', idShip, cuenta, index, selectVal);
+            var jsonCopy = _json;
+            var _code = selectVal.split('-')[1];
+            var _ancho;
+            var _largo;
+            var _alto;
+            var _peso;
+            _json = [];
+
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GetShipmentPackingWMSByCode", "ShipmentRequestsWMS")',
+                    data: {
+                        code: _code,
+                        productId: productId
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            if(_code == 'EMB' || _code == 'STC') {
+                                _ancho = json.json[0].ANCHO;
+                                _largo = json.json[0].LARGO;
+                                _alto = json.json[0].ALTO;
+                                _peso = json.json[0].PESO;
+                            }
+                            else {
+                                var valores = _jsonPackings.find(x => x.id == selectVal);
+                                _ancho = valores.ancho;
+                                _largo = valores.largo;
+                                _alto = valores.alto;
+                                _peso = json.json[0].PESO;
+                            }
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(errorThrown);
+                    }
+                });
+
+            for (var x = 0; x < jsonCopy.length; x++) {
+                let _obj = {};
+                _obj.idShip = jsonCopy[x].idShip;
+                _obj.cuenta = jsonCopy[x].cuenta;
+                _obj.productId = jsonCopy[x].productId;
+                _obj.productName = jsonCopy[x].productName;
+                _obj.ueNo = jsonCopy[x].ueNo;
+                _obj.orderNo = jsonCopy[x].orderNo;
+                _obj.ucc = jsonCopy[x].ucc;
+                _obj.barcode = jsonCopy[x].barcode;
+                _obj.referencia = jsonCopy[x].referencia;
+                _obj.pk = jsonCopy[x].pk;
+                _obj.piezas = jsonCopy[x].piezas;
+                _obj.porcentaje = 0;
+
+                if (jsonCopy[x].idShip == idShip && jsonCopy[x].cuenta == cuenta) {
+                    _obj.tipoEmpaque = _code;
+                    _obj.ancho = _ancho;
+                    _obj.largo = _largo;
+                    _obj.alto = _alto;
+                    _obj.peso = _peso;
+                    _obj.selectedValue = selectVal;
+                }
+                else {
+                    _obj.tipoEmpaque = jsonCopy[x].tipoEmpaque;
+                    _obj.ancho = jsonCopy[x].ancho;
+                    _obj.largo = jsonCopy[x].largo;
+                    _obj.alto = jsonCopy[x].alto;
+                    _obj.peso = jsonCopy[x].peso;
+                    _obj.selectedValue = jsonCopy[x].selectedValue;
+                }
+                //alert('Insert');
+                _json.push(_obj);
+            }
+
+            var myTable4 = $('#tblSolicitud').DataTable();
+            myTable4
+                .clear()
+                .draw();
+            for (var i = 0; i < _json.length; i++) {
+                myTable4.row.add([
+                    _json[i].referencia,
+                    "<select class='form-control m-b' onchange='Rebind(" + _json[i].idShip + "," + _json[i].cuenta + "," + i + "," + _json[i].productId + ")' id='ddlCodigo_" + i + "' style='width: 120px' > "
+                    + _optionsPackings + "</select>",
+                    "<input type='text' readonly id='porcentaje" + i + "' value='" + _json[i].porcentaje + "' name='porcentaje' class='form-control' style='width: 40px' />",
+                    "<input type='text' readonly id='ancho" + i + "' value='" + _json[i].ancho + "' name='ancho' class='form-control' style='width: 60px' />",
+                    "<input type='text' readonly id='largo" + i + "' value='" + _json[i].largo + "' name='largo' class='form-control' style='width: 60px' />",
+                    "<input type='text' readonly id='alto" + i + "' value='" + _json[i].alto + "' name='alto' class='form-control' style='width: 60px' />",
+                    "<input type='text' readonly id='peso" + i + "' value='" + _json[i].peso + "' name='peso' class='form-control' style='width: 60px' />"
+                ]).draw();
+
+                $("#ddlCodigo_" + i).val(_json[i].selectedValue);
+            }
+
+        }
+
+        function LimpiaModal() {
+            $("#ddlCodigo").val('');
+            $("#tipoEmpaque").val('');
+            $("#largo").val('');
+            $("#ancho").val('');
+            $("#alto").val('');
+            $("#peso").val('');
+
+            $("#ddlEstatus").val("1");
+            $("#idCnscPacking").val(0);
         }
 
         function popUpCanOrden(OrderNo) {

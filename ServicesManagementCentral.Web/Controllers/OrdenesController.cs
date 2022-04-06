@@ -169,16 +169,16 @@ namespace ServicesManagement.Web.Controllers
                         vista = 2;
                         switch (idOwner)
                         {
-                            case 2: 
+                            case 2:
                                 tipoAlmacen = "DST";
                                 break;
-                            case 3: 
+                            case 3:
                                 tipoAlmacen = "CEDIS";
                                 break;
-                            case 4: 
+                            case 4:
                                 tipoAlmacen = "DSV";
                                 break;
-                        }                            
+                        }
                     }
                     else
                     {
@@ -394,8 +394,8 @@ namespace ServicesManagement.Web.Controllers
             //if (Session["Id_Num_UN"] != null)
             //{
             //    un = int.Parse(Session["Id_Num_UN"].ToString());
-                Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirMCEDIS("CEDIS", un, vista);
-                Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarMCEDIS("CEDIS", un, vista);
+            Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirMCEDIS("CEDIS", un, vista);
+            Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarMCEDIS("CEDIS", un, vista);
             //}
             //else
             //{
@@ -1039,15 +1039,15 @@ namespace ServicesManagement.Web.Controllers
 
                     if (d.Tables[0].Rows[0]["DeliveryType"].ToString() == "Entrega a domicilio")
                         if (DALCorreos.GetMetodoEnvio_sUp(int.Parse(orderNo)).Tables[0].Rows[0][0].ToString().Contains("domicilio"))
-                    {
-                        //Confirmación de Entrega en domicilio DeliveryType == Entrega a domicilio
-                        Correos.Correos.Correo16A(int.Parse(orderNo));
-                    }
-                    else
-                    {
-                        //Confirmación de Entrega en Tienda DeliveryType != Entrega a domicilio
-                        Correos.Correos.Correo16(int.Parse(orderNo));
-                    }
+                        {
+                            //Confirmación de Entrega en domicilio DeliveryType == Entrega a domicilio
+                            Correos.Correos.Correo16A(int.Parse(orderNo));
+                        }
+                        else
+                        {
+                            //Confirmación de Entrega en Tienda DeliveryType != Entrega a domicilio
+                            Correos.Correos.Correo16(int.Parse(orderNo));
+                        }
                     #endregion
                 }
 
@@ -1105,6 +1105,36 @@ namespace ServicesManagement.Web.Controllers
             }
             return View();
 
+        }
+
+        public ActionResult ConsultaDetalleMonitorJson(string order)
+        {
+
+            if (string.IsNullOrEmpty(order))
+            {
+                return RedirectToAction("OrdenSeleccionada", "Ordenes");
+            }
+            else
+            {
+                DataSet ds;
+                ds = DALServicesM.GetOrdersByOrderNo(order);
+
+                var itemLst = new List<ItemsGuia>();
+                foreach (DataRow item in ds.Tables[5].Rows)
+                {
+                    itemLst.Add(
+                        new ItemsGuia
+                        {
+                            Barcode = item["Barcode"].ToString(),
+                            ProductId = item["ProductId"].ToString(),
+                            ProductName = item["ProductName"].ToString()
+                        }
+                        ); 
+                }
+                var result = new { Success = true, items = itemLst };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult ConsultaDetalle(string order)
@@ -2207,12 +2237,12 @@ namespace ServicesManagement.Web.Controllers
                         if (paqueteria.Equals("Estafeta"))
                         {
                             DataSet dsEstafeta = DALServicesM.EstafetaActive();
-                            if(dsEstafeta != null)
+                            if (dsEstafeta != null)
                             {
-                                if(dsEstafeta.Tables[0].Rows[0][1].ToString().ToLower().Equals("estafeta"))
+                                if (dsEstafeta.Tables[0].Rows[0][1].ToString().ToLower().Equals("estafeta"))
                                     guia = CreateGuiaEstafeta(UeNo, OrderNo, peso, type);
                                 else
-                                    guia = CreateGuiaEstafetaAPI(UeNo ,OrderNo, decimalPeso, Products, dsCarrier, null);
+                                    guia = CreateGuiaEstafetaAPI(UeNo, OrderNo, decimalPeso, Products, dsCarrier, null);
                             }
                             else
                                 throw new Exception("No hay Canal de Estafeta");
@@ -2236,11 +2266,11 @@ namespace ServicesManagement.Web.Controllers
                             break;
                     }
 
-                    if(guia == "ERROR")
+                    if (guia == "ERROR")
                         throw new Exception("No se pudo generar la guia con ninguna de las paqueterias. ");
 
                     string GuiaEstatus = "CREADA";
-                    
+
                     var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
                     item.Tipo, item.Largo, item.Ancho, item.Alto, peso,
                     User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
@@ -2249,8 +2279,8 @@ namespace ServicesManagement.Web.Controllers
                     if (!string.IsNullOrEmpty(requestRecoleccion))
                     {
                         var responseRecoleccion = RecoleccionEnvia(requestRecoleccion);
-                        
-                        if(responseRecoleccion.Contains("carrier"))
+
+                        if (responseRecoleccion.Contains("carrier"))
                             DALServicesM.GuardarPickUp(UeNo, OrderNo, FolioDisp, responseRecoleccion, User.Identity.Name, null, null, null);
                         else
                         {
@@ -2443,7 +2473,7 @@ namespace ServicesManagement.Web.Controllers
                                 if (dsEstafeta.Tables[0].Rows[0][1].ToString().ToLower().Equals("estafeta"))
                                     guia = CreateGuiaEstafeta(item.ueNo, item.orderNo, peso, type);
                                 else
-                                    guia = CreateGuiaEstafetaAPI(item.ueNo,item.orderNo, decimalPeso, null, dsCarrier, item);
+                                    guia = CreateGuiaEstafetaAPI(item.ueNo, item.orderNo, decimalPeso, null, dsCarrier, item);
                             }
                             else
                                 throw new Exception("No hay Canal de Estafeta");
@@ -2470,46 +2500,46 @@ namespace ServicesManagement.Web.Controllers
 
 
                     string GuiaEstatus = "CREADA";
-                        //TarifaModel tarifaSeleccionada = new TarifaModel();
-                        //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
+                    //TarifaModel tarifaSeleccionada = new TarifaModel();
+                    //tarifaSeleccionada = SeleccionarTarifaMasEconomica(UeNo, OrderNo);
 
-                        //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
-                        //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
-                        //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
+                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, IdTracking, TrackingType,
+                    //PackageType, PackageLength, PackageWidth, PackageHeight, PackageWeight,
+                    //User.Identity.Name, guia.Split(',')[0], guia.Split(',')[1]).Tables[0].Rows[0][0];
 
-                        //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
-                        //item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
-                        //User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
+                    //var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(UeNo, OrderNo, FolioDisp, TrackingType,
+                    //item.Tipo, item.Largo, item.Ancho, item.Alto, item.Peso,
+                    //User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, null, trackUrl).Tables[0].Rows[0][0];
 
-                        var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
-                         item.tipoEmpaque, item.largo, item.ancho, item.alto, peso,
-                         User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc, trackUrl).Tables[0].Rows[0][0];
+                    var cabeceraGuia = DALEmbarques.upCorpOms_Ins_UeNoTracking(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                     item.tipoEmpaque, item.largo, item.ancho, item.alto, peso,
+                     User.Identity.Name, servicioPaq, guia.Split(',')[0], guia.Split(',')[1], GuiaEstatus, item.ucc, trackUrl).Tables[0].Rows[0][0];
 
-                        DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
-                         item.productId, item.barcode, "000000000", User.Identity.Name);
+                    DALEmbarques.upCorpOms_Ins_UeNoTrackingDetail(item.ueNo, item.orderNo, FolioDisp, "Normal",
+                     item.productId, item.barcode, "000000000", User.Identity.Name);
 
-                        DALServicesM.UCCProcesada(item.ucc);
-                        DALServicesM.CarrierSelected(item.orderNo, cotizeId);
+                    DALServicesM.UCCProcesada(item.ucc);
+                    DALServicesM.CarrierSelected(item.orderNo, cotizeId);
 
-                        if (!string.IsNullOrEmpty(requestRecoleccion))
+                    if (!string.IsNullOrEmpty(requestRecoleccion))
+                    {
+                        var responseRecoleccion = RecoleccionEnvia(requestRecoleccion);
+
+                        if (responseRecoleccion.Contains("carrier"))
+                            DALServicesM.GuardarPickUp(item.ueNo, item.orderNo, FolioDisp, responseRecoleccion, User.Identity.Name, null, null, null);
+                        else
                         {
-                            var responseRecoleccion = RecoleccionEnvia(requestRecoleccion);
-
-                            if (responseRecoleccion.Contains("carrier"))
-                                DALServicesM.GuardarPickUp(item.ueNo, item.orderNo, FolioDisp, responseRecoleccion, User.Identity.Name, null, null, null);
-                            else
-                            {
-                                RecoleccionRequestModel request = JsonConvert.DeserializeObject<RecoleccionRequestModel>(requestRecoleccion);
-                                DALServicesM.GuardarPickUp(item.ueNo, item.orderNo, FolioDisp, "--", User.Identity.Name, paqueteria, request.shipment.pickup.date, request.origin.postalCode);
-                            }
+                            RecoleccionRequestModel request = JsonConvert.DeserializeObject<RecoleccionRequestModel>(requestRecoleccion);
+                            DALServicesM.GuardarPickUp(item.ueNo, item.orderNo, FolioDisp, "--", User.Identity.Name, paqueteria, request.shipment.pickup.date, request.origin.postalCode);
                         }
+                    }
                     // 2021-12-15: llamado a la clase de los corres, especificamente al template 7 para confirmacion de Envio.
                     Correos.Correos.Correo7(item.orderNo);
-                        //var s = item.ueNo.Split('-');
-                        //Correos.Correos.Correo7(int.Parse(s[0]));
+                    //var s = item.ueNo.Split('-');
+                    //Correos.Correos.Correo7(int.Parse(s[0]));
 
-                        #endregion
-                    
+                    #endregion
+
                 }
 
                 var result = new { Success = true };
@@ -2531,6 +2561,8 @@ namespace ServicesManagement.Web.Controllers
             productsAll = Paquete.productId.ToString();
             
             List<WeightByProducts> lstPesos = DataTableToModel.ConvertTo<WeightByProducts>(DALServicesM.GetDimensionsByProducts(productsAll).Tables[0]);
+
+            Session["ListWeightByProducts"] = lstPesos;
 
             foreach (var item in lstPesos)
             {
@@ -2790,7 +2822,7 @@ namespace ServicesManagement.Web.Controllers
             wayBill.costCenter = "SPMXA12345";
             wayBill.customerShipmentId = null;
             var reference = ds.Tables[0].Rows[0]["addressReference1"].ToString() + " " + ds.Tables[0].Rows[0]["addressReference2"].ToString();
-            wayBill.referenceNumber = reference.Length > 30 ? reference.Substring(0,29) : reference;
+            wayBill.referenceNumber = reference.Length > 30 ? reference.Substring(0, 29) : reference;
             wayBill.groupShipmentId = null;
 
             label.wayBillDocument = wayBill;
@@ -2801,7 +2833,7 @@ namespace ServicesManagement.Web.Controllers
             itemDescription.height = int.Parse(Session["SumHeigth"].ToString()) > 190 ? 190 : int.Parse(Session["SumHeigth"].ToString());
             itemDescription.length = int.Parse(Session["SumLength"].ToString()) > 240 ? 240 : int.Parse(Session["SumLength"].ToString());
             itemDescription.width = int.Parse(Session["SumWidth"].ToString()) > 120 ? 120 : int.Parse(Session["SumWidth"].ToString());
-            
+
             Merchandises merchandises = new Merchandises();
             merchandises.totalGrossWeight = weight;
             merchandises.weightUnitCode = "KGM";
@@ -2841,7 +2873,8 @@ namespace ServicesManagement.Web.Controllers
 
                     lstMerchandises.Add(merchandise);
                 }
-            }else
+            }
+            else
             {
                 var total = 0.0;
                 var quantity = 0.0;
@@ -2872,7 +2905,7 @@ namespace ServicesManagement.Web.Controllers
 
                 lstMerchandises.Add(merchandise);
             }
-        
+
             merchandises.merchandise = lstMerchandises;
             itemDescription.merchandises = merchandises;
 
@@ -3057,7 +3090,7 @@ namespace ServicesManagement.Web.Controllers
             label.location = location;
 
             model.labelDefinition = label;
-            
+
             json = JsonConvert.SerializeObject(model);
 
             return json;
@@ -3354,7 +3387,7 @@ namespace ServicesManagement.Web.Controllers
 
             return json;
         }
-        public string CreateGuiaEstafetaAPI(string UeNo,int OrderNo, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
+        public string CreateGuiaEstafetaAPI(string UeNo, int OrderNo, decimal weight, List<ProductEmbalaje> Products, DataSet dsCarrier, ShipmentToTrackingModel packageCEDIS)
         {
             string result = string.Empty;
             string json = string.Empty, url = string.Empty;
@@ -3375,7 +3408,7 @@ namespace ServicesManagement.Web.Controllers
                 parametros.Add("@OrderNo", OrderNo);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Cns_EstafetaInfo]", false, parametros);
-                
+
                 if (weight <= 70)
                 {
                     json = RequestEstafeta(ds, weight, Products, dsCarrier, packageCEDIS, UeNo);
@@ -3409,10 +3442,10 @@ namespace ServicesManagement.Web.Controllers
         }
         public string CreateGuiaEstafeta(string UeNo, int OrderNo, int weight, int typeId)
         {
-                string result = string.Empty;
-                var ServiceTypeId = 1;
-                DataSet ds = new DataSet();
-                DataSet dsO = new DataSet();
+            string result = string.Empty;
+            var ServiceTypeId = 1;
+            DataSet ds = new DataSet();
+            DataSet dsO = new DataSet();
 
             string conection = ConfigurationManager.AppSettings[ConfigurationManager.AppSettings["AmbienteSC"]];
             if (System.Configuration.ConfigurationManager.AppSettings["flagConectionDBEcriptado"].ToString().Trim().Equals("1"))
@@ -3529,10 +3562,10 @@ namespace ServicesManagement.Web.Controllers
 
 
                 }
-                
+
             }
-           
-            catch 
+
+            catch
             {
                 //throw new Exception("La generacion de la Guia por Estafeta Fallo. " + ex.Message);
                 result = "ERROR";
@@ -3705,7 +3738,7 @@ namespace ServicesManagement.Web.Controllers
 
                 result = re.data[0].trackingNumber + "," + re.data[0].label + "," + re.data[0].trackUrl;
             }
-            catch 
+            catch
             {
                 //throw new Exception("La generacion de la Guia por Envia.Com Fallo. " + ex.Message);
                 result = "ERROR";
@@ -4186,7 +4219,7 @@ namespace ServicesManagement.Web.Controllers
 
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            
+
             Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_Cotizador_Guia"], "", _json[0]);
 
             string msg = r2.message;
