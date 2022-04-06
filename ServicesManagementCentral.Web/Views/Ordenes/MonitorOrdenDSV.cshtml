@@ -147,9 +147,9 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Nombre Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">No. Pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 116px;">No. Orden de Compra</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Creación</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Límite</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Inicio</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora de Creación del Pedido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora límite para surtir</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora de inicio de Surtido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Estatus del Pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 128px;">Proceso Pendiente</th>
                                 </tr>
@@ -236,13 +236,37 @@
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Nombre Almacen</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">No. Pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">No. Orden de Compra</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Creación</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Solicitud</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha Limite</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora de Creación del Pedido</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora  Limite  de Solicitud de guía</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Fecha y hora de solicitud de la guia</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1" style="width: 125px;">No. Guía</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Transportista</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Estatus del pedido</th>
                                     <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Estatus de la guía</th>
+                                    @*Nota: falta un programa que de acuerdo al proveedor que este asociado al usuario firmado a OMS, se indentifique si es 
+                                        1-transporte propio  --> NO MOSTRAR las 2 columnas finales.
+                                        0,2-transporte soriana --> MOSTRAR las 2 columnas finales, 
+                                        
+                                      Este programa se debe llamar solo 1 vez al iniciar esta vista, y determinara si estas columas se muestran.
+                                        Programa: [dbo].[upCorpOms_Cns_MonitorUsuarioConfig]
+                                        Parametro: @Usuario nvarchar(50) --> ejemplo 't_eliseogr'
+                                        Devuelve un recordset: --> Parametro importante [Tipoenvio]
+                                           [idUsuario]
+		                                  ,[nombre]
+		                                  ,[activo]
+		                                  ,[fechaCreacion]
+		                                  ,[autor]
+		                                  ,[modificadoPor]
+		                                  ,[fechaModificacion]
+		                                  ,[usuario]
+		                                  ,[rol]
+		                                  ,[IdOwner]
+		                                  ,[IdTienda]
+		                                  ,[IdCarrier]
+		                                  ,[Tipoenvio] -- 1.transporte propio, 2.transporte soriana, 0.el usuario no tiene proveedor asociado
+                                        *@
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Tipo Envio</th>
+                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Proceso Pendiente</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -341,6 +365,13 @@
                                                 <td>@Transportista</td>
                                                 <td>@p["EstatusPedido"]</td>
                                                 <td>@GuiasPaqEstatusDesc</td>
+                                                <td style="text-align:center;">@p["TipoEnvio"]</td>
+                                                <td>
+                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para procesar el surtido" class="btn btn-link">
+                                                        Solicitar guía
+                                                    </a>
+                                                </td>
+
                                             </tr>
                                         }
                                     }
