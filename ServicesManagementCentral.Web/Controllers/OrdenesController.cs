@@ -3293,7 +3293,7 @@ namespace ServicesManagement.Web.Controllers
                     merchandise.isInternational = false;
                     merchandise.isImport = false;
                     merchandise.isHazardousMaterial = false;
-                    merchandise.hazardousMaterialCode = "M0035";
+                    //merchandise.hazardousMaterialCode = "M0035";
                     merchandise.packagingCode = "4A";
 
                     lstMerchandises.Add(merchandise);
@@ -3325,7 +3325,7 @@ namespace ServicesManagement.Web.Controllers
                 merchandise.isInternational = false;
                 merchandise.isImport = false;
                 merchandise.isHazardousMaterial = false;
-                merchandise.hazardousMaterialCode = "M0035";
+                //merchandise.hazardousMaterialCode = "M0035";
                 merchandise.packagingCode = "4A";
 
                 lstMerchandises.Add(merchandise);
@@ -3587,7 +3587,7 @@ namespace ServicesManagement.Web.Controllers
                     merchandise.isInternational = false;
                     merchandise.isImport = false;
                     merchandise.isHazardousMaterial = false;
-                    merchandise.hazardousMaterialCode = "M0035";
+                    //merchandise.hazardousMaterialCode = "M0035";
                     merchandise.packagingCode = "4A";
 
                     lstMerchandises.Add(merchandise);
@@ -3619,7 +3619,7 @@ namespace ServicesManagement.Web.Controllers
                 merchandise.isInternational = false;
                 merchandise.isImport = false;
                 merchandise.isHazardousMaterial = false;
-                merchandise.hazardousMaterialCode = "M0035";
+                //merchandise.hazardousMaterialCode = "M0035";
                 merchandise.packagingCode = "4A";
 
                 lstMerchandises.Add(merchandise);
