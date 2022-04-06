@@ -175,7 +175,7 @@
                                                 <td style="text-align:center;">@p["supplierName"]</td>
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
-                                                @if (@p["idOwner"].ToString() != "1")
+                                                @if (@p["idOwner"].ToString() == "A")
                                                 {
                                                     <td style="text-align:center;">
                                                         <a href="@Url.Action("ConsultaDetalleMonitor", "Ordenes", new { order = @p["OrderNo"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
@@ -295,7 +295,7 @@
                                                 <td style="text-align:center;">@p["supplierName"]</td>
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
-                                                @if (@p["idOwner"].ToString() != "1")
+                                                @if (@p["idOwner"].ToString() == "A")
                                                 {
                                                     <td style="text-align:center;">
                                                         <a href="@Url.Action("ConsultaDetalleMonitor", "Ordenes", new { order = @p["OrderNo"] })"
