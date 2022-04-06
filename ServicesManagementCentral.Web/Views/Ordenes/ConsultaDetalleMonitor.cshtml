@@ -808,6 +808,9 @@
     </div>
 </div>
 @Html.Partial("SolicitarGuia")
+@Html.Partial("ReasignarOrden")
+@Html.Partial("SolicitarGuiaMonitor")
+@Html.Partial("CancelacionOrden")
 @section scripts {
     @*=======================================================CANCELACION DE ORDEN=======================================================*@
 <script>
@@ -843,6 +846,79 @@
             window.location.href = '@Url.Content("~/Ordenes/MonitorOrdenADMIN")';
         }
 
+        function GetPackings() {
+            _jsonPackings = [];
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("GetShipmentPackingWMS", "Catalogo")',
+
+                datatype: "html",
+                success: function (json) {
+                    if (json.Success) {
+                        console.log(json);
+                        for (var i = 0; i < json.json.length; i++) {
+                            let _obj = {};
+                            _obj.id = json.json[i].idCnscPacking + '-' + json.json[i].IdPackingCode;
+                            _obj.text = json.json[i].IdPackingType;
+                            _obj.ancho = json.json[i].PackageWidth;
+                            _obj.largo = json.json[i].PackageLength;
+                            _obj.alto = json.json[i].PackageHeight;
+                            _obj.peso = json.json[i].PackageWeight;
+
+                            //alert('Insert');
+                            _jsonPackings.push(_obj);
+
+                            if (i == 0) {
+                                _optionsPackings = "<option value=" + _obj.id + " >" + _obj.text + "</option>"
+                            }
+                            else
+                                _optionsPackings += "<option value=" + _obj.id + " >" + _obj.text + "</option>"
+                        }
+
+
+
+
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(errorThrown);
+                }
+             });
+
+            console.log(_jsonPackings, _optionsPackings);
+    }
+
+        function ReasignarOrden() {
+            alert('ReasignarOrden');
+        }
+
+        function GenerarOrden() {
+            var OrderId = $('#OrderSF').val();
+            if (confirm('Desea solicitar una nueva orden de compra para este pedido?')) {
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("GenerarNvaOrden", "Ordenes")',
+                    data: {
+                        OrderId: OrderId
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            alert('Se envió la petición para la generación de nueva orden de compra para la orden actual: ' + $('#OrderSF').val() + '. Favor de esperar para la actualización.');
+                        }
+                        else {
+                            alert('La petición para la generación de nueva orden de compra de la orden actual: ' + $('#OrderSF').val() + ' fue errónea.' + json.Message);
+                         }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            }
+        }
+
         function SolicitarGuia() {
             if (confirm('Desea solicitar una Guía Manual?')) {
                 //validación de cobertura
@@ -850,15 +926,15 @@
                     alert('Pedido cancelado');
                 }
                 else {
-                    var causesSelect = $("<select class='form-control m-b' ></select>");
-                    $("<option>").val("0").text("--Seleccione--").appendTo(causesSelect);
-                    $("<option>").val("1").text("Error en Sistema No se puede solicitar guía").appendTo(causesSelect);
-                    $("<option>").val("2").text("Error en Sistema Tipo de Guía incorrecta").appendTo(causesSelect);
-                    $("<option>").val("3").text("Vencimiento de guía").appendTo(causesSelect);
-                    $("<option>").val("4").text("Faltó solicitar Guía para el pedido").appendTo(causesSelect);
-                    $("<option>").val("5").text("Reenvío de Pedido").appendTo(causesSelect);
-                    //alert("<td>" + causesSelect[0].outerHTML + "</td>");
-                    $("#dlgMotivoSol").modal('toggle');
+                    //var causesSelect = $("<select class='form-control m-b' ></select>");
+                    //$("<option>").val("0").text("--Seleccione--").appendTo(causesSelect);
+                    //$("<option>").val("1").text("Error en Sistema No se puede solicitar guía").appendTo(causesSelect);
+                    //$("<option>").val("2").text("Error en Sistema Tipo de Guía incorrecta").appendTo(causesSelect);
+                    //$("<option>").val("3").text("Vencimiento de guía").appendTo(causesSelect);
+                    //$("<option>").val("4").text("Faltó solicitar Guía para el pedido").appendTo(causesSelect);
+                    //$("<option>").val("5").text("Reenvío de Pedido").appendTo(causesSelect);
+                    ////alert("<td>" + causesSelect[0].outerHTML + "</td>");
+                    $("#dlgMotivoSol").modal('show');
                 }
             }
             else {
@@ -949,8 +1025,6 @@
                         }
                     }
             });
-
-            
         }
 
         function Confirmar() {
@@ -1058,7 +1132,6 @@
                         }
                     });
                 }
-
             }
             else
                 alert('Los datos estan Incompletos');
