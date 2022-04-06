@@ -1008,14 +1008,9 @@
                     alert('Pedido cancelado');
                 }
                 else {
-                    //var causesSelect = $("<select class='form-control m-b' ></select>");
-                    //$("<option>").val("0").text("--Seleccione--").appendTo(causesSelect);
-                    //$("<option>").val("1").text("Error en Sistema No se puede solicitar guía").appendTo(causesSelect);
-                    //$("<option>").val("2").text("Error en Sistema Tipo de Guía incorrecta").appendTo(causesSelect);
-                    //$("<option>").val("3").text("Vencimiento de guía").appendTo(causesSelect);
-                    //$("<option>").val("4").text("Faltó solicitar Guía para el pedido").appendTo(causesSelect);
-                    //$("<option>").val("5").text("Reenvío de Pedido").appendTo(causesSelect);
-                    ////alert("<td>" + causesSelect[0].outerHTML + "</td>");
+                    $('#ddlMotSol').val("0");
+                    $("#ddlMotSol option:selected").index(0);
+                    $("#ddlMotSol option:selected").val("--Seleccione");
                     $("#dlgMotivoSol").modal('show');
                 }
             }
@@ -1025,7 +1020,7 @@
         }
 
         function AceptarSol() {
-            if ($('#ddlMotSol').val() != "0") {
+            if ($("#ddlMotSol option:selected").text() != "--Seleccione") {
                 $('#dlgMotivoSol').modal('hide');
                 SolicitudGuia();
             }

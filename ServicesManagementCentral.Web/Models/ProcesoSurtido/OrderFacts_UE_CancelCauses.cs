@@ -16,10 +16,12 @@ namespace ServicesManagement.Web.Models.ProcesoSurtido
 
     }
 
-    public class upCorpOms_cns_MonitorPSCarriers
+    public class MotivosSolicitud
     {
-        public int IdCarrier { get; set; }
-        public string Nombre { get; set; }
+        public int IdCause { get; set; }
+        public string Desc_Motivo { get; set; }
+        public string Fec_Movto { get; set; }
+        //public bool Bit_deleted { get; set; }
     }
 
     public class upCorpOms_cns_MonitorPSCarriers

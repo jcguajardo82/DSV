@@ -14,12 +14,18 @@
                             <div class="form-group">
                                 <label>Motivo de Solicitud:</label>
                                 <select id="ddlMotSol" class="form-control">
-                                    <option value="0">--Seleccione</option>
-                                    <option value="1">Error en Sistema No se puede solicitar guía</option>
-                                    <option value="2">Error en Sistema Tipo de Guía incorrecta</option>
-                                    <option value="3">Vencimiento de guía</option>
-                                    <option value="4">Faltó solicitar Guía para el pedido</option>
-                                    <option value="5">Reenvío de Pedido</option>
+                                    @{
+                                        <option value="0">--Seleccione</option>
+                                        if (ViewBag.MotSol != null)
+                                        {
+                                            IEnumerable<MotivosSolicitud> listMotSol = ViewBag.MotSol as IEnumerable<MotivosSolicitud>;
+                                            foreach (MotivosSolicitud item in listMotSol)
+                                            {
+                                                <option value="@item.IdCause">@item.Desc_Motivo</option>
+                                            }
+                                        }
+
+                                    }
                                 </select>
                             </div>
                         </div>
