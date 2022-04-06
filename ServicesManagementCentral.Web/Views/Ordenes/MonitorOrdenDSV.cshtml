@@ -195,17 +195,17 @@
                                                 <td style="text-align:center">@p["StatusDescriptionUE"]</td>
                                                 <td style="text-align:center">
                                                @if (@p["Tipoenvio"].ToString() == "1")
-                                                {
+                                               {
                                                     <a href="@Url.Action("ProcesoSurtidoDSV", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"], Tipoenvio = @p["Tipoenvio"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
                                                     Procesar Surtido
                                                     </a>
-                                                }
-                                                else
-                                                { 
+                                               }
+                                               else
+                                               {
                                                     <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"], Tipoenvio = @p["Tipoenvio"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
                                                     Procesar Surtido
                                                     </a>
-                                                }                                                   
+                                               }                                                   
                                                 </td>
                                             </tr>
                                         }
@@ -265,8 +265,19 @@
 		                                  ,[IdCarrier]
 		                                  ,[Tipoenvio] -- 1.transporte propio, 2.transporte soriana, 0.el usuario no tiene proveedor asociado
                                         *@
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Tipo Envio</th>
-                                    <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Proceso Pendiente</th>
+                                    @{
+                                        if (Session["listaTipoEnvio"] != null)
+                                        {
+                                            System.Data.DataSet dsTE = (System.Data.DataSet)Session["listaTipoEnvio"];
+
+                                            var dtTE = dsTE.Tables[0];
+                                            if (dtTE.Rows[0]["Tipoenvio"].ToString() == "2") 
+                                            { 
+                                                <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Tipo Envio</th>
+                                                <th class="text-center sorting" tabindex="0" aria-controls="tblServicios" rowspan="1" colspan="1">Proceso Pendiente</th>
+                                            }
+                                        }
+                                    }
                                 </tr>
                             </thead>
                             <tbody>
@@ -365,13 +376,21 @@
                                                 <td>@Transportista</td>
                                                 <td>@p["EstatusPedido"]</td>
                                                 <td>@GuiasPaqEstatusDesc</td>
-                                                <td style="text-align:center;">@p["TipoEnvio"]</td>
-                                                <td>
-                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para procesar el surtido" class="btn btn-link">
-                                                        Solicitar guía
-                                                    </a>
-                                                </td>
+                                                @if (Session["listaTipoEnvio"] != null)
+                                                {
+                                                    System.Data.DataSet dsTE = (System.Data.DataSet)Session["listaTipoEnvio"];
 
+                                                    var dtTE = dsTE.Tables[0];
+                                                    if (dtTE.Rows[0]["Tipoenvio"].ToString() == "2") 
+                                                    { 
+                                                        <td style="text-align:center;">@p["TipoEnvio"]</td>
+                                                        <td>
+                                                            <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para procesar el surtido" class="btn btn-link">
+                                                                Solicitar guía
+                                                            </a>
+                                                        </td>
+                                                    }
+                                                }
                                             </tr>
                                         }
                                     }
