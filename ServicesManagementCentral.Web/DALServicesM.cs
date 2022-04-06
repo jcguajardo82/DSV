@@ -3765,22 +3765,6 @@ namespace ServicesManagement.Web
             }
             try
             {
-                //Soriana.FWK.FmkTools.SqlHelper.connection_Name(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString);
-
-                //System.Collections.Hashtable parametros = new System.Collections.Hashtable();
-                //parametros.Add("@orderNo", orderNo);
-                //parametros.Add("@PesoOrder", PesoOrder);
-                //parametros.Add("@Bigticket", Bigticket);
-                ////parametros.Add("@TrackingItemsType", dt);
-                //SqlParameter param = new SqlParameter("@TrackingItemsType", SqlDbType.Structured)
-                //{
-                //    TypeName = "dbo.TrackingItemsTableType",
-                //    Value = dt
-                //};
-                //parametros.Add("@TrackingItemsType", param);
-
-
-                //ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Ins_UeNoRatesLogyt]", false, parametros);
                 using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Connection_DEV"].ConnectionString))
                 {
                     using (SqlCommand sqlComm = new SqlCommand("dbo.upCorpOms_Ins_UeNoRatesLogyt", con))
