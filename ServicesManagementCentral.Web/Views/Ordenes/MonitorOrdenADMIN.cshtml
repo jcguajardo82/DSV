@@ -207,11 +207,22 @@
                                                 <td style="text-align:center">@p["FechaSurtidoWMS"]</td>
                                                 <td style="text-align:center;">@p["StatusDescriptionUE"]</td>
                                                 <td style="text-align:center">@p["OrdenCompra"]</td>
-                                                <td style="text-align:center">
-                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para procesar el surtido" class="btn btn-link">
-                                                        Procesar Surtido
-                                                    </a>
-                                                </td>
+                                                @if (@p["Tipoenvio"].ToString() == "1") 
+                                                    { 
+                                                        <td>
+                                                            <a href="@Url.Action("ProcesoSurtidoDSV", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para procesar el surtido" class="btn btn-link">
+                                                                Proceso de Surtido
+                                                            </a>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para procesar el surtido" class="btn btn-link">
+                                                                Proceso de Surtido
+                                                            </a>
+                                                        </td>
+                                                    }
                                             </tr>
                                         }
                                     }

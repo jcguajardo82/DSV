@@ -407,11 +407,10 @@ namespace ServicesManagement.Web.Controllers
         }
         public ActionResult MonitorOrdenADMIN()
         {
-            //var ds = DALConfig.Autenticar_sUP(User.Identity.Name);
-            //int idOwner = 0;
-            //string tipoAlmacen = null;
-            //int un = 0;
-            //int vista = 1;
+
+            Session["listaTipoEnvio"] = DALServicesM.upCorpOms_Cns_MonitorUsuarioConfig(User.Identity.Name);
+            Session["listaOrdersSurtir"] = DALServicesM.GetListaSurtirMADMIN("ADMIN", 0, 1);
+            Session["listaOrdersEmbarcar"] = DALServicesM.GetListaEmbarcarMADMIN("ADMIN", 0, 1);
 
             //if (ds.Tables[0].Rows.Count > 0)
             //{
