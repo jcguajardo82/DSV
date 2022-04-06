@@ -1333,9 +1333,12 @@ namespace ServicesManagement.Web.Controllers
                                 }
                             }
 
-                        CrearCotizacionesLogyt(productosLst, int.Parse(OrderNo));
+                        bool tieneCobertura = CrearCotizacionesLogytMonitor(productosLst, int.Parse(OrderNo));
                     }
-
+                    else
+                    {
+                        throw new Exception("La orden ha pasado por Punto de Venta.");
+                    }
                     //var result = new { Success = true, items = itemLst };
                     var result = new { Success = true, Reasignado = proveedorGanador };
                     return Json(result, JsonRequestBehavior.AllowGet);
@@ -1346,6 +1349,49 @@ namespace ServicesManagement.Web.Controllers
                 var result = new { Success = false, Message = x.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public JsonResult ReasignarAutoriza(string OrderNo, string UeNo, string idOwner, string idSupplierWH, string pass)
+        {
+            try
+            {
+                string msj = "Clave incorrecta";
+                bool isSucces = false;                
+
+                DataSet ds = DALServicesM.GetPassResignarAutoriza(1, long.Parse(idSupplierWH), int.Parse(idOwner));
+
+                if (ds.Tables[0].Rows.Count != 0)
+                {
+                    if (ds.Tables[0].Rows[0][0].ToString().Equals(pass))
+                    {
+                        //DALServicesM.CancelaOrden_Uup2(int.Parse(OrderNo), motivoCancelacion, int.Parse(Id_Num_MotCan), UeNo, User.Identity.Name);
+                        msj = "Clave correcta";
+                        string UeType = string.Empty;
+                        if (idOwner == "2")
+                            UeType = "DST";
+                        if (idOwner == "3")
+                            UeType = "CEDIS";
+                        if (UeType == "4")
+                            UeType = "DSV";
+                        DataSet ds1 = DALProcesoSurtido.UpCorpOMS_upd_MonitorReasignarOrden(UeNo, long.Parse(idSupplierWH), UeType);
+                        if (ds1.Tables[0].Rows.Count != 0)
+                        {
+                            msj = ds1.Tables[0].Rows[0]["Mensaje"].ToString();
+                        }
+                        isSucces = true;
+                    }
+                }
+
+                var result = new { Success = isSucces, Message = msj };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+            catch (Exception ex)
+            {
+                var result = new { Success = false, Message = ex.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         public ActionResult ConsultaDetalle(string order)
@@ -2598,6 +2644,85 @@ namespace ServicesManagement.Web.Controllers
 
             DALServicesM.GuardarTarifasLogyt(orderNo, sumPeso, bigTicket, dt);
 
+        }
+        public bool CrearCotizacionesLogytMonitor(List<ProductEmbalaje> Products, int orderNo)
+        {
+            string productsAll = string.Empty;
+            bool bigTicket = false;
+            decimal sumPeso = 0, width = 0, length = 0, heigth = 0;
+            DataTable dt = DALServicesM.GetTableProducts();
+
+            foreach (var p in Products)
+            {
+                productsAll += p.ProductId.ToString() + ",";
+            }
+            List<WeightByProducts> lstPesos = DataTableToModel.ConvertTo<WeightByProducts>(DALServicesM.GetDimensionsByProducts(productsAll).Tables[0]);
+
+            Session["ListWeightByProducts"] = lstPesos;
+
+            foreach (var item in lstPesos)
+            {
+                if (item.PesoVol > item.Peso)
+                {
+                    if (item.PesoVol > 70)
+                        bigTicket = true;
+
+                    var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
+                    sumPeso += (item.PesoVol * piezas);
+                    width += item.Width;
+                    length += item.Lenght;
+                    heigth += item.Height;
+
+                    dt.Rows.Add(item.Product, item.PesoVol, item.Cve_CategSAP, item.Cve_GciaCategSAP, item.Cve_GpoCategSAP, item.Desc_CategSAP);
+                }
+                else
+                {
+                    if (item.Peso > 70)
+                        bigTicket = true;
+
+                    var piezas = Products.Where(x => x.ProductId == item.Product).FirstOrDefault().Pieces;
+                    sumPeso += (item.Peso * piezas);
+                    width += item.Width;
+                    length += item.Lenght;
+                    heigth += item.Height;
+
+                    dt.Rows.Add(item.Product, item.Peso, item.Cve_CategSAP, item.Cve_GciaCategSAP, item.Cve_GpoCategSAP, item.Desc_CategSAP);
+                }
+
+
+            }
+
+            if (sumPeso < 1)
+                sumPeso = 1;
+
+            var widthRound = decimal.Round(width);
+            if (widthRound > 1)
+                Session["SumWidth"] = decimal.ToInt32(widthRound);
+            else
+                Session["SumWidth"] = 1;
+
+            var lengthRound = decimal.Round(length);
+            if (lengthRound > 1)
+                Session["SumLength"] = decimal.ToInt32(lengthRound);
+            else
+                Session["SumLength"] = 1;
+
+            var heightRound = decimal.Round(heigth);
+            if (heightRound > 1)
+                Session["SumHeigth"] = decimal.ToInt32(heightRound);
+            else
+                Session["SumHeigth"] = 1;
+
+            Session["SumPeso"] = sumPeso;
+
+            DataSet ds = DALServicesM.GuardarTarifasLogyt(orderNo, sumPeso, bigTicket, dt);
+            bool TieneCobertura = false;
+            if (ds.Tables[0].Rows[0]["mensaje"].ToString() == "OK")
+            {
+                TieneCobertura = true;
+            }
+
+            return TieneCobertura;
         }
         public ActionResult AddEmbalajePendiente(List<ShipmentToTrackingModel> Paquetes)
         {

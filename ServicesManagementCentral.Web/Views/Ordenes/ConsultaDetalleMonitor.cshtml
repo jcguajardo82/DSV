@@ -143,6 +143,11 @@
                                 <input id="StoreNum" name="StoreNum" value="@p["StoreNum"]" style="visibility:hidden" />
                                 <input id="OrderStatus" name="OrderStatus" value="@p["StatusUe"]" style="visibility:hidden" />
                                 <input id="UeType" name="UeType" value="@p["UeType"]" style="visibility:hidden" />
+                                //para llenar campos faltantes
+                                <input id="ProductId" name="ProductId" value="@ProductId" style="visibility:hidden" />
+                                <input id="Barcode" name="Barcode" value="@Barcode" style="visibility:hidden" />
+                                <input id="ReasigStoreNum" name="ReasigStoreNum" value="@p["StoreNum"]" style="visibility:hidden" />
+                                <input id="ReasigUeType" name="ReasigUeType" value="@p["UeType"]" style="visibility:hidden" />
                                 UeType = @p["UeType"].ToString();
 
                 <div class="row">
@@ -638,7 +643,7 @@
                                                                 <small>@p5["c_tot"]</small>
                                                             </th>
                                                         </tr>
-                                                     }
+                                                    }
                                                 </tbody>
                                                 <tfoot>
                                                     @foreach (System.Data.DataRow p5 in dt7.Rows)
@@ -786,7 +791,7 @@
                                                             @foreach (System.Data.DataRow p5 in dt5.Rows)
                                                             {
                                                             }
-                                                            </tbody>
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -800,7 +805,7 @@
                                 </div>
                             </div>
                         }
-                }
+                    }
                 </div>
 
                 </div>
@@ -809,6 +814,7 @@
 </div>
 @Html.Partial("SolicitarGuia")
 @Html.Partial("ReasignarOrden")
+@Html.Partial("ReasignarAutorizarOrden")
 @Html.Partial("SolicitarGuiaMonitor")
 @Html.Partial("CancelacionOrden")
 @section scripts {
@@ -891,6 +897,82 @@
 
         function ReasignarOrden() {
             alert('ReasignarOrden');
+        }
+
+        function ReasignarOrd() {
+            if ($('#ddlopReasignar').val() != "0") {
+                $('#dlgReasigOrden').modal('hide');
+                $("#ReasigUeType").val($('#ddlopReasignar').val());
+                var opReasignar = $('#ddlopReasignar').val();
+                var OrderNo = $('#OrderNo').val();
+                var UeNo = $('#UeNo').val()
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("ReasignarOrden", "Ordenes")',
+                    data: {
+                        OrderNo: OrderNo,
+                        UeNo: UeNo,
+                        opReasignar: opReasignar
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            $('#ReasigStoreNum').val(json.Reasignado);
+                            //alert('Se reordena a: ' + $('#ReasigStoreNum').val());
+                            $('#txtPassAut').val("");
+                            $('#dlgReasigAutOr').modal('show');
+                        }
+                        else {
+                            alert(json.Message);
+                         }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            }
+            else {
+                alert('Seleccione un motivo');
+            }
+    }
+
+        function ReasigAutOrden() {
+            if ($('#txtPassAut').val() != "") {
+                $('#dlgReasigAutOr').modal('hide');
+                var OrderNo = $('#OrderNo').val();
+                var UeNo = $('#UeNo').val();
+                _ReasigUeType = $("#ReasigUeType").val();
+                _ReasigStoreNum = $('#ReasigStoreNum').val();
+                _txtPassAut = $("#txtPassAut").val();
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("ReasignarAutoriza", "Ordenes")',
+                    data: {
+                        OrderNo: OrderNo,
+                        UeNo: UeNo,
+                        idOwner: _ReasigUeType,
+                        idSupplierWH: _ReasigStoreNum,
+                        pass: _txtPassAut
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            alert(json.Message);
+                        }
+                        else {
+                            alert(json.Message);
+                         }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            }
+            else {
+                alert('Capture el password.');
+            }
         }
 
         function GenerarOrden() {
