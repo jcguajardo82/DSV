@@ -10,7 +10,7 @@ namespace ServicesManagement.Web.DAL.Autorizacion
 {
     public class DALAutorizacion
     {
-        public static DataSet upCorpOms_Del_UeNoSupplyProcess(int OrderNo, string Cause_Desc, int IdCause, string UeNo)
+        public static DataSet upCorpOms_Del_UeNoSupplyProcess(int OrderNo, string Cause_Desc, int IdCause, string UeNo, string idUsuario)
         {
 
             DataSet ds = new DataSet();
@@ -29,6 +29,7 @@ namespace ServicesManagement.Web.DAL.Autorizacion
                 parametros.Add("@Cause_Desc", Cause_Desc);
                 parametros.Add("@IdCause", IdCause);
                 parametros.Add("@UeNo", UeNo);
+                parametros.Add("@idUsuario", idUsuario);
 
                 ds = Soriana.FWK.FmkTools.SqlHelper.ExecuteDataSet(CommandType.StoredProcedure, "[dbo].[upCorpOms_Del_UeNoSupplyProcess]", false, parametros);
 

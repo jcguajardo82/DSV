@@ -1,0 +1,1558 @@
+﻿@using ServicesManagement.Web.Models.ProcesoSurtido;
+@{
+    ViewBag.Title = "Proceso Surtido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var EsVehiculo = false;
+    string TieneGuia = string.Empty;
+}
+
+<div class="row wrapper border-bottom white-bg page-heading" style="padding-top:5px;padding-bottom:10px;">
+    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="fixed_header dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
+                    <h2>Proceso de Surtido</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
+                    @if (ViewBag.Header != null)
+                    {
+                        Encabezado list = ViewBag.Header as Encabezado;
+                        <div class="alert alert-info">
+                            @list.Concatenado
+                        </div>
+                        <input type="hidden" id="hddIdSupplierWH" value="@list.idSupplierWH" />
+                        <input type="hidden" id="hddSupplierName" value="@list.SupplierName" />
+                        <input type="hidden" id="hddUeNo" value="@ViewBag.UeNo" />
+                        <input type="hidden" id="hddOrderNo" value="@ViewBag.OrderNo" />
+                        <input type="hidden" id="hddStoreNum" value="@list.StoreNum" />
+                        <input type="hidden" id="hddStatusUe" value="@list.StatusUe" />
+                        <input type="hidden" id="hddIdSupplierWHCode" value="@list.IdSupplierWHCode" />
+                        <input type="hidden" id="hddIdOwner" value="@list.IdOwner" />
+
+                        EsVehiculo = list.bitVehicles;
+                        if (@list.TieneGuia.ToUpper().Equals("SI")) {
+                            TieneGuia = "disabled";
+                        }
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-12 col col-md-12 col col-lg-12">
+                    @if (ViewBag.Mensaje == null)
+                    {
+
+
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs" role="tablist" id="myTabs">
+                                <li><a class="nav-link active" data-toggle="tab" href="#tab-1">Aceptar Pedido</a></li>
+                                <li><a class="nav-link" data-toggle="tab" href="#tab-2">Proceso de Envío</a></li>
+                                @*<li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>*@
+                                @{
+                                    if (EsVehiculo)
+                                    {
+                                        <li><a class="nav-link" data-toggle="tab" href="#tab-4">Vehículo</a></li>
+                                    }
+                                }
+                                <!-- se comenta pues esta por hacerse -->
+                                @*<li><a class="nav-link" data-toggle="tab" href="#tab-3">Descarga de Guías</a></li>*@
+                            </ul>
+                            <div class="tab-content">
+                                <div role="tabpanel" id="tab-1" class="tab-pane active">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <table id="tblAcepConsig" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                                                    <thead class="bg-danger-sor">
+                                                        <tr>
+                                                            <th style="text-align:center;">EAN/Código Barras</th>
+                                                            <th style="text-align:center;">Descripción</th>
+                                                            <th style="text-align:center;">Pzas Solicitadas para Envío</th>
+                                                            <th style="text-align:center;">Tipo de Envio</th>
+                                                            <th style="text-align:center;" name="accion">Art. a Surtir</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+
+                                                            IEnumerable<upCorpOms_Cns_UeNoSupplyProcess> list = ViewBag.UeNoSupplyProcess as IEnumerable<upCorpOms_Cns_UeNoSupplyProcess>;
+
+                                                        }
+                                                        @foreach (upCorpOms_Cns_UeNoSupplyProcess item in list)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.EAN</td>
+                                                                <td style="text-align:left;">@item.Descripcion</td>
+                                                                <td style="text-align:right;">@item.Piezas</td>
+                                                                <td style="text-align:left;">@item.TipoEnvio</td>
+                                                                @if (item.Suplido)
+                                                                {
+                                                                    <td style="text-align:center;">x</td>
+                                                                    @*<td style="text-align:center;"><input type="checkbox" name="chbConsig" value="@item.EAN" class="checkbox" id="flexCheckDefault" checked disabled="disabled"></td>*@
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="text-align:center;"><input type="checkbox" name="chbConsig" value="@item.EAN" class="checkbox" id="flexCheckDefault"></td>
+                                                                }
+                                                            </tr>
+
+
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        @if (ViewBag.ArtSup == null)
+                                        {
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    <table style="width:100%">
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td style="width:25%;">
+                                                                <button type="button" id="btnAceptConsig" class="btn btn-primary block full-width m-b" onclick="Consignacion()">
+                                                                    Aceptar Pedido
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>
+                                                            </td>
+                                                            <td></td>
+                                                            <td style="width:25%;">
+                                                                <button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="popCancelar()"> Cancelar Pedido </button>
+                                                                @*<button type="button" id="btnCancelarConsig" class="btn btn-primary block full-width m-b" onclick="alert('La siguiente consignación será cancelada por el siguiente motivo')"> Cancelar  Consignación </button>*@
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div role="tabpanel" id="tab-2" class="tab-pane">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <button type="button" class="btn btn-primary block full-width m-b" id="btnConfirmar" @TieneGuia onclick="ConfirmarOrden()">
+                                                    Confirmar Orden Surtida y Empacada
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <button type="button" class="btn btn-primary block full-width m-b" id="btnIniciar" onclick="IniciarProceso()">
+                                                    Inicia proceso de Embarque
+                                                </button>
+
+                                                Transportista:
+                                                <select id="ddlPSCarriers" class="form-control">
+                                                    @{
+                                                        if (ViewBag.PSCarriers != null)
+                                                        {
+                                                            IEnumerable<upCorpOms_cns_MonitorPSCarriers> listCar = ViewBag.PSCarriers as IEnumerable<upCorpOms_cns_MonitorPSCarriers>;
+                                                            foreach (upCorpOms_cns_MonitorPSCarriers item in listCar)
+                                                            {
+                                                                <option value="@item.IdCarrier">@item.Nombre</option>
+
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>No. Guía/Referencia de envío:</td>
+                                                            <td><input type="text" id="txtGuia" class="form-control-sm" value="" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Estatus de la guía:</td>
+                                                            <td><input type="text" id="txtEstatus" class="form-control-sm" value="Enviada" disabled /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>                                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (EsVehiculo)
+                                {
+                                    if (ViewBag.Vehiculos != null)
+                                    {
+                                        <div role="tabpanel" id="tab-4" class="tab-pane">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                                        <table class="table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Serie</td>
+                                                                    <td><input type="text" id="txtSerie" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Bateria</td>
+                                                                    <td><input type="text" id="txtBateria" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Entrada Por</td>
+                                                                    <td><input type="text" id="txtEntradaPor" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Fecha de Entrada</td>
+                                                                    <td>
+                                                                        @*<input type="date" id="txtFechaEntrada" class="form-control-sm" value="@listV.EntryDate.ToString("yyyy-MM-dd")" />*@
+                                                                        <div class="input-group date" id="datetimepicker1">
+                                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                            <input class="form-control-sm datepicker" id="txtFechaEntrada" name="txtFechaEntrada"
+                                                                                   type="text" value="">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>No. de Pedimento</td>
+                                                                    <td><input type="text" id="txtNoPedimento" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>No. de Motor</td>
+                                                                    <td><input type="text" id="txtNoMotor" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Repuve</td>
+                                                                    <td><input type="text" id="txtRepuve" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Año</td>
+                                                                    <td><input type="text" id="txtAnio" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Color</td>
+                                                                    <td><input type="text" id="txtColor" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Modelo</td>
+                                                                    <td><input type="text" id="txtModelo" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Marca</td>
+                                                                    <td><input type="text" id="txtMarca" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Cilindraje</td>
+                                                                    <td><input type="text" id="txtCilindraje" class="form-control-sm" value="" /></td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <td colspan="2" style="text-align:right;">
+                                                                        <button type="button" class="btn btn-primary block full-width m-b" onclick="GuardarVehiculo()">
+                                                                            Guardar Vehículo
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                                        <table id="tblVehiculos" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                                                            <thead class="bg-danger-sor">
+                                                                <tr>
+                                                                    <th style="text-align:center;">Serie</th>
+                                                                    <th style="text-align:center;">Batería</th>
+                                                                    <th style="text-align:center;">Entrada Por</th>
+                                                                    <th style="text-align:center;">Fecha de Entrada</th>
+                                                                    <th style="text-align:center;">No. de Pedimento</th>
+                                                                    <th style="text-align:center;">No. de Motor</th>
+                                                                    <th style="text-align:center;">Repuve</th>
+                                                                    <th style="text-align:center;">Año</th>
+                                                                    <th style="text-align:center;">Color</th>
+                                                                    <th style="text-align:center;">Modelo</th>
+                                                                    <th style="text-align:center;">Marca</th>
+                                                                    <th style="text-align:center;">Cilindraje</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @{
+
+                                                                    IEnumerable<upCorpOms_Cns_UeNoConsigmentsVehicles> listV = ViewBag.Vehiculos as IEnumerable<upCorpOms_Cns_UeNoConsigmentsVehicles>;
+
+                                                                }
+                                                                @foreach (upCorpOms_Cns_UeNoConsigmentsVehicles item in listV)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@item.SerialId</td>
+                                                                        <td style="text-align:left;">@item.BateryId</td>
+                                                                        <td style="text-align:right;">@item.EntryBy</td>
+                                                                        <td style="text-align:left;">@item.EntryDate.ToString("dd/MM/yyyy")</td>
+                                                                        <td style="text-align:left;">@item.PetitionId</td>
+                                                                        <td style="text-align:left;">@item.MotorId</td>
+                                                                        <td style="text-align:left;">@item.RepuveId</td>
+                                                                        <td style="text-align:left;">@item.Year</td>
+                                                                        <td style="text-align:left;">@item.ColorId</td>
+                                                                        <td style="text-align:left;">@item.ModelId</td>
+                                                                        <td style="text-align:left;">@item.BrandId</td>
+                                                                        <td style="text-align:left;">@item.CylinderCapacityId</td>
+                                                                    </tr>
+                                                                 }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                 }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        msj mensaje = @ViewBag.Mensaje as msj;
+
+                        <div class="row">
+                            <div class="col col-xs-12 col col-md-12 col col-lg-12 text-center">
+                                <div class="alert alert-danger">
+                                    @mensaje.mensaje
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="dlgCancel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Cancelación de Pedido</p>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-4 col col-md-4 col col-lg-4">
+                        <div class="form-group">
+                            <label>Motivo de Cancelación</label>
+                            <select id="ddlMotCan" class="form-control">
+                                @{
+                                    if (ViewBag.MotCan != null)
+                                    {
+                                        IEnumerable<OrderFacts_UE_CancelCauses> listCan = ViewBag.MotCan as IEnumerable<OrderFacts_UE_CancelCauses>;
+                                        foreach (OrderFacts_UE_CancelCauses item in listCan)
+                                        {
+                                            <option value="@item.IdCause">@item.Cause_Desc</option>
+
+                                        }
+                                        <option value="99">Otro</option>
+
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col col-md-12 col col-lg-12">
+                        <textarea id="txtOtro" maxlength="50" placeholder="Describir Otro" class="form-control" rows="4" cols="50"></textarea>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Cancelar()">Cancelar Pedido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="dlgAddProdcut" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Embalaje</p>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateServicios">
+                    <table class="table" id="tblGenGuia" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="text-align:center;"></th>
+                                <th colspan="1" style="text-align:center;" id="colPeso"></th>
+                                <th colspan="3" style="text-align:center;">Dimensiones (cm)</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th colspan="2" style="text-align:center;">Tipo</th>
+                                <th colspan="1" style="text-align:center;" id="colPeso">Peso KG</th>
+                                <th style="text-align:center;">Largo</th>
+                                <th style="text-align:center;">Ancho</th>
+                                <th style="text-align:center;">Alto</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><input type="radio" checked="" value="Sobre" class="js-rate-type" id="optionsRadios1" name="optionsRadios"> Sobre</td>
+                                <td><input type="radio" value="Paquete" id="optionsRadios2" name="optionsRadios"> Paquete</td>
+
+                                <td><input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0" class="form-control input-sm" placeholder="KG" id="txtKG" /></td>
+
+                                <td><input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0" class="form-control input-sm" placeholder="Largo" id="txtLg" /></td>
+
+                                <td><input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0" class="form-control input-sm" placeholder="Ancho" id="txtAn" /></td>
+
+
+                                <td><input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0" class="form-control input-sm" placeholder="Alto" value="N/A" id="txtAltura" /></td>
+                                <td><input type="button" class="btn btn-primary" id="btnAdd" value="Agregar" /></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSave" onclick="AddEmbalaje2()">Asignar Guía</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="dlgShowProdcut" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-1">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p>Lista de Productos</p>
+            </div>
+            <div class="modal-body">
+                <form id="frmShowServicios">
+                    <table id="tblShowProduct" class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Código </th>
+                                <th>Producto</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal PDF -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<h4 class="modal-title">Modal Header</h4>*@
+            </div>
+            <div class="modal-body">
+
+                @*<embed src="~/Content/Article List.pdf"
+                    frameborder="0" width="100%" height="400px">*@
+
+                <iframe id="viewrPDF" width="100%" height="400px" src=''></iframe>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal Details -->
+<div id="myModalDetails" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+
+                <table id="tblDetails" class="table table-striped table-bordered table-hover table-responsive-md expand dataTable no-footer">
+                    <thead class="bg-danger-sor">
+                        <tr>
+                            <th style="text-align:center;">SKU</th>
+                            <th style="text-align:center;">Descripción</th>
+                            <th style="text-align:center;">Pzas Solicitadas para Envío</th>
+                            <th style="text-align:center;">Peso Real</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'es'
+                , format: "yyy/MM/DD"
+            });
+        });
+
+        $(document).ready(function () {
+            $("#btnIniciar").prop("disabled", true);
+            $("#txtGuia").prop("disabled", true);
+            $("#ddlPSCarriers").prop("disabled", true);
+            //GetSolicitarGuia();
+
+            $("input[name=optionsRadios]").change(function () {
+                var sobreType = $('.js-rate-type')[0];
+                var paqueteType = $("input[name=optionsRadios]")[1].checked;
+                $(".form-control input-sm").toggle(sobreType.checked);
+                $(".form-control input-s-lg").toggle(paqueteType.checked);
+                if (sobreType.checked) {
+                    $('#txtAltura').hide();
+                }
+                else {
+                    $('#txtAltura').show();
+                }
+            }).change()
+        });
+        //ConfirmarOrden IniciaProceso
+
+        function ConfirmarOrden() {
+        //var TrackingType = "Normal";
+        var _OrderNo = $("#hddOrderNo").val();
+
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("ConfirmarOrden", "ProcesoSurtido")',
+            data: {
+                OrderNo: _OrderNo
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    $("#btnIniciar").prop("disabled", false);
+                    $("#btnConfirmar").prop("disabled", true);
+                    $("#txtGuia").prop("disabled", false);
+                    $("#ddlPSCarriers").prop("disabled", false);
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+        });
+        }
+
+        function IniciarProceso() {
+        //var TrackingType = "Normal";
+        var _OrderNo = $("#hddOrderNo").val();
+            var _TrackingServiceName = $("#ddlPSCarriers option:selected").text(); //$("#ddlPSCarriers").val();
+            var _IdTrackingService = $("#txtGuia").val();
+            var _TrackingServiceStatus = $("#txtEstatus").val();
+
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("IniciarProceso", "ProcesoSurtido")',
+            data: {
+                OrderNo: _OrderNo,
+                TrackingServiceName: _TrackingServiceName,
+                IdTrackingService: _IdTrackingService,
+                TrackingServiceStatus: _TrackingServiceStatus
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    $("#btnIniciar").prop("disabled", true);
+                    $("#btnConfirmar").prop("disabled", true);
+                    $("#txtGuia").prop("disabled", true);
+                    $("#ddlPSCarriers").prop("disabled", true);
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+        });
+        }
+
+        function popUpLstProds(idTracking) {
+        //var TrackingType = "Normal";
+                var _UeNo = $("#hddUeNo").val();
+                var _OrderNo = $("#hddOrderNo").val();
+        var idTracking = idTracking;
+
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("LstProdPaquete", "Ordenes")',
+            data: {
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                IdTracking: idTracking,
+                //TrackingType: TrackingType
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    $("#tblShowProduct tbody").empty();
+                    //$("#tblShowProduct tbody").remove();
+                    //var tr;
+                    debugger;
+                    //Append each row to html table
+                    for (var i = 0; i < json.resp.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + json.resp[i].Barcode + "</td>");
+                        tr.append("<td>" + json.resp[i].ProductId + "</td>");
+                        tr.append("<td>" + json.resp[i].ProductName + "</td>");
+                        //tr.append("<td><button type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button' class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                        //tr.append("<td><button onclick='EditSurtidores(" + json.json[i].Id_Carrier + ")' type = 'button' class= 'btn btn-white btn-circle'> <i class='fa fa-edit'></i></button><button type='button'  onclick='DeleteSurtidores(" + json.json[i].Id_Carrier + ")'  class='btn btn-warning btn-circle'> <i class='fa fa-minus'></i></button></td >")
+                        $('#tblShowProduct').append(tr);
+
+                    }
+                    $('#dlgShowProdcut').modal('show');
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+        });
+        }
+
+        function tab2() {
+            //$('[href="#menu3"]').tab('show');
+            $('[href="#tab-2"]').tab('show')
+        }
+
+        function GetSolicitarGuia() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '@Url.Action("GetSolicitarGuia", "ProcesoSurtido")',
+                data: {
+                    //  Id_Num_UN: _Id_Num_UN
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+
+                        var table = $('#tblSolicitutGuia').DataTable();
+
+                        table.clear().draw();
+                        table.destroy();
+
+
+
+                        table.row.add([
+                            '1'
+                            , '1'
+                            , '1'
+                            , '1'
+
+                        ]).draw();
+
+                        iniciatblSolicitutGuia();
+
+                    }
+                    else {
+                       alert(Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+                }
+
+            });
+
+        }
+
+        function popCancelar() {
+            $("#txtOtro").hide();
+            $('#txtOtro').val('');
+            $('#dlgCancel').modal('show');
+        }
+
+        function AddEmbalaje() {
+
+        debugger;
+        var selProd = 0;
+        $('input[type=checkbox][id*=chkSel_]').each(function () {
+            if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                selProd ++
+            }
+        });
+        if (selProd == 0) {
+            alert("No ha seleccionado productos");
+            return;
+        }
+        var _txtKG = $("#txtKG").val();
+        if (_txtKG.length == 0) {
+            alert("Campo Peso kg vacío!");
+            $("#txtKG").focus();
+            return;
+        }
+        var _txtLg = $("#txtLg").val();
+        if (_txtLg.length == 0) {
+            alert("Campo Largo vacío!");
+            $("#txtLg").focus();
+            return;
+        }
+        var _txtAn = $("#txtAn").val();
+        if (_txtAn.length == 0) {
+            alert("Campo Ancho vacío!");
+            $("#txtAn").focus();
+            return;
+        }
+        var _txtAl = $("#txtAltura").val();
+        var PackageType = "Sobre";
+        var paqueteType = $("input[name=optionsRadios]")[1].checked;
+        if (paqueteType) {
+            PackageType = "Paquete";
+            if ($("#txtAltura").length == 0) {
+                alert("Campo Altura vacío!");
+                $("#txtAltura").focus();
+                return;
+            }
+        }
+        else {
+            var _txtAl = "0";
+            $("#txtAltura").val("0");
+        }
+
+        var IdTracking = "";
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("SigFolioDisp", "Ordenes")',
+            data: {
+
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    IdTracking = json.resp;
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+
+        var TrackingType = "Normal";
+        var _UeNo = $("#hddUeNo").val();
+        var _OrderNo = $("#hddOrderNo").val();
+              var CreationId = 't_joserp';
+              debugger;
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("CreacionCabeceraGuia", "Ordenes")',
+            data: {
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                IdTracking: IdTracking,
+                TrackingType: TrackingType,
+                PackageType: PackageType,
+                PackageLength: _txtLg,
+                PackageWidth: _txtAn,
+                PackageHeight: _txtAl,
+                PackageWeight: _txtKG,
+                CreationId: CreationId
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    //alert("success");
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+
+        var i = 0;
+        $('input[type=checkbox][id*=chkSel_]').each(function () {
+            if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                row = $(this).closest("tr");
+                var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
+                var Barcode = arrBarProd[0];
+                var ProductId = $(this).val();  //arrBarProd[1];
+                var ProductName = $(row)[0].cells[1].innerText;
+                debugger;
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '@Url.Action("DetalleProdaProd", "Ordenes")',
+                    data: {
+                        UeNo: _UeNo,
+                        OrderNo: _OrderNo,
+                        IdTracking: IdTracking,
+                        TrackingType: TrackingType,
+                        ProductId: ProductId,
+                        Barcode: Barcode,
+                        ProductName: ProductName,
+                        CreationId: CreationId
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            //alert(json.resp);
+                        }
+                        else {
+                            alert(json.Message);
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+
+                });
+            }
+            i++;
+        });
+
+        //$('#tblEmbalaje').append('<tr><td>' + '</td><td>' + $("#txtKG").val() + '</td><td>' + $("#txtLg").val() + ' x ' + $("#txtAn").val() + ' x ' + $("#txtAltura").val() + ' </td><td>' + IdTracking + '</td></tr>');
+        $('input[type=checkbox][id*=chkSel_]').each(function () {
+            if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                this.checked = false;
+            }
+        });
+
+            location.reload();
+
+    }
+
+        function popEmbalaje() {
+            var products = new Array();
+            //var i = 0;
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                    var product = {};
+                    row = $(this).closest("tr");
+                    var arrBarProd = $(row)[0].cells[0].innerText.split("\n")
+                    product.Barcode = arrBarProd[0];
+                    product.ProductId = arrBarProd[1];
+                    product.ProductName = $(row)[0].cells[1].innerText;
+                    product.product = {};
+                    products.push(product);
+                }
+                //i++;
+            });
+            debugger;
+            if (products.length == 0) {
+                alert("Debe de seleccionar un artículo");
+            }
+            else {
+                $('#txtKG').val("");
+                $('#txtLg').val("");
+                $('#txtAn').val("");
+                $('#txtAltura').val("");
+                $('#dlgAddProdcut').modal('show');
+            }
+        }
+
+        function FinalizaEmbarqueDST() {
+
+            var ch = "0";
+            var checked = 0;
+            var count = 0;
+            var existsProd = false;
+        //if (document.getElementById('CheckPinPad').checked) {
+        //    ch = "1";
+        //}
+
+            $("#tblSolicitutGuia TBODY TR").each(function () {
+                var row1 = $(this);
+
+
+                if (row1.find("TD").eq(3).html() == 'x')
+                    checked = checked + 1;
+
+                count = count + 1;
+                existsProd = true;
+            });
+
+            console.log(existsProd, checked, count);
+            if (existsProd == true && count == checked) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("FinalizarEmbarqueDSV", "Ordenes")',
+                    data: {
+                        //num: id
+
+                        OrderNo: document.getElementById("hddOrderNo").value,
+                        ue: document.getElementById("hddUeNo").value,
+                        store: document.getElementById("hddStoreNum").value,
+                        status: document.getElementById("hddStatusUe").value,
+                        bolsas: 0, //document.getElementById("in_bolsas").value,
+                        contenedores: 0, //document.getElementById("in_contenedores").value,
+
+                        hieleras: 0, //document.getElementById("in_hieleras").value,
+                        checkPinPad: ch
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            location.reload();
+                            //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+            }
+            else
+                alert('No se puede Finalizar debido a que aun hay productos sin guia.');
+
+    }
+
+        $("#ddlMotCan")
+            .change(function () {
+
+                $("#txtOtro").val('');
+                if ($("#ddlMotCan").val() == "99") {
+                    $("#txtOtro").show();
+                    $("#txtOtro").focus();
+                } else {
+                    $("#txtOtro").hide();
+                }
+
+            })
+
+        function Cancelar() {
+            var dll = $("#ddlMotCan");
+
+            var _Cause_Desc = $("#ddlMotCan option:selected").text();
+            var __IdCause = dll.val();//document.getElementById("ddlMotCan").value; //$("#ddlMotCan").val()
+            var _UeNo = $("#hddUeNo").val();
+            var _OrderNo = $("#hddOrderNo").val();
+            if (_Cause_Desc == "99") {
+                if ($("#txtOtro").val() == "") {
+                    $("#txtOtro").focus();
+                    return;
+                }
+                else {
+                    _Cause_Desc = $("#txtOtro").val();
+                }
+            }
+
+             $.ajax({
+                async: false,
+                type: "GET",
+                url: '@Url.Action("Cancelar", "ProcesoSurtido")',
+                data: {
+                    Cause_Desc: _Cause_Desc
+                    , IdCause: __IdCause
+                    , UeNo: _UeNo
+                    , OrderNo: _OrderNo
+                },
+
+                datatype: "json",
+                success: function (json) {
+                    if (json.Success) {
+                        location.reload();
+                    }
+                    else {
+                       alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                   alert(errorThrown);
+                }
+
+            });
+        }
+
+        function Consignacion() {
+            var values = [];
+            var markedCheckbox = document.getElementsByName('chbConsig');
+            debugger;
+            for (var checkbox of markedCheckbox) {
+                debugger;
+                if (checkbox.checked)
+                    values.push(checkbox.value);
+                   // document.body.append(checkbox.value + ' ');
+            }
+         //public ActionResult Consignacion(List<string> items, string UeNo, string OrderNo, string NombreExpedidor, string NumeroTransaccion)
+            if (values.length != 0) {
+                var _UeNo = $("#hddUeNo").val();
+                var _OrderNo = $("#hddOrderNo").val();
+                var _NombreSurtidor = $("#hddSupplierName").val();
+                var _SurtidorID = $("#hddIdSupplierWH").val();
+
+                 $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '@Url.Action("Consignacion", "ProcesoSurtido")',
+                    data: {
+                        items: values
+                        , UeNo: _UeNo
+                        , OrderNo: _OrderNo
+                        , NombreSurtidor: _NombreSurtidor
+                        , SurtidorID: _SurtidorID
+
+                    },
+                    datatype: "html",
+                    success: function (json) {
+                        if (json.Success) {
+                            location.reload();
+                            // window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                        }
+                    }
+                    , error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+
+                    }
+                });
+
+            }
+        }
+
+        function DeletePaquete(idTracking) {
+        var TrackingType = "Normal";
+        var _UeNo = $("#hddUeNo").val();
+        var _OrderNo = $("#hddOrderNo").val();
+        var idTracking = idTracking;
+
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '@Url.Action("BorrarPaquete", "Ordenes")',
+            data: {
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                IdTracking: idTracking,
+                TrackingType: TrackingType
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    location.reload();
+                }
+                else {
+                    alert(json.Message);
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+
+            }
+
+        });
+        }
+
+        function GuardarVehiculo() {
+
+
+
+            var _UeNo = document.getElementById("hddUeNo").value;
+            var _OrderNo = document.getElementById("hddOrderNo").value;
+            var _idOwner = document.getElementById("hddIdOwner").value;
+            var _idSupplierWH = document.getElementById("hddIdSupplierWH").value;
+            var _idSupplierWHCode = document.getElementById("hddIdSupplierWHCode").value;
+            var _SerialId = document.getElementById("txtSerie").value;
+            var _BateryId = document.getElementById("txtBateria").value;
+            var _EntryBy = document.getElementById("txtEntradaPor").value;
+            var _EntryDate = document.getElementById("txtFechaEntrada").value;
+            var _PetitionId = document.getElementById("txtNoPedimento").value;
+            var _MotorId = document.getElementById("txtNoMotor").value;
+            var _RepuveId = document.getElementById("txtRepuve").value;
+            var _Year = document.getElementById("txtAnio").value;
+            var _ColorId = document.getElementById("txtColor").value;
+            var _ModelId = document.getElementById("txtModelo").value;
+            var _BrandId = document.getElementById("txtMarca").value;
+            var _CylinderCapacityId = document.getElementById("txtCilindraje").value;
+
+              $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("SaveVehiculo", "ProcesoSurtido")',
+            data: {
+                //num: id
+
+                UeNo: _UeNo,
+                OrderNo: _OrderNo,
+                idOwner: _idOwner,
+                idSupplierWH: _idSupplierWH,
+                idSupplierWHCode: _idSupplierWHCode,
+                SerialId: _SerialId,
+                BateryId: _BateryId,
+                EntryBy: _EntryBy,
+                EntryDate: _EntryDate,
+                PetitionId: _PetitionId,
+                MotorId: _MotorId,
+                RepuveId: _RepuveId,
+                Year: _Year,
+                ColorId: _ColorId,
+                Year: _Year,
+                ModelId: _ModelId,
+                BrandId: _BrandId,
+                CylinderCapacityId: _CylinderCapacityId
+
+            },
+            datatype: "html",
+            success: function (json) {
+                if (json.Success) {
+                    location.reload();
+                    //window.location.href = '@Url.Content("~/ordenes/OrdenSeleccionada")';
+                }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+               alert(errorThrown);
+
+            }
+        });
+        }
+    </script>
+
+    @*CONFIGURACION DE TABLAS, FILTROS, BOTONES DE EXPORT*@
+    <script>
+
+        $(document).ready(function () {
+            $('#tblAcepConsig thead tr').clone(true).appendTo('#tblAcepConsig thead');
+            $('#tblAcepConsig thead tr:eq(0) th').each(function (i) {
+                if ($(this).attr('name') != "accion") {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" class="form form-control input-sm" placeholder="' + title + '" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+
+            table = $("#tblAcepConsig").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+
+            $("#tblVehiculos").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    // destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true
+
+                }
+            );
+
+
+        });
+
+        function iniciatblSolicitutGuia() {
+            $("#tblSolicitutGuia").DataTable(
+                {
+                    dom: "<'row'<'col col-xs-6'B><'#topRightSection.col-xs-12 col-md-6 text-right' f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'lp>>",
+                    processing: true,
+                    searching: true,
+                    ordering: true,
+                    order: [[1, 'asc']],
+                    filter: true,
+                    info: false,
+                    stateSave: false,
+                    select: false,
+                    select: {
+                        style: 'single'
+                    },
+                    //Paggin
+
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100, 500],
+
+                    //destroy: true, //destruye automaticamente la referencia a la tabla
+                    //Ajax
+                    //serverSide: true,
+                    //bServerSide: true,
+                    //sServerMethod: "GET",
+                    buttons: ['csv', 'excel'],
+                    orderCellsTop: false,
+                    fixedHeader: {
+                        header: true
+                    },
+                    "scrollX": true,
+                    @* "language": {
+
+                "emptyTable": '@ViewBag.MensajeSolGuia'
+            }*@
+                }
+            );
+        }
+
+        $("body").on("click", "#btnAdd", function () {
+            //Reference the Name and Country TextBoxes.
+            var txtKG = $("#txtKG");
+            var txtLg = $("#txtLg");
+            var txtAn = $("#txtAn");
+            var txtAltura = $("#txtAltura");
+            var rdOption = $("input[name='optionsRadios']:checked").val();
+            //Get the reference of the Table's TBODY element.
+            //var tBody = $("#tblGenGuia > TBODY")[0];
+
+
+
+
+            var _txtKG = $("#txtKG").val();
+            if (_txtKG.length == 0) {
+                alert("Campo Peso kg vacío!");
+                $("#txtKG").focus();
+                return;
+            }
+            var _txtLg = $("#txtLg").val();
+            if (_txtLg.length == 0) {
+                alert("Campo Largo vacío!");
+                $("#txtLg").focus();
+                return;
+            }
+            var _txtAn = $("#txtAn").val();
+            if (_txtAn.length == 0) {
+                alert("Campo Ancho vacío!");
+                $("#txtAn").focus();
+                return;
+            }
+            var _txtAl = $("#txtAltura").val();
+
+            var PackageType = "Sobre";
+            var paqueteType = $("input[name=optionsRadios]")[1].checked;
+            if (paqueteType) {
+                PackageType = "Paquete";
+                if (_txtAl.length == 0) {
+                    alert("Campo Altura vacío!");
+                    $("#txtAltura").focus();
+                    return;
+                }
+            }
+            else {
+                var _txtAl = "N/A";
+                $("#txtAltura").val("N/A");
+            }
+
+
+
+
+
+
+
+            tr = $('<tr/>');
+            //tr.append("<td class='row1'>" + json.json[i].Id_Num_Orden + "</td>");
+
+            tr.append("<td colspan='2' style='text-align:center;'>" + rdOption + "</td>");
+            tr.append("<td style='text-align:right;'>" + txtKG.val() + "</td>");
+            tr.append("<td style='text-align:right;'>" + txtLg.val() + "</td>");
+            tr.append("<td style='text-align:right;'>" + txtAn.val() + "</td>");
+            tr.append("<td style='text-align:right;'>" + txtAltura.val() + "</td>");
+
+
+            tr.append("<td><button onclick='Remove(this)'  type = 'button' class= 'btn btn-primary'>Remover</button></td >");
+            $('#tblGenGuia').append(tr);
+
+            //Clear the TextBoxes.
+            txtKG.val("");
+            txtLg.val("");
+            txtAn.val("");
+            txtAltura.val("");
+        });
+
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(0).html();
+            if (confirm("¿Esta seguro que desea eliminar?: " + name)) {
+                //Get the reference of the Table.
+                var table = $("#tblGenGuia")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+            }
+        };
+
+         function AddEmbalaje2() {
+            //Loop through the Table rows and build a JSON array.
+            var items = new Array();
+             var products = new Array();
+             const queryString = window.location.search;
+             const urlParams = new URLSearchParams(queryString);
+             const UeNo = urlParams.get('UeNo');
+             const orderNo = urlParams.get('OrderNo');
+             var _UeNo = UeNo;
+             var _OrderNo = orderNo;
+            debugger;
+            $("#tblGenGuia TBODY TR").each(function () {
+                var row = $(this);
+                var item = {};
+
+                debugger;
+                item.Tipo = row.find("TD").eq(0).html();
+                item.Peso = row.find("TD").eq(1).html();
+                item.Largo = row.find("TD").eq(2).html();
+                item.Ancho = row.find("TD").eq(3).html();
+                var alto= row.find("TD").eq(4).html()
+
+                item.Alto = alto=="" ? 0 : alto;
+
+                items.push(item);
+            });
+            debugger;
+            if (items.length == 0) {
+                $("#txtKG").focus();
+                return;
+            }
+
+            var i = 0;
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                    var product = {};
+                    row = $(this).closest("tr");
+                    var arrBarProd = $(row)[i].cells[0].innerText.split("\n")
+                    product.Barcode = arrBarProd[0];
+                    product.ProductId = arrBarProd[1];
+                    product.ProductName = $(row)[i].cells[1].innerText;
+                    product.Pieces = $(row)[i].cells[2].innerText;
+                    product.product = {};
+                    products.push(product);
+                }
+                //i++;
+            });
+            debugger;
+            if (products.length == 0) {
+                alert("Debe de seleccionar un artículo");
+                return;
+            }
+
+            //Send the JSON array to Controller using AJAX.
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: '@Url.Action("AddEmbalaje", "Ordenes")',
+                data: JSON.stringify({
+                    Paquetes: items,
+                    UeNo: _UeNo,
+                    OrderNo: _OrderNo,
+                    Products: products,
+                    TrackingType:'Normal'
+                    // Paquetes, string UeNo, int OrderNo,
+                }),
+                success: function (json) {
+                    if (json.Success) {
+                        location.reload();
+                        //alert(json.resp);
+                    }
+                    else {
+                        alert(json.Message);
+                    }
+                }
+                , error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+
+                }
+            });
+
+
+            $('input[type=checkbox][id*=chkSel_]').each(function () {
+                if ($(this).is(":checked") && $(this).is(":disabled") == false) {
+                    this.checked = false;
+                }
+            });
+
+
+        }
+
+        function showpdf(num_guia) {
+            //debugger;
+
+            $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("GetPdfGuia", "Ordenes")',
+            data: {
+            guia: num_guia
+            },
+            datatype: "html",
+            success: function (json) {
+            if (json.Success) {
+
+            if (json.pdf != 'url')
+                document.getElementById("viewrPDF").setAttribute('src', 'data:application/pdf; base64, ' + encodeURI(json.pdf));
+            else
+                document.getElementById("viewrPDF").setAttribute('src', json.url);
+
+            $("#myModal").modal("show");
+
+            }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+
+            }
+            });
+
+        }
+
+        function showDetails(num_guia) {
+            //debugger;
+
+            $.ajax({
+            async: false,
+            type: "POST",
+            url: '@Url.Action("GetDetails", "ProcesoSurtido")',
+                data: {
+                    idTrackingService: num_guia
+            },
+            datatype: "html",
+            success: function (json) {
+            if (json.Success) {
+
+                var myTable = $('#tblDetails').DataTable();
+                myTable
+                    .clear()
+                    .draw();
+                for (var i = 0; i < json.data.length; i++) {
+
+                    myTable.row.add([
+
+                        json.data[i].SKU,
+                        json.data[i].Descripcion,
+                        json.data[i].Piezas,
+                        json.data[i].PesoReal
+                    ]).draw();
+                }
+
+            $("#myModalDetails").modal("show");
+
+            }
+            }
+            , error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+
+            }
+            });
+
+    }
+    </script>
+}

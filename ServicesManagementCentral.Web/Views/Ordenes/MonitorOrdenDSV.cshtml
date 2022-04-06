@@ -169,10 +169,9 @@
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
                                                 <td style="text-align:center;">
-                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"]})" title="Click para ver el detalle de la orden" class="btn btn-link">
-                                                        @p["UeNo"]
-                                                    </a>
+                                                    @p["UeNo"]
                                                 </td>
+                                                <td style="text-align:center">@p["OrdenCompra"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
@@ -190,6 +189,21 @@
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Surtido"].ToString())" style="text-align:center">@p["FechaSurtido"]</td>
                                                 }
+                                                <td style="text-align:center">@p["StatusDescriptionUE"]</td>
+                                                <td style="text-align:center">
+                                               @if (@p["Tipoenvio"].ToString() == "1")
+                                                {
+                                                    <a href="@Url.Action("ProcesoSurtidoDSV", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"], Tipoenvio = @p["Tipoenvio"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
+                                                    Procesar Surtido
+                                                    </a>
+                                                }
+                                                else
+                                                { 
+                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"], Tipoenvio = @p["Tipoenvio"] })" title="Click para ver el detalle de la orden" class="btn btn-link">
+                                                    Procesar Surtido
+                                                    </a>
+                                                }                                                   
+                                                </td>
                                             </tr>
                                         }
                                     }
@@ -249,9 +263,9 @@
                                                 <td style="text-align:center;">@p["idSupplierWHCode"]</td>
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
                                                 <td style="text-align:center;">
-                                                    <a href="@Url.Action("ProcesoSurtido", "ProcesoSurtido", new { UeNo = @p["UeNo"], OrderNo = @p["OrderNo"] })"
-                                                       title="Click para ver el detalle de la orden" class="btn btn-link">@p["UeNo"]</a>
-                                                </td>                                                
+                                                    @p["UeNo"]
+                                                </td>
+                                                <td style="text-align:center">@p["OrdenCompra"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaSolGuia"].ToString()))
                                                 {

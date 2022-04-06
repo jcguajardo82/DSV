@@ -836,7 +836,8 @@ namespace ServicesManagement.Web.Controllers
                 if (Operacion == 5)
                 {
                     string ShipmentId = detalle[0].ShipmentId;
-                    DALAutorizacion.upCorpOms_Del_UeNoSupplyProcess(OrderId, Desc, 1, ShipmentId);
+                    string UserCreate = User.Identity.Name;
+                    DALAutorizacion.upCorpOms_Del_UeNoSupplyProcess(OrderId, Desc, 1, ShipmentId, UserCreate);
                     if (UeType.ToUpper().Equals("SETC"))
                     {
                         if (DALCallCenter.up_PPS_Sel_PaymenTransactionOrderCancellation(orden.Orderid).Tables[0].Rows.Count > 0)
