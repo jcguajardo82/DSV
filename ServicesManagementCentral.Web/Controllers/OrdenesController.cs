@@ -2987,8 +2987,6 @@ namespace ServicesManagement.Web.Controllers
             
             Session["ListWeightByProducts"] = lstPesos;
 
-            Session["ListWeightByProducts"] = lstPesos;
-
             foreach (var item in lstPesos)
             {
                 if (item.PesoVol > item.Peso)
@@ -3285,9 +3283,9 @@ namespace ServicesManagement.Web.Controllers
                     }
                     merchandise.merchandiseValue = total;
                     merchandise.currency = "MXN";
-                    merchandise.productServiceCode = lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_IdProdServ;
+                    merchandise.productServiceCode = lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_IdProdServ == null ? "01010101" : lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_IdProdServ;
                     merchandise.merchandiseQuantity = product.Pieces;
-                    merchandise.measurementUnitCode = lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_UniMedProd;
+                    merchandise.measurementUnitCode = lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_UniMedProd == null ? "H87" : lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_UniMedProd;
                     merchandise.tariffFraction = "12345678";
                     merchandise.UUIDExteriorTrade = "ABCDed02-a12A-B34B-c56C-c5abcdef61F2";
                     merchandise.isInternational = false;
@@ -3317,9 +3315,9 @@ namespace ServicesManagement.Web.Controllers
                 }
                 merchandise.merchandiseValue = total;
                 merchandise.currency = "MXN";
-                merchandise.productServiceCode = lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_IdProdServ;
+                merchandise.productServiceCode = lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_IdProdServ == null ? "01010101" : lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_IdProdServ;
                 merchandise.merchandiseQuantity = packageCEDIS.piezas;
-                merchandise.measurementUnitCode = lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_UniMedProd;
+                merchandise.measurementUnitCode = lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_UniMedProd == null ? "H87" : lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_UniMedProd;
                 merchandise.tariffFraction = "12345678";
                 merchandise.UUIDExteriorTrade = "ABCDed02-a12A-B34B-c56C-c5abcdef61F2";
                 merchandise.isInternational = false;
@@ -3579,9 +3577,9 @@ namespace ServicesManagement.Web.Controllers
                     }
                     merchandise.merchandiseValue = total;
                     merchandise.currency = "MXN";
-                    merchandise.productServiceCode = lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_IdProdServ;
+                    merchandise.productServiceCode = lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_IdProdServ == null ? "01010101" : lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_IdProdServ;
                     merchandise.merchandiseQuantity = product.Pieces;
-                    merchandise.measurementUnitCode = lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_UniMedProd;
+                    merchandise.measurementUnitCode = lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_UniMedProd == null ? "H87" : lstWeightByProducts.Where(x => x.Product == long.Parse(product.ProductId.ToString())).FirstOrDefault().SAT_UniMedProd;
                     merchandise.tariffFraction = "12345678";
                     merchandise.UUIDExteriorTrade = "ABCDed02-a12A-B34B-c56C-c5abcdef61F2";
                     merchandise.isInternational = false;
@@ -3611,9 +3609,9 @@ namespace ServicesManagement.Web.Controllers
                 }
                 merchandise.merchandiseValue = total;
                 merchandise.currency = "MXN";
-                merchandise.productServiceCode = lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_IdProdServ;
+                merchandise.productServiceCode = lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_IdProdServ == null ? "01010101" : lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_IdProdServ;
                 merchandise.merchandiseQuantity = packageCEDIS.piezas;
-                merchandise.measurementUnitCode = lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_UniMedProd;
+                merchandise.measurementUnitCode = lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_UniMedProd == null ? "H87" : lstWeightByProducts.Where(x => x.Product == long.Parse(packageCEDIS.productId.ToString())).FirstOrDefault().SAT_UniMedProd;
                 merchandise.tariffFraction = "12345678";
                 merchandise.UUIDExteriorTrade = "ABCDed02-a12A-B34B-c56C-c5abcdef61F2";
                 merchandise.isInternational = false;
