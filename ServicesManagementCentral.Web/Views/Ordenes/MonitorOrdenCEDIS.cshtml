@@ -174,6 +174,8 @@
                                                 <td style="text-align:center;">@p["SupplierWHName"]</td>
                                                 <td style="text-align:center;">@p["UeNo"]</td>
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
+                                                <td style="text-align:center">@p["FechaAutorizacion"]</td>
+                                                <td style="text-align:center;">@p["TipoPago"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Limite"].ToString())" style="text-align:center">@p["FechaLimite"]</td>
@@ -190,6 +192,8 @@
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Surtido"].ToString())" style="text-align:center">@p["FechaSurtido"]</td>
                                                 }
+                                                <td style="text-align:center">@p["FechaSurtidoWMS"]</td>
+                                                <td style="text-align:center;">@p["StatusDescriptionUE"]</td>
                                             </tr>
                                         }
                                     }
