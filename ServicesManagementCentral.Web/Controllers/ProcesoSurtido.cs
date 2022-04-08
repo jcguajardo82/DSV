@@ -69,7 +69,6 @@ namespace ServicesManagement.Web.Controllers
 
                 var totSup = list.Where(x => x.Suplido == true).ToList();
 
-
                 if (list.Count == totSup.Count)
                 {
                     ViewBag.ArtSup = true;
@@ -194,6 +193,10 @@ namespace ServicesManagement.Web.Controllers
 
                 var totSup = list.Where(x => x.Suplido == true).ToList();
 
+                if (totSup.Count > 0)
+                    Session["ProductsAccepted"] = true;
+                else
+                    Session["ProductsAccepted"] = false;
 
                 if (list.Count == totSup.Count)
                 {
@@ -484,23 +487,26 @@ namespace ServicesManagement.Web.Controllers
                 //Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtido"], "", json2);
                 Soriana.FWK.FmkTools.RestResponse r = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, System.Configuration.ConfigurationSettings.AppSettings["api_FinalizarSurtidoDSV"], "", json2);
 
-                //Llamado Generar Nueva orden de compra
-                string apiUrl2 = System.Configuration.ConfigurationManager.AppSettings["GeneracionNvaOrden_API"]; 
-                var req = new { OrderID = UeNo.ToString() };
-
-                string json3 = JsonConvert.SerializeObject(new { OrderID = UeNo.ToString() });
-                string PPSRequest = JsonConvert.SerializeObject(req);
-                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json3, false, null);
-                Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl2, false, null);
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl2, "", json3);
-
-                JObject json = JObject.Parse(r2.message);
-                if (json.TryGetValue("errorCode", out JToken v1))
+                //Llamado Generar Nueva orden
+                if (Session["ProductsAccepted"] != null && !Convert.ToBoolean(Session["ProductsAccepted"].ToString()))
                 {
-                    if (((Newtonsoft.Json.Linq.JValue)v1).Value.ToString() == "99")
+                    string apiUrl2 = System.Configuration.ConfigurationManager.AppSettings["GeneracionNvaOrden_API"];
+                    var req = new { OrderID = UeNo.ToString() };
+
+                    string json3 = JsonConvert.SerializeObject(new { OrderID = UeNo.ToString() });
+                    string PPSRequest = JsonConvert.SerializeObject(req);
+                    Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "in_data: " + json3, false, null);
+                    Soriana.FWK.FmkTools.LoggerToFile.WriteToLogFile(Soriana.FWK.FmkTools.LogModes.LogError, Soriana.FWK.FmkTools.LogLevel.INFO, "Request: " + apiUrl2, false, null);
+                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                    Soriana.FWK.FmkTools.RestResponse r2 = Soriana.FWK.FmkTools.RestClient.RequestRest(Soriana.FWK.FmkTools.HttpVerb.POST, apiUrl2, "", json3);
+
+                    JObject json = JObject.Parse(r2.message);
+                    if (json.TryGetValue("errorCode", out JToken v1))
                     {
-                        throw new Exception(r.message);
+                        if (((Newtonsoft.Json.Linq.JValue)v1).Value.ToString() == "99")
+                        {
+                            throw new Exception(r.message);
+                        }
                     }
                 }
                 //fin
