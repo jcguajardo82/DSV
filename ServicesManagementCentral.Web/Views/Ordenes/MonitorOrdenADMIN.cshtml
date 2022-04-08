@@ -121,7 +121,8 @@
     </div>
     <div class="col-lg-3">
         <div id="topRightSection" class="col-xs-12 col-md-12 text-right ">
-            @*<button type="button" class="btn btn-default btn btn-xs" data-toggle="modal" onclick="GetTdasTrasp()">
+            @*  // comentario 2022-04-08
+                <button type="button" class="btn btn-default btn btn-xs" data-toggle="modal" onclick="GetTdasTrasp()">
                     Traspaso
                 </button>*@
             @*<button type="button" class="btn btn-default btn btn-xs" data-toggle="modal" data-target="#dlgEtiquetas">
@@ -188,6 +189,8 @@
                                                     <td style="text-align:center;">@p["UeNo"]</td>
                                                 }
                                                 <td style="text-align:center">@p["FechaCreacion"]</td>
+                                                <td style="text-align:center">@p["FechaAutorizacion"]</td>
+                                                <td style="text-align:center;">@p["TipoPago"]</td>
                                                 @if (string.IsNullOrEmpty(@p["FechaLimite"].ToString()))
                                                 {
                                                     <td class="@ColoresSemaforo(@p["Color_Limite"].ToString())" style="text-align:center">@p["FechaLimite"]</td>
